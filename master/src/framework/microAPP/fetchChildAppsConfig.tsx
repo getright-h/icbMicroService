@@ -11,12 +11,20 @@ export function fetchChildAppsConfig() {
         defaultMountApp: true,
         children: [
           {
-            path: '',
+            path: 'login',
             title: '登录测试',
             icon: 'anticon-mobile',
             lazyload: true,
-            exact: true,
+            exact: false,
             componentUrl: 'login'
+          },
+          {
+            path: 'home',
+            title: '登录测试2',
+            icon: 'anticon-mobile',
+            lazyload: true,
+            exact: false,
+            componentUrl: 'home'
           }
         ]
       }

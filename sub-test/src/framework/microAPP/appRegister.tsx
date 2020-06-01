@@ -3,8 +3,11 @@ import { render, unmountComponentAtNode } from 'react-dom';
 import React from 'react';
 import App from '~pages/app.component';
 import { AppConfig, ChildrenObject } from './microAppModal';
-import { loginRoutes } from '~pages/login/login.routes';
-const login = () => import('~pages/login/login-component/login.component');
+import { appRoutes } from '~/solution/pages/app.routes';
+const components = {
+  login: () => import('~pages/login/login-component/login.component'),
+  home: () => import('~pages/home/home.module')
+};
 
 function childProjectLifeCycle() {
   return {
@@ -42,9 +45,10 @@ export function renderApp(props?: AppConfig) {
   // // 返回当前根据routeMatch拼接后的路由
   console.log('props', props);
 
-  const routers: any = window.__POWERED_BY_QIANKUN__ ? routerMatch(props.routers) : loginRoutes;
+  const routers: any = window.__POWERED_BY_QIANKUN__ ? routerMatch(props.routers) : appRoutes;
 
   const routerBase = window.__POWERED_BY_QIANKUN__ ? props.routerBase.replace('/#', '') : '';
+
   render(
     <App routers={routers} routerBase={routerBase} />,
     props && props.container ? props.container.querySelector('#root') : document.getElementById('root')
@@ -53,7 +57,7 @@ export function renderApp(props?: AppConfig) {
 
 function routerMatch(routers: Array<ChildrenObject>) {
   const dealRouters = routers.map(router => {
-    router.component = login;
+    router.component = components[router.componentUrl];
     return router;
   });
 

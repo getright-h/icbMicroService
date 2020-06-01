@@ -6,7 +6,7 @@ import { LazyloadLoadingComponent } from '~/solution/components/component.module
 
 export class RoutesService {
   // 渲染路由
-  static renderRoutes(routes: IRoute[], StrategyType?: any) {
+  static renderRoutes(routes: IRoute[], StrategyType?: any, Redirect?: JSX.Element) {
     // 自动使用 404 路由（需做好适配）
     routes.push({
       path: '',
@@ -23,7 +23,12 @@ export class RoutesService {
       );
     });
 
-    return <Switch>{RoutesArr}</Switch>;
+    return (
+      <Switch>
+        {Redirect}
+        {RoutesArr}
+      </Switch>
+    );
   }
 
   // 路由守卫

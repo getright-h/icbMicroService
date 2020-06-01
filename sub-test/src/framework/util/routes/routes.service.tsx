@@ -2,29 +2,35 @@ import * as React from 'react';
 import { Route, Switch, Redirect, RouteComponentProps } from 'react-router-dom';
 import { IRoute } from '~framework/interfaces/IRoute';
 import { LazyloadLoadingComponent } from '~/solution/components/component.module';
+import NotFoundComponent from '~/solution/pages/public/not-found-component/not-found.component';
 
 export class RoutesService {
   // 渲染路由
-  static renderRoutes(routes: IRoute[], StrategyType?: any) {
-    console.log(routes);
+  static renderRoutes(routes: IRoute[], StrategyType?: any, redirect?: JSX.Element) {
+    console.log(redirect);
 
     // 自动使用 404 路由（需做好适配）
-    // routes.push({
-    //   path: '',
-    //   component: NotFoundComponent
-    // });
+    routes.push({
+      path: '',
+      component: NotFoundComponent
+    });
     const RoutesArr = routes.map(route => {
       return (
         <Route
           key={route.path}
           exact={route.exact}
-          path={route.path}
+          path={'/' + route.path}
           render={RoutesService.render(route, StrategyType)}
         />
       );
     });
 
-    return <Switch>{RoutesArr}</Switch>;
+    return (
+      <Switch>
+        {redirect}
+        {RoutesArr}
+      </Switch>
+    );
   }
 
   // 路由守卫
@@ -38,6 +44,8 @@ export class RoutesService {
         let TargetComponent = route.component;
 
         if (route.lazyload) {
+          console.log(1);
+
           TargetComponent = React.lazy(route.component);
           return (
             <React.Suspense fallback={<LazyloadLoadingComponent />}>

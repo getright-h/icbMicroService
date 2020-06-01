@@ -6,6 +6,7 @@ import { IHomeProps } from './home.interface';
 import { useEffect } from 'react';
 import { Subscription } from 'rxjs';
 import { setState } from '~/framework/microAPP/appStore';
+import { fetchChildAppsConfig } from '~/framework/microAPP/fetchChildAppsConfig';
 export function useHomeStore() {
   const homeService = useService(HomeService);
   const menuService = useService(MenuService);
@@ -14,9 +15,6 @@ export function useHomeStore() {
 
   useEffect(() => {
     getMenuAndAuth();
-    return () => {
-      menuAndAuthSubscription.unsubscribe();
-    };
   }, []);
 
   function sendToChild() {
@@ -24,8 +22,8 @@ export function useHomeStore() {
   }
 
   function getMenuAndAuth() {
-    menuAndAuthSubscription = homeService.getMenuAndAuthKeys().subscribe((menuList: { data: IMenu[] }) => {
-      setStateWrap({ menuList: menuService.updateMenuByRoutes(menuList.data), loading: false });
+    fetchChildAppsConfig().then((menuList: { data: IMenu[] }) => {
+      setStateWrap({ menuList: menuService.updateMenuByRoutes(menuList), loading: false });
     });
   }
 
