@@ -7,7 +7,7 @@ import 'moment/locale/zh-cn';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import { useGlobalContext } from '../context/global/global.provider';
-import { HashRouter } from 'react-router-dom';
+import { HashRouter, Redirect } from 'react-router-dom';
 import MainReducer from '../context/redux/reducer/index';
 import { RoutesService } from '~/framework/util/routes/routes.service';
 import { ChildrenObject } from '~/framework/microAPP/microAppModal';
@@ -18,6 +18,8 @@ const App = (props: { routers: Array<ChildrenObject>; routerBase: string }) => {
 
   // const App = (props?: {appRoutes: any}) => {
   const { routers, routerBase } = props;
+  console.log(routerBase);
+
   // 项目内部用的hooks provicer
   const { GlobalProvider } = useGlobalContext();
   // 主项目用的store 主要用来接收子应用传来的信息
@@ -26,7 +28,7 @@ const App = (props: { routers: Array<ChildrenObject>; routerBase: string }) => {
     <ConfigProvider locale={zhCN}>
       <Provider store={store}>
         <GlobalProvider>
-          <HashRouter basename={routerBase}>{RoutesService.renderRoutes(routers)}</HashRouter>
+          <HashRouter basename={routerBase}>{RoutesService.renderRoutes(routers, false)}</HashRouter>
         </GlobalProvider>
       </Provider>
     </ConfigProvider>

@@ -10,7 +10,6 @@ import { useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 function HomeModule(props: any) {
-  console.log(props);
   const { state } = useHomeStore();
   const { gState }: IGlobalState = React.useContext(GlobalContext);
   const location = useLocation();

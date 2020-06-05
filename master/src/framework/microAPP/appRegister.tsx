@@ -24,6 +24,7 @@ function registerMainApp() {
         entry: isDev ? devEntry : proEntry,
         container: currentId,
         activeRule: activeRule,
+        // singular: singular,
         props: { baseFuntion, name: element.name, routers: children, routerBase: activeRule }
       });
       element.defaultMountApp && (defaultMountApp = element.activeRule);

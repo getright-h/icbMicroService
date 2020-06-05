@@ -12,7 +12,7 @@ function runExec(type, action) {
     appDir.forEach((dir) => {
         let projectPath = path.resolve(dir);
         console.log(`开始${action} ${dir}`);
-        const {stdout} = spawn(`yarn`, [type], {cwd: projectPath});
+        const {stdout} = spawn(`yarn`, [type], {cwd: projectPath, shell: process.platform === 'win32'});
         stdout.on("data", (data) => {
             console.log(data.toString()); 
         })

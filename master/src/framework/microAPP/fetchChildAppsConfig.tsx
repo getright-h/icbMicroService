@@ -9,13 +9,14 @@ export function fetchChildAppsConfig() {
         title: '测试菜单',
         icon: 'anticon-mobile',
         defaultMountApp: true,
+        // singular: true,
         children: [
           {
-            path: 'login',
+            path: '',
             title: '登录测试',
             icon: 'anticon-mobile',
             lazyload: true,
-            exact: false,
+            exact: true,
             componentUrl: 'login'
           },
           {
@@ -23,7 +24,7 @@ export function fetchChildAppsConfig() {
             title: '登录测试2',
             icon: 'anticon-mobile',
             lazyload: true,
-            exact: false,
+            exact: true,
             componentUrl: 'home'
           }
         ]
@@ -38,6 +39,7 @@ export interface AppConfig {
   devEntry: string;
   proEntry: string;
   activeRule: string;
+  singular?: boolean;
   defaultMountApp: boolean;
   children?: Array<ChildrenObject>;
 }
@@ -54,6 +56,7 @@ export interface ChildrenObject {
 export interface AppProps {
   name: string;
   props: any;
+  singular?: boolean;
   entry: string;
   container: string;
   activeRule: string;

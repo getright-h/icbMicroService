@@ -7,8 +7,6 @@ import NotFoundComponent from '~/solution/pages/public/not-found-component/not-f
 export class RoutesService {
   // 渲染路由
   static renderRoutes(routes: IRoute[], StrategyType?: any, redirect?: JSX.Element) {
-    console.log(redirect);
-
     // 自动使用 404 路由（需做好适配）
     routes.push({
       path: '',
@@ -44,8 +42,6 @@ export class RoutesService {
         let TargetComponent = route.component;
 
         if (route.lazyload) {
-          console.log(1);
-
           TargetComponent = React.lazy(route.component);
           return (
             <React.Suspense fallback={<LazyloadLoadingComponent />}>

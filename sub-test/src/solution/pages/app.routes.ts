@@ -1,14 +1,13 @@
 import { IRoute } from '~framework/interfaces/IRoute';
-import HomeModule from './home/home.module';
-import LoginModule from './login/login.module';
-
 export const appRoutes: IRoute[] = [
   {
     path: 'home',
-    component: HomeModule
+    component: () => import('./home/home.module'),
+    lazyload: true
   },
   {
     path: '',
-    component: LoginModule
+    component: () => import('./login/login.module'),
+    lazyload: true
   }
 ];

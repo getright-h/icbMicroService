@@ -27,6 +27,8 @@ function childProjectLifeCycle() {
       console.log('react app bootstraped');
     },
     async unmount(props: any) {
+      console.log(1222);
+
       unmountComponentAtNode(
         props && props.container ? props.container.querySelector('#root') : document.getElementById('root')
       );
@@ -43,11 +45,10 @@ export function renderApp(props?: AppConfig) {
   // 拼接当前的router, 来自主应用的路由
   // // TODO: 后期需要区分是否作为子应用启动 通过window.__POWERED_BY_QIANKUN__
   // // 返回当前根据routeMatch拼接后的路由
-  console.log('props', props);
 
-  const routers: any = window.__POWERED_BY_QIANKUN__ ? routerMatch(props.routers) : appRoutes;
+  const routers: any = !!window.__POWERED_BY_QIANKUN__ ? routerMatch(props.routers) : appRoutes;
 
-  const routerBase = window.__POWERED_BY_QIANKUN__ ? props.routerBase.replace('/#', '') : '';
+  const routerBase = !!window.__POWERED_BY_QIANKUN__ ? props.routerBase.replace('/#', '') : '';
 
   render(
     <App routers={routers} routerBase={routerBase} />,
@@ -60,6 +61,7 @@ function routerMatch(routers: Array<ChildrenObject>) {
     router.component = components[router.componentUrl];
     return router;
   });
+  console.log('dealRouters', dealRouters);
 
   return dealRouters;
 }

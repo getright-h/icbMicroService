@@ -7,7 +7,7 @@ import 'moment/locale/zh-cn';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import { useGlobalContext } from '../context/global/global.provider';
-import { HashRouter, Redirect } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import MainReducer from '../context/redux/reducer/index';
 import { RoutesService } from '~/framework/util/routes/routes.service';
 import { appRoutes } from './app.routes';
@@ -22,13 +22,7 @@ const App = () => {
     <ConfigProvider locale={zhCN}>
       <Provider store={store}>
         <GlobalProvider>
-          <HashRouter>
-            {RoutesService.renderRoutes(
-              appRoutes,
-              false,
-              <Redirect from="/home" exact to="/home/login" key="redirect"></Redirect>
-            )}
-          </HashRouter>
+          <HashRouter>{RoutesService.renderRoutes(appRoutes, false)}</HashRouter>
         </GlobalProvider>
       </Provider>
     </ConfigProvider>

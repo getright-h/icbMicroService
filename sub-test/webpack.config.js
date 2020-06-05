@@ -14,7 +14,7 @@ try {
     ...localEnv,
     ...dotenv.parse(localEnvBuffer)
   }
-}catch(e){
+} catch(e) {
   console.log('⚡️ 解析本地配置文件失败，将使用默认配置···')
 }finally{
   // The process.env object forces all of its properties to be of type string, since environment variables must always be strings. 
