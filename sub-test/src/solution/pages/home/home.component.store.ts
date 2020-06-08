@@ -5,6 +5,7 @@ import { useService, useStateStore } from '~/framework/aop/hooks/use-base-store'
 import { IHomeProps } from './home.interface';
 import { useEffect } from 'react';
 import { Subscription } from 'rxjs';
+import { PAGES_MENU } from '~/solution/shared/constant/common.const';
 export function useHomeStore() {
   const homeService = useService(HomeService);
   const menuService = useService(MenuService);
@@ -12,16 +13,19 @@ export function useHomeStore() {
   const { state, setStateWrap } = useStateStore(new IHomeProps());
 
   useEffect(() => {
+    console.log(1);
+
     getMenuAndAuth();
-    return () => {
-      menuAndAuthSubscription.unsubscribe();
-    };
+    // return () => {
+    //   menuAndAuthSubscription.unsubscribe();
+    // };
   }, []);
 
   function getMenuAndAuth() {
-    menuAndAuthSubscription = homeService.getMenuAndAuthKeys().subscribe((menuList: { data: IMenu[] }) => {
-      setStateWrap({ menuList: menuService.updateMenuByRoutes(menuList.data), loading: false });
-    });
+    setStateWrap({ menuList: menuService.updateMenuByRoutes(PAGES_MENU.MENU), loading: false });
+    // menuAndAuthSubscription = homeService.getMenuAndAuthKeys().subscribe((menuList: { data: IMenu[] }) => {
+    //   setStateWrap({ menuList: menuService.updateMenuByRoutes(menuList.data), loading: false });
+    // });
   }
 
   return { state };

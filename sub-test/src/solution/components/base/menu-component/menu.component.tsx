@@ -6,13 +6,17 @@ import { Link } from 'react-router-dom';
 import SubMenu from 'antd/lib/menu/SubMenu';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 import { IGlobalState } from '~/solution/context/global/global.interface';
-export default function MenuComponent(props: IProps) {
+import { AppstoreOutlined } from '@ant-design/icons';
+function MenuComponent(props: IProps) {
   const MenuItems = renderMenuItems(props.menuList);
+  console.log(props);
+
   const { currentUrl, expandList } = props;
   const { gState }: IGlobalState = React.useContext(GlobalContext);
   function renderMenuItems(menuList: IMenu[]) {
     return menuList.map(menu => {
       const { title, paths } = menu;
+
       return menu.children ? (
         <SubMenu
           key={paths}
@@ -22,6 +26,7 @@ export default function MenuComponent(props: IProps) {
               <span>{title}</span>
             </span>
           }
+          icon={<AppstoreOutlined />}
         >
           {renderMenuItems(menu.children)}
         </SubMenu>
@@ -47,3 +52,5 @@ export default function MenuComponent(props: IProps) {
     </Menu>
   );
 }
+
+export default React.memo(MenuComponent);

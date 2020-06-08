@@ -1,7 +1,7 @@
 import { IRoute } from '~framework/interfaces/IRoute';
 export const appRoutes: IRoute[] = [
   {
-    path: 'home',
+    path: 'account',
     component: () => import('./home/home.module'),
     lazyload: true
   },

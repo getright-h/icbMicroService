@@ -7,7 +7,8 @@ import { useHomeStore } from './home.component.store';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 import { IGlobalState } from '~/solution/context/global/global.interface';
 import { useLocation } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { RoutesService } from '~/framework/util/routes/routes.service';
+import { homeRoutes } from './home.routes';
 
 function HomeModule(props: any) {
   const { state } = useHomeStore();
@@ -19,10 +20,11 @@ function HomeModule(props: any) {
     currentUrl
       .split('/')
       .filter(item => item)
-      .forEach((element, index) => {
+      .forEach(element => {
         target += `/${element}`;
-        index && expandList.push(target);
+        expandList.push(target);
       });
+
     return expandList;
   }
 
@@ -38,11 +40,7 @@ function HomeModule(props: any) {
   }
 
   function renderLayoutContainer() {
-    return (
-      <Layout.Content>
-        <div id="subapp-viewport"></div>
-      </Layout.Content>
-    );
+    return <Layout.Content>{RoutesService.renderRoutes(homeRoutes)}</Layout.Content>;
   }
 
   return (
@@ -60,4 +58,4 @@ function HomeModule(props: any) {
   );
 }
 
-export default connect(state => state)(HomeModule);
+export default React.memo(HomeModule);

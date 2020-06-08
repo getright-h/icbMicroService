@@ -46,7 +46,6 @@ function LoginComponentOrigin(props: IProps) {
         <div className={style.stage}></div>
         <div className={style.leftCover} ref={leftCoverRef}></div>
       </section>
-      <Button onClick={sendMessageToFather}>子应用向父应用通信</Button>
       <section className={style.right}>
         <div>
           <p className={style.welcome}>Hello!</p>

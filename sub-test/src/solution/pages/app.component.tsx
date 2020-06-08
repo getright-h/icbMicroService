@@ -14,12 +14,7 @@ import { ChildrenObject } from '~/framework/microAPP/microAppModal';
 moment.locale('zh-cn');
 
 const App = (props: { routers: Array<ChildrenObject>; routerBase: string }) => {
-  console.log(props);
-
-  // const App = (props?: {appRoutes: any}) => {
   const { routers, routerBase } = props;
-  console.log(routerBase);
-
   // 项目内部用的hooks provicer
   const { GlobalProvider } = useGlobalContext();
   // 主项目用的store 主要用来接收子应用传来的信息

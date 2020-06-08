@@ -26,7 +26,7 @@ export class MenuService {
   private convertObjectToItem(object: IMenu, parent?: IMenu): IMenu {
     const item = object;
 
-    item.paths = parent && parent.paths ? parent.paths.slice(0) : '/home';
+    item.paths = parent && parent.paths ? parent.paths.slice(0) : '';
     if (!!item.path) item.paths += `/${item.path}`;
 
     if (object.children && object.children.length > 0) {
