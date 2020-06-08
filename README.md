@@ -39,5 +39,5 @@
 * 子应用可以独立启动
 * 要启动父应用需要使用根目录下 - **npm start**
 * 全部安装依赖模块 - **yarn ainstall**
-* 
+ 
 ##### 更多详情 请查看http://220.167.101.49:8092/FE-ZeroToOne/microFront-platform/RM-micro-web/wikis/%E5%BE%AE%E5%89%8D%E7%AB%AFqiankun%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F
