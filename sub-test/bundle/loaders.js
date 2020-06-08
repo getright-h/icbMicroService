@@ -163,7 +163,7 @@ class LoaderFactory {
         loader:'file-loader',
         options:{
           name:'[name].[ext]',
-          outputPath:'font'
+          outputPath:'fileContent'
         }
       }
     }
@@ -205,7 +205,7 @@ class LoaderFactory {
     this.loaders.push(
       TsLoader,
       ImgLoader,
-      FontLoader,
+      // FontLoader,
       SvgLoader,
       LessLoader,
       LessLoaderGlobal,
