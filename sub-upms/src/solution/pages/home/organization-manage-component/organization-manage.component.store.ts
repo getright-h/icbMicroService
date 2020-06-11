@@ -14,12 +14,27 @@ export function useOrganizationManageStore() {
       {
         id: '327',
         name: 'YDSK'
+      },
+      {
+        id: '777',
+        name: 'XXXXX'
       }
     ];
     setStateWrap({ tableData });
   }
   function addButtonClick(props: RouteComponentProps) {
     props.history.push('/account/organizationManage/addOrganization');
+  }
+  function tableAction(actionName: string, row: any) {
+    let props: RouteComponentProps;
+    switch (actionName) {
+      case '详情':
+        props.history.push(`/account/organizationManage/organizationDetail/${row.id}`);
+        break;
+
+      default:
+        break;
+    }
   }
   function changeTablePageIndex(index: number, pageSize: number) {
     const { searchForm } = state;
@@ -37,5 +52,5 @@ export function useOrganizationManageStore() {
       getTableDataSubscription && getTableDataSubscription.unsubscribe();
     };
   }, []);
-  return { state, changeTablePageIndex, addButtonClick };
+  return { state, changeTablePageIndex, addButtonClick, tableAction };
 }
