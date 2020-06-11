@@ -21,4 +21,5 @@ export { default as LazyloadComponent } from '~/solution/components/base/lazyloa
 export { default as CubeComponent } from '~/solution/components/base/cube-component/cube.component';
 export { TablePageTelComponent } from '~/solution/components/base/table-page-tel-component/table-page-tel.component';
 export { IHomeHeaderComponent } from '~/solution/components/base/i-home-header-component/i-home-header.component';
+export { default as ITableComponent } from '~/solution/components/base/i-table-component/i-table.component';
 //  -- Package End --
