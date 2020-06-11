@@ -4,6 +4,7 @@ export interface IBreadComponentLess {
   'ant-input': string;
   'ant-layout': string;
   'ant-layout-has-sider': string;
+  'ant-radio-group': string;
   'ant-select': string;
   'ant-spin': string;
   'ant-spin-container': string;
@@ -14,6 +15,7 @@ export interface IBreadComponentLess {
   antInput: string;
   antLayout: string;
   antLayoutHasSider: string;
+  antRadioGroup: string;
   antSelect: string;
   antSpin: string;
   antSpinContainer: string;

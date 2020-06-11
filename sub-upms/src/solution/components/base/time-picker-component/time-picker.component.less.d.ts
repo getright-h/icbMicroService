@@ -4,6 +4,7 @@ export interface ITimePickerComponentLess {
   'ant-input': string;
   'ant-layout': string;
   'ant-layout-has-sider': string;
+  'ant-radio-group': string;
   'ant-select': string;
   'ant-single-picker-style': string;
   'ant-spin': string;
@@ -16,6 +17,7 @@ export interface ITimePickerComponentLess {
   antInput: string;
   antLayout: string;
   antLayoutHasSider: string;
+  antRadioGroup: string;
   antSelect: string;
   antSinglePickerStyle: string;
   antSpin: string;

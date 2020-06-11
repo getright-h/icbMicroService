@@ -11,7 +11,7 @@ import { organizationColumns } from './organization-columns';
 import { RouteComponentProps } from 'react-router-dom';
 
 export default function OrganizationManageComponent(props: RouteComponentProps) {
-  const { state, changeTablePageIndex, addButtonClick } = useOrganizationManageStore();
+  const { state, changeTablePageIndex, addButtonClick, tableAction } = useOrganizationManageStore();
   const { isLoading, searchForm, total, tableData } = state;
   function renderPageLeft() {
     return <h3>组织机构管理</h3>;
@@ -78,7 +78,7 @@ export default function OrganizationManageComponent(props: RouteComponentProps) 
   function renderTable() {
     return (
       <ITableComponent
-        columns={organizationColumns}
+        columns={organizationColumns(tableData, tableAction)}
         isLoading={isLoading}
         pageIndex={searchForm.index}
         pageSize={searchForm.size}
