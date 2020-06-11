@@ -1,13 +1,14 @@
 import { IRoute } from '~framework/interfaces/IRoute';
+import { ROUTERS } from '~/solution/shared/constant/routers.const';
 export const appRoutes: IRoute[] = [
   {
     path: 'account',
-    component: () => import('./home/home.module'),
+    component: ROUTERS.home,
     lazyload: true
   },
   {
     path: '',
-    component: () => import('./login/login.module'),
+    component: ROUTERS.login,
     lazyload: true
   }
 ];

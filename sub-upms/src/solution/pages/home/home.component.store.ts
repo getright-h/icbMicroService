@@ -13,8 +13,6 @@ export function useHomeStore() {
   const { state, setStateWrap } = useStateStore(new IHomeProps());
 
   useEffect(() => {
-    console.log(1);
-
     getMenuAndAuth();
     // return () => {
     //   menuAndAuthSubscription.unsubscribe();

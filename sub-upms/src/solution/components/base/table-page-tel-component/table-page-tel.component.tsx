@@ -4,8 +4,6 @@ import { TablePageTelStore } from './table-page-tel.component.store';
 import { IProps } from './table-page-tel.interface';
 import style from './table-page-tel.component.less';
 
-@inject('tablePageTelStore')
-@observer
 export class TablePageTelComponent extends React.Component<IProps> {
   private readonly store: TablePageTelStore = this.props.tablePageTelStore;
 
@@ -49,7 +47,7 @@ export class TablePageTelComponent extends React.Component<IProps> {
             <div className={selectTags && style.selectTags}>{selectTags}</div>
             <div className={style.amMainHeader}>
               <div className={style.pushSearchRow}>{selectItems}</div>
-              <div className={style.pushSearchItem}>{searchButton}</div>
+              <div className={style.pushSearchButton}>{searchButton}</div>
             </div>
             {otherSearchBtns}
             {table}

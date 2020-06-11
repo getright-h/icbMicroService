@@ -1,4 +1,4 @@
-export interface IDepartmentManageComponentLess {
+export interface IAddOrganizationComponentLess {
   'ant-btn': string;
   'ant-form-item': string;
   'ant-input': string;
@@ -19,21 +19,34 @@ export interface IDepartmentManageComponentLess {
   antSpinContainer: string;
   antSpinNestedLoading: string;
   antSpinSpinning: string;
+  'base-info': string;
+  baseInfo: string;
   'custom-layout': string;
   'custom-layout-spin': string;
   customLayout: string;
   customLayoutSpin: string;
   h40: string;
+  header: string;
   label: string;
+  'label-value': string;
+  labelValue: string;
+  'line-container': string;
+  lineContainer: string;
   'login-form': string;
   loginForm: string;
+  'organization-main': string;
+  organizationMain: string;
   'other-search-button-item': string;
   otherSearchButtonItem: string;
   'push-search-item': string;
   pushSearchItem: string;
+  require: string;
   root: string;
-  test: string;
+  'submit-button': string;
+  submitButton: string;
+  'upload-images': string;
+  uploadImages: string;
 }
 
-export const locals: IDepartmentManageComponentLess;
+export const locals: IAddOrganizationComponentLess;
 export default locals;
