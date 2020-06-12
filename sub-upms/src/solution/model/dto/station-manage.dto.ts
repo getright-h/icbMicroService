@@ -4,9 +4,9 @@ import { Observable } from 'rxjs';
  * 真实开发中，请将示例代码移除
  */
 
-export abstract class OrganizationManageDTO {
+export abstract class StationManageDTO {
   // 你的抽象方法，具体在 Service 中实现
-  abstract getOrganizationChild(code: string): Observable<ExampleResponseResult>;
+  abstract example(params: ExampleRequestParam): Observable<ExampleResponseResult>;
 }
 
 // 示例 Dto
@@ -20,6 +20,6 @@ export interface ExampleRequestParam {
 
 // 响应 Dto
 export interface ExampleResponseResult {
-  data: any;
-  status: boolean;
+  data:any,
+  status:boolean,
 }
