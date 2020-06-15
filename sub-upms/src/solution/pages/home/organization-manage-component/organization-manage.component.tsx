@@ -1,10 +1,6 @@
 import * as React from 'react';
 import style from './organization-manage.component.less';
-import {
-  TablePageTelComponent,
-  DrapChooseLoadingComponent,
-  ITableComponent
-} from '~/solution/components/component.module';
+import { TablePageTelComponent, ITableComponent } from '~/solution/components/component.module';
 import { useOrganizationManageStore } from './organization-manage.component.store';
 import { Input, Button } from 'antd';
 import { organizationColumns } from './organization-columns';
@@ -65,10 +61,10 @@ export default function OrganizationManageComponent(props: RouteComponentProps) 
       </div>
     );
   }
-  function renderOtherButtons(this: unknown) {
+  function renderOtherButtons() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary" onClick={addButtonClick.bind(this, props)}>
+        <Button type="primary" onClick={() => addButtonClick(props)}>
           添加
         </Button>
         <Button type="primary">导出</Button>
@@ -78,7 +74,7 @@ export default function OrganizationManageComponent(props: RouteComponentProps) 
   function renderTable() {
     return (
       <ITableComponent
-        columns={organizationColumns(tableData, tableAction)}
+        columns={organizationColumns(tableAction)}
         isLoading={isLoading}
         pageIndex={searchForm.index}
         pageSize={searchForm.size}

@@ -10,10 +10,7 @@ export const organizationColumns = (action: Function): ColumnsType<any> => {
     },
     {
       title: '机构全称',
-      dataIndex: 'name',
-      render: (v: any) => {
-        console.log(v);
-      }
+      dataIndex: 'name'
     },
     {
       title: '机构简称',
