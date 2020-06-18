@@ -4,12 +4,13 @@ import { useUserManageStore } from './user-manage.component.store';
 import { Input, Button } from 'antd';
 import { ITableComponent, TablePageTelComponent } from '~/solution/components/component.module';
 import { userColumns } from './user-colomns';
+import OrganizationLeftComponent from '../../organization-manage-component/organization-left-component/organization-left.component';
 
 export default function UserManageComponent() {
-  const { state, changeTablePageIndex } = useUserManageStore();
+  const { state, changeTablePageIndex, getSelectTreeNode } = useUserManageStore();
   const { isLoading, searchForm, total, tableData } = state;
   function renderPageLeft() {
-    return <h3>组织架构</h3>;
+    return <OrganizationLeftComponent getSelectTreeNode={getSelectTreeNode}></OrganizationLeftComponent>;
   }
   function renderSelectItems() {
     return (
