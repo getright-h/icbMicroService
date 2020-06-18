@@ -2,22 +2,20 @@ import { ColumnsType } from 'antd/lib/table';
 import * as React from 'react';
 import { Divider } from 'antd';
 import { Link } from 'react-router-dom';
-export const organizationColumns = (action: Function): ColumnsType<any> => {
+export function organizationColumns(action: Function): ColumnsType<any> {
   return [
     {
       title: '机构类型',
-      dataIndex: 'type'
+      dataIndex: 'typeName'
     },
     {
       title: '机构全称',
-      dataIndex: 'name',
-      render: (v: any) => {
-        console.log(v);
-      }
+      dataIndex: 'name'
     },
     {
       title: '机构简称',
-      dataIndex: 'shortName'
+      dataIndex: 'shorterName',
+      render: (text, row) => <span>{row.extendAttributionModel.shorterName}</span>
     },
     {
       title: '上级机构',
@@ -25,35 +23,32 @@ export const organizationColumns = (action: Function): ColumnsType<any> => {
     },
     {
       title: '联系人',
-      dataIndex: 'contactName'
+      dataIndex: 'contactName',
+      render: (text, row) => <span>{row.extendAttributionModel.contactName}</span>
     },
     {
       title: '联系电话',
-      dataIndex: 'contactMobile'
+      dataIndex: 'contactMobile',
+      render: (text, row) => <span>{row.extendAttributionModel.contactMobile}</span>
     },
     {
       title: '操作',
       dataIndex: 'action',
-      render: row => {
+      fixed: 'right',
+      render: (text, row) => {
         return (
           <React.Fragment>
-            <Link to={'/account/organizationManage/organizationDetail/'}>详情</Link>
+            <Link to={`/account/organizationManage/organizationDetail/${row.id}`}>详情</Link>
             <Divider type="vertical" />
-            <a
-              onClick={() => {
-                console.log(row);
-              }}
-            >
-              编辑
-            </a>
+            <Link to={`/account/organizationManage/editOrganization/${row.id}`}>编辑</Link>
             <Divider type="vertical" />
-            <a>删除</a>
+            <a onClick={() => action(row)}>删除</a>
           </React.Fragment>
         );
       }
     }
   ];
-};
+}
 // export const organizationColumns: ColumnsType<any> = [
 //   {
 //     title: '机构类型',

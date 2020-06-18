@@ -6,7 +6,7 @@ import { ITableComponent, TablePageTelComponent } from '~/solution/components/co
 import { userColumns } from './user-colomns';
 
 export default function UserManageComponent() {
-  const { state, changeTablePageIndex } = useUserManageStore();
+  const { state, changeTablePageIndex, tableAction } = useUserManageStore();
   const { isLoading, searchForm, total, tableData } = state;
   function renderPageLeft() {
     return <h3>组织架构</h3>;
@@ -72,7 +72,7 @@ export default function UserManageComponent() {
   function renderTable() {
     return (
       <ITableComponent
-        columns={userColumns}
+        columns={userColumns(tableAction)}
         isLoading={isLoading}
         pageIndex={searchForm.index}
         pageSize={searchForm.size}
