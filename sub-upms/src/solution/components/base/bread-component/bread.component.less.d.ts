@@ -10,6 +10,8 @@ export interface IBreadComponentLess {
   'ant-spin-container': string;
   'ant-spin-nested-loading': string;
   'ant-spin-spinning': string;
+  'ant-tree': string;
+  'ant-tree-node-content-wrapper': string;
   antBtn: string;
   antFormItem: string;
   antInput: string;
@@ -21,6 +23,8 @@ export interface IBreadComponentLess {
   antSpinContainer: string;
   antSpinNestedLoading: string;
   antSpinSpinning: string;
+  antTree: string;
+  antTreeNodeContentWrapper: string;
   bread: string;
   'custom-layout': string;
   'custom-layout-spin': string;

@@ -1,24 +1,42 @@
 import React, { useState, useMemo, useReducer } from 'react';
 import { emptyFunction } from '~/framework/util/common';
 import { IAction } from '~/solution/shared/interfaces/common.interface';
-
 type Partial<T> = {
   [P in keyof T]?: T[P];
 };
 export function useStateStore<T>(initialState?: T) {
   const [state, setState] = useState(initialState);
-  const setStateWrap = (value: Partial<T>) => {
+  let newState = state;
+  const setStateWrap = (value: Partial<T>, callback?: Function) => {
     setState(state => {
-      return { ...state, ...value };
+      newState = { ...state, ...value };
+      callback && callback(newState);
+      return newState;
     });
-    // callback && callback(newState);
+    return newState;
   };
+
+  const getState = () => newState;
 
   return {
     state,
-    setStateWrap
+    setStateWrap,
+    getState
   };
 }
+
+// export function useRefInit<T>(initInfo: T) {
+//   const useRefInit = useRef(initInfo);
+//   const initRef: any = new Proxy(useRefInit, {
+//     get() {
+//       return useRefInit.current;
+//     },
+//     set(target, value) {
+//       return Reflect.set(target, 'current', value);
+//     }
+//   });
+//   return initRef;
+// }
 
 export class ReducerStore<T> {
   state: T;

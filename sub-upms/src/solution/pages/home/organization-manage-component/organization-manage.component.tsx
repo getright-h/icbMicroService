@@ -5,22 +5,19 @@ import { useOrganizationManageStore } from './organization-manage.component.stor
 import { Input, Button, Tree } from 'antd';
 import { organizationColumns } from './organization-columns';
 import { RouteComponentProps } from 'react-router-dom';
+import OrganizationLeftComponent from './organization-left-component/organization-left.component';
 
 export default function OrganizationManageComponent(props: RouteComponentProps) {
-  const {
-    state,
-    changeTablePageIndex,
-    addButtonClick,
-    tableAction,
+  const { state, changeTablePageIndex, addButtonClick, tableAction, getSelectTreeNode,
     handleFormDataChange,
-    getTableData
-  } = useOrganizationManageStore();
+    getTableData } = useOrganizationManageStore();
   const { isLoading, searchForm, total, tableData } = state;
   function renderPageLeft() {
     return (
-      <div>
+      <>
         <h3>组织机构管理</h3>
-      </div>
+        <OrganizationLeftComponent getSelectTreeNode={getSelectTreeNode}></OrganizationLeftComponent>
+      </>
     );
   }
   function renderSelectItems() {
@@ -47,10 +44,10 @@ export default function OrganizationManageComponent(props: RouteComponentProps) 
       </div>
     );
   }
-  function renderOtherButtons(this: unknown) {
+  function renderOtherButtons() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary" onClick={addButtonClick.bind(this, props)}>
+        <Button type="primary" onClick={() => addButtonClick(props)}>
           添加
         </Button>
         <Button type="primary">导出</Button>

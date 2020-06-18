@@ -2,7 +2,7 @@
 
 # dependencies
 /node_modules
-/dist
+#/dist
 # testing
 /coverage
 
@@ -15,6 +15,13 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
+src/**/*.d.ts
 # 本地环境变量
 .env.local
+yarn.lock
+yarn.lock
+*.lock
+*.less.d.ts
+
+.vscode
+.idea

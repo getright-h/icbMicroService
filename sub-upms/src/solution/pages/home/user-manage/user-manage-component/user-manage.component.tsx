@@ -4,12 +4,13 @@ import { useUserManageStore } from './user-manage.component.store';
 import { Input, Button } from 'antd';
 import { ITableComponent, TablePageTelComponent } from '~/solution/components/component.module';
 import { userColumns } from './user-colomns';
+import OrganizationLeftComponent from '../../organization-manage-component/organization-left-component/organization-left.component';
 
 export default function UserManageComponent() {
-  const { state, changeTablePageIndex, tableAction } = useUserManageStore();
+  const { state, changeTablePageIndex, tableAction, getSelectTreeNode } = useUserManageStore();
   const { isLoading, searchForm, total, tableData } = state;
   function renderPageLeft() {
-    return <h3>组织架构</h3>;
+    return <OrganizationLeftComponent getSelectTreeNode={getSelectTreeNode}></OrganizationLeftComponent>;
   }
   function renderSelectItems() {
     return (
@@ -30,8 +31,8 @@ export default function UserManageComponent() {
           <Input
             allowClear
             placeholder="请输入机构名"
-            // value={searchForm.keyWord}
-            // onChange={($event: any) => handleFormDataChange($event, 'keyWord')}
+          // value={searchForm.keyWord}
+          // onChange={($event: any) => handleFormDataChange($event, 'keyWord')}
           />
         </div>
         <div className="push-search-item">
@@ -53,7 +54,7 @@ export default function UserManageComponent() {
       <div className="push-search-button-item">
         <Button
           type="primary"
-          // onClick={searchClick} loading={searchLoading}
+        // onClick={searchClick} loading={searchLoading}
         >
           查询
         </Button>

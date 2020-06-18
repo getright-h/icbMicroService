@@ -39,6 +39,12 @@ export function useOrganizationManageStore() {
   function tableAction(row: any) {
     console.log('action', row);
   }
+
+  function getSelectTreeNode(key: string) {
+    // 获取当前所选node的相关信息
+    console.log('点击的key', key);
+  }
+
   function changeTablePageIndex(index: number, pageSize: number) {
     const { searchForm } = state;
     if (pageSize !== searchForm.size) {
@@ -57,5 +63,13 @@ export function useOrganizationManageStore() {
       getTreeDataSubscription && getTreeDataSubscription.unsubscribe();
     };
   }, []);
-  return { state, changeTablePageIndex, addButtonClick, tableAction, handleFormDataChange, getTableData };
+  return {
+    state,
+    changeTablePageIndex,
+    addButtonClick,
+    tableAction,
+    handleFormDataChange,
+    getTableData,
+    getSelectTreeNode
+  };
 }

@@ -1,13 +1,17 @@
 import { IUserManageState } from './user-manage.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
 import { Subscription } from 'rxjs';
-import { useEffect } from 'react';
 import { UserManageService } from '~/solution/model/services/user-manage.service';
+import { useEffect, useCallback } from 'react';
 
 export function useUserManageStore() {
   const { state, setStateWrap } = useStateStore(new IUserManageState());
   const userManageService = useService(UserManageService);
   let getTableDataSubscription: Subscription;
+
+  const getSelectTreeNode = useCallback((key: string) => {
+    console.log(key);
+  }, []);
 
   function getTableData() {
     getTableDataSubscription = userManageService
@@ -41,5 +45,5 @@ export function useUserManageStore() {
       getTableDataSubscription && getTableDataSubscription.unsubscribe();
     };
   }, []);
-  return { state, changeTablePageIndex, tableAction };
+  return { state, changeTablePageIndex, tableAction, getSelectTreeNode };
 }
