@@ -5,12 +5,18 @@ import { useOrganizationManageStore } from './organization-manage.component.stor
 import { Input, Button } from 'antd';
 import { organizationColumns } from './organization-columns';
 import { RouteComponentProps } from 'react-router-dom';
+import OrganizationLeftComponent from './organization-left-component/organization-left.component';
 
 export default function OrganizationManageComponent(props: RouteComponentProps) {
-  const { state, changeTablePageIndex, addButtonClick, tableAction } = useOrganizationManageStore();
+  const { state, changeTablePageIndex, addButtonClick, tableAction, getSelectTreeNode } = useOrganizationManageStore();
   const { isLoading, searchForm, total, tableData } = state;
   function renderPageLeft() {
-    return <h3>组织机构管理</h3>;
+    return (
+      <>
+        <h3>组织机构管理</h3>
+        <OrganizationLeftComponent getSelectTreeNode={getSelectTreeNode}></OrganizationLeftComponent>
+      </>
+    );
   }
   function renderSelectItems() {
     return (

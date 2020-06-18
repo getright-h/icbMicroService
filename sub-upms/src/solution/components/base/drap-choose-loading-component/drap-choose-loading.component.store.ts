@@ -3,6 +3,12 @@ import { DrapChooseLoadingReturn } from '../../../model/dto/drap-choose-loading.
 import { DepUtil } from '../../../../framework/aop/inject';
 import { DrapChooseLoadingService } from '../../../model/services/drap-choose-loading.service';
 import { Subscription } from 'rxjs';
+import { useRef } from 'react';
+function name(params) {
+  const page = useRef(1);
+  page.current = 2;
+  
+}
 
 export class DrapChooseLoadingStore {
   /**

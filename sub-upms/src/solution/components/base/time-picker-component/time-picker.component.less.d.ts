@@ -12,6 +12,8 @@ export interface ITimePickerComponentLess {
   'ant-spin-nested-loading': string;
   'ant-spin-spinning': string;
   'ant-time-range-picker': string;
+  'ant-tree': string;
+  'ant-tree-node-content-wrapper': string;
   antBtn: string;
   antFormItem: string;
   antInput: string;
@@ -25,6 +27,8 @@ export interface ITimePickerComponentLess {
   antSpinNestedLoading: string;
   antSpinSpinning: string;
   antTimeRangePicker: string;
+  antTree: string;
+  antTreeNodeContentWrapper: string;
   'custom-layout': string;
   'custom-layout-spin': string;
   customLayout: string;

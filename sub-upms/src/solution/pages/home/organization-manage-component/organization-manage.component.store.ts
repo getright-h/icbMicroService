@@ -36,6 +36,12 @@ export function useOrganizationManageStore() {
         break;
     }
   }
+
+  function getSelectTreeNode(key: string) {
+    // 获取当前所选node的相关信息
+    console.log('点击的key', key);
+  }
+
   function changeTablePageIndex(index: number, pageSize: number) {
     const { searchForm } = state;
     searchForm.index = index;
@@ -52,5 +58,5 @@ export function useOrganizationManageStore() {
       getTableDataSubscription && getTableDataSubscription.unsubscribe();
     };
   }, []);
-  return { state, changeTablePageIndex, addButtonClick, tableAction };
+  return { state, changeTablePageIndex, getSelectTreeNode, addButtonClick, tableAction };
 }

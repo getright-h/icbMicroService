@@ -1,7 +1,11 @@
 import * as React from 'react';
-import style from './organization-left.component.less';
 import { Tree } from 'antd';
-
-export default function OrganizationLeftComponent() {
-  // return <Tree loadData={this.onLoadData} treeData={this.state.treeData} />;
+import { useOrganizationLeftStore } from './organization-left.component.store';
+import { IOrganizationLeftProps } from './organization-left.interface';
+function OrganizationLeftComponent(props: IOrganizationLeftProps) {
+  const { onLoadData, state, onSelect } = useOrganizationLeftStore(props);
+  const { treeData } = state;
+  return <Tree loadData={onLoadData} showIcon onSelect={onSelect} treeData={treeData} />;
 }
+
+export default React.memo(OrganizationLeftComponent);
