@@ -6,20 +6,45 @@ import { Observable } from 'rxjs';
 
 export abstract class DepartmentManageDTO {
   // 你的抽象方法，具体在 Service 中实现
-  abstract example(params: ExampleRequestParam): Observable<ExampleResponseResult>;
+  abstract queryDepartmentList(params: QueryDepartmentListParam): Observable<Array<DepartmentInfo>>;
+  abstract addDepartment(params: SetDepartmentParams): Observable<boolean>;
+  abstract setDepartment(params: SetDepartmentParams): Observable<boolean>;
+  abstract deleteDepartment(organizationId: string): Observable<boolean>;
 }
 
 // 示例 Dto
-export interface ExampleRequestParam {
-  // 示例参数
-  exampleParam1: string;
-  exampleParam2: string;
-  exampleParam3: string;
-  exampleParam4: string;
+export interface QueryDepartmentListParam {
+  systemId?: string;
+  state?: number;
+  type?: number;
+  index: number;
+  size: number;
+}
+export interface SetDepartmentParams {
+  id?: string;
+  parentOrganizationId: string;
+  parentDepartmentId: string;
+  name: string;
+  instruction: string;
+  state: boolean;
 }
 
-// 响应 Dto
-export interface ExampleResponseResult {
-  data:any,
-  status:boolean,
+export interface DepartmentInfo {
+  parentOrganizationName: string;
+  parentDepartmentName: string;
+  id: string;
+  code: string;
+  name: string;
+  state: boolean;
+  instruction: string;
+  roleList: RoleList[];
+}
+
+interface RoleList {
+  id: string;
+  name: string;
+  state: boolean;
+  code: string;
+  originalCode: string;
+  systemId: string;
 }

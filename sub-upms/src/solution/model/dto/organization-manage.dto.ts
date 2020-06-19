@@ -7,12 +7,14 @@ import { DataNode } from 'rc-tree/lib/interface';
 
 export abstract class OrganizationManageDTO {
   // 你的抽象方法，具体在 Service 中实现
-  abstract queryOrganizationList(params: QueryOrganizationListParams): Observable<ExampleResponseResult>;
-  abstract insertOrganization(params: InsertOrganizationParams): Observable<ExampleResponseResult>;
-  abstract setOrganization(params: SetOrganizationParams): Observable<ExampleResponseResult>;
   abstract getOrganizationChild(params: { id: string; hierarchyType: number }): Observable<Array<Datum>>;
   abstract queryOrganizationTypeListBySystemId(systemId: string): Observable<Array<OrganizationTypeResponse>>;
   abstract queryOrganizationByTypeId(params: { typeId: string }): Observable<Array<Datum>>;
+  abstract queryOrganizationList(params: QueryOrganizationListParams): Observable<Array<Datum>>;
+  abstract insertOrganization(params: InsertOrganizationParams): Observable<Datum>;
+  abstract setOrganization(params: SetOrganizationParams): Observable<boolean>;
+  abstract deleteOrganization(organizationId: string): Observable<boolean>;
+  abstract getOrganizationDetail(strValue: string): Observable<Datum>;
 }
 
 // 请求 Dto
@@ -121,8 +123,4 @@ export interface OrganizationTypeResponse {
   createTime: string;
   updateTime: string;
   isHasChildren: boolean;
-}
-export interface ExampleResponseResult {
-  data: any;
-  status: boolean;
 }

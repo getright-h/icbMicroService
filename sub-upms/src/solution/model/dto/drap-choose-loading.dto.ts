@@ -6,19 +6,20 @@ import { Observable } from 'rxjs';
 
 export abstract class DrapChooseLoadingDTO {
   // 你的抽象方法，具体在 Service 中实现
-  abstract manageList(
-    params: DrapChooseLoadingParam
-  ): Observable<{ dataList: DrapChooseLoadingReturn[]; total: number }>;
+  abstract queryOrganizationType(params: { systemId: string }): Observable<DrapChooseLoadingReturn>;
+  abstract queryOrganizationSelectList(params: OrganizationSelectListParams): Observable<DrapChooseLoadingReturn>;
 }
 
 // 下拉加载 Dto
-export interface DrapChooseLoadingParam {
-  name: string;
+export interface OrganizationSelectListParams {
+  systemId: string;
+  hierarchyType: number;
+  parentCode?: string;
   index: number;
   size: number;
 }
 
 export interface DrapChooseLoadingReturn {
-  id: string;
-  name: string;
+  data: any;
+  status: boolean;
 }

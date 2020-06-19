@@ -1,7 +1,6 @@
 import {
   OrganizationManageDTO,
   QueryOrganizationListParams,
-  ExampleResponseResult,
   InsertOrganizationParams,
   SetOrganizationParams,
   OrganizationTypeResponse,
@@ -17,11 +16,13 @@ import { DepUtil } from '~/framework/aop/inject';
 
 // 机构管理
 const GET_ORGANIZATION_CHILD = 'prvilege/common/queryOrganizationChildByOrganizationId';
-const QUERY_ORGANIZATION_LIST = 'prvilege/common/queryOrganizationByParam';
-const INSERT_ORGANIZATION = 'prvilege/common/queryOrganizationByParam';
-const SET_ORGANIZATION = 'prvilege/common/queryOrganizationByParam';
 const QUERY_ORGANIZATION_TYPELIST_BY_SYSTEMID = 'prvilege/common/queryOrganizationTypeListBySystemId';
 const QUERY_ORGANIZATION_BY_TYPEID = 'prvilege/common/queryOrganizationByTypeId';
+const QUERY_ORGANIZATION_LIST = 'prvilege/common/queryOrganizationByParam';
+const INSERT_ORGANIZATION = 'prvilege/common/insertOrganization';
+const SET_ORGANIZATION = 'prvilege/common/setOrganization';
+const DELETE_ORGANIZATION = 'prvilege/common/organization';
+const GET_ORGANIZATION_DETAIL = 'prvilege/common/organizationDetail';
 
 @DepUtil.Injectable()
 export class OrganizationManageService extends OrganizationManageDTO {
@@ -45,13 +46,29 @@ export class OrganizationManageService extends OrganizationManageDTO {
   queryOrganizationByTypeId(params: { typeId: string }): Observable<Array<Datum>> {
     return this.requestService.get(QUERY_ORGANIZATION_BY_TYPEID, params);
   }
-  queryOrganizationList(params: QueryOrganizationListParams): Observable<ExampleResponseResult> {
+
+  // 根据条件查询机构信息
+  queryOrganizationList(params: QueryOrganizationListParams): Observable<Array<Datum>> {
     return this.requestService.post(QUERY_ORGANIZATION_LIST, params);
   }
-  insertOrganization(params: InsertOrganizationParams): Observable<ExampleResponseResult> {
+
+  // 添加机构
+  insertOrganization(params: InsertOrganizationParams): Observable<Datum> {
     return this.requestService.post(INSERT_ORGANIZATION, params);
   }
-  setOrganization(params: SetOrganizationParams): Observable<ExampleResponseResult> {
+
+  // 修改机构
+  setOrganization(params: SetOrganizationParams): Observable<boolean> {
     return this.requestService.post(SET_ORGANIZATION, params);
+  }
+
+  // 删除机构
+  deleteOrganization(organizationId: string): Observable<boolean> {
+    return this.requestService.delete(DELETE_ORGANIZATION, { organizationId });
+  }
+
+  // 查询机构详情
+  getOrganizationDetail(strValue: string): Observable<Datum> {
+    return this.requestService.get(GET_ORGANIZATION_DETAIL, { strValue });
   }
 }
