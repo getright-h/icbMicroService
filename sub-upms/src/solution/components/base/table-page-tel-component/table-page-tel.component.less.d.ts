@@ -7,7 +7,6 @@ export interface ITablePageTelComponentLess {
   'ant-layout': string;
   'ant-layout-has-sider': string;
   'ant-radio-group': string;
-  'ant-select': string;
   'ant-spin': string;
   'ant-spin-container': string;
   'ant-spin-nested-loading': string;
@@ -20,7 +19,6 @@ export interface ITablePageTelComponentLess {
   antLayout: string;
   antLayoutHasSider: string;
   antRadioGroup: string;
-  antSelect: string;
   antSpin: string;
   antSpinContainer: string;
   antSpinNestedLoading: string;

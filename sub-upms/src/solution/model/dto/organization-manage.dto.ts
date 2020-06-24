@@ -15,6 +15,8 @@ export abstract class OrganizationManageDTO {
   abstract setOrganization(params: SetOrganizationParams): Observable<boolean>;
   abstract deleteOrganization(organizationId: string): Observable<boolean>;
   abstract getOrganizationDetail(strValue: string): Observable<Datum>;
+  abstract getProvinceList(deep: number): Observable<Array<AreaInfoReturn>>;
+  abstract getAreaListByCode(cityCode: string): Observable<Array<AreaInfoReturn>>;
 }
 
 // 请求 Dto
@@ -123,4 +125,11 @@ export interface OrganizationTypeResponse {
   createTime: string;
   updateTime: string;
   isHasChildren: boolean;
+}
+
+export interface AreaInfoReturn {
+  cityCode: string;
+  cityName: string;
+  deep: number;
+  parentCode: string;
 }

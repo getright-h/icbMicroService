@@ -4,7 +4,8 @@ import {
   InsertOrganizationParams,
   SetOrganizationParams,
   OrganizationTypeResponse,
-  Datum
+  Datum,
+  AreaInfoReturn
 } from '../dto/organization-manage.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
@@ -23,6 +24,8 @@ const INSERT_ORGANIZATION = 'prvilege/common/insertOrganization';
 const SET_ORGANIZATION = 'prvilege/common/setOrganization';
 const DELETE_ORGANIZATION = 'prvilege/common/organization';
 const GET_ORGANIZATION_DETAIL = 'prvilege/common/organizationDetail';
+const GET_PROVINCE_LIST = 'prvilege/areasList';
+const GET_AREA_LIST_BY_CODE = 'prvilege/areaListByCode';
 
 @DepUtil.Injectable()
 export class OrganizationManageService extends OrganizationManageDTO {
@@ -70,5 +73,15 @@ export class OrganizationManageService extends OrganizationManageDTO {
   // 查询机构详情
   getOrganizationDetail(strValue: string): Observable<Datum> {
     return this.requestService.get(GET_ORGANIZATION_DETAIL, { strValue });
+  }
+
+  // 查询省
+  getProvinceList(deep: number): Observable<Array<AreaInfoReturn>> {
+    return this.requestService.get(GET_PROVINCE_LIST, { deep });
+  }
+
+  // 查询市、区
+  getAreaListByCode(cityCode: string): Observable<Array<AreaInfoReturn>> {
+    return this.requestService.get(GET_AREA_LIST_BY_CODE, { cityCode });
   }
 }

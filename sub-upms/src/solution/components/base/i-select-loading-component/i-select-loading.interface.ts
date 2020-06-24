@@ -8,10 +8,9 @@ export class IISelectLoadingState {
 }
 export interface IISelectLoadingProps {
   placeholder: string;
-  defaultValue?: string;
+  selectedValue?: string;
   reqUrl: string;
-  showSearch?: boolean;
-  searchKey?: string;
+  disabled?: boolean;
   searchForm?: Record<string, any>;
   getCurrentSelectInfo: (value: string, option: any) => void;
 }

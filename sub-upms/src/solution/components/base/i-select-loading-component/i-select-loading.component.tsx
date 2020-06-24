@@ -5,23 +5,22 @@ import { IISelectLoadingProps } from './i-select-loading.interface';
 import { useISelectLoadingStore } from './i-select-loading.component.store';
 
 export default function ISelectLoadingComponent(props: IISelectLoadingProps) {
-  const { placeholder, defaultValue, showSearch, getCurrentSelectInfo } = props;
-  const { state, optionData, optionScroll, fetchOptions } = useISelectLoadingStore(props);
+  const { placeholder, disabled, selectedValue, getCurrentSelectInfo } = props;
+  const { state, optionData, optionScroll, onClick } = useISelectLoadingStore(props);
   const { fetching } = state;
   return (
     <Select
-      showSearch={showSearch || false}
-      placeholder={placeholder}
-      onSearch={fetchOptions}
-      defaultValue={defaultValue}
-      onSelect={getCurrentSelectInfo}
-      onPopupScroll={optionScroll}
-      onFocus={() => fetchOptions('')}
       loading={fetching}
+      disabled={disabled || false}
+      placeholder={placeholder}
+      value={selectedValue}
+      onChange={getCurrentSelectInfo}
+      onPopupScroll={optionScroll}
+      onClick={onClick}
       allowClear={true}
     >
       {optionData.current &&
-        optionData.current.map((item: { id: string | number; name: React.ReactNode }) => (
+        optionData.current.map((item: { id: string | number; name: string }) => (
           <Select.Option value={item.id} key={item.id} info={item}>
             {item.name}
           </Select.Option>

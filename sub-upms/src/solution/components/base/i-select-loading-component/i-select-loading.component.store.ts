@@ -1,40 +1,32 @@
 import { IISelectLoadingState, IISelectLoadingProps } from './i-select-loading.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Subscription } from 'rxjs';
 import { DrapChooseLoadingService } from '~/solution/model/services/drap-choose-loading.service';
 
-let scrollPage = 1;
-let searchVal = '';
-
 export function useISelectLoadingStore(props: IISelectLoadingProps) {
-  const { reqUrl, searchKey, searchForm } = props;
+  const { reqUrl, searchForm } = props;
   const { state, setStateWrap } = useStateStore(new IISelectLoadingState());
   const drapChooseLoadingService = useService(DrapChooseLoadingService);
   let getOptionListSubscription: Subscription;
+
   const optionData = useRef([]);
+  const scrollPage = useRef(1);
 
   function getOptionList() {
     setStateWrap({ fetching: true });
-    getOptionListSubscription = drapChooseLoadingService[reqUrl](
-      searchKey
-        ? {
-            ...searchForm,
-            index: scrollPage,
-            [searchKey]: searchVal,
-            size: 15
-          }
-        : {
-            ...searchForm,
-            index: scrollPage,
-            size: 15
-          }
-    ).subscribe(
+    getOptionListSubscription = drapChooseLoadingService[reqUrl]({
+      ...searchForm,
+      index: scrollPage.current,
+      size: 20
+    }).subscribe(
       (res: any) => {
         if (res.dataList instanceof Array) {
           optionData.current = [...optionData.current, ...res.dataList];
         } else if (res instanceof Array) {
           optionData.current = [...optionData.current, ...res];
+        } else {
+          scrollPage.current--;
         }
         setStateWrap({ fetching: false });
       },
@@ -45,9 +37,8 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
     );
   }
 
-  function fetchOptions(value: string) {
-    scrollPage = 1;
-    searchVal = value;
+  function onClick() {
+    scrollPage.current = 1;
     optionData.current = [];
     getOptionList();
   }
@@ -56,14 +47,15 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
     e.persist();
     const { target } = e;
     if (target.scrollTop + target.offsetHeight === target.scrollHeight) {
-      scrollPage++;
+      scrollPage.current++;
       getOptionList();
     }
   }
   useEffect(() => {
+    getOptionList();
     return () => {
       getOptionListSubscription && getOptionListSubscription.unsubscribe();
     };
   }, []);
-  return { state, optionData, optionScroll, fetchOptions };
+  return { state, optionData, optionScroll, onClick };
 }

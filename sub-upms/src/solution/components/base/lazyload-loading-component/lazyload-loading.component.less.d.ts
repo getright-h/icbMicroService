@@ -5,7 +5,6 @@ export interface ILazyloadLoadingComponentLess {
   'ant-layout': string;
   'ant-layout-has-sider': string;
   'ant-radio-group': string;
-  'ant-select': string;
   'ant-spin': string;
   'ant-spin-container': string;
   'ant-spin-nested-loading': string;
@@ -18,7 +17,6 @@ export interface ILazyloadLoadingComponentLess {
   antLayout: string;
   antLayoutHasSider: string;
   antRadioGroup: string;
-  antSelect: string;
   antSpin: string;
   antSpinContainer: string;
   antSpinNestedLoading: string;

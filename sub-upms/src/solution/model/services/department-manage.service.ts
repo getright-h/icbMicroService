@@ -32,12 +32,12 @@ export class DepartmentManageService extends DepartmentManageDTO {
 
   // 添加部门
   addDepartment(params: SetDepartmentParams): Observable<boolean> {
-    return this.requestService.delete(ADD_DEPARTMENT, params);
+    return this.requestService.post(ADD_DEPARTMENT, params);
   }
 
   // 修改部门
   setDepartment(params: SetDepartmentParams): Observable<boolean> {
-    return this.requestService.delete(SET_DEPARTMENT, params);
+    return this.requestService.post(SET_DEPARTMENT, params);
   }
 
   // 删除部门
