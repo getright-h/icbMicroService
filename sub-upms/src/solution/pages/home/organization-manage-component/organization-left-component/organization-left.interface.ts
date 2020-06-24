@@ -1,5 +1,7 @@
 import { OrganizationTypeResponse } from '~/solution/model/dto/organization-manage.dto';
 import { DataNode } from 'rc-tree/lib/interface';
+import { EventDataNode } from 'rc-tree/lib/interface';
+
 /**
 import { Tree } from 'antd';
 import { DataNode } from './organization-left.interface';
@@ -11,7 +13,7 @@ export class IOrganizationLeftState {
 }
 
 export interface IOrganizationLeftProps {
-  getSelectTreeNode: (key: string | number) => void;
+  getSelectTreeNode: (node: EventDataNode) => void;
 }
 
 export interface NewDataNode extends OrganizationTypeResponse, DataNode {}

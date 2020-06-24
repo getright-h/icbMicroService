@@ -2,12 +2,23 @@ import * as React from 'react';
 import style from './user-manage.component.less';
 import { useUserManageStore } from './user-manage.component.store';
 import { Input, Button } from 'antd';
-import { ITableComponent, TablePageTelComponent } from '~/solution/components/component.module';
+import {
+  ITableComponent,
+  TablePageTelComponent,
+  ISelectLoadingComponent
+} from '~/solution/components/component.module';
 import { userColumns } from './user-colomns';
 import OrganizationLeftComponent from '../../organization-manage-component/organization-left-component/organization-left.component';
 
 export default function UserManageComponent() {
-  const { state, changeTablePageIndex, tableAction, getSelectTreeNode } = useUserManageStore();
+  const {
+    state,
+    getTableData,
+    changeTablePageIndex,
+    tableAction,
+    getSelectTreeNode,
+    handleFormDataChange
+  } = useUserManageStore();
   const { isLoading, searchForm, total, tableData } = state;
   function renderPageLeft() {
     return <OrganizationLeftComponent getSelectTreeNode={getSelectTreeNode}></OrganizationLeftComponent>;
@@ -16,35 +27,20 @@ export default function UserManageComponent() {
     return (
       <React.Fragment>
         <div className="push-search-item">
-          <span className="label">机构类型：</span>
-          {/* <DrapChooseLoadingComponent
-            placeholder="请选择机构类型"
-            reqUrl=""
-            defaultValue={searchForm.distributorName || undefined}
-            type={1}
-            getCurrentSelectInfo={(v: any) => serviceProviderChange(v, 'distributorName')}
-          ></DrapChooseLoadingComponent> */}
-          <Input />
-        </div>
-        <div className="push-search-item">
-          <span className="label">机构名：</span>
+          <span className="label">用户名称：</span>
           <Input
             allowClear
-            placeholder="请输入机构名"
-          // value={searchForm.keyWord}
-          // onChange={($event: any) => handleFormDataChange($event, 'keyWord')}
+            placeholder="请输入用户名称"
+            onChange={($event: any) => handleFormDataChange($event, 'name')}
           />
         </div>
         <div className="push-search-item">
-          <span className="label">上级机构：</span>
-          {/* <DrapChooseLoadingComponent
-            placeholder="请选择上级机构"
-            reqUrl=""
-            defaultValue={searchForm.distributorName || undefined}
-            type={1}
-            getCurrentSelectInfo={(v: any) => serviceProviderChange(v, 'distributorName')}
-          ></DrapChooseLoadingComponent> */}
-          <Input />
+          <span className="label">用户电话：</span>
+          <Input
+            allowClear
+            placeholder="请输入用户电话"
+            onChange={($event: any) => handleFormDataChange($event, 'telephone')}
+          />
         </div>
       </React.Fragment>
     );
@@ -52,10 +48,7 @@ export default function UserManageComponent() {
   function renderSearchButtons() {
     return (
       <div className="push-search-button-item">
-        <Button
-          type="primary"
-        // onClick={searchClick} loading={searchLoading}
-        >
+        <Button type="primary" onClick={() => getTableData(true)} loading={isLoading}>
           查询
         </Button>
       </div>
@@ -65,8 +58,8 @@ export default function UserManageComponent() {
     return (
       <div className="other-search-button-item">
         <Button type="primary">添加用户</Button>
-        <Button>部门管理</Button>
-        <Button>岗位管理</Button>
+        {/* <Button>部门管理</Button>
+        <Button>岗位管理</Button> */}
       </div>
     );
   }
@@ -80,7 +73,7 @@ export default function UserManageComponent() {
         data={tableData}
         total={total}
         isPagination={true}
-        changeTablePageIndex={(index: number) => changeTablePageIndex(index)}
+        changeTablePageIndex={(index: number, pageSize: number) => changeTablePageIndex(index, pageSize)}
       ></ITableComponent>
     );
   }

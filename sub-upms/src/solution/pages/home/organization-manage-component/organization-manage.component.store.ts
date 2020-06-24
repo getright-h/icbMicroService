@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import React, { useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { OrganizationManageService } from '~/solution/model/services/organization-manage.service';
+import { ShowNotification } from '~/framework/util/common';
 
 export function useOrganizationManageStore() {
   const { state, setStateWrap } = useStateStore(new IOrganizationManageState());
@@ -36,13 +37,29 @@ export function useOrganizationManageStore() {
     }
     setStateWrap({ searchForm });
   }
-  function tableAction(row: any) {
-    console.log('action', row);
+  function tableAction(row: Record<string, any>) {
+    organizationManageService.deleteOrganization(row.id).subscribe(
+      (res: any) => {
+        ShowNotification.success('删除成功');
+        getTableData();
+      },
+      (err: any) => {
+        ShowNotification.error(err);
+      }
+    );
   }
 
-  function getSelectTreeNode(key: string) {
-    // 获取当前所选node的相关信息
-    console.log('点击的key', key);
+  function getSelectTreeNode(node: Record<string, any>) {
+    const { searchForm } = state;
+    if (Number.isInteger(node.hierarchyType)) {
+      searchForm.typeId = node.typeId;
+      searchForm.parentId = node.id;
+    } else {
+      searchForm.typeId = node.id;
+      searchForm.parentId = '';
+    }
+    setStateWrap({ searchForm });
+    getTableData(true);
   }
 
   function changeTablePageIndex(index: number, pageSize: number) {

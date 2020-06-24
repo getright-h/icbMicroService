@@ -5,7 +5,6 @@ export interface IHomeComponentLess {
   'ant-layout': string;
   'ant-layout-has-sider': string;
   'ant-radio-group': string;
-  'ant-select': string;
   'ant-spin': string;
   'ant-spin-container': string;
   'ant-spin-nested-loading': string;
@@ -18,7 +17,6 @@ export interface IHomeComponentLess {
   antLayout: string;
   antLayoutHasSider: string;
   antRadioGroup: string;
-  antSelect: string;
   antSpin: string;
   antSpinContainer: string;
   antSpinNestedLoading: string;
@@ -31,6 +29,8 @@ export interface IHomeComponentLess {
   'custom-layout-spin': string;
   customLayout: string;
   customLayoutSpin: string;
+  'form-item': string;
+  formItem: string;
   h40: string;
   'home-main': string;
   homeMain: string;

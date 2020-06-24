@@ -30,6 +30,8 @@ export interface IIHomeHeaderComponentLess {
   customLayoutSpin: string;
   'fold-icon': string;
   foldIcon: string;
+  'form-item': string;
+  formItem: string;
   h40: string;
   header: string;
   'header-left': string;

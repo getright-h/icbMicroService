@@ -1,12 +1,17 @@
 import * as React from 'react';
 import style from './add-organization.component.less';
 import { useAddOrganizationStore } from './add-organization.component.store';
-import { RouteComponentProps } from 'react-router-dom';
-import { Button, Form, Input, Radio } from 'antd';
+import { Button, Form, Input, Radio, Select, Upload } from 'antd';
+import { ISelectLoadingComponent } from '~/solution/components/component.module';
+import { IAddOrganizationProps } from './add-organization.interface';
 
-export default function AddOrganizationComponent(props: RouteComponentProps) {
-  const { state } = useAddOrganizationStore(props);
-  const {} = state;
+export default function AddOrganizationComponent(props: IAddOrganizationProps) {
+  const [organizationForm] = Form.useForm();
+  const { state, onSubmit, handleFormDataChange, getProvinceList, getCityList, getAreaList } = useAddOrganizationStore(
+    props,
+    organizationForm
+  );
+  const { provinceList, cityList, areaList, isEdit } = state;
   const formItemLayout = {
     labelCol: {
       xs: { span: 24 },
@@ -28,83 +33,112 @@ export default function AddOrganizationComponent(props: RouteComponentProps) {
   function renderBaseInfo() {
     return (
       <div className={style.baseInfo}>
-        <Form.Item label="机构类型" className={`${style.require} push-search-item`}>
-          {/* <DrapChooseLoadingComponent
-            reqUrl="getOrganizationPagedList"
+        <Form.Item label="机构类型" name="typeId" className="form-item" rules={[{ required: true }]}>
+          <ISelectLoadingComponent
+            reqUrl="queryOrganizationType"
             placeholder="请选择机构类型"
-            type={1}
-            defaultValue={state.formInfo.distributorName}
-            getCurrentSelectInfo={value =>
-            }
-          ></DrapChooseLoadingComponent> */}
-          <Input />
+            searchForm={{ systemId: process.env.SYSTEM_ID }}
+            selectedValue={organizationForm.getFieldValue('typeId')}
+            getCurrentSelectInfo={(value, option) => handleFormDataChange(value, 'typeId')}
+          ></ISelectLoadingComponent>
         </Form.Item>
-        <Form.Item label="机构全称" className={`${style.require} push-search-item`}>
-          {/* {getFieldDecorator('contractNum', {
-            initialValue: state.formInfo.contractNum
-          })(<Input placeholder="请输入机构全称" />)} */}
-          <Input />
+        <Form.Item label="机构全称" name="unitName" className="form-item" rules={[{ required: true }]}>
+          <Input placeholder="请输入机构全称" />
         </Form.Item>
-        <Form.Item label="机构简称" className={'push-search-item'}>
-          {/* {getFieldDecorator('contractNum', {
-            initialValue: state.formInfo.contractNum
-          })(<Input placeholder="请输入机构简称" />)} */}
-          <Input />
+        <Form.Item label="机构简称" name="shorterName" className="form-item">
+          <Input placeholder="请输入机构简称" />
         </Form.Item>
-        <Form.Item label="上级机构" className={`${style.require} push-search-item`}>
-          {/* <DrapChooseLoadingComponent
-            reqUrl="getOrganizationPagedList"
+        <Form.Item label="上级机构" name="parentId" className="form-item">
+          <ISelectLoadingComponent
+            reqUrl="queryOrganizationSelectList"
             placeholder="请选择上级机构"
-            type={1}
-            defaultValue={state.formInfo.distributorName}
-            getCurrentSelectInfo={value =>
+            searchForm={{
+              systemId: process.env.SYSTEM_ID,
+              hierarchyType: 0,
+              typeId: organizationForm.getFieldValue('typeId')
+            }}
+            selectedValue={organizationForm.getFieldValue('parentId') || undefined}
+            disabled={!organizationForm.getFieldValue('typeId')}
+            getCurrentSelectInfo={(value, option) => handleFormDataChange(value, 'parentId', option)}
+          ></ISelectLoadingComponent>
+        </Form.Item>
+        <Form.Item
+          label="统一社会代码"
+          name="unitCode"
+          className="form-item"
+          rules={[
+            {
+              required: true,
+              pattern: /^[0-9A-HJ-NPQRTUWXY]{2}\d{6}[0-9A-HJ-NPQRTUWXY]{10}$/,
+              message: '请输入正确的统一社会信用代码'
             }
-          ></DrapChooseLoadingComponent> */}
-          <Input />
+          ]}
+        >
+          <Input placeholder="请输入统一社会信用代码" />
         </Form.Item>
-        <Form.Item label="统一社会代码" className={`${style.require} push-search-item`}>
-          {/* {getFieldDecorator('contractNum', {
-            initialValue: state.formInfo.contractNum
-          })(<Input placeholder="请输入统一社会代码" />)} */}
-          <Input />
+        <Form.Item label="联系人" name="contactName" className="form-item" rules={[{ required: true }]}>
+          <Input placeholder="请输入联系人" />
         </Form.Item>
-        <Form.Item label="联系人" className={`${style.require} push-search-item`}>
-          {/* {getFieldDecorator('contractNum', {
-            initialValue: state.formInfo.contractNum
-          })(<Input placeholder="请输入联系人" />)} */}
-          <Input />
+        <Form.Item label="联系人电话" name="contactMobile" className="form-item" rules={[{ required: true }]}>
+          <Input placeholder="请输入联系人电话" />
         </Form.Item>
-        <Form.Item label="联系人电话" className={`${style.require} push-search-item`}>
-          {/* {getFieldDecorator('contractNum', {
-            initialValue: state.formInfo.contractNum
-          })(<Input placeholder="请输入联系人电话" />)} */}
-          <Input />
+        <Form.Item label="机构电话" name="unitMobile" className="form-item" rules={[{ required: true }]}>
+          <Input placeholder="请输入机构电话" />
         </Form.Item>
-        <Form.Item label="机构电话" className={`${style.require} push-search-item`}>
-          {/* {getFieldDecorator('contractNum', {
-            initialValue: state.formInfo.contractNum
-          })(<Input placeholder="请输入机构电话" />)} */}
-          <Input />
+
+        <Form.Item label="省" name="province" className="form-item" rules={[{ required: true }]}>
+          <Select onClick={getProvinceList} placeholder="请选择省">
+            {provinceList &&
+              provinceList.map(item => (
+                <Select.Option value={item.cityCode} key={item.cityCode}>
+                  {item.cityName}
+                </Select.Option>
+              ))}
+          </Select>
         </Form.Item>
-        <Form.Item label="机构地址" className={`${style.require} push-search-item`} wrapperCol={{ span: 12 }}>
-          {/* {getFieldDecorator('contractNum', {
-            initialValue: state.formInfo.contractNum
-          })(<Input placeholder="请输入机构地址" />)} */}
-          <Input />
+        <Form.Item label="市" name="city" className="form-item" rules={[{ required: true }]}>
+          <Select onClick={getCityList} placeholder="请选择市">
+            {cityList &&
+              cityList.map(item => (
+                <Select.Option value={item.cityCode} key={item.cityCode}>
+                  {item.cityName}
+                </Select.Option>
+              ))}
+          </Select>
         </Form.Item>
-        <Form.Item label="机构状态" className={`${style.require} push-search-item`}>
-          {/* {getFieldDecorator('isNumberPlate', {
-            initialValue: state.formInfo.isNumberPlate
-          })( */}
-          <Radio.Group>
-            <Radio value={true}>启用</Radio>
-            <Radio value={false}>禁用</Radio>
-          </Radio.Group>
-          {/* )} */}
+        <Form.Item label="区" name="area" className="form-item" rules={[{ required: true }]}>
+          <Select onClick={getAreaList} placeholder="请选择区">
+            {areaList &&
+              areaList.map(item => (
+                <Select.Option value={item.cityCode} key={item.cityCode}>
+                  {item.cityName}
+                </Select.Option>
+              ))}
+          </Select>
         </Form.Item>
-        <Form.Item label="备注描述：" className="push-search-item">
-          {/* {getFieldDecorator('remark', { initialValue: state.formInfo.remark })(<Input placeholder="备注描述" />)} */}
-          <Input.TextArea />
+
+        <Form.Item
+          label="机构地址"
+          name="unitAddress"
+          className="form-item"
+          wrapperCol={{ span: 12 }}
+          rules={[{ required: true }]}
+        >
+          <Input placeholder="请输入机构地址" />
+        </Form.Item>
+        {isEdit && (
+          <Form.Item label="机构状态" name="state" className="form-item" rules={[{ required: true }]}>
+            <Radio.Group>
+              <Radio value={true}>启用</Radio>
+              <Radio value={false}>禁用</Radio>
+            </Radio.Group>
+          </Form.Item>
+        )}
+        <Form.Item label="logo" className="form-item upload-images">
+          <Upload></Upload>
+        </Form.Item>
+        <Form.Item label="备注描述" name="unitRemark" className="form-item">
+          <Input.TextArea style={{ verticalAlign: 'top' }} />
         </Form.Item>
       </div>
     );
@@ -113,7 +147,7 @@ export default function AddOrganizationComponent(props: RouteComponentProps) {
     <div className={style.organizationMain}>
       {renderHeader(
         () => {
-          return <h4>添加机构</h4>;
+          return <h4>{isEdit ? '编辑机构' : '添加机构'}</h4>;
         },
         () => {
           return (
@@ -124,7 +158,13 @@ export default function AddOrganizationComponent(props: RouteComponentProps) {
         }
       )}
       <div className={style.lineContainer}>
-        <Form layout="inline" {...formItemLayout}>
+        <Form
+          {...formItemLayout}
+          form={organizationForm}
+          onFinish={onSubmit}
+          onFinishFailed={onSubmit}
+          validateTrigger="onFinish"
+        >
           {renderBaseInfo()}
           <Form.Item wrapperCol={{ span: 12, offset: 6 }} className={style.submitButton}>
             <Button type="primary" htmlType="submit">

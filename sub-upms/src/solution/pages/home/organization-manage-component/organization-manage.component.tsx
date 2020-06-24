@@ -8,9 +8,15 @@ import { RouteComponentProps } from 'react-router-dom';
 import OrganizationLeftComponent from './organization-left-component/organization-left.component';
 
 export default function OrganizationManageComponent(props: RouteComponentProps) {
-  const { state, changeTablePageIndex, addButtonClick, tableAction, getSelectTreeNode,
+  const {
+    state,
+    changeTablePageIndex,
+    addButtonClick,
+    tableAction,
+    getSelectTreeNode,
     handleFormDataChange,
-    getTableData } = useOrganizationManageStore();
+    getTableData
+  } = useOrganizationManageStore();
   const { isLoading, searchForm, total, tableData } = state;
   function renderPageLeft() {
     return (
@@ -50,7 +56,9 @@ export default function OrganizationManageComponent(props: RouteComponentProps) 
         <Button type="primary" onClick={() => addButtonClick(props)}>
           添加
         </Button>
-        <Button type="primary">导出</Button>
+        <Button type="primary" disabled>
+          导出
+        </Button>
       </div>
     );
   }

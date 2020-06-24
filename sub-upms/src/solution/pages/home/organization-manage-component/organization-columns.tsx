@@ -2,7 +2,8 @@ import { ColumnsType } from 'antd/lib/table';
 import * as React from 'react';
 import { Divider } from 'antd';
 import { Link } from 'react-router-dom';
-export function organizationColumns(action: Function): ColumnsType<any> {
+import { OrganizationTableData } from './organization-manage.interface';
+export function organizationColumns(action: Function): ColumnsType<OrganizationTableData> {
   return [
     {
       title: '机构类型',
@@ -19,7 +20,8 @@ export function organizationColumns(action: Function): ColumnsType<any> {
     },
     {
       title: '上级机构',
-      dataIndex: 'parentName'
+      dataIndex: 'parentName',
+      render: (text, row) => <span>{row.parentName || '-'}</span>
     },
     {
       title: '联系人',
@@ -35,6 +37,7 @@ export function organizationColumns(action: Function): ColumnsType<any> {
       title: '操作',
       dataIndex: 'action',
       fixed: 'right',
+      width: 200,
       render: (text, row) => {
         return (
           <React.Fragment>
@@ -49,50 +52,3 @@ export function organizationColumns(action: Function): ColumnsType<any> {
     }
   ];
 }
-// export const organizationColumns: ColumnsType<any> = [
-//   {
-//     title: '机构类型',
-//     dataIndex: 'type'
-//   },
-//   {
-//     title: '机构全称',
-//     dataIndex: 'name'
-//   },
-//   {
-//     title: '机构简称',
-//     dataIndex: 'shortName'
-//   },
-//   {
-//     title: '上级机构',
-//     dataIndex: 'parentName'
-//   },
-//   {
-//     title: '联系人',
-//     dataIndex: 'contactName'
-//   },
-//   {
-//     title: '联系电话',
-//     dataIndex: 'contactMobile'
-//   },
-//   {
-//     title: '操作',
-//     dataIndex: 'action',
-//     render: row => {
-//       return (
-//         <React.Fragment>
-//           <Link to={'/account/organizationManage/organizationDetail/'}>详情</Link>
-//           <Divider type="vertical" />
-//           <a
-//             onClick={() => {
-//               console.log(row);
-//             }}
-//           >
-//             编辑
-//           </a>
-//           <Divider type="vertical" />
-//           <a>删除</a>
-//         </React.Fragment>
-//       );
-//     }
-//   }
-// ];

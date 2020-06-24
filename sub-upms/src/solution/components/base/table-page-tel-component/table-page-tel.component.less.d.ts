@@ -39,6 +39,8 @@ export interface ITablePageTelComponentLess {
   customLayout: string;
   customLayoutSpin: string;
   customRight: string;
+  'form-item': string;
+  formItem: string;
   h40: string;
   label: string;
   'login-form': string;

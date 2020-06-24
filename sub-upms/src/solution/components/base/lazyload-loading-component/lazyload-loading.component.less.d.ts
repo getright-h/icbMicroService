@@ -28,6 +28,8 @@ export interface ILazyloadLoadingComponentLess {
   'custom-layout-spin': string;
   customLayout: string;
   customLayoutSpin: string;
+  'form-item': string;
+  formItem: string;
   h40: string;
   label: string;
   'loading-info': string;
