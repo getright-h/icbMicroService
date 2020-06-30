@@ -4,6 +4,7 @@ import { IProps, IState } from './login.interface';
 import style from './login.component.less';
 import { LockOutlined, SafetyCertificateOutlined, UserOutlined } from '@ant-design/icons';
 import { Input, Checkbox, Button, Form } from 'antd';
+// import { CubeComponent } from '~/solution/components/component.module';
 import { useStore } from '~/framework/aop/hooks/use-base-store';
 import { reducer, initialState } from './store/reducer';
 import { setState } from '~/framework/microAPP/appStore';
@@ -39,6 +40,9 @@ function LoginComponentOrigin(props: IProps) {
   return (
     <div className={style.main}>
       <section className={style.left} ref={leftRef}>
+        {/* <CubeComponent size="80px" top="0" left="10%" />
+        <CubeComponent size="50px" top="20%" left="30%" />
+        <CubeComponent size="80px" top="40%" left="15%" /> */}
         <div className={style.stage}></div>
         <div className={style.leftCover} ref={leftCoverRef}></div>
       </section>
