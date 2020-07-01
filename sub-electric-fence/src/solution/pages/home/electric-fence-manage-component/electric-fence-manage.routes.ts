@@ -8,5 +8,10 @@ export const electricFenceManageRoutes: IRoute[] = [
     path: `${MODULE_PATH}/mainfence`,
     component: ROUTERS.MainFenceManageComponent,
     lazyload: true
+  },
+  {
+    path: `${MODULE_PATH}/fenceAttention`,
+    component: ROUTERS.FenceAttentionComponent,
+    lazyload: true
   }
 ];

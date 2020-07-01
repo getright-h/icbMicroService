@@ -6,5 +6,7 @@ export const ROUTERS = {
   MainFenceManageComponent: () =>
     import(
       '~/solution/pages/home/electric-fence-manage-component/main-fence-manage-component/main-fence-manage.component'
-    )
+    ),
+  FenceAttentionComponent: () =>
+    import('~/solution/pages/home/electric-fence-manage-component/fence-attention-component/fence-attention.component')
 };

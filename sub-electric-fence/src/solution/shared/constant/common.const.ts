@@ -15,6 +15,11 @@ export const PAGES_MENU = {
           path: 'mainfence',
           title: '围栏管理',
           icon: 'container'
+        },
+        {
+          path: 'fenceAttention',
+          title: '围栏告警',
+          icon: 'container'
         }
       ]
     }
