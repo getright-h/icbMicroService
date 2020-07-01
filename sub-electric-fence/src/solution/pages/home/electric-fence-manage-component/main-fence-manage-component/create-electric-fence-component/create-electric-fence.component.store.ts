@@ -5,6 +5,7 @@ import { RadioChangeEvent } from 'antd/lib/radio';
 import { ChangeEventHandler, ChangeEvent, useEffect } from 'react';
 import { Form } from 'antd';
 import * as _ from 'lodash';
+import { Store } from 'antd/lib/form/interface';
 declare const AMap: any;
 let geocoder = new AMap.Geocoder({
   // city: '全国', //城市设为北京，默认：“全国”
@@ -14,8 +15,8 @@ export function useCreateElectricFenceStore(props: ICreateElectricProps) {
   const { state, setStateWrap } = useStateStore(new ICreateElectricFenceState());
   const { onValueChange, circlrR, centerPlace } = props;
   const [form] = Form.useForm();
-  function onFinish() {
-    console.log(11);
+  function onFinish(values: Store) {
+    console.log(values);
   }
 
   _.debounce(handleChangeCircle, 1000);
@@ -25,8 +26,6 @@ export function useCreateElectricFenceStore(props: ICreateElectricProps) {
   }, [circlrR]);
 
   useEffect(() => {
-    console.log(centerPlace);
-
     centerPlace && regeoCode();
   }, [centerPlace]);
 
@@ -36,7 +35,13 @@ export function useCreateElectricFenceStore(props: ICreateElectricProps) {
     }
     geocoder.getAddress(centerPlace, function(status: string, result: any) {
       if (status === 'complete' && result.regeocode) {
-        form.setFieldsValue({ centerPlace: result.regeocode.formattedAddress });
+        let info = '...';
+        console.log(result.regeocode.formattedAddress.length);
+
+        if (result.regeocode.formattedAddress.length > 15) {
+          info += result.regeocode.formattedAddress.slice(-10);
+        }
+        form.setFieldsValue({ centerPlace: info });
       }
     });
   }

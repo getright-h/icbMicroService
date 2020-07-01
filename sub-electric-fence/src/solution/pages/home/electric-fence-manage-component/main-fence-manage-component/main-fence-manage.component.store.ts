@@ -8,8 +8,6 @@ export function useMainFenceManageStore() {
   }
 
   function onValueChange<T>(key: string, value: T) {
-    console.log(key, value);
-
     setStateWrap({
       [key]: value
     });

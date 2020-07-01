@@ -27,7 +27,7 @@ export default function CreateElectricFenceComponent(props: ICreateElectricProps
         return (
           <>
             <Form.Item name="centerPlace">
-              <Search placeholder="input search text" onSearch={handleChangeCircle} style={{ width: 300 }} />
+              <Search placeholder="输入圆的中心点地址" onSearch={handleChangeCircle} style={{ width: 200 }} />
               {/* <Input placeholder="输入圆的中心点地址" onChange={handleChangeCircle} /> */}
             </Form.Item>
             <Form.Item name="rPlace">
@@ -40,8 +40,9 @@ export default function CreateElectricFenceComponent(props: ICreateElectricProps
           <>
             <span>请在地图上选择多边形范围</span>
             <br />
+            <br />
             <Form.Item name="centerPlace">
-              <Input placeholder="输入圆的中心点地址" onChange={handleChangeCircle} />
+              <Search placeholder="输入圆的中心点地址" onSearch={handleChangeCircle} style={{ width: 200 }} />
             </Form.Item>
           </>
         );
@@ -77,6 +78,13 @@ export default function CreateElectricFenceComponent(props: ICreateElectricProps
             </Radio.Group>
           </Form.Item>
           {fenceTypeForArea(fenceType)}
+        </Form.Item>
+        <Form.Item>
+          <div style={{ textAlign: 'center' }}>
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </div>
         </Form.Item>
       </Form>
     </div>

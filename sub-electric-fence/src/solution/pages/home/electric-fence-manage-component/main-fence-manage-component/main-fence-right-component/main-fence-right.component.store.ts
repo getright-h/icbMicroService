@@ -95,10 +95,7 @@ export function useMainFenceRightStore(props: IMainFenceRightProps) {
       editor.on(
         'move',
         _.debounce((event: any) => {
-          console.log('event', event);
-
           const { lnglat } = event;
-
           type == FENCETYPENUM.CIRCLE && onValueChange('circleLocation', [lnglat.lng, lnglat.lat]);
         }, 500)
       );
