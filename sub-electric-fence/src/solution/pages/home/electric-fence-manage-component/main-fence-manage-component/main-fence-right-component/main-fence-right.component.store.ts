@@ -3,6 +3,7 @@ import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect, useRef } from 'react';
 import { FENCETYPENUM } from '../create-electric-fence-component/create-electric-fence.interface';
 declare const AMap: any;
+declare const AMapUI: any;
 import * as _ from 'lodash';
 export function useMainFenceRightStore(props: IMainFenceRightProps) {
   const { state, setStateWrap } = useStateStore();
@@ -20,13 +21,32 @@ export function useMainFenceRightStore(props: IMainFenceRightProps) {
       resizeEnable: true,
       zoom: 16
     });
+    addBaseController(map.current);
   }
-  console.log(props);
+  //添加缩放和图层切换控件
+  function addBaseController(map: any) {
+    AMapUI.loadUI(['control/BasicControl'], function(BasicControl: any) {
+      //缩放控件，显示Zoom值
+      map.addControl(
+        new BasicControl.Zoom({
+          position: 'lb'
+        })
+      );
+
+      //图层切换控件
+      map.addControl(
+        new BasicControl.LayerSwitcher({
+          position: 'rt'
+        })
+      );
+    });
+  }
 
   useEffect(() => {
     drawInfoInMap();
-  }, [props]);
+  }, [props.circleLocation, props.currentChoose]);
 
+  // 当传入的心心变化的时候改变当前页面的map图像
   function drawInfoInMap() {
     if (!circleLocation) {
       circleLocation = centerLocation.current;
@@ -46,6 +66,7 @@ export function useMainFenceRightStore(props: IMainFenceRightProps) {
     }
   }
 
+  // 初始化多边形
   function refinePolygon() {
     const x = circleLocation[0];
     const y = circleLocation[1];
@@ -69,9 +90,10 @@ export function useMainFenceRightStore(props: IMainFenceRightProps) {
     map.current.setFitView([polygon]);
     const polyEditor = new AMap.PolyEditor(map.current, polygon);
     polyEditor.open();
-    bindEditForMap(polyEditor, FENCETYPENUM.POLYGON);
+    bindEditForMap(polyEditor, FENCETYPENUM.POLYGON, path);
   }
 
+  // 初始化圆形
   function refineCircle() {
     const circle = new AMap.Circle({
       center: circleLocation,
@@ -95,7 +117,8 @@ export function useMainFenceRightStore(props: IMainFenceRightProps) {
     bindEditForMap(circleEditor, FENCETYPENUM.CIRCLE);
   }
 
-  function bindEditForMap(editor: any, type: number) {
+  // 监听多边形和原型的事件
+  function bindEditForMap(editor: any, type: number, path?: any) {
     type == FENCETYPENUM.CIRCLE &&
       editor.on(
         'move',
@@ -109,6 +132,7 @@ export function useMainFenceRightStore(props: IMainFenceRightProps) {
       'adjust',
       _.debounce((event: any) => {
         type == FENCETYPENUM.CIRCLE && onValueChange('circlrR', event.radius);
+        type == FENCETYPENUM.POLYGON && onValueChange('polygon', path);
       }, 500)
     );
   }

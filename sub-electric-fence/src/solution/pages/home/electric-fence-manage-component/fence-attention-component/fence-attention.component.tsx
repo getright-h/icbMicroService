@@ -15,17 +15,9 @@ const { Option } = Select;
 export default function FenceAttentionComponent() {
   const [form] = Form.useForm();
 
-  const {
-    state,
-    callbackAction,
-    changeTablePageIndex,
-    searchClick,
-    showModal,
-    hideModal,
-    handleStatusChange,
-    onFinish,
-    handleOK
-  } = useFenceAttentionStore(form);
+  const { state, callbackAction, changeTablePageIndex, searchClick, hideModal, handleOK } = useFenceAttentionStore(
+    form
+  );
   const { isLoading, visible, searchForm, tableData, total, searchLoading } = state;
 
   function renderSelectItems() {
@@ -117,7 +109,6 @@ export default function FenceAttentionComponent() {
           {...layout}
           name="basic"
           initialValues={{ remember: true }}
-          onFinish={onFinish}
           form={form}
 
           // onFinishFailed={onFinishFailed}

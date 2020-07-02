@@ -5,11 +5,16 @@ import { FENCETYPENUM } from '../create-electric-fence-component/create-electric
  * @class IMainFenceRightState
  */
 export interface IMainFenceRightProps {
+  // 圆心
   circleLocation?: Array<number>,
+  // 半径
   circlrR?: number,
   polygonLocation?:  Array<number>,
+  // 多边形path
   circlrPath?: any,
+  // 行政区域path
   administrativeDivisionPath?: any,
-  currentChoose?: number,
+  // 当前显示圆形 多边形 还是行政区域
+  currentChoose?: FENCETYPENUM,
   onValueChange: (key: string, value: any) => void
 }

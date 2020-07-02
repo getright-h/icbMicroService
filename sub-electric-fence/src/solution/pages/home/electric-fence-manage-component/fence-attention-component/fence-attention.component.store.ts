@@ -4,9 +4,11 @@ import { useEffect } from 'react';
 import { ACTION_TYPE } from '~/solution/shared/constant/action.const';
 import { values } from 'lodash';
 import { FormInstance } from 'antd/lib/form';
+import { useHistory } from 'react-router-dom';
 
 export function useFenceAttentionStore(form: FormInstance) {
   const { state, setStateWrap } = useStateStore(new IFenceAttentionState());
+  const history = useHistory();
   useEffect(() => {
     const list = [
       {
@@ -41,11 +43,8 @@ export function useFenceAttentionStore(form: FormInstance) {
     switch (actionType) {
       case ACTION_TYPE.EDIT:
         showModal();
-        console.log('111', data);
-
         break;
       case ACTION_TYPE.DETAIL:
-        console.log(data);
         break;
       default:
         break;
@@ -68,15 +67,9 @@ export function useFenceAttentionStore(form: FormInstance) {
       visible: false
     });
   }
-  function handleStatusChange() {
-    console.log(values);
-  }
-  function onFinish() {
-    console.log(form);
-    console.log(form.getFieldsValue());
-  }
+
   function handleOK() {
-    onFinish();
+    console.log(form.getFieldsValue());
     setStateWrap({
       visible: false
     });
@@ -86,10 +79,7 @@ export function useFenceAttentionStore(form: FormInstance) {
     callbackAction,
     changeTablePageIndex,
     searchClick,
-    showModal,
     hideModal,
-    handleStatusChange,
-    onFinish,
     handleOK
   };
 }

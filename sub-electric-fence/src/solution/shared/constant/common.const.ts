@@ -4,6 +4,8 @@ export enum ADDRESS_TYPE {
   Area
 }
 
+export const PAGESIZE = 10;
+
 export const PAGES_MENU = {
   MENU: [
     {
@@ -19,6 +21,11 @@ export const PAGES_MENU = {
         {
           path: 'fenceAttention',
           title: '围栏告警',
+          icon: 'container'
+        },
+        {
+          path: 'monitoringObject',
+          title: '监控对象',
           icon: 'container'
         }
       ]

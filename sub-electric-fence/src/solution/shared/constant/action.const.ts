@@ -1,5 +1,8 @@
 export const enum ACTION_TYPE {
   EDIT,
   DELETE,
-  DETAIL
+  DETAIL,
+  FENCEMODAL,
+  UNBIND,
+  BATCH_EDIT
 }
