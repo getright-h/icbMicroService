@@ -50,7 +50,12 @@ export function useMainFenceRightStore(props: IMainFenceRightProps) {
     const x = circleLocation[0];
     const y = circleLocation[1];
 
-    const path = [[x - 0.0508, y - 0.045], [x - 0.0508, y + 0.045], [x + 0.0508, y + 0.045], [x + 0.0508, y - 0.045]];
+    const path = [
+      [x - 0.0508, y - 0.045],
+      [x - 0.0508, y + 0.045],
+      [x + 0.0508, y + 0.045],
+      [x + 0.0508, y - 0.045]
+    ];
     const polygon = new AMap.Polygon({
       path: path,
       strokeColor: '#FF33FF',
