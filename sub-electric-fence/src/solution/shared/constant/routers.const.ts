@@ -8,5 +8,9 @@ export const ROUTERS = {
       '~/solution/pages/home/electric-fence-manage-component/main-fence-manage-component/main-fence-manage.component'
     ),
   FenceAttentionComponent: () =>
-    import('~/solution/pages/home/electric-fence-manage-component/fence-attention-component/fence-attention.component')
+    import('~/solution/pages/home/electric-fence-manage-component/fence-attention-component/fence-attention.component'),
+  MonitoringObjectComponent: () =>
+    import(
+      '~/solution/pages/home/electric-fence-manage-component/monitoring-object-component/monitoring-object.component'
+    )
 };

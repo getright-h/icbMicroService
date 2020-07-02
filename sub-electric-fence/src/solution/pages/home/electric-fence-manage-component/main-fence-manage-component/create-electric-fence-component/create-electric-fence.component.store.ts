@@ -41,7 +41,7 @@ export function useCreateElectricFenceStore(props: ICreateElectricProps) {
         if (result.regeocode.formattedAddress.length > 15) {
           info += result.regeocode.formattedAddress.slice(-10);
         }
-        form.setFieldsValue({ centerPlace: info });
+        form.setFieldsValue({ centerPlace: info, centerLatlng: centerPlace });
       }
     });
   }

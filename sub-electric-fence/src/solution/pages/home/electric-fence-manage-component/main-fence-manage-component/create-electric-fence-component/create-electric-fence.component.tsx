@@ -82,7 +82,7 @@ export default function CreateElectricFenceComponent(props: ICreateElectricProps
         <Form.Item>
           <div style={{ textAlign: 'center' }}>
             <Button type="primary" htmlType="submit">
-              Submit
+              提交
             </Button>
           </div>
         </Form.Item>

@@ -10,7 +10,7 @@ export class TablePageTelComponent extends React.Component<IProps> {
 
   static defaultProps = {
     isFlex: true,
-    leftFlex: 2,
+    leftFlex: 0,
     rightFlex: 6,
     isLeft: false
   };
@@ -23,15 +23,7 @@ export class TablePageTelComponent extends React.Component<IProps> {
     );
   }
 
-  tableFunction(
-    isFlex: boolean,
-    selectTags: boolean,
-    selectItems: any,
-    searchButton: any,
-    otherSearchBtns: any,
-    table: any,
-    rightFlex: any
-  ) {
+  renderDrawer() {
     const {
       closable,
       maskClosable,
@@ -46,30 +38,46 @@ export class TablePageTelComponent extends React.Component<IProps> {
       onCloseDrawer
     } = this.props.drawerInfo;
     return (
-      <div className={`${style.appManageAmPush} ${isFlex && style.customRight}`} style={{ flex: rightFlex }}>
-        <div className={selectTags && style.selectTags}>{selectTags}</div>
-        <div className={style.amMainHeader}>
-          <div className={style.pushSearchRow}>{selectItems}</div>
-          <div className={style.pushSearchButton}>{searchButton}</div>
+      <Drawer
+        title={title}
+        placement={placement}
+        closable={closable}
+        maskClosable={maskClosable}
+        mask={mask}
+        visible={visible}
+        style={styleInfo}
+        width={width}
+        key={placement}
+        getContainer={getContainer}
+        onClose={onCloseDrawer}
+      >
+        {container}
+      </Drawer>
+    );
+  }
+
+  tableFunction(
+    isFlex: boolean,
+    selectTags: boolean,
+    selectItems: any,
+    searchButton: any,
+    otherSearchBtns: any,
+    table: any,
+    rightFlex: any
+  ) {
+    return (
+      <>
+        <div className={`${style.appManageAmPush} ${isFlex && style.customRight}`} style={{ flex: rightFlex }}>
+          <div className={selectTags && style.selectTags}>{selectTags}</div>
+          <div className={style.amMainHeader}>
+            <div className={style.pushSearchRow}>{selectItems}</div>
+            <div className={style.pushSearchButton}>{searchButton}</div>
+          </div>
+          {otherSearchBtns}
+          {table}
+          {this.props.drawerInfo && this.renderDrawer()}
         </div>
-        {otherSearchBtns}
-        {table}
-        <Drawer
-          title={title}
-          placement={placement}
-          closable={closable}
-          maskClosable={maskClosable}
-          mask={mask}
-          visible={visible}
-          style={styleInfo}
-          width={width}
-          key={placement}
-          getContainer={getContainer}
-          onClose={onCloseDrawer}
-        >
-          {container}
-        </Drawer>
-      </div>
+      </>
     );
   }
 
@@ -95,6 +103,8 @@ export class TablePageTelComponent extends React.Component<IProps> {
       isLeft
     } = this.props;
     const LayoutSider = this.renderSubHeader();
+    console.log(isFlex);
+
     return (
       <div className={style.pageContainer}>
         {LayoutSider}
@@ -106,7 +116,7 @@ export class TablePageTelComponent extends React.Component<IProps> {
             </>
           ) : (
             <>
-              {this.otherFieldLeftFunction(isFlex, leftFlex, pageLeft)}
+              {leftFlex ? this.otherFieldLeftFunction(isFlex, leftFlex, pageLeft) : null}
               {this.tableFunction(isFlex, selectTags, selectItems, searchButton, otherSearchBtns, table, rightFlex)}
             </>
           )}

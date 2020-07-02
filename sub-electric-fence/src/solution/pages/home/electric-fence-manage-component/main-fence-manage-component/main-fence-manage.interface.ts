@@ -9,6 +9,7 @@ export class IMainFenceManageState {
   visible = false;
   circleLocation: any;
   circlrR? = 200;
+  polygon: any[];
   polygonLocation? = { lat: 0, lng: 0 };
   circlrPath?: any = [];
   administrativeDivisionPath?: any = [];

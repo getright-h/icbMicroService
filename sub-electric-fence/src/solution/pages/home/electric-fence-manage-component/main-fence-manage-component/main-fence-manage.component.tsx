@@ -59,7 +59,6 @@ export default function MainFenceManageComponent() {
     circlrR,
     currentChoose
   };
-  console.log('````circlrR****', circlrR);
   return (
     <div>
       <TablePageTelComponent

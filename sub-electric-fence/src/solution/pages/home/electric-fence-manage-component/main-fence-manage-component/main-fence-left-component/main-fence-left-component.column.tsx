@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Divider } from 'antd';
+import { ACTION_TYPE } from '~/solution/shared/constant/action.const';
 export function stationColumns(callbackAction: Function) {
   return [
     {

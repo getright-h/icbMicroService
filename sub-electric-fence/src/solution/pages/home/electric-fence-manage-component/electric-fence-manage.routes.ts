@@ -13,5 +13,10 @@ export const electricFenceManageRoutes: IRoute[] = [
     path: `${MODULE_PATH}/fenceAttention`,
     component: ROUTERS.FenceAttentionComponent,
     lazyload: true
+  },
+  {
+    path: `${MODULE_PATH}/monitoringObject`,
+    component: ROUTERS.MonitoringObjectComponent,
+    lazyload: true
   }
 ];
