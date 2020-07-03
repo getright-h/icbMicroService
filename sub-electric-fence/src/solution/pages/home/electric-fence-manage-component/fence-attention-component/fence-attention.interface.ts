@@ -14,5 +14,6 @@ export class IFenceAttentionState {
   confirmModalLoading = false;
   visibleModal = false;
   modalTitle = '';
+  modalWidth = 700;
   modalContainer: JSX.Element = null;
 }

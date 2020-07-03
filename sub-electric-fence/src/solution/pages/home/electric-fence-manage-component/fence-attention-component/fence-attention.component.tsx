@@ -29,6 +29,7 @@ export default function FenceAttentionComponent() {
     searchLoading,
     visibleModal,
     modalTitle,
+    modalWidth,
     confirmModalLoading,
     modalContainer
   } = state;
@@ -37,39 +38,27 @@ export default function FenceAttentionComponent() {
     return (
       <>
         <div className="push-search-item">
-          <div className="label">围栏名</div>
+          <span className="label">围栏名:</span>
           <Input placeholder="请输入围栏名" />
         </div>
         <div className="push-search-item">
-          <div className="label">车辆所属</div>
-          <Input placeholder="请输入机构名或者车队名" />
+          <span className="label">车辆所属:</span>
+          <Input placeholder="请输入机构名/车队名" />
         </div>
         <div className="push-search-item">
-          <div className="label">车辆信息</div>
+          <span className="label">车辆信息:</span>
           <Input placeholder="车主电话/车主姓名/车牌号" />
         </div>
         <div className="push-search-item">
-          <div className="label">状态</div>
+          <span className="label">状态:</span>
           <Select defaultValue="lucy">
             <Option value="jack">已处理</Option>
             <Option value="lucy">未处理</Option>
           </Select>
         </div>
         <div className="push-search-item">
-          <div className="label">告警时间</div>
+          <span className="label">告警时间:</span>
           <TimePickerComponent pickerType="dateRange" getDateTimeInfo={getDateTimeInfo}></TimePickerComponent>
-
-          {/* <RangePicker
-            dateRender={current => {
-              const style = {};
-
-              return (
-                <div className="ant-picker-cell-inner" style={style}>
-                  {current.date()}
-                </div>
-              );
-            }}
-          /> */}
         </div>
       </>
     );
@@ -83,20 +72,18 @@ export default function FenceAttentionComponent() {
       </div>
     );
   }
-  function renderFenceAttentionTable() {
+  function RenderTable() {
     return (
-      <div className={style.test}>
-        <ITableComponent
-          columns={stationColumns(callbackAction)}
-          isLoading={isLoading}
-          pageIndex={searchForm.index}
-          pageSize={searchForm.size}
-          data={tableData}
-          total={total}
-          isPagination={true}
-          changeTablePageIndex={(index: number, pageSize: number) => changeTablePageIndex(index, pageSize)}
-        ></ITableComponent>
-      </div>
+      <ITableComponent
+        columns={stationColumns(callbackAction)}
+        isLoading={isLoading}
+        pageIndex={searchForm.index}
+        pageSize={searchForm.size}
+        data={tableData}
+        total={total}
+        isPagination={true}
+        changeTablePageIndex={(index: number, pageSize: number) => changeTablePageIndex(index, pageSize)}
+      ></ITableComponent>
     );
   }
   function ModalDetail() {
@@ -104,7 +91,7 @@ export default function FenceAttentionComponent() {
       <Modal
         title={modalTitle}
         visible={visibleModal}
-        width={1000}
+        width={modalWidth}
         onOk={handleModalOk}
         confirmLoading={confirmModalLoading}
         onCancel={handleModalCancel}
@@ -115,15 +102,14 @@ export default function FenceAttentionComponent() {
   }
 
   return (
-    <React.Fragment>
+    <>
       <TablePageTelComponent
         pageName={'围栏告警'}
-        leftFlex={0}
         selectItems={renderSelectItems()}
         searchButton={renderSearchButtons()}
-        table={renderFenceAttentionTable()}
+        table={<RenderTable />}
       ></TablePageTelComponent>
       <ModalDetail />
-    </React.Fragment>
+    </>
   );
 }

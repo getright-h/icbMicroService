@@ -17,7 +17,7 @@ export default function AttentionDetailComponent() {
         <Descriptions.Item label="状态">empty</Descriptions.Item>
       </Descriptions>
       <Descriptions title="告警信息">
-        <Descriptions.Item label="驶出围栏 位置">四川省成都市武侯区西部智谷D</Descriptions.Item>
+        <Descriptions.Item label="驶出围栏位置">四川省成都市武侯区西部智谷D</Descriptions.Item>
       </Descriptions>
       <Descriptions title="跟进记录">
         <Descriptions.Item label="2019-12-01"> XXX跟进</Descriptions.Item>

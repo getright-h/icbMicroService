@@ -46,6 +46,7 @@ export function useFenceAttentionStore() {
         setStateWrap({
           modalContainer: <FollowUpComponent />,
           modalTitle: '跟进',
+          modalWidth: 700,
           visibleModal: true
         });
         break;
@@ -53,6 +54,7 @@ export function useFenceAttentionStore() {
         setStateWrap({
           modalContainer: <AttentionDetailComponent />,
           modalTitle: '围栏告警详情',
+          modalWidth: 1000,
           visibleModal: true
         });
         break;
