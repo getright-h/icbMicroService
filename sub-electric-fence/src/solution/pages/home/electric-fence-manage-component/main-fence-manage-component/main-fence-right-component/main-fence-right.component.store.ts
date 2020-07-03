@@ -5,41 +5,27 @@ import { FENCETYPENUM } from '../create-electric-fence-component/create-electric
 declare const AMap: any;
 declare const AMapUI: any;
 import * as _ from 'lodash';
+import { IMAP } from '~/solution/shared/util/map.util';
 export function useMainFenceRightStore(props: IMainFenceRightProps) {
-  const { state, setStateWrap } = useStateStore();
+  const { state } = useStateStore();
   const centerLocation = useRef([116.433322, 39.900256]);
   const map: any = useRef();
   const { currentChoose = FENCETYPENUM.CIRCLE, onValueChange, circlrR = 200 } = props;
   let { circleLocation } = props;
   useEffect(() => {
     initMap();
-    geolocationCurrentLocation();
+    IMAP.getCurrentLocation(map.current, setCurrentCenter);
   }, []);
+
+  function setCurrentCenter(lgnlat: [number, number]) {
+    centerLocation.current = lgnlat;
+    drawInfoInMap();
+  }
+
   function initMap() {
     // 获取当前用户定位
-    map.current = new AMap.Map('container', {
-      resizeEnable: true,
-      zoom: 16
-    });
-    addBaseController(map.current);
-  }
-  //添加缩放和图层切换控件
-  function addBaseController(map: any) {
-    AMapUI.loadUI(['control/BasicControl'], function(BasicControl: any) {
-      //缩放控件，显示Zoom值
-      map.addControl(
-        new BasicControl.Zoom({
-          position: 'lb'
-        })
-      );
-
-      //图层切换控件
-      map.addControl(
-        new BasicControl.LayerSwitcher({
-          position: 'rt'
-        })
-      );
-    });
+    map.current = IMAP.createMap('container');
+    IMAP.addBaseController(map.current);
   }
 
   useEffect(() => {
@@ -68,47 +54,13 @@ export function useMainFenceRightStore(props: IMainFenceRightProps) {
 
   // 初始化多边形
   function refinePolygon() {
-    const x = circleLocation[0];
-    const y = circleLocation[1];
-
-    const path = [[x - 0.0508, y - 0.045], [x - 0.0508, y + 0.045], [x + 0.0508, y + 0.045], [x + 0.0508, y - 0.045]];
-    const polygon = new AMap.Polygon({
-      path: path,
-      strokeColor: '#FF33FF',
-      strokeWeight: 6,
-      strokeOpacity: 0.2,
-      fillOpacity: 0.4,
-      fillColor: '#1791fc',
-      zIndex: 50
-    });
-    map.current.add(polygon);
-    map.current.setFitView([polygon]);
-    const polyEditor = new AMap.PolyEditor(map.current, polygon);
-    polyEditor.open();
+    const { polyEditor, path } = IMAP.createPolygon(circleLocation, map.current);
     bindEditForMap(polyEditor, FENCETYPENUM.POLYGON, path);
   }
 
   // 初始化圆形
   function refineCircle() {
-    const circle = new AMap.Circle({
-      center: circleLocation,
-      radius: circlrR, //半径
-      borderWeight: 3,
-      strokeColor: '#FF33FF',
-      strokeWeight: 6,
-      strokeOpacity: 0.2,
-      fillOpacity: 0.4,
-      strokeStyle: 'dashed',
-      strokeDasharray: [10, 10],
-      // 线样式还支持 'dashed'
-      fillColor: '#1791fc',
-      zIndex: 50
-    });
-
-    circle.setMap(map.current);
-    map.current.setFitView([circle]);
-    const circleEditor = new AMap.CircleEditor(map.current, circle);
-    circleEditor.open();
+    const circleEditor = IMAP.createCircle(circleLocation, circlrR, map.current);
     bindEditForMap(circleEditor, FENCETYPENUM.CIRCLE);
   }
 
@@ -130,27 +82,6 @@ export function useMainFenceRightStore(props: IMainFenceRightProps) {
         type == FENCETYPENUM.POLYGON && onValueChange('polygon', path);
       }, 500)
     );
-  }
-
-  // Geolocation
-  function geolocationCurrentLocation() {
-    AMap.plugin('AMap.Geolocation', function() {
-      const geolocation = new AMap.Geolocation({
-        enableHighAccuracy: true, //是否使用高精度定位，默认:true
-        timeout: 10000, //超过10秒后停止定位，默认：5s
-        buttonPosition: 'RB', //定位按钮的停靠位置
-        buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-        zoomToAccuracy: true //定位成功后是否自动调整地图视野到定位点
-      });
-
-      map.current.addControl(geolocation);
-      geolocation.getCurrentPosition(function(status: string, result: any) {
-        if (status == 'complete') {
-          centerLocation.current = [result.position.lng, result.position.lat];
-          drawInfoInMap();
-        }
-      });
-    });
   }
 
   return { state };
