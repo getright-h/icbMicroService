@@ -30,7 +30,7 @@ export default function FollowUpComponent() {
         </Form.Item>
 
         <Form.Item name="remark" label="跟进备注">
-          <Input.TextArea />
+          <Input.TextArea autoSize={{ minRows: 4, maxRows: 6 }} />
         </Form.Item>
       </Form>
     </div>

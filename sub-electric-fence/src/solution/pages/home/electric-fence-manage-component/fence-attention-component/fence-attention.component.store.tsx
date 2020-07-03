@@ -46,7 +46,7 @@ export function useFenceAttentionStore() {
         setStateWrap({
           modalContainer: <FollowUpComponent />,
           modalTitle: '跟进',
-          modalWidth: 700,
+          modalWidth: 500,
           visibleModal: true
         });
         break;

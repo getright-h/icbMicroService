@@ -93,6 +93,7 @@ export default function FenceAttentionComponent() {
         visible={visibleModal}
         width={modalWidth}
         onOk={handleModalOk}
+        style={{ top: 20 }}
         confirmLoading={confirmModalLoading}
         onCancel={handleModalCancel}
       >
