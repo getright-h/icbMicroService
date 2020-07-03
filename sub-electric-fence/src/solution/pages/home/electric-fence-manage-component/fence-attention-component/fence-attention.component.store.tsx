@@ -1,14 +1,15 @@
+import * as React from 'react';
 import { IFenceAttentionState } from './fence-attention.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect } from 'react';
 import { ACTION_TYPE } from '~/solution/shared/constant/action.const';
 import { values } from 'lodash';
 import { FormInstance } from 'antd/lib/form';
-import { useHistory } from 'react-router-dom';
+import AttentionDetailComponent from './attention-detail-component/attention-detail.component';
+import FollowUpComponent from './follow-up-component/follow-up.component';
 
-export function useFenceAttentionStore(form: FormInstance) {
+export function useFenceAttentionStore() {
   const { state, setStateWrap } = useStateStore(new IFenceAttentionState());
-  const history = useHistory();
   useEffect(() => {
     const list = [
       {
@@ -42,9 +43,18 @@ export function useFenceAttentionStore(form: FormInstance) {
     console.log('a', actionType);
     switch (actionType) {
       case ACTION_TYPE.EDIT:
-        showModal();
+        setStateWrap({
+          modalContainer: <FollowUpComponent />,
+          modalTitle: '跟进',
+          visibleModal: true
+        });
         break;
       case ACTION_TYPE.DETAIL:
+        setStateWrap({
+          modalContainer: <AttentionDetailComponent />,
+          modalTitle: '围栏告警详情',
+          visibleModal: true
+        });
         break;
       default:
         break;
@@ -56,30 +66,26 @@ export function useFenceAttentionStore(form: FormInstance) {
   function changeTablePageIndex(index: number, pageSize: number) {
     console.log(index, pageSize);
   }
-  function showModal() {
+  function getDateTimeInfo() {}
+
+  function handleModalCancel() {
     setStateWrap({
-      visible: true
+      visibleModal: false
+    });
+  }
+  function handleModalOk() {
+    setStateWrap({
+      visibleModal: false
     });
   }
 
-  function hideModal() {
-    setStateWrap({
-      visible: false
-    });
-  }
-
-  function handleOK() {
-    console.log(form.getFieldsValue());
-    setStateWrap({
-      visible: false
-    });
-  }
   return {
     state,
     callbackAction,
     changeTablePageIndex,
     searchClick,
-    hideModal,
-    handleOK
+    getDateTimeInfo,
+    handleModalCancel,
+    handleModalOk
   };
 }

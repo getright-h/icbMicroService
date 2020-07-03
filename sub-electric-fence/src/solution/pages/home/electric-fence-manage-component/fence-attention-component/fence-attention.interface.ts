@@ -4,7 +4,6 @@
  */
 export class IFenceAttentionState {
   isLoading = false;
-  visible = false;
   searchForm: { index: number; size: number } = {
     index: 1,
     size: 10
@@ -12,4 +11,8 @@ export class IFenceAttentionState {
   tableData: any = [];
   total = 0;
   searchLoading = false;
+  confirmModalLoading = false;
+  visibleModal = false;
+  modalTitle = '';
+  modalContainer: JSX.Element = null;
 }
