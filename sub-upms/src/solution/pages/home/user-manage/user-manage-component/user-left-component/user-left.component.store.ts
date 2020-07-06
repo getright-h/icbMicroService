@@ -37,7 +37,7 @@ export function useUserLeftStore(props: IUserLeftProps) {
   ) {
     const isHierarchyType = Number.isInteger(hierarchyType);
     const url = isHierarchyType ? 'getOrganizationChild' : 'queryOrganizationByTypeId';
-    organizationManageService[url]({ typeId, id: typeId, hierarchyType }).subscribe((res: any) => {
+    organizationManageService[url]({ typeId, id: typeId, hierarchyType: -1 }).subscribe((res: any) => {
       treeNode.children = dealWithTreeData(res);
       setStateWrap({
         treeData: updateTreeData(state.treeData, treeNode.key, treeNode.children)
