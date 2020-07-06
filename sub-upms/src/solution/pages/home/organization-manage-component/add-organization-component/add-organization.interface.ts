@@ -17,6 +17,7 @@ export class IAddOrganizationState {
   areaList: Array<AreaInfo>;
   fileList: Array<any>;
   isEdit = false;
+  isDetail = false;
 }
 interface OrganizationForm {
   systemCode: string;

@@ -11,7 +11,7 @@ export default function AddOrganizationComponent(props: IAddOrganizationProps) {
     props,
     organizationForm
   );
-  const { provinceList, cityList, areaList, isEdit } = state;
+  const { provinceList, cityList, areaList, isEdit, isDetail } = state;
   const formItemLayout = {
     labelCol: {
       xs: { span: 24 },
@@ -144,7 +144,7 @@ export default function AddOrganizationComponent(props: IAddOrganizationProps) {
     <div className={style.organizationMain}>
       {renderHeader(
         () => {
-          return <h4>{isEdit ? '编辑机构' : '添加机构'}</h4>;
+          return <h4>{isEdit && !isDetail ? '编辑机构' : isDetail ? '机构详情' : '添加机构'}</h4>;
         },
         () => {
           return (
@@ -163,11 +163,13 @@ export default function AddOrganizationComponent(props: IAddOrganizationProps) {
           validateTrigger="onFinish"
         >
           {renderBaseInfo()}
-          <Form.Item wrapperCol={{ span: 12, offset: 6 }} className={style.submitButton}>
-            <Button type="primary" htmlType="submit">
-              保存
-            </Button>
-          </Form.Item>
+          {!isDetail && (
+            <Form.Item wrapperCol={{ span: 12, offset: 6 }} className={style.submitButton}>
+              <Button type="primary" htmlType="submit">
+                保存
+              </Button>
+            </Form.Item>
+          )}
         </Form>
       </div>
     </div>

@@ -12,7 +12,7 @@ export function useAddOrganizationStore(props: IAddOrganizationProps, form: Form
 
   useEffect(() => {
     if (id) {
-      setStateWrap({ isEdit: true });
+      setStateWrap({ isEdit: true, isDetail: props.match.path.includes('Detail') });
       getDetails(id);
     }
   }, []);

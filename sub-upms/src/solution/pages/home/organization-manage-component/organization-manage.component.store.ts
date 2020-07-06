@@ -40,7 +40,7 @@ export function useOrganizationManageStore() {
   function tableAction(row: Record<string, any>) {
     organizationManageService.deleteOrganization(row.id).subscribe(
       (res: any) => {
-        ShowNotification.success('删除成功');
+        ShowNotification.success('删除成功！');
         getTableData();
       },
       (err: any) => {
