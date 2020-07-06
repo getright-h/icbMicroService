@@ -3,16 +3,34 @@
  * @class IDepartmentManageState
  */
 interface SearchForm {
+  systemId: string;
+  code: string;
+  name: string;
+  state: number;
   index: number;
   size: number;
 }
-interface TableData {}
+interface DepartmentTableData {
+  id: string;
+  parentOrganizationName: string;
+  parentDepartmentName: string;
+  name: string;
+  instruction: string;
+  state: boolean;
+}
 export class IDepartmentManageState {
   searchForm: SearchForm = {
+    systemId: process.env.SYSTEM_ID,
+    code: '',
+    name: '',
+    state: -1,
     index: 1,
     size: 10
   };
-  tableData: TableData[] = [];
+  tableData: DepartmentTableData[] = [];
   total = 0;
   isLoading = false;
+  editDepartmentInfo: Record<string, any>;
+  editDepartmentVisible = false;
+  isEdit = false;
 }

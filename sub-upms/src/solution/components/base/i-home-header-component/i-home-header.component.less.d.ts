@@ -5,7 +5,6 @@ export interface IIHomeHeaderComponentLess {
   'ant-layout': string;
   'ant-layout-has-sider': string;
   'ant-radio-group': string;
-  'ant-select': string;
   'ant-spin': string;
   'ant-spin-container': string;
   'ant-spin-nested-loading': string;
@@ -18,7 +17,6 @@ export interface IIHomeHeaderComponentLess {
   antLayout: string;
   antLayoutHasSider: string;
   antRadioGroup: string;
-  antSelect: string;
   antSpin: string;
   antSpinContainer: string;
   antSpinNestedLoading: string;
@@ -32,6 +30,8 @@ export interface IIHomeHeaderComponentLess {
   customLayoutSpin: string;
   'fold-icon': string;
   foldIcon: string;
+  'form-item': string;
+  formItem: string;
   h40: string;
   header: string;
   'header-left': string;

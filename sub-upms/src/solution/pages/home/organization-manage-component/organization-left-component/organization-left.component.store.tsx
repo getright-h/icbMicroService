@@ -50,8 +50,8 @@ export function useOrganizationLeftStore(props: IOrganizationLeftProps) {
     });
   }
 
-  function onSelect(selectedKeys: React.Key[]) {
-    props.getSelectTreeNode(selectedKeys[0]);
+  function onSelect(selectedKeys: React.Key[], e: { node: EventDataNode }) {
+    props.getSelectTreeNode(e.node);
   }
 
   return { state, onLoadData, onSelect };

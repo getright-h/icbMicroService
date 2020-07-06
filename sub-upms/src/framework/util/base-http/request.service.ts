@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosPromise } from 'axios';
+import axios, { AxiosInstance, AxiosPromise, ResponseType } from 'axios';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { DepUtil } from '~/framework/aop/inject';
@@ -40,13 +40,28 @@ class RequestService {
     return returnInfo;
   }
 
-  private _makeRequest(method: string, url: string, queryParams?: object, body?: object, reponseType = 'json') {
-    const request: AxiosPromise = this._httpClient[method](this.getRootUrl(url) + url, {
-      params: queryParams,
-      headers: this.createAuthHeaders(),
-      reponseType,
-      timeout: 300000
-    });
+  private _makeRequest(
+    method: string,
+    url: string,
+    queryParams?: object,
+    // body?: object,
+    responseType: ResponseType = 'json'
+  ) {
+    let request: AxiosPromise;
+    if (method == 'post' || method == 'put') {
+      request = this._httpClient[method](this.getRootUrl(url) + url, queryParams, {
+        headers: this.createAuthHeaders(),
+        responseType,
+        timeout: 300000
+      });
+    } else {
+      request = this._httpClient[method](this.getRootUrl(url) + url, {
+        params: queryParams,
+        headers: this.createAuthHeaders(),
+        responseType,
+        timeout: 300000
+      });
+    }
     return new Observable(subscriber => {
       request
         .then(response => {
@@ -69,8 +84,8 @@ class RequestService {
     );
   }
 
-  public post(url: string, body: object, queryParams?: object) {
-    return this._makeRequest('post', url, queryParams, body).pipe(
+  public post(url: string, queryParams?: object) {
+    return this._makeRequest('post', url, queryParams).pipe(
       map(data => {
         return this.dealWithError(data);
       }),
@@ -78,8 +93,8 @@ class RequestService {
     );
   }
 
-  public put(url: string, body: object, queryParams?: object) {
-    return this._makeRequest('put', url, queryParams, body).pipe(
+  public put(url: string, queryParams?: object) {
+    return this._makeRequest('put', url, queryParams).pipe(
       map(data => {
         return this.dealWithError(data);
       }),
@@ -97,7 +112,7 @@ class RequestService {
   }
 
   public getDownload(url: string, queryParams?: object) {
-    return this._makeRequest('get', url, queryParams, {}, 'arraybuffer').pipe(
+    return this._makeRequest('get', url, queryParams, 'arraybuffer').pipe(
       map(data => {
         return this.dealWithError(data);
       }),
@@ -105,8 +120,8 @@ class RequestService {
     );
   }
 
-  public postDownload(url: string, queryParams?: object, body?: any) {
-    return this._makeRequest('post', url, queryParams, body, 'arraybuffer').pipe(
+  public postDownload(url: string, queryParams?: object) {
+    return this._makeRequest('post', url, queryParams, 'arraybuffer').pipe(
       map(data => {
         return this.dealWithError(data);
       }),
