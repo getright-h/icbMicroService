@@ -1,0 +1,20 @@
+import { IAction } from '~/solution/shared/interfaces/common.interface';
+import { IState } from '../login.interface';
+import { TYPES } from './type';
+
+export const initialState: IState = {
+  loginLoading: false
+};
+
+export function reducer(state = initialState, action: IAction<any>) {
+  const { type, payload } = action;
+  switch (type) {
+    case TYPES.SET_LOADING_LOADING:
+      return {
+        ...state,
+        loginLoading: payload
+      };
+    default:
+      return state;
+  }
+}
