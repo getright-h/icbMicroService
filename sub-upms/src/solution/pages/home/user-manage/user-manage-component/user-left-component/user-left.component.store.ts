@@ -33,10 +33,11 @@ export function useUserLeftStore(props: IUserLeftProps) {
     typeId: string,
     treeNode: EventDataNode,
     resolve: Function,
-    isHierarchyType: boolean
+    hierarchyType: number
   ) {
+    const isHierarchyType = Number.isInteger(hierarchyType);
     const url = isHierarchyType ? 'getOrganizationChild' : 'queryOrganizationByTypeId';
-    organizationManageService[url]({ typeId, id: typeId }).subscribe((res: any) => {
+    organizationManageService[url]({ typeId, id: typeId, hierarchyType }).subscribe((res: any) => {
       treeNode.children = dealWithTreeData(res);
       setStateWrap({
         treeData: updateTreeData(state.treeData, treeNode.key, treeNode.children)
@@ -47,7 +48,7 @@ export function useUserLeftStore(props: IUserLeftProps) {
 
   function onLoadData(treeNode: EventDataNode | any): Promise<void> {
     return new Promise(resolve => {
-      queryOrganizationByTypeId(treeNode.id, treeNode, resolve, Number.isInteger(treeNode.hierarchyType));
+      queryOrganizationByTypeId(treeNode.id, treeNode, resolve, treeNode.hierarchyType);
     });
   }
 
