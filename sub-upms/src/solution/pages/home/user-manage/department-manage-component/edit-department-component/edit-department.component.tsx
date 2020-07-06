@@ -54,8 +54,6 @@ export default function EditDepartmentComponent(props: any) {
                 reqUrl="queryOrganizationSelectList"
                 placeholder="请选择所属机构"
                 searchForm={{ systemId: process.env.SYSTEM_ID, hierarchyType: 0 }}
-                showSearch={true}
-                searchKey="name"
                 getCurrentSelectInfo={(value, option) => selectOrganization(value, option)}
               ></ISelectLoadingComponent>
             </Form.Item>
@@ -64,8 +62,6 @@ export default function EditDepartmentComponent(props: any) {
                 reqUrl="queryOrganizationSelectList"
                 placeholder="请选择上级部门"
                 searchForm={{ systemId: process.env.SYSTEM_ID, hierarchyType: 1, parentCode: state.parentCode }}
-                showSearch={true}
-                searchKey="name"
                 getCurrentSelectInfo={value => departmentForm.setFieldsValue({ parentDepartmentId: value })}
               ></ISelectLoadingComponent>
             </Form.Item>

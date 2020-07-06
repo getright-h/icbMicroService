@@ -54,8 +54,6 @@ export default function EditStationComponent(props: any) {
                 reqUrl="queryOrganizationSelectList"
                 placeholder="请选择所属机构"
                 searchForm={{ systemId: process.env.SYSTEM_ID, hierarchyType: 0 }}
-                showSearch={true}
-                searchKey="name"
                 // defaultValue={state.formInfo.distributorName}
                 getCurrentSelectInfo={(value, option) => selectOrganization(value, option)}
               ></ISelectLoadingComponent>
@@ -65,8 +63,6 @@ export default function EditStationComponent(props: any) {
                 reqUrl="queryOrganizationSelectList"
                 placeholder="请选择所属部门"
                 searchForm={{ systemId: process.env.SYSTEM_ID, hierarchyType: 1, parentCode: state.parentCode }}
-                showSearch={true}
-                searchKey="name"
                 // defaultValue={state.formInfo.distributorName}
                 getCurrentSelectInfo={(value, option) => stationForm.setFieldsValue({ parentDepartmentId: value })}
               ></ISelectLoadingComponent>

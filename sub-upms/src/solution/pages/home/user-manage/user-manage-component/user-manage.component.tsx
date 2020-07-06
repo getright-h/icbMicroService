@@ -2,13 +2,9 @@ import * as React from 'react';
 import style from './user-manage.component.less';
 import { useUserManageStore } from './user-manage.component.store';
 import { Input, Button } from 'antd';
-import {
-  ITableComponent,
-  TablePageTelComponent,
-  ISelectLoadingComponent
-} from '~/solution/components/component.module';
+import { ITableComponent, TablePageTelComponent } from '~/solution/components/component.module';
 import { userColumns } from './user-colomns';
-import OrganizationLeftComponent from '../../organization-manage-component/organization-left-component/organization-left.component';
+import UserLeftComponent from './user-left-component/user-left.component';
 
 export default function UserManageComponent() {
   const {
@@ -21,7 +17,7 @@ export default function UserManageComponent() {
   } = useUserManageStore();
   const { isLoading, searchForm, total, tableData } = state;
   function renderPageLeft() {
-    return <OrganizationLeftComponent getSelectTreeNode={getSelectTreeNode}></OrganizationLeftComponent>;
+    return <UserLeftComponent getSelectTreeNode={getSelectTreeNode}></UserLeftComponent>;
   }
   function renderSelectItems() {
     return (

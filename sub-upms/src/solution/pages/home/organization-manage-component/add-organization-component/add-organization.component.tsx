@@ -1,8 +1,8 @@
 import * as React from 'react';
 import style from './add-organization.component.less';
 import { useAddOrganizationStore } from './add-organization.component.store';
-import { Button, Form, Input, Radio, Select, Upload } from 'antd';
-import { ISelectLoadingComponent } from '~/solution/components/component.module';
+import { Button, Form, Input, Radio, Select } from 'antd';
+import { ISelectLoadingComponent, IUploadImgComponent } from '~/solution/components/component.module';
 import { IAddOrganizationProps } from './add-organization.interface';
 
 export default function AddOrganizationComponent(props: IAddOrganizationProps) {
@@ -117,13 +117,7 @@ export default function AddOrganizationComponent(props: IAddOrganizationProps) {
           </Select>
         </Form.Item>
 
-        <Form.Item
-          label="机构地址"
-          name="unitAddress"
-          className="form-item"
-          wrapperCol={{ span: 12 }}
-          rules={[{ required: true }]}
-        >
+        <Form.Item label="机构地址" name="unitAddress" className="form-item" rules={[{ required: true }]}>
           <Input placeholder="请输入机构地址" />
         </Form.Item>
         {isEdit && (
@@ -134,8 +128,11 @@ export default function AddOrganizationComponent(props: IAddOrganizationProps) {
             </Radio.Group>
           </Form.Item>
         )}
-        <Form.Item label="logo" className="form-item upload-images">
-          <Upload></Upload>
+        <Form.Item label="logo" name="logoUrl" className="form-item upload-images">
+          <IUploadImgComponent
+            getFileList={value => organizationForm.setFieldsValue({ logoUrl: value[0] })}
+            fileList={state.fileList}
+          ></IUploadImgComponent>
         </Form.Item>
         <Form.Item label="备注描述" name="unitRemark" className="form-item">
           <Input.TextArea style={{ verticalAlign: 'top' }} />

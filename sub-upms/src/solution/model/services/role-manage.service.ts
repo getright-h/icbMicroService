@@ -1,5 +1,12 @@
-
-import { RoleManageDTO, QueryRoleListParam, RoleInfoResponse, PrivilegeInfoResponse, MenuTreeNode, RoleMenuPrivilegeDetail } from '../dto/role-manage.dto';
+import {
+  RoleManageDTO,
+  QueryRoleListParam,
+  RoleInfoResponse,
+  PrivilegeInfo,
+  MenuTreeNode,
+  RoleMenuPrivilegeDetail,
+  MenuPrivilegeModel
+} from '../dto/role-manage.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
 import { DepUtil } from '~/framework/aop/inject';
@@ -13,6 +20,7 @@ const GET_MENU_PRIVILEGE_LIST = 'prvilege/common/menuPrivilegeList';
 const GET_MENU_TREE = 'prvilege/common/menuTree';
 const ROLE_MENU_PRIVILEGE_DETAIL = 'prvilege/common/roleMenuPrivilegeDetail';
 const SUBMIT_MENU_RELATION = 'prvilege/common/submitMenuRelation';
+const GET_SYSTEM_PRIVILEGES = 'prvilege/GetAllPrivileges';
 
 @DepUtil.Injectable()
 export class RoleManageService extends RoleManageDTO {
@@ -28,7 +36,7 @@ export class RoleManageService extends RoleManageDTO {
   }
 
   // 根据菜单获取权限列表
-  getMenuPrivilegeList(menuId: string): Observable<Array<PrivilegeInfoResponse>> {
+  getMenuPrivilegeList(menuId: string): Observable<Array<PrivilegeInfo>> {
     return this.requestService.get(GET_MENU_PRIVILEGE_LIST, { menuId });
   }
 
@@ -45,5 +53,10 @@ export class RoleManageService extends RoleManageDTO {
   // 绑定角色、菜单、权限关系
   submitMenuRelation(params: RoleMenuPrivilegeDetail): Observable<boolean> {
     return this.requestService.post(SUBMIT_MENU_RELATION, params);
+  }
+
+  // 获取系统所有可选权限
+  getSystemPrivileges(systemId: string): Observable<Array<MenuPrivilegeModel>> {
+    return this.requestService.get(GET_SYSTEM_PRIVILEGES, { systemId });
   }
 }

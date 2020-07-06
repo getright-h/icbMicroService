@@ -9,7 +9,7 @@ interface SearchForm {
   index: number;
   size: number;
 }
-interface TableData { }
+interface TableData {}
 export class IUserManageState {
   searchForm: SearchForm = {
     systemId: process.env.SYSTEM_ID,

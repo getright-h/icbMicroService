@@ -30,8 +30,6 @@ export default function DepartmentManageComponent() {
             reqUrl="queryOrganizationSelectList"
             placeholder="请选择所属机构"
             searchForm={{ systemId: process.env.SYSTEM_ID, hierarchyType: 0 }}
-            showSearch={true}
-            searchKey="name"
             getCurrentSelectInfo={(value, option) => handleFormDataChange(value, 'code', option)}
           ></ISelectLoadingComponent>
         </div>

@@ -10,6 +10,16 @@ export function useAddOrganizationStore(props: IAddOrganizationProps, form: Form
   const organizationManageService = useService(OrganizationManageService);
   const id = props.match.params.id;
 
+  useEffect(() => {
+    if (id) {
+      setStateWrap({ isEdit: true });
+      getDetails(id);
+    }
+  }, []);
+
+  /**
+   * @param id 查询机构详情
+   */
   function getDetails(id: string) {
     organizationManageService.getOrganizationDetail(id).subscribe(
       (res: any) => {
@@ -20,7 +30,17 @@ export function useAddOrganizationStore(props: IAddOrganizationProps, form: Form
             parentName: res.extendAttributionModel.parentName,
             parentCode: res.extendAttributionModel.parentCode,
             id: res.id
-          }
+          },
+          fileList: res.extendAttributionModel.logoUrl
+            ? [
+                {
+                  url: res.extendAttributionModel.logoUrl,
+                  uid: '0',
+                  type: 'image/jpg',
+                  status: 'done'
+                }
+              ]
+            : []
         });
         console.log({ ...form.getFieldsValue(), ...state.formInfo });
         getProvinceList();
@@ -32,12 +52,17 @@ export function useAddOrganizationStore(props: IAddOrganizationProps, form: Form
       }
     );
   }
+
+  /**
+   * @param values 提交机构信息
+   */
   function onSubmit(values: Record<string, any>) {
     if (state.isEdit) {
       console.log('编辑', { ...state.formInfo, ...values });
       organizationManageService.setOrganization({ ...values, ...state.formInfo }).subscribe(
         (res: any) => {
           ShowNotification.success('编辑机构成功');
+          props.history.push(`/account/organizationManage/organizationDetail/${id}`);
         },
         (err: string) => {
           ShowNotification.error(err);
@@ -56,9 +81,16 @@ export function useAddOrganizationStore(props: IAddOrganizationProps, form: Form
       );
     }
   }
-  function handleFormDataChange(value: string, type: string, option?: Record<string, any>) {
+
+  /**
+   *
+   * @param value 表单项获取值
+   * @param name 表单项字段名
+   * @param option 表单项获取额外信息
+   */
+  function handleFormDataChange(value: string, name: string, option?: Record<string, any>) {
     const { formInfo } = state;
-    switch (type) {
+    switch (name) {
       case 'parentId':
         form.setFieldsValue({ parentId: value });
         console.log('form', form.getFieldsValue());
@@ -66,11 +98,15 @@ export function useAddOrganizationStore(props: IAddOrganizationProps, form: Form
         formInfo.parentName = value ? option.info.name : '';
         break;
       default:
-        form.setFieldsValue({ [type]: value });
+        form.setFieldsValue({ [name]: value });
         break;
     }
     setStateWrap({ formInfo });
   }
+
+  /**
+   * 获取省下拉列表
+   */
   function getProvinceList() {
     organizationManageService.getProvinceList(1).subscribe(
       (res: any) => {
@@ -81,6 +117,9 @@ export function useAddOrganizationStore(props: IAddOrganizationProps, form: Form
       }
     );
   }
+  /**
+   * 获取市下拉列表
+   */
   function getCityList() {
     organizationManageService.getAreaListByCode(form.getFieldValue('province')).subscribe(
       (res: any) => {
@@ -91,6 +130,9 @@ export function useAddOrganizationStore(props: IAddOrganizationProps, form: Form
       }
     );
   }
+  /**
+   * 获取区下拉列表
+   */
   function getAreaList() {
     organizationManageService.getAreaListByCode(form.getFieldValue('city')).subscribe(
       (res: any) => {
@@ -101,14 +143,5 @@ export function useAddOrganizationStore(props: IAddOrganizationProps, form: Form
       }
     );
   }
-  useEffect(() => {
-    if (id) {
-      const { formInfo } = state;
-      formInfo.id = id;
-      setStateWrap({ isEdit: true, formInfo });
-      getDetails(id);
-    }
-    return () => {};
-  }, []);
   return { state, onSubmit, handleFormDataChange, getProvinceList, getCityList, getAreaList };
 }

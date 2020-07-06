@@ -16,4 +16,7 @@ export { default as ITableComponent } from '~/solution/components/base/i-table-c
 export {
   default as ISelectLoadingComponent
 } from '~/solution/components/base/i-select-loading-component/i-select-loading.component';
+export {
+  default as IUploadImgComponent
+} from '~/solution/components/base/i-upload-img-component/i-upload-img.component';
 //  -- Package End --
