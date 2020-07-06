@@ -41,11 +41,11 @@ export function organizationColumns(action: Function): ColumnsType<OrganizationT
       render: (text, row) => {
         return (
           <React.Fragment>
-            <Link to={`/account/organizationManage/organizationDetail/${row.id}`}>详情</Link>
+            <a onClick={() => action(row, '详情')}>详情</a>
             <Divider type="vertical" />
-            <Link to={`/account/organizationManage/editOrganization/${row.id}`}>编辑</Link>
+            <a onClick={() => action(row, '编辑')}>编辑</a>
             <Divider type="vertical" />
-            <a onClick={() => action(row)}>删除</a>
+            <a onClick={() => action(row, '删除')}>删除</a>
           </React.Fragment>
         );
       }

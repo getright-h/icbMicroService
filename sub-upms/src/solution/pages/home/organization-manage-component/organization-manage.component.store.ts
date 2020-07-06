@@ -10,7 +10,6 @@ export function useOrganizationManageStore() {
   const { state, setStateWrap } = useStateStore(new IOrganizationManageState());
   const organizationManageService = useService(OrganizationManageService);
   let getTableDataSubscription: Subscription;
-  let getTreeDataSubscription: Subscription;
 
   function getTableData(isClick?: boolean) {
     const { searchForm } = state;
@@ -26,7 +25,7 @@ export function useOrganizationManageStore() {
     );
   }
   function addButtonClick(props: RouteComponentProps) {
-    props.history.push('/account/organizationManage/addOrganization');
+    setStateWrap({ popVisible: true, isEdit: false, isDetail: false, rowId: '' });
   }
   function handleFormDataChange($event: any, name: string) {
     const { searchForm } = state;
@@ -37,16 +36,33 @@ export function useOrganizationManageStore() {
     }
     setStateWrap({ searchForm });
   }
-  function tableAction(row: Record<string, any>) {
-    organizationManageService.deleteOrganization(row.id).subscribe(
-      (res: any) => {
-        ShowNotification.success('删除成功！');
-        getTableData();
-      },
-      (err: any) => {
-        ShowNotification.error(err);
-      }
-    );
+  function tableAction(row: Record<string, any>, actionName: string) {
+    switch (actionName) {
+      case '详情':
+        setStateWrap({ popVisible: true, isEdit: true, isDetail: true, rowId: row.id });
+        break;
+      case '编辑':
+        setStateWrap({ popVisible: true, isEdit: true, isDetail: false, rowId: row.id });
+        break;
+      case '删除':
+        organizationManageService.deleteOrganization(row.id).subscribe(
+          (res: any) => {
+            ShowNotification.success('删除成功！');
+            getTableData();
+          },
+          (err: any) => {
+            ShowNotification.error(err);
+          }
+        );
+        break;
+    }
+  }
+
+  function popClose(isSuccess?: boolean) {
+    setStateWrap({ popVisible: false, isEdit: false, isDetail: false });
+    if (isSuccess) {
+      getTableData(true);
+    }
   }
 
   function getSelectTreeNode(node: Record<string, any>) {
@@ -77,7 +93,6 @@ export function useOrganizationManageStore() {
     getTableData();
     return () => {
       getTableDataSubscription && getTableDataSubscription.unsubscribe();
-      getTreeDataSubscription && getTreeDataSubscription.unsubscribe();
     };
   }, []);
   return {
@@ -87,6 +102,7 @@ export function useOrganizationManageStore() {
     tableAction,
     handleFormDataChange,
     getTableData,
-    getSelectTreeNode
+    getSelectTreeNode,
+    popClose
   };
 }

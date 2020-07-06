@@ -1,17 +1,22 @@
 import * as React from 'react';
 import style from './add-organization.component.less';
 import { useAddOrganizationStore } from './add-organization.component.store';
-import { Button, Form, Input, Radio, Select } from 'antd';
+import { Form, Input, Radio, Select, Modal } from 'antd';
 import { ISelectLoadingComponent, IUploadImgComponent } from '~/solution/components/component.module';
 import { IAddOrganizationProps } from './add-organization.interface';
 
 export default function AddOrganizationComponent(props: IAddOrganizationProps) {
-  const [organizationForm] = Form.useForm();
-  const { state, onSubmit, handleFormDataChange, getProvinceList, getCityList, getAreaList } = useAddOrganizationStore(
-    props,
-    organizationForm
-  );
-  const { provinceList, cityList, areaList, isEdit, isDetail } = state;
+  const { isEdit, isDetail, visible } = props;
+  const {
+    state,
+    organizationForm,
+    onSubmit,
+    handleFormDataChange,
+    getProvinceList,
+    getCityList,
+    getAreaList
+  } = useAddOrganizationStore(props);
+  const { provinceList, cityList, areaList, confirmLoading } = state;
   const formItemLayout = {
     labelCol: {
       xs: { span: 24 },
@@ -22,14 +27,6 @@ export default function AddOrganizationComponent(props: IAddOrganizationProps) {
       sm: { span: 14 }
     }
   };
-  function renderHeader(leftChild: any, rightChild?: any) {
-    return (
-      <div className={[style.header].join(' ')}>
-        {leftChild()}
-        {rightChild && rightChild()}
-      </div>
-    );
-  }
   function renderBaseInfo() {
     return (
       <div className={style.baseInfo}>
@@ -141,37 +138,38 @@ export default function AddOrganizationComponent(props: IAddOrganizationProps) {
     );
   }
   return (
-    <div className={style.organizationMain}>
-      {renderHeader(
-        () => {
-          return <h4>{isEdit && !isDetail ? '编辑机构' : isDetail ? '机构详情' : '添加机构'}</h4>;
-        },
-        () => {
-          return (
-            <Button type="primary" onClick={() => window.history.back()}>
-              返回上一页
-            </Button>
-          );
-        }
-      )}
+    <Modal
+      width={'75vw'}
+      title={isEdit && !isDetail ? '编辑机构' : isDetail ? '机构详情' : '添加机构'}
+      visible={visible}
+      okText={'保存'}
+      onOk={
+        isEdit
+          ? () => {
+              organizationForm
+                .validateFields()
+                .then(values => {
+                  onSubmit(values);
+                })
+                .catch(info => {
+                  console.log('Validate Failed:', info);
+                });
+            }
+          : null
+      }
+      onCancel={() => {
+        props.close();
+        organizationForm.resetFields();
+      }}
+      maskClosable={false}
+      destroyOnClose={true}
+      confirmLoading={confirmLoading}
+    >
       <div className={style.lineContainer}>
-        <Form
-          {...formItemLayout}
-          form={organizationForm}
-          onFinish={onSubmit}
-          onFinishFailed={onSubmit}
-          validateTrigger="onFinish"
-        >
+        <Form {...formItemLayout} form={organizationForm}>
           {renderBaseInfo()}
-          {!isDetail && (
-            <Form.Item wrapperCol={{ span: 12, offset: 6 }} className={style.submitButton}>
-              <Button type="primary" htmlType="submit">
-                保存
-              </Button>
-            </Form.Item>
-          )}
         </Form>
       </div>
-    </div>
+    </Modal>
   );
 }

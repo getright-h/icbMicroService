@@ -1,21 +1,20 @@
 import { IAddOrganizationState, IAddOrganizationProps } from './add-organization.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
 import { useEffect } from 'react';
-import { FormInstance } from 'antd/lib/form';
+import { Form } from 'antd';
 import { OrganizationManageService } from '~/solution/model/services/organization-manage.service';
 import { ShowNotification } from '~/framework/util/common';
 
-export function useAddOrganizationStore(props: IAddOrganizationProps, form: FormInstance) {
+export function useAddOrganizationStore(props: IAddOrganizationProps) {
   const { state, setStateWrap } = useStateStore(new IAddOrganizationState());
   const organizationManageService = useService(OrganizationManageService);
-  const id = props.match.params.id;
+  const [organizationForm] = Form.useForm();
 
   useEffect(() => {
-    if (id) {
-      setStateWrap({ isEdit: true, isDetail: props.match.path.includes('Detail') });
-      getDetails(id);
+    if (props.id) {
+      getDetails(props.id);
     }
-  }, []);
+  }, [props.id]);
 
   /**
    * @param id 查询机构详情
@@ -23,7 +22,7 @@ export function useAddOrganizationStore(props: IAddOrganizationProps, form: Form
   function getDetails(id: string) {
     organizationManageService.getOrganizationDetail(id).subscribe(
       (res: any) => {
-        form.setFieldsValue({ ...res, ...res.extendAttributionModel });
+        organizationForm.setFieldsValue({ ...res, ...res.extendAttributionModel });
         setStateWrap({
           formInfo: {
             systemCode: '',
@@ -42,7 +41,7 @@ export function useAddOrganizationStore(props: IAddOrganizationProps, form: Form
               ]
             : []
         });
-        console.log({ ...form.getFieldsValue(), ...state.formInfo });
+        console.log({ ...organizationForm.getFieldsValue(), ...state.formInfo });
         getProvinceList();
         getCityList();
         getAreaList();
@@ -57,14 +56,17 @@ export function useAddOrganizationStore(props: IAddOrganizationProps, form: Form
    * @param values 提交机构信息
    */
   function onSubmit(values: Record<string, any>) {
-    if (state.isEdit) {
+    setStateWrap({ confirmLoading: true });
+    if (props.isEdit) {
       console.log('编辑', { ...state.formInfo, ...values });
       organizationManageService.setOrganization({ ...values, ...state.formInfo }).subscribe(
         (res: any) => {
           ShowNotification.success('编辑机构成功');
-          props.history.push(`/account/organizationManage/organizationDetail/${id}`);
+          setStateWrap({ confirmLoading: false });
+          props.close(true);
         },
         (err: string) => {
+          setStateWrap({ confirmLoading: false });
           ShowNotification.error(err);
         }
       );
@@ -73,9 +75,11 @@ export function useAddOrganizationStore(props: IAddOrganizationProps, form: Form
       organizationManageService.insertOrganization({ ...values, ...state.formInfo }).subscribe(
         (res: any) => {
           ShowNotification.success('添加机构成功！');
-          props.history.push('/account/organizationManage');
+          setStateWrap({ confirmLoading: false });
+          props.close(true);
         },
         (err: string) => {
+          setStateWrap({ confirmLoading: false });
           ShowNotification.error(err);
         }
       );
@@ -92,13 +96,12 @@ export function useAddOrganizationStore(props: IAddOrganizationProps, form: Form
     const { formInfo } = state;
     switch (name) {
       case 'parentId':
-        form.setFieldsValue({ parentId: value });
-        console.log('form', form.getFieldsValue());
+        organizationForm.setFieldsValue({ parentId: value });
         formInfo.parentCode = value ? option.info.code : '';
         formInfo.parentName = value ? option.info.name : '';
         break;
       default:
-        form.setFieldsValue({ [name]: value });
+        organizationForm.setFieldsValue({ [name]: value });
         break;
     }
     setStateWrap({ formInfo });
@@ -121,7 +124,7 @@ export function useAddOrganizationStore(props: IAddOrganizationProps, form: Form
    * 获取市下拉列表
    */
   function getCityList() {
-    organizationManageService.getAreaListByCode(form.getFieldValue('province')).subscribe(
+    organizationManageService.getAreaListByCode(organizationForm.getFieldValue('province')).subscribe(
       (res: any) => {
         setStateWrap({ cityList: res });
       },
@@ -134,7 +137,7 @@ export function useAddOrganizationStore(props: IAddOrganizationProps, form: Form
    * 获取区下拉列表
    */
   function getAreaList() {
-    organizationManageService.getAreaListByCode(form.getFieldValue('city')).subscribe(
+    organizationManageService.getAreaListByCode(organizationForm.getFieldValue('city')).subscribe(
       (res: any) => {
         setStateWrap({ areaList: res });
       },
@@ -143,5 +146,5 @@ export function useAddOrganizationStore(props: IAddOrganizationProps, form: Form
       }
     );
   }
-  return { state, onSubmit, handleFormDataChange, getProvinceList, getCityList, getAreaList };
+  return { state, organizationForm, onSubmit, handleFormDataChange, getProvinceList, getCityList, getAreaList };
 }

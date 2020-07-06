@@ -33,4 +33,8 @@ export class IOrganizationManageState {
   tableData: OrganizationTableData[] = [];
   total = 0;
   isLoading = false;
+  popVisible = false;
+  isEdit = false;
+  isDetail = false;
+  rowId: string;
 }

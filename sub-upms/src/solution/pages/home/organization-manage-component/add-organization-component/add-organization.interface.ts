@@ -1,13 +1,7 @@
-import { match, RouteComponentProps } from 'react-router-dom';
-
 /**
  * @export state变量定义和初始化
  * @class IAddOrganizationState
  */
-
-export interface IAddOrganizationProps extends RouteComponentProps {
-  match: match<{ id: string }>;
-}
 export class IAddOrganizationState {
   formInfo: OrganizationForm = {
     systemCode: ''
@@ -16,8 +10,15 @@ export class IAddOrganizationState {
   cityList: Array<AreaInfo>;
   areaList: Array<AreaInfo>;
   fileList: Array<any>;
-  isEdit = false;
-  isDetail = false;
+  confirmLoading = false;
+}
+
+export class IAddOrganizationProps {
+  visible: boolean;
+  close: (isSuccess?: boolean) => void;
+  isEdit?: boolean;
+  isDetail?: boolean;
+  id?: string;
 }
 interface OrganizationForm {
   systemCode: string;
