@@ -6,12 +6,9 @@ import { PrivilegeInfo } from '~/solution/model/dto/role-manage.dto';
  */
 export class IRoleManageState {
   roleList: Array<RoleInfo> = [];
-  checkedMenuKeys: string[] = [];
-  checkNodeEvent: CheckNodeEvent;
   isLoading = false;
   roleId = '';
   systemId = '';
-  roleDetailMenuList: PrivilegeMenuItem[];
 }
 
 export interface RoleInfo {
@@ -29,16 +26,4 @@ export interface MenuTreeNode extends DataNode {
   name: string;
   title: string;
   children?: MenuTreeNode[];
-}
-
-export interface PrivilegeMenuItem {
-  menuId: string;
-  menuName?: string;
-  privilegeList: PrivilegeInfo[];
-}
-
-export interface CheckNodeEvent {
-  menuId: string;
-  menuName: string;
-  checked: boolean;
 }
