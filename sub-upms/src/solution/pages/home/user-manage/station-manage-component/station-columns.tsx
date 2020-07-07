@@ -1,44 +1,54 @@
 import { ColumnsType } from 'antd/lib/table';
 import * as React from 'react';
 import { Divider } from 'antd';
-export const stationColumns: ColumnsType<any> = [
-  {
-    title: '所属机构',
-    dataIndex: 'distributor'
-  },
-  {
-    title: '所属部门',
-    dataIndex: 'department'
-  },
-  {
-    title: '岗位名称',
-    dataIndex: 'station'
-  },
-  {
-    title: '所属角色',
-    dataIndex: 'role'
-  },
-  {
-    title: '状态',
-    dataIndex: 'status'
-  },
-  {
-    title: '说明',
-    dataIndex: 'remark'
-  },
-  {
-    title: '操作',
-    dataIndex: 'action',
-    render: () => {
-      return (
-        <React.Fragment>
-          <a>编辑</a>
-          <Divider type="vertical" />
-          <a>权限</a>
-          <Divider type="vertical" />
-          <a>删除</a>
-        </React.Fragment>
-      );
+import { StationTableData } from './station-manage.interface';
+export function stationColumns(action: Function): ColumnsType<StationTableData> {
+  return [
+    {
+      title: '所属机构',
+      dataIndex: 'parentOrganizationName'
+    },
+    {
+      title: '所属部门',
+      dataIndex: 'parentDepartmentName'
+    },
+    {
+      title: '岗位名称',
+      dataIndex: 'name'
+    },
+    {
+      title: '所属角色',
+      dataIndex: 'roleList',
+      render: text => {
+        const role: Array<string> = [];
+        text && text.map((item: { name: string }) => role.push(item.name));
+        return role.join('，') || '无';
+      }
+    },
+    {
+      title: '状态',
+      dataIndex: 'state',
+      render: text => (text ? '启用' : '禁用')
+    },
+    {
+      title: '说明',
+      dataIndex: 'instruction',
+      render: text => text || '无'
+    },
+    {
+      title: '操作',
+      dataIndex: 'action',
+      render: (text, row) => {
+        return (
+          <React.Fragment>
+            <a onClick={() => action('编辑', row)}>编辑</a>
+            <Divider type="vertical" />
+            <a onClick={() => action('权限', row)}>权限</a>
+            <Divider type="vertical" />
+            <a onClick={() => action('删除', row)}>删除</a>
+          </React.Fragment>
+        );
+      }
     }
-  }
-];
+  ];
+}

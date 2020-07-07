@@ -5,7 +5,6 @@ export interface IAddOrganizationComponentLess {
   'ant-layout': string;
   'ant-layout-has-sider': string;
   'ant-radio-group': string;
-  'ant-select': string;
   'ant-spin': string;
   'ant-spin-container': string;
   'ant-spin-nested-loading': string;
@@ -18,7 +17,6 @@ export interface IAddOrganizationComponentLess {
   antLayout: string;
   antLayoutHasSider: string;
   antRadioGroup: string;
-  antSelect: string;
   antSpin: string;
   antSpinContainer: string;
   antSpinNestedLoading: string;
@@ -31,11 +29,11 @@ export interface IAddOrganizationComponentLess {
   'custom-layout-spin': string;
   customLayout: string;
   customLayoutSpin: string;
+  'form-item': string;
+  formItem: string;
   h40: string;
   header: string;
   label: string;
-  'label-value': string;
-  labelValue: string;
   'line-container': string;
   lineContainer: string;
   'login-form': string;
@@ -46,7 +44,6 @@ export interface IAddOrganizationComponentLess {
   otherSearchButtonItem: string;
   'push-search-item': string;
   pushSearchItem: string;
-  require: string;
   root: string;
   'submit-button': string;
   submitButton: string;

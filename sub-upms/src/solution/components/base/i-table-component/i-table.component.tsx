@@ -14,6 +14,7 @@ export default function ITableComponent(props: IITableProps) {
       columns={columns}
       pagination={isPagination && state.pagination}
       rowKey={row => row.id}
+      scroll={{ x: 'max-content' }}
     />
   );
 }

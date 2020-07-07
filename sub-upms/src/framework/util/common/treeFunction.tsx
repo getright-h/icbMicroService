@@ -1,5 +1,5 @@
 import { NewDataNode } from '~/solution/pages/home/organization-manage-component/organization-left-component/organization-left.interface';
-import { BankOutlined, CarOutlined, ApartmentOutlined } from '@ant-design/icons';
+import { BankOutlined, GroupOutlined, ApartmentOutlined } from '@ant-design/icons';
 import * as React from 'react';
 import { OrganizationTypeResponse, Datum } from '~/solution/model/dto/organization-manage.dto';
 export function dealWithTreeData(res: OrganizationTypeResponse[] | Datum[] | any) {
@@ -12,7 +12,7 @@ export function dealWithTreeData(res: OrganizationTypeResponse[] | Datum[] | any
       organizationType.hierarchyType == 0 ? (
         <BankOutlined />
       ) : (
-        <CarOutlined />
+        <GroupOutlined />
       )
     ) : (
       <ApartmentOutlined />

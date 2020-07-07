@@ -1,4 +1,8 @@
-import { DrapChooseLoadingDTO, DrapChooseLoadingParam, DrapChooseLoadingReturn } from '../dto/drap-choose-loading.dto';
+import {
+  DrapChooseLoadingDTO,
+  OrganizationSelectListParams,
+  DrapChooseLoadingReturn
+} from '../dto/drap-choose-loading.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
 import { DepUtil } from '~/framework/aop/inject';
@@ -7,7 +11,8 @@ import { DepUtil } from '~/framework/aop/inject';
  * 真实开发中，请将示例代码移除
  */
 
-const MANAGE_LIST = 'distributor/manage/list';
+const QUERY_ORGANIZATION_TYPE = 'prvilege/common/queryOrganizationTypeListBySystemId';
+const QUERY_ORGANIZATION_LIST = 'prvilege/common/queryOrganizationSelectPagedList';
 
 @DepUtil.Injectable()
 export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
@@ -17,7 +22,10 @@ export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
     super();
   }
 
-  manageList(params: DrapChooseLoadingParam): Observable<{ dataList: DrapChooseLoadingReturn[]; total: number }> {
-    return this.requestService.get(MANAGE_LIST, params);
+  queryOrganizationType(params: { systemId: string }): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.get(QUERY_ORGANIZATION_TYPE, params);
+  }
+  queryOrganizationSelectList(params: OrganizationSelectListParams): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.post(QUERY_ORGANIZATION_LIST, params);
   }
 }
