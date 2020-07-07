@@ -3,5 +3,5 @@
  * @class IFenceModalViewState
  */
 export class IFenceModalViewState {
-
+  isRule = false;
 }

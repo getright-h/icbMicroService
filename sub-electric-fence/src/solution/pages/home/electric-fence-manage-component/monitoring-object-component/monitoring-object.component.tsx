@@ -83,6 +83,7 @@ export default function MonitoringObjectComponent() {
         width={700}
         onOk={handleModalOk}
         confirmLoading={confirmModalLoading}
+        style={{ top: 20 }}
         onCancel={handleModalCancel}
       >
         {modalContainer}

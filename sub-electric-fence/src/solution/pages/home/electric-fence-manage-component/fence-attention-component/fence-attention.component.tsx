@@ -51,9 +51,9 @@ export default function FenceAttentionComponent() {
         </div>
         <div className="push-search-item">
           <span className="label">状态:</span>
-          <Select defaultValue="lucy">
-            <Option value="jack">已处理</Option>
-            <Option value="lucy">未处理</Option>
+          <Select placeholder="请选择">
+            <Option value="已处理">已处理</Option>
+            <Option value="未处理">未处理</Option>
           </Select>
         </div>
         <div className="push-search-item">
@@ -93,7 +93,6 @@ export default function FenceAttentionComponent() {
         visible={visibleModal}
         width={modalWidth}
         onOk={handleModalOk}
-        style={{ top: 20 }}
         confirmLoading={confirmModalLoading}
         onCancel={handleModalCancel}
       >
