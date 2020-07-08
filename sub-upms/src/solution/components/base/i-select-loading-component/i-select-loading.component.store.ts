@@ -1,34 +1,38 @@
 import { IISelectLoadingState, IISelectLoadingProps } from './i-select-loading.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
-import React, { useEffect, useRef } from 'react';
-import { Subscription } from 'rxjs';
+import { useEffect, useRef, useCallback } from 'react';
 import { DrapChooseLoadingService } from '~/solution/model/services/drap-choose-loading.service';
+import _ from 'lodash';
 
 export function useISelectLoadingStore(props: IISelectLoadingProps) {
-  const { reqUrl, searchForm } = props;
+  const { reqUrl } = props;
   const { state, setStateWrap } = useStateStore(new IISelectLoadingState());
   const drapChooseLoadingService = useService(DrapChooseLoadingService);
-  let getOptionListSubscription: Subscription;
 
-  const optionData = useRef([]);
   const scrollPage = useRef(1);
+  const searchParams = useRef({});
+  searchParams.current = props.searchForm || {};
 
-  function getOptionList() {
+  function getOptionList(isSearch = false) {
     setStateWrap({ fetching: true });
-    getOptionListSubscription = drapChooseLoadingService[reqUrl]({
-      ...searchForm,
+    drapChooseLoadingService[reqUrl]({
+      ...searchParams.current,
       index: scrollPage.current,
       size: 20
     }).subscribe(
       (res: any) => {
         if (res.dataList instanceof Array) {
-          optionData.current = [...optionData.current, ...res.dataList];
+          const optionList = [...(isSearch ? [] : state.optionList), ...res.dataList];
+          setStateWrap({ optionList, fetching: false });
         } else if (res instanceof Array) {
-          optionData.current = [...optionData.current, ...res];
+          const optionList = [...(isSearch ? [] : state.optionList), ...res];
+          setStateWrap({ optionList, fetching: false });
+        } else if (scrollPage.current == 1 && !res.dataList) {
+          setStateWrap({ optionList: [], fetching: false });
         } else {
           scrollPage.current--;
+          setStateWrap({ fetching: false });
         }
-        setStateWrap({ fetching: false });
       },
       (error: any) => {
         setStateWrap({ fetching: false });
@@ -37,11 +41,15 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
     );
   }
 
-  function onClick() {
-    scrollPage.current = 1;
-    optionData.current = [];
-    getOptionList();
-  }
+  const fetchOptions = useCallback(
+    _.throttle((isSearch?: boolean, value?: string) => {
+      if (isSearch) {
+        scrollPage.current = 1;
+      }
+      getOptionList(isSearch);
+    }, 300),
+    []
+  );
 
   function optionScroll(e: any) {
     e.persist();
@@ -52,10 +60,8 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
     }
   }
   useEffect(() => {
+    setStateWrap({ value: props.selectedValue });
     getOptionList();
-    return () => {
-      getOptionListSubscription && getOptionListSubscription.unsubscribe();
-    };
-  }, []);
-  return { state, optionData, optionScroll, onClick };
+  }, [props.selectedValue]);
+  return { state, optionScroll, fetchOptions };
 }
