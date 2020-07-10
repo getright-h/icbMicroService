@@ -5,6 +5,7 @@ import { Input, Button } from 'antd';
 import { ITableComponent, TablePageTelComponent } from '~/solution/components/component.module';
 import { userColumns } from './user-colomns';
 import UserLeftComponent from './user-left-component/user-left.component';
+import AddUserComponent from './add-user-component/add-user.component';
 
 export default function UserManageComponent() {
   const {
@@ -13,9 +14,11 @@ export default function UserManageComponent() {
     changeTablePageIndex,
     tableAction,
     getSelectTreeNode,
-    handleFormDataChange
+    handleFormDataChange,
+    addUser,
+    popClose
   } = useUserManageStore();
-  const { isLoading, searchForm, total, tableData } = state;
+  const { isLoading, searchForm, total, tableData, popVisible, isEdit, isDetail, userId } = state;
   function renderPageLeft() {
     return <UserLeftComponent getSelectTreeNode={getSelectTreeNode}></UserLeftComponent>;
   }
@@ -53,7 +56,9 @@ export default function UserManageComponent() {
   function renderOtherButtons() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary">添加用户</Button>
+        <Button type="primary" onClick={() => addUser()}>
+          添加用户
+        </Button>
         {/* <Button>部门管理</Button>
         <Button>岗位管理</Button> */}
       </div>
@@ -74,15 +79,18 @@ export default function UserManageComponent() {
     );
   }
   return (
-    <TablePageTelComponent
-      leftFlex={1}
-      rightFlex={5}
-      pageName={'用户管理'}
-      pageLeft={renderPageLeft()}
-      selectItems={renderSelectItems()}
-      searchButton={renderSearchButtons()}
-      otherSearchBtns={renderOtherButtons()}
-      table={renderTable()}
-    ></TablePageTelComponent>
+    <React.Fragment>
+      <TablePageTelComponent
+        leftFlex={1}
+        rightFlex={5}
+        pageName={'用户管理'}
+        pageLeft={renderPageLeft()}
+        selectItems={renderSelectItems()}
+        searchButton={renderSearchButtons()}
+        otherSearchBtns={renderOtherButtons()}
+        table={renderTable()}
+      ></TablePageTelComponent>
+      <AddUserComponent visible={popVisible} isEdit={isEdit} isDetail={isDetail} userId={userId} close={popClose} />
+    </React.Fragment>
   );
 }

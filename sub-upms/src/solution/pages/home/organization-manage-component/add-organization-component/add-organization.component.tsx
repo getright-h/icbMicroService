@@ -143,24 +143,22 @@ export default function AddOrganizationComponent(props: IAddOrganizationProps) {
       title={isEdit && !isDetail ? '编辑机构' : isDetail ? '机构详情' : '添加机构'}
       visible={visible}
       okText={'保存'}
-      onOk={
-        isEdit
-          ? () => {
-              organizationForm
-                .validateFields()
-                .then(values => {
-                  onSubmit(values);
-                })
-                .catch(info => {
-                  console.log('Validate Failed:', info);
-                });
-            }
-          : null
-      }
+      onOk={() => {
+        organizationForm
+          .validateFields()
+          .then(values => {
+            onSubmit(values);
+          })
+          .catch(info => {
+            console.log('Validate Failed:', info);
+          });
+      }}
       onCancel={() => {
         props.close();
         organizationForm.resetFields();
       }}
+      okButtonProps={{ disabled: isDetail }}
+      cancelButtonProps={{ disabled: isDetail }}
       maskClosable={false}
       destroyOnClose={true}
       confirmLoading={confirmLoading}
