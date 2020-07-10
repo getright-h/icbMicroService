@@ -10,17 +10,15 @@ export function useRoleManageStore() {
 
   function getRoleTableData() {
     setStateWrap({ isLoading: true });
-    roleManageService
-      .queryRoleList({ userId: '25658bc026f3c8d9550808d8182b35fd', systemId: process.env.SYSTEM_ID })
-      .subscribe(
-        (res: any) => {
-          setStateWrap({ roleList: res, isLoading: false });
-        },
-        (err: any) => {
-          setStateWrap({ isLoading: false });
-          ShowNotification.error(err);
-        }
-      );
+    roleManageService.queryRoleList({ systemId: process.env.SYSTEM_ID }).subscribe(
+      (res: any) => {
+        setStateWrap({ roleList: res, isLoading: false });
+      },
+      (err: any) => {
+        setStateWrap({ isLoading: false });
+        ShowNotification.error(err);
+      }
+    );
   }
 
   function tableAction(roleId: string, systemId: string) {

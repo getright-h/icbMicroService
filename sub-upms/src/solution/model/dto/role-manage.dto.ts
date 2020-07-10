@@ -7,7 +7,7 @@ import { DataNode } from 'rc-tree/lib/interface';
 
 export abstract class RoleManageDTO {
   // 你的抽象方法，具体在 Service 中实现
-  abstract queryRoleList(params: QueryRoleListParam): Observable<Array<RoleInfoResponse>>;
+  abstract queryRoleList(params: QueryRoleListParam): Observable<Array<RoleInfo>>;
   abstract getMenuPrivilegeList(menuId: string): Observable<Array<PrivilegeInfo>>;
   abstract getMenuTree(systemId: string): Observable<Array<MenuTreeNode>>;
   abstract getRoleMenuPrivilegeDetail(roleId: string): Observable<RoleMenuPrivilegeDetail>;
@@ -18,11 +18,11 @@ export abstract class RoleManageDTO {
 // 示例 Dto
 export interface QueryRoleListParam {
   systemId: string;
-  userId: string;
+  userId?: string;
 }
 
 // 响应 Dto
-export interface RoleInfoResponse {
+export interface RoleInfo {
   id: string;
   name: string;
   state: boolean;
