@@ -15,7 +15,7 @@ export default function ISelectLoadingComponent(props: IISelectLoadingProps) {
       placeholder={placeholder}
       filterOption={false}
       value={state.value}
-      defaultValue={state.value}
+      // defaultValue={state.value}
       onChange={getCurrentSelectInfo}
       onPopupScroll={optionScroll}
       onFocus={() => fetchOptions(true)}
@@ -23,8 +23,8 @@ export default function ISelectLoadingComponent(props: IISelectLoadingProps) {
       allowClear={true}
     >
       {optionList &&
-        optionList.map((item: { id: string | number; name: string }) => (
-          <Select.Option value={item.id} key={item.id} info={item}>
+        optionList.map((item: { id: string | number; name: string }, index: number) => (
+          <Select.Option value={item.id} key={`${item.id}${index}`} info={item}>
             {item.name}
           </Select.Option>
         ))}

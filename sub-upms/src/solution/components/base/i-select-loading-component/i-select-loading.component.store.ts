@@ -3,11 +3,13 @@ import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store'
 import { useEffect, useRef, useCallback } from 'react';
 import { DrapChooseLoadingService } from '~/solution/model/services/drap-choose-loading.service';
 import _ from 'lodash';
+import { Subscription } from 'rxjs';
 
 export function useISelectLoadingStore(props: IISelectLoadingProps) {
   const { reqUrl } = props;
   const { state, setStateWrap } = useStateStore(new IISelectLoadingState());
   const drapChooseLoadingService = useService(DrapChooseLoadingService);
+  let getOptionListSubscription: Subscription;
 
   const scrollPage = useRef(1);
   const searchParams = useRef({});
@@ -15,7 +17,7 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
 
   function getOptionList(isSearch = false) {
     setStateWrap({ fetching: true });
-    drapChooseLoadingService[reqUrl]({
+    getOptionListSubscription = drapChooseLoadingService[reqUrl]({
       ...searchParams.current,
       index: scrollPage.current,
       size: 20
@@ -63,5 +65,10 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
     setStateWrap({ value: props.selectedValue });
     getOptionList();
   }, [props.selectedValue]);
+  useEffect(() => {
+    return () => {
+      getOptionListSubscription && getOptionListSubscription.unsubscribe();
+    };
+  }, []);
   return { state, optionScroll, fetchOptions };
 }
