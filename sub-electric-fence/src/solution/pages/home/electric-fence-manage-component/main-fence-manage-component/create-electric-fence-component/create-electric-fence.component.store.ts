@@ -1,8 +1,6 @@
 import { ICreateElectricFenceState, ICreateElectricProps } from './create-electric-fence.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
-import { valueType } from 'antd/lib/statistic/utils';
-import { RadioChangeEvent } from 'antd/lib/radio';
-import { ChangeEventHandler, ChangeEvent, useEffect } from 'react';
+import { ChangeEvent, useEffect } from 'react';
 import { Form } from 'antd';
 import * as _ from 'lodash';
 import { Store } from 'antd/lib/form/interface';
@@ -13,7 +11,7 @@ let geocoder = new AMap.Geocoder({
 });
 export function useCreateElectricFenceStore(props: ICreateElectricProps) {
   const { state, setStateWrap } = useStateStore(new ICreateElectricFenceState());
-  const { onValueChange, circlrR, centerPlace } = props;
+  const { onValueChange, circlrR, centerPlace, editData} = props;
   const [form] = Form.useForm();
   function onFinish(values: Store) {
     console.log(values);

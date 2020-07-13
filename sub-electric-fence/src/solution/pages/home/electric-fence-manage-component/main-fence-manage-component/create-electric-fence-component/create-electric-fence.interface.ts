@@ -1,3 +1,5 @@
+import { FenceManageListReturnModal } from '~/solution/model/dto/fence-manage.dto';
+
 /**
  * @export state变量定义和初始化
  * @class ICreateElectricFenceState
@@ -10,6 +12,7 @@ export class ICreateElectricFenceState {
 export interface ICreateElectricProps {
   onValueChange: (key: string, value: any) => void;
   circlrR: number;
+  editData: FenceManageListReturnModal;
   centerPlace: Array<number>;
   //   getCurrentCircleLocation: (location: { lat: number; lng: number }) => void;
   //   onFenceTypeChangeBack: (value: number) => void;
