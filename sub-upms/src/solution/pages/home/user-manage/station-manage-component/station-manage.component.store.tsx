@@ -1,7 +1,7 @@
 import { IStationManageState } from './station-manage.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
 import { Subscription } from 'rxjs';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { StationManageService } from '~/solution/model/services/station-manage.service';
 import { ShowNotification } from '~/framework/util/common';
 import { Modal } from 'antd';
@@ -69,7 +69,7 @@ export function useStationManageStore() {
       case '删除':
         Modal.confirm({
           title: '确定删除此岗位吗？',
-          // icon: <ExclamationCircleOutlined />,
+          icon: <ExclamationCircleOutlined />,
           onOk: () =>
             new Promise((resolve, reject) => {
               stationManageService.deleteStation(row.id).subscribe(

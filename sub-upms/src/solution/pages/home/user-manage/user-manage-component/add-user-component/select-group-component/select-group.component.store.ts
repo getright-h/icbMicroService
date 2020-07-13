@@ -38,8 +38,10 @@ export function useSelectGroupStore(props: ISelectGroupProps) {
     setStateWrap({ searchDepartForm, searchPositionForm });
   }
   useEffect(() => {
-    selectValues && formatSearchForm();
-    selectValues && selectValues.positionId && queryPositionRuleList(selectValues.positionId);
+    if (selectValues) {
+      formatSearchForm();
+      selectValues.positionId ? queryPositionRuleList(selectValues.positionId) : queryPositionRuleList('');
+    }
   }, [JSON.stringify(selectValues)]);
 
   return { state };

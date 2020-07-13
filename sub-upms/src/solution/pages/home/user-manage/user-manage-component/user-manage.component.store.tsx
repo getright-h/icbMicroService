@@ -2,9 +2,10 @@ import { IUserManageState } from './user-manage.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
 import { Subscription } from 'rxjs';
 import { UserManageService } from '~/solution/model/services/user-manage.service';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { ShowNotification } from '~/framework/util/common';
 import { Modal } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 export function useUserManageStore() {
   const { state, setStateWrap, getState } = useStateStore(new IUserManageState());
@@ -92,7 +93,7 @@ export function useUserManageStore() {
       case '删除':
         Modal.confirm({
           title: '确定删除此用户吗？',
-          // icon: <ExclamationCircleOutlined />,
+          icon: <ExclamationCircleOutlined />,
           onOk: () =>
             new Promise((resolve, reject) => {
               userManageService.deleteUser(row.id).subscribe(

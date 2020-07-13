@@ -1,14 +1,13 @@
 import { ColumnsType } from 'antd/lib/table';
 import * as React from 'react';
 import { Divider } from 'antd';
-import { Link } from 'react-router-dom';
 import { OrganizationTableData } from './organization-manage.interface';
 export function organizationColumns(action: Function): ColumnsType<OrganizationTableData> {
   return [
-    {
-      title: '机构类型',
-      dataIndex: 'typeName'
-    },
+    // {
+    //   title: '机构类型',
+    //   dataIndex: 'typeName'
+    // },
     {
       title: '机构全称',
       dataIndex: 'name'

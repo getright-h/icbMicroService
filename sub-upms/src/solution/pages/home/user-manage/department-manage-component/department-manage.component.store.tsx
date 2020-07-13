@@ -1,10 +1,11 @@
 import { IDepartmentManageState } from './department-manage.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
 import { Subscription } from 'rxjs';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { DepartmentManageService } from '~/solution/model/services/department-manage.service';
 import { ShowNotification } from '~/framework/util/common';
 import { Modal } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 export function useDepartmentManageStore() {
   const { state, setStateWrap } = useStateStore(new IDepartmentManageState());
@@ -46,7 +47,7 @@ export function useDepartmentManageStore() {
       case '删除':
         Modal.confirm({
           title: '确定删除此部门吗？',
-          // icon: <ExclamationCircleOutlined />,
+          icon: <ExclamationCircleOutlined />,
           onOk: () =>
             new Promise((resolve, reject) => {
               departmentManageService.deleteDepartment(row.id).subscribe(

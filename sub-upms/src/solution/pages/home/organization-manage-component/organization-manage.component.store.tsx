@@ -5,6 +5,8 @@ import React, { useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { OrganizationManageService } from '~/solution/model/services/organization-manage.service';
 import { ShowNotification } from '~/framework/util/common';
+import { Modal } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 export function useOrganizationManageStore() {
   const { state, setStateWrap } = useStateStore(new IOrganizationManageState());
@@ -45,15 +47,22 @@ export function useOrganizationManageStore() {
         setStateWrap({ popVisible: true, isEdit: true, isDetail: false, rowId: row.id });
         break;
       case '删除':
-        organizationManageService.deleteOrganization(row.id).subscribe(
-          (res: any) => {
-            ShowNotification.success('删除成功！');
-            getTableData();
-          },
-          (err: any) => {
-            ShowNotification.error(err);
-          }
-        );
+        Modal.confirm({
+          title: '确定删除此部门吗？',
+          icon: <ExclamationCircleOutlined />,
+          onOk: () =>
+            new Promise((resolve, reject) => {
+              organizationManageService.deleteOrganization(row.id).subscribe(
+                (res: any) => {
+                  ShowNotification.success('删除成功！');
+                  getTableData();
+                },
+                (err: any) => {
+                  ShowNotification.error(err);
+                }
+              );
+            })
+        });
         break;
     }
   }
