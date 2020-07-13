@@ -1,7 +1,7 @@
 import {
   RoleManageDTO,
   QueryRoleListParam,
-  RoleInfoResponse,
+  RoleInfo,
   PrivilegeInfo,
   MenuTreeNode,
   RoleMenuPrivilegeDetail,
@@ -31,7 +31,7 @@ export class RoleManageService extends RoleManageDTO {
   }
 
   // 查询角色列表
-  queryRoleList(params: QueryRoleListParam): Observable<Array<RoleInfoResponse>> {
+  queryRoleList(params: QueryRoleListParam): Observable<Array<RoleInfo>> {
     return this.requestService.get(QUERY_ROLE_LIST, params);
   }
 

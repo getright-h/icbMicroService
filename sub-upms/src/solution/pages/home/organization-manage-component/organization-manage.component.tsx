@@ -6,6 +6,7 @@ import { Input, Button, Tree } from 'antd';
 import { organizationColumns } from './organization-columns';
 import { RouteComponentProps } from 'react-router-dom';
 import OrganizationLeftComponent from './organization-left-component/organization-left.component';
+import AddOrganizationComponent from './add-organization-component/add-organization.component';
 
 export default function OrganizationManageComponent(props: RouteComponentProps) {
   const {
@@ -15,9 +16,10 @@ export default function OrganizationManageComponent(props: RouteComponentProps) 
     tableAction,
     getSelectTreeNode,
     handleFormDataChange,
-    getTableData
+    getTableData,
+    popClose
   } = useOrganizationManageStore();
-  const { isLoading, searchForm, total, tableData } = state;
+  const { isLoading, searchForm, total, tableData, popVisible, isEdit, isDetail, rowId } = state;
   function renderPageLeft() {
     return (
       <>
@@ -77,15 +79,18 @@ export default function OrganizationManageComponent(props: RouteComponentProps) 
     );
   }
   return (
-    <TablePageTelComponent
-      leftFlex={1}
-      rightFlex={5}
-      pageName={'机构管理'}
-      pageLeft={renderPageLeft()}
-      selectItems={renderSelectItems()}
-      searchButton={renderSearchButtons()}
-      otherSearchBtns={renderOtherButtons()}
-      table={renderTable()}
-    ></TablePageTelComponent>
+    <React.Fragment>
+      <TablePageTelComponent
+        leftFlex={1}
+        rightFlex={5}
+        pageName={'机构管理'}
+        pageLeft={renderPageLeft()}
+        selectItems={renderSelectItems()}
+        searchButton={renderSearchButtons()}
+        otherSearchBtns={renderOtherButtons()}
+        table={renderTable()}
+      ></TablePageTelComponent>
+      <AddOrganizationComponent visible={popVisible} close={popClose} isEdit={isEdit} isDetail={isDetail} id={rowId} />
+    </React.Fragment>
   );
 }

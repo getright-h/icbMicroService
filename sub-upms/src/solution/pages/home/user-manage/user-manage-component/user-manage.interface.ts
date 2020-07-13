@@ -6,19 +6,39 @@ interface SearchForm {
   systemId: string;
   name: string;
   telephone: string;
+  organizationCode: string;
+  departmentCode: string;
+  positionCode: string;
+  typeId: string;
   index: number;
   size: number;
 }
-interface TableData {}
+export interface UserTableData {
+  id: string;
+  account: string;
+  name: string;
+  telephone: string;
+  rolesCodeList: string[];
+  state: boolean;
+  systemId: string;
+}
 export class IUserManageState {
   searchForm: SearchForm = {
     systemId: process.env.SYSTEM_ID,
     name: '',
     telephone: '',
+    organizationCode: '',
+    departmentCode: '',
+    positionCode: '',
+    typeId: '',
     index: 1,
     size: 10
   };
-  tableData: TableData[] = [];
+  tableData: UserTableData[] = [];
   total = 0;
   isLoading = false;
+  isEdit = false;
+  isDetail = false;
+  popVisible = false;
+  userId: string;
 }

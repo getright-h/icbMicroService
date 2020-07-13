@@ -3,7 +3,9 @@ import {
   QueryUserListParams,
   UserInfoResponse,
   SetUserParams,
-  SetUserPasswordParams
+  SetUserPasswordParams,
+  UserBelongInfoResponse,
+  PositionRelateRule
 } from '../dto/user-manage.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
@@ -15,8 +17,11 @@ import { DepUtil } from '~/framework/aop/inject';
 const QUERY_USER_LIST = 'prvilege/common/getUserInfoByParam';
 const INSERT_USER = 'prvilege/common/insertUser';
 const SET_USER = 'prvilege/common/setUser';
+const DELETE_USER = 'prvilege/DeleteUser';
 const SET_PASSWORD = 'prvilege/common/setPassword';
 const GET_USER_DETAIL = 'prvilege/common/userDetail';
+const QUERY_USER_BELONG_INFO = 'prvilege/common/queryOrganizationInfoByUserId';
+const QUERY_POSITION_ROLE_LIST = 'prvilege/common/queryPositionRoleList';
 
 @DepUtil.Injectable()
 export class UserManageService extends UserManageDTO {
@@ -41,6 +46,11 @@ export class UserManageService extends UserManageDTO {
     return this.requestService.post(SET_USER, params);
   }
 
+  // 删除用户
+  deleteUser(userId: string): Observable<boolean> {
+    return this.requestService.delete(DELETE_USER, { userId });
+  }
+
   // 修改密码
   setUserPassword(params: SetUserPasswordParams): Observable<boolean> {
     return this.requestService.post(SET_PASSWORD, params);
@@ -49,5 +59,15 @@ export class UserManageService extends UserManageDTO {
   // 用户详情
   getUserDetail(strValue: string): Observable<UserInfoResponse> {
     return this.requestService.get(GET_USER_DETAIL, { strValue });
+  }
+
+  // 用户所属机构、部门、岗位
+  queryOrganizationInfoByUserId(userId: string): Observable<Array<UserBelongInfoResponse>> {
+    return this.requestService.get(QUERY_USER_BELONG_INFO, { userId });
+  }
+
+  // 查询岗位已关联角色
+  queryPositionRoleList(positionId: string): Observable<Array<PositionRelateRule>> {
+    return this.requestService.get(QUERY_POSITION_ROLE_LIST, { positionId });
   }
 }

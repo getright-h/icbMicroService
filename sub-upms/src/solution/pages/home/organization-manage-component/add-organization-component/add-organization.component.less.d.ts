@@ -38,8 +38,6 @@ export interface IAddOrganizationComponentLess {
   lineContainer: string;
   'login-form': string;
   loginForm: string;
-  'organization-main': string;
-  organizationMain: string;
   'other-search-button-item': string;
   otherSearchButtonItem: string;
   'push-search-item': string;
