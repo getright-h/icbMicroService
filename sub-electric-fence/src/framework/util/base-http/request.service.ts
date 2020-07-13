@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosPromise } from 'axios';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { Injectable } from '~/framework/aop/inject';
+import { DepUtil } from '~/framework/aop/inject';
 import * as Sentry from '@sentry/browser';
 
 export interface HttpResponseModel {
@@ -12,7 +12,7 @@ export interface HttpResponseModel {
   status?: boolean;
   timestamp?: string;
 }
-@Injectable()
+@DepUtil.Injectable()
 class RequestService {
   private _httpClient: AxiosInstance;
 

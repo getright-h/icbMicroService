@@ -1,4 +1,6 @@
 import { FENCETYPENUM } from './create-electric-fence-component/create-electric-fence.interface';
+import { PAGESIZE } from '~/solution/shared/constant/common.const';
+import { FenceManageListReturnModal } from '~/solution/model/dto/fence-manage.dto';
 
 /**
  * @export state变量定义和初始化
@@ -14,4 +16,10 @@ export class IMainFenceManageState {
   circlrPath?: any = [];
   administrativeDivisionPath?: any = [];
   currentChoose?: number = FENCETYPENUM.CIRCLE;
+  searchForm = {
+    index: 1,
+    size: PAGESIZE,
+    name: ''
+  };
+  singleFenceData: FenceManageListReturnModal
 }
