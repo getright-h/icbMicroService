@@ -35,7 +35,7 @@ export function IHomeHeaderComponent() {
               </div>
               <div className={style.headerLogo}>
                 {/* <img src={logo} /> */}
-                <span>👑风控4.0系统</span>
+                <span>风控权限</span>
               </div>
             </div>
           </div>

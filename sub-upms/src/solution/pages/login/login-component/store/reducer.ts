@@ -3,7 +3,8 @@ import { IState } from '../login.interface';
 import { TYPES } from './type';
 
 export const initialState: IState = {
-  loginLoading: false
+  loginLoading: false,
+  vCodeImage: ''
 };
 
 export function reducer(state = initialState, action: IAction<any>) {
@@ -13,6 +14,11 @@ export function reducer(state = initialState, action: IAction<any>) {
       return {
         ...state,
         loginLoading: payload
+      };
+    case TYPES.SET_V_CODE:
+      return {
+        ...state,
+        vCodeImage: payload
       };
     default:
       return state;

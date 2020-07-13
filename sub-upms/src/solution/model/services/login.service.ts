@@ -1,14 +1,15 @@
-import { LoginDTO, LoginParam, LoginResult } from '../dto/login.dto';
+import { LoginDTO, LoginParam, LoginResult, VCodeInfo, MyAccountInfo } from '../dto/login.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
-import { Observable, Subscriber } from 'rxjs';
+import { Observable } from 'rxjs';
 import { DepUtil } from '~/framework/aop/inject';
-import { delay } from 'rxjs/operators';
 
 /**
  * 真实开发中，请将示例代码移除
  */
 
-const EXAMPLE_API_PATH = 'your-http-request-path';
+const LOGIN_PATH = 'GlobPermissionVerificationPlugin/Login';
+const VERIFICATION_CODE = 'GlobPermissionVerificationPlugin/VerifyCode';
+const GET_MY_INFO = 'prvilege/GetMyInfo';
 
 @DepUtil.Injectable()
 export class LoginService extends LoginDTO {
@@ -20,10 +21,16 @@ export class LoginService extends LoginDTO {
 
   // 登录
   login(params: LoginParam): Observable<LoginResult> {
-    // return this.requestService.get(EXAMPLE_API_PATH, params);
-    return Observable.create((observer: Subscriber<LoginResult>) => {
-      observer.next({ token: 'loginSuccess', status: true });
-      observer.complete();
-    }).pipe(delay(500));
+    return this.requestService.post(LOGIN_PATH, params);
+  }
+
+  // 获取验证码
+  getVerificationCode(codeKey: string): Observable<VCodeInfo> {
+    return this.requestService.get(VERIFICATION_CODE, { codeKey });
+  }
+
+  // 获取登录用户信息
+  getMyInfo(): Observable<MyAccountInfo> {
+    return this.requestService.get(GET_MY_INFO);
   }
 }

@@ -62,6 +62,9 @@ export function useAddUserStore(props: IAddUserProps) {
     organizationIds[index][`${type}Id`] = option ? option.info.id : undefined;
     organizationIds[index][`${type}Code`] = option ? option.info.code : undefined;
     organizationIds[index][`${type}Name`] = option ? option.info.name : undefined;
+    if (type == 'organization') {
+      organizationIds[index]['systemId'] = option ? option.info.systemId : undefined;
+    }
     userForm.setFieldsValue([organizationIds]);
   }
 
