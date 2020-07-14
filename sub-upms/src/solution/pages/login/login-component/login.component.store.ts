@@ -1,7 +1,7 @@
 import { DepUtil } from '~/framework/aop/inject';
 import { LoginService } from '~/solution/model/services/login.service';
 import { LoginParam, VCodeInfo } from '~/solution/model/dto/login.dto';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { IProps, IState } from './login.interface';
 import { setLoadingAction, setVcode } from './store/action';
 import { message } from 'antd';
@@ -39,7 +39,6 @@ export class LoginStore extends ReducerStore<IState> {
   };
 
   // 登陆
-  // handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
   handleSubmit = (values: Store) => {
     console.log(values);
     this.dispatch(setLoadingAction(true));

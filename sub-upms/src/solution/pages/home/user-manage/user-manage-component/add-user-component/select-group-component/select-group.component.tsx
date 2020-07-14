@@ -5,6 +5,9 @@ import { ISelectLoadingComponent } from '~/solution/components/component.module'
 import { PlusOutlined, MinusOutlined, DownOutlined } from '@ant-design/icons';
 import { ISelectGroupProps } from './select-group.interface';
 import { useSelectGroupStore } from './select-group.component.store';
+import { StorageUtil } from '~/framework/util/storage';
+
+const SYSTEMID = StorageUtil.getLocalStorage('systemId');
 
 export default function SelectGroupComponent(props: ISelectGroupProps) {
   const { field, index, add, remove, selectValues } = props;
@@ -22,7 +25,7 @@ export default function SelectGroupComponent(props: ISelectGroupProps) {
           reqUrl="queryOrganizationSelectList"
           placeholder="请选择机构"
           searchForm={{
-            systemId: process.env.SYSTEM_ID,
+            systemId: SYSTEMID,
             hierarchyType: 0
           }}
           selectedValue={selectValues ? selectValues.organizationId : undefined}

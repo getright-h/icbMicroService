@@ -9,6 +9,9 @@ import {
 } from '~/solution/components/component.module';
 import { departmentColumns } from './department-columns';
 import EditDepartmentComponent from './edit-department-component/edit-department.component';
+import { StorageUtil } from '~/framework/util/storage';
+
+const SYSTEMID = StorageUtil.getLocalStorage('systemId');
 
 export default function DepartmentManageComponent() {
   const {
@@ -29,7 +32,7 @@ export default function DepartmentManageComponent() {
           <ISelectLoadingComponent
             reqUrl="queryOrganizationSelectList"
             placeholder="请选择所属机构"
-            searchForm={{ systemId: process.env.SYSTEM_ID, hierarchyType: 0 }}
+            searchForm={{ systemId: SYSTEMID, hierarchyType: 0 }}
             getCurrentSelectInfo={(value, option) => handleFormDataChange(value, 'code', option)}
           ></ISelectLoadingComponent>
         </div>

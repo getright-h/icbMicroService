@@ -2,11 +2,15 @@ import { IAddUserState, IAddUserProps } from './add-user.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
 import { Form } from 'antd';
 import { UserManageService } from '~/solution/model/services/user-manage.service';
-import { OrganizationId, UserBelongInfoResponse } from '~/solution/model/dto/user-manage.dto';
+import { OrganizationId } from '~/solution/model/dto/user-manage.dto';
 import { ShowNotification } from '~/framework/util/common';
 import { RoleManageService } from '~/solution/model/services/role-manage.service';
 import { useEffect, useRef } from 'react';
 import _ from 'lodash';
+import { StorageUtil } from '~/framework/util/storage';
+
+const SYSTEMID = StorageUtil.getLocalStorage('systemId');
+const SYSTEMCODE = StorageUtil.getLocalStorage('systemCode');
 
 export function useAddUserStore(props: IAddUserProps) {
   const { userId, isEdit, visible } = props;
@@ -15,6 +19,10 @@ export function useAddUserStore(props: IAddUserProps) {
   const { state, setStateWrap } = useStateStore(new IAddUserState());
   const [userForm] = Form.useForm();
   const relateRoles = useRef({});
+
+  useEffect(() => {
+    getRoleOptions(SYSTEMID);
+  }, []);
 
   useEffect(() => {
     if (userId && visible) {
@@ -68,8 +76,8 @@ export function useAddUserStore(props: IAddUserProps) {
     userForm.setFieldsValue([organizationIds]);
   }
 
-  function getRoleOptions() {
-    roleManageService.queryRoleList({ systemId: process.env.SYSTEM_ID }).subscribe(
+  function getRoleOptions(systemId: string) {
+    roleManageService.queryRoleList({ systemId }).subscribe(
       (res: any) => {
         setStateWrap({ roleOptions: res });
       },
@@ -83,7 +91,7 @@ export function useAddUserStore(props: IAddUserProps) {
     values.roleList && (values.roleList = values.roleList.map((v: string) => JSON.parse(v)));
     setStateWrap({ confirmLoading: true });
     if (isEdit) {
-      userManageService.setUser({ ...values, id: userId, systemCode: process.env.SYSTEM_CODE }).subscribe(
+      userManageService.setUser({ ...values, id: userId, systemCode: SYSTEMCODE }).subscribe(
         (res: any) => {
           ShowNotification.success('编辑用户成功');
           setStateWrap({ confirmLoading: false });
@@ -96,7 +104,7 @@ export function useAddUserStore(props: IAddUserProps) {
         }
       );
     } else {
-      userManageService.insertUser({ ...values, systemCode: process.env.SYSTEM_CODE }).subscribe(
+      userManageService.insertUser({ ...values, systemCode: SYSTEMCODE }).subscribe(
         (res: any) => {
           ShowNotification.success('添加用户成功！');
           setStateWrap({ confirmLoading: false });
@@ -125,10 +133,6 @@ export function useAddUserStore(props: IAddUserProps) {
     console.log('positionRoles', positionRoles);
     setStateWrap({ positionRoles });
   }
-
-  useEffect(() => {
-    getRoleOptions();
-  }, []);
 
   return {
     state,

@@ -5,7 +5,10 @@ import * as React from 'react';
 import { EventDataNode } from 'rc-tree/lib/interface';
 import { OrganizationManageService } from '../../../../model/services/organization-manage.service';
 import { dealWithTreeData, updateTreeData } from '~/framework/util/common/treeFunction';
-const SYSTEMID = process.env.SYSTEM_ID;
+import { StorageUtil } from '~/framework/util/storage';
+
+const SYSTEMID = StorageUtil.getLocalStorage('systemId');
+
 export function useOrganizationLeftStore(props: IOrganizationLeftProps) {
   const organizationManageService: OrganizationManageService = new OrganizationManageService();
   const { state, setStateWrap } = useStateStore(new IOrganizationLeftState());
