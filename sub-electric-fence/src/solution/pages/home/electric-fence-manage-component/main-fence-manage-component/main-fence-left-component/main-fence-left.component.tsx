@@ -4,10 +4,15 @@ import { ITableComponent, TablePageTelComponent } from '~/solution/components/co
 import { useMainFenceLeftStore } from './main-fence-left.component.store';
 import { stationColumns } from './main-fence-left-component.column';
 import { Button, Input } from 'antd';
+import { IMainFenceLeftProps } from './main-fence-left.interface';
 
-export default function MainFenceLeftComponent() {
-  const { state, callbackAction, changeTablePageIndex, searchClick } = useMainFenceLeftStore();
-  const { isLoading, searchForm, tableData, total, searchLoading } = state;
+function MainFenceLeftComponent(props: IMainFenceLeftProps, ref: any) {
+  const { state, callbackAction, changeTablePageIndex, searchClick, onValueChange } = useMainFenceLeftStore(props);
+  const { isLoading, tableData, searchForm, total } = state;
+  React.useImperativeHandle(ref, () => ({
+    searchClick,
+    onValueChange
+  }));
   return (
     <div className={style.test}>
       <ITableComponent
@@ -18,8 +23,10 @@ export default function MainFenceLeftComponent() {
         data={tableData}
         total={total}
         isPagination={true}
-        changeTablePageIndex={(index: number, pageSize: number) => changeTablePageIndex(index, pageSize)}
+        changeTablePageIndex={(index: number) => changeTablePageIndex(index)}
       ></ITableComponent>
     </div>
   );
 }
+
+export default React.forwardRef(MainFenceLeftComponent);

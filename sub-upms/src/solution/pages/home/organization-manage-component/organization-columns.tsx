@@ -1,14 +1,13 @@
 import { ColumnsType } from 'antd/lib/table';
 import * as React from 'react';
 import { Divider } from 'antd';
-import { Link } from 'react-router-dom';
 import { OrganizationTableData } from './organization-manage.interface';
 export function organizationColumns(action: Function): ColumnsType<OrganizationTableData> {
   return [
-    {
-      title: '机构类型',
-      dataIndex: 'typeName'
-    },
+    // {
+    //   title: '机构类型',
+    //   dataIndex: 'typeName'
+    // },
     {
       title: '机构全称',
       dataIndex: 'name'
@@ -41,11 +40,11 @@ export function organizationColumns(action: Function): ColumnsType<OrganizationT
       render: (text, row) => {
         return (
           <React.Fragment>
-            {/* <Link to={`/account/organizationManage/organizationDetail/${row.id}`}>详情</Link>
-            <Divider type="vertical" /> */}
-            <Link to={`/account/organizationManage/editOrganization/${row.id}`}>编辑</Link>
+            <a onClick={() => action(row, '详情')}>详情</a>
             <Divider type="vertical" />
-            <a onClick={() => action(row)}>删除</a>
+            <a onClick={() => action(row, '编辑')}>编辑</a>
+            <Divider type="vertical" />
+            <a onClick={() => action(row, '删除')}>删除</a>
           </React.Fragment>
         );
       }

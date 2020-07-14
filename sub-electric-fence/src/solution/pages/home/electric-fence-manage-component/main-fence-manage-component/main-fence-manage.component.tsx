@@ -6,20 +6,22 @@ import { Input, Button } from 'antd';
 import { TablePageTelComponent } from '../../../../components/base/table-page-tel-component/table-page-tel.component';
 import { useMainFenceManageStore } from './main-fence-manage.component.store';
 import CreateElectricFenceComponent from './create-electric-fence-component/create-electric-fence.component';
+import * as _ from 'lodash';
 
 export default function MainFenceManageComponent() {
-  const { state, searchClick, onValueChange } = useMainFenceManageStore();
-  const { searchLoading, visible, circleLocation, circlrR, currentChoose } = state;
+  const { state, onValueChange, tableRef, searchClick,editPopShow, changeSearchTableValue } = useMainFenceManageStore();
+  const { searchLoading, visible, circleLocation, circlrR, currentChoose, singleFenceData } = state;
 
   function renderSelectItems() {
     return (
       <div style={{ position: 'relative' }}>
         <div className="push-search-item">
-          <Input placeholder="请输入围栏名" />
+          <Input placeholder="请输入围栏名" onChange={value => changeSearchTableValue('name', value)} />
         </div>
       </div>
     );
   }
+
   function renderSearchButtons() {
     return (
       <div className="push-search-button-item">
@@ -50,7 +52,7 @@ export default function MainFenceManageComponent() {
     getContainer: false,
     onCloseDrawer: () => onValueChange('visible', false),
     container: (
-      <CreateElectricFenceComponent onValueChange={onValueChange} circlrR={circlrR} centerPlace={circleLocation} />
+      <CreateElectricFenceComponent onValueChange={onValueChange} editData={singleFenceData}  circlrR={circlrR} centerPlace={circleLocation} />
     )
   };
 
@@ -68,7 +70,7 @@ export default function MainFenceManageComponent() {
         selectItems={renderSelectItems()}
         searchButton={renderSearchButtons()}
         otherSearchBtns={renderOtherButtons()}
-        table={<MainFenceLeftComponent />}
+        table={<MainFenceLeftComponent ref={tableRef} editPopShow={editPopShow}/>}
         rightFlex={5}
         drawerInfo={drawerInfo}
         leftFlex={2}

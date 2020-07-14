@@ -9,8 +9,11 @@ export abstract class UserManageDTO {
   abstract queryUserList(params: QueryUserListParams): Observable<Array<UserInfoResponse>>;
   abstract insertUser(params: SetUserParams): Observable<boolean>;
   abstract setUser(params: SetUserParams): Observable<boolean>;
+  abstract deleteUser(userId: string): Observable<boolean>;
   abstract setUserPassword(params: SetUserPasswordParams): Observable<boolean>;
   abstract getUserDetail(strValue: string): Observable<UserInfoResponse>;
+  abstract queryOrganizationInfoByUserId(userId: string): Observable<Array<UserBelongInfoResponse>>;
+  abstract queryPositionRoleList(positionId: string): Observable<Array<PositionRelateRule>>;
 }
 
 // 示例 Dto
@@ -40,17 +43,16 @@ export interface SetUserPasswordParams {
   userId: string;
 }
 
-interface OrganizationId {
-  positionId: string;
-  positionCode: string;
-  departmentId: string;
-  departmentCode: string;
-  organizationId: string;
-  organizationCode: string;
-  departmentName: string;
-  positionName: string;
-  organizationName: string;
-  userType: number;
+export interface OrganizationId {
+  positionId?: string;
+  positionCode?: string;
+  positionName?: string;
+  departmentId?: string;
+  departmentCode?: string;
+  departmentName?: string;
+  organizationId?: string;
+  organizationCode?: string;
+  organizationName?: string;
 }
 
 interface RoleList {
@@ -101,4 +103,35 @@ interface RolesCodeList {
   code: string;
   name: string;
   userId: string;
+}
+
+export interface UserBelongInfoResponse {
+  positionId?: string;
+  positionCode?: string;
+  positionName?: string;
+  departmentId?: string;
+  departmentCode?: string;
+  departmentName?: string;
+  organizationId?: string;
+  organizationCode?: string;
+  organizationName?: string;
+  roleList: RoleBelongInfo[];
+}
+
+interface RoleBelongInfo {
+  id: string;
+  code: string;
+  name: string;
+  userId: string;
+  positionId: string;
+}
+
+export interface PositionRelateRule {
+  positionId: string;
+  positionCode: string;
+  roleId: string;
+  roleName: string;
+  roleCode: string;
+  createTime: string;
+  systemId: string;
 }

@@ -5,6 +5,7 @@
 export class IISelectLoadingState {
   fetching = false;
   optionList: Array<any> = [];
+  value: string;
 }
 export interface IISelectLoadingProps {
   placeholder: string;
@@ -13,4 +14,6 @@ export interface IISelectLoadingProps {
   disabled?: boolean;
   searchForm?: Record<string, any>;
   getCurrentSelectInfo: (value: string, option: any) => void;
+  searchKey?: string;
+  showSearch?: boolean;
 }

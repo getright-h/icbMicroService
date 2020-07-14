@@ -31,18 +31,14 @@ export interface IRoleManageComponentLess {
   'form-item': string;
   formItem: string;
   h40: string;
-  header: string;
   label: string;
   layout: string;
-  left: string;
   'login-form': string;
   loginForm: string;
-  main: string;
   'other-search-button-item': string;
   otherSearchButtonItem: string;
   'push-search-item': string;
   pushSearchItem: string;
-  right: string;
   'role-table': string;
   roleTable: string;
   root: string;

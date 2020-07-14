@@ -6,3 +6,5 @@ export const enum ACTION_TYPE {
   UNBIND,
   BATCH_EDIT
 }
+
+export const PAGESIZE = 10;

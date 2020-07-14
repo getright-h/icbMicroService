@@ -9,5 +9,6 @@ export const ROUTERS = {
   roleManage: () => import('~/solution/pages/home/user-manage/role-manage-component/role-manage.component'),
   stationManage: () => import('~/solution/pages/home/user-manage/station-manage-component/station-manage.component'),
   departmentManage: () =>
-    import('~/solution/pages/home/user-manage/department-manage-component/department-manage.component')
+    import('~/solution/pages/home/user-manage/department-manage-component/department-manage.component'),
+  addUser: () => import('~/solution/pages/home/user-manage/user-manage-component/add-user-component/add-user.component')
 };

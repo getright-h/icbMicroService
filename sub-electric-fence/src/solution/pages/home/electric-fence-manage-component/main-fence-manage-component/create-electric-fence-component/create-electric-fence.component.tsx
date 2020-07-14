@@ -11,6 +11,8 @@ const { Search } = Input;
 export default function CreateElectricFenceComponent(props: ICreateElectricProps) {
   const { state, onFinish, form, handleChangeCircle, onCrPlaceChange } = useCreateElectricFenceStore(props);
   const [fenceType, setFenceType] = useState(FENCETYPENUM.CIRCLE);
+  const {editData} = props;
+  const {circle} = editData
   const formItemLayout = {
     labelCol: { span: 5 },
     wrapperCol: { span: 19 }
@@ -27,7 +29,7 @@ export default function CreateElectricFenceComponent(props: ICreateElectricProps
         return (
           <>
             <Form.Item name="centerPlace">
-              <Search placeholder="输入圆的中心点地址" onSearch={handleChangeCircle} style={{ width: 200 }} />
+              <Search placeholder="输入圆的中心点地址"  onSearch={handleChangeCircle} style={{ width: 200 }} />
               {/* <Input placeholder="输入圆的中心点地址" onChange={handleChangeCircle} /> */}
             </Form.Item>
             <Form.Item name="rPlace">
