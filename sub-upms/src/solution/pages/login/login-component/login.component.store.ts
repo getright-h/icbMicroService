@@ -74,7 +74,6 @@ export class LoginStore extends ReducerStore<IState> {
   getMyInfo = () => {
     return this.loginService.getMyInfo().subscribe(
       res => {
-        StorageUtil.setLocalStorage('userId', res.id);
         StorageUtil.setLocalStorage('systemId', res.systemId);
         StorageUtil.setLocalStorage('systemCode', res.systemCode);
         message.success('登录成功');
