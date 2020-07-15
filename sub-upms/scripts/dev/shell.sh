@@ -1,8 +1,8 @@
 #/usr/bin
 version="1.0.0";
-imageName="test_fch-h5-spa";
-containerName="test_fch-h5-spa";
-port="5206"
+imageName="test_sub_upms";
+containerName="ttest_sub_upms";
+port="2000"
 
 echo "--> docker build"
 cd ..
