@@ -3,11 +3,11 @@ branch="v1.0.0"
 time=$(date "+%Y-%m-%d %H:%M:%S")
 
 echo "--> build···"
-cd ..
+cd ../..
 yarn build-dev
 
 echo "--> copy files···"
-cp -rf Dockerfile ecosystem.config.js server/* ../dist
+cp -rf Dockerfile ecosystem.config.js server/* ./dist
 echo "--> install node dependencies···"
 # 太慢了 install 放在本地
 cd ../dist
