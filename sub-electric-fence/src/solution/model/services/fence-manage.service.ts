@@ -24,8 +24,12 @@ export class FenceManageService implements FenceManageDTO {
   @DepUtil.Inject(RequestService)
   private readonly requestService: RequestService;
   constructor() {}
-  fenceList(params: { name: string; index: number; size: number }): Observable<Array<FenceManageListReturnModal>> {
-    return this.requestService.get(FENCE_MANAGE_LIST, params);
+  fenceList(params: {
+    name: string;
+    index: number;
+    size: number;
+  }): Observable<{ data: Array<FenceManageListReturnModal>; total: number }> {
+    return this.requestService.post(FENCE_MANAGE_LIST, params);
   }
   fenceDelete(params: { id: string }): Observable<number> {
     return this.requestService.get(FENCE_MANAGE_DELETE, params);
@@ -40,6 +44,6 @@ export class FenceManageService implements FenceManageDTO {
   }
 
   fenceCreate(params: FenceManageCreateParamsModal): Observable<number> {
-    return this.requestService.get(FENCE_MANAGE_CREATE, params);
+    return this.requestService.post(FENCE_MANAGE_CREATE, params);
   }
 }

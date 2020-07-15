@@ -15,11 +15,11 @@ export class IMainFenceManageState {
   polygonLocation? = { lat: 0, lng: 0 };
   circlrPath?: any = [];
   administrativeDivisionPath?: any = [];
-  currentChoose?: number = FENCETYPENUM.CIRCLE;
+  currentChoose?: number = FENCETYPENUM.POLYGON;
   searchForm = {
     index: 1,
     size: PAGESIZE,
     name: ''
   };
-  singleFenceData: FenceManageListReturnModal
+  singleFenceData: FenceManageListReturnModal;
 }

@@ -72,7 +72,11 @@ interface Circle {
 export interface FenceManageDTO {
     fenceCreate(params: FenceManageCreateParamsModal): Observable<number>;
     fenceEdit(params: FenceManageEditParamsModal): Observable<number>;
-    fenceList(params: {name: string, index: number, size: number}): Observable<Array<FenceManageListReturnModal>>;
+    fenceList(params: {
+      name: string;
+      index: number;
+      size: number;
+    }): Observable<{ data: Array<FenceManageListReturnModal>; total: number }>
     fenceDelete(params: {id: string}): Observable<number>;
     fenceDistrict(params: {parentCode: string}): Observable<FenceManageDistrictReturnModal>;
 }

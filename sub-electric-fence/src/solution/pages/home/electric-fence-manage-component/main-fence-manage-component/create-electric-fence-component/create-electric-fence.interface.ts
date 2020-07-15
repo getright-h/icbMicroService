@@ -20,7 +20,7 @@ export interface ICreateElectricProps {
 }
 
 export enum FENCETYPENUM {
-  CIRCLE,
+  CIRCLE = 1,
   POLYGON,
   ADMINISTRATIVEDIVISION
 }

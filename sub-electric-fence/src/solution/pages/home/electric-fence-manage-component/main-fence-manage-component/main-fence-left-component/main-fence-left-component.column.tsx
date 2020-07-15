@@ -9,11 +9,13 @@ export function stationColumns(callbackAction: Function) {
     },
     {
       title: '驶出提醒',
-      dataIndex: 'outAttention'
+      dataIndex: 'alarmOut',
+      render: (text: boolean) => <span>{text ? '提醒' : '不提醒'}</span>
     },
     {
       title: '驶入提醒',
-      dataIndex: 'inAttention'
+      dataIndex: 'alarmIn',
+      render: (text: boolean) => <span>{text ? '提醒' : '不提醒'}</span>
     },
     {
       title: '操作',
