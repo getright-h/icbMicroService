@@ -4,8 +4,9 @@ import { OrganizationManageService } from '~/solution/model/services/organizatio
 import React, { useEffect } from 'react';
 import { EventDataNode } from 'rc-tree/lib/interface';
 import { dealWithTreeData, updateTreeData } from '~/framework/util/common/treeFunction';
+import { StorageUtil } from '~/framework/util/storage';
 
-const SYSTEMID = process.env.SYSTEM_ID;
+const SYSTEMID = StorageUtil.getLocalStorage('systemId');
 
 export function useUserLeftStore(props: IUserLeftProps) {
   const organizationManageService: OrganizationManageService = new OrganizationManageService();

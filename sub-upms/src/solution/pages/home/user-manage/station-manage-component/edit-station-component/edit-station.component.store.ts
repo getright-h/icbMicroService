@@ -5,6 +5,9 @@ import { StationManageService } from '~/solution/model/services/station-manage.s
 import { FormInstance } from 'antd/lib/form';
 import { Subscription } from 'rxjs';
 import { ShowNotification } from '~/framework/util/common';
+import { StorageUtil } from '~/framework/util/storage';
+
+const SYSTEMID = StorageUtil.getLocalStorage('systemId');
 
 export function useEditStationStore(props: any, form: FormInstance) {
   const { state, setStateWrap } = useStateStore(new IEditStationState());
@@ -31,7 +34,7 @@ export function useEditStationStore(props: any, form: FormInstance) {
     getRoleListSubscription = stationManageService
       .queryRoleList({
         userId: '',
-        systemId: process.env.SYSTEM_ID
+        systemId: SYSTEMID
       })
       .subscribe((res: any) => {
         setStateWrap({ roleList: res });
