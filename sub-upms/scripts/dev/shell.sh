@@ -2,7 +2,7 @@
 version="1.0.0";
 imageName="test_sub_upms";
 containerName="test_sub_upms";
-port="2000"
+port="2099"
 
 echo "--> docker build"
 cd ..
