@@ -4,7 +4,7 @@ time=$(date "+%Y-%m-%d %H:%M:%S")
 
 echo "--> build···"
 cd ..
-npm run build:dev
+npm run build
 
 echo "--> copy files···"
 cp -rf Dockerfile ecosystem.config.js server/* ./dist
