@@ -9,6 +9,9 @@ import {
 } from '~/solution/components/component.module';
 import { stationColumns } from './station-columns';
 import EditStationComponent from './edit-station-component/edit-station.component';
+import { StorageUtil } from '~/framework/util/storage';
+
+const SYSTEMID = StorageUtil.getLocalStorage('systemId');
 
 export default function StationManageComponent() {
   const {
@@ -29,8 +32,7 @@ export default function StationManageComponent() {
           <ISelectLoadingComponent
             reqUrl="queryOrganizationSelectList"
             placeholder="请选择所属机构"
-            searchForm={{ systemId: process.env.SYSTEM_ID, hierarchyType: 0 }}
-            // defaultValue={state.formInfo.distributorName}
+            searchForm={{ systemId: SYSTEMID, hierarchyType: 0 }}
             getCurrentSelectInfo={(value, option) => handleFormDataChange(value, 'parentOrganizationCode', option)}
           ></ISelectLoadingComponent>
         </div>
@@ -40,11 +42,10 @@ export default function StationManageComponent() {
             reqUrl="queryOrganizationSelectList"
             placeholder="请选择所属部门"
             searchForm={{
-              systemId: process.env.SYSTEM_ID,
+              systemId: SYSTEMID,
               hierarchyType: 1,
               parentCode: searchForm.parentOrganizationCode
             }}
-            // defaultValue={state.formInfo.distributorName}
             getCurrentSelectInfo={(value, option) => handleFormDataChange(value, 'code', option)}
           ></ISelectLoadingComponent>
         </div>

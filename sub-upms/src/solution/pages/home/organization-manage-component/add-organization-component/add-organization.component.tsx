@@ -4,6 +4,9 @@ import { useAddOrganizationStore } from './add-organization.component.store';
 import { Form, Input, Radio, Select, Modal } from 'antd';
 import { ISelectLoadingComponent, IUploadImgComponent } from '~/solution/components/component.module';
 import { IAddOrganizationProps } from './add-organization.interface';
+import { StorageUtil } from '~/framework/util/storage';
+
+const SYSTEMID = StorageUtil.getLocalStorage('systemId');
 
 export default function AddOrganizationComponent(props: IAddOrganizationProps) {
   const { isEdit, isDetail, visible } = props;
@@ -34,7 +37,7 @@ export default function AddOrganizationComponent(props: IAddOrganizationProps) {
           <ISelectLoadingComponent
             reqUrl="queryOrganizationType"
             placeholder="请选择机构类型"
-            searchForm={{ systemId: process.env.SYSTEM_ID }}
+            searchForm={{ systemId: SYSTEMID }}
             selectedValue={organizationForm.getFieldValue('typeId')}
             getCurrentSelectInfo={(value, option) => handleFormDataChange(value, 'typeId')}
           ></ISelectLoadingComponent>
@@ -50,7 +53,7 @@ export default function AddOrganizationComponent(props: IAddOrganizationProps) {
             reqUrl="queryOrganizationSelectList"
             placeholder="请选择上级机构"
             searchForm={{
-              systemId: process.env.SYSTEM_ID,
+              systemId: SYSTEMID,
               hierarchyType: 0,
               typeId: organizationForm.getFieldValue('typeId')
             }}

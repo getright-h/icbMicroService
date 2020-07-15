@@ -6,6 +6,9 @@ import React, { useEffect } from 'react';
 import { ShowNotification } from '~/framework/util/common';
 import { Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { StorageUtil } from '~/framework/util/storage';
+
+const SYSTEMID = StorageUtil.getLocalStorage('systemId');
 
 export function useUserManageStore() {
   const { state, setStateWrap, getState } = useStateStore(new IUserManageState());
@@ -14,7 +17,7 @@ export function useUserManageStore() {
 
   function getSelectTreeNode(node: Record<string, any>) {
     const searchForm = {
-      systemId: process.env.SYSTEM_ID,
+      systemId: SYSTEMID,
       name: '',
       telephone: '',
       organizationCode: '',

@@ -3,6 +3,9 @@ import style from './edit-station.component.less';
 import { useEditStationStore } from './edit-station.component.store';
 import { Modal, Form, Select, Input, Radio } from 'antd';
 import { ISelectLoadingComponent } from '~/solution/components/component.module';
+import { StorageUtil } from '~/framework/util/storage';
+
+const SYSTEMID = StorageUtil.getLocalStorage('systemId');
 
 export default function EditStationComponent(props: any) {
   const [stationForm] = Form.useForm();
@@ -53,8 +56,7 @@ export default function EditStationComponent(props: any) {
               <ISelectLoadingComponent
                 reqUrl="queryOrganizationSelectList"
                 placeholder="请选择所属机构"
-                searchForm={{ systemId: process.env.SYSTEM_ID, hierarchyType: 0 }}
-                // defaultValue={state.formInfo.distributorName}
+                searchForm={{ systemId: SYSTEMID, hierarchyType: 0 }}
                 getCurrentSelectInfo={(value, option) => selectOrganization(value, option)}
               ></ISelectLoadingComponent>
             </Form.Item>
@@ -62,8 +64,7 @@ export default function EditStationComponent(props: any) {
               <ISelectLoadingComponent
                 reqUrl="queryOrganizationSelectList"
                 placeholder="请选择所属部门"
-                searchForm={{ systemId: process.env.SYSTEM_ID, hierarchyType: 1, parentCode: state.parentCode }}
-                // defaultValue={state.formInfo.distributorName}
+                searchForm={{ systemId: SYSTEMID, hierarchyType: 1, parentCode: state.parentCode }}
                 getCurrentSelectInfo={(value, option) => stationForm.setFieldsValue({ parentDepartmentId: value })}
               ></ISelectLoadingComponent>
             </Form.Item>

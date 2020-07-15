@@ -3,6 +3,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { DepUtil } from '~/framework/aop/inject';
 import * as Sentry from '@sentry/browser';
+import { StorageUtil } from '../storage';
 
 export interface HttpResponseModel {
   message: string;
@@ -23,7 +24,7 @@ class RequestService {
 
   private createAuthHeaders(): any {
     const headers = { token: '' };
-    const token = localStorage.getItem('TOKENINFO');
+    const token = StorageUtil.getLocalStorage('token');
     if (token) {
       headers.token = token;
     }
@@ -32,7 +33,7 @@ class RequestService {
 
   private getRootUrl(url: string) {
     let returnInfo = process.env.MAIN;
-    if (!!~url.indexOf('VerifyCode')) {
+    if (!!~url.indexOf('GlobPermissionVerificationPlugin')) {
       returnInfo = process.env.LOGIN;
     } else {
       returnInfo = process.env.MAIN;

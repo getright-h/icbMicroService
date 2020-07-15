@@ -1,4 +1,7 @@
 import { OrganizationId } from '~/solution/model/dto/user-manage.dto';
+import { StorageUtil } from '~/framework/util/storage';
+
+const SYSTEMID = StorageUtil.getLocalStorage('systemId');
 
 /**
  * @export state变量定义和初始化
@@ -6,12 +9,12 @@ import { OrganizationId } from '~/solution/model/dto/user-manage.dto';
  */
 export class ISelectGroupState {
   searchDepartForm: SearchForm = {
-    systemId: process.env.SYSTEM_ID,
+    systemId: SYSTEMID,
     hierarchyType: 1,
     parentCode: ''
   };
   searchPositionForm: SearchForm = {
-    systemId: process.env.SYSTEM_ID,
+    systemId: SYSTEMID,
     hierarchyType: 2,
     parentCode: ''
   };

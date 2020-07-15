@@ -3,6 +3,9 @@ import style from './edit-department.component.less';
 import { Form, Modal, Input, Radio, Select } from 'antd';
 import { ISelectLoadingComponent } from '~/solution/components/component.module';
 import { useEditDepartmentStore } from './edit-department.component.store';
+import { StorageUtil } from '~/framework/util/storage';
+
+const SYSTEMID = StorageUtil.getLocalStorage('systemId');
 
 export default function EditDepartmentComponent(props: any) {
   const [departmentForm] = Form.useForm();
@@ -27,7 +30,6 @@ export default function EditDepartmentComponent(props: any) {
       width={500}
       title={title}
       visible={visible}
-      // onOk={selfSubmit}
       onOk={() => {
         departmentForm
           .validateFields()
@@ -53,7 +55,7 @@ export default function EditDepartmentComponent(props: any) {
               <ISelectLoadingComponent
                 reqUrl="queryOrganizationSelectList"
                 placeholder="请选择所属机构"
-                searchForm={{ systemId: process.env.SYSTEM_ID, hierarchyType: 0 }}
+                searchForm={{ systemId: SYSTEMID, hierarchyType: 0 }}
                 getCurrentSelectInfo={(value, option) => selectOrganization(value, option)}
               ></ISelectLoadingComponent>
             </Form.Item>
@@ -61,7 +63,7 @@ export default function EditDepartmentComponent(props: any) {
               <ISelectLoadingComponent
                 reqUrl="queryOrganizationSelectList"
                 placeholder="请选择上级部门"
-                searchForm={{ systemId: process.env.SYSTEM_ID, hierarchyType: 1, parentCode: state.parentCode }}
+                searchForm={{ systemId: SYSTEMID, hierarchyType: 1, parentCode: state.parentCode }}
                 getCurrentSelectInfo={value => departmentForm.setFieldsValue({ parentDepartmentId: value })}
               ></ISelectLoadingComponent>
             </Form.Item>
