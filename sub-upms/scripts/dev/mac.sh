@@ -10,7 +10,7 @@ echo "--> copy files···"
 cp -rf Dockerfile ecosystem.config.js server/* ./dist
 echo "--> install node dependencies···"
 # 太慢了 install 放在本地
-cd ../dist
+cd ./dist
 yarn install
 cd ..
 
