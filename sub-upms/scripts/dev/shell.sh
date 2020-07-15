@@ -1,7 +1,7 @@
 #/usr/bin
 version="1.0.0";
 imageName="test_sub_upms";
-containerName="ttest_sub_upms";
+containerName="test_sub_upms";
 port="2000"
 
 echo "--> docker build"
