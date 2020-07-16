@@ -121,7 +121,6 @@ export function useAddUserStore(props: IAddUserProps) {
 
   function sendRelateRoles(roles: string[], index: number) {
     relateRoles.current[index] = roles;
-    console.log('current', relateRoles.current);
     dealWithRelateRoles();
   }
   function dealWithRelateRoles() {
@@ -130,7 +129,6 @@ export function useAddUserStore(props: IAddUserProps) {
       positionRoles.push(...relateRoles.current[i]);
     }
     _.uniq(positionRoles);
-    console.log('positionRoles', positionRoles);
     setStateWrap({ positionRoles });
   }
 

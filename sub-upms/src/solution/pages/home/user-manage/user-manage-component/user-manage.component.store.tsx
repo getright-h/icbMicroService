@@ -83,7 +83,6 @@ export function useUserManageStore() {
     setStateWrap({ popVisible: true, isEdit: false, isDetail: false, userId: '' });
   }
   function tableAction(actionName: string, row: any) {
-    console.log(row);
     switch (actionName) {
       case '详情':
         setStateWrap({ popVisible: true, isEdit: true, isDetail: true, userId: row.id });

@@ -4,17 +4,25 @@ import { useEffect } from 'react';
 import { Form } from 'antd';
 import { OrganizationManageService } from '~/solution/model/services/organization-manage.service';
 import { ShowNotification } from '~/framework/util/common';
+import { StorageUtil } from '~/framework/util/storage';
+
+const SYSTEMID = StorageUtil.getLocalStorage('systemId');
 
 export function useAddOrganizationStore(props: IAddOrganizationProps) {
+  const { visible, id } = props;
   const { state, setStateWrap } = useStateStore(new IAddOrganizationState());
   const organizationManageService = useService(OrganizationManageService);
   const [organizationForm] = Form.useForm();
 
   useEffect(() => {
-    if (props.id) {
-      getDetails(props.id);
+    getTypeList();
+  }, []);
+
+  useEffect(() => {
+    if (id && visible) {
+      getDetails(id);
     }
-  }, [props.id]);
+  }, [id && visible]);
 
   /**
    * @param id 查询机构详情
@@ -58,7 +66,6 @@ export function useAddOrganizationStore(props: IAddOrganizationProps) {
   function onSubmit(values: Record<string, any>) {
     setStateWrap({ confirmLoading: true });
     if (props.isEdit) {
-      console.log('编辑', { ...state.formInfo, ...values });
       organizationManageService.setOrganization({ ...values, ...state.formInfo }).subscribe(
         (res: any) => {
           ShowNotification.success('编辑机构成功');
@@ -71,7 +78,6 @@ export function useAddOrganizationStore(props: IAddOrganizationProps) {
         }
       );
     } else {
-      console.log('添加', { ...state.formInfo, ...values });
       organizationManageService.insertOrganization({ ...values, ...state.formInfo }).subscribe(
         (res: any) => {
           ShowNotification.success('添加机构成功！');
@@ -92,18 +98,11 @@ export function useAddOrganizationStore(props: IAddOrganizationProps) {
    * @param name 表单项字段名
    * @param option 表单项获取额外信息
    */
-  function handleFormDataChange(value: string, name: string, option?: Record<string, any>) {
+  function handleFormDataChange(value: string, option?: Record<string, any>) {
     const { formInfo } = state;
-    switch (name) {
-      case 'parentId':
-        organizationForm.setFieldsValue({ parentId: value });
-        formInfo.parentCode = value ? option.info.code : '';
-        formInfo.parentName = value ? option.info.name : '';
-        break;
-      default:
-        organizationForm.setFieldsValue({ [name]: value });
-        break;
-    }
+    organizationForm.setFieldsValue({ parentId: value });
+    formInfo.parentCode = value ? option.info.code : '';
+    formInfo.parentName = value ? option.info.name : '';
     setStateWrap({ formInfo });
   }
 
@@ -146,5 +145,27 @@ export function useAddOrganizationStore(props: IAddOrganizationProps) {
       }
     );
   }
-  return { state, organizationForm, onSubmit, handleFormDataChange, getProvinceList, getCityList, getAreaList };
+  /**
+   * 获取机构类型下拉列表
+   */
+  function getTypeList() {
+    organizationManageService.queryOrganizationTypeListBySystemId(SYSTEMID).subscribe(
+      (res: any) => {
+        setStateWrap({ typeList: res });
+      },
+      (err: string) => {
+        ShowNotification.error(err);
+      }
+    );
+  }
+  return {
+    state,
+    organizationForm,
+    onSubmit,
+    handleFormDataChange,
+    getProvinceList,
+    getCityList,
+    getAreaList,
+    getTypeList
+  };
 }
