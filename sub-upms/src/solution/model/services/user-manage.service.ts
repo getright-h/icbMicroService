@@ -5,7 +5,8 @@ import {
   SetUserParams,
   SetUserPasswordParams,
   UserBelongInfoResponse,
-  PositionRelateRule
+  PositionRelateRule,
+  PasswordEditParams
 } from '../dto/user-manage.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
@@ -22,6 +23,8 @@ const SET_PASSWORD = 'prvilege/common/setPassword';
 const GET_USER_DETAIL = 'prvilege/common/userDetail';
 const QUERY_USER_BELONG_INFO = 'prvilege/common/queryOrganizationInfoByUserId';
 const QUERY_POSITION_ROLE_LIST = 'prvilege/common/queryPositionRoleList';
+const RESET_PASSWORD = 'prvilege/UpdatePassword';
+const UPDATE_PASSWORD = 'prvilege/common/setPassword';
 
 @DepUtil.Injectable()
 export class UserManageService extends UserManageDTO {
@@ -69,5 +72,15 @@ export class UserManageService extends UserManageDTO {
   // 查询岗位已关联角色
   queryPositionRoleList(positionId: string): Observable<Array<PositionRelateRule>> {
     return this.requestService.get(QUERY_POSITION_ROLE_LIST, { positionId });
+  }
+
+  // 重置密码
+  resetPassword(userId: string): Observable<string> {
+    return this.requestService.post(RESET_PASSWORD, { userId });
+  }
+
+  // 修改密码
+  updatePassword(params: PasswordEditParams): Observable<boolean> {
+    return this.requestService.post(UPDATE_PASSWORD, params);
   }
 }

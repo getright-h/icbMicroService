@@ -49,7 +49,6 @@ export function useAddOrganizationStore(props: IAddOrganizationProps) {
               ]
             : []
         });
-        console.log({ ...organizationForm.getFieldsValue(), ...state.formInfo });
         getProvinceList();
         getCityList();
         getAreaList();

@@ -2,7 +2,7 @@ import * as React from 'react';
 import style from './user-manage.component.less';
 import { useUserManageStore } from './user-manage.component.store';
 import { Input, Button } from 'antd';
-import { ITableComponent, TablePageTelComponent } from '~/solution/components/component.module';
+import { ITableComponent, TablePageTelComponent, IEditPasswordComponent } from '~/solution/components/component.module';
 import { userColumns } from './user-colomns';
 import UserLeftComponent from './user-left-component/user-left.component';
 import AddUserComponent from './add-user-component/add-user.component';
@@ -18,7 +18,7 @@ export default function UserManageComponent() {
     addUser,
     popClose
   } = useUserManageStore();
-  const { isLoading, searchForm, total, tableData, popVisible, isEdit, isDetail, userId } = state;
+  const { isLoading, searchForm, total, tableData, popVisible, isEdit, isDetail, userId, passwordVisible } = state;
   function renderPageLeft() {
     return <UserLeftComponent getSelectTreeNode={getSelectTreeNode}></UserLeftComponent>;
   }
@@ -91,6 +91,7 @@ export default function UserManageComponent() {
         table={renderTable()}
       ></TablePageTelComponent>
       <AddUserComponent visible={popVisible} isEdit={isEdit} isDetail={isDetail} userId={userId} close={popClose} />
+      <IEditPasswordComponent visible={passwordVisible} userId={userId} close={popClose} />
     </React.Fragment>
   );
 }
