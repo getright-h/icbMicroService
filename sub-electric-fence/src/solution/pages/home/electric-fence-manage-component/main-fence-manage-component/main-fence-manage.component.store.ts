@@ -16,8 +16,13 @@ export function useMainFenceManageStore() {
     };
   } = useRef();
 
+  function rowClick(record: FenceManageListReturnModal) {
+    setStateWrap({
+      mapInfo: record
+    });
+  }
+
   function onValueChange(key: string, value: any) {
-    console.log(key, value);
     if (key == 'formValueAndSubmit') {
       if (state.isEdit) {
         editFence({ ...state.singleFenceData, polyline: state.polygon, ...value });
@@ -42,12 +47,6 @@ export function useMainFenceManageStore() {
 
   // 保证传给后端的是个code
   function editFence(fenceData: FenceManageEditParamsModal | any) {
-    if (fenceData.fenceType == FENCETYPENUM.ADMINISTRATIVEDIVISION) {
-      const { city, district, province } = fenceData.district;
-      fenceData.districtAdcode =
-        (district && district.adcode) || (city && city.adcode) || (province && province.adcode);
-    }
-
     fenceManageService.fenceEdit(fenceData).subscribe(res => {
       setStateWrap({
         visible: false
@@ -69,6 +68,7 @@ export function useMainFenceManageStore() {
   // function onCrPlaceChangeBack(value)
   return {
     state,
+    rowClick,
     tableRef,
     onValueChange,
     searchClick,

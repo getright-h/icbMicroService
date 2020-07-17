@@ -15,9 +15,10 @@ export default function MainFenceManageComponent() {
     tableRef,
     searchClick,
     editPopShow,
-    changeSearchTableValue
+    changeSearchTableValue,
+    rowClick
   } = useMainFenceManageStore();
-  const { searchLoading, visible, isEdit, circleLocation, circlrR, currentChoose, singleFenceData } = state;
+  const { searchLoading, visible, isEdit, circleLocation, circlrR, mapInfo, currentChoose, singleFenceData } = state;
 
   function renderSelectItems() {
     return (
@@ -72,18 +73,19 @@ export default function MainFenceManageComponent() {
   const rightProps = {
     circleLocation,
     circlrR,
-    currentChoose
+    currentChoose,
+    mapInfo
   };
   return (
     <div>
       <TablePageTelComponent
         pageName={'围栏管理'}
         isLeft={true}
-        pageLeft={<MainFenceRightComponent {...rightProps} onValueChange={onValueChange} />}
+        pageLeft={<MainFenceRightComponent mapInfo={mapInfo} {...rightProps} onValueChange={onValueChange} />}
         selectItems={renderSelectItems()}
         searchButton={renderSearchButtons()}
         otherSearchBtns={renderOtherButtons()}
-        table={<MainFenceLeftComponent ref={tableRef} editPopShow={editPopShow} />}
+        table={<MainFenceLeftComponent rowClick={rowClick} ref={tableRef} editPopShow={editPopShow} />}
         rightFlex={5}
         drawerInfo={drawerInfo}
         leftFlex={2}

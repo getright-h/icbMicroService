@@ -30,6 +30,22 @@ export function useMainFenceLeftStore(props: IMainFenceLeftProps) {
     }
   }
 
+  function rowClick(record: FenceManageListReturnModal, event: any) {
+    try {
+      const allTrNodes = document.querySelectorAll('tr[data-row-key]');
+      allTrNodes.forEach(item => {
+        if (item.getAttribute('data-row-key') == record.id) {
+          item.className = 'ant-table-row ant-table-row-level-0 ant-table-row-selected';
+          return;
+        }
+        item.className = 'ant-table-row ant-table-row-level-0';
+      });
+      props.rowClick(record);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   function showConfirm(id: string) {
     confirm({
       title: '是否删除',
@@ -80,5 +96,5 @@ export function useMainFenceLeftStore(props: IMainFenceLeftProps) {
     });
     getFenceList();
   }
-  return { state, callbackAction, changeTablePageIndex, searchClick, onValueChange };
+  return { state, callbackAction, rowClick, changeTablePageIndex, searchClick, onValueChange };
 }

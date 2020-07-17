@@ -1,4 +1,5 @@
 import { FENCETYPENUM } from '../create-electric-fence-component/create-electric-fence.interface';
+import { FenceManageListReturnModal } from '~/solution/model/dto/fence-manage.dto';
 
 /**
  * @export state变量定义和初始化
@@ -12,6 +13,7 @@ export interface IMainFenceRightProps {
   polygonLocation?:  Array<number>,
   // 多边形path
   circlrPath?: any,
+  mapInfo?: FenceManageListReturnModal;
   // 行政区域path
   administrativeDivisionPath?: any,
   // 当前显示圆形 多边形 还是行政区域

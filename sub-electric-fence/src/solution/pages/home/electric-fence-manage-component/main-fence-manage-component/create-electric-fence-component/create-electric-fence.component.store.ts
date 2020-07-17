@@ -20,7 +20,7 @@ export function useCreateElectricFenceStore(props: ICreateElectricProps) {
   }
 
   function getAddressInfo(value: ISelectAddressState) {
-    addressInfo.current = value.area || value.city || value.province;
+    addressInfo.current = value.district || value.city || value.province;
   }
 
   _.debounce(handleChangeCircle, 1000);
@@ -40,8 +40,6 @@ export function useCreateElectricFenceStore(props: ICreateElectricProps) {
     geocoder.getAddress(centerPlace, function(status: string, result: any) {
       if (status === 'complete' && result.regeocode) {
         let info = '...';
-        console.log(result.regeocode.formattedAddress.length);
-
         if (result.regeocode.formattedAddress.length > 15) {
           info += result.regeocode.formattedAddress.slice(-10);
         }

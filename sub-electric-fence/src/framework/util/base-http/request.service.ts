@@ -23,7 +23,10 @@ class RequestService {
 
   private createAuthHeaders(): any {
     const headers = { token: '' };
-    const token = localStorage.getItem('TOKENINFO');
+
+    // const token = localStorage.getItem('TOKENINFO');
+    const token =
+      '5766fdebe2cea60cc71cd2422a4778c5:cf74367d9c3368da5b9475dff2b4390059f57c2b6a55416ce02b39d75b27efd730331df6df684c8510e7320de8e92e18572dc06ba3f350acee6d84c055cabcd06485f0155d7381d18cb091bd4a840d13344349b44487dec0dfdee456419862d1e07c7ead970596f3702f626e6007419522e81566625d51b7c60251f9a61d4ff0b902475691466bfb2fa10556887970c8c476677b9a69a86fa7539cae8cd4f990';
     if (token) {
       headers.token = token;
     }

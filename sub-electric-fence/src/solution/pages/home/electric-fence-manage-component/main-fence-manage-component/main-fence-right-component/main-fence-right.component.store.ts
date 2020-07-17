@@ -6,16 +6,45 @@ declare const AMap: any;
 declare const AMapUI: any;
 import * as _ from 'lodash';
 import { IMAP } from '~/solution/shared/util/map.util';
+import { FenceManageService } from '~/solution/model/services/fence-manage.service';
 export function useMainFenceRightStore(props: IMainFenceRightProps) {
   const { state } = useStateStore();
   const centerLocation = useRef([116.433322, 39.900256]);
   const map: any = useRef();
-  const { currentChoose = FENCETYPENUM.POLYGON, onValueChange, circlrR = 200 } = props;
+  const fenceManageService = new FenceManageService();
+  const { currentChoose = FENCETYPENUM.POLYGON, onValueChange, circlrR = 200, mapInfo } = props;
   let { circleLocation } = props;
   useEffect(() => {
     initMap();
     IMAP.getCurrentLocation(map.current, setCurrentCenter);
   }, []);
+  console.log('mapInfo', mapInfo);
+
+  useEffect(() => {
+    if (mapInfo) {
+      map.current.clearMap();
+      if (mapInfo.fenceType == FENCETYPENUM.POLYGON) {
+        const paths = exchangePath(mapInfo.polyline);
+        IMAP.createPolygon(null, map.current, paths, false);
+      } else if (mapInfo.fenceType == FENCETYPENUM.ADMINISTRATIVEDIVISION) {
+        // 获取当前的行政区域的点
+        const { city, district, province } = mapInfo.district;
+        const adcode = (district && district.adcode) || (city && city.adcode) || (province && province.adcode);
+        fenceManageService.fenceDistrictInfo({ adcode }).subscribe(res => {
+          const paths = exchangePath(res.polyline);
+          IMAP.createPolygon(null, map.current, paths, false);
+        });
+      }
+    }
+  }, [mapInfo]);
+
+  //转换{ lng: number; lat: number } 为 【lng， lat】
+  function exchangePath(polyline: Array<{ lng: number; lat: number }>) {
+    const paths = polyline.map(item => {
+      return [item.lng, item.lat];
+    });
+    return paths;
+  }
 
   function setCurrentCenter(lgnlat: [number, number]) {
     centerLocation.current = lgnlat;

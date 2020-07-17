@@ -19,7 +19,7 @@ export function useSelectAddressStore(props: ISelectAddressProps) {
       setStateWrap({
         city: city && city.adcode,
         province: province && province.adcode,
-        area: district && district.adcode
+        district: district && district.adcode
       });
     }
   }, [props.initValue]);

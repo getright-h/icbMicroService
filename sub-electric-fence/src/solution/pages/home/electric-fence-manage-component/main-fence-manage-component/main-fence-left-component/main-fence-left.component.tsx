@@ -7,7 +7,9 @@ import { Button, Input } from 'antd';
 import { IMainFenceLeftProps } from './main-fence-left.interface';
 
 function MainFenceLeftComponent(props: IMainFenceLeftProps, ref: any) {
-  const { state, callbackAction, changeTablePageIndex, searchClick, onValueChange } = useMainFenceLeftStore(props);
+  const { state, callbackAction, changeTablePageIndex, rowClick, searchClick, onValueChange } = useMainFenceLeftStore(
+    props
+  );
   const { isLoading, tableData, searchForm, total } = state;
   React.useImperativeHandle(ref, () => ({
     searchClick,
@@ -18,6 +20,7 @@ function MainFenceLeftComponent(props: IMainFenceLeftProps, ref: any) {
       <ITableComponent
         columns={stationColumns(callbackAction)}
         isLoading={isLoading}
+        rowClick={rowClick}
         pageIndex={searchForm.index}
         pageSize={searchForm.size}
         data={tableData}

@@ -18,4 +18,5 @@ export class IMainFenceLeftState {
 
 export interface IMainFenceLeftProps {
   editPopShow: (data: FenceManageListReturnModal) => void;
+  rowClick: (record: FenceManageListReturnModal) => void;
 }

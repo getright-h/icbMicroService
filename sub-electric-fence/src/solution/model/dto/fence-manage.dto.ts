@@ -46,7 +46,7 @@ export interface FenceManageDistrictReturnModal {
 }
 
 interface Polyline {
-  lon: number;
+  lng: number;
   lat: number;
 }
 
@@ -69,6 +69,20 @@ interface Circle {
   lat: number;
 }
 
+export interface FenceDistrictInfoReturn {
+  polyline: Polyline[];
+  parentAdcode: string;
+  id: string;
+  name: string;
+  adcode: string;
+  level: string;
+}
+
+interface Polyline {
+  lng: number;
+  lat: number;
+}
+
 export interface FenceManageDTO {
     fenceCreate(params: FenceManageCreateParamsModal): Observable<number>;
     fenceEdit(params: FenceManageEditParamsModal): Observable<number>;
@@ -79,4 +93,5 @@ export interface FenceManageDTO {
     }): Observable<{ data: Array<FenceManageListReturnModal>; total: number }>
     fenceDelete(params: {id: string}): Observable<number>;
     fenceDistrict(params: { parentCode: string }): Observable<{ data: FenceManageDistrictReturnModal }>;
+    fenceDistrictInfo(params: { adcode: string }): Observable<FenceDistrictInfoReturn>;
 }

@@ -12,6 +12,7 @@ export class IMainFenceManageState {
   circleLocation: any;
   circlrR? = 200;
   isEdit = false;
+  mapInfo: FenceManageListReturnModal;
   polygon: any[];
   polygonLocation? = { lat: 0, lng: 0 };
   circlrPath?: any = [];
