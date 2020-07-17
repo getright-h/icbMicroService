@@ -11,7 +11,7 @@ let geocoder = new AMap.Geocoder({
 });
 export function useCreateElectricFenceStore(props: ICreateElectricProps) {
   const { state, setStateWrap } = useStateStore(new ICreateElectricFenceState());
-  const { onValueChange, circlrR, centerPlace, editData} = props;
+  const { onValueChange, circlrR, centerPlace, editData } = props;
   const [form] = Form.useForm();
   function onFinish(values: Store) {
     console.log(values);

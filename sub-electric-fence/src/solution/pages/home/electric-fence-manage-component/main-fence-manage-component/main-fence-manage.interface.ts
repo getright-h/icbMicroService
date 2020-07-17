@@ -21,5 +21,5 @@ export class IMainFenceManageState {
     size: PAGESIZE,
     name: ''
   };
-  singleFenceData: FenceManageListReturnModal
+  singleFenceData: FenceManageListReturnModal;
 }

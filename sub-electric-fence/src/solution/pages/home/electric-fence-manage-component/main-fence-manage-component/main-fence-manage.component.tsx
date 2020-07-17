@@ -9,7 +9,14 @@ import CreateElectricFenceComponent from './create-electric-fence-component/crea
 import * as _ from 'lodash';
 
 export default function MainFenceManageComponent() {
-  const { state, onValueChange, tableRef, searchClick,editPopShow, changeSearchTableValue } = useMainFenceManageStore();
+  const {
+    state,
+    onValueChange,
+    tableRef,
+    searchClick,
+    editPopShow,
+    changeSearchTableValue
+  } = useMainFenceManageStore();
   const { searchLoading, visible, circleLocation, circlrR, currentChoose, singleFenceData } = state;
 
   function renderSelectItems() {
@@ -52,7 +59,12 @@ export default function MainFenceManageComponent() {
     getContainer: false,
     onCloseDrawer: () => onValueChange('visible', false),
     container: (
-      <CreateElectricFenceComponent onValueChange={onValueChange} editData={singleFenceData}  circlrR={circlrR} centerPlace={circleLocation} />
+      <CreateElectricFenceComponent
+        onValueChange={onValueChange}
+        editData={singleFenceData}
+        circlrR={circlrR}
+        centerPlace={circleLocation}
+      />
     )
   };
 
@@ -70,7 +82,7 @@ export default function MainFenceManageComponent() {
         selectItems={renderSelectItems()}
         searchButton={renderSearchButtons()}
         otherSearchBtns={renderOtherButtons()}
-        table={<MainFenceLeftComponent ref={tableRef} editPopShow={editPopShow}/>}
+        table={<MainFenceLeftComponent ref={tableRef} editPopShow={editPopShow} />}
         rightFlex={5}
         drawerInfo={drawerInfo}
         leftFlex={2}

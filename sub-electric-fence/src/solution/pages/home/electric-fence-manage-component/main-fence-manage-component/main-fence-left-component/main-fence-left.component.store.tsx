@@ -12,7 +12,7 @@ export function useMainFenceLeftStore(props: IMainFenceLeftProps) {
   const { state, setStateWrap, getState } = useStateStore(new IMainFenceLeftState());
   const fenceManageService = new FenceManageService();
   const { searchForm } = state;
-  const {editPopShow} = props;
+  const { editPopShow } = props;
 
   useEffect(() => {
     getFenceList();
@@ -42,14 +42,14 @@ export function useMainFenceLeftStore(props: IMainFenceLeftProps) {
       },
       onCancel() {
         console.log('取消');
-      },
+      }
     });
   }
 
   function confirmDeleteFence(id: string) {
-    fenceManageService.fenceDelete({id}).subscribe((res) => {
+    fenceManageService.fenceDelete({ id }).subscribe(res => {
       searchClick();
-    })
+    });
   }
 
   function getFenceList() {
