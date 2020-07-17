@@ -6,6 +6,7 @@ import { ShowNotification } from '~/framework/util/common';
 import { StorageUtil } from '~/framework/util/storage';
 
 const SYSTEMID = StorageUtil.getLocalStorage('systemId');
+const USERID = StorageUtil.getLocalStorage('userId');
 
 export function useRoleManageStore() {
   const { state, setStateWrap } = useStateStore(new IRoleManageState());
@@ -13,7 +14,7 @@ export function useRoleManageStore() {
 
   function getRoleTableData() {
     setStateWrap({ isLoading: true });
-    roleManageService.queryRoleList({ systemId: SYSTEMID }).subscribe(
+    roleManageService.queryRoleList({ systemId: SYSTEMID, userId: USERID }).subscribe(
       (res: any) => {
         setStateWrap({ roleList: res, isLoading: false });
       },

@@ -9,6 +9,7 @@ import { useEffect, useRef } from 'react';
 import _ from 'lodash';
 import { StorageUtil } from '~/framework/util/storage';
 
+const USERID = StorageUtil.getLocalStorage('userId');
 const SYSTEMID = StorageUtil.getLocalStorage('systemId');
 const SYSTEMCODE = StorageUtil.getLocalStorage('systemCode');
 
@@ -21,7 +22,7 @@ export function useAddUserStore(props: IAddUserProps) {
   const relateRoles = useRef({});
 
   useEffect(() => {
-    getRoleOptions(SYSTEMID);
+    getRoleOptions(SYSTEMID, USERID);
   }, []);
 
   useEffect(() => {
@@ -76,8 +77,8 @@ export function useAddUserStore(props: IAddUserProps) {
     userForm.setFieldsValue([organizationIds]);
   }
 
-  function getRoleOptions(systemId: string) {
-    roleManageService.queryRoleList({ systemId }).subscribe(
+  function getRoleOptions(systemId: string, userId: string) {
+    roleManageService.queryRoleList({ systemId, userId }).subscribe(
       (res: any) => {
         setStateWrap({ roleOptions: res });
       },
