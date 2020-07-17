@@ -11,7 +11,6 @@ import { DepUtil } from '~/framework/aop/inject';
  * 真实开发中，请将示例代码移除
  */
 
-const QUERY_ORGANIZATION_TYPE = 'prvilege/common/queryOrganizationTypeListBySystemId';
 const QUERY_ORGANIZATION_LIST = 'prvilege/common/queryOrganizationSelectPagedList';
 
 @DepUtil.Injectable()
@@ -22,9 +21,6 @@ export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
     super();
   }
 
-  queryOrganizationType(params: { systemId: string }): Observable<DrapChooseLoadingReturn> {
-    return this.requestService.get(QUERY_ORGANIZATION_TYPE, params);
-  }
   queryOrganizationSelectList(params: OrganizationSelectListParams): Observable<DrapChooseLoadingReturn> {
     return this.requestService.post(QUERY_ORGANIZATION_LIST, params);
   }

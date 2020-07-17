@@ -44,7 +44,9 @@ export function userColumns(action: Function): ColumnsType<UserTableData> {
             <Divider type="vertical" />
             <a onClick={() => action('编辑', row)}>编辑</a>
             <Divider type="vertical" />
-            <a onClick={() => action('权限', row)}>权限</a>
+            <a onClick={() => action('修改密码', row)}>修改密码</a>
+            <Divider type="vertical" />
+            <a onClick={() => action('重置密码', row)}>重置密码</a>
             <Divider type="vertical" />
             <a onClick={() => action('删除', row)}>删除</a>
           </React.Fragment>

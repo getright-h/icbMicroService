@@ -28,6 +28,7 @@ export default function SelectGroupComponent(props: ISelectGroupProps) {
             systemId: SYSTEMID,
             hierarchyType: 0
           }}
+          searchKey={selectValues ? selectValues.organizationName : ''}
           selectedValue={selectValues ? selectValues.organizationId : undefined}
           getCurrentSelectInfo={(value, option) => props.handleOrganSelect(option, index, 'organization')}
         ></ISelectLoadingComponent>
@@ -37,6 +38,7 @@ export default function SelectGroupComponent(props: ISelectGroupProps) {
           reqUrl="queryOrganizationSelectList"
           placeholder="请选择部门"
           searchForm={searchDepartForm}
+          searchKey={selectValues ? selectValues.departmentName : ''}
           selectedValue={selectValues ? selectValues.departmentId : undefined}
           getCurrentSelectInfo={(value, option) => props.handleOrganSelect(option, index, 'department')}
         ></ISelectLoadingComponent>
@@ -46,6 +48,7 @@ export default function SelectGroupComponent(props: ISelectGroupProps) {
           reqUrl="queryOrganizationSelectList"
           placeholder="请选择岗位"
           searchForm={searchPositionForm}
+          searchKey={selectValues ? selectValues.positionName : ''}
           selectedValue={selectValues ? selectValues.positionId : undefined}
           getCurrentSelectInfo={(value, option) => props.handleOrganSelect(option, index, 'position')}
         ></ISelectLoadingComponent>

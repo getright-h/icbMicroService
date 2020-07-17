@@ -14,6 +14,8 @@ export abstract class UserManageDTO {
   abstract getUserDetail(strValue: string): Observable<UserInfoResponse>;
   abstract queryOrganizationInfoByUserId(userId: string): Observable<Array<UserBelongInfoResponse>>;
   abstract queryPositionRoleList(positionId: string): Observable<Array<PositionRelateRule>>;
+  abstract resetPassword(userId: string): Observable<string>;
+  abstract updatePassword(params: PasswordEditParams): Observable<boolean>;
 }
 
 // 示例 Dto
@@ -134,4 +136,10 @@ export interface PositionRelateRule {
   roleCode: string;
   createTime: string;
   systemId: string;
+}
+
+export interface PasswordEditParams {
+  oldPassword: string;
+  newPassword: string;
+  userId: string;
 }

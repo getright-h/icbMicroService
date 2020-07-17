@@ -15,11 +15,13 @@ export default function ISelectLoadingComponent(props: IISelectLoadingProps) {
       placeholder={placeholder}
       filterOption={false}
       value={state.value}
-      // defaultValue={state.value}
+      defaultValue={state.value}
       onChange={getCurrentSelectInfo}
       onPopupScroll={optionScroll}
-      onFocus={() => fetchOptions(true)}
-      showSearch={props.showSearch || false}
+      // onFocus={!optionList.length ? () => fetchOptions(false) : () => {}}
+      onFocus={() => fetchOptions(false)}
+      showSearch={props.showSearch || true}
+      // onSearch={$event => fetchOptions(true, $event)}
       allowClear={true}
     >
       {optionList &&
