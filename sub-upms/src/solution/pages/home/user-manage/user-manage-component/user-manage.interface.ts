@@ -45,4 +45,5 @@ export class IUserManageState {
   isDetail = false;
   popVisible = false;
   userId: string;
+  passwordVisible = false;
 }

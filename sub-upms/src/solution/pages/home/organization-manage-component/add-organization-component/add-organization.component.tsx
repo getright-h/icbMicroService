@@ -19,7 +19,7 @@ export default function AddOrganizationComponent(props: IAddOrganizationProps) {
     getCityList,
     getAreaList
   } = useAddOrganizationStore(props);
-  const { provinceList, cityList, areaList, confirmLoading } = state;
+  const { typeList, provinceList, cityList, areaList, confirmLoading } = state;
   const formItemLayout = {
     labelCol: {
       xs: { span: 24 },
@@ -34,13 +34,14 @@ export default function AddOrganizationComponent(props: IAddOrganizationProps) {
     return (
       <div className={style.baseInfo}>
         <Form.Item label="机构类型" name="typeId" className="form-item" rules={[{ required: true }]}>
-          <ISelectLoadingComponent
-            reqUrl="queryOrganizationType"
-            placeholder="请选择机构类型"
-            searchForm={{ systemId: SYSTEMID }}
-            selectedValue={organizationForm.getFieldValue('typeId')}
-            getCurrentSelectInfo={(value, option) => handleFormDataChange(value, 'typeId')}
-          ></ISelectLoadingComponent>
+          <Select placeholder="请选择机构类型">
+            {typeList &&
+              typeList.map(item => (
+                <Select.Option value={item.id} key={item.id}>
+                  {item.name}
+                </Select.Option>
+              ))}
+          </Select>
         </Form.Item>
         <Form.Item label="机构全称" name="unitName" className="form-item" rules={[{ required: true }]}>
           <Input placeholder="请输入机构全称" />
@@ -57,9 +58,10 @@ export default function AddOrganizationComponent(props: IAddOrganizationProps) {
               hierarchyType: 0,
               typeId: organizationForm.getFieldValue('typeId')
             }}
+            searchKey={organizationForm.getFieldValue('parentName') || ''}
             selectedValue={organizationForm.getFieldValue('parentId') || undefined}
-            disabled={!organizationForm.getFieldValue('typeId')}
-            getCurrentSelectInfo={(value, option) => handleFormDataChange(value, 'parentId', option)}
+            // disabled={!organizationForm.getFieldValue('typeId')}
+            getCurrentSelectInfo={(value, option) => handleFormDataChange(value, option)}
           ></ISelectLoadingComponent>
         </Form.Item>
         <Form.Item

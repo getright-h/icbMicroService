@@ -83,7 +83,6 @@ export function useUserManageStore() {
     setStateWrap({ popVisible: true, isEdit: false, isDetail: false, userId: '' });
   }
   function tableAction(actionName: string, row: any) {
-    console.log(row);
     switch (actionName) {
       case '详情':
         setStateWrap({ popVisible: true, isEdit: true, isDetail: true, userId: row.id });
@@ -91,7 +90,30 @@ export function useUserManageStore() {
       case '编辑':
         setStateWrap({ popVisible: true, isEdit: true, isDetail: false, userId: row.id });
         break;
-      case '权限':
+      case '修改密码':
+        setStateWrap({ passwordVisible: true, userId: row.id });
+        break;
+      case '重置密码':
+        Modal.confirm({
+          title: '确定为此用户重置密码吗？',
+          icon: <ExclamationCircleOutlined />,
+          onOk: () =>
+            new Promise((resolve, reject) => {
+              userManageService.resetPassword(row.id).subscribe(
+                (res: any) => {
+                  Modal.success({
+                    content: `密码已重置为${res}`
+                  });
+                  getTableData(true);
+                  resolve();
+                },
+                (err: any) => {
+                  ShowNotification.error(err);
+                  reject();
+                }
+              );
+            })
+        });
         break;
       case '删除':
         Modal.confirm({
@@ -116,7 +138,7 @@ export function useUserManageStore() {
     }
   }
   function popClose(isSuccess?: boolean) {
-    setStateWrap({ popVisible: false });
+    setStateWrap({ popVisible: false, passwordVisible: false });
     if (isSuccess) {
       getTableData(true);
     }

@@ -1,3 +1,3 @@
-export class IProps {
-  
+export class IIHomeHeaderState {
+  passwordVisible = false;
 }
