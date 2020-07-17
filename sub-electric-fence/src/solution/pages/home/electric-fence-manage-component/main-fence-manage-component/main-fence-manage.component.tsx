@@ -62,7 +62,10 @@ export default function MainFenceManageComponent() {
       <CreateElectricFenceComponent
         onValueChange={onValueChange}
         editData={singleFenceData}
+<<<<<<< HEAD
+=======
         isEdit={isEdit}
+>>>>>>> caa6db3c71d1c632e6b071cb424d1aa4fce831ec
         circlrR={circlrR}
         centerPlace={circleLocation}
       />

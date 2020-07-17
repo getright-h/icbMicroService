@@ -3,5 +3,17 @@
  * @class IFenceAttentionState
  */
 export class IFenceAttentionState {
-
+  isLoading = false;
+  searchForm: { index: number; size: number } = {
+    index: 1,
+    size: 10
+  };
+  tableData: any = [];
+  total = 0;
+  searchLoading = false;
+  confirmModalLoading = false;
+  visibleModal = false;
+  modalTitle = '';
+  modalWidth = 700;
+  modalContainer: JSX.Element = null;
 }
