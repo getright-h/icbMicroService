@@ -1,14 +1,14 @@
 import { IAddOrganizationState, IAddOrganizationProps } from './add-organization.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { Form } from 'antd';
 import { OrganizationManageService } from '~/solution/model/services/organization-manage.service';
 import { ShowNotification } from '~/framework/util/common';
-import { StorageUtil } from '~/framework/util/storage';
-
-const SYSTEMID = StorageUtil.getLocalStorage('systemId');
+import { IGlobalState } from '~/solution/context/global/global.interface';
+import { GlobalContext } from '~/solution/context/global/global.provider';
 
 export function useAddOrganizationStore(props: IAddOrganizationProps) {
+  const { gState }: IGlobalState = useContext(GlobalContext);
   const { visible, id } = props;
   const { state, setStateWrap } = useStateStore(new IAddOrganizationState());
   const organizationManageService = useService(OrganizationManageService);
@@ -148,7 +148,7 @@ export function useAddOrganizationStore(props: IAddOrganizationProps) {
    * 获取机构类型下拉列表
    */
   function getTypeList() {
-    organizationManageService.queryOrganizationTypeListBySystemId(SYSTEMID).subscribe(
+    organizationManageService.queryOrganizationTypeListBySystemId(gState.myInfo.systemId).subscribe(
       (res: any) => {
         setStateWrap({ typeList: res });
       },

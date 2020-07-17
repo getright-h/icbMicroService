@@ -3,11 +3,11 @@ import style from './edit-station.component.less';
 import { useEditStationStore } from './edit-station.component.store';
 import { Modal, Form, Select, Input, Radio } from 'antd';
 import { ISelectLoadingComponent } from '~/solution/components/component.module';
-import { StorageUtil } from '~/framework/util/storage';
-
-const SYSTEMID = StorageUtil.getLocalStorage('systemId');
+import { GlobalContext } from '~/solution/context/global/global.provider';
+import { IGlobalState } from '~/solution/context/global/global.interface';
 
 export default function EditStationComponent(props: any) {
+  const { gState }: IGlobalState = React.useContext(GlobalContext);
   const [stationForm] = Form.useForm();
   const { title, visible, close, isEdit, info } = props;
   const { state, selfClose, selfSubmit, getRoleList, selectOrganization } = useEditStationStore(
@@ -56,7 +56,7 @@ export default function EditStationComponent(props: any) {
               <ISelectLoadingComponent
                 reqUrl="queryOrganizationSelectList"
                 placeholder="请选择所属机构"
-                searchForm={{ systemId: SYSTEMID, hierarchyType: 0 }}
+                searchForm={{ systemId: gState.myInfo.systemId, hierarchyType: 0 }}
                 getCurrentSelectInfo={(value, option) => selectOrganization(value, option)}
               ></ISelectLoadingComponent>
             </Form.Item>
@@ -64,7 +64,7 @@ export default function EditStationComponent(props: any) {
               <ISelectLoadingComponent
                 reqUrl="queryOrganizationSelectList"
                 placeholder="请选择所属部门"
-                searchForm={{ systemId: SYSTEMID, hierarchyType: 1, parentCode: state.parentCode }}
+                searchForm={{ systemId: gState.myInfo.systemId, hierarchyType: 1, parentCode: state.parentCode }}
                 getCurrentSelectInfo={(value, option) => stationForm.setFieldsValue({ parentDepartmentId: value })}
               ></ISelectLoadingComponent>
             </Form.Item>

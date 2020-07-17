@@ -55,7 +55,12 @@ export const IMAP = {
       const x = circleLocation[0];
       const y = circleLocation[1];
 
-      path = [[x - 0.0508, y - 0.045], [x - 0.0508, y + 0.045], [x + 0.0508, y + 0.045], [x + 0.0508, y - 0.045]];
+      path = [
+        [x - 0.0508, y - 0.045],
+        [x - 0.0508, y + 0.045],
+        [x + 0.0508, y + 0.045],
+        [x + 0.0508, y - 0.045]
+      ];
     }
     const polygon = new AMap.Polygon({
       strokeWeight: 1,

@@ -1,7 +1,4 @@
 import { OrganizationId } from '~/solution/model/dto/user-manage.dto';
-import { StorageUtil } from '~/framework/util/storage';
-
-const SYSTEMID = StorageUtil.getLocalStorage('systemId');
 
 /**
  * @export state变量定义和初始化
@@ -9,12 +6,10 @@ const SYSTEMID = StorageUtil.getLocalStorage('systemId');
  */
 export class ISelectGroupState {
   searchDepartForm: SearchForm = {
-    systemId: SYSTEMID,
     hierarchyType: 1,
     parentCode: ''
   };
   searchPositionForm: SearchForm = {
-    systemId: SYSTEMID,
     hierarchyType: 2,
     parentCode: ''
   };
@@ -36,7 +31,6 @@ interface FieldData {
   fieldKey: number;
 }
 interface SearchForm {
-  systemId: string;
   hierarchyType: number;
   parentCode: string;
 }

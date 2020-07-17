@@ -1,4 +1,4 @@
-import { LoginDTO, LoginParam, LoginResult, VCodeInfo, MyAccountInfo } from '../dto/login.dto';
+import { LoginDTO, LoginParam, LoginResult, VCodeInfo } from '../dto/login.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
 import { DepUtil } from '~/framework/aop/inject';
@@ -9,7 +9,6 @@ import { DepUtil } from '~/framework/aop/inject';
 
 const LOGIN_PATH = 'GlobPermissionVerificationPlugin/Login';
 const VERIFICATION_CODE = 'GlobPermissionVerificationPlugin/VerifyCode';
-const GET_MY_INFO = 'prvilege/GetMyInfo';
 
 @DepUtil.Injectable()
 export class LoginService extends LoginDTO {
@@ -27,10 +26,5 @@ export class LoginService extends LoginDTO {
   // 获取验证码
   getVerificationCode(codeKey: string): Observable<VCodeInfo> {
     return this.requestService.get(VERIFICATION_CODE, { codeKey });
-  }
-
-  // 获取登录用户信息
-  getMyInfo(): Observable<MyAccountInfo> {
-    return this.requestService.get(GET_MY_INFO);
   }
 }

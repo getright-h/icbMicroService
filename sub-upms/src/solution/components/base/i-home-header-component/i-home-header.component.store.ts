@@ -7,9 +7,6 @@ export function useHomeHeaderStore() {
   const { state, setStateWrap } = useStateStore(new IIHomeHeaderState());
   function logout() {
     StorageUtil.removeLocalStorage('token');
-    StorageUtil.removeLocalStorage('userId');
-    StorageUtil.removeLocalStorage('systemId');
-    StorageUtil.removeLocalStorage('systemCode');
     HistoryService.getHashHistory().push('/login');
   }
 
