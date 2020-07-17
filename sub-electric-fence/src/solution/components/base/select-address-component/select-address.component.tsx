@@ -2,46 +2,60 @@ import * as React from 'react';
 import style from './select-address.component.less';
 import { Select } from 'antd';
 import { useSelectAddressStore } from './select-address.component.store';
-import { ADDRESSINFO } from './select-address.interface';
+import { ADDRESSINFO, ISelectAddressProps } from './select-address.interface';
 const { Option } = Select;
-export default function SelectAddressComponent() {
-  const { state, getAddressInfo } = useSelectAddressStore();
-  const { city, province, area } = state;
+const { map } = React.Children;
+export default function SelectAddressComponent(props: ISelectAddressProps) {
+  const { state, getAddressInfo } = useSelectAddressStore(props);
+  const { city, province, area, citys, provinces, areas } = state;
+
   return (
     <div>
       <>
         <Select
-          defaultValue={province[0].adcode}
-          style={{ width: 120 }}
-          onChange={adcode => getAddressInfo(ADDRESSINFO.CITY, adcode)}
+          value={provinces && province}
+          style={{ width: 100, marginLeft: '-80px' }}
+          placeholder="请输入省"
+          allowClear
+          onChange={adcode => getAddressInfo(ADDRESSINFO.CITY, adcode, ADDRESSINFO.PROVINCE)}
         >
-          {province.map(item => (
-            <Option key={item.adcode} value={item.adcode}>
-              {item.name}
-            </Option>
-          ))}
+          {provinces &&
+            provinces.length &&
+            provinces.map(item => (
+              <Option key={item.adcode} value={item.adcode}>
+                {item.name}
+              </Option>
+            ))}
         </Select>
         <Select
-          style={{ width: 120 }}
-          defaultValue={city[0].adcode}
-          onChange={adcode => getAddressInfo(ADDRESSINFO.AREA, adcode)}
+          style={{ width: 100 }}
+          placeholder="请输入市"
+          allowClear
+          value={citys && city}
+          onChange={adcode => getAddressInfo(ADDRESSINFO.AREA, adcode, ADDRESSINFO.CITY)}
         >
-          {city.map(item => (
-            <Option key={item.adcode} value={item.adcode}>
-              {item.name}
-            </Option>
-          ))}
+          {citys &&
+            citys.length &&
+            citys.map(item => (
+              <Option key={item.adcode} value={item.adcode}>
+                {item.name}
+              </Option>
+            ))}
         </Select>
         <Select
-          style={{ width: 120 }}
-          defaultValue={area[0].adcode}
-          onChange={adcode => getAddressInfo(ADDRESSINFO.AREA, adcode)}
+          style={{ width: 100 }}
+          placeholder="请输入区"
+          allowClear
+          value={areas && areas.length ? area : undefined}
+          onChange={adcode => getAddressInfo(undefined, adcode, ADDRESSINFO.AREA)}
         >
-          {area.map(item => (
-            <Option key={item.adcode} value={item.adcode}>
-              {item.name}
-            </Option>
-          ))}
+          {areas &&
+            areas.length &&
+            areas.map(item => (
+              <Option key={item.adcode} value={item.adcode}>
+                {item.name}
+              </Option>
+            ))}
         </Select>
       </>
     </div>
