@@ -2,19 +2,23 @@ import { IUserManageState } from './user-manage.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
 import { Subscription } from 'rxjs';
 import { UserManageService } from '~/solution/model/services/user-manage.service';
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext, useRef } from 'react';
 import { ShowNotification } from '~/framework/util/common';
 import { Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { IGlobalState } from '~/solution/context/global/global.interface';
+import { GlobalContext } from '~/solution/context/global/global.provider';
 
 export function useUserManageStore() {
+  const { gState }: IGlobalState = useContext(GlobalContext);
   const { state, setStateWrap, getState } = useStateStore(new IUserManageState());
   const userManageService: UserManageService = useService(UserManageService);
   let getTableDataSubscription: Subscription;
 
+  const systemId = useRef(gState.myInfo.systemId);
+
   function getSelectTreeNode(node: Record<string, any>) {
     const searchForm = {
-      systemId: process.env.SYSTEM_ID,
       name: '',
       telephone: '',
       organizationCode: '',
@@ -38,7 +42,7 @@ export function useUserManageStore() {
         searchForm.typeId = node.id;
         break;
     }
-    searchForm.systemId = node.systemId;
+    systemId.current = node.systemId;
     setStateWrap({ searchForm });
     getTableData();
   }
@@ -47,7 +51,7 @@ export function useUserManageStore() {
     const { searchForm } = getState();
     isClick && (searchForm.index = 1);
     setStateWrap({ searchForm });
-    getTableDataSubscription = userManageService.queryUserList(searchForm).subscribe(
+    getTableDataSubscription = userManageService.queryUserList({ systemId: systemId.current, ...searchForm }).subscribe(
       (res: any) => {
         setStateWrap({ tableData: res.dataList, total: res.total });
       },
@@ -80,7 +84,6 @@ export function useUserManageStore() {
     setStateWrap({ popVisible: true, isEdit: false, isDetail: false, userId: '' });
   }
   function tableAction(actionName: string, row: any) {
-    console.log(row);
     switch (actionName) {
       case '详情':
         setStateWrap({ popVisible: true, isEdit: true, isDetail: true, userId: row.id });
@@ -88,7 +91,30 @@ export function useUserManageStore() {
       case '编辑':
         setStateWrap({ popVisible: true, isEdit: true, isDetail: false, userId: row.id });
         break;
-      case '权限':
+      case '修改密码':
+        setStateWrap({ passwordVisible: true, userId: row.id });
+        break;
+      case '重置密码':
+        Modal.confirm({
+          title: '确定为此用户重置密码吗？',
+          icon: <ExclamationCircleOutlined />,
+          onOk: () =>
+            new Promise((resolve, reject) => {
+              userManageService.resetPassword(row.id).subscribe(
+                (res: any) => {
+                  Modal.success({
+                    content: `密码已重置为${res}`
+                  });
+                  getTableData(true);
+                  resolve();
+                },
+                (err: any) => {
+                  ShowNotification.error(err);
+                  reject();
+                }
+              );
+            })
+        });
         break;
       case '删除':
         Modal.confirm({
@@ -113,7 +139,7 @@ export function useUserManageStore() {
     }
   }
   function popClose(isSuccess?: boolean) {
-    setStateWrap({ popVisible: false });
+    setStateWrap({ popVisible: false, passwordVisible: false });
     if (isSuccess) {
       getTableData(true);
     }

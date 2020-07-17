@@ -9,8 +9,11 @@ import {
 } from '~/solution/components/component.module';
 import { stationColumns } from './station-columns';
 import EditStationComponent from './edit-station-component/edit-station.component';
+import { IGlobalState } from '~/solution/context/global/global.interface';
+import { GlobalContext } from '~/solution/context/global/global.provider';
 
 export default function StationManageComponent() {
+  const { gState }: IGlobalState = React.useContext(GlobalContext);
   const {
     state,
     changeTablePageIndex,
@@ -29,8 +32,7 @@ export default function StationManageComponent() {
           <ISelectLoadingComponent
             reqUrl="queryOrganizationSelectList"
             placeholder="请选择所属机构"
-            searchForm={{ systemId: process.env.SYSTEM_ID, hierarchyType: 0 }}
-            // defaultValue={state.formInfo.distributorName}
+            searchForm={{ systemId: gState.myInfo.systemId, hierarchyType: 0 }}
             getCurrentSelectInfo={(value, option) => handleFormDataChange(value, 'parentOrganizationCode', option)}
           ></ISelectLoadingComponent>
         </div>
@@ -40,11 +42,10 @@ export default function StationManageComponent() {
             reqUrl="queryOrganizationSelectList"
             placeholder="请选择所属部门"
             searchForm={{
-              systemId: process.env.SYSTEM_ID,
+              systemId: gState.myInfo.systemId,
               hierarchyType: 1,
               parentCode: searchForm.parentOrganizationCode
             }}
-            // defaultValue={state.formInfo.distributorName}
             getCurrentSelectInfo={(value, option) => handleFormDataChange(value, 'code', option)}
           ></ISelectLoadingComponent>
         </div>

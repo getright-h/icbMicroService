@@ -19,4 +19,7 @@ export {
 export {
   default as IUploadImgComponent
 } from '~/solution/components/base/i-upload-img-component/i-upload-img.component';
+export {
+  default as IEditPasswordComponent
+} from '~/solution/components/base/i-edit-password-component/i-edit-password.component';
 //  -- Package End --

@@ -55,7 +55,8 @@ export function useMainFenceLeftStore(props: IMainFenceLeftProps) {
   function getFenceList() {
     fenceManageService.fenceList(getState().searchForm).subscribe(res => {
       setStateWrap({
-        tableData: res
+        tableData: res.data,
+        total: res.total
       });
     });
   }

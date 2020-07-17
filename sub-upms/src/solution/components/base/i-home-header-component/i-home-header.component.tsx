@@ -6,9 +6,10 @@ import style from './i-home-header.component.less';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 import { TYPES } from '~/solution/context/global/store/global.type';
 import { IGlobalState } from '~/solution/context/global/global.interface';
+import { IEditPasswordComponent } from '../../component.module';
 
 export function IHomeHeaderComponent() {
-  const { logout, changePwd } = useHomeHeaderStore();
+  const { state, logout, changePwd, popClose } = useHomeHeaderStore();
   const { dispatch, gState }: IGlobalState = React.useContext(GlobalContext);
   function renderActionContent() {
     return (
@@ -20,6 +21,7 @@ export function IHomeHeaderComponent() {
         <a onClick={changePwd} className="a-link">
           修改密码
         </a>
+        <IEditPasswordComponent visible={state.passwordVisible} userId={gState.myInfo.userId} close={popClose} />
       </div>
     );
   }
@@ -35,7 +37,7 @@ export function IHomeHeaderComponent() {
               </div>
               <div className={style.headerLogo}>
                 {/* <img src={logo} /> */}
-                <span>👑风控4.0系统</span>
+                <span>风控权限</span>
               </div>
             </div>
           </div>

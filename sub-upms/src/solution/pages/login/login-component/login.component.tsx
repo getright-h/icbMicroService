@@ -7,12 +7,14 @@ import { Input, Checkbox, Button, Form } from 'antd';
 import { useStore } from '~/framework/aop/hooks/use-base-store';
 import { reducer, initialState } from './store/reducer';
 import { setState } from '~/framework/microAPP/appStore';
+import { FormInstance } from 'antd/lib/form';
 
 function LoginComponentOrigin(props: IProps) {
   // 初始化 store
   const store: LoginStore = useStore(LoginStore, props);
   const { state } = store.useReducer<IState>(reducer, initialState);
   const { leftRef, leftCoverRef } = store.useRefs();
+  const loginForm = React.createRef<FormInstance>();
 
   // 设置页面宽高
   const setLeftCoverHeight = useCallback(() => {
@@ -50,25 +52,38 @@ function LoginComponentOrigin(props: IProps) {
           </p>
         </div>
         <div className={style.loginBox}>
-          <Form className="login-form" onFinish={store.handleSubmit} initialValues={{ checked: true }}>
-            <Form.Item rules={[{ required: true, message: '请输入用户名' }]}>
+          <Form className="login-form" ref={loginForm} onFinish={store.handleSubmit}>
+            <Form.Item name="account" rules={[{ required: true, message: '请输入用户名' }]}>
               <Input prefix={<UserOutlined />} placeholder="请输入用户名" />
             </Form.Item>
-            <Form.Item rules={[{ required: true, message: '请输入登录密码' }]}>
+            <Form.Item name="password" rules={[{ required: true, message: '请输入登录密码' }]}>
               <Input prefix={<LockOutlined />} type="password" placeholder="请输入登录密码" />
             </Form.Item>
-            <Form.Item className={style.formFlexItem} rules={[{ required: true, message: '请输入验证码' }]}>
-              <Input prefix={<SafetyCertificateOutlined />} className={style.vcodeInput} placeholder="请输入验证码" />
-              <div className={style.vcodeBox}>验证码</div>
+            <Form.Item
+              name="vcode"
+              className={style.formFlexItem}
+              rules={[{ required: true, message: '请输入验证码' }]}
+            >
+              <Input
+                prefix={<SafetyCertificateOutlined />}
+                className={style.vcodeInput}
+                placeholder="请输入验证码"
+                onChange={e => {
+                  loginForm.current.setFieldsValue({ vcode: e.target.value });
+                }}
+              />
+              <span className={style.vcodeBox} onClick={store.getVcode}>
+                <img alt="验证码" title="点击更换验证码" src={state.vCodeImage} />
+              </span>
             </Form.Item>
-            <Form.Item className={style.formFlexItem} rules={[{ required: true, message: '请输入用户名' }]}>
-              <Checkbox>七天内免登录</Checkbox>)<a>忘记密码</a>
-            </Form.Item>
+            {/* <Form.Item className={style.formFlexItem} rules={[{ required: true, message: '请输入用户名' }]}>
+              <Checkbox>七天内免登录</Checkbox><a>忘记密码</a>
+            </Form.Item> */}
             <Form.Item>
               <Button type="primary" htmlType="submit" loading={state.loginLoading} className={style.loginBtn}>
                 登录
               </Button>
-              <a>还没有账号？点击注册</a>
+              {/* <a>还没有账号？点击注册</a> */}
             </Form.Item>
           </Form>
         </div>

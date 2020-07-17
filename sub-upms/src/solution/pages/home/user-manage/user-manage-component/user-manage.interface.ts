@@ -2,8 +2,8 @@
  * @export state变量定义和初始化
  * @class IUserManageState
  */
+
 interface SearchForm {
-  systemId: string;
   name: string;
   telephone: string;
   organizationCode: string;
@@ -24,7 +24,6 @@ export interface UserTableData {
 }
 export class IUserManageState {
   searchForm: SearchForm = {
-    systemId: process.env.SYSTEM_ID,
     name: '',
     telephone: '',
     organizationCode: '',
@@ -41,4 +40,5 @@ export class IUserManageState {
   isDetail = false;
   popVisible = false;
   userId: string;
+  passwordVisible = false;
 }

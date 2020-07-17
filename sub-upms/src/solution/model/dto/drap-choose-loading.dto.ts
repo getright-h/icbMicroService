@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 
 export abstract class DrapChooseLoadingDTO {
   // 你的抽象方法，具体在 Service 中实现
-  abstract queryOrganizationType(params: { systemId: string }): Observable<DrapChooseLoadingReturn>;
   abstract queryOrganizationSelectList(params: OrganizationSelectListParams): Observable<DrapChooseLoadingReturn>;
 }
 

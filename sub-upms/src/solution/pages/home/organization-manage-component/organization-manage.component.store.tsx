@@ -1,14 +1,17 @@
 import { IOrganizationManageState } from './organization-manage.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
 import { Subscription } from 'rxjs';
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { OrganizationManageService } from '~/solution/model/services/organization-manage.service';
 import { ShowNotification } from '~/framework/util/common';
 import { Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { IGlobalState } from '~/solution/context/global/global.interface';
+import { GlobalContext } from '~/solution/context/global/global.provider';
 
 export function useOrganizationManageStore() {
+  const { gState }: IGlobalState = useContext(GlobalContext);
   const { state, setStateWrap } = useStateStore(new IOrganizationManageState());
   const organizationManageService = useService(OrganizationManageService);
   let getTableDataSubscription: Subscription;
@@ -17,14 +20,16 @@ export function useOrganizationManageStore() {
     const { searchForm } = state;
     isClick && (searchForm.index = 1);
     setStateWrap({ isLoading: true, searchForm });
-    getTableDataSubscription = organizationManageService.queryOrganizationList(searchForm).subscribe(
-      (res: any) => {
-        setStateWrap({ tableData: res.dataList, isLoading: false });
-      },
-      (err: any) => {
-        setStateWrap({ tableData: [], isLoading: false });
-      }
-    );
+    getTableDataSubscription = organizationManageService
+      .queryOrganizationList({ systemId: gState.myInfo.systemId, ...searchForm })
+      .subscribe(
+        (res: any) => {
+          setStateWrap({ tableData: res.dataList, isLoading: false });
+        },
+        (err: any) => {
+          setStateWrap({ tableData: [], isLoading: false });
+        }
+      );
   }
   function addButtonClick(props: RouteComponentProps) {
     setStateWrap({ popVisible: true, isEdit: false, isDetail: false, rowId: '' });

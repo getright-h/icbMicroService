@@ -6,8 +6,11 @@ import { StationManageService } from '~/solution/model/services/station-manage.s
 import { ShowNotification } from '~/framework/util/common';
 import { Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { IGlobalState } from '~/solution/context/global/global.interface';
+import { GlobalContext } from '~/solution/context/global/global.provider';
 
 export function useStationManageStore() {
+  const { gState }: IGlobalState = React.useContext(GlobalContext);
   const { state, setStateWrap } = useStateStore(new IStationManageState());
   const stationManageService = useService(StationManageService);
   let getTableDataSubscription: Subscription;
@@ -16,14 +19,16 @@ export function useStationManageStore() {
     const { searchForm } = state;
     isClick && (searchForm.index = 1);
     setStateWrap({ isLoading: true, searchForm });
-    getTableDataSubscription = stationManageService.queryStationList(searchForm).subscribe(
-      (res: any) => {
-        setStateWrap({ tableData: res.dataList, isLoading: false });
-      },
-      (err: any) => {
-        setStateWrap({ tableData: [], isLoading: false });
-      }
-    );
+    getTableDataSubscription = stationManageService
+      .queryStationList({ systemId: gState.myInfo.systemId, ...searchForm })
+      .subscribe(
+        (res: any) => {
+          setStateWrap({ tableData: res.dataList, isLoading: false });
+        },
+        (err: any) => {
+          setStateWrap({ tableData: [], isLoading: false });
+        }
+      );
   }
   function changeTablePageIndex(index: number, pageSize: number) {
     const { searchForm } = state;

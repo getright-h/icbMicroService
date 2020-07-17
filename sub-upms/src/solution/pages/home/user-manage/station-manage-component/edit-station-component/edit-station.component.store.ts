@@ -1,12 +1,15 @@
 import { IEditStationState } from './edit-station.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { StationManageService } from '~/solution/model/services/station-manage.service';
 import { FormInstance } from 'antd/lib/form';
 import { Subscription } from 'rxjs';
 import { ShowNotification } from '~/framework/util/common';
+import { IGlobalState } from '~/solution/context/global/global.interface';
+import { GlobalContext } from '~/solution/context/global/global.provider';
 
 export function useEditStationStore(props: any, form: FormInstance) {
+  const { gState }: IGlobalState = useContext(GlobalContext);
   const { state, setStateWrap } = useStateStore(new IEditStationState());
   const stationManageService = useService(StationManageService);
   let getRoleListSubscription: Subscription;
@@ -31,7 +34,7 @@ export function useEditStationStore(props: any, form: FormInstance) {
     getRoleListSubscription = stationManageService
       .queryRoleList({
         userId: '',
-        systemId: process.env.SYSTEM_ID
+        systemId: gState.myInfo.systemId
       })
       .subscribe((res: any) => {
         setStateWrap({ roleList: res });

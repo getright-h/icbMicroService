@@ -3,8 +3,11 @@ import style from './edit-department.component.less';
 import { Form, Modal, Input, Radio, Select } from 'antd';
 import { ISelectLoadingComponent } from '~/solution/components/component.module';
 import { useEditDepartmentStore } from './edit-department.component.store';
+import { IGlobalState } from '~/solution/context/global/global.interface';
+import { GlobalContext } from '~/solution/context/global/global.provider';
 
 export default function EditDepartmentComponent(props: any) {
+  const { gState }: IGlobalState = React.useContext(GlobalContext);
   const [departmentForm] = Form.useForm();
   const { title, visible, close, isEdit, info } = props;
   const { state, selfClose, selfSubmit, selectOrganization } = useEditDepartmentStore(
@@ -27,7 +30,6 @@ export default function EditDepartmentComponent(props: any) {
       width={500}
       title={title}
       visible={visible}
-      // onOk={selfSubmit}
       onOk={() => {
         departmentForm
           .validateFields()
@@ -53,7 +55,7 @@ export default function EditDepartmentComponent(props: any) {
               <ISelectLoadingComponent
                 reqUrl="queryOrganizationSelectList"
                 placeholder="请选择所属机构"
-                searchForm={{ systemId: process.env.SYSTEM_ID, hierarchyType: 0 }}
+                searchForm={{ systemId: gState.myInfo.systemId, hierarchyType: 0 }}
                 getCurrentSelectInfo={(value, option) => selectOrganization(value, option)}
               ></ISelectLoadingComponent>
             </Form.Item>
@@ -61,7 +63,7 @@ export default function EditDepartmentComponent(props: any) {
               <ISelectLoadingComponent
                 reqUrl="queryOrganizationSelectList"
                 placeholder="请选择上级部门"
-                searchForm={{ systemId: process.env.SYSTEM_ID, hierarchyType: 1, parentCode: state.parentCode }}
+                searchForm={{ systemId: gState.myInfo.systemId, hierarchyType: 1, parentCode: state.parentCode }}
                 getCurrentSelectInfo={value => departmentForm.setFieldsValue({ parentDepartmentId: value })}
               ></ISelectLoadingComponent>
             </Form.Item>

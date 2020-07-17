@@ -3,7 +3,6 @@
  * @class IStationManageState
  */
 interface SearchForm {
-  systemId: string;
   parentOrganizationCode?: string;
   code?: string;
   name?: string;
@@ -23,7 +22,6 @@ export interface StationTableData {
 }
 export class IStationManageState {
   searchForm: SearchForm = {
-    systemId: process.env.SYSTEM_ID,
     state: -1,
     type: 2,
     index: 1,

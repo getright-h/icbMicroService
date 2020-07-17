@@ -10,7 +10,7 @@ export function useMainFenceRightStore(props: IMainFenceRightProps) {
   const { state } = useStateStore();
   const centerLocation = useRef([116.433322, 39.900256]);
   const map: any = useRef();
-  const { currentChoose = FENCETYPENUM.CIRCLE, onValueChange, circlrR = 200 } = props;
+  const { currentChoose = FENCETYPENUM.POLYGON, onValueChange, circlrR = 200 } = props;
   let { circleLocation } = props;
   useEffect(() => {
     initMap();
@@ -55,6 +55,8 @@ export function useMainFenceRightStore(props: IMainFenceRightProps) {
   // 初始化多边形
   function refinePolygon() {
     const { polyEditor, path } = IMAP.createPolygon(circleLocation, map.current);
+
+    onValueChange('polygon', path);
     bindEditForMap(polyEditor, FENCETYPENUM.POLYGON, path);
   }
 

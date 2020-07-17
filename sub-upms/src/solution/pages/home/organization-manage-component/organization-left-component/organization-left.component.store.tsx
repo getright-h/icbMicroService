@@ -5,12 +5,15 @@ import * as React from 'react';
 import { EventDataNode } from 'rc-tree/lib/interface';
 import { OrganizationManageService } from '../../../../model/services/organization-manage.service';
 import { dealWithTreeData, updateTreeData } from '~/framework/util/common/treeFunction';
-const SYSTEMID = process.env.SYSTEM_ID;
+import { IGlobalState } from '~/solution/context/global/global.interface';
+import { GlobalContext } from '~/solution/context/global/global.provider';
+
 export function useOrganizationLeftStore(props: IOrganizationLeftProps) {
+  const { gState }: IGlobalState = React.useContext(GlobalContext);
   const organizationManageService: OrganizationManageService = new OrganizationManageService();
   const { state, setStateWrap } = useStateStore(new IOrganizationLeftState());
   useEffect(() => {
-    queryOrganizationTypeListBySystemId(SYSTEMID);
+    queryOrganizationTypeListBySystemId(gState.myInfo.systemId);
   }, []);
   // 根据根据系统id查找机构类型
   function queryOrganizationTypeListBySystemId(systemId: string) {

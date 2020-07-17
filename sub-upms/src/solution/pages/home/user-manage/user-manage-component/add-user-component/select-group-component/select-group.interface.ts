@@ -6,12 +6,10 @@ import { OrganizationId } from '~/solution/model/dto/user-manage.dto';
  */
 export class ISelectGroupState {
   searchDepartForm: SearchForm = {
-    systemId: process.env.SYSTEM_ID,
     hierarchyType: 1,
     parentCode: ''
   };
   searchPositionForm: SearchForm = {
-    systemId: process.env.SYSTEM_ID,
     hierarchyType: 2,
     parentCode: ''
   };
@@ -33,7 +31,6 @@ interface FieldData {
   fieldKey: number;
 }
 interface SearchForm {
-  systemId: string;
   hierarchyType: number;
   parentCode: string;
 }

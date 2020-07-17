@@ -3,7 +3,6 @@
  * @class IDepartmentManageState
  */
 interface SearchForm {
-  systemId: string;
   code: string;
   name: string;
   state: number;
@@ -20,7 +19,6 @@ interface DepartmentTableData {
 }
 export class IDepartmentManageState {
   searchForm: SearchForm = {
-    systemId: process.env.SYSTEM_ID,
     code: '',
     name: '',
     state: -1,

@@ -3,8 +3,11 @@ import style from './edit-station.component.less';
 import { useEditStationStore } from './edit-station.component.store';
 import { Modal, Form, Select, Input, Radio } from 'antd';
 import { ISelectLoadingComponent } from '~/solution/components/component.module';
+import { GlobalContext } from '~/solution/context/global/global.provider';
+import { IGlobalState } from '~/solution/context/global/global.interface';
 
 export default function EditStationComponent(props: any) {
+  const { gState }: IGlobalState = React.useContext(GlobalContext);
   const [stationForm] = Form.useForm();
   const { title, visible, close, isEdit, info } = props;
   const { state, selfClose, selfSubmit, getRoleList, selectOrganization } = useEditStationStore(
@@ -53,8 +56,7 @@ export default function EditStationComponent(props: any) {
               <ISelectLoadingComponent
                 reqUrl="queryOrganizationSelectList"
                 placeholder="请选择所属机构"
-                searchForm={{ systemId: process.env.SYSTEM_ID, hierarchyType: 0 }}
-                // defaultValue={state.formInfo.distributorName}
+                searchForm={{ systemId: gState.myInfo.systemId, hierarchyType: 0 }}
                 getCurrentSelectInfo={(value, option) => selectOrganization(value, option)}
               ></ISelectLoadingComponent>
             </Form.Item>
@@ -62,8 +64,7 @@ export default function EditStationComponent(props: any) {
               <ISelectLoadingComponent
                 reqUrl="queryOrganizationSelectList"
                 placeholder="请选择所属部门"
-                searchForm={{ systemId: process.env.SYSTEM_ID, hierarchyType: 1, parentCode: state.parentCode }}
-                // defaultValue={state.formInfo.distributorName}
+                searchForm={{ systemId: gState.myInfo.systemId, hierarchyType: 1, parentCode: state.parentCode }}
                 getCurrentSelectInfo={(value, option) => stationForm.setFieldsValue({ parentDepartmentId: value })}
               ></ISelectLoadingComponent>
             </Form.Item>

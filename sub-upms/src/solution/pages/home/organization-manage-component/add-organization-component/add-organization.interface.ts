@@ -9,6 +9,7 @@ export class IAddOrganizationState {
   provinceList: Array<AreaInfo>;
   cityList: Array<AreaInfo>;
   areaList: Array<AreaInfo>;
+  typeList: Array<{ id: string; name: string }>;
   fileList: Array<any>;
   confirmLoading = false;
 }

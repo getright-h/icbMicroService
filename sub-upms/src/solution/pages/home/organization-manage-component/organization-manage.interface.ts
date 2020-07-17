@@ -4,7 +4,6 @@
  */
 
 interface SearchForm {
-  systemId?: string;
   typeId?: string;
   parentId?: string;
   hierarchyType?: number;
@@ -25,7 +24,6 @@ export interface OrganizationTableData {
 }
 export class IOrganizationManageState {
   searchForm: SearchForm = {
-    systemId: process.env.SYSTEM_ID,
     hierarchyType: 0,
     index: 1,
     size: 10

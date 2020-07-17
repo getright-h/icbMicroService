@@ -2,20 +2,31 @@ import { Observable } from 'rxjs';
 import { IMenu } from '~components/base/menu-component/menu.interface';
 
 export abstract class LoginDTO {
-  // 登录
   abstract login(params: LoginParam): Observable<LoginResult>;
+  abstract getVerificationCode(codeKey: string): Observable<VCodeInfo>;
 }
 
 // 登录
 export interface LoginParam {
-  username: string;
+  account: string;
   password: string;
-  vcode: string;
-  vcodeKey: string;
+  verificationCodeInfo: VerificationCodeInfo;
+  systemCode?: string;
+  systemId?: string;
+}
+
+export interface VerificationCodeInfo {
+  sessionId: string;
+  codeStrValue: string;
 }
 
 // 登录响应
 export interface LoginResult {
   token: string;
   status: boolean;
+}
+
+export interface VCodeInfo {
+  sessionId: string;
+  codeImgBase64: string;
 }
