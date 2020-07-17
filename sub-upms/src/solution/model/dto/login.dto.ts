@@ -4,7 +4,6 @@ import { IMenu } from '~components/base/menu-component/menu.interface';
 export abstract class LoginDTO {
   abstract login(params: LoginParam): Observable<LoginResult>;
   abstract getVerificationCode(codeKey: string): Observable<VCodeInfo>;
-  abstract getMyInfo(): Observable<MyAccountInfo>;
 }
 
 // 登录
@@ -30,10 +29,4 @@ export interface LoginResult {
 export interface VCodeInfo {
   sessionId: string;
   codeImgBase64: string;
-}
-
-export interface MyAccountInfo {
-  id: string;
-  systemId: string;
-  systemCode: string;
 }

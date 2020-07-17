@@ -5,23 +5,22 @@ import { UserManageService } from '~/solution/model/services/user-manage.service
 import { OrganizationId } from '~/solution/model/dto/user-manage.dto';
 import { ShowNotification } from '~/framework/util/common';
 import { RoleManageService } from '~/solution/model/services/role-manage.service';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useContext } from 'react';
 import _ from 'lodash';
-import { StorageUtil } from '~/framework/util/storage';
-
-const SYSTEMID = StorageUtil.getLocalStorage('systemId');
-const SYSTEMCODE = StorageUtil.getLocalStorage('systemCode');
+import { IGlobalState } from '~/solution/context/global/global.interface';
+import { GlobalContext } from '~/solution/context/global/global.provider';
 
 export function useAddUserStore(props: IAddUserProps) {
   const { userId, isEdit, visible } = props;
   const userManageService: UserManageService = useService(UserManageService);
   const roleManageService: RoleManageService = useService(RoleManageService);
+  const { gState }: IGlobalState = useContext(GlobalContext);
   const { state, setStateWrap } = useStateStore(new IAddUserState());
   const [userForm] = Form.useForm();
   const relateRoles = useRef({});
 
   useEffect(() => {
-    getRoleOptions(SYSTEMID);
+    getRoleOptions(gState.myInfo.systemId, gState.myInfo.userId);
   }, []);
 
   useEffect(() => {
@@ -76,8 +75,8 @@ export function useAddUserStore(props: IAddUserProps) {
     userForm.setFieldsValue([organizationIds]);
   }
 
-  function getRoleOptions(systemId: string) {
-    roleManageService.queryRoleList({ systemId }).subscribe(
+  function getRoleOptions(systemId: string, userId: string) {
+    roleManageService.queryRoleList({ systemId, userId }).subscribe(
       (res: any) => {
         setStateWrap({ roleOptions: res });
       },
@@ -91,7 +90,7 @@ export function useAddUserStore(props: IAddUserProps) {
     values.roleList && (values.roleList = values.roleList.map((v: string) => JSON.parse(v)));
     setStateWrap({ confirmLoading: true });
     if (isEdit) {
-      userManageService.setUser({ ...values, id: userId, systemCode: SYSTEMCODE }).subscribe(
+      userManageService.setUser({ ...values, id: userId, systemCode: gState.myInfo.systemCode }).subscribe(
         (res: any) => {
           ShowNotification.success('编辑用户成功');
           setStateWrap({ confirmLoading: false });
@@ -104,7 +103,7 @@ export function useAddUserStore(props: IAddUserProps) {
         }
       );
     } else {
-      userManageService.insertUser({ ...values, systemCode: SYSTEMCODE }).subscribe(
+      userManageService.insertUser({ ...values, systemCode: gState.myInfo.systemCode }).subscribe(
         (res: any) => {
           ShowNotification.success('添加用户成功！');
           setStateWrap({ confirmLoading: false });

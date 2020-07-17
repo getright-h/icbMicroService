@@ -5,11 +5,11 @@ import { ISelectLoadingComponent } from '~/solution/components/component.module'
 import { PlusOutlined, MinusOutlined, DownOutlined } from '@ant-design/icons';
 import { ISelectGroupProps } from './select-group.interface';
 import { useSelectGroupStore } from './select-group.component.store';
-import { StorageUtil } from '~/framework/util/storage';
-
-const SYSTEMID = StorageUtil.getLocalStorage('systemId');
+import { IGlobalState } from '~/solution/context/global/global.interface';
+import { GlobalContext } from '~/solution/context/global/global.provider';
 
 export default function SelectGroupComponent(props: ISelectGroupProps) {
+  const { gState }: IGlobalState = React.useContext(GlobalContext);
   const { field, index, add, remove, selectValues } = props;
   const { state } = useSelectGroupStore(props);
   const { searchDepartForm, searchPositionForm, relateRolesText } = state;
@@ -25,7 +25,7 @@ export default function SelectGroupComponent(props: ISelectGroupProps) {
           reqUrl="queryOrganizationSelectList"
           placeholder="请选择机构"
           searchForm={{
-            systemId: SYSTEMID,
+            systemId: gState.myInfo.systemId,
             hierarchyType: 0
           }}
           searchKey={selectValues ? selectValues.organizationName : ''}
@@ -37,7 +37,7 @@ export default function SelectGroupComponent(props: ISelectGroupProps) {
         <ISelectLoadingComponent
           reqUrl="queryOrganizationSelectList"
           placeholder="请选择部门"
-          searchForm={searchDepartForm}
+          searchForm={{ ...searchDepartForm, systemId: gState.myInfo.systemId }}
           searchKey={selectValues ? selectValues.departmentName : ''}
           selectedValue={selectValues ? selectValues.departmentId : undefined}
           getCurrentSelectInfo={(value, option) => props.handleOrganSelect(option, index, 'department')}
@@ -47,7 +47,7 @@ export default function SelectGroupComponent(props: ISelectGroupProps) {
         <ISelectLoadingComponent
           reqUrl="queryOrganizationSelectList"
           placeholder="请选择岗位"
-          searchForm={searchPositionForm}
+          searchForm={{ ...searchPositionForm, systemId: gState.myInfo.systemId }}
           searchKey={selectValues ? selectValues.positionName : ''}
           selectedValue={selectValues ? selectValues.positionId : undefined}
           getCurrentSelectInfo={(value, option) => props.handleOrganSelect(option, index, 'position')}

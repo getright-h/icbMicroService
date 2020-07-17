@@ -1,13 +1,8 @@
-import { StorageUtil } from '~/framework/util/storage';
-
-const SYSTEMID = StorageUtil.getLocalStorage('systemId');
-
 /**
  * @export state变量定义和初始化
  * @class IStationManageState
  */
 interface SearchForm {
-  systemId: string;
   parentOrganizationCode?: string;
   code?: string;
   name?: string;
@@ -27,7 +22,6 @@ export interface StationTableData {
 }
 export class IStationManageState {
   searchForm: SearchForm = {
-    systemId: SYSTEMID,
     state: -1,
     type: 2,
     index: 1,

@@ -1,13 +1,16 @@
 import { IDepartmentManageState } from './department-manage.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
 import { Subscription } from 'rxjs';
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { DepartmentManageService } from '~/solution/model/services/department-manage.service';
 import { ShowNotification } from '~/framework/util/common';
 import { Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { IGlobalState } from '~/solution/context/global/global.interface';
+import { GlobalContext } from '~/solution/context/global/global.provider';
 
 export function useDepartmentManageStore() {
+  const { gState }: IGlobalState = useContext(GlobalContext);
   const { state, setStateWrap } = useStateStore(new IDepartmentManageState());
   const departmentManageService = useService(DepartmentManageService);
   let getTableDataSubscription: Subscription;
@@ -16,14 +19,16 @@ export function useDepartmentManageStore() {
     const { searchForm } = state;
     isClick && (searchForm.index = 1);
     setStateWrap({ searchForm });
-    getTableDataSubscription = departmentManageService.queryDepartmentList(searchForm).subscribe(
-      (res: any) => {
-        setStateWrap({ tableData: res.dataList });
-      },
-      (err: any) => {
-        ShowNotification.error(err);
-      }
-    );
+    getTableDataSubscription = departmentManageService
+      .queryDepartmentList({ systemId: gState.myInfo.systemId, ...searchForm })
+      .subscribe(
+        (res: any) => {
+          setStateWrap({ tableData: res.dataList });
+        },
+        (err: any) => {
+          ShowNotification.error(err);
+        }
+      );
   }
   function changeTablePageIndex(index: number, pageSize: number) {
     const { searchForm } = state;

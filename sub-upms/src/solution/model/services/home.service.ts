@@ -1,4 +1,4 @@
-import { HomeDTO, MenuAndAuthResult } from '../dto/home.dto';
+import { HomeDTO, MenuAndAuthResult, MyInfo } from '../dto/home.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable, Subscriber } from 'rxjs';
 import { DepUtil } from '~/framework/aop/inject';
@@ -8,7 +8,7 @@ import { PAGES_MENU } from '~/solution/shared/constant/common.const';
 /**
  * 真实开发中，请将示例代码移除
  */
-const EXAMPLE_API_PATH = 'your-http-request-path';
+const GET_MY_INFO = 'prvilege/GetMyInfo';
 
 @DepUtil.Injectable()
 export class HomeService extends HomeDTO {
@@ -27,5 +27,10 @@ export class HomeService extends HomeDTO {
       });
       observer.complete();
     }).pipe(delay(500));
+  }
+
+  // 获取登录用户信息
+  getMyInfo(): Observable<MyInfo> {
+    return this.requestService.get(GET_MY_INFO);
   }
 }
