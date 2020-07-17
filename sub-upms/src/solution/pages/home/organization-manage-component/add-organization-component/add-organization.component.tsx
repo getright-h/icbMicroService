@@ -4,11 +4,11 @@ import { useAddOrganizationStore } from './add-organization.component.store';
 import { Form, Input, Radio, Select, Modal } from 'antd';
 import { ISelectLoadingComponent, IUploadImgComponent } from '~/solution/components/component.module';
 import { IAddOrganizationProps } from './add-organization.interface';
-import { StorageUtil } from '~/framework/util/storage';
-
-const SYSTEMID = StorageUtil.getLocalStorage('systemId');
+import { IGlobalState } from '~/solution/context/global/global.interface';
+import { GlobalContext } from '~/solution/context/global/global.provider';
 
 export default function AddOrganizationComponent(props: IAddOrganizationProps) {
+  const { gState }: IGlobalState = React.useContext(GlobalContext);
   const { isEdit, isDetail, visible } = props;
   const {
     state,
@@ -54,7 +54,7 @@ export default function AddOrganizationComponent(props: IAddOrganizationProps) {
             reqUrl="queryOrganizationSelectList"
             placeholder="请选择上级机构"
             searchForm={{
-              systemId: SYSTEMID,
+              systemId: gState.myInfo.systemId,
               hierarchyType: 0,
               typeId: organizationForm.getFieldValue('typeId')
             }}

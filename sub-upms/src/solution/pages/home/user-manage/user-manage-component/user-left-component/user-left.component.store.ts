@@ -1,18 +1,18 @@
 import { IUserLeftState, IUserLeftProps } from './user-left.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { OrganizationManageService } from '~/solution/model/services/organization-manage.service';
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { EventDataNode } from 'rc-tree/lib/interface';
 import { dealWithTreeData, updateTreeData } from '~/framework/util/common/treeFunction';
-import { StorageUtil } from '~/framework/util/storage';
-
-const SYSTEMID = StorageUtil.getLocalStorage('systemId');
+import { IGlobalState } from '~/solution/context/global/global.interface';
+import { GlobalContext } from '~/solution/context/global/global.provider';
 
 export function useUserLeftStore(props: IUserLeftProps) {
+  const { gState }: IGlobalState = useContext(GlobalContext);
   const organizationManageService: OrganizationManageService = new OrganizationManageService();
   const { state, setStateWrap } = useStateStore(new IUserLeftState());
   useEffect(() => {
-    queryOrganizationTypeListBySystemId(SYSTEMID);
+    queryOrganizationTypeListBySystemId(gState.myInfo.systemId);
   }, []);
   // 根据根据系统id查找机构类型
   function queryOrganizationTypeListBySystemId(systemId: string) {

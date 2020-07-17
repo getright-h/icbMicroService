@@ -2,22 +2,23 @@ import { IUserManageState } from './user-manage.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
 import { Subscription } from 'rxjs';
 import { UserManageService } from '~/solution/model/services/user-manage.service';
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext, useRef } from 'react';
 import { ShowNotification } from '~/framework/util/common';
 import { Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { StorageUtil } from '~/framework/util/storage';
-
-const SYSTEMID = StorageUtil.getLocalStorage('systemId');
+import { IGlobalState } from '~/solution/context/global/global.interface';
+import { GlobalContext } from '~/solution/context/global/global.provider';
 
 export function useUserManageStore() {
+  const { gState }: IGlobalState = useContext(GlobalContext);
   const { state, setStateWrap, getState } = useStateStore(new IUserManageState());
   const userManageService: UserManageService = useService(UserManageService);
   let getTableDataSubscription: Subscription;
 
+  const systemId = useRef(gState.myInfo.systemId);
+
   function getSelectTreeNode(node: Record<string, any>) {
     const searchForm = {
-      systemId: SYSTEMID,
       name: '',
       telephone: '',
       organizationCode: '',
@@ -41,7 +42,7 @@ export function useUserManageStore() {
         searchForm.typeId = node.id;
         break;
     }
-    searchForm.systemId = node.systemId;
+    systemId.current = node.systemId;
     setStateWrap({ searchForm });
     getTableData();
   }
@@ -50,7 +51,7 @@ export function useUserManageStore() {
     const { searchForm } = getState();
     isClick && (searchForm.index = 1);
     setStateWrap({ searchForm });
-    getTableDataSubscription = userManageService.queryUserList(searchForm).subscribe(
+    getTableDataSubscription = userManageService.queryUserList({ systemId: systemId.current, ...searchForm }).subscribe(
       (res: any) => {
         setStateWrap({ tableData: res.dataList, total: res.total });
       },

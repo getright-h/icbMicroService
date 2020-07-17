@@ -1,20 +1,19 @@
 import { IRoleManageState } from './role-manage.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { RoleManageService } from '~/solution/model/services/role-manage.service';
 import { ShowNotification } from '~/framework/util/common';
-import { StorageUtil } from '~/framework/util/storage';
-
-const SYSTEMID = StorageUtil.getLocalStorage('systemId');
-const USERID = StorageUtil.getLocalStorage('userId');
+import { IGlobalState } from '~/solution/context/global/global.interface';
+import { GlobalContext } from '~/solution/context/global/global.provider';
 
 export function useRoleManageStore() {
+  const { gState }: IGlobalState = useContext(GlobalContext);
   const { state, setStateWrap } = useStateStore(new IRoleManageState());
   const roleManageService: RoleManageService = useService(RoleManageService);
 
   function getRoleTableData() {
     setStateWrap({ isLoading: true });
-    roleManageService.queryRoleList({ systemId: SYSTEMID, userId: USERID }).subscribe(
+    roleManageService.queryRoleList({ systemId: gState.myInfo.systemId, userId: gState.myInfo.userId }).subscribe(
       (res: any) => {
         setStateWrap({ roleList: res, isLoading: false });
       },

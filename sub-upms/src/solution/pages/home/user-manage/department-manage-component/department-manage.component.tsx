@@ -9,11 +9,11 @@ import {
 } from '~/solution/components/component.module';
 import { departmentColumns } from './department-columns';
 import EditDepartmentComponent from './edit-department-component/edit-department.component';
-import { StorageUtil } from '~/framework/util/storage';
-
-const SYSTEMID = StorageUtil.getLocalStorage('systemId');
+import { IGlobalState } from '~/solution/context/global/global.interface';
+import { GlobalContext } from '~/solution/context/global/global.provider';
 
 export default function DepartmentManageComponent() {
+  const { gState }: IGlobalState = React.useContext(GlobalContext);
   const {
     state,
     getTableData,
@@ -32,7 +32,7 @@ export default function DepartmentManageComponent() {
           <ISelectLoadingComponent
             reqUrl="queryOrganizationSelectList"
             placeholder="请选择所属机构"
-            searchForm={{ systemId: SYSTEMID, hierarchyType: 0 }}
+            searchForm={{ systemId: gState.myInfo.systemId, hierarchyType: 0 }}
             getCurrentSelectInfo={(value, option) => handleFormDataChange(value, 'code', option)}
           ></ISelectLoadingComponent>
         </div>
