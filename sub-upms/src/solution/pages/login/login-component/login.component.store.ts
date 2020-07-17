@@ -66,6 +66,7 @@ export class LoginStore extends ReducerStore<IState> {
       },
       err => {
         ShowNotification.error(err);
+        this.dispatch(setLoadingAction(false));
         this.getVcode();
       }
     );
