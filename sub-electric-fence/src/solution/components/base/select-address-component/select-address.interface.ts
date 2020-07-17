@@ -1,4 +1,4 @@
-import { FenceManageDistrictReturnModal } from '~/solution/model/dto/fence-manage.dto';
+import { FenceManageDistrictReturnModal, District } from '~/solution/model/dto/fence-manage.dto';
 
 /**
 import CreateBindCarComponent from '../../../pages/home/electric-fence-manage-component/monitoring-object-component/create-bind-car-component/create-bind-car.component';
@@ -6,9 +6,17 @@ import CreateBindCarComponent from '../../../pages/home/electric-fence-manage-co
  * @class ISelectAddressState
  */
 export class ISelectAddressState {
-  city: Array<FenceManageDistrictReturnModal>;
-  province: Array<FenceManageDistrictReturnModal>;
-  area: Array<FenceManageDistrictReturnModal>;
+  citys: Array<FenceManageDistrictReturnModal>;
+  provinces: Array<FenceManageDistrictReturnModal>;
+  areas: Array<FenceManageDistrictReturnModal>;
+  city: string;
+  province: string;
+  area: string;
+}
+
+export interface ISelectAddressProps {
+  getAddressInfo: (value: ISelectAddressState) => void;
+  initValue: District;
 }
 
 export const enum ADDRESSINFO {

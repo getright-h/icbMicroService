@@ -1,26 +1,34 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import style from './create-electric-fence.component.less';
 import { Input, Form, Switch, Radio, Button } from 'antd';
 import { useCreateElectricFenceStore } from './create-electric-fence.component.store';
-import { AddressChooseComponent, SelectAddressComponent } from '~/solution/components/component.module';
+import { SelectAddressComponent } from '~/solution/components/component.module';
 import { FENCETYPENUM, ICreateElectricProps } from './create-electric-fence.interface';
 import { RadioChangeEvent } from 'antd/lib/radio';
 import * as _ from 'lodash';
 const { Search } = Input;
 export default function CreateElectricFenceComponent(props: ICreateElectricProps) {
-  const { state, onFinish, form, handleChangeCircle, onCrPlaceChange } = useCreateElectricFenceStore(props);
+  const { onFinish, form, handleChangeCircle, onCrPlaceChange, getAddressInfo } = useCreateElectricFenceStore(props);
   const [fenceType, setFenceType] = useState(FENCETYPENUM.POLYGON);
   const { editData } = props;
+  useEffect(() => {
+    form.resetFields();
+    editData && onFenceTypeChange(editData.fenceType);
+  }, [editData]);
   // const { circle } = editData;
   const formItemLayout = {
     labelCol: { span: 5 },
     wrapperCol: { span: 19 }
   };
 
-  const onFenceTypeChange = (e: RadioChangeEvent) => {
-    setFenceType(e.target.value);
-    props.onValueChange('currentChoose', e.target.value);
+  const onFenceTypeChange = (e: RadioChangeEvent | number) => {
+    let value: any = e;
+    if (typeof e == 'object') {
+      value = e.target.value;
+    }
+    setFenceType(value);
+    props.onValueChange('currentChoose', value);
   };
 
   function fenceTypeForArea(fenceType: number) {
@@ -49,7 +57,12 @@ export default function CreateElectricFenceComponent(props: ICreateElectricProps
           </>
         );
       case FENCETYPENUM.ADMINISTRATIVEDIVISION:
-        return <SelectAddressComponent></SelectAddressComponent>;
+        return (
+          <SelectAddressComponent
+            getAddressInfo={getAddressInfo}
+            initValue={editData && editData.district}
+          ></SelectAddressComponent>
+        );
       default:
         return null;
     }
@@ -57,7 +70,13 @@ export default function CreateElectricFenceComponent(props: ICreateElectricProps
 
   return (
     <div className={style.test}>
-      <Form name="validate_other" form={form} {...formItemLayout} onFinish={onFinish} initialValues={{ fenceType }}>
+      <Form
+        name="validate_other"
+        form={form}
+        {...formItemLayout}
+        onFinish={onFinish}
+        initialValues={{ fenceType, ...editData }}
+      >
         <Form.Item label="围栏名称" name="name">
           <Input placeholder="请输入围栏名称" />
         </Form.Item>

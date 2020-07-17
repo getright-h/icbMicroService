@@ -50,7 +50,7 @@ interface Polyline {
   lat: number;
 }
 
-interface District {
+export interface District {
   province: Province;
   city: Province;
   district: Province;
@@ -78,5 +78,5 @@ export interface FenceManageDTO {
       size: number;
     }): Observable<{ data: Array<FenceManageListReturnModal>; total: number }>
     fenceDelete(params: {id: string}): Observable<number>;
-    fenceDistrict(params: {parentCode: string}): Observable<FenceManageDistrictReturnModal>;
+    fenceDistrict(params: { parentCode: string }): Observable<{ data: FenceManageDistrictReturnModal }>;
 }

@@ -1,9 +1,10 @@
 import { ICreateElectricFenceState, ICreateElectricProps } from './create-electric-fence.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
-import { ChangeEvent, useEffect } from 'react';
+import { ChangeEvent, useEffect, useRef } from 'react';
 import { Form } from 'antd';
 import * as _ from 'lodash';
 import { Store } from 'antd/lib/form/interface';
+import { ISelectAddressState } from '~/solution/components/base/select-address-component/select-address.interface';
 declare const AMap: any;
 let geocoder = new AMap.Geocoder({
   // city: '全国', //城市设为北京，默认：“全国”
@@ -13,8 +14,13 @@ export function useCreateElectricFenceStore(props: ICreateElectricProps) {
   const { state, setStateWrap } = useStateStore(new ICreateElectricFenceState());
   const { onValueChange, circlrR, centerPlace, editData } = props;
   const [form] = Form.useForm();
+  const addressInfo = useRef('');
   function onFinish(values: Store) {
-    onValueChange('formValueAndSubmit', values);
+    onValueChange('formValueAndSubmit', { ...values, districtAdcode: addressInfo.current });
+  }
+
+  function getAddressInfo(value: ISelectAddressState) {
+    addressInfo.current = value.area || value.city || value.province;
   }
 
   _.debounce(handleChangeCircle, 1000);
@@ -56,5 +62,5 @@ export function useCreateElectricFenceStore(props: ICreateElectricProps) {
   const onCrPlaceChange = (e: ChangeEvent<HTMLInputElement>) => {
     onValueChange('circlrR', e.target.value);
   };
-  return { state, onFinish, handleChangeCircle, onCrPlaceChange, form };
+  return { state, onFinish, getAddressInfo, handleChangeCircle, onCrPlaceChange, form };
 }

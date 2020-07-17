@@ -35,12 +35,12 @@ export class FenceManageService implements FenceManageDTO {
     return this.requestService.get(FENCE_MANAGE_DELETE, params);
   }
 
-  fenceDistrict(params: { parentCode: string }): Observable<FenceManageDistrictReturnModal> {
+  fenceDistrict(params: { parentCode: string }): Observable<{ data: FenceManageDistrictReturnModal }> {
     return this.requestService.get(FENCE_MANAGE_DISTRICT, params);
   }
 
   fenceEdit(params: FenceManageEditParamsModal): Observable<number> {
-    return this.requestService.get(FENCE_MANAGE_EDIT, params);
+    return this.requestService.post(FENCE_MANAGE_EDIT, params);
   }
 
   fenceCreate(params: FenceManageCreateParamsModal): Observable<number> {

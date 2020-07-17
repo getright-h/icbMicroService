@@ -17,7 +17,7 @@ export default function MainFenceManageComponent() {
     editPopShow,
     changeSearchTableValue
   } = useMainFenceManageStore();
-  const { searchLoading, visible, circleLocation, circlrR, currentChoose, singleFenceData } = state;
+  const { searchLoading, visible, isEdit, circleLocation, circlrR, currentChoose, singleFenceData } = state;
 
   function renderSelectItems() {
     return (
@@ -55,13 +55,14 @@ export default function MainFenceManageComponent() {
     width: '100%',
     styleInfo: { position: 'absolute', zIndex: 0 },
     placement: 'left',
-    title: '添加电子围栏',
+    title: isEdit ? '编辑电子围栏' : '添加电子围栏',
     getContainer: false,
     onCloseDrawer: () => onValueChange('visible', false),
     container: (
       <CreateElectricFenceComponent
         onValueChange={onValueChange}
         editData={singleFenceData}
+        isEdit={isEdit}
         circlrR={circlrR}
         centerPlace={circleLocation}
       />

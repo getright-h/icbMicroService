@@ -12,6 +12,7 @@ export class ICreateElectricFenceState {
 export interface ICreateElectricProps {
   onValueChange: (key: string, value: any) => void;
   circlrR: number;
+  isEdit: boolean;
   editData: FenceManageListReturnModal;
   centerPlace: Array<number>;
   //   getCurrentCircleLocation: (location: { lat: number; lng: number }) => void;

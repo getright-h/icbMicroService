@@ -8,7 +8,7 @@ export class IMainFenceLeftState {
   isLoading = false;
   searchForm: { index: number; size: number; name: string } = {
     index: 1,
-    size: 10,
+    size: 5,
     name: ''
   };
   tableData: Array<FenceManageListReturnModal> = [];
