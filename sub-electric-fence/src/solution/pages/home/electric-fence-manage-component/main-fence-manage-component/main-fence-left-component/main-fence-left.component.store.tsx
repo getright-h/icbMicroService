@@ -52,8 +52,10 @@ export function useMainFenceLeftStore(props: IMainFenceLeftProps) {
     });
   }
 
-  function getFenceList() {
-    getFenceListAction(getState().searchForm, dispatch);
+  function getFenceList(searchForm = mainFenceManageState.searchForm) {
+    console.log('mainFenceManageState.searchForm', mainFenceManageState.searchForm);
+
+    getFenceListAction(searchForm, dispatch);
   }
 
   function searchClick() {
@@ -61,8 +63,9 @@ export function useMainFenceLeftStore(props: IMainFenceLeftProps) {
   }
 
   function changeTablePageIndex(index: number) {
+    console.log('index.searchForm', index);
     changeSearchForm('index', index, dispatch);
-    getFenceList();
+    getFenceList({ ...mainFenceManageState.searchForm, index });
   }
   return { state, callbackAction, changeTablePageIndex, searchClick };
 }

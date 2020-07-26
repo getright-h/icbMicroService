@@ -9,9 +9,8 @@ import { MainFenceManageContext } from '../main-fence-manage.provider';
 
 function MainFenceLeftComponent(props: IMainFenceLeftProps, ref: any) {
   const { state, callbackAction, changeTablePageIndex } = useMainFenceLeftStore(props);
-  const { searchForm } = state;
   const { mainFenceManageState, dispatch } = React.useContext(MainFenceManageContext);
-  const { isLoading, total, tableData } = mainFenceManageState;
+  const { isLoading, total, tableData, searchForm } = mainFenceManageState;
 
   return (
     <div className={style.test}>
