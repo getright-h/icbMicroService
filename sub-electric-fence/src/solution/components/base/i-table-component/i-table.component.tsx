@@ -4,8 +4,17 @@ import { useITableStore } from './i-table.component.store';
 import { Table } from 'antd';
 
 export default function ITableComponent(props: IITableProps) {
-  const { isLoading = false, data = [], columns, isPagination = true, rowClick } = props;
+  const {
+    isLoading = false,
+    data = [],
+    columns,
+    total,
+    isPagination = true,
+    rowClick = () => {},
+    changeTablePageIndex
+  } = props;
   const { state } = useITableStore(props);
+  console.log(state.pagination);
 
   return (
     <Table

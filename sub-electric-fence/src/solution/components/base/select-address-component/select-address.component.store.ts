@@ -21,6 +21,12 @@ export function useSelectAddressStore(props: ISelectAddressProps) {
         province: province && province.adcode,
         district: district && district.adcode
       });
+    } else {
+      setStateWrap({
+        city: undefined,
+        province: undefined,
+        district: undefined
+      });
     }
   }, [props.initValue]);
 

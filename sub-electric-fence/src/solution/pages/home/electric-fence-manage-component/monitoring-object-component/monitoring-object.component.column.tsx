@@ -9,35 +9,37 @@ export function stationColumns(callbackAction: Function) {
     },
     {
       title: '驶出提醒',
-      dataIndex: 'outAttention'
+      dataIndex: 'alarmIn',
+      render: (data: boolean) => <a>{data ? '是' : '否'}</a>
     },
     {
       title: '驶入提醒',
-      dataIndex: 'inAttention'
+      dataIndex: 'alarmOut',
+      render: (data: boolean) => <a>{data ? '是' : '否'}</a>
     },
     {
       title: '绑定开始日期',
-      dataIndex: 'startTime'
+      dataIndex: 'beginDate'
     },
     {
       title: '绑定结束日期',
-      dataIndex: 'endTime'
+      dataIndex: 'endDate'
     },
     {
       title: '绑定车辆所属',
-      dataIndex: 'bindCarFor4s'
+      dataIndex: 'groupName'
     },
     {
       title: '车牌号',
-      dataIndex: 'vehicle'
+      dataIndex: 'plateNumber'
     },
     {
       title: '车主姓名',
-      dataIndex: 'name'
+      dataIndex: 'ownerName'
     },
     {
       title: '设备号',
-      dataIndex: 'id'
+      dataIndex: 'vehicleId'
     },
     {
       title: '操作',

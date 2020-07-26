@@ -33,7 +33,6 @@ export class TablePageTelComponent extends React.Component<IProps> {
       styleInfo,
       placement,
       title,
-      getContainer,
       container,
       onCloseDrawer
     } = this.props.drawerInfo;
@@ -48,7 +47,7 @@ export class TablePageTelComponent extends React.Component<IProps> {
         style={styleInfo}
         width={width}
         key={placement}
-        getContainer={getContainer}
+        getContainer={false}
         onClose={onCloseDrawer}
       >
         {container}

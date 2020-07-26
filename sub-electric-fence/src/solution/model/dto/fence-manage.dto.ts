@@ -70,7 +70,7 @@ interface Circle {
 }
 
 export interface FenceDistrictInfoReturn {
-  polyline: Polyline[];
+  polylines: Polyline[][];
   parentAdcode: string;
   id: string;
   name: string;

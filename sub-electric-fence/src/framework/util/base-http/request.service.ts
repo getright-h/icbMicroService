@@ -3,6 +3,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { DepUtil } from '~/framework/aop/inject';
 import * as Sentry from '@sentry/browser';
+import { message } from 'antd';
 
 export interface HttpResponseModel {
   message: string;
@@ -24,9 +25,9 @@ class RequestService {
   private createAuthHeaders(): any {
     const headers = { token: '' };
 
-    // const token = localStorage.getItem('TOKENINFO');
-    const token =
-      '5766fdebe2cea60cc71cd2422a4778c5:cf74367d9c3368da5b9475dff2b4390059f57c2b6a55416ce02b39d75b27efd730331df6df684c8510e7320de8e92e18572dc06ba3f350acee6d84c055cabcd06485f0155d7381d18cb091bd4a840d13344349b44487dec0dfdee456419862d1e07c7ead970596f3702f626e6007419522e81566625d51b7c60251f9a61d4ff0b902475691466bfb2fa10556887970c8c476677b9a69a86fa7539cae8cd4f990';
+    const token = localStorage.getItem('TOKENINFO');
+    // const token =
+    //   'a8ef08d599c91222de8864bc28fa6416:ab5d2ad7e037bad368554a6a0dd1621158735f146e30deaf997190ae64005fd527de4ce731546d88dc715b2c3a27936710addad7bd0eedaceb04e1b246185afc6b2b7d8c342d5dcb673e5731a56f8fe7f73b51999c54fbd00c73f0a3145c07625c5961a1a9c826c7f33110826842c97f559b412593e0a1e93b4c2a82b39c50a10cbaefcdb8a4c7cd60efedad4c5362d49ba4d71f87cd8dfe6d2df88279a65de0';
     if (token) {
       headers.token = token;
     }
@@ -157,12 +158,11 @@ class RequestService {
 
     process.env.SENTRY_URL && Sentry.captureException({ PROJECT: process.env.SENTRY_LABLE, ERROR: error });
     // 在这个地方打印error
+    message.error(error);
     return throwError(error);
   }
 
   dealWithError(data: any) {
-    console.log(data);
-
     data = data as HttpResponseModel;
     if (data.status) {
       if (data.total || data.total == 0) {

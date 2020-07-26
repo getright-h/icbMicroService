@@ -1,5 +1,6 @@
 import { FENCETYPENUM } from '../create-electric-fence-component/create-electric-fence.interface';
 import { FenceManageListReturnModal } from '~/solution/model/dto/fence-manage.dto';
+import { Dispatch } from 'react';
 
 /**
  * @export state变量定义和初始化
@@ -13,6 +14,7 @@ export interface IMainFenceRightProps {
   polygonLocation?:  Array<number>,
   // 多边形path
   circlrPath?: any,
+  isEdit?: boolean,
   mapInfo?: FenceManageListReturnModal;
   // 行政区域path
   administrativeDivisionPath?: any,

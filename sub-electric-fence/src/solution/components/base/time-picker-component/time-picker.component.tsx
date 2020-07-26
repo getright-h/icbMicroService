@@ -33,6 +33,8 @@ export default class TimePickerComponent extends React.Component<IProps> {
 
   render() {
     const { pickerType, dateFormat, timeFormat, timeInfo } = this.props;
+    console.log(timeInfo);
+
     return (
       <div>
         {pickerType == 'timePicker' && (

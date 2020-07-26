@@ -4,7 +4,7 @@ imageName="release_fch-h5-spa";
 
 echo "--> docker build"
 cd ..
-cd ./dist
+cd ../dist
 # sudo docker build -t web/"$imageName":"$version" .
 # sudo docker tag "$imageName":"$version" docker.local61:5000/web/"$imageName":"$version"
 # sudo docker push docker.local61:5000/web/"$imageName":"$version"

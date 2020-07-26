@@ -6,9 +6,9 @@ import CreateBindCarComponent from '../../../pages/home/electric-fence-manage-co
  * @class ISelectAddressState
  */
 export class ISelectAddressState {
-  citys: Array<FenceManageDistrictReturnModal>;
-  provinces: Array<FenceManageDistrictReturnModal>;
-  districts: Array<FenceManageDistrictReturnModal>;
+  citys?: Array<FenceManageDistrictReturnModal>;
+  provinces?: Array<FenceManageDistrictReturnModal>;
+  districts?: Array<FenceManageDistrictReturnModal>;
   city: string;
   province: string;
   district: string;

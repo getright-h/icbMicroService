@@ -1,5 +1,4 @@
 import * as React from 'react';
-import style from './main-fence-manage.component.less';
 import MainFenceLeftComponent from './main-fence-left-component/main-fence-left.component';
 import MainFenceRightComponent from './main-fence-right-component/main-fence-right.component';
 import { Input, Button } from 'antd';
@@ -7,24 +6,24 @@ import { TablePageTelComponent } from '../../../../components/base/table-page-te
 import { useMainFenceManageStore } from './main-fence-manage.component.store';
 import CreateElectricFenceComponent from './create-electric-fence-component/create-electric-fence.component';
 import * as _ from 'lodash';
+import { MainFenceManageContext } from './main-fence-manage.provider';
+import { visibleInfo, newFence, getFenceListAction, changeSearchForm } from './hooks-redux/main-fence-action';
+import { MainFenceReducer, mainFenceInitialState } from './hooks-redux/main-fence-reducer';
 
 export default function MainFenceManageComponent() {
-  const {
-    state,
-    onValueChange,
-    tableRef,
-    searchClick,
-    editPopShow,
-    changeSearchTableValue,
-    rowClick
-  } = useMainFenceManageStore();
-  const { searchLoading, visible, isEdit, circleLocation, circlrR, mapInfo, currentChoose, singleFenceData } = state;
-
+  const { state, onValueChange } = useMainFenceManageStore();
+  const { searchLoading, circleLocation, circlrR, currentChoose, singleFenceData, polygon } = state;
+  const [fenceManage, dispatch] = React.useReducer(MainFenceReducer, mainFenceInitialState);
+  const { visible, isEdit, searchForm } = fenceManage;
   function renderSelectItems() {
     return (
       <div style={{ position: 'relative' }}>
         <div className="push-search-item">
-          <Input placeholder="请输入围栏名" onChange={value => changeSearchTableValue('name', value)} />
+          <Input
+            placeholder="请输入围栏名"
+            allowClear
+            onChange={value => changeSearchForm('name', value.target.value, dispatch)}
+          />
         </div>
       </div>
     );
@@ -33,7 +32,7 @@ export default function MainFenceManageComponent() {
   function renderSearchButtons() {
     return (
       <div className="push-search-button-item">
-        <Button type="primary" onClick={searchClick} loading={searchLoading}>
+        <Button type="primary" onClick={() => getFenceListAction(searchForm, dispatch)} loading={searchLoading}>
           查询
         </Button>
       </div>
@@ -42,7 +41,7 @@ export default function MainFenceManageComponent() {
   function renderOtherButtons() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary" onClick={() => onValueChange('visible', true)}>
+        <Button type="primary" onClick={() => newFence(dispatch)}>
           新建围栏
         </Button>
       </div>
@@ -58,15 +57,13 @@ export default function MainFenceManageComponent() {
     placement: 'left',
     title: isEdit ? '编辑电子围栏' : '添加电子围栏',
     getContainer: false,
-    onCloseDrawer: () => onValueChange('visible', false),
+    onCloseDrawer: () => visibleInfo(false, dispatch),
     container: (
       <CreateElectricFenceComponent
         onValueChange={onValueChange}
         editData={singleFenceData}
-<<<<<<< HEAD
-=======
+        polygon={polygon}
         isEdit={isEdit}
->>>>>>> caa6db3c71d1c632e6b071cb424d1aa4fce831ec
         circlrR={circlrR}
         centerPlace={circleLocation}
       />
@@ -77,22 +74,23 @@ export default function MainFenceManageComponent() {
     circleLocation,
     circlrR,
     currentChoose,
-    mapInfo
+    isEdit,
+    polygon
   };
   return (
-    <div>
+    <MainFenceManageContext.Provider value={{ mainFenceManageState: fenceManage, dispatch }}>
       <TablePageTelComponent
         pageName={'围栏管理'}
         isLeft={true}
-        pageLeft={<MainFenceRightComponent mapInfo={mapInfo} {...rightProps} onValueChange={onValueChange} />}
+        pageLeft={<MainFenceRightComponent {...rightProps} onValueChange={onValueChange} />}
         selectItems={renderSelectItems()}
         searchButton={renderSearchButtons()}
         otherSearchBtns={renderOtherButtons()}
-        table={<MainFenceLeftComponent rowClick={rowClick} ref={tableRef} editPopShow={editPopShow} />}
+        table={<MainFenceLeftComponent />}
         rightFlex={5}
         drawerInfo={drawerInfo}
         leftFlex={2}
       ></TablePageTelComponent>
-    </div>
+    </MainFenceManageContext.Provider>
   );
 }

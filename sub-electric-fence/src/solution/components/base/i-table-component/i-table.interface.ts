@@ -5,7 +5,9 @@ import { ColumnsType, TablePaginationConfig } from 'antd/lib/table';
  * @class IITableState
  */
 export class IITableState {
-  pagination: false | TablePaginationConfig;
+  pagination: false | TablePaginationConfig = {
+    showSizeChanger: false
+  };
 }
 
 export interface IITableProps {
