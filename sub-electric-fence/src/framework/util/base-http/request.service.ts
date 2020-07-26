@@ -147,7 +147,8 @@ class RequestService {
         if (status && parseInt(status) >= 500) {
           error = '服务器错误，请联系管理员。';
         } else if (status === 401) {
-          localStorage.getItem('TOKENINFO');
+          // localStorage.getItem('TOKENINFO');
+          location.href = '';
           // this.route.navigateByUrl('login');
           error = '登录失效，请重新登录。';
         } else if (status && parseInt(status) >= 400) {
@@ -175,8 +176,7 @@ class RequestService {
       }
     } else {
       if (data.code === 401 || data.StatusCode === 401) {
-        // this.cookieService.remove("FanCheHuiToken");
-        // this.route.navigateByUrl('login');
+        location.href = '';
         throw '登录失效，请重新登录！';
       }
 

@@ -5,8 +5,8 @@ containerName="test_sub-electric-fence";
 port="2100"
 
 cd ../..
-yarn
-yarn build-dev
+# yarn
+# yarn build-dev
 
 echo "--> copy files···"
 cp -rf Dockerfile ecosystem.config.js server/* ./dist
