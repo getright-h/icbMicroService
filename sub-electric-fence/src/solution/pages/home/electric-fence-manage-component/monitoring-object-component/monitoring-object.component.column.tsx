@@ -27,7 +27,7 @@ export function stationColumns(callbackAction: Function) {
     },
     {
       title: '绑定车辆所属',
-      dataIndex: 'groupName'
+      dataIndex: 'thingName'
     },
     {
       title: '车牌号',
@@ -37,10 +37,14 @@ export function stationColumns(callbackAction: Function) {
       title: '车主姓名',
       dataIndex: 'ownerName'
     },
-    // {
-    //   title: '设备号',
-    //   dataIndex: 'vehicleId'
-    // },
+    {
+      title: '车主电话',
+      dataIndex: 'ownerMobile'
+    },
+    {
+      title: '车架号',
+      dataIndex: 'vin'
+    },
     {
       title: '操作',
       dataIndex: 'action',
