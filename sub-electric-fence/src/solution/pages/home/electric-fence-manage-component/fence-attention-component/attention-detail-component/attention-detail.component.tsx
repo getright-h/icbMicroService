@@ -26,7 +26,8 @@ export default function AttentionDetailComponent(props: AttentionDetailInfo) {
           follows.map(follow => {
             return (
               <>
-                <Descriptions.Item label="2019-12-01">{follow.time}</Descriptions.Item>
+                <Descriptions.Item label="跟进人">{follow.name}</Descriptions.Item>
+                <Descriptions.Item label="时间">{follow.time}</Descriptions.Item>
                 <Descriptions.Item label="备注">{follow.remark}</Descriptions.Item>
               </>
             );
