@@ -72,7 +72,7 @@ export function useFenceAttentionStore() {
     getCurrentPageList();
   }
 
-  function changeTablePageIndex(index: number, pageSize: number) {
+  function changeTablePageIndex(index: number, pageSize?: number) {
     setStateWrap({ searchForm: { ...searchForm, index } });
     getCurrentPageList();
   }

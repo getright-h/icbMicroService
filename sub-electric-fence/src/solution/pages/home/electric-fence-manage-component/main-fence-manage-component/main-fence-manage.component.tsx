@@ -32,7 +32,11 @@ export default function MainFenceManageComponent() {
   function renderSearchButtons() {
     return (
       <div className="push-search-button-item">
-        <Button type="primary" onClick={() => getFenceListAction(searchForm, dispatch)} loading={searchLoading}>
+        <Button
+          type="primary"
+          onClick={() => getFenceListAction({ ...searchForm, index: 1 }, dispatch)}
+          loading={searchLoading}
+        >
           查询
         </Button>
       </div>

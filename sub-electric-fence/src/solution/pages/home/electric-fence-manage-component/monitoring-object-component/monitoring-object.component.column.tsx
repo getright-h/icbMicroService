@@ -37,10 +37,10 @@ export function stationColumns(callbackAction: Function) {
       title: '车主姓名',
       dataIndex: 'ownerName'
     },
-    {
-      title: '设备号',
-      dataIndex: 'vehicleId'
-    },
+    // {
+    //   title: '设备号',
+    //   dataIndex: 'vehicleId'
+    // },
     {
       title: '操作',
       dataIndex: 'action',

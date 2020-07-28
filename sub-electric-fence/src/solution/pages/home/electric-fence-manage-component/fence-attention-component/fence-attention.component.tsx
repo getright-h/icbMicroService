@@ -82,7 +82,7 @@ export default function FenceAttentionComponent() {
   function renderSearchButtons() {
     return (
       <div>
-        <Button type="primary" onClick={searchClick} loading={searchLoading}>
+        <Button type="primary" onClick={() => changeTablePageIndex(1)} loading={searchLoading}>
           查询
         </Button>
       </div>

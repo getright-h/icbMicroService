@@ -13,7 +13,7 @@ export default function AttentionDetailComponent(props: AttentionDetailInfo) {
         <Descriptions.Item label="车主姓名">{ownerName}</Descriptions.Item>
         <Descriptions.Item label="车主电话">{ownerMobile}</Descriptions.Item>
         <Descriptions.Item label="车架号">{vehicleId}</Descriptions.Item>
-        <Descriptions.Item label="设备号"> {vin}</Descriptions.Item>
+        {/* <Descriptions.Item label="设备号"> {vin}</Descriptions.Item> */}
         <Descriptions.Item label="绑定围栏">{fenceName}</Descriptions.Item>
         <Descriptions.Item label="告警时间">{time}</Descriptions.Item>
         <Descriptions.Item label="状态">{statusText}</Descriptions.Item>

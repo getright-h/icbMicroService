@@ -143,7 +143,7 @@ export function useMonitoringObjectStore() {
     );
   }
 
-  function changeTablePageIndex(index: number, pageSize: number) {
+  function changeTablePageIndex(index: number, pageSize?: number) {
     setStateWrap({ searchForm: { ...searchForm, index } });
     getMonitorList();
   }

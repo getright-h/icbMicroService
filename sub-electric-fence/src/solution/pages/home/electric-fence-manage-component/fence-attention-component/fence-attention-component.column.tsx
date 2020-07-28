@@ -20,10 +20,6 @@ export function stationColumns(callbackAction: Function) {
       dataIndex: 'vin'
     },
     {
-      title: '设备号',
-      dataIndex: 'vehicleId'
-    },
-    {
       title: '绑定围栏',
       dataIndex: 'fenceName'
     },

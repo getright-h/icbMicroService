@@ -56,7 +56,8 @@ export function getFenceListAction(
   dispatch({
     type: TYPES.SET_TABLE_INFO,
     payload: {
-      isLoading: true
+      isLoading: true,
+      searchForm
     }
   });
   fenceManageService.fenceList(searchForm).subscribe(
