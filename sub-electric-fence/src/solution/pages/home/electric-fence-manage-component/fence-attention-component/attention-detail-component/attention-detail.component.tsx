@@ -2,12 +2,15 @@ import * as React from 'react';
 import style from './attention-detail.component.less';
 import { Descriptions } from 'antd';
 import { AttentionDetailInfo } from './attention-detail.interface';
+import { useAttentionDetailStore } from './attention-detail.component.store';
+import { FileExcelFilled } from '@ant-design/icons';
 
 export default function AttentionDetailComponent(props: AttentionDetailInfo) {
   const { baseData } = props;
-  const { plateNumber, fenceName, ownerName, ownerMobile, vehicleId, statusText, vin, time, follows } = baseData;
+  const { plateNumber, fenceName, ownerName, ownerMobile, vehicleId, statusText, alarmAddr, time, follows } = baseData;
+  useAttentionDetailStore(props);
   return (
-    <div className={style.test}>
+    <div>
       <Descriptions title="基本信息">
         <Descriptions.Item label="车辆号">{plateNumber}</Descriptions.Item>
         <Descriptions.Item label="车主姓名">{ownerName}</Descriptions.Item>
@@ -18,9 +21,16 @@ export default function AttentionDetailComponent(props: AttentionDetailInfo) {
         <Descriptions.Item label="告警时间">{time}</Descriptions.Item>
         <Descriptions.Item label="状态">{statusText}</Descriptions.Item>
       </Descriptions>
-      <Descriptions title="告警信息">
-        <Descriptions.Item label="驶出围栏位置">四川省成都市武侯区西部智谷D</Descriptions.Item>
-      </Descriptions>
+      {alarmAddr && (
+        <Descriptions title="告警信息">
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div className={style.mapContent}>
+              <div>驶出围栏位置 : {alarmAddr}</div>
+              <div id="container" className={style.container}></div>
+            </div>
+          </div>
+        </Descriptions>
+      )}
       <Descriptions title="跟进记录">
         {follows &&
           follows.map(follow => {

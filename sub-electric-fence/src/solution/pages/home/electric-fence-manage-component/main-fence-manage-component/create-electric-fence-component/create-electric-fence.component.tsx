@@ -1,24 +1,31 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import style from './create-electric-fence.component.less';
-import { Input, Form, Switch, Radio, Button } from 'antd';
+import { Input, Form, Switch, Radio, Button, Select } from 'antd';
 import { useCreateElectricFenceStore } from './create-electric-fence.component.store';
 import { SelectAddressComponent } from '~/solution/components/component.module';
 import { FENCETYPENUM, ICreateElectricProps } from './create-electric-fence.interface';
 import { RadioChangeEvent } from 'antd/lib/radio';
 import * as _ from 'lodash';
+const { Option } = Select;
 import { MainFenceManageContext } from '../main-fence-manage.provider';
 const { Search } = Input;
 // 用来编辑和增加的组件
 export default function CreateElectricFenceComponent(props: ICreateElectricProps) {
-  const { state, onFinish, form, handleChangeCircle, onCrPlaceChange, getAddressInfo } = useCreateElectricFenceStore(
-    props
-  );
+  const {
+    state,
+    onFinish,
+    form,
+    handleChangeCircle,
+    handleCircleLocation,
+    onCrPlaceChange,
+    getAddressInfo
+  } = useCreateElectricFenceStore(props);
   const [fenceType, setFenceType] = useState(FENCETYPENUM.POLYGON);
   const { mainFenceManageState, dispatch } = React.useContext(MainFenceManageContext);
   const { editData, isEdit } = mainFenceManageState;
 
-  const { isLoading } = state;
+  const { isLoading, locationList } = state;
   useEffect(() => {
     form.resetFields();
     editData && onFenceTypeChange(editData.fenceType);
@@ -61,7 +68,27 @@ export default function CreateElectricFenceComponent(props: ICreateElectricProps
             <br />
             <br />
             <Form.Item name="centerPlace">
-              <Search placeholder="输入多边形的中心点地址" onSearch={handleChangeCircle} style={{ width: 200 }} />
+              <Select
+                showSearch
+                placeholder="请输入地址"
+                defaultActiveFirstOption={false}
+                showArrow={false}
+                filterOption={false}
+                onSearch={handleChangeCircle}
+                onChange={handleCircleLocation}
+                notFoundContent={null}
+              >
+                {locationList &&
+                  locationList.map(
+                    (d: any) =>
+                      d.location && (
+                        <Option key={d.adcode} value={JSON.stringify(d.location)}>
+                          {d.name}
+                        </Option>
+                      )
+                  )}
+              </Select>
+              {/* <Search placeholder="输入多边形的中心点地址" onSearch={handleChangeCircle} style={{ width: 200 }} /> */}
             </Form.Item>
           </>
         );
@@ -89,10 +116,10 @@ export default function CreateElectricFenceComponent(props: ICreateElectricProps
         <Form.Item label="围栏名称" name="name">
           <Input placeholder="请输入围栏名称" />
         </Form.Item>
-        <Form.Item name="alarmIn" label="驶出提醒" valuePropName="checked">
+        <Form.Item name="alarmOut" label="驶出提醒" valuePropName="checked">
           <Switch />
         </Form.Item>
-        <Form.Item name="alarmOut" label="驶入提醒" valuePropName="checked">
+        <Form.Item name="alarmIn" label="驶入提醒" valuePropName="checked">
           <Switch />
         </Form.Item>
         <Form.Item label="围栏范围">

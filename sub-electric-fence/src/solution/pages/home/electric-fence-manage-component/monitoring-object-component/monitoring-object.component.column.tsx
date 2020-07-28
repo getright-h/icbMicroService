@@ -51,8 +51,8 @@ export function stationColumns(callbackAction: Function) {
       render: (render: any, data: any, index: number) => {
         return (
           <React.Fragment>
-            <a onClick={() => callbackAction(ACTION_TYPE.FENCEMODAL, data)}>围栏模式</a>
-            <Divider type="vertical" />
+            {/* <a onClick={() => callbackAction(ACTION_TYPE.FENCEMODAL, data)}>围栏模式</a>
+            <Divider type="vertical" /> */}
             <a onClick={() => callbackAction(ACTION_TYPE.EDIT, data)}>编辑</a>
             <Divider type="vertical" />
             <a onClick={() => callbackAction(ACTION_TYPE.UNBIND, data)}>解绑</a>

@@ -77,9 +77,9 @@ export default function MonitoringObjectComponent() {
         <Button type="primary" onClick={() => openModal(ModalType.BINDCAR)}>
           绑定车辆
         </Button>
-        <Button type="primary" onClick={() => openModal(ModalType.FENCETYPE)}>
+        {/* <Button type="primary" onClick={() => openModal(ModalType.FENCETYPE)}>
           围栏模式
-        </Button>
+        </Button> */}
       </div>
     );
   }

@@ -16,6 +16,11 @@ let geocoder =
     // city: '全国', //城市设为北京，默认：“全国”
     // radius: 1000 //范围，默认：500
   });
+
+const autoOptions = {
+  city: '全国'
+};
+const autoComplete = new AMap.Autocomplete(autoOptions);
 export function useCreateElectricFenceStore(props: ICreateElectricProps) {
   const { state, setStateWrap } = useStateStore(new ICreateElectricFenceState());
   const { onValueChange, circlrR, centerPlace, polygon } = props;
@@ -109,6 +114,8 @@ export function useCreateElectricFenceStore(props: ICreateElectricProps) {
         let info = '...';
         if (result.regeocode.formattedAddress.length > 15) {
           info += result.regeocode.formattedAddress.slice(-10);
+        } else {
+          info = result.regeocode.formattedAddress;
         }
         form.setFieldsValue({ centerPlace: info, centerLatlng: centerPlace });
       }
@@ -116,17 +123,27 @@ export function useCreateElectricFenceStore(props: ICreateElectricProps) {
   }
 
   function handleChangeCircle(value: string) {
-    geocoder.getLocation(value, function(status: string, result: any) {
-      if (status === 'complete' && result.geocodes.length) {
-        const lnglat = result.geocodes[0].location;
-
-        onValueChange('circleLocation', [lnglat.lng, lnglat.lat]);
-      }
+    setStateWrap({
+      locationList: []
     });
+
+    autoComplete.search(value, function(status: string, result: any) {
+      // 搜索成功时，result即是对应的匹配数据
+      setStateWrap({
+        locationList: result.tips
+      });
+      console.log(result.tips);
+    });
+  }
+
+  function handleCircleLocation(value: any, options: any) {
+    const lnglat = JSON.parse(options.value);
+
+    onValueChange('circleLocation', [lnglat.lng, lnglat.lat]);
   }
 
   const onCrPlaceChange = (e: ChangeEvent<HTMLInputElement>) => {
     onValueChange('circlrR', e.target.value);
   };
-  return { state, onFinish, getAddressInfo, handleChangeCircle, onCrPlaceChange, form };
+  return { state, onFinish, getAddressInfo, handleCircleLocation, handleChangeCircle, onCrPlaceChange, form };
 }

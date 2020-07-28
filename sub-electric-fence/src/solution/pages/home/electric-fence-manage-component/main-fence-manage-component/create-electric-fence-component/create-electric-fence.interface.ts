@@ -9,6 +9,7 @@ export class ICreateElectricFenceState {
   loadingMapArea = false;
   listOfOption: any = undefined;
   isLoading = false;
+  locationList: any[] = [];
 }
 
 export interface ICreateElectricProps {

@@ -49,6 +49,8 @@ export interface AlarmListReturn {
   status: number;
   statusText: string;
   time: string;
+  alarmLocation: Array<number>;
+  alarmAddr: string;
   fenceId: string;
   fenceName: string;
   thingId: string;
