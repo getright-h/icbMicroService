@@ -111,6 +111,14 @@ export function useFenceAttentionStore() {
     });
   }
   function handleModalOk() {
+    console.log(state.modalTitle);
+
+    if (state.modalTitle == '围栏告警详情') {
+      setStateWrap({
+        visibleModal: false
+      });
+      return;
+    }
     const formParams: any = formInfo.current.getFieldsValue();
     alarmCreateService.alarmFollow({ ...formParams, id: formInfo.current.id }).subscribe(res => {
       getCurrentPageList();

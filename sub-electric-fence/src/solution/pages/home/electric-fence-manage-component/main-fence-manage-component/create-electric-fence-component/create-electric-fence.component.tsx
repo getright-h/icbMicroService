@@ -114,7 +114,7 @@ export default function CreateElectricFenceComponent(props: ICreateElectricProps
         initialValues={{ fenceType, ...editData }}
       >
         <Form.Item label="围栏名称" name="name">
-          <Input placeholder="请输入围栏名称" />
+          <Input placeholder="请输入围栏名称" maxLength={30} />
         </Form.Item>
         <Form.Item name="alarmOut" label="驶出提醒" valuePropName="checked">
           <Switch />

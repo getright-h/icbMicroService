@@ -115,7 +115,7 @@ export function useMonitoringObjectStore() {
         break;
       case ACTION_TYPE.BATCH_EDIT:
         confirm({
-          title: '批量解绑',
+          title: '批量修改',
           width: 700,
           content: <CreateBindCarComponent onValuesChange={getFormInfo} formInitValue={{ ...data, isEdit: true }} />,
           onOk() {

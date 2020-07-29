@@ -10,7 +10,12 @@ export function stationColumns(callbackAction: Function) {
     {
       title: '驶出提醒',
       dataIndex: 'alarmIn',
-      render: (data: boolean) => <a>{data ? '是' : '否'}</a>
+      render: (data: boolean) => (
+        <a>
+          {data ? '是' : '否'}
+          {data}
+        </a>
+      )
     },
     {
       title: '驶入提醒',
