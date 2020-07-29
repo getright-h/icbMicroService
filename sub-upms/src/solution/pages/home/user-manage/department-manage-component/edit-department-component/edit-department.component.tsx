@@ -69,10 +69,10 @@ export default function EditDepartmentComponent(props: any) {
             </Form.Item>
           </React.Fragment>
         )}
-        <Form.Item name="name" label="岗位名称" rules={[{ required: true }]}>
-          <Input placeholder="请输入岗位名称" />
+        <Form.Item name="name" label="部门名称" rules={[{ required: true }]}>
+          <Input placeholder="请输入部门名称" />
         </Form.Item>
-        <Form.Item name="state" label="岗位状态">
+        <Form.Item name="state" label="部门状态">
           <Radio.Group buttonStyle="solid">
             <Radio.Button value={true}>启用</Radio.Button>
             <Radio.Button value={false}>禁用</Radio.Button>
