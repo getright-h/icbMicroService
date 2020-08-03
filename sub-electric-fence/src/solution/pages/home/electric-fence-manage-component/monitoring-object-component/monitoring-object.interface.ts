@@ -9,7 +9,8 @@ export class IMonitoringObjectState {
   searchForm: MonitorObjectListParams = {
     fenceId: '',
     thingId: '',
-    vehicleId: '',
+    keyId: '',
+    keyType: '',
     ownerId: '',
     index: 1,
     size: 10,

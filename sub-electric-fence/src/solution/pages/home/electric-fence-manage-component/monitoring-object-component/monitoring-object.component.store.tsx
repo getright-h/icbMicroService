@@ -17,6 +17,7 @@ export function useMonitoringObjectStore() {
   const monitorObjectServiceService = new MonitorObjectServiceService();
   const { searchForm } = state;
   const formInfo = useRef(null);
+  const currentModal = useRef(null);
   const monitorObjectServiceServiceSubscript: { current: Subscription } = useRef();
   useEffect(() => {
     getMonitorList();
@@ -40,7 +41,8 @@ export function useMonitoringObjectStore() {
         searchForm['thingId'] = selectItem.key ? selectItem.key : '';
         break;
       case 'vehicleId':
-        searchForm[key] = selectItem.key ? selectItem.key : '';
+        searchForm['keyType'] = selectItem.type ? selectItem.type : 0;
+        searchForm['keyId'] = selectItem.key ? selectItem.key : '';
         break;
       default:
         searchForm[key] = value;
@@ -57,8 +59,6 @@ export function useMonitoringObjectStore() {
     searchForm.end = formatToUnix(searchForm.end);
     monitorObjectServiceServiceSubscript.current = monitorObjectServiceService.vehicleList(searchForm).subscribe(
       res => {
-        console.log(res);
-
         setStateWrap({
           tableData: res.data,
           total: res.total,
@@ -74,6 +74,7 @@ export function useMonitoringObjectStore() {
   }
 
   function callbackAction(type: ACTION_TYPE, data: any) {
+    formInfo.current = null;
     switch (type) {
       case ACTION_TYPE.FENCEMODAL:
         confirm({
@@ -92,10 +93,8 @@ export function useMonitoringObjectStore() {
           title: '编辑',
           width: 700,
           content: <CreateBindCarComponent onValuesChange={getFormInfo} formInitValue={{ ...data, isEdit: true }} />,
-          onOk() {
-            return new Promise((resolve, reject) => {
-              handleModalOk(resolve, reject, true, data.id);
-            }).catch(() => console.log('Oops errors!'));
+          onOk(close) {
+            handleModalOk(close, true, data.id);
           },
           onCancel() {}
         });
@@ -108,7 +107,7 @@ export function useMonitoringObjectStore() {
           onOk() {
             return new Promise((resolve, reject) => {
               handleUnBind(resolve, reject, data.id);
-            }).catch(() => console.log('Oops errors!'));
+            }).catch(error => console.log('Oops errors!', error));
           },
           onCancel() {}
         });
@@ -118,10 +117,8 @@ export function useMonitoringObjectStore() {
           title: '批量修改',
           width: 700,
           content: <CreateBindCarComponent onValuesChange={getFormInfo} formInitValue={{ ...data, isEdit: true }} />,
-          onOk() {
-            return new Promise((resolve, reject) => {
-              handleModalOk(resolve, reject, false, data.id, true);
-            }).catch(() => console.log('Oops errors!'));
+          onOk(close) {
+            handleModalOk(close, false, data.id, true);
           },
           onCancel() {}
         });
@@ -169,48 +166,52 @@ export function useMonitoringObjectStore() {
     formInfo.current = form;
   }
 
-  function handleModalOk(resolve: any, reject: any, isEdit = false, id = '', isBatch = true) {
-    console.log(formInfo.current.getFieldsValue());
-
-    const values = { ...formInfo.current.getFieldsValue() };
-    values.bindData =
-      values.bindData &&
-      values.bindData.map((value: { key: string; value: string }) => {
-        const bindInfo = JSON.parse(value.value);
-        return { thingId: bindInfo.key, thingType: bindInfo.type };
-      });
-    values.begin = formatToUnix(values.begin);
-    values.end = formatToUnix(values.end);
-    const url = !isEdit ? (isBatch ? 'vehicleEditBatch' : 'vehicleBind') : 'vehicleEdit';
-    monitorObjectServiceServiceSubscript.current = monitorObjectServiceService[url]({ ...values, id }).subscribe(
-      res => {
-        resolve();
-        getMonitorList();
-        setStateWrap({
-          visibleModal: false,
-          confirmModalLoading: false
+  async function handleModalOk(close: any, isEdit = false, id = '', isBatch = true) {
+    currentModal.current.update({
+      okButtonProps: { loading: true }
+    });
+    formInfo &&
+      formInfo.current
+        .validateFields()
+        .then(() => {
+          const values = { ...formInfo.current.getFieldsValue() };
+          values.bindData =
+            values.bindData &&
+            values.bindData.map((value: { key: string; value: string }) => {
+              const bindInfo = JSON.parse(value.value);
+              return { thingId: bindInfo.key, thingType: bindInfo.type };
+            });
+          values.begin = formatToUnix(values.begin);
+          values.end = formatToUnix(values.end);
+          const url = !isEdit ? (isBatch ? 'vehicleEditBatch' : 'vehicleBind') : 'vehicleEdit';
+          monitorObjectServiceServiceSubscript.current = monitorObjectServiceService[url]({ ...values, id }).subscribe(
+            res => {
+              close();
+              getMonitorList();
+            },
+            () => {
+              currentModal.current.update({
+                okButtonProps: { loading: false }
+              });
+            }
+          );
+        })
+        .catch(() => {
+          currentModal.current.update({
+            okButtonProps: { loading: false }
+          });
         });
-      },
-      () => {
-        reject();
-        setStateWrap({
-          confirmModalLoading: false
-        });
-      }
-    );
   }
 
   function openModal(type: ModalType) {
     switch (type) {
       case ModalType.BINDCAR:
-        confirm({
+        currentModal.current = confirm({
           title: '绑定车辆',
           width: 700,
           content: <CreateBindCarComponent onValuesChange={getFormInfoCallback}></CreateBindCarComponent>,
-          onOk() {
-            return new Promise((resolve, reject) => {
-              handleModalOk(resolve, reject, false, '', false);
-            }).catch(error => console.log('Oops errors!', error));
+          onOk(close) {
+            handleModalOk(close, false, '', false);
           },
           onCancel() {}
         });
@@ -221,9 +222,7 @@ export function useMonitoringObjectStore() {
           width: 700,
           content: <FenceModalViewComponent />,
           onOk() {
-            return new Promise((resolve, reject) => {
-              handleModalOk(resolve, reject);
-            }).catch(error => console.log('Oops errors!', error));
+            console.log(1);
           },
           onCancel() {}
         });

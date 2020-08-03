@@ -92,7 +92,9 @@ export function useFenceAttentionStore() {
         searchForm['thingId'] = selectItem.key ? selectItem.key : '';
         break;
       case 'vehicleId':
-        searchForm[key] = selectItem.key ? selectItem.key : '';
+        searchForm['keyType'] = selectItem.type ? selectItem.type : 0;
+        searchForm['keyId'] = selectItem.key ? selectItem.key : '';
+        break;
         break;
       default:
         searchForm[key] = value;

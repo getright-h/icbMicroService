@@ -38,7 +38,8 @@ export interface MonitorObjectListreturn {
 export interface MonitorObjectListParams {
   fenceId: string;
   thingId: string;
-  vehicleId: string;
+  keyId: string;
+  keyType: string;
   ownerId: string;
   index: number;
   size: number;

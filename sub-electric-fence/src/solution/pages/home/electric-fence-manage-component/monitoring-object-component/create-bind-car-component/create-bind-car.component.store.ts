@@ -11,7 +11,7 @@ import moment from 'moment';
 export function useCreateBindCarStore(props: ICreateBindCarProps) {
   const { state, setStateWrap } = useStateStore(new ICreateBindCarState());
   const [form] = Form.useForm();
-  const { formInitValue } = props;
+  const { formInitValue, onValuesChange } = props;
   const fenceManageService = new FenceManageService();
   const monitorObjectServiceService = new MonitorObjectServiceService();
   const monitorObjectServiceServiceSubscription: { current: Subscription } = useRef();
@@ -21,12 +21,12 @@ export function useCreateBindCarStore(props: ICreateBindCarProps) {
   }, []);
 
   useEffect(() => {
-    console.log('formInitValue1', formInitValue);
     if (formInitValue) {
       formInitValue.begin = moment(formInitValue.beginDate);
       formInitValue.end = moment(formInitValue.endDate);
       form.setFieldsValue({ ...formInitValue });
     }
+    onValuesChange(form);
     return () => {
       monitorObjectServiceServiceSubscription.current && monitorObjectServiceServiceSubscription.current.unsubscribe();
     };

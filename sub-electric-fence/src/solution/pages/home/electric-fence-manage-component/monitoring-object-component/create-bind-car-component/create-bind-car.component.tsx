@@ -18,7 +18,11 @@ function CreateBindCarComponent(props: ICreateBindCarProps) {
     <div className={style.test}>
       <Form name="validate_other" form={form} onValuesChange={() => onValuesChange(form)} {...formItemLayout}>
         {!formInitValue ? (
-          <Form.Item label="请选择绑定对象" name="bindData">
+          <Form.Item
+            label="请选择绑定对象"
+            name="bindData"
+            rules={[{ required: true, message: '请输入车辆所属机构或车队名或车牌号' }]}
+          >
             <Select
               mode="multiple"
               labelInValue
@@ -41,7 +45,7 @@ function CreateBindCarComponent(props: ICreateBindCarProps) {
             <Input disabled />
           </Form.Item>
         )}
-        <Form.Item name="fenceId" label="选择围栏">
+        <Form.Item name="fenceId" label="选择围栏" rules={[{ required: true, message: '请选择电子围栏' }]}>
           <Select
             showSearch
             placeholder="请选择电子围栏"
@@ -59,10 +63,10 @@ function CreateBindCarComponent(props: ICreateBindCarProps) {
               ))}
           </Select>
         </Form.Item>
-        <Form.Item name="begin" label="绑定开始时间">
+        <Form.Item name="begin" label="绑定开始时间" rules={[{ required: true, message: '请绑定开始时间' }]}>
           <DatePicker showTime locale={locale} format="YYYY-MM-DD" />
         </Form.Item>
-        <Form.Item name="end" label="绑定结束时间">
+        <Form.Item name="end" label="绑定结束时间" rules={[{ required: true, message: '请绑定结束时间' }]}>
           <DatePicker showTime locale={locale} format="YYYY-MM-DD" />
         </Form.Item>
       </Form>

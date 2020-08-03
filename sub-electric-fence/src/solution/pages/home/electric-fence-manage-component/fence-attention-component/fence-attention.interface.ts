@@ -14,7 +14,8 @@ export class IFenceAttentionState {
     status: '-1',
     thingId: '',
     thingType: 0,
-    vehicleId: ''
+    keyId: '',
+    keyType: 0
   };
   tableData: any = [];
   total = 0;
