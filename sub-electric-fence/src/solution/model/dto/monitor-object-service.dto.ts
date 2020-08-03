@@ -39,7 +39,7 @@ export interface MonitorObjectListParams {
   fenceId: string;
   thingId: string;
   keyId: string;
-  keyType: string;
+  keyType: number;
   ownerId: string;
   index: number;
   size: number;

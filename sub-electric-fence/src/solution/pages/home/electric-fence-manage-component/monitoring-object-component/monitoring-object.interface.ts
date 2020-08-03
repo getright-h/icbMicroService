@@ -10,7 +10,7 @@ export class IMonitoringObjectState {
     fenceId: '',
     thingId: '',
     keyId: '',
-    keyType: '',
+    keyType: 0,
     ownerId: '',
     index: 1,
     size: 10,
