@@ -34,23 +34,26 @@ function RolePrivilegeTabsComponent(props: IRolePrivilegeTabsProps) {
             return (
               <Tabs.TabPane tab={menu.menuName} key={menu.menuId}>
                 <Checkbox.Group
+                  className={style.checkGroup}
                   onChange={checkedValue => changeCheckPrivileges(checkedValue, menu)}
                   defaultValue={checkedValues && checkedValues.map(o => JSON.stringify(o))}
                 >
                   <Collapse defaultActiveKey={activeCollapses}>
                     {activeCollapses &&
+                      privilegeModelList &&
                       privilegeModelList.map(privilegeModel => {
                         return (
                           <Collapse.Panel header={privilegeModel.name} key={privilegeModel.id}>
-                            {privilegeModel.privileges.map(privilege => (
-                              <Tooltip placement="top" title={privilege.code} key={privilege.id}>
-                                <Checkbox
-                                  value={JSON.stringify({ privilegeId: privilege.id, privilegeCode: privilege.code })}
-                                >
-                                  {privilege.name}
-                                </Checkbox>
-                              </Tooltip>
-                            ))}
+                            {privilegeModel.privileges &&
+                              privilegeModel.privileges.map(privilege => (
+                                <Tooltip placement="top" title={privilege.code} key={privilege.id}>
+                                  <Checkbox
+                                    value={JSON.stringify({ privilegeId: privilege.id, privilegeCode: privilege.code })}
+                                  >
+                                    {privilege.name}
+                                  </Checkbox>
+                                </Tooltip>
+                              ))}
                           </Collapse.Panel>
                         );
                       })}
