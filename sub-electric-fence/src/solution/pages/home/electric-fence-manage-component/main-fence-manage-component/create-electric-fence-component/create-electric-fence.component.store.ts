@@ -34,7 +34,6 @@ export function useCreateElectricFenceStore(props: ICreateElectricProps) {
   function onFinish(values: Store) {
     if (!values.name) {
       message.warning('请输入围栏名');
-
       return;
     }
     setStateWrap({
