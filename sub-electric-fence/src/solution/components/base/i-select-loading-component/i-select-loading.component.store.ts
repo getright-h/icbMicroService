@@ -3,6 +3,7 @@ import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store'
 import React, { useEffect, useRef } from 'react';
 import { Subscription } from 'rxjs';
 import { DrapChooseLoadingService } from '~/solution/model/services/drap-choose-loading.service';
+import { debounce } from '~/solution/shared/util/common.util';
 
 export function useISelectLoadingStore(props: IISelectLoadingProps) {
   const { reqUrl, searchForm } = props;
@@ -13,22 +14,18 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
   const optionData = useRef([]);
   const scrollPage = useRef(1);
 
-  function getOptionList() {
-    setStateWrap({ fetching: true });
+  function getOptionList(searchInfo?: string) {
+    // if (!searchInfo) return;
+    setStateWrap({ fetching: true, optionList: [] });
     getOptionListSubscription = drapChooseLoadingService[reqUrl]({
       ...searchForm,
-      index: scrollPage.current,
-      size: 20
+      name: searchInfo,
+      key: searchInfo,
+      index: 1,
+      size: 10
     }).subscribe(
       (res: any) => {
-        if (res.dataList instanceof Array) {
-          optionData.current = [...optionData.current, ...res.dataList];
-        } else if (res instanceof Array) {
-          optionData.current = [...optionData.current, ...res];
-        } else {
-          scrollPage.current--;
-        }
-        setStateWrap({ fetching: false });
+        setStateWrap({ fetching: false, optionList: [...res.data] });
       },
       (error: any) => {
         setStateWrap({ fetching: false });
@@ -37,11 +34,7 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
     );
   }
 
-  function onClick() {
-    scrollPage.current = 1;
-    optionData.current = [];
-    getOptionList();
-  }
+  const getOptionListDebouce = debounce(getOptionList, 500);
 
   function optionScroll(e: any) {
     e.persist();
@@ -52,10 +45,12 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
     }
   }
   useEffect(() => {
+    console.log('reqUrl', reqUrl);
+
     getOptionList();
     return () => {
       getOptionListSubscription && getOptionListSubscription.unsubscribe();
     };
   }, []);
-  return { state, optionData, optionScroll, onClick };
+  return { state, optionData, optionScroll, getOptionList, getOptionListDebouce };
 }

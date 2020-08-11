@@ -1,6 +1,7 @@
-import React, { useState, useMemo, useReducer } from 'react';
+import React, { useState, useMemo, useReducer, useRef } from 'react';
 import { emptyFunction } from '~/framework/util/common';
 import { IAction } from '~/solution/shared/interfaces/common.interface';
+import { FormInstance } from 'antd/lib/form';
 type Partial<T> = {
   [P in keyof T]?: T[P];
 };

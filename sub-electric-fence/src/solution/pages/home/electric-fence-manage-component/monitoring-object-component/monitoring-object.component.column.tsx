@@ -9,35 +9,46 @@ export function stationColumns(callbackAction: Function) {
     },
     {
       title: '驶出提醒',
-      dataIndex: 'outAttention'
+      dataIndex: 'alarmIn',
+      render: (data: boolean) => (
+        <a>
+          {data ? '是' : '否'}
+          {data}
+        </a>
+      )
     },
     {
       title: '驶入提醒',
-      dataIndex: 'inAttention'
+      dataIndex: 'alarmOut',
+      render: (data: boolean) => <a>{data ? '是' : '否'}</a>
     },
     {
       title: '绑定开始日期',
-      dataIndex: 'startTime'
+      dataIndex: 'beginDate'
     },
     {
       title: '绑定结束日期',
-      dataIndex: 'endTime'
+      dataIndex: 'endDate'
     },
     {
       title: '绑定车辆所属',
-      dataIndex: 'bindCarFor4s'
+      dataIndex: 'thingName'
     },
     {
       title: '车牌号',
-      dataIndex: 'vehicle'
+      dataIndex: 'plateNumber'
     },
     {
       title: '车主姓名',
-      dataIndex: 'name'
+      dataIndex: 'ownerName'
     },
     {
-      title: '设备号',
-      dataIndex: 'id'
+      title: '车主电话',
+      dataIndex: 'ownerMobile'
+    },
+    {
+      title: '车架号',
+      dataIndex: 'vin'
     },
     {
       title: '操作',
@@ -45,8 +56,8 @@ export function stationColumns(callbackAction: Function) {
       render: (render: any, data: any, index: number) => {
         return (
           <React.Fragment>
-            <a onClick={() => callbackAction(ACTION_TYPE.FENCEMODAL, data)}>围栏模式</a>
-            <Divider type="vertical" />
+            {/* <a onClick={() => callbackAction(ACTION_TYPE.FENCEMODAL, data)}>围栏模式</a>
+            <Divider type="vertical" /> */}
             <a onClick={() => callbackAction(ACTION_TYPE.EDIT, data)}>编辑</a>
             <Divider type="vertical" />
             <a onClick={() => callbackAction(ACTION_TYPE.UNBIND, data)}>解绑</a>

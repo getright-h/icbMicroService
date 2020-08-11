@@ -3,7 +3,8 @@ import {
   FenceManageEditParamsModal,
   FenceManageDTO,
   FenceManageCreateParamsModal,
-  FenceManageDistrictReturnModal
+  FenceManageDistrictReturnModal,
+  FenceDistrictInfoReturn
 } from '../dto/fence-manage.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
@@ -18,12 +19,14 @@ const FENCE_MANAGE_EDIT = 'fence/manage/edit';
 const FENCE_MANAGE_LIST = 'fence/manage/list';
 const FENCE_MANAGE_DISTRICT = 'fence/manage/district';
 const FENCE_MANAGE_DELETE = 'fence/manage/delete';
+const FENCE_MANAGE_DISTRICTINFO = 'fence/manage/district-info';
 
 @DepUtil.Injectable()
 export class FenceManageService implements FenceManageDTO {
   @DepUtil.Inject(RequestService)
   private readonly requestService: RequestService;
   constructor() {}
+
   fenceList(params: {
     name: string;
     index: number;
@@ -45,5 +48,9 @@ export class FenceManageService implements FenceManageDTO {
 
   fenceCreate(params: FenceManageCreateParamsModal): Observable<number> {
     return this.requestService.post(FENCE_MANAGE_CREATE, params);
+  }
+
+  fenceDistrictInfo(params: { adcode: string }): Observable<FenceDistrictInfoReturn> {
+    return this.requestService.get(FENCE_MANAGE_DISTRICTINFO, params);
   }
 }

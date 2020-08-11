@@ -1,10 +1,13 @@
 import * as React from 'react';
-import style from './monitoring-object.component.less';
-import { TablePageTelComponent, ITableComponent, TimePickerComponent } from '~/solution/components/component.module';
+import {
+  TablePageTelComponent,
+  ITableComponent,
+  TimePickerComponent,
+  ISelectLoadingComponent
+} from '~/solution/components/component.module';
 import { stationColumns } from './monitoring-object.component.column';
 import { useMonitoringObjectStore } from './monitoring-object.component.store';
 import { Input, Button, Modal } from 'antd';
-import CreateBindCarComponent from './create-bind-car-component/create-bind-car.component';
 import { ModalType } from './monitoring-object.interface';
 
 export default function MonitoringObjectComponent() {
@@ -12,41 +15,47 @@ export default function MonitoringObjectComponent() {
     state,
     callbackAction,
     changeTablePageIndex,
-    handleModalCancel,
-    handleModalOk,
     searchClick,
     getDateTimeInfo,
+    getFormSearchInfo,
     openModal
   } = useMonitoringObjectStore();
-  const {
-    isLoading,
-    searchForm,
-    tableData,
-    total,
-    visibleModal,
-    modalTitle,
-    confirmModalLoading,
-    modalContainer
-  } = state;
+  const { isLoading, searchForm, tableData, total } = state;
 
   function renderSelectItems() {
     return (
       <>
         <div className="push-search-item">
           <span className="label">围栏名称：</span>
-          <Input placeholder="请输入围栏名查询" />
+          <ISelectLoadingComponent
+            getCurrentSelectInfo={value => getFormSearchInfo('fenceId', value)}
+            placeholder="请输入围栏名"
+            reqUrl="fenceList"
+          ></ISelectLoadingComponent>
         </div>
         <div className="push-search-item">
           <span className="label">车辆所属：</span>
-          <Input placeholder="请输入机构名/车辆名" />
+          <ISelectLoadingComponent
+            getCurrentSelectInfo={value => getFormSearchInfo('fenceDdlBelong', value)}
+            placeholder="请输入机构名/车队名"
+            reqUrl="fenceDdlBelong"
+          ></ISelectLoadingComponent>
         </div>
         <div className="push-search-item">
           <span className="label">车辆信息：</span>
-          <Input placeholder="车主电话/姓名" />
+          <ISelectLoadingComponent
+            getCurrentSelectInfo={value => getFormSearchInfo('vehicleId', value)}
+            placeholder="车主电话/车主姓名/车牌号"
+            reqUrl="fenceDdlVehicleInfo"
+          ></ISelectLoadingComponent>
         </div>
         <div className="push-search-item">
           <span className="label">绑定日期：</span>
-          <TimePickerComponent pickerType="dateRange" getDateTimeInfo={getDateTimeInfo}></TimePickerComponent>
+          <TimePickerComponent
+            pickerType="dateRange"
+            timeInfo={[searchForm.begin, searchForm.end]}
+            getDateTimeInfo={getDateTimeInfo}
+          ></TimePickerComponent>
         </div>
       </>
     );
@@ -55,7 +64,7 @@ export default function MonitoringObjectComponent() {
   function renderSearchButtons() {
     return (
       <div className="push-search-button-item">
-        <Button type="primary" onClick={searchClick}>
+        <Button type="primary" onClick={() => changeTablePageIndex(1)}>
           查询
         </Button>
       </div>
@@ -68,26 +77,10 @@ export default function MonitoringObjectComponent() {
         <Button type="primary" onClick={() => openModal(ModalType.BINDCAR)}>
           绑定车辆
         </Button>
-        <Button type="primary" onClick={() => openModal(ModalType.FENCETYPE)}>
+        {/* <Button type="primary" onClick={() => openModal(ModalType.FENCETYPE)}>
           围栏模式
-        </Button>
+        </Button> */}
       </div>
-    );
-  }
-
-  function ModalDetail() {
-    return (
-      <Modal
-        title={modalTitle}
-        visible={visibleModal}
-        width={700}
-        onOk={handleModalOk}
-        confirmLoading={confirmModalLoading}
-        style={{ top: 20 }}
-        onCancel={handleModalCancel}
-      >
-        {modalContainer}
-      </Modal>
     );
   }
 
@@ -108,13 +101,12 @@ export default function MonitoringObjectComponent() {
   return (
     <>
       <TablePageTelComponent
-        pageName={'围栏管理'}
+        pageName={'监控对象'}
         selectItems={renderSelectItems()}
         searchButton={renderSearchButtons()}
         otherSearchBtns={renderOtherButtons()}
         table={<RenderTable />}
       ></TablePageTelComponent>
-      <ModalDetail />
     </>
   );
 }

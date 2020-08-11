@@ -50,31 +50,28 @@ export const IMAP = {
     return circleEditor;
   },
   // 创建多边形
-  createPolygon(circleLocation: Array<number>, map: any, path?: Array<[number, number]>) {
+  createPolygon(circleLocation: Array<number>, map: any, path?: Array<[number, number]> | any, isOpen = true) {
     if (!path) {
       const x = circleLocation[0];
       const y = circleLocation[1];
 
-      path = [
-        [x - 0.0508, y - 0.045],
-        [x - 0.0508, y + 0.045],
-        [x + 0.0508, y + 0.045],
-        [x + 0.0508, y - 0.045]
-      ];
+      path = [[x - 0.0508, y - 0.045], [x - 0.0508, y + 0.045], [x + 0.0508, y + 0.045], [x + 0.0508, y - 0.045]];
     }
     const polygon = new AMap.Polygon({
+      strokeWeight: 1,
       path: path,
-      strokeColor: '#FF33FF',
-      strokeWeight: 6,
-      strokeOpacity: 0.2,
       fillOpacity: 0.4,
-      fillColor: '#1791fc',
-      zIndex: 50
+      fillColor: '#80d8ff',
+      strokeColor: '#0091ea'
     });
     map.add(polygon);
     map.setFitView([polygon]);
-    const polyEditor = new AMap.PolyEditor(map, polygon);
-    polyEditor.open();
+    let polyEditor;
+    if (isOpen) {
+      polyEditor = new AMap.PolyEditor(map, polygon);
+      polyEditor.open();
+    }
+
     return { polyEditor, path };
   },
   // 获取当前定位并执行callback回传地址信息

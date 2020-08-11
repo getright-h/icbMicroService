@@ -10,12 +10,22 @@ export function stationColumns(callbackAction: Function) {
     {
       title: '驶出提醒',
       dataIndex: 'alarmOut',
-      render: (text: boolean) => <span>{text ? '提醒' : '不提醒'}</span>
+      render: (text: boolean) => (
+        <span>
+          {text ? '提醒' : '不提醒'}
+          {text}
+        </span>
+      )
     },
     {
       title: '驶入提醒',
       dataIndex: 'alarmIn',
-      render: (text: boolean) => <span>{text ? '提醒' : '不提醒'}</span>
+      render: (text: boolean) => (
+        <span>
+          {text ? '提醒' : '不提醒'}
+          {text}
+        </span>
+      )
     },
     {
       title: '操作',
@@ -23,9 +33,9 @@ export function stationColumns(callbackAction: Function) {
       render: (render: any, data: any, index: number) => {
         return (
           <React.Fragment>
-            <a onClick={() => callbackAction(ACTION_TYPE.EDIT, data)}>编辑</a>
+            <a onClick={e => callbackAction(e, ACTION_TYPE.EDIT, data)}>编辑</a>
             <Divider type="vertical" />
-            <a onClick={() => callbackAction(ACTION_TYPE.DELETE, data)}>删除</a>
+            <a onClick={e => callbackAction(e, ACTION_TYPE.DELETE, data)}>删除</a>
           </React.Fragment>
         );
       }

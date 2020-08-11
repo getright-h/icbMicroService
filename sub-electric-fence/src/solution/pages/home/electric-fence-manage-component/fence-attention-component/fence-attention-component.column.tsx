@@ -5,7 +5,7 @@ export function stationColumns(callbackAction: Function) {
   return [
     {
       title: '车辆所属',
-      dataIndex: 'source'
+      dataIndex: 'thingName'
     },
     {
       title: '车牌号',
@@ -13,31 +13,27 @@ export function stationColumns(callbackAction: Function) {
     },
     {
       title: '车主姓名',
-      dataIndex: 'userName'
+      dataIndex: 'ownerName'
     },
     {
       title: '车架号',
       dataIndex: 'vin'
     },
     {
-      title: '设备号',
-      dataIndex: 'equipmentNumber'
-    },
-    {
       title: '绑定围栏',
-      dataIndex: 'bindFence'
+      dataIndex: 'fenceName'
     },
     {
       title: '告警信息',
-      dataIndex: 'warningMessage'
+      dataIndex: 'alarm'
     },
     {
       title: '告警时间',
-      dataIndex: 'warningTime'
+      dataIndex: 'time'
     },
     {
       title: '状态',
-      dataIndex: 'status'
+      dataIndex: 'statusText'
     },
     {
       title: '操作',
@@ -45,7 +41,7 @@ export function stationColumns(callbackAction: Function) {
       render: (render: any, data: any, index: number) => {
         return (
           <React.Fragment>
-            {data.status == '未处理' && (
+            {data.status == 0 && (
               <a
                 onClick={() => {
                   console.log(ACTION_TYPE.EDIT), callbackAction(ACTION_TYPE.EDIT, data);
@@ -54,7 +50,7 @@ export function stationColumns(callbackAction: Function) {
                 跟进
               </a>
             )}
-            {data.status == '未处理' && <Divider type="vertical" />}
+            {data.status == 0 && <Divider type="vertical" />}
             <a onClick={() => callbackAction(ACTION_TYPE.DETAIL, data)}>详情</a>
           </React.Fragment>
         );

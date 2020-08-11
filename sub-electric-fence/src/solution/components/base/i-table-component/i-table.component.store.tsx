@@ -10,11 +10,11 @@ export function useITableStore(props: IITableProps) {
     const pagination = {
       current: pageIndex,
       showQuickJumper: true,
-      showSizeChanger: true,
       onShowSizeChange: changeTablePageIndex,
       showTotal: (total: number) => {
         return <div>共 {total} 条</div>;
       },
+      showSizeChanger: false,
       pageSize,
       total,
       onChange: changeTablePageIndex

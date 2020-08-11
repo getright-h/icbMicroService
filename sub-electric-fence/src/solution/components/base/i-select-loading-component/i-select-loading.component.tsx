@@ -1,30 +1,36 @@
 import * as React from 'react';
 import style from './i-select-loading.component.less';
-import { Select } from 'antd';
+import { Select, Spin } from 'antd';
 import { IISelectLoadingProps } from './i-select-loading.interface';
 import { useISelectLoadingStore } from './i-select-loading.component.store';
-
+const { Option } = Select;
 export default function ISelectLoadingComponent(props: IISelectLoadingProps) {
-  const { placeholder, disabled, selectedValue, getCurrentSelectInfo } = props;
-  const { state, optionData, optionScroll, onClick } = useISelectLoadingStore(props);
-  const { fetching } = state;
+  const { placeholder, getCurrentSelectInfo, disabled } = props;
+  const { state, getOptionListDebouce } = useISelectLoadingStore(props);
+  const { optionList, fetching } = state;
+
+  const options = optionList.map((item: { id?: string | number; name?: string; key: string; value: string }) => {
+    return (
+      <Option value={JSON.stringify(item)} key={item.id || item.key} info={item}>
+        {item.name || item.value}
+      </Option>
+    );
+  });
+
   return (
     <Select
-      loading={fetching}
+      showSearch
+      onSearch={getOptionListDebouce}
+      defaultActiveFirstOption={false}
+      filterOption={false}
       disabled={disabled || false}
       placeholder={placeholder}
-      value={selectedValue}
+      // value={selectedValue}
       onChange={getCurrentSelectInfo}
-      onPopupScroll={optionScroll}
-      onClick={onClick}
       allowClear={true}
+      notFoundContent={fetching ? <Spin size="small" /> : null}
     >
-      {optionData.current &&
-        optionData.current.map((item: { id: string | number; name: string }) => (
-          <Select.Option value={item.id} key={item.id} info={item}>
-            {item.name}
-          </Select.Option>
-        ))}
+      {options}
     </Select>
   );
 }

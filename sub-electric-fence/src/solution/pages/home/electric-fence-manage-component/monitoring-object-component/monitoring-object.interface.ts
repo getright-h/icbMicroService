@@ -1,18 +1,24 @@
-import { PAGESIZE } from '~/solution/shared/constant/common.const';
-import { Component } from 'react';
-
+import { MonitorObjectListParams } from '~/solution/model/dto/monitor-object-service.dto';
+import moment from 'moment';
 /**
  * @export state变量定义和初始化
  * @class IMonitoringObjectState
  */
 export class IMonitoringObjectState {
   isLoading = false;
-  searchForm = {
+  searchForm: MonitorObjectListParams = {
+    fenceId: '',
+    thingId: '',
+    keyId: '',
+    keyType: 0,
+    ownerId: '',
     index: 1,
-    size: PAGESIZE
+    size: 10,
+    begin: moment().subtract(1, 'months'),
+    end: moment(moment().format('YYYY MM DD') + ' 00:00:00')
   };
   visibleModal = false;
-  tableData: any[] = tableData;
+  tableData: any[];
   total = 0;
   confirmModalLoading = false;
   handleModalOk = false;
@@ -24,17 +30,3 @@ export enum ModalType {
   BINDCAR,
   FENCETYPE
 }
-
-const tableData = [
-  {
-    fenceName: '成都围栏',
-    outAttention: '开',
-    inAttention: '关',
-    startTime: '2019-9-9',
-    endTime: '2019-9-9',
-    bindCarFor4s: '西物吉利',
-    vehicle: '川A1222',
-    name: '符宇轩',
-    id: '213'
-  }
-];

@@ -1,4 +1,5 @@
 import { FenceManageListReturnModal } from '~/solution/model/dto/fence-manage.dto';
+import { Dispatch } from 'react';
 
 /**
  * @export state变量定义和初始化
@@ -11,11 +12,6 @@ export class IMainFenceLeftState {
     size: 5,
     name: ''
   };
-  tableData: Array<FenceManageListReturnModal> = [];
-  total = 0;
-  searchLoading = false;
 }
 
-export interface IMainFenceLeftProps {
-  editPopShow: (data: FenceManageListReturnModal) => void;
-}
+export interface IMainFenceLeftProps {}

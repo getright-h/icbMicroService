@@ -6,12 +6,12 @@ import CreateBindCarComponent from '../../../pages/home/electric-fence-manage-co
  * @class ISelectAddressState
  */
 export class ISelectAddressState {
-  citys: Array<FenceManageDistrictReturnModal>;
-  provinces: Array<FenceManageDistrictReturnModal>;
-  areas: Array<FenceManageDistrictReturnModal>;
+  citys?: Array<FenceManageDistrictReturnModal>;
+  provinces?: Array<FenceManageDistrictReturnModal>;
+  districts?: Array<FenceManageDistrictReturnModal>;
   city: string;
   province: string;
-  area: string;
+  district: string;
 }
 
 export interface ISelectAddressProps {
@@ -22,5 +22,5 @@ export interface ISelectAddressProps {
 export const enum ADDRESSINFO {
   PROVINCE = 'province',
   CITY = 'city',
-  AREA = 'area'
+  AREA = 'district'
 }

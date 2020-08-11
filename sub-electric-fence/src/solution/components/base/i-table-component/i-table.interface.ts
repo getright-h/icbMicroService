@@ -5,11 +5,14 @@ import { ColumnsType, TablePaginationConfig } from 'antd/lib/table';
  * @class IITableState
  */
 export class IITableState {
-  pagination: false | TablePaginationConfig;
+  pagination: false | TablePaginationConfig = {
+    showSizeChanger: false
+  };
 }
 
 export interface IITableProps {
   isLoading: boolean;
+  rowClick?: (record: any, event: any) => void;
   data: any;
   total: number;
   pageSize?: number;
