@@ -20,4 +20,4 @@ echo "--> install node dependencies···"
 echo "--> push···"
 git add .
 git commit -m "正式环境提交：$time"
-git push  -u origin "$branch"
+# git push  -u origin "$branch"
