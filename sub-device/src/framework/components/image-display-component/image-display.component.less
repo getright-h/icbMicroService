@@ -1,0 +1,37 @@
+.preview-img {
+  position: relative;
+
+  .show-img {
+    width: 100%;
+    height: 100%;
+
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 5px;
+    }
+  }
+
+  .mask {
+    cursor: pointer;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+
+    .look {
+      color: #fff;
+      font-size: 20px;
+    }
+  }
+
+  .mask:hover {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000;
+    opacity: 0.5;
+  }
+}
