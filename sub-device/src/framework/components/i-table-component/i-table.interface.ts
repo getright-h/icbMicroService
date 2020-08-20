@@ -17,4 +17,5 @@ export interface IITableProps {
   isPagination?: boolean;
   pageIndex: number;
   changeTablePageIndex: (page: number, pageSize?: number) => void;
+  rowSelection?: any;
 }

@@ -26,7 +26,7 @@ function MenuComponent(props: IProps) {
               <span>{title}</span>
             </span>
           }
-          icon={<AppstoreOutlined />}
+          // icon={<AppstoreOutlined />}
         >
           {renderMenuItems(menu.children)}
         </SubMenu>
