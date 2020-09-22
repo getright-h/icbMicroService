@@ -1,40 +1,38 @@
-import { NewDataNode } from '~/solution/pages/home/organization-manage-component/organization-left-component/organization-left.interface';
-import { BankOutlined, GroupOutlined, ApartmentOutlined } from '@ant-design/icons';
 import * as React from 'react';
-import { OrganizationTypeResponse, Datum } from '~/solution/model/dto/organization-manage.dto';
-export function dealWithTreeData(res: OrganizationTypeResponse[] | Datum[] | any) {
-  const treeData: NewDataNode[] = res.map((organizationType: any) => {
-    const treeDataChild: NewDataNode = { ...organizationType, title: '', key: '' };
-    treeDataChild.title = organizationType.name;
-    treeDataChild.key = organizationType.id;
-    treeDataChild.isLeaf = !organizationType.isHasChildren;
-    treeDataChild.icon = Number.isInteger(organizationType.hierarchyType) ? (
-      organizationType.hierarchyType == 0 ? (
-        <BankOutlined />
-      ) : (
-        <GroupOutlined />
-      )
-    ) : (
-      <ApartmentOutlined />
-    );
-    return treeDataChild;
-  });
+export function dealWithTreeData<T>(res: T[], treeMap: Record<string, any>) {
+  const treeData: any[] =
+    !!res &&
+    res.map((element: any) => {
+      const treeDataChild: any = { ...element, title: '', key: '' };
+
+      Object.keys(treeMap).forEach(key => {
+        treeDataChild[key] = element[treeMap[key]];
+      });
+      treeDataChild['isLeaf'] = false;
+      return treeDataChild;
+    });
+  console.log(treeData);
+
   return treeData;
 }
 // 节点key匹配
-export function updateTreeData(list: NewDataNode[], key: React.Key, children: NewDataNode[] | any): NewDataNode[] {
-  return list.map(node => {
-    if (node.key === key) {
-      return {
-        ...node,
-        children
-      };
-    } else if (node.children) {
-      return {
-        ...node,
-        children: updateTreeData(node.children as any, key, children)
-      };
-    }
-    return node;
-  });
+export function updateTreeData(list: any[], key: React.Key, children: any[] | any): any[] {
+  return (
+    list &&
+    list.map(node => {
+      if (node.key === key) {
+        return {
+          ...node,
+          isLeaf: !children,
+          children
+        };
+      } else if (node.children) {
+        return {
+          ...node,
+          children: updateTreeData(node.children as any, key, children)
+        };
+      }
+      return node;
+    })
+  );
 }

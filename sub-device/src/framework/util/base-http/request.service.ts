@@ -23,7 +23,8 @@ class RequestService {
 
   private createAuthHeaders(): any {
     const headers = { token: '' };
-    const token = localStorage.getItem('TOKENINFO');
+    // const token = localStorage.getItem('TOKENINFO');
+    const token = 'session:262622cc-b2ba-457c-b3a9-68cb05875cf6';
     if (token) {
       headers.token = token;
     }
@@ -34,6 +35,8 @@ class RequestService {
     let returnInfo = process.env.MAIN;
     if (!!~url.indexOf('VerifyCode')) {
       returnInfo = process.env.LOGIN;
+    } else if (!!~url.indexOf('Organization/manage')) {
+      returnInfo = process.env.ORGANAZATION;
     } else {
       returnInfo = process.env.MAIN;
     }
@@ -163,7 +166,7 @@ class RequestService {
       if (data.total || data.total == 0) {
         return { total: data.total, data: data.data };
       }
-      if (data.data == 0 || data.data) {
+      if (data.data == null || data.data) {
         return data.data;
       } else {
         return data;

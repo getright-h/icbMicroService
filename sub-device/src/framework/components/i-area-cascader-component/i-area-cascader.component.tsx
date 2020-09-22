@@ -11,6 +11,7 @@ export default function IAreaCascaderComponent(props: IIAreaCascaderProps) {
     <Cascader
       defaultValue={props.defaultValue}
       value={state.value}
+      style={{ width: '100%' }}
       options={state.areaOptions}
       loadData={loadAreaData}
       onChange={onChangeArea}

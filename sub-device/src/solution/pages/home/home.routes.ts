@@ -4,10 +4,9 @@ import { RedirectStrategy } from '~/framework/aop/strategy/redirect.strategy';
 const MODULE_PATH = 'home';
 export const homeRoutes: IRoute[] = [
   {
-    path: `${MODULE_PATH}/warehouse`,
+    path: `${MODULE_PATH}/baseManage`,
     component: ROUTERS.warehouseManage,
-    lazyload: true,
-    exact: true
+    lazyload: true
   },
   {
     path: `${MODULE_PATH}/stock`,

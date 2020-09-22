@@ -4,6 +4,8 @@ export enum ADDRESS_TYPE {
   Area
 }
 
+export const PAGE_SIZE = 10;
+
 export const PAGES_MENU = {
   MENU: [
     {
@@ -36,16 +38,17 @@ export const PAGES_MENU = {
           path: 'process',
           title: '调拨流程'
         }
-        // 调拨模板已移入基础设置
-        // {
-        //   path: 'template',
-        //   title: '调拨模板'
-        // }
       ]
     },
     {
-      path: 'home/warehouse',
-      title: '仓库管理'
+      path: 'home/baseManage',
+      title: '基础管理',
+      children: [
+        {
+          path: 'warehouse',
+          title: '仓库设置'
+        }
+      ]
     }
   ]
 };

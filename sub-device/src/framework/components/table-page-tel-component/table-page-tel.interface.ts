@@ -1,3 +1,4 @@
+import { Component } from 'react';
 import { TablePageTelStore } from './table-page-tel.component.store';
 
 export interface IProps {
@@ -6,6 +7,7 @@ export interface IProps {
   isFlex?: boolean,
   leftFlex?: number,
   rightFlex?: number,
+  PageLeftComponent?: any,
   pageLeft?: any,
   selectTags?: any,
   selectItems?: any,

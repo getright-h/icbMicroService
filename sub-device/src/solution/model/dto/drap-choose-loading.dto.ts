@@ -23,3 +23,13 @@ export interface DrapChooseLoadingReturn {
   data: any;
   status: boolean;
 }
+
+export interface QueryStoreOrganizationResult {
+  id: string;
+  organizationId: string;
+  name: string;
+  code: string;
+  parentId: string;
+  parentCode: string;
+  parentName: string;
+}
