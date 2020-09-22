@@ -3,12 +3,20 @@ import style from './add-warehouse.component.less';
 import { useAddWarehouseStore } from './add-warehouse.component.store';
 import { useContext } from 'react';
 import { WarehouseListManageContext } from '../warehouse-list.component';
-import { Modal, Form, Input, Checkbox } from 'antd';
+import { Modal, Form, Input, Checkbox, Switch } from 'antd';
 import { IAreaCascaderComponent, ISelectLoadingComponent } from '~/framework/components/component.module';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 
 export default function AddWarehouseComponent() {
-  const { state, handleOk, handleCancel, form, getCurrentSelectInfo } = useAddWarehouseStore();
+  const {
+    state,
+    handleOk,
+    handleCancel,
+    form,
+    getCurrentSelectInfo,
+    setAreaInfo,
+    getCurrentSelectAdmin
+  } = useAddWarehouseStore();
   const { reduxState } = useContext(WarehouseListManageContext);
   const { gState } = React.useContext(GlobalContext);
   const { addWarehousevisible } = reduxState;
@@ -17,7 +25,6 @@ export default function AddWarehouseComponent() {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 }
   };
-  function setAreaInfo() {}
   return (
     <Modal
       title="添加仓库"
@@ -30,7 +37,7 @@ export default function AddWarehouseComponent() {
         <Form.Item name="name" label="仓库名" rules={[{ required: true }]}>
           <Input placeholder="请输入仓库名" />
         </Form.Item>
-        <Form.Item name="name" label="所属组织" rules={[{ required: true }]}>
+        <Form.Item name="organizationId" label="所属组织" rules={[{ required: true }]}>
           <ISelectLoadingComponent
             placeholder="请选择所属组织"
             showSearch
@@ -41,17 +48,17 @@ export default function AddWarehouseComponent() {
             getCurrentSelectInfo={getCurrentSelectInfo}
           ></ISelectLoadingComponent>
         </Form.Item>
-        <Form.Item name="name" label="仓库地址" rules={[{ required: true }]}>
+        <Form.Item label="仓库地址" name="areaCode" rules={[{ required: true, message: '请选择省市区' }]}>
           <Input.Group compact>
-            <Form.Item noStyle name="orgArea" rules={[{ required: true, message: '请选择省市区' }]}>
+            <Form.Item noStyle name="areaCode">
               <IAreaCascaderComponent deep={2} setAreaInfo={setAreaInfo} />
             </Form.Item>
-            <Form.Item name="address" noStyle rules={[{ required: true, message: '请输入详细地址' }]}>
-              <Input style={{ width: '50%' }} placeholder="请输入详细地址" />
+            <Form.Item name="addressDetail" noStyle rules={[{ required: true, message: '请输入详细地址' }]}>
+              <Input style={{ width: '70%', marginTop: 10 }} placeholder="请输入详细地址" />
             </Form.Item>
           </Input.Group>
         </Form.Item>
-        <Form.Item name="name" label="管理员" rules={[{ required: true }]}>
+        <Form.Item name="personId" label="管理员" rules={[{ required: true }]}>
           <ISelectLoadingComponent
             placeholder="请选择库管人员"
             showSearch
@@ -59,12 +66,14 @@ export default function AddWarehouseComponent() {
               systemId: gState.myInfo.systemId
             }}
             reqUrl="queryStoreUser"
-            getCurrentSelectInfo={getCurrentSelectInfo}
+            getCurrentSelectInfo={getCurrentSelectAdmin}
           ></ISelectLoadingComponent>
         </Form.Item>
-        <Form.Item name="name" label="总库存报警" rules={[{ required: true }]}>
+        <Form.Item label="总库存报警">
           <Input.Group compact>
-            <Input style={{ width: 100, textAlign: 'center' }} type="number" suffix="个" placeholder="请输入" />
+            <Form.Item name="minAlarm" noStyle>
+              <Input style={{ width: 100, textAlign: 'center' }} type="number" suffix="个" placeholder="请输入" />
+            </Form.Item>
             <Input
               className="site-input-split"
               style={{
@@ -76,20 +85,22 @@ export default function AddWarehouseComponent() {
               placeholder="~"
               disabled
             />
-            <Input
-              type="number"
-              className="site-input-right"
-              style={{
-                width: 100,
-                textAlign: 'center'
-              }}
-              suffix="个"
-              placeholder="请输入"
-            />
+            <Form.Item name="maxAlarm" noStyle>
+              <Input
+                type="number"
+                className="site-input-right"
+                style={{
+                  width: 100,
+                  textAlign: 'center'
+                }}
+                suffix="个"
+                placeholder="请输入"
+              />
+            </Form.Item>
           </Input.Group>
         </Form.Item>
-        <Form.Item name="name" label="添加默认仓位" rules={[{ required: true }]}>
-          <Checkbox>默认仓位: 1个</Checkbox>
+        <Form.Item name="isDefault" label="添加默认仓位" initialValue={false}>
+          <Switch checkedChildren="默认仓位: 1个" unCheckedChildren="无默认仓位" />
         </Form.Item>
       </Form>
     </Modal>

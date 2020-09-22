@@ -9,6 +9,7 @@ import {
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
 import { DepUtil } from '~/framework/aop/inject';
+import { AddWarehouseParams } from '~/solution/model/dto/warehouse-list.dto';
 
 /**
  * 真实开发中，请将示例代码移除
@@ -18,6 +19,7 @@ const QUERYORGANIZATIONPAGEDLIST = 'store/manage/queryOrganizationPagedList';
 const QUERYSTOREPOSITIONPAGEDLISTBYSTOREID = 'store/manage/queryStorePositionPagedListByStoreId';
 const QUERYSTORE_ORGANIZATION = 'store/manage/queryStoreOrganization';
 const QUERY_STORE_ORGANIZATION_LIST_SUB = 'store/manage/queryStoreOrganizationListSub';
+const INSERT_STORE = 'store/manage/insertStore';
 @DepUtil.Injectable()
 export class WarehouseListService extends WarehouseListDTO {
   @DepUtil.Inject(RequestService)
@@ -40,7 +42,12 @@ export class WarehouseListService extends WarehouseListDTO {
     return this.requestService.get(QUERYSTORE_ORGANIZATION, params);
   }
 
+  // 获取子集组织
   queryStoreOrganizationListSub(params: { parentId: string }): Observable<QueryStoreOrganizationReturn[]> {
     return this.requestService.get(QUERY_STORE_ORGANIZATION_LIST_SUB, params);
+  }
+  // 添加仓库
+  insertStore(params: AddWarehouseParams) {
+    return this.requestService.post(INSERT_STORE, params);
   }
 }

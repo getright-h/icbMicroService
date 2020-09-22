@@ -77,3 +77,23 @@ export interface QueryStoreOrganizationReturn {
   parentCode: string;
   parentName: string;
 }
+
+export class AddWarehouseParams {
+  name: string;
+  organizationId: string;
+  organizationName: string;
+  organizationCode: string;
+  provinceName: string;
+  provinceCode: string;
+  cityName: string;
+  cityCode: string;
+  areaName: string;
+  areaCode: string;
+  addressDetail: string;
+  personId: string;
+  personName: string;
+  personMobile: string;
+  minAlarm: number;
+  maxAlarm: number;
+  isDefault: boolean;
+}

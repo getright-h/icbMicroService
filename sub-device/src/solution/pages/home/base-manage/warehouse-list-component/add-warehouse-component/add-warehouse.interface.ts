@@ -3,5 +3,5 @@
  * @class IAddWarehouseState
  */
 export class IAddWarehouseState {
-  confirmLoading: false;
+  confirmLoading: boolean;
 }
