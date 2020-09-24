@@ -6,43 +6,60 @@ import WarehouseListLeftComponent from './warehouse-list-left-component/warehous
 import { useWarehouseListStore } from './warehouse-list.component.store';
 import { wareHouseListColumns } from './warehouse-list.columns';
 import { Button, Input } from 'antd';
+import { setModalvisible } from './warehouse-list-redux/warehouse-list-action';
+import AddShippingSpaceComponent from './add-shipping-space-component/add-shipping-space.component';
 export const WarehouseListManageContext = React.createContext({
   reduxState: warehouseListInitialState,
   dispatch: undefined
 });
 export default function WarehouseListComponent() {
   // warehouseListState 当前hooks state 将需要进行组件交流的数据放到 redux 中。
-
   const [warehouseListState, dispatch] = React.useReducer(WarehouseListReducer, warehouseListInitialState);
 
   const { state, changeTablePageIndex, callbackAction, handleFormDataChange, getTableData } = useWarehouseListStore(
     warehouseListState
   );
-  const { isLoading, searchForm, tableData, total } = state;
+  const { currentSelectNode } = warehouseListState;
+  const { isLoading, searchForm, tableData, total, totalAlarm, totalNumber } = state;
+
+  function addShippingSpace() {
+    setModalvisible({ modal: 'addShippingSpaceVisible', value: true }, dispatch);
+  }
+  function renderSelectItems() {
+    return (
+      <div className="push-search-item">
+        <span className="label">仓位名：</span>
+        <Input
+          disabled={!currentSelectNode}
+          allowClear
+          placeholder="请输入仓位名"
+          value={searchForm.name}
+          onChange={($event: any) => handleFormDataChange($event, 'name')}
+        />
+      </div>
+    );
+  }
 
   function renderSearchButtons() {
     return (
-      <React.Fragment>
-        <div className="push-search-item">
-          <span className="label">机构名：</span>
-          <Input
-            allowClear
-            placeholder="请输入仓位名"
-            value={searchForm.name}
-            onChange={($event: any) => handleFormDataChange<string>($event, 'name')}
-          />
-        </div>
-        <div className="push-search-button-item">
-          <Button type="primary" onClick={() => getTableData()} loading={isLoading}>
-            查询
-          </Button>
-        </div>
-      </React.Fragment>
+      <div className="other-search-button-item">
+        <Button type="primary" disabled={!currentSelectNode} onClick={() => getTableData()} loading={isLoading}>
+          查询
+        </Button>
+        <Button type="primary" disabled={!currentSelectNode} onClick={() => addShippingSpace()} loading={isLoading}>
+          添加仓位
+        </Button>
+      </div>
     );
   }
 
   function renderOtherButtons() {
-    return <div className={style.totalShow}>库存总数1000</div>;
+    return (
+      <div className={style.totalShow}>
+        库存总数: {!currentSelectNode ? '**' : totalNumber}
+        <span>({totalAlarm})</span>
+      </div>
+    );
   }
 
   function renderTable() {
@@ -68,9 +85,11 @@ export default function WarehouseListComponent() {
         pageName={'仓库管理'}
         PageLeftComponent={WarehouseListLeftComponent}
         searchButton={renderSearchButtons()}
+        selectItems={renderSelectItems()}
         otherSearchBtns={renderOtherButtons()}
         table={renderTable()}
       ></TablePageTelComponent>
+      <AddShippingSpaceComponent />
     </WarehouseListManageContext.Provider>
   );
 }

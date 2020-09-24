@@ -5,9 +5,11 @@ import { TYPES } from './warehouse-list-types';
 export const warehouseListInitialState: {
   currentSelectNode: EventDataNode;
   addWarehousevisible: boolean;
+  addShippingSpaceVisible: boolean;
 } = {
   currentSelectNode: undefined,
-  addWarehousevisible: false
+  addWarehousevisible: false,
+  addShippingSpaceVisible: false
 };
 
 export function WarehouseListReducer(state = warehouseListInitialState, action: IAction<any>) {

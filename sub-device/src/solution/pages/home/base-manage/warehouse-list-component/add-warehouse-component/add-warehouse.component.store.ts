@@ -1,4 +1,4 @@
-import { IAddWarehouseState } from './add-warehouse.interface';
+import { IAddWarehouseState, IAddWarehouseProps } from './add-warehouse.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useRef, useContext } from 'react';
 import { Form } from 'antd';
@@ -8,12 +8,14 @@ import { AddWarehouseParams } from '~/solution/model/dto/warehouse-list.dto';
 import { WarehouseListService } from '~/solution/model/services/warehouse-list.service';
 import { ShowNotification } from '~/framework/util/common';
 
-export function useAddWarehouseStore() {
+export function useAddWarehouseStore(props: IAddWarehouseProps) {
   const { state, setStateWrap } = useStateStore(new IAddWarehouseState());
   const { dispatch } = useContext(WarehouseListManageContext);
   const formData = useRef(new AddWarehouseParams());
   const warehouseListService = useRef(new WarehouseListService());
   const [form] = Form.useForm();
+
+  // 确定创建
   function handleOk() {
     setStateWrap({
       confirmLoading: true
@@ -21,8 +23,6 @@ export function useAddWarehouseStore() {
     form
       .validateFields()
       .then(value => {
-        console.log(formData.current);
-
         addWarehouse({ ...value, ...formData.current });
       })
       .catch(error => {
@@ -42,6 +42,10 @@ export function useAddWarehouseStore() {
         });
         // 关闭的时候销毁当前的modal
         ShowNotification.success('创建仓库成功');
+        setModalvisible({ modal: 'addWarehousevisible', value: false }, dispatch);
+        // 刷新当前的tree
+        props.queryOrganizationTypeListByTypeId();
+        console.log(props);
       },
       error => {
         setStateWrap({

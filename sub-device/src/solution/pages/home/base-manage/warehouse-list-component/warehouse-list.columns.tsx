@@ -35,9 +35,9 @@ export function wareHouseListColumns(action: Function): ColumnsType<any> {
       render: (text, row) => {
         return (
           <React.Fragment>
-            <a onClick={() => action(row, '设置')}>设置</a>
+            <a onClick={() => action(row, '编辑')}>编辑</a>
             <Divider type="vertical" />
-            <a onClick={() => action(row, '编辑')}>删除</a>
+            <a onClick={() => action(row, '删除')}>删除</a>
           </React.Fragment>
         );
       }

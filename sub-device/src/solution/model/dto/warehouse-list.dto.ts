@@ -47,7 +47,7 @@ export interface StorePositionPagedList {
 
 export interface StorePositionPagedDataList {
   id: string;
-  storeId: string;
+  storePositionId: string;
   name: string;
   code: string;
   positionAddress: string;
@@ -96,4 +96,15 @@ export class AddWarehouseParams {
   minAlarm: number;
   maxAlarm: number;
   isDefault: boolean;
+}
+
+export interface VStoreSimple {
+  id: string;
+  storeId: string;
+  name: string;
+  stockNumber: number;
+  code: string;
+  organizationId: string;
+  organizationCode: string;
+  organizationName: string;
 }

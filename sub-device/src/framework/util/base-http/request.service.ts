@@ -3,6 +3,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { DepUtil } from '~/framework/aop/inject';
 import * as Sentry from '@sentry/browser';
+import { ShowNotification } from '~/framework/util/common';
 
 export interface HttpResponseModel {
   message: string;
@@ -175,7 +176,7 @@ class RequestService {
         // this.route.navigateByUrl('login');
         throw '登录失效，请重新登录！';
       }
-
+      ShowNotification.error(data.message);
       throw data.message;
     }
   }

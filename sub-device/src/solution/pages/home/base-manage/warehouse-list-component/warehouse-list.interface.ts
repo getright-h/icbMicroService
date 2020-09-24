@@ -15,4 +15,6 @@ export class IWarehouseListState {
   };
   tableData: StorePositionPagedDataList[];
   total: number;
+  totalNumber = '**';
+  totalAlarm = '**';
 }

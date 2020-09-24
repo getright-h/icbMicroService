@@ -5,3 +5,7 @@
 export class IAddWarehouseState {
   confirmLoading: boolean;
 }
+
+export interface IAddWarehouseProps {
+  queryOrganizationTypeListByTypeId: Function;
+}

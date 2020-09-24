@@ -4,7 +4,8 @@ import {
   QueryOrganizationPagedParams,
   QueryStorePositionParams,
   QueryStorePositionReturn,
-  QueryStoreOrganizationReturn
+  QueryStoreOrganizationReturn,
+  VStoreSimple
 } from '../dto/warehouse-list.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
@@ -20,6 +21,9 @@ const QUERYSTOREPOSITIONPAGEDLISTBYSTOREID = 'store/manage/queryStorePositionPag
 const QUERYSTORE_ORGANIZATION = 'store/manage/queryStoreOrganization';
 const QUERY_STORE_ORGANIZATION_LIST_SUB = 'store/manage/queryStoreOrganizationListSub';
 const INSERT_STORE = 'store/manage/insertStore';
+const QUERYSTORE_LIST_BY_ORGANIZATIONID = 'store/manage/queryStoreListByOrganizationId';
+const DELETE_WAREHOUSE = 'store/manage/store';
+const DELETE_STOREPOSITION = 'store/manage/storePosition';
 @DepUtil.Injectable()
 export class WarehouseListService extends WarehouseListDTO {
   @DepUtil.Inject(RequestService)
@@ -49,5 +53,20 @@ export class WarehouseListService extends WarehouseListDTO {
   // 添加仓库
   insertStore(params: AddWarehouseParams) {
     return this.requestService.post(INSERT_STORE, params);
+  }
+
+  // 根据Id查询仓库列表
+  queryStoreListByOrganizationId(params: { organizationId: string }): Observable<VStoreSimple[]> {
+    return this.requestService.get(QUERYSTORE_LIST_BY_ORGANIZATIONID, params);
+  }
+
+  // 删除当前的仓库
+  deleteWarehouse(params: { storeId: string }) {
+    return this.requestService.delete(DELETE_WAREHOUSE, params);
+  }
+
+  // 存储当前仓位
+  deleteStorePosition(params: { storeId: string; id: string }) {
+    return this.requestService.delete(DELETE_STOREPOSITION, params);
   }
 }

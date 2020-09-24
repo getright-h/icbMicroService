@@ -7,6 +7,7 @@ export class IWarehouseListLeftState {
     typeId: 'c59c75eec2d3cc075cca08d84386bcb9',
     id: ''
   };
+  treeSelectedKeys: string[] = [];
   treeData: DataNode[] = [];
 }
 
@@ -19,6 +20,5 @@ export interface DataNode {
 
 export const TREE_MAP = {
   title: 'name',
-  key: 'id',
-  isLeaf: 'id'
+  key: 'id'
 };
