@@ -1,22 +1,14 @@
-import { NewDataNode } from '~/solution/pages/home/organization-manage-component/organization-left-component/organization-left.interface';
 import { BankOutlined, GroupOutlined, ApartmentOutlined } from '@ant-design/icons';
 import * as React from 'react';
-import { OrganizationTypeResponse, Datum } from '~/solution/model/dto/organization-manage.dto';
-export function dealWithTreeData(res: OrganizationTypeResponse[] | Datum[] | any) {
-  const treeData: NewDataNode[] = res.map((organizationType: any) => {
-    const treeDataChild: NewDataNode = { ...organizationType, title: '', key: '' };
-    treeDataChild.title = organizationType.name;
-    treeDataChild.key = organizationType.id;
-    treeDataChild.isLeaf = !organizationType.isHasChildren;
-    treeDataChild.icon = Number.isInteger(organizationType.hierarchyType) ? (
-      organizationType.hierarchyType == 0 ? (
-        <BankOutlined />
-      ) : (
-        <GroupOutlined />
-      )
-    ) : (
-      <ApartmentOutlined />
-    );
+import { OrganizationInfo } from '~/solution/model/dto/organization-tree.dto';
+import { NewDataNode } from '~/solution/pages/home/stock-manage/stock-manage-component/stock-manage-left-component/stock-manage-left.interface';
+
+export function dealWithTreeData(res: OrganizationInfo[] | any) {
+  const treeData: NewDataNode[] = res.map((organization: any) => {
+    const treeDataChild: NewDataNode = { ...organization, title: '', key: '' };
+    treeDataChild.title = organization.name;
+    treeDataChild.key = organization.id;
+    treeDataChild.isLeaf = !organization.isHasChildren;
     return treeDataChild;
   });
   return treeData;

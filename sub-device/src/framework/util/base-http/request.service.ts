@@ -22,11 +22,11 @@ class RequestService {
   }
 
   private createAuthHeaders(): any {
-    const headers = { token: '' };
-    const token = localStorage.getItem('TOKENINFO');
-    if (token) {
-      headers.token = token;
-    }
+    const headers = { token: 'session:b7e18643-a5b0-4b41-b809-8c20549396ea' };
+    // const token = localStorage.getItem('TOKENINFO');
+    // if (token) {
+    //   headers.token = token;
+    // }
     return headers;
   }
 

@@ -3,58 +3,46 @@ import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store'
 import React, { useEffect } from 'react';
 import { ShowNotification } from '~/framework/util/common';
 import { StockManageService } from '~/solution/model/services/stock-manage.service';
-import { Modal } from 'antd';
+import { Form, Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 export function useStockManageStore() {
-  const { state, setStateWrap } = useStateStore(new IStockManageState());
+  const { state, setStateWrap, getState } = useStateStore(new IStockManageState());
   const stockManageService: StockManageService = useService(StockManageService);
+  const [searchForm] = Form.useForm();
 
   useEffect(() => {
-    getTableData();
+    initSearchform();
   }, []);
 
-  function getTableData() {
-    // setStateWrap({ isLoading: true });
-    // warehouseManageService.__getTableData__(state.searchForm).subscribe(
-    //   res => {
-    //     setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
-    //   },
-    //   err => {
-    //     setStateWrap({ isLoading: false });
-    //     ShowNotification.error(err);
-    //   }
-    // );
-    setStateWrap({
-      tableData: [
-        {
-          id: '826',
-          type: '默认仓位',
-          number: 'KR8267',
-          card: '44448989777777',
-          list: '65848974987',
-          location: '第一排第一格',
-          createTime: '2020-08-27 00:00:00',
-          stayTime: '100d',
-          status: '正常'
-        }
-      ]
-    });
+  function getSelectTreeNode(node: Record<string, any>) {
+    setStateWrap({ selectedOrgId: node.id });
+    searchClick();
   }
 
-  function handleSearchFormChange(value: any, valueType: string) {
-    setStateWrap({
-      searchForm: {
-        ...state.searchForm,
-        [valueType]: value
-      }
-    });
+  function getTableData() {
+    setStateWrap({ isLoading: true });
+    stockManageService
+      .queryStockDeviceList({
+        ...searchForm.getFieldsValue(),
+        organizationId: getState().selectedOrgId,
+        duration: searchForm.getFieldValue('duration') || -1,
+        index: state.pageIndex,
+        size: state.pageSize
+      })
+      .subscribe(
+        res => {
+          setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
+        },
+        err => {
+          setStateWrap({ isLoading: false });
+          ShowNotification.error(err);
+        }
+      );
   }
 
   function searchClick() {
-    const { searchForm } = state;
-    searchForm.page = 1;
-    setStateWrap({ searchForm });
+    setStateWrap({ pageIndex: 1 });
     getTableData();
   }
 
@@ -63,7 +51,7 @@ export function useStockManageStore() {
   }
 
   function callbackAction<T>(actionType: number, data?: T) {
-    setStateWrap({ currentId: data ? data.id : '' });
+    setStateWrap({ currentId: data ? data.materialId : '' });
     switch (actionType) {
       case ModalType.ADD:
         setStateWrap({ stockInVisible: true });
@@ -81,16 +69,17 @@ export function useStockManageStore() {
           icon: <ExclamationCircleOutlined />,
           onOk: () =>
             new Promise((resolve, reject) => {
-              //   stockManageService.delete(data.id).subscribe(
-              //     (res: any) => {
-              //       ShowNotification.success('已删除！');
-              resolve();
-              //     },
-              //     (err: any) => {
-              //       ShowNotification.error(err);
-              //       reject();
-              //     }
-              //   );
+              stockManageService.lossMaterial(data.materialId).subscribe(
+                (res: any) => {
+                  ShowNotification.success('遗失已上报！');
+                  getTableData();
+                  resolve();
+                },
+                (err: any) => {
+                  ShowNotification.error(err);
+                  reject();
+                }
+              );
             })
         });
         break;
@@ -100,16 +89,17 @@ export function useStockManageStore() {
           icon: <ExclamationCircleOutlined />,
           onOk: () =>
             new Promise((resolve, reject) => {
-              //   stockManageService.delete(data.id).subscribe(
-              //     (res: any) => {
-              //       ShowNotification.success('已删除！');
-              resolve();
-              //     },
-              //     (err: any) => {
-              //       ShowNotification.error(err);
-              //       reject();
-              //     }
-              //   );
+              stockManageService.deleteMaterial(data.materialId).subscribe(
+                (res: any) => {
+                  ShowNotification.success('已删除！');
+                  getTableData();
+                  resolve();
+                },
+                (err: any) => {
+                  ShowNotification.error(err);
+                  reject();
+                }
+              );
             })
         });
         break;
@@ -123,15 +113,18 @@ export function useStockManageStore() {
     }
   }
 
-  function changeTablePageIndex(index: number, pageSize: number) {
-    const { searchForm } = state;
-    searchForm.page = index;
-    searchForm.size = pageSize;
-    setStateWrap({ searchForm });
+  function changeTablePageIndex(pageIndex: number, pageSize: number) {
+    setStateWrap({ pageIndex, pageSize });
     getTableData();
   }
 
-  function clearSearchform() {}
+  function initSearchform() {
+    searchForm.resetFields();
+    searchForm.setFieldsValue({
+      state: -1,
+      isAlarm: -1
+    });
+  }
 
   function modalCancel() {
     setStateWrap({ stockInVisible: false, bulkImportVisible: false, deviceEditVisible: false });
@@ -139,12 +132,13 @@ export function useStockManageStore() {
 
   return {
     state,
+    searchForm,
     onSelectRows,
     callbackAction,
     changeTablePageIndex,
-    handleSearchFormChange,
     searchClick,
-    clearSearchform,
-    modalCancel
+    initSearchform,
+    modalCancel,
+    getSelectTreeNode
   };
 }

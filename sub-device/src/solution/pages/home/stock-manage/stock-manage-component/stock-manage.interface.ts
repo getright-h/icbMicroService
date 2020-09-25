@@ -4,10 +4,9 @@
  */
 export class IStockManageState {
   isLoading = false;
-  searchForm = {
-    page: 1,
-    size: 10
-  };
+  selectedOrgId = '';
+  pageIndex = 1;
+  pageSize = 10;
   tableData: any = [];
   total = 0;
   currentId = '';

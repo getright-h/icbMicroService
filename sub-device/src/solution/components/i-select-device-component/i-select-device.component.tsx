@@ -1,16 +1,15 @@
-import * as React from 'react';
-import style from './i-select-loading.component.less';
 import { Select } from 'antd';
-import { IISelectLoadingProps } from './i-select-loading.interface';
-import { useISelectLoadingStore } from './i-select-loading.component.store';
+import * as React from 'react';
+import style from './i-select-device.component.less';
+import { useISelectDeviceStore } from './i-select-device.component.store';
+import { IISelectDeviceProps } from './i-select-device.interface';
 
-export default function ISelectLoadingComponent(props: IISelectLoadingProps) {
-  const { style, placeholder, disabled, getCurrentSelectInfo } = props;
-  const { state, optionScroll, fetchOptions } = useISelectLoadingStore(props);
+export default function ISelectDeviceComponent(props:IISelectDeviceProps) {
+  const { placeholder, disabled, getCurrentSelectInfo } = props;
+  const { state, optionScroll, fetchOptions } = useISelectDeviceStore(props);
   const { optionList, fetching } = state;
   return (
     <Select
-      style={style}
       loading={fetching}
       disabled={disabled || false}
       placeholder={placeholder}
@@ -19,6 +18,7 @@ export default function ISelectLoadingComponent(props: IISelectLoadingProps) {
       defaultValue={state.value}
       onChange={getCurrentSelectInfo}
       onPopupScroll={optionScroll}
+      // onFocus={!optionList.length ? () => fetchOptions(false) : () => {}}
       onFocus={() => fetchOptions(false)}
       showSearch={props.showSearch || true}
       // onSearch={$event => fetchOptions(true, $event)}

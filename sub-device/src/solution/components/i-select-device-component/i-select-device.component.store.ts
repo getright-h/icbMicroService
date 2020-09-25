@@ -1,14 +1,13 @@
-import { IISelectLoadingState, IISelectLoadingProps } from './i-select-loading.interface';
-import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
-import { useEffect, useRef, useCallback } from 'react';
-import { DrapChooseLoadingService } from '~/solution/model/services/drap-choose-loading.service';
+import { IISelectDeviceProps, IISelectDeviceState } from './i-select-device.interface';
+import { useService, useStateStore } from '~/framework/aop/hooks/use-base-store';
 import _ from 'lodash';
+import { useRef, useCallback, useEffect } from 'react';
 import { Subscription } from 'rxjs';
+import { StockManageService } from '~/solution/model/services/stock-manage.service';
 
-export function useISelectLoadingStore(props: IISelectLoadingProps) {
-  const { reqUrl } = props;
-  const { state, setStateWrap } = useStateStore(new IISelectLoadingState());
-  const drapChooseLoadingService = useService(DrapChooseLoadingService);
+export function useISelectDeviceStore(props:IISelectDeviceProps) {
+    const { state, setStateWrap } = useStateStore(new IISelectDeviceState());
+  const stockManageService = useService(StockManageService);
   let getOptionListSubscription: Subscription;
 
   const scrollPage = useRef(1);
@@ -19,11 +18,11 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
 
   function getOptionList(isSearch = false) {
     setStateWrap({ fetching: true });
-    getOptionListSubscription = drapChooseLoadingService[reqUrl]({
+    getOptionListSubscription = stockManageService.queryDeviceSelected({
       ...searchParams.current,
-      name: searchName.current,
+      code: searchName.current,
       index: scrollPage.current,
-      size: props.pageSize || 100
+      size: 20
     }).subscribe(
       (res: any) => {
         if (res.dataList) {
@@ -68,8 +67,7 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
   }, [props.selectedValue]);
 
   useEffect(() => {
-    fetchOptions(true, props.searchKey);
-    // props.searchKey && fetchOptions(true, props.searchKey);
+    props.searchKey && fetchOptions(true, props.searchKey);
   }, [props.searchKey]);
 
   useEffect(() => {

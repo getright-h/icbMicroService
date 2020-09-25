@@ -16,35 +16,29 @@ export default function DeviceStockInComponent(props: IDeviceStockInProps) {
     return (
       <React.Fragment>
         <Form {...layout} form={form}>
-          <Form.Item name="name" label="设备型号" rules={[{ required: true }]}>
-            <Select allowClear placeholder="请输入采购单号"></Select>
+          <Form.Item name="typeId" label="设备型号" rules={[{ required: true }]}>
+            <Select allowClear placeholder="请选择设备型号"></Select>
           </Form.Item>
-          <Form.Item name="name" label="设备号/SIM卡号" rules={[{ required: true }]}>
+          <Form.Item name="deviceList" label="设备号/SIM卡号" rules={[{ required: true }]}>
             <Input.TextArea placeholder="请输入设备号/SIM卡号，可添加多个设备，提行切换" />
           </Form.Item>
-          <Form.Item name="name" label="入库仓库" rules={[{ required: true }]}>
+          <Form.Item label="入库仓库" rules={[{ required: true }]}>
             <Input.Group compact>
-              <Form.Item
-                name={['address', 'province']}
-                noStyle
-                rules={[{ required: true, message: 'Province is required' }]}
-              >
+              <Form.Item name="storeId" noStyle rules={[{ required: true, message: 'Province is required' }]}>
                 <Select placeholder="选择仓库"></Select>
               </Form.Item>
-              <Form.Item
-                name={['address', 'street']}
-                noStyle
-                rules={[{ required: true, message: 'Street is required' }]}
-              >
+              <Form.Item name="storePositionId" noStyle rules={[{ required: true, message: 'Street is required' }]}>
                 <Select placeholder="选择仓位"></Select>
               </Form.Item>
-              <a href="">添加仓库/仓位</a>
+              <span className={style.aLink}>
+                <a href="">添加仓库/仓位</a>
+              </span>
             </Input.Group>
           </Form.Item>
-          <Form.Item name="name" label="设备状态" rules={[{ required: true }]}>
+          <Form.Item name="state" label="设备状态" rules={[{ required: true }]}>
             <Select allowClear placeholder="请选择设备状态"></Select>
           </Form.Item>
-          <Form.Item name="name" label="采购单">
+          <Form.Item name="purchaseId" label="采购单">
             <Select allowClear placeholder="请输入采购单号"></Select>
           </Form.Item>
         </Form>

@@ -1,22 +1,30 @@
 import { IStockDeviceState, IStockDeviceProps } from './stock-device.interface';
-import { useStateStore } from '~/framework/aop/hooks/use-base-store';
+import { useService, useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect } from 'react';
+import { ShowNotification } from '~/framework/util/common';
+import { StockManageService } from '~/solution/model/services/stock-manage.service';
 
 export function useStockDeviceStore(props: IStockDeviceProps) {
   const { state, setStateWrap } = useStateStore(new IStockDeviceState());
+  const stockManageService: StockManageService = useService(StockManageService);
 
   useEffect(() => {
-    setStateWrap({
-      tableData: [
-        { id: '1', name: 'OBD1', number: '23155487446' },
-        { id: '2', name: 'OBD2', number: '23155487446' },
-        { id: '3', name: 'OBD3', number: '23155487446' }
-      ]
-    });
-  }, []);
+    props.id && getDetails(props.id);
+  }, [props.id]);
+
+  function getDetails(id: string) {
+    stockManageService.queryInOutRecordDetail(id).subscribe(
+      res => {
+        setStateWrap({ tableData: res.contentList });
+      },
+      err => {
+        ShowNotification.error(err);
+      }
+    );
+  }
 
   function selfClose() {
-    props.close && props.close();
+    props.close?.();
   }
   return { state, selfClose };
 }

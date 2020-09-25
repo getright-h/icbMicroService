@@ -5,27 +5,28 @@ export function purchaseOrderColumns(callbackAction: Function) {
   return [
     {
       title: '机构名',
-      dataIndex: 'orgName'
+      dataIndex: 'organizationName'
     },
     {
       title: '采购单号',
-      dataIndex: 'orderNum'
+      dataIndex: 'purchaseCode'
     },
     {
       title: '采购单名称',
-      dataIndex: 'orderName'
+      dataIndex: 'name'
     },
     {
       title: '采购商品',
-      dataIndex: 'product'
+      dataIndex: 'contentList',
+      render: (list: any) => list.map((item: any) => <div key={item.typeId}>{item.typeName}</div>)
     },
     {
       title: '采购总数',
-      dataIndex: 'total'
+      dataIndex: 'totalNumber'
     },
     {
       title: '采购金额',
-      dataIndex: 'amount'
+      dataIndex: 'totalAmount'
     },
     {
       title: '采购时间',
@@ -33,7 +34,7 @@ export function purchaseOrderColumns(callbackAction: Function) {
     },
     {
       title: '创建人',
-      dataIndex: 'creater'
+      dataIndex: 'creatorName'
     },
     {
       title: '操作',

@@ -1,53 +1,53 @@
 import { IInOutStockState, ModalType } from './in-out-stock.interface';
-import { useStateStore } from '~/framework/aop/hooks/use-base-store';
+import { useService, useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { StockManageService } from '~/solution/model/services/stock-manage.service';
 import { useEffect } from 'react';
+import { ShowNotification } from '~/framework/util/common';
+import { Form } from 'antd';
+import moment from 'moment';
 
 export function useInOutStockStore() {
   const { state, setStateWrap } = useStateStore(new IInOutStockState());
-  const stockManageService: StockManageService = new StockManageService();
+  const stockManageService: StockManageService = useService(StockManageService);
+  const [searchForm] = Form.useForm();
 
   useEffect(() => {
+    initSearchform();
     getTableData();
   }, []);
 
   function getTableData() {
-    // setStateWrap({ isLoading: true });
-    // warehouseManageService.__getTableData__(state.searchForm).subscribe(
-    //   res => {
-    //     setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
-    //   },
-    //   err => {
-    //     setStateWrap({ isLoading: false });
-    //     ShowNotification.error(err);
-    //   }
-    // );
-    setStateWrap({
-      tableData: [
-        {
-          id: '826',
-          name: 'A仓库',
-          type: '出库',
-          number: 8,
-          creater: '小二',
-          createTime: 'xxxx-xx-xx 00:00:00'
+    setStateWrap({ isLoading: true });
+    stockManageService
+      .queryInOutRecordList({
+        ...searchForm.getFieldsValue(),
+        beginTime: state.timeInfo[0] ? moment(state.timeInfo[0]).valueOf() : 0,
+        endTime: state.timeInfo[1] ? moment(state.timeInfo[1]).valueOf() : 0,
+        index: state.pageIndex,
+        size: state.pageSize
+      })
+      .subscribe(
+        res => {
+          setStateWrap({
+            tableData: res.pagedList?.dataList,
+            total: res.total,
+            isLoading: false,
+            statistics: res.statistics
+          });
+        },
+        err => {
+          setStateWrap({ isLoading: false });
+          ShowNotification.error(err);
         }
-      ]
-    });
+      );
   }
 
-  function handleSearchFormChange(value: any, valueType: string) {
-    setStateWrap({
-      searchForm: {
-        ...state.searchForm,
-        [valueType]: value
-      }
-    });
+  function getDateTimeInfo(timeInfo: any) {
+    setStateWrap({ timeInfo });
   }
+
   function searchClick() {
-    const { searchForm } = state;
-    searchForm.page = 1;
-    setStateWrap({ searchForm });
+    setStateWrap({ pageIndex: 1 });
     getTableData();
   }
 
@@ -69,11 +69,8 @@ export function useInOutStockStore() {
     }
   }
 
-  function changeTablePageIndex(index: number, pageSize: number) {
-    const { searchForm } = state;
-    searchForm.page = index;
-    searchForm.size = pageSize;
-    setStateWrap({ searchForm });
+  function changeTablePageIndex(pageIndex: number, pageSize: number) {
+    setStateWrap({ pageIndex, pageSize });
     getTableData();
   }
 
@@ -81,12 +78,20 @@ export function useInOutStockStore() {
     setStateWrap({ recordVisible: false, deviceVisible: false });
   }
 
+  function initSearchform() {
+    searchForm.resetFields();
+    searchForm.setFieldsValue({ type: -1 });
+    setStateWrap({ timeInfo: [] });
+  }
+
   return {
     state,
+    searchForm,
     callbackAction,
     changeTablePageIndex,
     searchClick,
     modalClose,
-    handleSearchFormChange
+    initSearchform,
+    getDateTimeInfo
   };
 }

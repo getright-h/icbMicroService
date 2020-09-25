@@ -1,63 +1,56 @@
-import * as React from 'react';
 import { IPurchaseOrderState, ModalType } from './purchase-order.interface';
-import { useStateStore } from '~/framework/aop/hooks/use-base-store';
-import { useEffect } from 'react';
+import { useService, useStateStore } from '~/framework/aop/hooks/use-base-store';
+import React, { useEffect } from 'react';
 import { ShowNotification } from '~/framework/util/common';
 import { StockManageService } from '~/solution/model/services/stock-manage.service';
+import { Form, Modal } from 'antd';
+import moment from 'moment';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 export function usePurchaseOrderStore() {
   const { state, setStateWrap } = useStateStore(new IPurchaseOrderState());
-  const stockManageService: StockManageService = new StockManageService();
+  const stockManageService: StockManageService = useService(StockManageService);
+  const [searchForm] = Form.useForm();
 
   useEffect(() => {
+    initSearchform();
     getTableData();
   }, []);
 
   function getTableData() {
-    // setStateWrap({ isLoading: true });
-    // purchaseOrderService.__getTableData__(state.searchForm).subscribe(
-    //   res => {
-    //     setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
-    //   },
-    //   err => {
-    //     setStateWrap({ isLoading: false });
-    //     ShowNotification.error(err);
-    //   }
-    // );
-    setStateWrap({
-      tableData: [
-        {
-          id: '827',
-          orgName: 'A机构',
-          orderNum: '958267',
-          orderName: 'xx无线设备采购',
-          product: 'ICB001-OBD',
-          total: 10,
-          amount: '100.00',
-          createTime: '2020-08-27 00:00:00',
-          creater: '吴小二'
+    setStateWrap({ isLoading: true });
+    stockManageService
+      .queryPurchaseList({
+        ...searchForm.getFieldsValue(),
+        beginTime: state.timeInfo[0] ? moment(state.timeInfo[0]).valueOf() : 0,
+        endTime: state.timeInfo[1] ? moment(state.timeInfo[1]).valueOf() : 0,
+        index: state.pageIndex,
+        size: state.pageSize
+      })
+      .subscribe(
+        res => {
+          setStateWrap({
+            tableData: res.purchasePagedList?.dataList,
+            total: res.total,
+            isLoading: false,
+            sumAmount: res.sumAmount,
+            sumNumber: res.sumNumber
+          });
+        },
+        err => {
+          setStateWrap({ isLoading: false });
+          ShowNotification.error(err);
         }
-      ]
-    });
+      );
   }
 
-  function onChange(value: any, valueType: string) {
-    setStateWrap({
-      searchForm: {
-        ...state.searchForm,
-        [valueType]: value
-      }
-    });
-  }
   function searchClick() {
-    const { searchForm } = state;
-    searchForm.page = 1;
-    setStateWrap({ searchForm });
+    setStateWrap({ pageIndex: 1 });
     getTableData();
   }
 
   function callbackAction<T>(actionType: number, data?: T) {
-    setStateWrap({ currentId: data.id });
+    setStateWrap({ currentId: data?.id || '' });
     switch (actionType) {
       case ModalType.CREATE:
         setStateWrap({ editVisible: true });
@@ -69,29 +62,54 @@ export function usePurchaseOrderStore() {
         setStateWrap({ detailVisible: true });
         break;
       case ModalType.DELETE:
+        Modal.confirm({
+          title: '是否确认删除设备？删除后无法恢复',
+          icon: <ExclamationCircleOutlined />,
+          onOk: () =>
+            new Promise((resolve, reject) => {
+              stockManageService.deletePurchase(data.id).subscribe(
+                (res: any) => {
+                  ShowNotification.success('已删除！');
+                  getTableData();
+                  resolve();
+                },
+                (err: any) => {
+                  ShowNotification.error(err);
+                  reject();
+                }
+              );
+            })
+        });
         break;
       default:
         break;
     }
   }
 
-  function changeTablePageIndex(index: number, pageSize: number) {
-    const { searchForm } = state;
-    searchForm.page = index;
-    searchForm.size = pageSize;
-    setStateWrap({ searchForm });
+  function changeTablePageIndex(pageIndex: number, pageSize: number) {
+    setStateWrap({ pageIndex, pageSize });
     getTableData();
+  }
+
+  function getDateTimeInfo(timeInfo: any) {
+    setStateWrap({ timeInfo });
   }
 
   function handleModalCancel() {
     setStateWrap({ editVisible: false, detailVisible: false });
   }
+  function initSearchform() {
+    searchForm.resetFields();
+    setStateWrap({ timeInfo: [] });
+  }
   return {
     state,
+    searchForm,
     callbackAction,
     changeTablePageIndex,
     searchClick,
     handleModalCancel,
-    onChange
+    getDateTimeInfo,
+    initSearchform
   };
 }

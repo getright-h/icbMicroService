@@ -10,6 +10,7 @@ export class IEditOrderState {
  * @class IEditOrderProps
  */
 export class IEditOrderProps {
+  id: string;
   visible: boolean;
   close: () => void;
 }

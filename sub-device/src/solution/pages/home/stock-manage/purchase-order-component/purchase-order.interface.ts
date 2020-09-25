@@ -4,11 +4,12 @@
  */
 export class IPurchaseOrderState {
   isLoading = false;
-  searchForm = {
-    page: 1,
-    size: 10
-  };
+  pageIndex = 1;
+  pageSize = 10;
+  timeInfo: string[] = [];
   tableData: any = [];
+  sumAmount: number;
+  sumNumber: number;
   total = 0;
   editVisible = false;
   detailVisible = false;

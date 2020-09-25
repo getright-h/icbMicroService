@@ -15,23 +15,23 @@ export function stockManageColumns(callbackAction: Function) {
   return [
     {
       title: '设备型号',
-      dataIndex: 'type'
+      dataIndex: 'typeName'
     },
     {
       title: '设备号',
-      dataIndex: 'number'
+      dataIndex: 'code'
     },
     {
       title: 'SIM卡号',
-      dataIndex: 'card'
+      dataIndex: 'sim'
     },
     {
       title: '采购单',
-      dataIndex: 'list'
+      dataIndex: 'purchaseCode'
     },
     {
       title: '所属仓位',
-      dataIndex: 'location'
+      dataIndex: 'storePositionName'
     },
     {
       title: '入库时间',
@@ -39,11 +39,11 @@ export function stockManageColumns(callbackAction: Function) {
     },
     {
       title: '在库时长',
-      dataIndex: 'stayTime'
+      dataIndex: 'duration'
     },
     {
       title: '设备状态',
-      dataIndex: 'status'
+      dataIndex: 'stateText'
     },
     {
       title: '操作',
@@ -60,7 +60,7 @@ export function stockManageColumns(callbackAction: Function) {
               详情
             </a>
             <Divider type="vertical" />
-            <Popover content={(data: any) => renderActionContent(data)} placement="bottom" trigger="click">
+            <Popover content={() => renderActionContent(data)} placement="bottom" trigger="click">
               <a>移除设备</a>
             </Popover>
           </React.Fragment>

@@ -9,7 +9,7 @@ import { ColumnsType } from 'antd/lib/table';
 export default function OrderDetailComponent(props: IOrderDetailProps) {
   const { state, selfClose } = useOrderDetailStore(props);
   const { visible } = props;
-  const { tableData } = state;
+  const { details } = state;
   const layout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 }
@@ -18,18 +18,20 @@ export default function OrderDetailComponent(props: IOrderDetailProps) {
     return (
       <React.Fragment>
         <Form {...layout}>
-          <Form.Item label="采购单号">100216448964</Form.Item>
-          <Form.Item label="采购单名称">xx无线设备采购</Form.Item>
+          <Form.Item label="采购单号">{details.code}</Form.Item>
+          <Form.Item label="采购单名称">{details.name}</Form.Item>
           <Form.Item label="采购商品">
             <ProductTable />
           </Form.Item>
-          <Form.Item label="采购时间">2020-08-27 00:00:00</Form.Item>
-          <Form.Item label="供应商">NINTENDO</Form.Item>
+          <Form.Item label="采购时间">{details.purchaseTime}</Form.Item>
+          <Form.Item label="供应商">{details.supplierName}</Form.Item>
           <Form.Item label="采购单图片">
-            <ImageDisplayComponent imageUrl="a" />
+            {details?.imageList.map(image => (
+              <ImageDisplayComponent imageUrl={image} key={image} />
+            ))}
           </Form.Item>
-          <Form.Item label="采购单创建时间">2020-08-27 00:00:00</Form.Item>
-          <Form.Item label="备注">remark</Form.Item>
+          <Form.Item label="采购单创建时间">{details.createTime}</Form.Item>
+          <Form.Item label="备注">{details.remark}</Form.Item>
         </Form>
       </React.Fragment>
     );
@@ -38,13 +40,13 @@ export default function OrderDetailComponent(props: IOrderDetailProps) {
     const columns: ColumnsType<any> = [
       {
         title: '采购商品',
-        dataIndex: 'product',
-        key: 'product'
+        dataIndex: 'typeName',
+        key: 'typeName'
       },
       {
         title: '采购数量',
-        dataIndex: 'num',
-        key: 'num'
+        dataIndex: 'number',
+        key: 'number'
       },
       {
         title: '采购金额',
@@ -57,12 +59,16 @@ export default function OrderDetailComponent(props: IOrderDetailProps) {
       <Table
         size="small"
         columns={columns}
-        dataSource={tableData}
+        rowKey={row => row.typeId}
+        dataSource={details?.deviceList}
         pagination={false}
         summary={() => (
           <Table.Summary.Row>
             <Table.Summary.Cell index={0} colSpan={3}>
-              商品总数：商品总金额：
+              <div className={style.summary}>
+                <span>商品总数量：{details.sumNumber}</span>
+                <span>商品总金额：￥{details.sumAmount}</span>
+              </div>
             </Table.Summary.Cell>
           </Table.Summary.Row>
         )}
@@ -83,7 +89,7 @@ export default function OrderDetailComponent(props: IOrderDetailProps) {
         </Button>
       ]}
     >
-      {renderForm()}
+      {details && renderForm()}
     </Modal>
   );
 }

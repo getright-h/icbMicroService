@@ -4,7 +4,15 @@ import { useITableStore } from './i-table.component.store';
 import { Table } from 'antd';
 
 export default function ITableComponent(props: IITableProps) {
-  const { isLoading = false, data = [], columns, isPagination = true, rowSelection = null } = props;
+  const {
+    isLoading = false,
+    data = [],
+    columns,
+    isPagination = true,
+    rowSelection = null,
+    rowKey = 'id',
+    summary = false
+  } = props;
   const { state } = useITableStore(props);
 
   return (
@@ -13,9 +21,10 @@ export default function ITableComponent(props: IITableProps) {
       dataSource={data}
       columns={columns}
       pagination={isPagination && state.pagination}
-      rowKey={row => row.id}
+      rowKey={row => row[rowKey]}
       scroll={{ x: 'max-content' }}
       rowSelection={rowSelection}
+      summary={summary}
     />
   );
 }
