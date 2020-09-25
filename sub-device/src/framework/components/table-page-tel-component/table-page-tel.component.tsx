@@ -25,21 +25,31 @@ export class TablePageTelComponent extends React.Component<IProps> {
       isFlex,
       leftFlex,
       rightFlex,
-      pageLeft,
+      PageLeftComponent,
       selectTags,
       selectItems,
       searchButton,
       otherSearchBtns,
-      table
+      table,
+      pageLeft
     } = this.props;
+    console.log(3);
+
     const LayoutSider = this.renderSubHeader();
     return (
       <div className={style.pageContainer}>
         {this.props.pageName && LayoutSider}
         <div className={isFlex && style.customFlex}>
+          {/* 后面的写法，为了兼容没有去处原来的写法，这个时候能到拿到provider提供的dispatch */}
+          {PageLeftComponent && (
+            <div className={isFlex && style.customRight} style={{ flex: leftFlex }}>
+              <PageLeftComponent />
+            </div>
+          )}
+          {/* 最开始的写法，传入的是一个执行之后的方法，没法传入redux的上下文 */}
           {pageLeft && (
             <div className={isFlex && style.customRight} style={{ flex: leftFlex }}>
-              {pageLeft}
+              {pageLeft()}
             </div>
           )}
           <div className={`${style.appManageAmPush} ${isFlex && style.customRight}`} style={{ flex: rightFlex }}>

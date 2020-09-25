@@ -7,7 +7,7 @@ import { DepUtil } from '~/framework/aop/inject';
  * 真实开发中，请将示例代码移除
  */
 
-const QUERY_AREA_INFO_HTTP = 'Organization/manage/QueryAreaInfoHttp';
+const QUERY_AREA_INFO_HTTP = 'store/manage/queryAreaList';
 
 @DepUtil.Injectable()
 export class AreaChooseService extends AreaChooseDTO {

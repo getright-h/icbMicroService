@@ -1,8 +1,7 @@
 export const ROUTERS = {
   login: () => import('~pages/login/login.module'),
   home: () => import('~pages/home/home.module'),
-  warehouseManage: () =>
-    import('~/solution/pages/home/warehouse-manage/warehouse-manage-component/warehouse-manage.component'),
+  warehouseManage: () => import('~/solution/pages/home/base-manage/base-manage.module'),
 
   stockManageModule: () => import('~pages/home/stock-manage/stock-manage.module'),
   stockAll: () => import('~pages/home/stock-manage/stock-manage-component/stock-manage.component'),
@@ -35,5 +34,6 @@ export const ROUTERS = {
   receiveDetail: () =>
     import(
       '~/solution/pages/home/allocation-manage/allocation-process-component/receive-allocation-component/detail-component/detail.component'
-    )
+    ),
+  warehouseList: () => import('~/solution/pages/home/base-manage/warehouse-list-component/warehouse-list.component')
 };

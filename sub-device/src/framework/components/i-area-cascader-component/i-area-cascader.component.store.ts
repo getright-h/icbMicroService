@@ -43,7 +43,7 @@ export function useIAreaCascaderStore(props: IIAreaCascaderProps) {
   };
 
   function queryAreaInfo(value: string) {
-    return areaChooseService.queryAreaInfoHttp(value ? { code: value } : {}).toPromise();
+    return areaChooseService.queryAreaInfoHttp(value ? { code: value } : { code: '1' }).toPromise();
   }
 
   async function loadDefaultValueData(defaultValue: string[], info?: any, value?: string) {

@@ -3,6 +3,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { DepUtil } from '~/framework/aop/inject';
 import * as Sentry from '@sentry/browser';
+import { ShowNotification } from '~/framework/util/common';
 
 export interface HttpResponseModel {
   message: string;
@@ -22,11 +23,12 @@ class RequestService {
   }
 
   private createAuthHeaders(): any {
-    const headers = { token: 'session:b7e18643-a5b0-4b41-b809-8c20549396ea' };
+    const headers = { token: '' };
     // const token = localStorage.getItem('TOKENINFO');
-    // if (token) {
-    //   headers.token = token;
-    // }
+    const token = 'session:262622cc-b2ba-457c-b3a9-68cb05875cf6';
+    if (token) {
+      headers.token = token;
+    }
     return headers;
   }
 
@@ -163,7 +165,7 @@ class RequestService {
       if (data.total || data.total == 0) {
         return { total: data.total, data: data.data };
       }
-      if (data.data == 0 || data.data) {
+      if (data.data == null || data.data) {
         return data.data;
       } else {
         return data;
@@ -174,7 +176,7 @@ class RequestService {
         // this.route.navigateByUrl('login');
         throw '登录失效，请重新登录！';
       }
-
+      ShowNotification.error(data.message);
       throw data.message;
     }
   }

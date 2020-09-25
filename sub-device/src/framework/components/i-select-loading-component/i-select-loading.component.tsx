@@ -1,16 +1,15 @@
 import * as React from 'react';
-import style from './i-select-loading.component.less';
 import { Select } from 'antd';
 import { IISelectLoadingProps } from './i-select-loading.interface';
 import { useISelectLoadingStore } from './i-select-loading.component.store';
 
 export default function ISelectLoadingComponent(props: IISelectLoadingProps) {
-  const { style, placeholder, disabled, getCurrentSelectInfo } = props;
+  const { placeholder, disabled, getCurrentSelectInfo, width = '100%' } = props;
   const { state, optionScroll, fetchOptions } = useISelectLoadingStore(props);
   const { optionList, fetching } = state;
   return (
     <Select
-      style={style}
+      style={{ width }}
       loading={fetching}
       disabled={disabled || false}
       placeholder={placeholder}
@@ -25,9 +24,9 @@ export default function ISelectLoadingComponent(props: IISelectLoadingProps) {
       allowClear={true}
     >
       {optionList &&
-        optionList.map((item: { id: string | number; name: string }, index: number) => (
+        optionList.map((item: { id: string | number; name: string; telephone: string }, index: number) => (
           <Select.Option value={item.id} key={`${item.id}${index}`} info={item}>
-            {item.name}
+            {item.telephone ? item.name + ' ' + item.telephone : item.name}
           </Select.Option>
         ))}
     </Select>

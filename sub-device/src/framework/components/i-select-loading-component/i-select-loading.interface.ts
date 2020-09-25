@@ -9,6 +9,8 @@ export class IISelectLoadingState {
 }
 export interface IISelectLoadingProps {
   placeholder: string;
+  width?: number | string;
+  className?: string;
   selectedValue?: string;
   reqUrl: string;
   disabled?: boolean;
@@ -17,5 +19,4 @@ export interface IISelectLoadingProps {
   searchKey?: string;
   showSearch?: boolean;
   pageSize?: number;
-  style?: Record<string, any>;
 }

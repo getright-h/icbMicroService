@@ -18,6 +18,8 @@ const QUERY_ORGANIZATION_PAGED_LIST = 'store/manage/queryOrganizationPagedList';
 const QUERY_DEVICE_TYPE_PAGED_LIST = 'material/manage/queryDeviceTypePagedList';
 const QUERY_SUPPLIER_LIST = 'store/manage/querySupplierList';
 const QUERY_PURCHASE_LIST = 'allot/manage/queryPurchasePagedList';
+const QUERY_STOREOR_GANIZATION = 'store/manage/queryOrganizationPagedList';
+const QUERY_STORE_USER = 'store/manage/queryStoreUser';
 
 @DepUtil.Injectable()
 export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
@@ -42,5 +44,14 @@ export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
   // 采购单
   queryPurchaseList(params: QueryPurchaseListParam): Observable<DrapChooseLoadingReturn> {
     return this.requestService.post(QUERY_PURCHASE_LIST, params);
+  }
+
+  // 获取机构名称
+  queryStoreOrganization(params: { systemId: string }): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.post(QUERY_STOREOR_GANIZATION, params);
+  }
+  //查询仓库人员列表
+  queryStoreUser(params: { systemId: string }): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.post(QUERY_STORE_USER, params);
   }
 }
