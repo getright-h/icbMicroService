@@ -28,7 +28,7 @@ export function dealWithTreeData<T>(
               e.stopPropagation();
             }}
           >
-            {isWarehouse && (
+            {isWarehouse && content && (
               <Popover content={content(element)} trigger="hover">
                 <AppstoreOutlined />
               </Popover>

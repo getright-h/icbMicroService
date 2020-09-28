@@ -34,7 +34,7 @@ export default function EditOrderComponent(props: IEditOrderProps) {
   });
 
   const querySupplierList = ISelectLoadingComponent({
-    style: { width: '200px' },
+    width: '200px',
     reqUrl: 'querySupplierList',
     placeholder: '请选择供应商',
     searchKey: '',

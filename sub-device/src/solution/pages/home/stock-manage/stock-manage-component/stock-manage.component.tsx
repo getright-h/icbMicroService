@@ -184,7 +184,7 @@ export default function StockManageComponent() {
       <TablePageTelComponent
         leftFlex={1}
         rightFlex={4}
-        pageLeft={renderPageLeft()}
+        pageLeft={renderPageLeft}
         pageName={'全部设备管理'}
         selectTags={stockMainInfo()}
         selectItems={renderSelectItems()}

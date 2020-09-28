@@ -3,22 +3,36 @@ import style from './stock-manage-left.component.less';
 import { useStockManageLeftStore } from './stock-manage-left.component.store';
 import { Tree, Input } from 'antd';
 import { IStockManageLeftProps } from './stock-manage-left.interface';
-const { Search } = Input;
+import { ISelectLoadingComponent } from '~/framework/components/component.module';
+import { GlobalContext } from '~/solution/context/global/global.provider';
 
-function StockManageLeftComponent(props: IStockManageLeftProps) {
-  const { state, onLoadData, onSelect } = useStockManageLeftStore(props);
-  const { treeData } = state;
+export default function StockManageLeftComponent(props: IStockManageLeftProps) {
+  const { state, onLoadData, onSelect, getCurrentSelectInfo, onExpand } = useStockManageLeftStore(props);
+  const { gState } = React.useContext(GlobalContext);
+  const { treeData, expandedKeys, treeSelectedKeys } = state;
   return (
-    <React.Fragment>
-      <div>
-        <Search
-          placeholder="input search text"
-          onSearch={value => console.log(value)}
-          style={{ marginBottom: '20px' }}
+    <div className={style.stockListLeft}>
+      <div className={style.searchWarehouse}>
+        <ISelectLoadingComponent
+          placeholder="请输入机构名称"
+          width={'100%'}
+          showSearch
+          searchForm={{
+            systemId: gState.myInfo.systemId
+          }}
+          reqUrl="queryStoreOrganization"
+          getCurrentSelectInfo={value => getCurrentSelectInfo<string>(value, 'id')}
         />
-        <Tree loadData={onLoadData} showIcon onSelect={onSelect} treeData={treeData} />
       </div>
-    </React.Fragment>
+      <Tree
+        loadData={onLoadData}
+        onSelect={onSelect}
+        expandedKeys={expandedKeys}
+        selectedKeys={treeSelectedKeys}
+        onExpand={onExpand}
+        blockNode
+        treeData={treeData}
+      />
+    </div>
   );
 }
-export default React.memo(StockManageLeftComponent);
