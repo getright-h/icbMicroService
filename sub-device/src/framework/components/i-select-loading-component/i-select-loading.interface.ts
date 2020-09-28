@@ -15,7 +15,7 @@ export interface IISelectLoadingProps {
   reqUrl: string;
   disabled?: boolean;
   searchForm?: Record<string, any>;
-  getCurrentSelectInfo: (value: string, option: any) => void;
+  getCurrentSelectInfo?: (value: string, option: any) => void;
   searchKey?: string;
   showSearch?: boolean;
 }

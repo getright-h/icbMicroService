@@ -5,3 +5,10 @@
 export class IAddShippingSpaceState {
   confirmLoading = false;
 }
+
+export class IAddShippingSpaceProps {
+  addShippingSpaceVisible = false;
+  isEdit? = false;
+  shippingSpaceId? = '';
+  closeShippingSpaceModal?: (isRefresh?: boolean) => void;
+}

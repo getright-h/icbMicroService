@@ -21,7 +21,7 @@ export default function ISelectLoadingComponent(props: IISelectLoadingProps) {
       // onFocus={!optionList.length ? () => fetchOptions(false) : () => {}}
       onFocus={() => fetchOptions(false)}
       showSearch={props.showSearch || true}
-      // onSearch={$event => fetchOptions(true, $event)}
+      onSearch={$event => fetchOptions(true, $event)}
       allowClear={true}
     >
       {optionList &&

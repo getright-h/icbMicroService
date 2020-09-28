@@ -49,6 +49,7 @@ export interface StorePositionPagedDataList {
   id: string;
   storePositionId: string;
   name: string;
+  storeId: string;
   code: string;
   positionAddress: string;
   isDefault: boolean;
@@ -79,6 +80,7 @@ export interface QueryStoreOrganizationReturn {
 }
 
 export class AddWarehouseParams {
+  id?: string;
   name: string;
   organizationId: string;
   organizationName: string;
@@ -95,7 +97,11 @@ export class AddWarehouseParams {
   personMobile: string;
   minAlarm: number;
   maxAlarm: number;
-  isDefault: boolean;
+  isDefault: true;
+  areaDetail: string[];
+  constructor() {
+    this.isDefault = true;
+  }
 }
 
 export interface VStoreSimple {
@@ -107,4 +113,14 @@ export interface VStoreSimple {
   organizationId: string;
   organizationCode: string;
   organizationName: string;
+}
+
+export interface InsertStorePositionParams {
+  storeId: string;
+  name: string;
+  positionAddress: string;
+  minAlarm: number;
+  maxAlarm: number;
+  alarmDay: number;
+  isDefault: boolean;
 }

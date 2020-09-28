@@ -7,8 +7,12 @@ export class IWarehouseListLeftState {
     typeId: 'c59c75eec2d3cc075cca08d84386bcb9',
     id: ''
   };
+  expandedKeys: string[] = [];
   treeSelectedKeys: string[] = [];
   treeData: DataNode[] = [];
+  isEditWarehouseModal = false;
+  editWarehouseId: '';
+  addWarehouseVisible: boolean;
 }
 
 export interface DataNode {

@@ -26,10 +26,10 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
       size: 20
     }).subscribe(
       (res: any) => {
-        if (res.dataList) {
+        if (res && res.dataList) {
           const optionList = [...(isSearch ? [] : state.optionList), ...res.dataList];
           setStateWrap({ optionList, fetching: false });
-        } else if (scrollPage.current == 1 && !res.dataList) {
+        } else if (scrollPage.current == 1 && (!res || !res.dataList)) {
           setStateWrap({ optionList: [], fetching: false });
         } else {
           scrollPage.current--;
@@ -45,6 +45,8 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
 
   const fetchOptions = useCallback(
     _.throttle((isSearch?: boolean, value?: string) => {
+      console.log('fetchOptions', value);
+      console.log('isSearch', isSearch);
       if (isSearch) {
         scrollPage.current = 1;
         searchName.current = value || '';

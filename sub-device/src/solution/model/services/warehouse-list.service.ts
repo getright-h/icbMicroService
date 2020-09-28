@@ -5,16 +5,13 @@ import {
   QueryStorePositionParams,
   QueryStorePositionReturn,
   QueryStoreOrganizationReturn,
-  VStoreSimple
+  VStoreSimple,
+  InsertStorePositionParams
 } from '../dto/warehouse-list.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
 import { DepUtil } from '~/framework/aop/inject';
 import { AddWarehouseParams } from '~/solution/model/dto/warehouse-list.dto';
-
-/**
- * 真实开发中，请将示例代码移除
- */
 
 const QUERYORGANIZATIONPAGEDLIST = 'store/manage/queryOrganizationPagedList';
 const QUERYSTOREPOSITIONPAGEDLISTBYSTOREID = 'store/manage/queryStorePositionPagedListByStoreId';
@@ -24,6 +21,11 @@ const INSERT_STORE = 'store/manage/insertStore';
 const QUERYSTORE_LIST_BY_ORGANIZATIONID = 'store/manage/queryStoreListByOrganizationId';
 const DELETE_WAREHOUSE = 'store/manage/store';
 const DELETE_STOREPOSITION = 'store/manage/storePosition';
+const INSERT_STORE_POSITION = 'store/manage/insertStorePosition';
+const STORE_POSITION_DETAIL = 'store/manage/storePositionDetail';
+const UPDATE_STORE_POSITION = 'store/manage/updateStorePosition';
+const STORE_DETAIL = 'store/manage/storeDetail';
+const UPDATE_STORE = 'store/manage/updateStore';
 @DepUtil.Injectable()
 export class WarehouseListService extends WarehouseListDTO {
   @DepUtil.Inject(RequestService)
@@ -55,6 +57,11 @@ export class WarehouseListService extends WarehouseListDTO {
     return this.requestService.post(INSERT_STORE, params);
   }
 
+  // 编辑仓库
+  updateStore(params: AddWarehouseParams) {
+    return this.requestService.post(UPDATE_STORE, params);
+  }
+
   // 根据Id查询仓库列表
   queryStoreListByOrganizationId(params: { organizationId: string }): Observable<VStoreSimple[]> {
     return this.requestService.get(QUERYSTORE_LIST_BY_ORGANIZATIONID, params);
@@ -68,5 +75,25 @@ export class WarehouseListService extends WarehouseListDTO {
   // 存储当前仓位
   deleteStorePosition(params: { storeId: string; id: string }) {
     return this.requestService.delete(DELETE_STOREPOSITION, params);
+  }
+
+  // 新增仓位
+  insertStorePosition(params: InsertStorePositionParams) {
+    return this.requestService.post(INSERT_STORE_POSITION, params);
+  }
+
+  // 仓位详情
+  getStorePositionDetail(params: { id: string }) {
+    return this.requestService.get(STORE_POSITION_DETAIL, params);
+  }
+
+  // 编辑仓位
+  updateStorePosition(params: InsertStorePositionParams) {
+    return this.requestService.post(UPDATE_STORE_POSITION, params);
+  }
+
+  // 仓库详情
+  getStoreDetail(params: { id: string }) {
+    return this.requestService.get(STORE_DETAIL, params);
   }
 }

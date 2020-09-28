@@ -6,7 +6,7 @@ import WarehouseListLeftComponent from './warehouse-list-left-component/warehous
 import { useWarehouseListStore } from './warehouse-list.component.store';
 import { wareHouseListColumns } from './warehouse-list.columns';
 import { Button, Input } from 'antd';
-import { setModalvisible } from './warehouse-list-redux/warehouse-list-action';
+import { openOrCloseShippingSpaceModal } from './warehouse-list-redux/warehouse-list-action';
 import AddShippingSpaceComponent from './add-shipping-space-component/add-shipping-space.component';
 export const WarehouseListManageContext = React.createContext({
   reduxState: warehouseListInitialState,
@@ -16,15 +16,28 @@ export default function WarehouseListComponent() {
   // warehouseListState 当前hooks state 将需要进行组件交流的数据放到 redux 中。
   const [warehouseListState, dispatch] = React.useReducer(WarehouseListReducer, warehouseListInitialState);
 
-  const { state, changeTablePageIndex, callbackAction, handleFormDataChange, getTableData } = useWarehouseListStore(
-    warehouseListState
-  );
+  const {
+    state,
+    changeTablePageIndex,
+    callbackAction,
+    handleFormDataChange,
+    getTableData,
+    closeShippingSpaceModal,
+    addShippingSpace
+  } = useWarehouseListStore(warehouseListState);
   const { currentSelectNode } = warehouseListState;
-  const { isLoading, searchForm, tableData, total, totalAlarm, totalNumber } = state;
+  const {
+    isLoading,
+    searchForm,
+    tableData,
+    total,
+    totalAlarm,
+    totalNumber,
+    addShippingSpaceVisible,
+    isEditShippingSpaceModal,
+    editShippingSpaceId
+  } = state;
 
-  function addShippingSpace() {
-    setModalvisible({ modal: 'addShippingSpaceVisible', value: true }, dispatch);
-  }
   function renderSelectItems() {
     return (
       <div className="push-search-item">
@@ -61,7 +74,7 @@ export default function WarehouseListComponent() {
       </div>
     );
   }
-
+  // component --- 渲染table
   function renderTable() {
     return (
       <ITableComponent
@@ -77,6 +90,17 @@ export default function WarehouseListComponent() {
     );
   }
 
+  // component --- 渲染添加仓位的modal
+  function RenderShippingSpaceModal() {
+    const addShippingSpaceProps = {
+      addShippingSpaceVisible,
+      isEdit: isEditShippingSpaceModal,
+      shippingSpaceId: editShippingSpaceId,
+      closeShippingSpaceModal
+    };
+    return <AddShippingSpaceComponent {...addShippingSpaceProps}></AddShippingSpaceComponent>;
+  }
+
   return (
     <WarehouseListManageContext.Provider value={{ reduxState: warehouseListState, dispatch }}>
       <TablePageTelComponent
@@ -89,7 +113,7 @@ export default function WarehouseListComponent() {
         otherSearchBtns={renderOtherButtons()}
         table={renderTable()}
       ></TablePageTelComponent>
-      <AddShippingSpaceComponent />
+      <RenderShippingSpaceModal />
     </WarehouseListManageContext.Provider>
   );
 }

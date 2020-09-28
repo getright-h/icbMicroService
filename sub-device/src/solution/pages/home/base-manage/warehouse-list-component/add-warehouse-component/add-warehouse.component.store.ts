@@ -1,19 +1,39 @@
 import { IAddWarehouseState, IAddWarehouseProps } from './add-warehouse.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
-import { useRef, useContext } from 'react';
+import { useRef, useEffect } from 'react';
 import { Form } from 'antd';
-import { WarehouseListManageContext } from '../warehouse-list.component';
-import { setModalvisible } from '../warehouse-list-redux/warehouse-list-action';
 import { AddWarehouseParams } from '~/solution/model/dto/warehouse-list.dto';
 import { WarehouseListService } from '~/solution/model/services/warehouse-list.service';
 import { ShowNotification } from '~/framework/util/common';
 
 export function useAddWarehouseStore(props: IAddWarehouseProps) {
   const { state, setStateWrap } = useStateStore(new IAddWarehouseState());
-  const { dispatch } = useContext(WarehouseListManageContext);
   const formData = useRef(new AddWarehouseParams());
   const warehouseListService = useRef(new WarehouseListService());
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (props.warehouseId) {
+      getWarehouseDetail();
+    }
+  }, [props.warehouseId]);
+
+  // 获取仓库详情用于编辑
+  function getWarehouseDetail() {
+    warehouseListService.current.getStoreDetail({ id: props.warehouseId }).subscribe(res => {
+      const { provinceCode, cityCode, areaCode, personName, organizationName } = res;
+      const areaDetail = [provinceCode, cityCode, areaCode];
+      res.minAlarm = res.minAlarm == -1 ? '' : res.minAlarm;
+      res.maxAlarm = res.maxAlarm == -1 ? '' : res.maxAlarm;
+      form.setFieldsValue({ ...res, areaDetail });
+      formData.current = res;
+      setStateWrap({
+        editOrganizationName: organizationName,
+        editmanageName: personName,
+        areaDetail
+      });
+    });
+  }
 
   // 确定创建
   function handleOk() {
@@ -23,10 +43,9 @@ export function useAddWarehouseStore(props: IAddWarehouseProps) {
     form
       .validateFields()
       .then(value => {
-        addWarehouse({ ...value, ...formData.current });
+        addWarehouse({ ...formData.current, ...value });
       })
-      .catch(error => {
-        console.log(error);
+      .catch(() => {
         setStateWrap({
           confirmLoading: false
         });
@@ -35,17 +54,18 @@ export function useAddWarehouseStore(props: IAddWarehouseProps) {
 
   // 添加仓库的网络请求
   function addWarehouse(formInfo: AddWarehouseParams) {
-    warehouseListService.current.insertStore(formInfo).subscribe(
+    const URL = props.isEdit ? 'updateStore' : 'insertStore';
+    formInfo.minAlarm = formInfo.minAlarm + '' == '' ? -1 : formInfo.minAlarm;
+    formInfo.maxAlarm = formInfo.maxAlarm + '' == '' ? -1 : formInfo.maxAlarm;
+    warehouseListService.current[URL](formInfo).subscribe(
       res => {
         setStateWrap({
           confirmLoading: false
         });
         // 关闭的时候销毁当前的modal
         ShowNotification.success('创建仓库成功');
-        setModalvisible({ modal: 'addWarehousevisible', value: false }, dispatch);
-        // 刷新当前的tree
-        props.queryOrganizationTypeListByTypeId();
-        console.log(props);
+        // 通知父应用刷新树列表
+        props.closeAddWarehouseModal(!props.isEdit);
       },
       error => {
         setStateWrap({
@@ -57,15 +77,12 @@ export function useAddWarehouseStore(props: IAddWarehouseProps) {
 
   // 关闭当前的modal
   function handleCancel() {
-    setModalvisible({ modal: 'addWarehousevisible', value: false }, dispatch);
+    props.closeAddWarehouseModal();
   }
 
   // 设置当前的地址信息
   function setAreaInfo(value: any, selectedOptions: any) {
-    console.log(selectedOptions);
-
     if (selectedOptions.length >= 3) {
-      form.setFieldsValue({ areaCode: selectedOptions[2].value });
       formData.current = {
         ...formData.current,
         provinceName: selectedOptions[0].label,
@@ -80,7 +97,8 @@ export function useAddWarehouseStore(props: IAddWarehouseProps) {
 
   // 设置当前的选择的组织相关的信息内容
   function getCurrentSelectInfo(valueInfo: string, options: any) {
-    const { name, code } = options.info;
+    const name = options && options.info.name;
+    const code = options && options.info.code;
     formData.current = {
       ...formData.current,
       organizationId: valueInfo,
@@ -99,7 +117,6 @@ export function useAddWarehouseStore(props: IAddWarehouseProps) {
       personName: name,
       personMobile: telephone
     };
-    form.setFieldsValue({ personId: valueInfo });
   }
-  return { state, handleCancel, handleOk, form, getCurrentSelectInfo, setAreaInfo, getCurrentSelectAdmin };
+  return { state, handleCancel, handleOk, form, getCurrentSelectInfo, setAreaInfo, getCurrentSelectAdmin, formData };
 }
