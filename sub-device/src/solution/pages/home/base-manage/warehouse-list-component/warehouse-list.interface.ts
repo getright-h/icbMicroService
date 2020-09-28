@@ -17,4 +17,7 @@ export class IWarehouseListState {
   total: number;
   totalNumber = '**';
   totalAlarm = '**';
+  isEditShippingSpaceModal = false;
+  editShippingSpaceId: string;
+  addShippingSpaceVisible: boolean;
 }

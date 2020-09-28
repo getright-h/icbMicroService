@@ -9,7 +9,7 @@ import { dealWithTreeData, deleteTreeDataByKey, updateTreeData } from '~/framewo
 import { QueryStoreOrganizationReturn } from '~/solution/model/dto/warehouse-list.dto';
 import { EventDataNode } from 'antd/lib/tree';
 import { WarehouseListManageContext } from '../warehouse-list.component';
-import { setModalvisible, setTreeSelectNode } from '../warehouse-list-redux/warehouse-list-action';
+import { openOrCloseAddWarehouseModal, setTreeSelectNode } from '../warehouse-list-redux/warehouse-list-action';
 import { forkJoin } from 'rxjs';
 import confirm from 'antd/lib/modal/confirm';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
@@ -37,7 +37,7 @@ export function useWarehouseListLeftStore() {
 
   // 添加仓库，显示弹窗
   function addWarehouse() {
-    setModalvisible({ modal: 'addWarehousevisible', value: true }, dispatch);
+    setStateWrap({ addWarehouseVisible: true });
   }
 
   /**
@@ -69,8 +69,8 @@ export function useWarehouseListLeftStore() {
           删除
         </a>
         <p></p>
-        <a onClick={editWarehouse} className="a-link">
-          修改
+        <a onClick={() => editWarehouse(element)} className="a-link">
+          编辑
         </a>
       </div>
     );
@@ -113,7 +113,11 @@ export function useWarehouseListLeftStore() {
   }
 
   function editWarehouse(element: any) {
-    console.log(element);
+    setStateWrap({
+      addWarehouseVisible: true,
+      isEditWarehouseModal: true,
+      editWarehouseId: element.id
+    });
   }
 
   // 点击展开加载数据
@@ -145,9 +149,39 @@ export function useWarehouseListLeftStore() {
   // 选择当前的机构信息，这边进行搜索
   function searchCurrentSelectInfo(params: { typeId: string; id: string }) {
     warehouseListService.queryStoreOrganization(params).subscribe(res => {
-      console.log('res----', res);
+      const expandedKeys: string[] = [];
+      res.forEach(item => {
+        expandedKeys.push(item.id);
+      });
+
+      setStateWrap({
+        expandedKeys
+      });
     });
   }
 
-  return { state, onLoadData, onSelect, getCurrentSelectInfo, addWarehouse, queryOrganizationTypeListByTypeId };
+  function closeAddWarehouseModal(isRefresh: boolean) {
+    setStateWrap({
+      isEditWarehouseModal: false,
+      addWarehouseVisible: false,
+      editWarehouseId: ''
+    });
+    isRefresh && queryOrganizationTypeListByTypeId();
+  }
+
+  function onExpand(expandedKeys: []) {
+    setStateWrap({
+      expandedKeys
+    });
+  }
+
+  return {
+    state,
+    onLoadData,
+    onSelect,
+    getCurrentSelectInfo,
+    addWarehouse,
+    closeAddWarehouseModal,
+    onExpand
+  };
 }

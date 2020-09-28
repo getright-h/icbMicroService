@@ -4,8 +4,14 @@
  */
 export class IAddWarehouseState {
   confirmLoading: boolean;
+  editOrganizationName = '';
+  editmanageName = '';
+  areaDetail: string[];
 }
 
-export interface IAddWarehouseProps {
-  queryOrganizationTypeListByTypeId: Function;
+export class IAddWarehouseProps {
+  addWarehouseVisible = false;
+  isEdit? = false;
+  warehouseId? = '';
+  closeAddWarehouseModal: (isRefresh?: boolean) => void;
 }

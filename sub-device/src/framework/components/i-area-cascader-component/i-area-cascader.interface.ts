@@ -7,7 +7,7 @@ export class IIAreaCascaderState {
   value: string[];
 }
 export class IIAreaCascaderProps {
-  setAreaInfo: (value: any, selectedOptions: any) => void;
+  setAreaInfo?: (value: any, selectedOptions: any) => void;
   defaultValue?: string[];
   deep: number;
 }

@@ -13,10 +13,30 @@ export default function WarehouseListLeftComponent() {
     onLoadData,
     onSelect,
     addWarehouse,
-    queryOrganizationTypeListByTypeId
+    closeAddWarehouseModal,
+    onExpand
   } = useWarehouseListLeftStore();
   const { gState } = React.useContext(GlobalContext);
-  const { treeData, treeSelectedKeys } = state;
+  const {
+    treeData,
+    treeSelectedKeys,
+    addWarehouseVisible,
+    editWarehouseId,
+    expandedKeys,
+    isEditWarehouseModal
+  } = state;
+
+  // component --- 渲染添加仓库的modal
+  function RenderAddWarehouseModal() {
+    const addWarehouseComponentProps = {
+      addWarehouseVisible,
+      isEdit: isEditWarehouseModal,
+      warehouseId: editWarehouseId,
+      closeAddWarehouseModal
+    };
+    return <AddWarehouseComponent {...addWarehouseComponentProps}></AddWarehouseComponent>;
+  }
+
   return (
     <div className={style.warehouseListLeft}>
       <Button type="primary" style={{ width: '100%' }} onClick={addWarehouse}>
@@ -34,10 +54,16 @@ export default function WarehouseListLeftComponent() {
           getCurrentSelectInfo={value => getCurrentSelectInfo<string>(value, 'id')}
         />
       </div>
-      <Tree loadData={onLoadData} onSelect={onSelect} selectedKeys={treeSelectedKeys} blockNode treeData={treeData} />
-      <AddWarehouseComponent
-        queryOrganizationTypeListByTypeId={queryOrganizationTypeListByTypeId}
-      ></AddWarehouseComponent>
+      <Tree
+        loadData={onLoadData}
+        onSelect={onSelect}
+        expandedKeys={expandedKeys}
+        selectedKeys={treeSelectedKeys}
+        onExpand={onExpand}
+        blockNode
+        treeData={treeData}
+      />
+      <RenderAddWarehouseModal />
     </div>
   );
 }

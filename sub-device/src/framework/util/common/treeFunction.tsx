@@ -29,7 +29,7 @@ export function dealWithTreeData<T>(
             }}
           >
             {isWarehouse && (
-              <Popover content={content(element)} trigger="click">
+              <Popover content={content(element)} trigger="hover">
                 <AppstoreOutlined />
               </Popover>
             )}

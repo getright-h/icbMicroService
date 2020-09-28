@@ -52,6 +52,8 @@ class PluginFactory {
     let forFileName = this.isProd ? ".min" : "";
     this.plugins.push(
       new WebpackCdnPlugin({
+        prodUrl: 'https://lib.baomitu.com/:name/:version/:path',
+        devUrl: ':name/:path',
         modules: {
            'react': [
              { name: 'react', var: 'React', path: `umd/react.${process.env.NODE_ENV}${forFileName}.js` },

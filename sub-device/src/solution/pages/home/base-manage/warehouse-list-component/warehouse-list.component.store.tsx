@@ -60,6 +60,11 @@ export function useWarehouseListStore(warehouseListState: { currentSelectNode: E
   function callbackAction(row: StorePositionPagedDataList, actionType: string) {
     switch (actionType) {
       case '编辑':
+        setStateWrap({
+          addShippingSpaceVisible: true,
+          isEditShippingSpaceModal: true,
+          editShippingSpaceId: row.id
+        });
         break;
       case '删除':
         deleteWarehouse(row);
@@ -89,9 +94,7 @@ export function useWarehouseListStore(warehouseListState: { currentSelectNode: E
   }
   // 删除仓位
   function deleteShippingSpace(resolve: Function, reject: Function, row: StorePositionPagedDataList) {
-    console.log(row);
-
-    warehouseListService.current.deleteStorePosition({ storeId: row.storePositionId, id: row.id }).subscribe(
+    warehouseListService.current.deleteStorePosition({ storeId: row.storeId, id: row.id }).subscribe(
       () => {
         ShowNotification.success('删除成功');
         resolve();
@@ -109,5 +112,29 @@ export function useWarehouseListStore(warehouseListState: { currentSelectNode: E
       }
     );
   }
-  return { state, changeTablePageIndex, callbackAction, handleFormDataChange, getTableData };
+
+  function closeShippingSpaceModal(isRefresh: boolean) {
+    setStateWrap({
+      isEditShippingSpaceModal: false,
+      editShippingSpaceId: '',
+      addShippingSpaceVisible: false
+    });
+    isRefresh && getTableData();
+  }
+
+  function addShippingSpace() {
+    setStateWrap({
+      addShippingSpaceVisible: true
+    });
+  }
+
+  return {
+    state,
+    changeTablePageIndex,
+    callbackAction,
+    handleFormDataChange,
+    getTableData,
+    closeShippingSpaceModal,
+    addShippingSpace
+  };
 }

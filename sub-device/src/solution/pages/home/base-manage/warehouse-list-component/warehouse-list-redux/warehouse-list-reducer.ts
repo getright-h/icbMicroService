@@ -4,12 +4,8 @@ import { TYPES } from './warehouse-list-types';
 
 export const warehouseListInitialState: {
   currentSelectNode: EventDataNode;
-  addWarehousevisible: boolean;
-  addShippingSpaceVisible: boolean;
 } = {
-  currentSelectNode: undefined,
-  addWarehousevisible: false,
-  addShippingSpaceVisible: false
+  currentSelectNode: undefined
 };
 
 export function WarehouseListReducer(state = warehouseListInitialState, action: IAction<any>) {
@@ -19,11 +15,6 @@ export function WarehouseListReducer(state = warehouseListInitialState, action: 
       return {
         ...state,
         currentSelectNode: payload
-      };
-    case TYPES.SET_MODAL_STATE:
-      return {
-        ...state,
-        [payload.modal]: payload.value
       };
     default:
       return state;
