@@ -6,17 +6,35 @@ import { Observable } from 'rxjs';
 
 export abstract class DrapChooseLoadingDTO {
   // 你的抽象方法，具体在 Service 中实现
-  abstract queryOrganizationType(params: { systemId: string }): Observable<DrapChooseLoadingReturn>;
-  abstract queryOrganizationSelectList(params: OrganizationSelectListParams): Observable<DrapChooseLoadingReturn>;
+  abstract queryOrganizationList(params: QueryOrganizationListParam): Observable<DrapChooseLoadingReturn>;
+  abstract queryDeviceTypeList(params: QueryDeviceTypeListParam): Observable<DrapChooseLoadingReturn>;
+  abstract querySupplierList(params: QuerySupplierListParam): Observable<DrapChooseLoadingReturn>;
+  abstract queryPurchaseList(params: QueryPurchaseListParam): Observable<DrapChooseLoadingReturn>;
 }
 
 // 下拉加载 Dto
-export interface OrganizationSelectListParams {
+export interface QueryOrganizationListParam {
+  name?: string;
   systemId: string;
-  hierarchyType: number;
-  parentCode?: string;
   index: number;
   size: number;
+}
+export interface QueryDeviceTypeListParam {
+  name?: string;
+  index: number;
+  size: number;
+}
+export interface QuerySupplierListParam {
+  name?: string;
+  typeId: string;
+  index: number;
+  size: number;
+}
+
+export interface QueryPurchaseListParam {
+  index: number;
+  size: number;
+  name?: string;
 }
 
 export interface DrapChooseLoadingReturn {

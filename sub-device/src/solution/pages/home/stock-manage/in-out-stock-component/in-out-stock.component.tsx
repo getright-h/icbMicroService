@@ -1,7 +1,7 @@
 import * as React from 'react';
 import style from './in-out-stock.component.less';
 import { useInOutStockStore } from './in-out-stock.component.store';
-import { Input, Button, Select } from 'antd';
+import { Input, Button, Select, Row, Form, Col } from 'antd';
 import { TablePageTelComponent, ITableComponent, TimePickerComponent } from '~/framework/components/component.module';
 import { inOutStockColumns } from './in-out-stock.column';
 import StockRecordComponent from './stock-record-component/stock-record.component';
@@ -10,49 +10,65 @@ import StockDeviceComponent from './stock-device-component/stock-device.componen
 export default function InOutStockComponent() {
   const {
     state,
+    searchForm,
     callbackAction,
     changeTablePageIndex,
     searchClick,
-    handleSearchFormChange,
-    modalClose
+    modalClose,
+    initSearchform,
+    getDateTimeInfo
   } = useInOutStockStore();
-  const { isLoading, searchForm, tableData, total, deviceVisible, recordVisible, currentId } = state;
+  const {
+    isLoading,
+    tableData,
+    total,
+    deviceVisible,
+    recordVisible,
+    currentId,
+    pageIndex,
+    pageSize,
+    statistics
+  } = state;
 
   function renderStockInfo() {
     return (
       <div className={style.mainInfo}>
-        <h3>总库存：</h3>
-        <h3>入库数量：</h3>
-        <h3>出库数量：</h3>
+        <h3>总库存：{statistics.totalNumber}</h3>
+        <h3>入库数量：{statistics.inNumber}</h3>
+        <h3>出库数量：{statistics.outNumber}</h3>
       </div>
     );
   }
 
   function renderSelectItems() {
+    const layout = {
+      labelCol: { span: 8 },
+      wrapperCol: { span: 16 }
+    };
     return (
-      <React.Fragment>
-        <div className="push-search-item">
-          <span className="label">仓位名：</span>
-          <Input
-            allowClear
-            placeholder="请输入仓位名"
-            onChange={e => {
-              handleSearchFormChange(e.target.value, 'keyword');
-            }}
-          />
-        </div>
-        <div className="push-search-item">
-          <span className="label">时间：</span>
-          <TimePickerComponent pickerType="dateRange" />
-        </div>
-        <div className="push-search-item">
-          <span className="label">方式：</span>
-          <Select allowClear placeholder="请选择操作类型">
-            <Select.Option value={1}>出库</Select.Option>
-            <Select.Option value={0}>入库</Select.Option>
-          </Select>
-        </div>
-      </React.Fragment>
+      <Form {...layout} form={searchForm} style={{ width: '90%' }}>
+        <Row gutter={24}>
+          <Col span={8}>
+            <Form.Item name="storeName" label="仓库名">
+              <Input allowClear placeholder="请输入仓库名" />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item name="timeInfo" label="时间">
+              <TimePickerComponent pickerType="dateRange" getDateTimeInfo={getDateTimeInfo} />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item name="type" label="方式">
+              <Select allowClear placeholder="请选择操作类型">
+                <Select.Option value={-1}>全部</Select.Option>
+                <Select.Option value={2}>出库</Select.Option>
+                <Select.Option value={1}>入库</Select.Option>
+              </Select>
+            </Form.Item>
+          </Col>
+        </Row>
+      </Form>
     );
   }
   function renderSearchButtons() {
@@ -61,6 +77,7 @@ export default function InOutStockComponent() {
         <Button type="primary" onClick={searchClick}>
           查询
         </Button>
+        <Button onClick={initSearchform}>清空</Button>
       </div>
     );
   }
@@ -69,12 +86,12 @@ export default function InOutStockComponent() {
       <ITableComponent
         columns={inOutStockColumns(callbackAction)}
         isLoading={isLoading}
-        pageIndex={searchForm.page}
-        pageSize={searchForm.size}
+        pageIndex={pageIndex}
+        pageSize={pageSize}
         data={tableData}
         total={total}
         isPagination={true}
-        changeTablePageIndex={(index: number, pageSize: number) => changeTablePageIndex(index, pageSize)}
+        changeTablePageIndex={(pageIndex: number, pageSize: number) => changeTablePageIndex(pageIndex, pageSize)}
       ></ITableComponent>
     );
   }
@@ -83,7 +100,7 @@ export default function InOutStockComponent() {
     <React.Fragment>
       <TablePageTelComponent
         pageName={'出入库记录'}
-        selectTags={renderStockInfo()}
+        selectTags={statistics && renderStockInfo()}
         selectItems={renderSelectItems()}
         searchButton={renderSearchButtons()}
         table={<RenderTable />}

@@ -7,6 +7,7 @@ import { IStockRecordProps } from './stock-record.interface';
 export default function StockRecordComponent(props: IStockRecordProps) {
   const { state, selfClose } = useStockRecordStore(props);
   const { visible } = props;
+  const { details } = state;
   const layout = {
     labelCol: { span: 6 },
     wrapperCol: { offset: 1, span: 11 }
@@ -14,13 +15,19 @@ export default function StockRecordComponent(props: IStockRecordProps) {
   function renderInfo() {
     return (
       <Form {...layout}>
-        <Form.Item label="仓库名">A仓库</Form.Item>
-        <Form.Item label="方式">入库</Form.Item>
-        <Form.Item label="接收方">B仓库</Form.Item>
-        <Form.Item label="数量">OBD-10001，100个</Form.Item>
-        <Form.Item label="操作人">孙三</Form.Item>
-        <Form.Item label="操作时间">2020-01-01 14:00:00</Form.Item>
-        <Form.Item label="采购单">xx批次采购单</Form.Item>
+        <Form.Item label="仓库名">{details.storeName}</Form.Item>
+        <Form.Item label="方式">{details.typeText}</Form.Item>
+        {/* <Form.Item label="接收方">{details.}</Form.Item> */}
+        <Form.Item label="数量">
+          {details.deviceTypeList?.map(device => (
+            <span key={device.typeId}>
+              {device.typeName}，{device.number}个
+            </span>
+          ))}
+        </Form.Item>
+        {/* <Form.Item label="操作人">{details.}</Form.Item> */}
+        <Form.Item label="操作时间">{details.createTime}</Form.Item>
+        {/* <Form.Item label="采购单">{details.}</Form.Item> */}
       </Form>
     );
   }
@@ -34,7 +41,7 @@ export default function StockRecordComponent(props: IStockRecordProps) {
       maskClosable={false}
       destroyOnClose={true}
     >
-      {renderInfo()}
+      {details && renderInfo()}
     </Modal>
   );
 }

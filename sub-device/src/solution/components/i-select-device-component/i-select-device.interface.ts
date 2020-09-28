@@ -1,22 +1,18 @@
 /**
  * @export state变量定义和初始化
- * @class IISelectLoadingState
- */
-export class IISelectLoadingState {
+ * @class IISelectDeviceState
+*/
+export class IISelectDeviceState {
   fetching = false;
   optionList: Array<any> = [];
   value: string;
 }
-export interface IISelectLoadingProps {
+export interface IISelectDeviceProps {
   placeholder: string;
-  width?: number | string;
-  className?: string;
   selectedValue?: string;
-  reqUrl: string;
   disabled?: boolean;
   searchForm?: Record<string, any>;
-  getCurrentSelectInfo?: (value: string, option: any) => void;
+  getCurrentSelectInfo: (value: string, option: any) => void;
   searchKey?: string;
   showSearch?: boolean;
-  pageSize?: number;
 }

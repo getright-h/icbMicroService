@@ -13,18 +13,18 @@ export default function StockDeviceComponent(props: IStockDeviceProps) {
   const columns = [
     {
       title: '设备型号',
-      dataIndex: 'name'
+      dataIndex: 'typeName'
     },
     {
       title: '设备号',
-      dataIndex: 'number'
+      dataIndex: 'code'
     }
   ];
 
   function renderInfo() {
     return (
       <React.Fragment>
-        <div className={style.search}>
+        {/* <div className={style.search}>
           <Search
             placeholder="请输入设备型号/设备号"
             onSearch={value => console.log(value)}
@@ -32,8 +32,10 @@ export default function StockDeviceComponent(props: IStockDeviceProps) {
             style={{ width: 400 }}
           />
           <Button>导出Excel</Button>
+        </div> */}
+        <div className={style.deviceTable}>
+          <Table columns={columns} dataSource={tableData} pagination={false} bordered rowKey={row => row.materialId} />
         </div>
-        <Table columns={columns} dataSource={tableData} pagination={false} bordered rowKey={row => row.id} />
       </React.Fragment>
     );
   }

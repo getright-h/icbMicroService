@@ -1,31 +1,30 @@
 import { IOrderDetailState, IOrderDetailProps } from './order-detail.interface';
-import { useStateStore } from '~/framework/aop/hooks/use-base-store';
-import { useParams } from 'react-router-dom';
+import { useService, useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect } from 'react';
+import { StockManageService } from '~/solution/model/services/stock-manage.service';
+import { ShowNotification } from '~/framework/util/common';
 
 export function useOrderDetailStore(props: IOrderDetailProps) {
   const { state, setStateWrap } = useStateStore(new IOrderDetailState());
-  const { id } = useParams();
+  const stockManageService: StockManageService = useService(StockManageService);
 
   useEffect(() => {
-    getDetails(id);
-  }, []);
+    props.id && getDetails(props.id);
+  }, [props.id]);
 
   function getDetails(id: string) {
-    setStateWrap({
-      tableData: [
-        {
-          id: '16351',
-          product: 'OBD-10001',
-          num: 10,
-          amount: '100.00'
-        }
-      ]
-    });
+    stockManageService.queryPurchaseDetail(id).subscribe(
+      res => {
+        setStateWrap({ details: res });
+      },
+      err => {
+        ShowNotification.error(err);
+      }
+    );
   }
 
   function selfClose() {
-    props.close && props.close();
+    props.close?.();
   }
 
   return { state, selfClose };

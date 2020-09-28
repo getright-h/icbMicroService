@@ -6,11 +6,11 @@ export function inOutStockColumns(callbackAction: Function) {
   return [
     {
       title: '仓库名',
-      dataIndex: 'name'
+      dataIndex: 'storeName'
     },
     {
       title: '方式',
-      dataIndex: 'type'
+      dataIndex: 'typeText'
     },
     {
       title: '数量',
@@ -18,7 +18,7 @@ export function inOutStockColumns(callbackAction: Function) {
     },
     {
       title: '操作人',
-      dataIndex: 'creater'
+      dataIndex: 'modifyUserName'
     },
     {
       title: '操作时间',

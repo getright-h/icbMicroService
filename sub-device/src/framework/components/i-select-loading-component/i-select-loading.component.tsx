@@ -18,7 +18,6 @@ export default function ISelectLoadingComponent(props: IISelectLoadingProps) {
       defaultValue={state.value}
       onChange={getCurrentSelectInfo}
       onPopupScroll={optionScroll}
-      // onFocus={!optionList.length ? () => fetchOptions(false) : () => {}}
       onFocus={() => fetchOptions(false)}
       showSearch={props.showSearch || true}
       onSearch={$event => fetchOptions(true, $event)}

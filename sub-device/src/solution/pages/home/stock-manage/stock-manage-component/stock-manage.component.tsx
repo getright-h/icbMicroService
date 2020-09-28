@@ -1,9 +1,13 @@
 import * as React from 'react';
 import style from './stock-manage.component.less';
 import { useStockManageStore } from './stock-manage.component.store';
-import { TablePageTelComponent, ITableComponent } from '~/framework/components/component.module';
+import {
+  TablePageTelComponent,
+  ITableComponent,
+  ISelectLoadingComponent
+} from '~/framework/components/component.module';
 import { stockManageColumns } from './stock-manage.column';
-import { Button, Input, Select } from 'antd';
+import { Button, Input, Select, Form, Row, Col } from 'antd';
 import StockManageLeftComponent from './stock-manage-left-component/stock-manage-left.component';
 import { ModalType } from './stock-manage.interface';
 import DeviceStockInComponent from './device-stock-in-component/device-stock-in.component';
@@ -13,18 +17,29 @@ import DeviceEditComponent from './device-edit-component/device-edit.component';
 export default function StockManageComponent() {
   const {
     state,
+    searchForm,
     changeTablePageIndex,
     callbackAction,
     onSelectRows,
     searchClick,
-    handleSearchFormChange,
-    clearSearchform,
-    modalCancel
+    initSearchform,
+    modalCancel,
+    getSelectTreeNode
   } = useStockManageStore();
-  const { isLoading, searchForm, tableData, total, stockInVisible, bulkImportVisible, deviceEditVisible } = state;
+  const {
+    isLoading,
+    tableData,
+    total,
+    stockInVisible,
+    bulkImportVisible,
+    deviceEditVisible,
+    currentId,
+    pageIndex,
+    pageSize
+  } = state;
 
   function renderPageLeft() {
-    return <StockManageLeftComponent />;
+    return <StockManageLeftComponent getSelectTreeNode={getSelectTreeNode} />;
   }
   function stockMainInfo() {
     return (
@@ -34,82 +49,76 @@ export default function StockManageComponent() {
     );
   }
   function renderSelectItems() {
+    const layout = {
+      labelCol: { span: 8 },
+      wrapperCol: { span: 16 }
+    };
     return (
-      <>
-        <div className="push-search-item">
-          <span className="label">搜索设备：</span>
-          <Select
-            allowClear
-            placeholder="设备号 / SIM卡号"
-            onChange={value => {
-              handleSearchFormChange(value, 'keyword');
-            }}
-          ></Select>
-        </div>
-        <div className="push-search-item">
-          <span className="label">设备型号：</span>
-          <Select
-            allowClear
-            placeholder="请选择设备型号"
-            onChange={value => {
-              handleSearchFormChange(value, 'keyword');
-            }}
-          ></Select>
-        </div>
-        <div className="push-search-item">
-          <span className="label">仓位：</span>
-          <Select
-            allowClear
-            placeholder="请选择仓位"
-            onChange={value => {
-              handleSearchFormChange(value, 'keyword');
-            }}
-          ></Select>
-        </div>
-        <div className="push-search-item">
-          <span className="label">设备状态：</span>
-          <Select
-            allowClear
-            placeholder="请选择设备状态"
-            onChange={value => {
-              handleSearchFormChange(value, 'keyword');
-            }}
-          ></Select>
-        </div>
-        <div className="push-search-item">
-          <span className="label">入库时长：</span>
-          <Input
-            allowClear
-            placeholder="停留天数"
-            onChange={e => {
-              handleSearchFormChange(e.target.value, 'keyword');
-            }}
-          />
-        </div>
-        <div className="push-search-item">
-          <span className="label">仓位超时报警：</span>
-          <Select
-            allowClear
-            placeholder="请选择"
-            onChange={value => {
-              handleSearchFormChange(value, 'keyword');
-            }}
-          >
-            <Select.Option value={1}>是</Select.Option>
-            <Select.Option value={0}>否</Select.Option>
-          </Select>
-        </div>
-        <div className="push-search-item">
-          <span className="label">采购单：</span>
-          <Select
-            allowClear
-            placeholder="请输入采购单号"
-            onChange={value => {
-              handleSearchFormChange(value, 'keyword');
-            }}
-          ></Select>
-        </div>
-      </>
+      <Form {...layout} form={searchForm} style={{ width: '90%' }}>
+        <Row gutter={24}>
+          <Col span={8}>
+            <Form.Item name="deviceValue" label="搜索设备">
+              <Input allowClear placeholder="设备号 / SIM卡号"></Input>
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item name="typeId" label="设备型号">
+              <ISelectLoadingComponent
+                reqUrl="queryDeviceTypeList"
+                placeholder="选择设备型号"
+                getCurrentSelectInfo={(value: string, option: any) => {
+                  searchForm.setFieldsValue({ typeId: value });
+                }}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item name="storePositionId" label="仓位">
+              <Select allowClear placeholder="请选择仓位"></Select>
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={24}>
+          <Col span={8}>
+            <Form.Item name="state" label="设备状态">
+              <Select placeholder="请选择设备状态">
+                <Select.Option value={-1}>全部</Select.Option>
+                <Select.Option value={1}>正常</Select.Option>
+                <Select.Option value={2}>故障</Select.Option>
+                <Select.Option value={3}>损坏</Select.Option>
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item name="duration" label="入库时长">
+              <Input placeholder="停留天数" />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item name="isAlarm" label="仓位超时报警">
+              <Select placeholder="请选择是否超时报警">
+                <Select.Option value={-1}>全部</Select.Option>
+                <Select.Option value={1}>是</Select.Option>
+                <Select.Option value={0}>否</Select.Option>
+              </Select>
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={24}>
+          <Col span={8}>
+            <Form.Item name="purchaseId" label="采购单">
+              {/* 返回格式与封装组件不一致 */}
+              <ISelectLoadingComponent
+                reqUrl="queryPurchaseList"
+                placeholder="选择采购单"
+                getCurrentSelectInfo={(value: string, option: any) => {
+                  searchForm.setFieldsValue({ purchaseId: value });
+                }}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+      </Form>
     );
   }
   function renderSearchButtons() {
@@ -118,9 +127,7 @@ export default function StockManageComponent() {
         <Button type="primary" onClick={searchClick}>
           查询
         </Button>
-        <Button type="primary" onClick={clearSearchform}>
-          清空
-        </Button>
+        <Button onClick={initSearchform}>清空</Button>
       </div>
     );
   }
@@ -161,13 +168,14 @@ export default function StockManageComponent() {
       <ITableComponent
         columns={stockManageColumns(callbackAction)}
         isLoading={isLoading}
-        pageIndex={searchForm.page}
-        pageSize={searchForm.size}
+        pageIndex={pageIndex}
+        pageSize={pageSize}
         data={tableData}
         total={total}
         isPagination={true}
-        changeTablePageIndex={(index: number, pageSize: number) => changeTablePageIndex(index, pageSize)}
+        changeTablePageIndex={(pageIndex: number, pageSize: number) => changeTablePageIndex(pageIndex, pageSize)}
         rowSelection={rowSelection}
+        rowKey="materialId"
       ></ITableComponent>
     );
   }
@@ -186,7 +194,7 @@ export default function StockManageComponent() {
       ></TablePageTelComponent>
       <DeviceStockInComponent visible={stockInVisible} close={modalCancel} />
       <BulkImportComponent visible={bulkImportVisible} close={modalCancel} />
-      <DeviceEditComponent visible={deviceEditVisible} close={modalCancel} />
+      <DeviceEditComponent id={currentId} visible={deviceEditVisible} close={modalCancel} />
     </React.Fragment>
   );
 }

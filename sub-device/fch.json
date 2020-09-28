@@ -7,5 +7,9 @@
     ],
     "needDto": [
         "s"
-    ]
+    ],
+    "baseUrl": {
+      "service": "/src/solution/model/services",
+      "dto": "/src/solution/model/dto"
+    }
 }

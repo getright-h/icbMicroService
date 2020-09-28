@@ -18,4 +18,6 @@ export interface IITableProps {
   pageIndex: number;
   changeTablePageIndex: (page: number, pageSize?: number) => void;
   rowSelection?: any;
+  rowKey?: string;
+  summary?: any;
 }
