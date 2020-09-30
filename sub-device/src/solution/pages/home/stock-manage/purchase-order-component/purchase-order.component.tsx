@@ -82,7 +82,7 @@ export default function PurchaseOrderComponent() {
       </div>
     );
   }
-  function RenderTable() {
+  function renderTable() {
     return (
       <ITableComponent
         columns={purchaseOrderColumns(callbackAction)}
@@ -114,7 +114,7 @@ export default function PurchaseOrderComponent() {
         selectItems={renderSelectItems()}
         searchButton={renderSearchButtons()}
         otherSearchBtns={renderOtherButtons()}
-        table={<RenderTable />}
+        table={renderTable()}
       ></TablePageTelComponent>
       <EditOrderComponent id={currentId} visible={editVisible} close={handleModalCancel} />
       <OrderDetailComponent id={currentId} visible={detailVisible} close={handleModalCancel} />

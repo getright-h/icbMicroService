@@ -1,9 +1,11 @@
 import { IEditOrderState, IEditOrderProps } from './edit-order.interface';
 import { useService, useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form } from 'antd';
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { ShowNotification } from '~/framework/util/common';
 import { StockManageService } from '~/solution/model/services/stock-manage.service';
+import moment from 'moment';
+import { DeviceListItem } from '~/solution/model/dto/stock-manage.dto';
 
 export function useEditOrderStore(props: IEditOrderProps) {
   const { state, setStateWrap } = useStateStore(new IEditOrderState());
@@ -21,7 +23,13 @@ export function useEditOrderStore(props: IEditOrderProps) {
       res => {
         form.setFieldsValue({
           ...res,
-          totalAmount: res.sumAmount
+          totalAmount: res.sumAmount,
+          purchaseTime: moment(res.purchaseTime, 'YYYY-MM-DD HH:mm:ss')
+        });
+        setStateWrap({
+          editSupplierName: res.supplierName,
+          editPurchaseTime: res.purchaseTime,
+          editDeviceList: res.deviceList
         });
       },
       err => {
@@ -30,8 +38,43 @@ export function useEditOrderStore(props: IEditOrderProps) {
     );
   }
 
+  function getCurrentSelectInfo(typeName: string, option: any) {
+    switch (typeName) {
+      case 'supplier':
+        setStateWrap({ editSupplierName: option?.info.name });
+        break;
+    }
+  }
+
+  function handleDeviceListChange(typeName: string, option: any, index: number) {
+    const deviceList = form.getFieldsValue(['deviceList']).deviceList;
+    !deviceList[index] && (deviceList[index] = {});
+    switch (typeName) {
+      case 'type':
+        deviceList[index].typeId = option?.info.id;
+        deviceList[index].typeName = option?.info.name;
+        break;
+      default:
+        deviceList[index][typeName] = option;
+        break;
+    }
+    form.setFieldsValue([deviceList]);
+    setTotalAmount();
+  }
+
+  function setTotalAmount() {
+    const deviceList = form.getFieldsValue(['deviceList']).deviceList;
+    let totalAmount = 0;
+    deviceList.forEach((info: DeviceListItem) => {
+      if (info.number && info.amount) {
+        totalAmount += info.number * info.amount;
+      }
+    });
+    form.setFieldsValue({ totalAmount });
+  }
+
   function selfSubmit(values: any) {
-    setStateWrap({ confirmLoading: true });
+    // setStateWrap({ confirmLoading: true });
     console.log(values);
     // if (props.id) {
     //   // 编辑
@@ -66,5 +109,5 @@ export function useEditOrderStore(props: IEditOrderProps) {
     props.close?.();
   }
 
-  return { state, form, selfSubmit, selfClose };
+  return { state, form, selfSubmit, selfClose, getCurrentSelectInfo, handleDeviceListChange, setTotalAmount };
 }

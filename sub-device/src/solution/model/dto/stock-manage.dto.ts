@@ -231,7 +231,7 @@ export interface QueryPurchaseDetailResult {
   remark: string;
 }
 
-interface DeviceListItem {
+export interface DeviceListItem {
   typeId: string;
   typeName: string;
   number: number;

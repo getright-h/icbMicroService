@@ -2,18 +2,22 @@ import * as React from 'react';
 import style from './edit-order.component.less';
 import { useEditOrderStore } from './edit-order.component.store';
 import { IEditOrderProps } from './edit-order.interface';
-import { Modal, Form, Input, Space } from 'antd';
-import {
-  ISelectLoadingComponent,
-  IUploadImgComponent,
-  TimePickerComponent
-} from '~/framework/components/component.module';
-import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
+import { Modal, Form, Input, DatePicker } from 'antd';
+import { ISelectLoadingComponent, IUploadImgComponent } from '~/framework/components/component.module';
+import DeviceListSelectComponent from './device-list-select-component/device-list-select.component';
 
 export default function EditOrderComponent(props: IEditOrderProps) {
-  const { state, form, selfSubmit, selfClose } = useEditOrderStore(props);
+  const {
+    state,
+    form,
+    selfSubmit,
+    selfClose,
+    getCurrentSelectInfo,
+    handleDeviceListChange,
+    setTotalAmount
+  } = useEditOrderStore(props);
   const { visible } = props;
-  const { confirmLoading } = state;
+  const { confirmLoading, editSupplierName } = state;
   const formItemLayout = {
     labelCol: {
       xs: { span: 24 },
@@ -24,29 +28,21 @@ export default function EditOrderComponent(props: IEditOrderProps) {
       sm: { span: 20 }
     }
   };
-  const queryDeviceTypeList = ISelectLoadingComponent({
-    reqUrl: 'queryDeviceTypeList',
-    placeholder: '选择设备型号',
-    searchKey: '',
-    getCurrentSelectInfo: (value: string, option: any) => {
-      console.log(option);
-    }
-  });
 
   const querySupplierList = ISelectLoadingComponent({
     width: '200px',
     reqUrl: 'querySupplierList',
     placeholder: '请选择供应商',
-    searchKey: '',
+    searchKey: editSupplierName || '',
     getCurrentSelectInfo: (value: string, option: any) => {
-      form.setFieldsValue({ supplierId: value });
+      getCurrentSelectInfo('supplier', option);
     },
     searchForm: { typeId: process.env.SUPPLIER_TYPE_ID }
   });
 
   function renderForm() {
     return (
-      <Form {...formItemLayout} form={form} initialValues={{ deviceList: [{ typeId: 1, number: 2 }] }}>
+      <Form {...formItemLayout} form={form} initialValues={{ deviceList: [{}] }}>
         <Form.Item label="采购单名称" name="name" rules={[{ required: true }]}>
           <Input placeholder="请输入采购单名称" style={{ width: '200px' }} />
         </Form.Item>
@@ -55,49 +51,20 @@ export default function EditOrderComponent(props: IEditOrderProps) {
             return (
               <Form.Item label="采购商品" required={true} style={{ alignItems: 'start' }}>
                 {fields.map((field, index) => (
-                  <Space key={field.key} className={style.space} align="start">
-                    <Form.Item
-                      {...field}
-                      name={[field.name, 'typeId']}
-                      style={{ width: '200px' }}
-                      className={style.fieldItem}
-                      rules={[{ required: true, message: '请选择设备型号' }]}
-                    >
-                      {queryDeviceTypeList}
-                    </Form.Item>
-                    <Form.Item
-                      {...field}
-                      name={[field.name, 'number']}
-                      style={{ maxWidth: '150px' }}
-                      className={style.fieldItem}
-                      rules={[{ required: true, message: '请填写数量' }]}
-                    >
-                      <Input placeholder="请填写数量" />
-                    </Form.Item>
-                    <Form.Item
-                      {...field}
-                      name={[field.name, 'amount']}
-                      style={{ maxWidth: '150px' }}
-                      className={style.fieldItem}
-                      rules={[{ required: true, message: '请填写金额' }]}
-                    >
-                      <Input placeholder="请填写金额" prefix="￥" />
-                    </Form.Item>
-                    <div className={style.fieldAddButton}>
-                      <PlusOutlined
-                        onClick={() => {
-                          add();
-                        }}
-                      />
-                      {index != 0 && (
-                        <MinusOutlined
-                          onClick={() => {
-                            remove(field.name);
-                          }}
-                        />
-                      )}
-                    </div>
-                  </Space>
+                  <DeviceListSelectComponent
+                    key={field.key}
+                    field={field}
+                    index={index}
+                    add={add}
+                    remove={index => {
+                      remove(index);
+                      setTotalAmount();
+                    }}
+                    defaultInfo={form.getFieldValue(['deviceList', index])}
+                    handleDeviceChange={(typeName: string, option: any) =>
+                      handleDeviceListChange(typeName, option, index)
+                    }
+                  />
                 ))}
               </Form.Item>
             );
@@ -107,10 +74,19 @@ export default function EditOrderComponent(props: IEditOrderProps) {
           <Input prefix="￥" placeholder="请输入金额" style={{ width: '200px' }} />
         </Form.Item>
         <Form.Item label="采购时间" name="purchaseTime" rules={[{ required: true }]}>
-          <TimePickerComponent
+          {/* <TimePickerComponent
             pickerType="dateTimePicker"
-            timeInfo={form.getFieldValue('purchaseTime') || undefined}
+            timeInfo={editPurchaseTime || undefined}
             getDateTimeInfo={(timeInfo: string) => form.setFieldsValue({ purchaseTime: timeInfo })}
+          /> */}
+          <DatePicker
+            style={{ width: '200px' }}
+            showTime={{ format: 'YYYY-MM-DD HH:mm:ss' }}
+            format="YYYY-MM-DD HH:mm:ss"
+            placeholder="请选择时间"
+            onChange={(date: any, dateString: string) => {
+              form.setFieldsValue({ purchaseTime: dateString });
+            }}
           />
         </Form.Item>
         <Form.Item label="供应商" name="supplierId">
