@@ -30,6 +30,7 @@ export interface QueryStockDeviceListParam {
   state?: number;
   purchaseId?: string;
   storePositionId?: string;
+  storeId?: string;
   duration?: number;
   isAlarm?: number;
   organizationId?: string;
@@ -38,8 +39,11 @@ export interface QueryStockDeviceListParam {
 }
 
 export interface QueryStockDeviceListResult {
-  dataList: StockDeviceItem[];
-  total: number;
+  pagedList: {
+    dataList: StockDeviceItem[];
+    total: number;
+  };
+  totalNumber: number;
 }
 
 interface StockDeviceItem {
@@ -52,6 +56,7 @@ interface StockDeviceItem {
   storePositionId: string;
   storePositionName: string;
   purchaseCode: string;
+  purchaseName: string;
   createTime: string;
   stateText: string;
   isAlarmText: string;
@@ -59,6 +64,8 @@ interface StockDeviceItem {
 
 export interface QueryStockDeviceDetailResult {
   materialId: string;
+  typeId: string;
+  typeName: string;
   code: string;
   sim: string;
   storeId: string;
@@ -68,7 +75,9 @@ export interface QueryStockDeviceDetailResult {
   state: number;
   stateText: string;
   duration: number;
+  purchaseId: string;
   purchaseCode: string;
+  purchaseName: string;
   creatorName: string;
 }
 

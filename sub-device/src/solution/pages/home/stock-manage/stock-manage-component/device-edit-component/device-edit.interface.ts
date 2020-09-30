@@ -8,6 +8,12 @@ export class IDeviceEditState {
   confirmLoading = false;
   isEdit = false;
   details: QueryStockDeviceDetailResult;
+  formData = {
+    purchaseCode: '',
+    purchaseName: '',
+    typeName: '',
+    storePositionName: ''
+  };
 }
 /**
  * @export props变量定义和初始化
@@ -16,5 +22,5 @@ export class IDeviceEditState {
 export class IDeviceEditProps {
   id: string;
   visible: boolean;
-  close: () => void;
+  close: (isSuccess?: boolean) => void;
 }

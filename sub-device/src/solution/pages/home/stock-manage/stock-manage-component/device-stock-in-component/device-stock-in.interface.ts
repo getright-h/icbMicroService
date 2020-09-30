@@ -4,6 +4,11 @@
  */
 export class IDeviceStockInState {
   confirmLoading = false;
+  formData = {
+    typeName: '',
+    purchaseCode: '',
+    storePositionName: ''
+  };
 }
 /**
  * @export props变量定义和初始化
@@ -11,5 +16,5 @@ export class IDeviceStockInState {
  */
 export class IDeviceStockInProps {
   visible: boolean;
-  close: () => void;
+  close: (isSuccess: boolean) => void;
 }

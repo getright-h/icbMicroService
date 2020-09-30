@@ -25,26 +25,51 @@ export function useDeviceEditStore(props: IDeviceEditProps) {
     );
   }
 
+  function getCurrentSelectInfo(typeName: string, option: Record<string, any>) {
+    const { formData } = state;
+    switch (typeName) {
+      case 'type':
+        formData.typeName = option?.info.name;
+        break;
+      case 'position':
+        formData.storePositionName = option?.info.name;
+        break;
+      case 'purchase':
+        formData.purchaseCode = option?.info.code;
+        formData.purchaseName = option?.info.name;
+        break;
+    }
+    setStateWrap({ formData });
+  }
+
   function selfSubmit(values: any) {
-    console.log(values);
-    stockManageService.materialStockUpdate(values).subscribe(
+    const confirmForm = {
+      ...values,
+      purchaseId: values.purchaseId || '',
+      purchaseCode: state.formData.purchaseCode || '',
+      storeId: state.details.storeId,
+      materialId: state.details.materialId
+    };
+    console.log(confirmForm);
+    stockManageService.materialStockUpdate(confirmForm).subscribe(
       (res: any) => {
         ShowNotification.success('编辑成功！');
-        selfClose();
+        selfClose(true);
       },
       (err: any) => {
         ShowNotification.error(err);
       }
     );
   }
-  function selfClose() {
+  function selfClose(isSuccess = false) {
     form.resetFields();
     setStateWrap({ isEdit: false });
-    props.close?.();
+    props.close?.(isSuccess);
   }
   function changeToEdit() {
-    setStateWrap({ isEdit: true });
+    setStateWrap({ isEdit: true, formData: state.details });
+    form.setFieldsValue(state.details);
   }
 
-  return { state, form, selfSubmit, selfClose, changeToEdit };
+  return { state, form, selfSubmit, selfClose, changeToEdit, getCurrentSelectInfo };
 }

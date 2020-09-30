@@ -13,8 +13,16 @@ import { ModalType } from './stock-manage.interface';
 import DeviceStockInComponent from './device-stock-in-component/device-stock-in.component';
 import BulkImportComponent from './bulk-import-component/bulk-import.component';
 import DeviceEditComponent from './device-edit-component/device-edit.component';
+import { useReducer, createContext } from 'react';
+import { stockListInitialState, StockListReducer } from './stock-list-redux/stock-list-reducer';
+
+export const StockListManageContext = createContext({
+  reduxState: stockListInitialState,
+  dispatch: undefined
+});
 
 export default function StockManageComponent() {
+  const [stockListState, dispatch] = useReducer(StockListReducer, stockListInitialState);
   const {
     state,
     searchForm,
@@ -23,9 +31,9 @@ export default function StockManageComponent() {
     onSelectRows,
     searchClick,
     initSearchform,
-    modalCancel,
-    getSelectTreeNode
-  } = useStockManageStore();
+    modalCancel
+  } = useStockManageStore(stockListState);
+  const { currentSelectNode } = stockListState;
   const {
     isLoading,
     tableData,
@@ -35,16 +43,17 @@ export default function StockManageComponent() {
     deviceEditVisible,
     currentId,
     pageIndex,
-    pageSize
+    pageSize,
+    totalStock
   } = state;
 
-  function renderPageLeft() {
-    return <StockManageLeftComponent getSelectTreeNode={getSelectTreeNode} />;
-  }
   function stockMainInfo() {
     return (
       <>
-        <h3>库存：X 件</h3>
+        <h3 style={{ color: '#7958fa' }}>
+          当前仓库：{!currentSelectNode ? '未选择' : `${currentSelectNode.organizationName}-${currentSelectNode.name}`}
+        </h3>
+        <h3>库存：{totalStock} 件</h3>
       </>
     );
   }
@@ -74,7 +83,15 @@ export default function StockManageComponent() {
           </Col>
           <Col span={8}>
             <Form.Item name="storePositionId" label="仓位">
-              <Select allowClear placeholder="请选择仓位"></Select>
+              <ISelectLoadingComponent
+                reqUrl="queryStorePositionList"
+                placeholder="选择仓位"
+                disabled={!currentSelectNode}
+                searchForm={{ storeId: currentSelectNode ? currentSelectNode.key : '' }}
+                getCurrentSelectInfo={(value: string, option: any) => {
+                  searchForm.setFieldsValue({ storePositionId: value });
+                }}
+              />
             </Form.Item>
           </Col>
         </Row>
@@ -107,9 +124,8 @@ export default function StockManageComponent() {
         <Row gutter={24}>
           <Col span={8}>
             <Form.Item name="purchaseId" label="采购单">
-              {/* 返回格式与封装组件不一致 */}
               <ISelectLoadingComponent
-                reqUrl="queryPurchaseList"
+                reqUrl="queryPurchaseSelectList"
                 placeholder="选择采购单"
                 getCurrentSelectInfo={(value: string, option: any) => {
                   searchForm.setFieldsValue({ purchaseId: value });
@@ -124,7 +140,7 @@ export default function StockManageComponent() {
   function renderSearchButtons() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary" onClick={searchClick}>
+        <Button type="primary" onClick={searchClick} disabled={!currentSelectNode}>
           查询
         </Button>
         <Button onClick={initSearchform}>清空</Button>
@@ -139,6 +155,7 @@ export default function StockManageComponent() {
           onClick={() => {
             callbackAction(ModalType.ADD);
           }}
+          disabled={!currentSelectNode}
         >
           设备入库
         </Button>
@@ -146,6 +163,7 @@ export default function StockManageComponent() {
           onClick={() => {
             callbackAction(ModalType.IMPORT);
           }}
+          disabled={!currentSelectNode}
         >
           批量导入
         </Button>
@@ -153,6 +171,7 @@ export default function StockManageComponent() {
           onClick={() => {
             callbackAction(ModalType.EXPORT);
           }}
+          disabled={!currentSelectNode}
         >
           批量导出
         </Button>
@@ -163,7 +182,7 @@ export default function StockManageComponent() {
     // selectedRowKeys,
     onChange: onSelectRows
   };
-  function RenderTable() {
+  function renderTable() {
     return (
       <ITableComponent
         columns={stockManageColumns(callbackAction)}
@@ -180,21 +199,21 @@ export default function StockManageComponent() {
     );
   }
   return (
-    <React.Fragment>
+    <StockListManageContext.Provider value={{ reduxState: stockListState, dispatch }}>
       <TablePageTelComponent
         leftFlex={1}
         rightFlex={4}
-        pageLeft={renderPageLeft}
+        PageLeftComponent={StockManageLeftComponent}
         pageName={'全部设备管理'}
         selectTags={stockMainInfo()}
         selectItems={renderSelectItems()}
         searchButton={renderSearchButtons()}
         otherSearchBtns={renderOtherButtons()}
-        table={<RenderTable />}
+        table={renderTable()}
       ></TablePageTelComponent>
       <DeviceStockInComponent visible={stockInVisible} close={modalCancel} />
       <BulkImportComponent visible={bulkImportVisible} close={modalCancel} />
       <DeviceEditComponent id={currentId} visible={deviceEditVisible} close={modalCancel} />
-    </React.Fragment>
+    </StockListManageContext.Provider>
   );
 }

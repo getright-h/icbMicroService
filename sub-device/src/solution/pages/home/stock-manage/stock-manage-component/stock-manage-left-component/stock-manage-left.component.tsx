@@ -1,14 +1,14 @@
 import * as React from 'react';
 import style from './stock-manage-left.component.less';
 import { useStockManageLeftStore } from './stock-manage-left.component.store';
-import { Tree, Input } from 'antd';
-import { IStockManageLeftProps } from './stock-manage-left.interface';
+import { Tree } from 'antd';
 import { ISelectLoadingComponent } from '~/framework/components/component.module';
 import { GlobalContext } from '~/solution/context/global/global.provider';
+import { useContext } from 'react';
 
-export default function StockManageLeftComponent(props: IStockManageLeftProps) {
-  const { state, onLoadData, onSelect, getCurrentSelectInfo, onExpand } = useStockManageLeftStore(props);
-  const { gState } = React.useContext(GlobalContext);
+export default function StockManageLeftComponent() {
+  const { state, onLoadData, onSelect, getCurrentSelectInfo, onExpand } = useStockManageLeftStore();
+  const { gState } = useContext(GlobalContext);
   const { treeData, expandedKeys, treeSelectedKeys } = state;
   return (
     <div className={style.stockListLeft}>

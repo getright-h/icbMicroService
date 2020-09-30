@@ -70,8 +70,8 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
   }, [props.selectedValue]);
 
   useEffect(() => {
-    fetchOptions(true, props.searchKey);
-    // props.searchKey && fetchOptions(true, props.searchKey);
+    // fetchOptions(true, props.searchKey);
+    props.searchKey && fetchOptions(true, props.searchKey);
   }, [props.searchKey]);
 
   useEffect(() => {

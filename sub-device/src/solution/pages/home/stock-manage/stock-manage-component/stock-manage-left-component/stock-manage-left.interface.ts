@@ -13,9 +13,6 @@ export class IStockManageLeftState {
   expandedKeys: string[] = [];
   treeSelectedKeys: string[] = [];
 }
-export class IStockManageLeftProps {
-  getSelectTreeNode: (node: EventDataNode) => void;
-}
 
 export interface DataNode {
   title: string;

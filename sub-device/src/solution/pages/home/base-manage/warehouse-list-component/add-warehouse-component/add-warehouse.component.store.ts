@@ -106,6 +106,7 @@ export function useAddWarehouseStore(props: IAddWarehouseProps) {
       organizationCode: code
     };
     form.setFieldsValue({ organizationId: valueInfo });
+    setStateWrap({ editOrganizationName });
   }
 
   // 获取当前管理人员的信息

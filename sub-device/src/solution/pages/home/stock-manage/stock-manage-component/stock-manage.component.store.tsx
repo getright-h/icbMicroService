@@ -5,8 +5,10 @@ import { ShowNotification } from '~/framework/util/common';
 import { StockManageService } from '~/solution/model/services/stock-manage.service';
 import { Form, Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { EventDataNode } from 'antd/lib/tree';
+import { Subscription } from 'rxjs';
 
-export function useStockManageStore() {
+export function useStockManageStore(stockListState: { currentSelectNode: EventDataNode }) {
   const { state, setStateWrap, getState } = useStateStore(new IStockManageState());
   const stockManageService: StockManageService = useService(StockManageService);
   const [searchForm] = Form.useForm();
@@ -15,24 +17,39 @@ export function useStockManageStore() {
     initSearchform();
   }, []);
 
-  function getSelectTreeNode(node: Record<string, any>) {
-    setStateWrap({ selectedOrgId: node.id });
-    searchClick();
-  }
+  useEffect(() => {
+    if (stockListState.currentSelectNode) {
+      console.log('curNode', stockListState.currentSelectNode);
+
+      setStateWrap(
+        {
+          selectedOrgId: stockListState.currentSelectNode.key as string
+        },
+        () => {
+          searchClick();
+        }
+      );
+    }
+  }, [stockListState.currentSelectNode]);
 
   function getTableData() {
     setStateWrap({ isLoading: true });
     stockManageService
       .queryStockDeviceList({
         ...searchForm.getFieldsValue(),
-        organizationId: getState().selectedOrgId,
+        storeId: getState().selectedOrgId,
         duration: searchForm.getFieldValue('duration') || -1,
         index: state.pageIndex,
         size: state.pageSize
       })
       .subscribe(
         res => {
-          setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
+          setStateWrap({
+            tableData: res.pagedList.dataList,
+            total: res.pagedList.total,
+            totalStock: res.totalNumber,
+            isLoading: false
+          });
         },
         err => {
           setStateWrap({ isLoading: false });
@@ -50,7 +67,7 @@ export function useStockManageStore() {
     console.log('selectedRowKeys changed: ', selectedRowKeys);
   }
 
-  function callbackAction<T>(actionType: number, data?: T) {
+  function callbackAction(actionType: number, data?: any) {
     setStateWrap({ currentId: data ? data.materialId : '' });
     switch (actionType) {
       case ModalType.ADD:
@@ -126,8 +143,9 @@ export function useStockManageStore() {
     });
   }
 
-  function modalCancel() {
+  function modalCancel(isSuccess?: boolean) {
     setStateWrap({ stockInVisible: false, bulkImportVisible: false, deviceEditVisible: false });
+    isSuccess && searchClick();
   }
 
   return {
@@ -138,7 +156,6 @@ export function useStockManageStore() {
     changeTablePageIndex,
     searchClick,
     initSearchform,
-    modalCancel,
-    getSelectTreeNode
+    modalCancel
   };
 }

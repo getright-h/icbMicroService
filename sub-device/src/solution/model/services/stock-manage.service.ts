@@ -53,8 +53,8 @@ export class StockManageService extends StockManageDTO {
     return this.requestService.post(QUERY_STOCK_DEVICE_LIST, params);
   }
   // 设备详情
-  queryStockDeviceDetail(id: string): Observable<QueryStockDeviceDetailResult> {
-    return this.requestService.get(QUERY_STOCK_DEVICE_DETAIL, { id });
+  queryStockDeviceDetail(materialId: string): Observable<QueryStockDeviceDetailResult> {
+    return this.requestService.get(QUERY_STOCK_DEVICE_DETAIL, { materialId });
   }
   // 设备入库
   materialStockIn(params: MaterialStockInParam): Observable<boolean> {

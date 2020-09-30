@@ -8,6 +8,7 @@ export class IStockManageState {
   pageIndex = 1;
   pageSize = 10;
   tableData: any = [];
+  totalStock = 0;
   total = 0;
   currentId = '';
   stockInVisible = false;

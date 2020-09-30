@@ -9,7 +9,8 @@ export abstract class DrapChooseLoadingDTO {
   abstract queryOrganizationList(params: QueryOrganizationListParam): Observable<DrapChooseLoadingReturn>;
   abstract queryDeviceTypeList(params: QueryDeviceTypeListParam): Observable<DrapChooseLoadingReturn>;
   abstract querySupplierList(params: QuerySupplierListParam): Observable<DrapChooseLoadingReturn>;
-  abstract queryPurchaseList(params: QueryPurchaseListParam): Observable<DrapChooseLoadingReturn>;
+  abstract queryPurchaseSelectList(params: QueryPurchaseListParam): Observable<DrapChooseLoadingReturn>;
+  abstract queryStorePositionList(params: QueryStorePositionListParam): Observable<DrapChooseLoadingReturn>;
 }
 
 // 下拉加载 Dto
@@ -50,4 +51,11 @@ export interface QueryStoreOrganizationResult {
   parentId: string;
   parentCode: string;
   parentName: string;
+}
+
+export interface QueryStorePositionListParam {
+  storeId?: string;
+  name?: string;
+  index: number;
+  size: number;
 }

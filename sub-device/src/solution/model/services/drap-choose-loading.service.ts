@@ -4,6 +4,7 @@ import {
   QueryDeviceTypeListParam,
   QueryOrganizationListParam,
   QueryPurchaseListParam,
+  QueryStorePositionListParam,
   QuerySupplierListParam
 } from '../dto/drap-choose-loading.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
@@ -17,9 +18,10 @@ import { DepUtil } from '~/framework/aop/inject';
 const QUERY_ORGANIZATION_PAGED_LIST = 'store/manage/queryOrganizationPagedList';
 const QUERY_DEVICE_TYPE_PAGED_LIST = 'material/manage/queryDeviceTypePagedList';
 const QUERY_SUPPLIER_LIST = 'store/manage/querySupplierList';
-const QUERY_PURCHASE_LIST = 'allot/manage/queryPurchasePagedList';
 const QUERY_STOREOR_GANIZATION = 'store/manage/queryOrganizationPagedList';
 const QUERY_STORE_USER = 'store/manage/queryStoreUser';
+const QUERY_PURCHASE_SELECT_LIST = 'allot/manage/queryPurchasePagedListSelected';
+const QUERY_STORE_POSITION_LIST = 'store/manage/queryStorePositionPagedListByStoreIdSelected';
 
 @DepUtil.Injectable()
 export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
@@ -42,8 +44,8 @@ export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
     return this.requestService.post(QUERY_SUPPLIER_LIST, params);
   }
   // 采购单
-  queryPurchaseList(params: QueryPurchaseListParam): Observable<DrapChooseLoadingReturn> {
-    return this.requestService.post(QUERY_PURCHASE_LIST, params);
+  queryPurchaseSelectList(params: QueryPurchaseListParam): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.post(QUERY_PURCHASE_SELECT_LIST, params);
   }
 
   // 获取机构名称
@@ -53,5 +55,9 @@ export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
   //查询仓库人员列表
   queryStoreUser(params: { systemId: string }): Observable<DrapChooseLoadingReturn> {
     return this.requestService.post(QUERY_STORE_USER, params);
+  }
+  //仓位列表
+  queryStorePositionList(params: QueryStorePositionListParam): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.post(QUERY_STORE_POSITION_LIST, params);
   }
 }

@@ -27,7 +27,8 @@ export function stockManageColumns(callbackAction: Function) {
     },
     {
       title: '采购单',
-      dataIndex: 'purchaseCode'
+      dataIndex: 'purchaseName',
+      render: (text: any) => <span>{text || '-'}</span>
     },
     {
       title: '所属仓位',
