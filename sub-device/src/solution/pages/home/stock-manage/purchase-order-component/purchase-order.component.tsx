@@ -42,7 +42,7 @@ export default function PurchaseOrderComponent() {
                 reqUrl="queryOrganizationList"
                 placeholder="请选择机构"
                 getCurrentSelectInfo={(value: string, option: any) =>
-                  searchForm.setFieldsValue({ organizationName: option.info?.name })
+                  searchForm.setFieldsValue({ organizationName: option?.info?.name })
                 }
                 searchForm={{ systemId: process.env.SYSTEM_ID }}
               />

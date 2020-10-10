@@ -63,7 +63,7 @@ export function usePurchaseOrderStore() {
         break;
       case ModalType.DELETE:
         Modal.confirm({
-          title: '是否确认删除设备？删除后无法恢复',
+          title: '是否确认删除该采购单？删除后无法恢复',
           icon: <ExclamationCircleOutlined />,
           onOk: () =>
             new Promise((resolve, reject) => {
