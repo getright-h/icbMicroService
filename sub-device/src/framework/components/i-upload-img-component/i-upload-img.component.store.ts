@@ -10,6 +10,7 @@ export function useIUploadImgStore(props: IIUploadImgProps) {
   const returnImageListInfo: MutableRefObject<Array<string>> = useRef([]);
   useEffect(() => {
     setStateWrap({ fileList: props.fileList });
+    returnImageListInfo.current = props.fileList.map(file => file.url);
   }, [props.fileList]);
 
   /**
@@ -23,8 +24,9 @@ export function useIUploadImgStore(props: IIUploadImgProps) {
       });
     } else if (file.status === 'removed') {
       returnImageListInfo.current = returnImageListInfo.current.filter(returnImage => {
-        return returnImage != file['response'];
+        return returnImage != file['url'];
       });
+      props.getFileList(returnImageListInfo.current);
     }
     setStateWrap({ fileList: file.status ? [...fileList] : state.fileList });
   }
@@ -41,13 +43,6 @@ export function useIUploadImgStore(props: IIUploadImgProps) {
    */
   function handleCancel() {
     setStateWrap({ previewVisible: false });
-  }
-
-  /**
-   * @param {UploadFile} file 下载图片功能
-   */
-  function handleDownload(file: UploadFile) {
-    // CommonUtil.downFile(file.thumbUrl, file.fileName);
   }
 
   /**
@@ -80,5 +75,5 @@ export function useIUploadImgStore(props: IIUploadImgProps) {
       }
     });
   }
-  return { state, customReq, handleChange, handlePreview, handleCancel, handleDownload };
+  return { state, customReq, handleChange, handlePreview, handleCancel };
 }

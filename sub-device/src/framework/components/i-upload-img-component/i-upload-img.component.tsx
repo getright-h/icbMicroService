@@ -14,15 +14,14 @@ IUploadImgComponent.defaultProps = {
 };
 
 export default function IUploadImgComponent(props: IIUploadImgProps) {
-  const { state, customReq, handleChange, handlePreview, handleCancel, handleDownload } = useIUploadImgStore(props);
+  const { state, customReq, handleChange, handlePreview, handleCancel } = useIUploadImgStore(props);
   const uploadsProps = {
     action: state.action,
     customRequest: customReq,
     listType: 'picture-card' as UploadListType,
     onChange: handleChange,
     fileList: state.fileList,
-    onPreview: handlePreview,
-    onDownload: handleDownload
+    onPreview: handlePreview
   };
   const uploadButton = (
     <div>
@@ -31,14 +30,16 @@ export default function IUploadImgComponent(props: IIUploadImgProps) {
     </div>
   );
   return (
-    <div>
-      <Upload {...uploadsProps}>
-        {state.fileList && state.fileList.length < props.maxImgNumber ? uploadButton : null}
-      </Upload>
-      <Modal visible={state.previewVisible} footer={null} onCancel={handleCancel}>
-        <img alt="example" style={{ width: '100%' }} src={state.previewImage} />
-      </Modal>
-      <div className={style.iIploadImgTipInfo}>{props.remarkText || ''}</div>
+    <div className={style.iUploadImg}>
+      <div className="clearfix">
+        <Upload {...uploadsProps}>
+          {state.fileList && state.fileList.length < props.maxImgNumber ? uploadButton : null}
+        </Upload>
+        <Modal visible={state.previewVisible} footer={null} onCancel={handleCancel}>
+          <img alt="example" style={{ width: '100%' }} src={state.previewImage} />
+        </Modal>
+        {props.remarkText && <div className={style.iIploadImgTipInfo}>{props.remarkText || ''}</div>}
+      </div>
     </div>
   );
 }

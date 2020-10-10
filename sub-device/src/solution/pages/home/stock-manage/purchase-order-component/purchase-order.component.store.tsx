@@ -95,8 +95,9 @@ export function usePurchaseOrderStore() {
     setStateWrap({ timeInfo });
   }
 
-  function handleModalCancel() {
+  function handleModalCancel(isSuccess?: boolean) {
     setStateWrap({ editVisible: false, detailVisible: false });
+    isSuccess && searchClick();
   }
   function initSearchform() {
     searchForm.resetFields();

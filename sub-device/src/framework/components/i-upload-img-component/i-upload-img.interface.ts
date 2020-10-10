@@ -19,13 +19,3 @@ export interface IIUploadImgProps {
   fileList?: Array<UploadFile>;
   getFileList?: (url: string | Array<string>) => void;
 }
-
-interface ImageContent {
-  uid: string;
-  url?: string;
-  name: string;
-  formType?: string;
-  path: string | string[];
-  isShow?: boolean;
-  type?: number;
-}

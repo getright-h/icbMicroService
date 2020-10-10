@@ -24,12 +24,20 @@ export function useEditOrderStore(props: IEditOrderProps) {
         form.setFieldsValue({
           ...res,
           totalAmount: res.sumAmount,
-          purchaseTime: moment(res.purchaseTime, 'YYYY-MM-DD HH:mm:ss')
+          purchaseTime: moment(res.purchaseTime, 'YYYY-MM-DD HH:mm:ss'),
+          image: res.imageList
+        });
+        const imageList = res.imageList.map(image => {
+          return {
+            uid: image,
+            url: image
+          };
         });
         setStateWrap({
           editSupplierName: res.supplierName,
           editPurchaseTime: res.purchaseTime,
-          editDeviceList: res.deviceList
+          editDeviceList: res.deviceList,
+          imageList: imageList || []
         });
       },
       err => {
@@ -44,6 +52,10 @@ export function useEditOrderStore(props: IEditOrderProps) {
         setStateWrap({ editSupplierName: option?.info.name });
         break;
     }
+  }
+
+  function handleTimeChange(dateString: string) {
+    setStateWrap({ editPurchaseTime: dateString });
   }
 
   function handleDeviceListChange(typeName: string, option: any, index: number) {
@@ -74,40 +86,53 @@ export function useEditOrderStore(props: IEditOrderProps) {
   }
 
   function selfSubmit(values: any) {
-    // setStateWrap({ confirmLoading: true });
-    console.log(values);
-    // if (props.id) {
-    //   // 编辑
-    //   stockManageService.updatePurchase(values).subscribe(
-    //     res => {
-    //       ShowNotification.success('已更新采购单！');
-    //       setStateWrap({ confirmLoading: false });
-    //       selfClose();
-    //     },
-    //     err => {
-    //       setStateWrap({ confirmLoading: false });
-    //       ShowNotification.error(err);
-    //     }
-    //   );
-    // } else {
-    //   // 新增
-    //   stockManageService.insertPurchase(values).subscribe(
-    //     res => {
-    //       ShowNotification.success('新增采购单成功！');
-    //       setStateWrap({ confirmLoading: false });
-    //       selfClose();
-    //     },
-    //     err => {
-    //       setStateWrap({ confirmLoading: false });
-    //       ShowNotification.error(err);
-    //     }
-    //   );
-    // }
+    setStateWrap({ confirmLoading: true });
+    const confirmForm = {
+      ...values,
+      purchaseTime: moment(values.purchaseTime).format('YYYY-MM-DD HH:mm:ss')
+    };
+    if (props.id) {
+      // 编辑
+      stockManageService.updatePurchase({ ...confirmForm, id: props.id }).subscribe(
+        res => {
+          ShowNotification.success('已更新采购单！');
+          setStateWrap({ confirmLoading: false });
+          selfClose(true);
+        },
+        err => {
+          setStateWrap({ confirmLoading: false });
+          ShowNotification.error(err);
+        }
+      );
+    } else {
+      // 新增
+      stockManageService.insertPurchase(confirmForm).subscribe(
+        res => {
+          ShowNotification.success('新增采购单成功！');
+          setStateWrap({ confirmLoading: false });
+          selfClose(true);
+        },
+        err => {
+          setStateWrap({ confirmLoading: false });
+          ShowNotification.error(err);
+        }
+      );
+    }
   }
-  function selfClose() {
+  function selfClose(isSuccess = false) {
+    setStateWrap({ editPurchaseTime: '' });
     form.resetFields();
-    props.close?.();
+    props.close?.(isSuccess);
   }
 
-  return { state, form, selfSubmit, selfClose, getCurrentSelectInfo, handleDeviceListChange, setTotalAmount };
+  return {
+    state,
+    form,
+    selfSubmit,
+    selfClose,
+    getCurrentSelectInfo,
+    handleDeviceListChange,
+    handleTimeChange,
+    setTotalAmount
+  };
 }

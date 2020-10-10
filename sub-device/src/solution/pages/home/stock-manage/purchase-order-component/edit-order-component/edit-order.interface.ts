@@ -1,3 +1,4 @@
+import { UploadFile } from 'antd/lib/upload/interface';
 import { DeviceListItem } from '~/solution/model/dto/stock-manage.dto';
 
 /**
@@ -7,7 +8,9 @@ import { DeviceListItem } from '~/solution/model/dto/stock-manage.dto';
 export class IEditOrderState {
   confirmLoading = false;
   editSupplierName = '';
+  editPurchaseTime: string;
   editDeviceList: DeviceListItem[] = [];
+  imageList: any[] = [];
 }
 /**
  * @export props变量定义和初始化
@@ -16,5 +19,5 @@ export class IEditOrderState {
 export class IEditOrderProps {
   id: string;
   visible: boolean;
-  close: () => void;
+  close: (isSuccess?: boolean) => void;
 }

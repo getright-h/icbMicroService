@@ -5,6 +5,7 @@ import { IEditOrderProps } from './edit-order.interface';
 import { Modal, Form, Input, DatePicker } from 'antd';
 import { ISelectLoadingComponent, IUploadImgComponent } from '~/framework/components/component.module';
 import DeviceListSelectComponent from './device-list-select-component/device-list-select.component';
+import moment from 'moment';
 
 export default function EditOrderComponent(props: IEditOrderProps) {
   const {
@@ -14,10 +15,11 @@ export default function EditOrderComponent(props: IEditOrderProps) {
     selfClose,
     getCurrentSelectInfo,
     handleDeviceListChange,
+    handleTimeChange,
     setTotalAmount
   } = useEditOrderStore(props);
   const { visible } = props;
-  const { confirmLoading, editSupplierName } = state;
+  const { confirmLoading, editSupplierName, editPurchaseTime, imageList } = state;
   const formItemLayout = {
     labelCol: {
       xs: { span: 24 },
@@ -74,18 +76,14 @@ export default function EditOrderComponent(props: IEditOrderProps) {
           <Input prefix="￥" placeholder="请输入金额" style={{ width: '200px' }} />
         </Form.Item>
         <Form.Item label="采购时间" name="purchaseTime" rules={[{ required: true }]}>
-          {/* <TimePickerComponent
-            pickerType="dateTimePicker"
-            timeInfo={editPurchaseTime || undefined}
-            getDateTimeInfo={(timeInfo: string) => form.setFieldsValue({ purchaseTime: timeInfo })}
-          /> */}
           <DatePicker
             style={{ width: '200px' }}
             showTime={{ format: 'YYYY-MM-DD HH:mm:ss' }}
             format="YYYY-MM-DD HH:mm:ss"
+            defaultValue={editPurchaseTime && moment(editPurchaseTime)}
             placeholder="请选择时间"
-            onChange={(date: any, dateString: string) => {
-              form.setFieldsValue({ purchaseTime: dateString });
+            onChange={(date: moment.Moment, dateString: string) => {
+              handleTimeChange(dateString);
             }}
           />
         </Form.Item>
@@ -93,7 +91,13 @@ export default function EditOrderComponent(props: IEditOrderProps) {
           {querySupplierList}
         </Form.Item>
         <Form.Item label="采购单图" name="image">
-          <IUploadImgComponent maxImgNumber={3} />
+          <IUploadImgComponent
+            maxImgNumber={3}
+            fileList={imageList}
+            getFileList={url => {
+              form.setFieldsValue({ image: url });
+            }}
+          />
         </Form.Item>
         <Form.Item label="备注" name="remark">
           <Input.TextArea placeholder="请输入备注" rows={2} style={{ width: '300px' }} />
