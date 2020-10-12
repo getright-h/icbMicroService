@@ -5,8 +5,9 @@
 export class IInitAllocationState {
   isLoading = false;
   searchForm = {
-    page: 1,
-    size: 10
+    index: 1,
+    size: 10,
+    state: -1
   };
   tableData: any = [];
   total = 0;

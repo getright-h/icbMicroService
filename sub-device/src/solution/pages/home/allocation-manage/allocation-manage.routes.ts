@@ -22,6 +22,12 @@ export const allocationManageRoutes: IRoute[] = [
     exact: true
   },
   {
+    path: `${MODULE_PATH}/allocationDetail/:id`,
+    component: ROUTERS.allocationDetail,
+    lazyload: true,
+    exact: true
+  },
+  {
     path: `${MODULE_PATH}/process`,
     component: ROUTERS.allocationProcess,
     lazyload: true,

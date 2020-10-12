@@ -16,16 +16,16 @@ export function useInitAllocationStore() {
   }, []);
 
   function getTableData() {
-    // setStateWrap({ isLoading: true });
-    // initAllocationService.__getTableData__(state.searchForm).subscribe(
-    //   res => {
-    //     setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
-    //   },
-    //   err => {
-    //     setStateWrap({ isLoading: false });
-    //     ShowNotification.error(err);
-    //   }
-    // );
+    setStateWrap({ isLoading: true });
+    allocationManageService.queryAllotPromoterPagedList(state.searchForm).subscribe(
+      res => {
+        setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
+      },
+      err => {
+        setStateWrap({ isLoading: false });
+        ShowNotification.error(err);
+      }
+    );
     setStateWrap({
       tableData: [
         {

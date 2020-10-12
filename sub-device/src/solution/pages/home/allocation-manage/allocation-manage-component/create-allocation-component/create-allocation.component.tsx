@@ -72,7 +72,7 @@ export default function CreateAllocationComponent() {
               </Form.Item>
               <Form.Item wrapperCol={{ span: 12, offset: 8 }}>
                 <Button type="primary" htmlType="submit">
-                  确定
+                  提交审批
                 </Button>
                 <Button style={{ marginLeft: '30px' }}>取消</Button>
               </Form.Item>

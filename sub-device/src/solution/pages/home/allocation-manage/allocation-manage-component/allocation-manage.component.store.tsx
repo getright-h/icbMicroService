@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { IAllocationManageState, ModalType } from './allocation-manage.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect } from 'react';
@@ -16,16 +15,16 @@ export function useAllocationManageStore() {
   }, []);
 
   function getTableData() {
-    // setStateWrap({ isLoading: true });
-    // allocationManageService.__getTableData__(state.searchForm).subscribe(
-    //   res => {
-    //     setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
-    //   },
-    //   err => {
-    //     setStateWrap({ isLoading: false });
-    //     ShowNotification.error(err);
-    //   }
-    // );
+    setStateWrap({ isLoading: true });
+    allocationManageService.queryAllotPagedList(state.searchForm).subscribe(
+      res => {
+        setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
+      },
+      err => {
+        setStateWrap({ isLoading: false });
+        ShowNotification.error(err);
+      }
+    );
     setStateWrap({
       tableData: [
         {
@@ -53,7 +52,7 @@ export function useAllocationManageStore() {
   }
   function searchClick() {
     const { searchForm } = state;
-    searchForm.page = 1;
+    searchForm.index = 1;
     setStateWrap({ searchForm });
     getTableData();
   }
@@ -61,13 +60,14 @@ export function useAllocationManageStore() {
   function callbackAction<T>(actionType: number, data?: T) {
     setStateWrap({ currentId: data ? data.id : '' });
     switch (actionType) {
+      case ModalType.DETAIL:
+        history.push(`/home/allocation/allocationDetail/${data.id}`);
+        break;
       case ModalType.CREATE:
         history.push('/home/allocation/createAllocation');
         break;
       case ModalType.EDIT:
         history.push(`/home/allocation/editAllocation/${data.id}`);
-        break;
-      case ModalType.DELETE:
         break;
       case ModalType.RECORD:
         setStateWrap({ visibleModal: true });

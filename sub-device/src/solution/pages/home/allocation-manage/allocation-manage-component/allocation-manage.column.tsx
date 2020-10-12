@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { Divider } from 'antd';
 import { ModalType } from './allocation-manage.interface';
+import { AllOT_STATE_ENUM, AllOT_APPROVAL_STATE_ENUM } from '~shared/constant/common.const';
 export function allocationManageColumns(callbackAction: Function) {
   return [
     {
       title: '调拨单号',
-      dataIndex: 'orderNum'
+      dataIndex: 'inventoryCode'
     },
     {
       title: '流程名称',
@@ -13,15 +14,22 @@ export function allocationManageColumns(callbackAction: Function) {
     },
     {
       title: '设备详情',
-      dataIndex: 'detail'
+      dataIndex: 'contentList',
+      render: (text: any) => {
+        if (Array.isArray(text) && text.length) {
+          return text.map((item: any) => <div key={item.tydiveId}>{`${item.typeName}个, ${item.number}`}</div>);
+        } else {
+          return '-';
+        }
+      }
     },
     {
       title: '调拨总数',
-      dataIndex: 'total'
+      dataIndex: 'totalNumber'
     },
     {
       title: '创建机构',
-      dataIndex: 'org'
+      dataIndex: 'organizationName'
     },
     {
       title: '创建时间',
@@ -29,11 +37,11 @@ export function allocationManageColumns(callbackAction: Function) {
     },
     {
       title: '创建人',
-      dataIndex: 'creater'
+      dataIndex: 'creatorName'
     },
     {
       title: '调拨状态',
-      dataIndex: 'status'
+      dataIndex: 'stateText'
     },
     {
       title: '操作',
@@ -68,4 +76,12 @@ export function allocationManageColumns(callbackAction: Function) {
       }
     }
   ];
+
+  /**
+   * @description 根据[  调拨状态, 审批状态 ] 渲染操作按钮
+   */
+  function renderOperateBtn(data: any) {
+    const { allocaState, approvalState } = data;
+    const btnArray = [];
+  }
 }

@@ -9,7 +9,6 @@ import { IGlobalState } from '~/solution/context/global/global.interface';
 import { AppstoreOutlined } from '@ant-design/icons';
 function MenuComponent(props: IProps) {
   const MenuItems = renderMenuItems(props.menuList);
-  console.log(props);
 
   const { currentUrl, expandList } = props;
   const { gState }: IGlobalState = React.useContext(GlobalContext);

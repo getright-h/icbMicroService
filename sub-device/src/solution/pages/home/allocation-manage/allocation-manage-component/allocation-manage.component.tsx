@@ -1,12 +1,12 @@
 import * as React from 'react';
 import style from './allocation-manage.component.less';
-import { TablePageTelComponent } from '~/framework/components/component.module';
-import { ITableComponent } from '~/framework/components/component.module';
+import { TablePageTelComponent, ITableComponent, TimePickerComponent } from '~/framework/components/component.module';
 import { allocationManageColumns } from './allocation-manage.column';
 import { useAllocationManageStore } from './allocation-manage.component.store';
 
 import { Button, Input, Select } from 'antd';
 import { ModalType } from './allocation-manage.interface';
+import { AllOT_STATE } from '~shared/constant/common.const';
 import TransferRecordComponent from './transfer-record-component/transfer-record.component';
 
 const { Option } = Select;
@@ -26,27 +26,33 @@ export default function AllocationManageComponent() {
     return (
       <>
         <div className="push-search-item">
-          <span className="label">用户信息:</span>
+          <span className="label">输入调拨单号:</span>
           <Input
             allowClear
-            placeholder="姓名/电话"
+            placeholder="请输入调拨单号"
             onChange={e => {
               onChange(e.target.value, 'keyword');
             }}
           />
         </div>
         <div className="push-search-item">
-          <span className="label">启用状态:</span>
+          <span className="label">查找创建时间:</span>
+          <TimePickerComponent pickerType={'dateRange'} />
+        </div>
+        <div className="push-search-item">
+          <span className="label">调拨状态:</span>
           <Select
-            defaultValue=""
+            defaultValue={''}
             placeholder="请选择"
             onChange={value => {
               onChange(value, 'status');
             }}
           >
-            <Option value="">全部</Option>
-            <Option value={1}>启用</Option>
-            <Option value={0}>禁用</Option>
+            {AllOT_STATE.map((item, index) => (
+              <Option key={index} value={item.value}>
+                {item.label}
+              </Option>
+            ))}
           </Select>
         </div>
       </>
@@ -56,7 +62,7 @@ export default function AllocationManageComponent() {
     return (
       <div className="other-search-button-item">
         <Button type="primary" onClick={searchClick}>
-          查询
+          搜索
         </Button>
         <Button>清空</Button>
       </div>
@@ -65,7 +71,7 @@ export default function AllocationManageComponent() {
   function renderOtherButtons() {
     return (
       <Button type="primary" onClick={() => callbackAction(ModalType.CREATE)}>
-        创建调拨单
+        申请调拨单
       </Button>
     );
   }

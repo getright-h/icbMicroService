@@ -13,6 +13,10 @@ export const ROUTERS = {
     import('~pages/home/allocation-manage/allocation-manage-component/allocation-manage.component'),
   allocationProcess: () =>
     import('~pages/home/allocation-manage/allocation-process-component/allocation-process.component'),
+  allocationDetail: () =>
+    import(
+      '~pages/home/allocation-manage/allocation-manage-component/allocation-detail-component/allocation-detail.component'
+    ),
   allocationTemplate: () =>
     import('~pages/home/allocation-manage/allocation-template-component/allocation-template.component'),
   templateEdit: () =>
