@@ -125,6 +125,61 @@ export enum ALLOW_FLOW_ENUM {
   AuditRefuse = 102
 }
 
+export const ALLOW_FLOW = [
+  {
+    title: '全部',
+    value: -1
+  },
+  {
+    title: '待申请',
+    value: ALLOW_FLOW_ENUM.Apply
+  },
+  {
+    title: '待确认',
+    value: ALLOW_FLOW_ENUM.Confirm
+  },
+  {
+    title: '待验货',
+    value: ALLOW_FLOW_ENUM.Inspection
+  },
+  {
+    title: '已撤回',
+    value: ALLOW_FLOW_ENUM.Recall
+  },
+  {
+    title: '已驳回',
+    value: ALLOW_FLOW_ENUM.Reject
+  },
+  {
+    title: '已退货',
+    value: ALLOW_FLOW_ENUM.Return
+  },
+  {
+    title: '退货中',
+    value: ALLOW_FLOW_ENUM.Returning
+  },
+  {
+    title: '已收货',
+    value: ALLOW_FLOW_ENUM.Identification
+  },
+  {
+    title: '已流转',
+    value: ALLOW_FLOW_ENUM.Move
+  },
+  {
+    title: '撤回审核',
+    value: ALLOW_FLOW_ENUM.Recallaudit
+  },
+  {
+    title: '审核通过',
+    value: ALLOW_FLOW_ENUM.AuditProcessed
+  },
+  {
+    title: '审核驳回',
+    value: ALLOW_FLOW_ENUM.AuditRefuse
+  }
+];
+
 /**
  * @description 调拨流程操作码
  * @description Apply             发起申请

@@ -7,7 +7,9 @@ export class IInitAllocationState {
   searchForm = {
     index: 1,
     size: 10,
-    state: -1
+    state: -1,
+    beginTime: 0,
+    endTime: 0
   };
   tableData: any = [];
   total = 0;

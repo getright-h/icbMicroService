@@ -4,7 +4,7 @@ import { TablePageTelComponent, TimePickerComponent } from '~/framework/componen
 import { ITableComponent } from '~/framework/components/component.module';
 import { receiveAllocationColumns } from './receive-allocation.column';
 import { useReceiveAllocationStore } from './receive-allocation.component.store';
-
+import { ALLOW_FLOW } from '~shared/constant/common.const';
 import { Button, Input, Select } from 'antd';
 import { ModalType } from './receive-allocation.interface';
 
@@ -47,13 +47,17 @@ export default function ReceiveAllocationComponent() {
         <div className="push-search-item">
           <span className="label">调拨状态:</span>
           <Select
-            defaultValue=""
+            defaultValue={-1}
             placeholder="请选择"
             onChange={value => {
               onChange(value, 'status');
             }}
           >
-            <Option value="">全部</Option>
+            {ALLOW_FLOW.map((item: any, index: number) => (
+              <Option key={index} value={item.value}>
+                {item.title}
+              </Option>
+            ))}
           </Select>
         </div>
         <div className="push-search-item">

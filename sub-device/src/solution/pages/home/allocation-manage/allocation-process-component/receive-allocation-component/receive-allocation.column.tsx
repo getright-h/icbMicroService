@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Divider } from 'antd';
 import style from './receive-allocation.component.less';
 import { ModalType } from './receive-allocation.interface';
 import { ALLOW_FLOW_ENUM } from '~shared/constant/common.const';

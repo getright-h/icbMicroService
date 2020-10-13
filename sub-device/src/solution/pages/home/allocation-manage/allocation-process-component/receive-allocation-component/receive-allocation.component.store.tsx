@@ -43,9 +43,17 @@ export function useReceiveAllocationStore() {
   function callbackAction<T>(actionType: number, data: T) {
     setStateWrap({ currentId: data.id });
     switch (actionType) {
-      case ModalType.EDIT:
+      case ModalType.LOOK:
         break;
-      case ModalType.DELETE:
+      case ModalType.RECIVE:
+        break;
+      case ModalType.REJECT:
+        break;
+      case ModalType.MOVE:
+        break;
+      case ModalType.PASS:
+        break;
+      case ModalType.RETURN:
         break;
       default:
         break;
@@ -65,7 +73,7 @@ export function useReceiveAllocationStore() {
   }
   function openModal(type: ModalType) {
     switch (type) {
-      case ModalType.CREATE:
+      case ModalType.LOOK:
         break;
       default:
         break;

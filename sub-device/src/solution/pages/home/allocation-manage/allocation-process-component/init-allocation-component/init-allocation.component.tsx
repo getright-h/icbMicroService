@@ -4,7 +4,7 @@ import { TablePageTelComponent, TimePickerComponent } from '~/framework/componen
 import { ITableComponent } from '~/framework/components/component.module';
 import { initAllocationColumns } from './init-allocation.column';
 import { useInitAllocationStore } from './init-allocation.component.store';
-
+import { ALLOW_FLOW } from '~shared/constant/common.const';
 import { Button, Input, Select } from 'antd';
 import { ModalType } from './init-allocation.interface';
 import DeviceImportComponent from './device-import-component/device-import.component';
@@ -32,7 +32,7 @@ export default function InitAllocationComponent() {
             allowClear
             placeholder="请输入调拨单号"
             onChange={e => {
-              onChange(e.target.value, 'keyword');
+              onChange(e.target.value, 'allotCode');
             }}
           />
         </div>
@@ -42,25 +42,32 @@ export default function InitAllocationComponent() {
             allowClear
             placeholder="请输入仓库名"
             onChange={e => {
-              onChange(e.target.value, 'keyword');
+              onChange(e.target.value, 'storeName');
             }}
           />
         </div>
         <div className="push-search-item">
           <span className="label">调拨状态:</span>
           <Select
-            defaultValue=""
+            defaultValue={-1}
             placeholder="请选择"
             onChange={value => {
-              onChange(value, 'status');
+              onChange(value, 'state');
             }}
           >
-            <Option value="">全部</Option>
+            {ALLOW_FLOW.map((item: any, index: number) => (
+              <Option key={index} value={item.value}>
+                {item.title}
+              </Option>
+            ))}
           </Select>
         </div>
         <div className="push-search-item">
           <span className="label">调拨时间:</span>
-          <TimePickerComponent pickerType="dateRange" />
+          <TimePickerComponent
+            pickerType="dateRange"
+            getDateTimeInfo={(time: any, other: any) => onChange(time, 'time')}
+          />
         </div>
       </>
     );
@@ -80,7 +87,7 @@ export default function InitAllocationComponent() {
       <ITableComponent
         columns={initAllocationColumns(callbackAction)}
         isLoading={isLoading}
-        pageIndex={searchForm.page}
+        pageIndex={searchForm.index}
         pageSize={searchForm.size}
         data={tableData}
         total={total}

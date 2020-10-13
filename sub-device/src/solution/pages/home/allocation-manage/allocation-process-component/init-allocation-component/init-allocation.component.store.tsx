@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { IInitAllocationState, ModalType } from './init-allocation.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect } from 'react';
@@ -26,33 +25,24 @@ export function useInitAllocationStore() {
         ShowNotification.error(err);
       }
     );
-    setStateWrap({
-      tableData: [
-        {
-          id: '826',
-          orderNum: '100023548',
-          target: 'B大区仓库',
-          type: 'ODB-10001，100个',
-          total: 100,
-          createTime: '2020-08-28',
-          creater: '孙杜昂',
-          status: '待申请'
-        }
-      ]
-    });
   }
 
   function onChange(value: any, valueType: string) {
+    const { searchForm } = state;
+    if (valueType == 'time') {
+      searchForm.beginTime = Date.parse(value[0]);
+      searchForm.endTime = Date.parse(value[1]);
+    }
     setStateWrap({
       searchForm: {
-        ...state.searchForm,
+        ...searchForm,
         [valueType]: value
       }
     });
   }
   function searchClick() {
     const { searchForm } = state;
-    searchForm.page = 1;
+    searchForm.index = 1;
     setStateWrap({ searchForm });
     getTableData();
   }

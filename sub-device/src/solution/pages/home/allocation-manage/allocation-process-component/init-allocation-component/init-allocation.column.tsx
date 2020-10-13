@@ -8,8 +8,8 @@ export function initAllocationColumns(callbackAction: Function) {
    * @description 根据[  调拨状态 ] 渲染操作按钮
    */
   function renderOperateBtn(data: any) {
-    const { state } = data;
-    // const state = 70;
+    // const { state } = data;
+    const state = 70;
     const lookAllot = (
       <a
         className={style.button}
@@ -80,6 +80,7 @@ export function initAllocationColumns(callbackAction: Function) {
           <a
             className={`${style.button} ${style.getApproval}`}
             onClick={() => callbackAction(ModalType.ROLLBACK, data)}
+            key={5}
           >
             收到申请
           </a>
@@ -109,7 +110,7 @@ export function initAllocationColumns(callbackAction: Function) {
       dataIndex: 'deviceTypeList',
       render: (text: any) => {
         if (Array.isArray(text) && text.length) {
-          return text.map((item: any) => <div key={item.tydiveId}>{`${item.typeName}, ${item.number}个`}</div>);
+          return text.map((item: any) => <div key={item.typeId}>{`${item.typeName}, ${item.number}个`}</div>);
         } else {
           return '-';
         }

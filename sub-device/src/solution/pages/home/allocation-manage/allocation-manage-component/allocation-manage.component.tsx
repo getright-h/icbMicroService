@@ -31,13 +31,16 @@ export default function AllocationManageComponent() {
             allowClear
             placeholder="请输入调拨单号"
             onChange={e => {
-              onChange(e.target.value, 'keyword');
+              onChange(e.target.value, 'code');
             }}
           />
         </div>
         <div className="push-search-item">
           <span className="label">查找创建时间:</span>
-          <TimePickerComponent pickerType={'dateRange'} />
+          <TimePickerComponent
+            pickerType={'dateRange'}
+            getDateTimeInfo={(time: any, other: any) => onChange(time, 'time')}
+          />
         </div>
         <div className="push-search-item">
           <span className="label">调拨状态:</span>
@@ -45,7 +48,7 @@ export default function AllocationManageComponent() {
             defaultValue={''}
             placeholder="请选择"
             onChange={value => {
-              onChange(value, 'status');
+              onChange(value, 'state');
             }}
           >
             {AllOT_STATE.map((item, index) => (
@@ -80,7 +83,7 @@ export default function AllocationManageComponent() {
       <ITableComponent
         columns={allocationManageColumns(callbackAction)}
         isLoading={isLoading}
-        pageIndex={searchForm.page}
+        pageIndex={searchForm.index}
         pageSize={searchForm.size}
         data={tableData}
         total={total}
