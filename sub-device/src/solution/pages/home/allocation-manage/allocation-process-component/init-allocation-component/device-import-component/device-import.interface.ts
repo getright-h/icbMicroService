@@ -11,6 +11,25 @@ export class IDeviceImportState {
  * @class IDeviceImportProps
  */
 export class IDeviceImportProps {
+  data: any;
   visible: boolean;
   close: () => void;
+}
+
+interface ISearchForm {
+  id?: string;
+  allotId?: string;
+  operation: 0;
+  excelPath?: string;
+  deviceList: [
+    {
+      materialId: string;
+      typeId: string;
+      typeName: string;
+      code: string;
+      sim: string;
+    }
+  ];
+  rejectAuditRemark: string;
+  returnRemark: string;
 }

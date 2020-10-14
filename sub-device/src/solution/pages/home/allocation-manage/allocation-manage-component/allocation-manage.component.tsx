@@ -1,10 +1,8 @@
 import * as React from 'react';
-import style from './allocation-manage.component.less';
 import { TablePageTelComponent, ITableComponent, TimePickerComponent } from '~/framework/components/component.module';
 import { allocationManageColumns } from './allocation-manage.column';
 import { useAllocationManageStore } from './allocation-manage.component.store';
-
-import { Button, Input, Select } from 'antd';
+import { Button, Input, Select, Form } from 'antd';
 import { ModalType } from './allocation-manage.interface';
 import { AllOT_STATE } from '~shared/constant/common.const';
 import TransferRecordComponent from './transfer-record-component/transfer-record.component';
@@ -14,19 +12,30 @@ const { Option } = Select;
 export default function AllocationManageComponent() {
   const {
     state,
+    form,
     callbackAction,
     changeTablePageIndex,
     searchClick,
     handleModalCancel,
     openModal,
+    searchClean,
     onChange
   } = useAllocationManageStore();
   const { isLoading, searchForm, tableData, total, visibleModal } = state;
+  const formItemLayout = {
+    labelCol: {
+      xs: { span: 24 },
+      sm: { span: 8 }
+    },
+    wrapperCol: {
+      xs: { span: 24 },
+      sm: { span: 16 }
+    }
+  };
   function renderSelectItems() {
     return (
-      <>
-        <div className="push-search-item">
-          <span className="label">输入调拨单号:</span>
+      <Form {...formItemLayout} layout={'inline'} form={form}>
+        <Form.Item label="输入调拨单号" name="code">
           <Input
             allowClear
             placeholder="请输入调拨单号"
@@ -34,17 +43,16 @@ export default function AllocationManageComponent() {
               onChange(e.target.value, 'code');
             }}
           />
-        </div>
-        <div className="push-search-item">
-          <span className="label">查找创建时间:</span>
+        </Form.Item>
+        <Form.Item label="查找创建时间" name="time">
           <TimePickerComponent
             pickerType={'dateRange'}
             getDateTimeInfo={(time: any, other: any) => onChange(time, 'time')}
           />
-        </div>
-        <div className="push-search-item">
-          <span className="label">调拨状态:</span>
+        </Form.Item>
+        <Form.Item label="调拨状态" name="state">
           <Select
+            style={{ width: 200 }}
             defaultValue={''}
             placeholder="请选择"
             onChange={value => {
@@ -57,8 +65,8 @@ export default function AllocationManageComponent() {
               </Option>
             ))}
           </Select>
-        </div>
-      </>
+        </Form.Item>
+      </Form>
     );
   }
   function renderSearchButtons() {
@@ -67,7 +75,7 @@ export default function AllocationManageComponent() {
         <Button type="primary" onClick={searchClick}>
           搜索
         </Button>
-        <Button>清空</Button>
+        <Button onClick={searchClean}>清空</Button>
       </div>
     );
   }

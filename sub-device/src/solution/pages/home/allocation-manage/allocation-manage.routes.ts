@@ -16,13 +16,13 @@ export const allocationManageRoutes: IRoute[] = [
     exact: true
   },
   {
-    path: `${MODULE_PATH}/editAllocation/:id`,
+    path: `${MODULE_PATH}/editAllocation`,
     component: ROUTERS.createAllocation,
     lazyload: true,
     exact: true
   },
   {
-    path: `${MODULE_PATH}/allocationDetail/:id`,
+    path: `${MODULE_PATH}/allocationDetail`,
     component: ROUTERS.allocationDetail,
     lazyload: true,
     exact: true

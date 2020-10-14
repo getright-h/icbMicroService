@@ -8,8 +8,8 @@ export function initAllocationColumns(callbackAction: Function) {
    * @description 根据[  调拨状态 ] 渲染操作按钮
    */
   function renderOperateBtn(data: any) {
-    // const { state } = data;
-    const state = 70;
+    const { state } = data;
+    // const state = 70;
     const lookAllot = (
       <a
         className={style.button}

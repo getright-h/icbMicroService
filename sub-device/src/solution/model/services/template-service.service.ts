@@ -52,9 +52,9 @@ export class TemplateServiceService extends TemplateServiceDTO {
   queryAllotFlowTemplateNodeListByTemplateId(
     params: QueryAllotFlowTemplateNodeListByTemplateIdParam
   ): Observable<IReturn> {
-    return this.requestService.post(QUERY_ALLOT_FLOW_TEMPLATE_NODE_LIST_BY_TEMPLATE_ID, params);
+    return this.requestService.get(QUERY_ALLOT_FLOW_TEMPLATE_NODE_LIST_BY_TEMPLATE_ID, params);
   }
   queryAllotFlowTemplateDetail(params: QueryAllotFlowTemplateDetailParam): Observable<IReturn> {
-    return this.requestService.post(QUERY_ALLOT_FLOW_TEMPLATED_ETAIL, params);
+    return this.requestService.get(QUERY_ALLOT_FLOW_TEMPLATED_ETAIL, params);
   }
 }

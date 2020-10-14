@@ -16,6 +16,7 @@ export class IInitAllocationState {
   importVisible = false;
   rollbackVisible = false;
   currentId = '';
+  currentData: any = {};
 }
 export enum ModalType {
   CREATE,

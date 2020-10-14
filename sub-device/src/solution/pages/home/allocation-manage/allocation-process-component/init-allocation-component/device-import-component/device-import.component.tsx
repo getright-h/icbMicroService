@@ -2,22 +2,29 @@ import * as React from 'react';
 import style from './device-import.component.less';
 import { useDeviceImportStore } from './device-import.component.store';
 import { IDeviceImportProps } from './device-import.interface';
-import { Modal, Form, Input, Radio, Button, Upload, Space, Select } from 'antd';
+import { Modal, Form, Input, Radio, Button, Upload, Space, Select, Label } from 'antd';
 import { UploadOutlined, PlusOutlined, MinusOutlined } from '@ant-design/icons';
 
 export default function DeviceImportComponent(props: IDeviceImportProps) {
+  console.log(props, 3333);
   const { state, form, selfSubmit, selfClose, changeImportType } = useDeviceImportStore(props);
-  const { visible } = props;
+  const { visible, data = {} } = props;
+  const { deviceTypeList = [] } = data;
   const { confirmLoading, importType } = state;
   const layout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 16 }
   };
-
+  const initialValues = {};
+  if (deviceTypeList.length && Array.isArray(deviceTypeList)) {
+    deviceTypeList.forEach((device: any) => {
+      initialValues[`device_${device.typeId}`] = [{}];
+    });
+  }
   function renderForm() {
     return (
       <React.Fragment>
-        <Form {...layout} form={form} initialValues={{ devices: [{}] }}>
+        <Form {...layout} form={form} initialValues={initialValues}>
           <Form.Item name="name" label="目标仓库">
             B大区仓库
           </Form.Item>
@@ -54,38 +61,39 @@ export default function DeviceImportComponent(props: IDeviceImportProps) {
   }
   function RenderTypeTwo() {
     return (
-      <Form.List name="devices">
-        {(fields, { add, remove }) => {
-          return (
-            <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-              {fields.map((field, index) => (
-                <Space key={field.key} className={style.space} align="start">
-                  <Form.Item {...field} name={[field.name, 'type']} className={style.fieldItem}>
-                    <Select placeholder="请选择设备型号"></Select>
-                  </Form.Item>
-                  <Form.Item {...field} name={[field.name, 'number']} className={style.fieldItem}>
-                    <Input placeholder="请输入设备数量" />
-                  </Form.Item>
-                  <div className={style.fieldAddButton}>
-                    <PlusOutlined
-                      onClick={() => {
-                        add();
-                      }}
-                    />
-                    {index != 0 && (
-                      <MinusOutlined
-                        onClick={() => {
-                          remove(field.name);
-                        }}
-                      />
-                    )}
-                  </div>
-                </Space>
-              ))}
-            </Form.Item>
-          );
-        }}
-      </Form.List>
+      <>
+        {deviceTypeList.map((device: any) => (
+          <Form.List name={`device_${device.typeId}`} key={device.typeId}>
+            {(fields, { add, remove }) => {
+              return (
+                <Form.Item wrapperCol={{ offset: 4, span: 16 }} label={device.typeName}>
+                  {fields.map((field, index) => (
+                    <Space key={field.key} className={style.space} align="start">
+                      <Form.Item {...field} name={[field.name, 'number']} className={style.fieldItem}>
+                        <Input placeholder="请输入设备号" />
+                      </Form.Item>
+                      <div className={style.fieldAddButton}>
+                        <PlusOutlined
+                          onClick={() => {
+                            add();
+                          }}
+                        />
+                        {index != 0 && (
+                          <MinusOutlined
+                            onClick={() => {
+                              remove(field.name);
+                            }}
+                          />
+                        )}
+                      </div>
+                    </Space>
+                  ))}
+                </Form.Item>
+              );
+            }}
+          </Form.List>
+        ))}
+      </>
     );
   }
   return (

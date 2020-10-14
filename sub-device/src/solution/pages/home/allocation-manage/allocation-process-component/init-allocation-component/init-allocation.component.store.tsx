@@ -48,7 +48,7 @@ export function useInitAllocationStore() {
   }
 
   function callbackAction<T>(actionType: number, data: T) {
-    setStateWrap({ currentId: data.id });
+    setStateWrap({ currentId: data.id, currentData: data });
     switch (actionType) {
       case ModalType.CREATE:
         setStateWrap({ importVisible: true });
@@ -72,7 +72,7 @@ export function useInitAllocationStore() {
   }
 
   function handleModalCancel() {
-    setStateWrap({ importVisible: false, rollbackVisible: false });
+    setStateWrap({ currentData: {}, importVisible: false, rollbackVisible: false });
   }
   function openModal(type: ModalType) {
     switch (type) {

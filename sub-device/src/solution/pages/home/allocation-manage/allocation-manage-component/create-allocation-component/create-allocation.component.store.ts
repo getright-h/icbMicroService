@@ -1,23 +1,62 @@
 import { ICreateAllocationState } from './create-allocation.interface';
-import { useStateStore } from '~/framework/aop/hooks/use-base-store';
+import { useStateStore, IFlowNode } from '~/framework/aop/hooks/use-base-store';
 import { useEffect } from 'react';
 import { Form } from 'antd';
-import { ShowNotification } from '~/framework/util/common';
+import { ShowNotification, getQueryParams } from '~/framework/util/common';
 import { TemplateServiceService } from '~/solution/model/services/template-service.service';
+import { AllocationManageService } from '~/solution/model/services/allocation-manage.service';
 import { useHistory } from 'react-router-dom';
 import { Subscription } from 'rxjs';
+import _ from 'lodash';
 export function useCreateAllocationStore() {
   const { state, setStateWrap } = useStateStore(new ICreateAllocationState());
   const templateServiceService: TemplateServiceService = new TemplateServiceService();
+  const allocationManageService: AllocationManageService = new AllocationManageService();
   const history = useHistory();
   const [form] = Form.useForm();
   let templateServiceServiceSubscription: Subscription;
+  let queryAllotFlowTemplateNodeListByTemplateIdSubscription: Subscription;
+  let allocationManageServiceSubscription: Subscription;
+  // 获取默认路由参数
+  function getDefaultParams() {
+    const { id = '' } = getQueryParams();
+    id && getAlloactionDetail(id);
+    setStateWrap({
+      id
+    });
+  }
   // 新增调拨单
   function createNewAllocation() {
-    const { searchForm } = state;
-    templateServiceServiceSubscription = templateServiceService.insertAllotFlowTemplate({ ...searchForm }).subscribe(
+    let params;
+    try {
+      params = setAlloactionTemplateSubmitData();
+    } catch (error) {
+      ShowNotification.warning(error);
+      return;
+    }
+    setStateWrap({ submitLoading: true });
+    templateServiceServiceSubscription = allocationManageService.insertAllot({ ...params }).subscribe(
+      (res: any) => {
+        ShowNotification.success('添加调拨单成功!');
+        form.resetFields();
+        setStateWrap({ setStateWrap: {}, submitLoading: false });
+      },
+      (error: any) => {
+        setStateWrap({ submitLoading: false });
+      }
+    );
+  }
+  // 编辑调拨单 ==> 获取调拨单详情
+  function getAlloactionDetail(id: string) {
+    if (!id) return;
+    allocationManageServiceSubscription = allocationManageService.allotDetail({ allotId: id }).subscribe(
       (res: any) => {
         console.log(res);
+        setStateWrap({
+          searchForm: res
+        });
+        form.setFieldsValue(res);
+        setAlloactionTemplateFlowData(res.flowList);
       },
       (error: any) => {
         console.log(error);
@@ -25,7 +64,87 @@ export function useCreateAllocationStore() {
     );
   }
 
+  // 获取模板对应的节点列表
+  function getAlloactionTemplateFlow(id: any) {
+    if (!id) return;
+    queryAllotFlowTemplateNodeListByTemplateIdSubscription = templateServiceService
+      .queryAllotFlowTemplateDetail({ id })
+      .subscribe(
+        (res: any) => {
+          setAlloactionTemplateFlowData(res.flowList);
+        },
+        (error: any) => {
+          ShowNotification.warning('获取模板失败');
+        }
+      );
+  }
+  // 节点流程数据重构
+  function setAlloactionTemplateFlowData(flowListData: Array<IFlowNode>) {
+    if (!Array.isArray(flowListData) || !flowListData.length) return;
+    const flowList = [];
+    // 根据获取所有的sort,并且去重来获取流程的节点长度
+    const sort: Array<number> = flowListData.map(flow => flow.sort);
+    const nodeLength = sort.length;
+    // 数组去重未作处理！！！！
+    for (let i = 1; i <= nodeLength; i++) {
+      flowList.push(flowListData.filter((flow: IFlowNode) => flow.sort == i));
+    }
+    console.log(flowList);
+    setStateWrap({ flowList });
+  }
+  /**
+   * 选择流程节点
+   * @param index 层级
+   * @param flowId 节点ID
+   * 通过 index flowId 共同定位到改变的数据
+   */
+  function selectAlloactionTemplateFlowNode(index: number, flowId: string) {
+    const { flowList } = state;
+    flowList[index].forEach((flow: IFlowNode) => {
+      if (flow.flowId === flowId) {
+        flow.isSelected = !flow.isSelected;
+      }
+    });
+    setStateWrap({ flowList });
+  }
+  // 设置提交数据的数据结构
+  function setAlloactionTemplateSubmitData() {
+    const { flowList, searchForm } = state;
+    // 对数据克隆防止污染节点,以及设备数据
+    const params = JSON.parse(JSON.stringify(searchForm));
+    const _flowList = JSON.parse(JSON.stringify(flowList));
+
+    // 节点流程数据处理
+    _flowList.forEach((item: any) => {
+      // 如果当前节点只有一个选项则默认为选中
+      if (item.length === 1) {
+        item[0].isSelected = true;
+      }
+      // 每层节点至少选择一项
+      if (!item.some((item: any) => !!item.isSelected)) {
+        throw '请完善节点信息';
+      }
+      // 对选择节点列表数据处理,移除多余的数据
+      item.forEach((cur: any) => {
+        cur.id != undefined && delete cur.id;
+        cur.name != undefined && delete cur.name;
+      });
+    });
+    // 扁平化数据
+    params.attributeList = _flowList.flat();
+
+    // 对设备数据处理
+    if (params.content && Array.isArray(params.content) && params.content.length) {
+      params.content.forEach((item: any) => {
+        item.key != undefined && delete item.key;
+      });
+    }
+    return { ...params };
+  }
   function onChange(value: any, valueType: string) {
+    if (valueType === 'allotTemplateId') {
+      getAlloactionTemplateFlow(value);
+    }
     setStateWrap({
       searchForm: {
         ...state.searchForm,
@@ -79,7 +198,7 @@ export function useCreateAllocationStore() {
     }
     setStateWrap({ searchForm });
   }
-
+  // 移除设备
   function removeTypeDevice(field: any) {
     const { key } = field;
     const { searchForm = {} } = state;
@@ -94,9 +213,21 @@ export function useCreateAllocationStore() {
   }
 
   useEffect(() => {
+    getDefaultParams();
     return () => {
       templateServiceServiceSubscription && templateServiceServiceSubscription.unsubscribe();
+      queryAllotFlowTemplateNodeListByTemplateIdSubscription &&
+        queryAllotFlowTemplateNodeListByTemplateIdSubscription.unsubscribe();
+      allocationManageServiceSubscription && allocationManageServiceSubscription.unsubscribe();
     };
-  });
-  return { state, form, onChange, createNewAllocation, removeTypeDevice, updateTypeDevice };
+  }, []);
+  return {
+    state,
+    form,
+    onChange,
+    createNewAllocation,
+    removeTypeDevice,
+    updateTypeDevice,
+    selectAlloactionTemplateFlowNode
+  };
 }

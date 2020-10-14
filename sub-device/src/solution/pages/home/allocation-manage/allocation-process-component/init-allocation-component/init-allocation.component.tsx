@@ -22,7 +22,7 @@ export default function InitAllocationComponent() {
     openModal,
     onChange
   } = useInitAllocationStore();
-  const { isLoading, searchForm, tableData, total, importVisible, rollbackVisible } = state;
+  const { isLoading, searchForm, tableData, total, importVisible, rollbackVisible, currentData } = state;
   function renderSelectItems() {
     return (
       <>
@@ -104,7 +104,8 @@ export default function InitAllocationComponent() {
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
       ></TablePageTelComponent>
-      <DeviceImportComponent visible={importVisible} close={handleModalCancel} />
+      {/* <DeviceImportComponent visible={importVisible} close={handleModalCancel} /> */}
+      <DeviceImportComponent visible={importVisible} close={handleModalCancel} data={currentData} />
       <RollbackApplyComponent visible={rollbackVisible} close={handleModalCancel} />
     </React.Fragment>
   );

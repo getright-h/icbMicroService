@@ -1,7 +1,7 @@
 import { IAllocationManageState, ModalType } from './allocation-manage.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect } from 'react';
-import { Modal } from 'antd';
+import { Modal, Form } from 'antd';
 import { AllocationManageService } from '~/solution/model/services/allocation-manage.service';
 import { ShowNotification } from '~/framework/util/common';
 import { useHistory } from 'react-router-dom';
@@ -12,19 +12,23 @@ export function useAllocationManageStore() {
   const { state, setStateWrap } = useStateStore(new IAllocationManageState());
   const allocationManageService: AllocationManageService = new AllocationManageService();
   let allocationManageServiceSubscribable: Subscription;
+  let deleteAllotSubscribable: Subscription;
   const history = useHistory();
-
+  const [form] = Form.useForm();
   useEffect(() => {
     getTableData();
     return () => {
       allocationManageServiceSubscribable && allocationManageServiceSubscribable.unsubscribe();
+      deleteAllotSubscribable && deleteAllotSubscribable.unsubscribe();
     };
   }, []);
 
   function getTableData() {
+    const { searchForm } = state;
     setStateWrap({ isLoading: true });
-    allocationManageServiceSubscribable = allocationManageService.queryAllotPagedList(state.searchForm).subscribe(
+    allocationManageServiceSubscribable = allocationManageService.queryAllotPagedList(searchForm).subscribe(
       res => {
+        console.log(res);
         setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
       },
       err => {
@@ -53,24 +57,45 @@ export function useAllocationManageStore() {
     setStateWrap({ searchForm });
     getTableData();
   }
+  function searchClean() {
+    const initParams = {
+      index: 1,
+      size: 10,
+      state: -1,
+      code: ''
+    };
+    form.resetFields();
 
-  function callbackAction<T>(actionType: number, data?: T) {
-    setStateWrap({ currentId: data ? data.id : '' });
+    setStateWrap({
+      searchForm: initParams
+    });
+    const setState = new Promise((reslove, reject) => {
+      setStateWrap({
+        searchForm: initParams
+      });
+      reslove();
+    });
+    setState.then((res: any) => {
+      getTableData();
+    });
+  }
+  function callbackAction<T>(actionType: number, data?: any) {
+    setStateWrap({ currentId: data ? data.allotId : '' });
     switch (actionType) {
       case ModalType.ALLOCATE:
         history.push('/home/allocation/process');
         break;
       case ModalType.DETAIL:
-        history.push(`/home/allocation/allocationDetail/${data.id}`);
+        history.push(`/home/allocation/allocationDetail?id=${data.allotId}`);
         break;
       case ModalType.CREATE:
         history.push('/home/allocation/createAllocation');
         break;
       case ModalType.EDIT:
-        history.push(`/home/allocation/editAllocation/${data.id}`);
+        history.push(`/home/allocation/editAllocation?id=${data.allotId}`);
         break;
       case ModalType.DELETE:
-        deleteAlloaction();
+        deleteAlloaction(data.allotId);
         break;
       case ModalType.RECORD:
         setStateWrap({ visibleModal: true });
@@ -79,11 +104,21 @@ export function useAllocationManageStore() {
     }
   }
 
-  function deleteAlloaction() {
+  function deleteAlloaction(allotId: string) {
+    if (!allotId) return;
     confirm({
       content: '确认删除此调拨',
       onOk() {
-        console.log('OK');
+        deleteAllotSubscribable = allocationManageService.deleteAllot({ allotId }).subscribe(
+          (res: any) => {
+            ShowNotification.success('删除成功');
+            console.log(res);
+            getTableData();
+          },
+          (error: any) => {
+            console.log(error);
+          }
+        );
       },
       onCancel() {
         console.log('Cancel');
@@ -100,7 +135,7 @@ export function useAllocationManageStore() {
   }
 
   function handleModalCancel() {
-    setStateWrap({ visibleModal: false, visibleDeleteModal: false });
+    setStateWrap({ visibleModal: false });
   }
   function openModal(type: ModalType) {
     switch (type) {
@@ -110,11 +145,13 @@ export function useAllocationManageStore() {
   }
   return {
     state,
+    form,
     callbackAction,
     changeTablePageIndex,
     searchClick,
     handleModalCancel,
     openModal,
-    onChange
+    onChange,
+    searchClean
   };
 }
