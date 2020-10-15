@@ -35,5 +35,7 @@ export const ROUTERS = {
     import(
       '~/solution/pages/home/allocation-manage/allocation-process-component/receive-allocation-component/detail-component/detail.component'
     ),
-  warehouseList: () => import('~/solution/pages/home/base-manage/warehouse-list-component/warehouse-list.component')
+  warehouseList: () => import('~/solution/pages/home/base-manage/warehouse-list-component/warehouse-list.component'),
+  voucherManageModule: () => import('~/solution/pages/home/voucher-manage/voucher-manage.module'),
+  voucherManage: () => import('~/solution/pages/home/voucher-manage/voucher-manage-component/voucher-manage.component')
 };

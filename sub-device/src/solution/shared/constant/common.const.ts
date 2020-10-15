@@ -49,6 +49,10 @@ export const PAGES_MENU = {
           title: '仓库设置'
         }
       ]
+    },
+    {
+      path: 'home/voucher/manage',
+      title: '安装凭证管理'
     }
   ]
 };

@@ -17,5 +17,10 @@ export const homeRoutes: IRoute[] = [
     path: `${MODULE_PATH}/allocation`,
     component: ROUTERS.allocationManageModule,
     lazyload: true
+  },
+  {
+    path: `${MODULE_PATH}/voucher`,
+    component: ROUTERS.voucherManageModule,
+    lazyload: true
   }
 ];
