@@ -37,5 +37,8 @@ export const ROUTERS = {
     ),
   warehouseList: () => import('~/solution/pages/home/base-manage/warehouse-list-component/warehouse-list.component'),
   voucherManageModule: () => import('~/solution/pages/home/voucher-manage/voucher-manage.module'),
-  voucherManage: () => import('~/solution/pages/home/voucher-manage/voucher-manage-component/voucher-manage.component')
+  voucherManage: () => import('~/solution/pages/home/voucher-manage/voucher-manage-component/voucher-manage.component'),
+  customerManageModule: () => import('~/solution/pages/home/customer-manage/customer-manage.module'),
+  ownerManageComponent: () =>
+    import('~/solution/pages/home/customer-manage/owner-manage-component/owner-manage.component')
 };

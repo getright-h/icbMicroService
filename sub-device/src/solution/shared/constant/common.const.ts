@@ -51,6 +51,16 @@ export const PAGES_MENU = {
       ]
     },
     {
+      path: 'home/customer',
+      title: '客户管理',
+      children: [
+        {
+          path: 'owner',
+          title: '车主管理'
+        }
+      ]
+    },
+    {
       path: 'home/voucher/manage',
       title: '安装凭证管理'
     }
