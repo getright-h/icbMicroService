@@ -1,7 +1,6 @@
 import * as React from 'react';
 import style from './init-allocation.component.less';
-import { ModalType } from './init-allocation.interface';
-import { ALLOW_FLOW_ENUM } from '~shared/constant/common.const';
+import { ALLOW_FLOW_ENUM, ModalType } from '~shared/constant/common.const';
 
 export function initAllocationColumns(callbackAction: Function) {
   /**
@@ -40,10 +39,9 @@ export function initAllocationColumns(callbackAction: Function) {
         condition: [ALLOW_FLOW_ENUM.Confirm],
         btn: (
           <>
-            <a className={style.button} onClick={() => callbackAction(ModalType.WITHDRAW, data)} key={2}>
+            <a className={style.button} onClick={() => callbackAction(ModalType.REVOKE, data)} key={2}>
               撤销
             </a>
-            {lookAllot}
           </>
         )
       },
@@ -62,7 +60,7 @@ export function initAllocationColumns(callbackAction: Function) {
       {
         condition: [ALLOW_FLOW_ENUM.Returning],
         btn: (
-          <a className={style.button} onClick={() => callbackAction(ModalType.REAPPLY, data)} key={4}>
+          <a className={style.button} onClick={() => callbackAction(ModalType.RETURN, data)} key={4}>
             收到退货
           </a>
         )
@@ -103,7 +101,7 @@ export function initAllocationColumns(callbackAction: Function) {
     },
     {
       title: '目标仓库',
-      dataIndex: 'target'
+      dataIndex: 'storeName'
     },
     {
       title: '设备型号',
@@ -137,30 +135,6 @@ export function initAllocationColumns(callbackAction: Function) {
       fixed: 'right' as 'right',
       dataIndex: 'action',
       render: (render: any, data: any, index: number) => renderOperateBtn(data)
-
-      // return (
-      //   <React.Fragment>
-      //     <a
-      //       onClick={() => {
-      //         callbackAction(ModalType.DETAIL, data);
-      //       }}
-      //     >
-      //       查看
-      //     </a>
-      //     <Divider type="vertical" />
-      //     <a onClick={() => callbackAction(ModalType.CREATE, data)}>发起申请</a>
-      //     <Divider type="vertical" />
-      //     <a onClick={() => callbackAction(ModalType.CONFIRM, data)}>待确认</a>
-      //     <Divider type="vertical" />
-      //     <a onClick={() => callbackAction(ModalType.REAPPLY, data)}>重新申请</a>
-      //     <Divider type="vertical" />
-      //     <a onClick={() => callbackAction(ModalType.ROLLBACK, data)}>收到申请</a>
-      //     <Divider type="vertical" />
-      //     <a onClick={() => callbackAction(ModalType.WITHDRAW, data)}>撤回</a>
-      //     <Divider type="vertical" />
-      //     <a onClick={() => callbackAction(ModalType.RETURN, data)}>收到退货</a>
-      //   </React.Fragment>
-      // );
     }
   ];
 }

@@ -18,12 +18,12 @@ export class IInitAllocationState {
   currentId = '';
   currentData: any = {};
 }
-export enum ModalType {
-  CREATE,
-  DETAIL,
-  CONFIRM,
-  REAPPLY,
-  WITHDRAW,
-  ROLLBACK,
-  RETURN
-}
+// export enum ModalType {
+//   CREATE,
+//   DETAIL,
+//   CONFIRM,
+//   REAPPLY,
+//   REVOKE,
+//   ROLLBACK,
+//   RETURN
+// }

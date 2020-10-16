@@ -1,8 +1,185 @@
 import * as React from 'react';
 import style from './detail.component.less';
 import { useDetailStore } from './detail.component.store';
-
+import { Form, Button, Table } from 'antd';
+import { ColumnsType } from 'antd/lib/table';
+import { ALLOW_FLOW_ENUM, ModalType } from '~shared/constant/common.const';
+import { IHeaderTitleComponent } from '~framework/components/component.module';
+import RejectAllocationComponent from '../reject-allocation-component/reject-allocation.component';
 export default function DetailComponent() {
-  const { state } = useDetailStore();
-  return <div className={style.test}>Hello DetailComponent</div>;
+  const { state, callbackAction, handleModalCancel, allocationOperate, getAlloactionDetail } = useDetailStore();
+  const { currentData, currentActionType, detail = {}, rejectVisibleModal } = state;
+  const layout = {
+    labelCol: { span: 8 },
+    wrapperCol: { span: 12 }
+  };
+
+  /**
+   * @description 根据[  调拨状态 ] 渲染操作按钮
+   */
+  function renderOperateBtn(data: any) {
+    const { state } = data;
+    const back = (
+      <Button
+        className={style.button}
+        onClick={() => {
+          callbackAction(ModalType.GO_BACK, data);
+        }}
+        key={0}
+      >
+        返回
+      </Button>
+    );
+    if (!state) {
+      return back;
+    }
+    const btnState = [
+      // 驳回操作 & 接收操作
+      {
+        condition: [ALLOW_FLOW_ENUM.Confirm],
+        btn: (
+          <div key={'Confirm'} style={{ display: 'inline-block' }}>
+            <Button
+              type={'primary'}
+              danger
+              className={style.button}
+              onClick={() => callbackAction(ModalType.REJECT, data)}
+              key={2}
+            >
+              驳回
+            </Button>
+            <Button
+              type={'primary'}
+              className={style.button}
+              onClick={() => callbackAction(ModalType.RECIVE, data)}
+              key={1}
+            >
+              接收
+            </Button>
+          </div>
+        )
+      },
+
+      // 通过操作 & 退货操作
+      {
+        condition: [ALLOW_FLOW_ENUM.Inspection],
+        btn: (
+          <div key={'Inspection'} style={{ display: 'inline-block' }}>
+            <Button
+              type={'primary'}
+              className={style.button}
+              onClick={() => callbackAction(ModalType.PASS, data)}
+              key={3}
+            >
+              通过
+            </Button>
+            <Button
+              type={'primary'}
+              danger
+              className={style.button}
+              onClick={() => callbackAction(ModalType.SET_RETURN, data)}
+              key={4}
+            >
+              退货
+            </Button>
+          </div>
+        )
+      }
+    ];
+    const btnArray = btnState.filter((item: any) => item.condition.includes(state)).map((btn: any) => btn.btn);
+    btnArray.push(back);
+    return <React.Fragment>{btnArray}</React.Fragment>;
+  }
+  function RenderTable() {
+    const columns: ColumnsType<any> = [
+      {
+        title: '设备型号',
+        dataIndex: 'typeName',
+        key: 'typeName'
+      },
+      {
+        title: '设备个数',
+        dataIndex: 'number',
+        key: 'number',
+        render: text => <span>{text}个</span>
+      }
+    ];
+    return <Table size="small" columns={columns} dataSource={detail.deviceTypeList || []} pagination={false} />;
+  }
+  function renderFlowList() {
+    function renderArrow() {
+      return (
+        <div className={style.arrowWapepr}>
+          <div className={style.line}>
+            <i className="arrow"></i>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div className={style.flowLListContainer}>
+        <div className={style.flowNode}>{detail.currentPromoterStoreName}</div>
+        {renderArrow()}
+        <div className={style.flowNode}>{detail.currentRecipientStoreName}</div>
+      </div>
+    );
+  }
+  return (
+    <div className={style.mainForm}>
+      <IHeaderTitleComponent pageName={'调拨单详情'} className="flexJusBetw">
+        {[
+          ALLOW_FLOW_ENUM.Reject,
+          ALLOW_FLOW_ENUM.Inspection,
+          ALLOW_FLOW_ENUM.Returning,
+          ALLOW_FLOW_ENUM.Identification
+        ].includes(detail.state) && (
+          <Button danger type={'primary'} onClick={() => callbackAction(ModalType.APPLY_REVOKE, detail)}>
+            申请撤销
+          </Button>
+        )}
+      </IHeaderTitleComponent>
+      <Form {...layout}>
+        <div className={style.formPart}>
+          <div className={style.formItems}>
+            <div className={style.formLeft}>
+              <Form.Item name="name" label="调拨单号">
+                {detail.allotCode}
+              </Form.Item>
+              <Form.Item name="name" label="调拨设备">
+                <RenderTable />
+              </Form.Item>
+              <Form.Item name="name" label="调拨总数">
+                {Array.isArray(detail.deviceTypeList) &&
+                  detail.deviceTypeList
+                    .map((item: any) => item.number)
+                    .reduce((per: number, next: number) => per + next, 0)}
+              </Form.Item>
+              <Form.Item name="name" label="操作时间">
+                {detail.createTime || '-'}
+              </Form.Item>
+              <Form.Item name="name" label="节点流程">
+                {renderFlowList()}
+              </Form.Item>
+              <Form.Item name="name" label="操作人">
+                {detail.creatorName || '-'}
+              </Form.Item>
+              <Form.Item name="name" label="状态">
+                {detail.stateText}
+              </Form.Item>
+
+              <Form.Item wrapperCol={{ span: 12, offset: 8 }}>{renderOperateBtn(detail)}</Form.Item>
+            </div>
+          </div>
+        </div>
+      </Form>
+      <RejectAllocationComponent
+        allocationOperate={allocationOperate}
+        visible={rejectVisibleModal}
+        data={currentData}
+        getAlloactionDetail={getAlloactionDetail}
+        close={handleModalCancel}
+        currentActionType={currentActionType}
+      />
+    </div>
+  );
 }

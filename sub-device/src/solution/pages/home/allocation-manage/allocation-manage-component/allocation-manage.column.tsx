@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Divider } from 'antd';
-import { ModalType } from './allocation-manage.interface';
-import { AllOT_STATE_ENUM, AllOT_APPROVAL_STATE_ENUM } from '~shared/constant/common.const';
+import { AllOT_STATE_ENUM, AllOT_APPROVAL_STATE_ENUM, ModalType } from '~shared/constant/common.const';
 export function allocationManageColumns(callbackAction: Function) {
   return [
     {
@@ -46,13 +45,17 @@ export function allocationManageColumns(callbackAction: Function) {
       dataIndex: 'stateText'
     },
     {
+      title: '审批状态',
+      dataIndex: 'stateText_'
+    },
+    {
       title: '操作',
       fixed: 'right' as 'right',
       dataIndex: 'action',
       render: (render: any, data: any, index: number) => {
         return (
           <React.Fragment>
-            <a onClick={() => callbackAction(ModalType.DETAIL, data)}>查看</a>
+            <a onClick={() => callbackAction(ModalType.SEE, data)}>查看</a>
             <Divider type="vertical" />
             <a
               onClick={() => {

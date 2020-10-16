@@ -3,7 +3,7 @@ import { TablePageTelComponent, ITableComponent, TimePickerComponent } from '~/f
 import { allocationManageColumns } from './allocation-manage.column';
 import { useAllocationManageStore } from './allocation-manage.component.store';
 import { Button, Input, Select, Form } from 'antd';
-import { ModalType } from './allocation-manage.interface';
+import { ModalType } from '~shared/constant/common.const';
 import { AllOT_STATE } from '~shared/constant/common.const';
 import TransferRecordComponent from './transfer-record-component/transfer-record.component';
 

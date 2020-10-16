@@ -19,7 +19,7 @@ export default function CreateAllocationComponent() {
     labelCol: { span: 8 },
     wrapperCol: { span: 16 }
   };
-  console.log(searchForm, flowList);
+
   function ArrowComponent() {
     return (
       <div className={style.arrowWapepr}>

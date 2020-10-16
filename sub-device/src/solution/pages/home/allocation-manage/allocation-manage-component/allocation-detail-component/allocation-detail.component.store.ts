@@ -1,4 +1,4 @@
-import { IAllocationDetailState } from './allocation-detail.interface';
+import { IAllocationDetailState, IFlowNode } from './allocation-detail.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { AllocationManageService } from '~/solution/model/services/allocation-manage.service';
 import { useEffect } from 'react';
@@ -16,9 +16,6 @@ export function useAllocationDetailStore() {
   function getDefaultParams() {
     const { id = '' } = getQueryParams();
     id && getAlloactionDetail(id);
-    setStateWrap({
-      id
-    });
   }
 
   //获取调拨单详情
@@ -26,14 +23,29 @@ export function useAllocationDetailStore() {
     if (!id) return;
     allocationManageServiceSubscription = allocationManageService.allotDetail({ allotId: id }).subscribe(
       (res: any) => {
-        console.log(res);
+        setStateWrap({
+          detail: res
+        });
+        setAlloactionTemplateFlowData(res.flowList);
       },
       (error: any) => {
         console.log(error);
       }
     );
   }
-
+  // 节点流程数据重构
+  function setAlloactionTemplateFlowData(flowListData: Array<IFlowNode>) {
+    if (!Array.isArray(flowListData) || !flowListData.length) return;
+    const flowList = [];
+    // 根据获取所有的sort,并且去重来获取流程的节点长度
+    const sort: Array<number> = flowListData.map(flow => flow.sort);
+    const nodeLength = sort.length;
+    // 数组去重未作处理！！！！
+    for (let i = 1; i <= nodeLength; i++) {
+      flowList.push(flowListData.filter((flow: IFlowNode) => flow.sort == i));
+    }
+    setStateWrap({ flowList });
+  }
   useEffect(() => {
     getDefaultParams();
     return () => {

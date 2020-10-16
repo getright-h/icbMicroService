@@ -1,5 +1,4 @@
 import * as React from 'react';
-import style from './stock-manage.component.less';
 import { useStockManageStore } from './stock-manage.component.store';
 import {
   TablePageTelComponent,

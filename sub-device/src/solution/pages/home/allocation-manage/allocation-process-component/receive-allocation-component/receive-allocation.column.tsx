@@ -1,7 +1,6 @@
 import * as React from 'react';
 import style from './receive-allocation.component.less';
-import { ModalType } from './receive-allocation.interface';
-import { ALLOW_FLOW_ENUM } from '~shared/constant/common.const';
+import { ALLOW_FLOW_ENUM, ModalType } from '~shared/constant/common.const';
 export function receiveAllocationColumns(callbackAction: Function) {
   /**
    * @description 根据[  调拨状态 ] 渲染操作按钮
@@ -39,26 +38,18 @@ export function receiveAllocationColumns(callbackAction: Function) {
       return lookAllot;
     }
     const btnState = [
-      // 接收操作
-      {
-        condition: [ALLOW_FLOW_ENUM.Apply],
-        btn: (
-          <a className={style.button} onClick={() => callbackAction(ModalType.RECIVE, data)} key={1}>
-            接收
-          </a>
-        )
-      },
-
-      // 驳回操作
+      // 驳回操作 & 接收操作
       {
         condition: [ALLOW_FLOW_ENUM.Confirm],
         btn: (
-          <>
+          <div key={'Confirm'} style={{ display: 'inline-block' }}>
             <a className={style.button} onClick={() => callbackAction(ModalType.REJECT, data)} key={2}>
               驳回
             </a>
-            {lookAllot}
-          </>
+            <a className={style.button} onClick={() => callbackAction(ModalType.RECIVE, data)} key={1}>
+              接收
+            </a>
+          </div>
         )
       },
 
@@ -66,14 +57,14 @@ export function receiveAllocationColumns(callbackAction: Function) {
       {
         condition: [ALLOW_FLOW_ENUM.Inspection],
         btn: (
-          <>
+          <div key={'Inspection'} style={{ display: 'inline-block' }}>
             <a className={style.button} onClick={() => callbackAction(ModalType.PASS, data)} key={3}>
               通过
             </a>
-            <a className={style.button} onClick={() => callbackAction(ModalType.RETURN, data)} key={4}>
+            <a className={style.button} onClick={() => callbackAction(ModalType.SET_RETURN, data)} key={4}>
               退货
             </a>
-          </>
+          </div>
         )
       }
     ];
@@ -85,19 +76,26 @@ export function receiveAllocationColumns(callbackAction: Function) {
   return [
     {
       title: '调拨单号',
-      dataIndex: 'orderNum'
+      dataIndex: 'allotCode'
     },
     {
-      title: '目标仓库',
-      dataIndex: 'target'
+      title: '发起仓库',
+      dataIndex: 'storeName'
     },
     {
       title: '设备型号',
-      dataIndex: 'type'
+      dataIndex: 'deviceTypeList',
+      render: (text: any) => {
+        if (Array.isArray(text) && text.length) {
+          return text.map((item: any, index: number) => <div key={index}>{`${item.typeName}, ${item.number}个`}</div>);
+        } else {
+          return '-';
+        }
+      }
     },
     {
       title: '调拨总数',
-      dataIndex: 'total'
+      dataIndex: 'totalNUmber'
     },
     {
       title: '调拨时间',
@@ -105,11 +103,11 @@ export function receiveAllocationColumns(callbackAction: Function) {
     },
     {
       title: '操作人',
-      dataIndex: 'creater'
+      dataIndex: 'operationName'
     },
     {
       title: '状态',
-      dataIndex: 'status'
+      dataIndex: 'stateText'
     },
     {
       title: '操作',

@@ -12,13 +12,16 @@ export class IReceiveAllocationState {
   tableData: any = [];
   total = 0;
   visibleModal = false;
+  rejectVisibleModal = false;
   currentId = '';
+  currentData = {};
+  currentActionType: any;
 }
-export enum ModalType {
-  LOOK,
-  RECIVE,
-  REJECT,
-  MOVE,
-  PASS,
-  RETURN
-}
+// export enum ModalType {
+//   LOOK,
+//   RECIVE,
+//   REJECT,
+//   MOVE,
+//   PASS,
+//   RETURN
+// }

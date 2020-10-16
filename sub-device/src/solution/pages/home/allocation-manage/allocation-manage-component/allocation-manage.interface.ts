@@ -23,11 +23,3 @@ interface ISearchFrom {
   beginTime?: number;
   endTime?: number;
 }
-export enum ModalType {
-  CREATE,
-  ALLOCATE,
-  DETAIL,
-  RECORD,
-  EDIT,
-  DELETE
-}

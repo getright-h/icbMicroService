@@ -1,12 +1,11 @@
 import * as React from 'react';
-import style from './init-allocation.component.less';
+
 import { TablePageTelComponent, TimePickerComponent } from '~/framework/components/component.module';
 import { ITableComponent } from '~/framework/components/component.module';
 import { initAllocationColumns } from './init-allocation.column';
 import { useInitAllocationStore } from './init-allocation.component.store';
 import { ALLOW_FLOW } from '~shared/constant/common.const';
 import { Button, Input, Select } from 'antd';
-import { ModalType } from './init-allocation.interface';
 import DeviceImportComponent from './device-import-component/device-import.component';
 import RollbackApplyComponent from './rollback-apply-component/rollback-apply.component';
 
@@ -20,6 +19,7 @@ export default function InitAllocationComponent() {
     searchClick,
     handleModalCancel,
     openModal,
+    getTableData,
     onChange
   } = useInitAllocationStore();
   const { isLoading, searchForm, tableData, total, importVisible, rollbackVisible, currentData } = state;
@@ -105,7 +105,12 @@ export default function InitAllocationComponent() {
         table={<RenderTable />}
       ></TablePageTelComponent>
       {/* <DeviceImportComponent visible={importVisible} close={handleModalCancel} /> */}
-      <DeviceImportComponent visible={importVisible} close={handleModalCancel} data={currentData} />
+      <DeviceImportComponent
+        visible={importVisible}
+        close={handleModalCancel}
+        data={currentData}
+        getTableData={getTableData}
+      />
       <RollbackApplyComponent visible={rollbackVisible} close={handleModalCancel} />
     </React.Fragment>
   );

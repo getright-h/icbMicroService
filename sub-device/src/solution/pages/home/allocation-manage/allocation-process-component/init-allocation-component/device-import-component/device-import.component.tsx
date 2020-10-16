@@ -6,11 +6,10 @@ import { Modal, Form, Input, Radio, Button, Upload, Space, Select, Label } from 
 import { UploadOutlined, PlusOutlined, MinusOutlined } from '@ant-design/icons';
 
 export default function DeviceImportComponent(props: IDeviceImportProps) {
-  console.log(props, 3333);
-  const { state, form, selfSubmit, selfClose, changeImportType } = useDeviceImportStore(props);
+  const { state, form, selfSubmit, selfClose, changeImportType, onChange, removeDevice } = useDeviceImportStore(props);
   const { visible, data = {} } = props;
   const { deviceTypeList = [] } = data;
-  const { confirmLoading, importType } = state;
+  const { importType, submitLoading } = state;
   const layout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 16 }
@@ -26,7 +25,7 @@ export default function DeviceImportComponent(props: IDeviceImportProps) {
       <React.Fragment>
         <Form {...layout} form={form} initialValues={initialValues}>
           <Form.Item name="name" label="目标仓库">
-            B大区仓库
+            {data.storeName}
           </Form.Item>
           <Form.Item name="type" label="添加方式" rules={[{ required: true }]}>
             <Radio.Group onChange={e => changeImportType(e.target.value)}>
@@ -70,7 +69,7 @@ export default function DeviceImportComponent(props: IDeviceImportProps) {
                   {fields.map((field, index) => (
                     <Space key={field.key} className={style.space} align="start">
                       <Form.Item {...field} name={[field.name, 'number']} className={style.fieldItem}>
-                        <Input placeholder="请输入设备号" />
+                        <Input placeholder="请输入设备号" onChange={e => onChange(e.target.value, device, field.key)} />
                       </Form.Item>
                       <div className={style.fieldAddButton}>
                         <PlusOutlined
@@ -81,6 +80,7 @@ export default function DeviceImportComponent(props: IDeviceImportProps) {
                         {index != 0 && (
                           <MinusOutlined
                             onClick={() => {
+                              removeDevice(field.key);
                               remove(field.name);
                             }}
                           />
@@ -103,16 +103,11 @@ export default function DeviceImportComponent(props: IDeviceImportProps) {
       width={800}
       onCancel={selfClose}
       onOk={() => {
-        form
-          .validateFields()
-          .then(values => selfSubmit(values))
-          .catch(info => {
-            console.log('Validate Failed:', info);
-          });
+        selfSubmit();
       }}
       maskClosable={false}
       destroyOnClose={true}
-      confirmLoading={confirmLoading}
+      confirmLoading={submitLoading}
     >
       {renderForm()}
     </Modal>

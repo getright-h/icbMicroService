@@ -193,7 +193,7 @@ export const ALLOW_FLOW = [
  * @description Return            退货
  * @description Move              流转
  * @description  RecallApply      申请撤回
- * @description RecallAuditPass   审核申请驳回
+ * @description RecallAuditPass   审核申请通过
  * @description RecallAuditReject 审核申请驳回
  */
 
@@ -211,4 +211,58 @@ export enum ALLOW_FLOW_KEYCODE_ENUM {
   RecallApply = 10,
   RecallAuditPass = 11,
   RecallAuditReject = 12
+}
+
+/**
+ * 调拨 表单操作判断 码
+ *  // 调拨单
+ * @description SEE  查看调拨
+ * @description ALLOCATE  去调拨
+ * @description EDIT  修改调拨单
+ * @description RECORD  调拨记录
+ * @description DELETE  删除
+ * // 发起
+ * @description CREATE  发起申请
+ * @description DETAIL  查看详情
+ * @description CONFIRM  ''
+ * @description REAPPLY  重新申请
+ * @description REVOKE  撤销操作
+ * @description ROLLBACK  收到申请
+ * @description RETURN  收到退货
+ * // 接收
+ * @description LOOK  查看
+ * @description REJECT  驳回
+ * @description MOVE  流转
+ * @description PASS  通过
+ * @description SET_RETURN  退货
+ * @description APPLY_REVOKE  申请撤销
+ * // 返回
+ * @description GO_BACK  退货
+ *
+ */
+export enum ModalType {
+  // 调拨单
+  SEE,
+  ALLOCATE,
+  EDIT,
+  RECORD,
+  DELETE,
+  // 发起
+  CREATE,
+  DETAIL,
+  CONFIRM,
+  REAPPLY,
+  REVOKE,
+  ROLLBACK,
+  RETURN,
+  // 接收
+  LOOK,
+  RECIVE,
+  REJECT,
+  MOVE,
+  PASS,
+  SET_RETURN,
+  APPLY_REVOKE,
+  // 返回
+  GO_BACK
 }

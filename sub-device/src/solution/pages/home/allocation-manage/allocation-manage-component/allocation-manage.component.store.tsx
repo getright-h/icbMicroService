@@ -1,5 +1,6 @@
-import { IAllocationManageState, ModalType } from './allocation-manage.interface';
+import { IAllocationManageState } from './allocation-manage.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
+import { ModalType } from '~shared/constant/common.const';
 import { useEffect } from 'react';
 import { Modal, Form } from 'antd';
 import { AllocationManageService } from '~/solution/model/services/allocation-manage.service';
@@ -85,7 +86,7 @@ export function useAllocationManageStore() {
       case ModalType.ALLOCATE:
         history.push('/home/allocation/process');
         break;
-      case ModalType.DETAIL:
+      case ModalType.SEE:
         history.push(`/home/allocation/allocationDetail?id=${data.allotId}`);
         break;
       case ModalType.CREATE:

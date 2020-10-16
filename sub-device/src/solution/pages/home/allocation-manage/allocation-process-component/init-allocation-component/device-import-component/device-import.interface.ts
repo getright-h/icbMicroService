@@ -5,6 +5,9 @@
 export class IDeviceImportState {
   confirmLoading = false;
   importType: number = null;
+  searchForm = {};
+  deviceList: Array<any> = [];
+  submitLoading = false;
 }
 /**
  * @export props变量定义和初始化
@@ -14,6 +17,8 @@ export class IDeviceImportProps {
   data: any;
   visible: boolean;
   close: () => void;
+  getTableData?: () => void;
+  getAlloactionDetail?: (id: string) => void;
 }
 
 interface ISearchForm {
