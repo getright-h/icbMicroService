@@ -39,5 +39,18 @@ export const ROUTERS = {
     import(
       '~/solution/pages/home/allocation-manage/allocation-process-component/receive-allocation-component/detail-component/detail.component'
     ),
-  warehouseList: () => import('~/solution/pages/home/base-manage/warehouse-list-component/warehouse-list.component')
+  warehouseList: () => import('~/solution/pages/home/base-manage/warehouse-list-component/warehouse-list.component'),
+  // 监控组
+  monitorManagModule: () => import('~/solution/pages/home/monitor-manage/monitor-manage.module'),
+  monitorManage: () => import('~/solution/pages/home/monitor-manage/monitor-manage-component/monitor-manage.component'),
+  // 数据报表
+  dataManagModule: () => import('~/solution/pages/home/data-manage/data-manage.module'),
+  deviceMonitor: () => import('~/solution/pages/home/data-manage/device-monitor-component/device-monitor.component'),
+  deviceLine: () => import('~/solution/pages/home/data-manage/device-line-component/device-line.component'),
+  carTypeSetting: () =>
+    import('~/solution/pages/home/base-manage/car-type-setting-component/car-type-setting.component'),
+  supplierSetting: () =>
+    import('~/solution/pages/home/base-manage/supplier-setting-component/supplier-setting.component'),
+  deviceTypeSetting: () =>
+    import('~/solution/pages/home/base-manage/device-type-setting-component/device-type-setting.component')
 };

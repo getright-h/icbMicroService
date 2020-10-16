@@ -41,12 +41,48 @@ export const PAGES_MENU = {
       ]
     },
     {
+      path: 'home/monitor',
+      title: '监控组',
+      children: [
+        {
+          path: 'monitorManage',
+          title: '监控组管理'
+        }
+      ]
+    },
+    {
+      path: 'home/data',
+      title: '数据报表',
+      children: [
+        {
+          path: 'deviceMonitor',
+          title: '设备监控'
+        },
+        {
+          path: 'deviceLine',
+          title: '设备路线表'
+        }
+      ]
+    },
+    {
       path: 'home/baseManage',
       title: '基础管理',
       children: [
         {
           path: 'warehouse',
           title: '仓库设置'
+        },
+        {
+          path: 'carTypeSetting',
+          title: '车型设置'
+        },
+        {
+          path: 'supplierSetting',
+          title: '供应商设置'
+        },
+        {
+          path: 'deviceTypeSetting',
+          title: '设备型号设置'
         }
       ]
     }

@@ -8,5 +8,23 @@ export const baseManageRoutes: IRoute[] = [
     component: ROUTERS.warehouseList,
     lazyload: true,
     exact: true
+  },
+  {
+    path: `${MODULE_PATH}/carTypeSetting`,
+    component: ROUTERS.carTypeSetting,
+    lazyload: true,
+    exact: true
+  },
+  {
+    path: `${MODULE_PATH}/supplierSetting`,
+    component: ROUTERS.supplierSetting,
+    lazyload: true,
+    exact: true
+  },
+  {
+    path: `${MODULE_PATH}/deviceTypeSetting`,
+    component: ROUTERS.deviceTypeSetting,
+    lazyload: true,
+    exact: true
   }
 ];
