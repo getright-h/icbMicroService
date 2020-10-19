@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Divider } from 'antd';
-import { ModalType } from './allocation-template.interface';
 export function allocationTemplateColumns(callbackAction: Function) {
   return [
     {
@@ -9,15 +8,15 @@ export function allocationTemplateColumns(callbackAction: Function) {
     },
     {
       title: '流程类型',
-      dataIndex: 'type'
+      dataIndex: 'typeText'
     },
     {
       title: '创建机构',
-      dataIndex: 'org'
+      dataIndex: 'organizationName'
     },
     {
       title: '创建人',
-      dataIndex: 'creater'
+      dataIndex: 'creatorName'
     },
     {
       title: '创建时间',
@@ -32,13 +31,13 @@ export function allocationTemplateColumns(callbackAction: Function) {
           <React.Fragment>
             <a
               onClick={() => {
-                callbackAction(ModalType.EDIT, data);
+                callbackAction('详情', data);
               }}
             >
               详情
             </a>
             <Divider type="vertical" />
-            <a onClick={() => callbackAction(ModalType.DELETE, data)}>删除</a>
+            <a onClick={() => callbackAction('删除', data)}>删除</a>
           </React.Fragment>
         );
       }

@@ -48,6 +48,24 @@ export const PAGES_MENU = {
           path: 'warehouse',
           title: '仓库设置'
         }
+        // {
+        //   path: 'allocationTemplate',
+        //   title: '调拨模板管理'
+        // }
+      ]
+    },
+    {
+      path: 'home/approvalManage',
+      title: '审批管理',
+      children: [
+        {
+          path: 'approvalManage',
+          title: '审批管理'
+        },
+        {
+          path: 'approveTemplate',
+          title: '审批模板'
+        }
       ]
     }
   ]

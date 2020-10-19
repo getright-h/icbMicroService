@@ -44,23 +44,5 @@ export const allocationManageRoutes: IRoute[] = [
     component: ROUTERS.allocationTemplate,
     lazyload: true,
     exact: true
-  },
-  {
-    path: `${MODULE_PATH}/templateEdit`,
-    component: ROUTERS.templateEdit,
-    lazyload: true,
-    exact: true
-  },
-  {
-    path: `${MODULE_PATH}/templateEdit/:id`,
-    component: ROUTERS.templateEdit,
-    lazyload: true,
-    exact: true
-  },
-  {
-    path: `${MODULE_PATH}/templateDetail/:id`,
-    component: ROUTERS.templateDetail,
-    lazyload: true,
-    exact: true
   }
 ];

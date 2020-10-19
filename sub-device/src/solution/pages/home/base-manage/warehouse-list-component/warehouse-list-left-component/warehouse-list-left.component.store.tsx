@@ -160,12 +160,13 @@ export function useWarehouseListLeftStore() {
     });
   }
 
-  function closeAddWarehouseModal(isRefresh: boolean) {
+  function closeAddWarehouseModal(isRefresh: boolean, id: string) {
     setStateWrap({
       isEditWarehouseModal: false,
       addWarehouseVisible: false,
       editWarehouseId: ''
     });
+
     isRefresh && queryOrganizationTypeListByTypeId();
   }
 

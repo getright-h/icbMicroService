@@ -8,5 +8,17 @@ export const baseManageRoutes: IRoute[] = [
     component: ROUTERS.warehouseList,
     lazyload: true,
     exact: true
+  },
+  {
+    path: `${MODULE_PATH}/allocationTemplate`,
+    component: ROUTERS.allocationTemplate,
+    lazyload: true,
+    exact: true
+  },
+  {
+    path: `${MODULE_PATH}/addAndEditAllocationTemplate`,
+    component: ROUTERS.addOrEditallocationTemplate,
+    lazyload: true,
+    exact: false
   }
 ];

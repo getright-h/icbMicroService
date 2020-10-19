@@ -13,5 +13,5 @@ export class IAddWarehouseProps {
   addWarehouseVisible = false;
   isEdit? = false;
   warehouseId? = '';
-  closeAddWarehouseModal: (isRefresh?: boolean) => void;
+  closeAddWarehouseModal: (isRefresh?: boolean, id?: string) => void;
 }

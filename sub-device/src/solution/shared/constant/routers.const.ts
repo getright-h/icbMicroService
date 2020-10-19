@@ -13,16 +13,6 @@ export const ROUTERS = {
     import('~pages/home/allocation-manage/allocation-manage-component/allocation-manage.component'),
   allocationProcess: () =>
     import('~pages/home/allocation-manage/allocation-process-component/allocation-process.component'),
-  allocationTemplate: () =>
-    import('~pages/home/allocation-manage/allocation-template-component/allocation-template.component'),
-  templateEdit: () =>
-    import(
-      '~/solution/pages/home/allocation-manage/allocation-template-component/template-edit-component/template-edit.component'
-    ),
-  templateDetail: () =>
-    import(
-      '~/solution/pages/home/allocation-manage/allocation-template-component/template-detail-component/template-detail.component'
-    ),
   createAllocation: () =>
     import(
       '~/solution/pages/home/allocation-manage/allocation-manage-component/create-allocation-component/create-allocation.component'
@@ -35,5 +25,15 @@ export const ROUTERS = {
     import(
       '~/solution/pages/home/allocation-manage/allocation-process-component/receive-allocation-component/detail-component/detail.component'
     ),
-  warehouseList: () => import('~/solution/pages/home/base-manage/warehouse-list-component/warehouse-list.component')
+  warehouseList: () => import('~/solution/pages/home/base-manage/warehouse-list-component/warehouse-list.component'),
+  allocationTemplate: () =>
+    import('~/solution/pages/home/base-manage/allocation-template-component/allocation-template.component'),
+  addOrEditallocationTemplate: () =>
+    import(
+      '~/solution/pages/home/base-manage/allocation-template-component/template-edit-component/template-edit.component'
+    ),
+  approvalManageModule: () => import('~pages/home/approval-manage/approval-manage.module'),
+  approvalManage: () => import('~pages/home/approval-manage/approval-manage-component/approval-manage.component'),
+  approvalTemplate: () =>
+    import('~/solution/pages/home/approval-manage/appraval-template-component/appraval-template.component')
 };

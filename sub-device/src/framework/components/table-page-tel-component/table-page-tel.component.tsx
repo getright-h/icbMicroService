@@ -33,7 +33,6 @@ export class TablePageTelComponent extends React.Component<IProps> {
       table,
       pageLeft
     } = this.props;
-    console.log(3);
 
     const LayoutSider = this.renderSubHeader();
     return (

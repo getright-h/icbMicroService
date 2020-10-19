@@ -38,7 +38,7 @@ export default class TimePickerComponent extends React.Component<IProps> {
   render() {
     const { pickerType, dateFormat, timeFormat, timeInfo } = this.props;
     return (
-      <div>
+      <>
         {pickerType == 'timePicker' && (
           <TimePicker
             onChange={this.onChange}
@@ -99,7 +99,7 @@ export default class TimePickerComponent extends React.Component<IProps> {
             onChange={this.onChange}
           />
         )}
-      </div>
+      </>
     );
   }
 }
