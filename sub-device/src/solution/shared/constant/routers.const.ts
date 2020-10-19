@@ -40,5 +40,15 @@ export const ROUTERS = {
   voucherManage: () => import('~/solution/pages/home/voucher-manage/voucher-manage-component/voucher-manage.component'),
   customerManageModule: () => import('~/solution/pages/home/customer-manage/customer-manage.module'),
   ownerManageComponent: () =>
-    import('~/solution/pages/home/customer-manage/owner-manage-component/owner-manage.component')
+    import('~/solution/pages/home/customer-manage/owner-manage-component/owner-manage.component'),
+  vehicleManageComponent: () =>
+    import('~/solution/pages/home/customer-manage/vehicle-manage-component/vehicle-manage.component'),
+  editVehicle: () =>
+    import(
+      '~/solution/pages/home/customer-manage/vehicle-manage-component/edit-vehicle-component/edit-vehicle.component'
+    ),
+  vehicleDetail: () =>
+    import(
+      '~/solution/pages/home/customer-manage/vehicle-manage-component/vehicle-detail-component/vehicle-detail.component'
+    )
 };

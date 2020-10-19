@@ -57,6 +57,10 @@ export const PAGES_MENU = {
         {
           path: 'owner',
           title: '车主管理'
+        },
+        {
+          path: 'vehicle',
+          title: '车辆管理'
         }
       ]
     },
