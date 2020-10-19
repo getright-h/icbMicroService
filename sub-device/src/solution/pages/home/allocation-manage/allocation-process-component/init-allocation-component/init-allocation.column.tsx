@@ -7,7 +7,7 @@ export function initAllocationColumns(callbackAction: Function) {
    * @description 根据[  调拨状态 ] 渲染操作按钮
    */
   function renderOperateBtn(data: any) {
-    const { state } = data;
+    const { state, isRecipientReCallAudit = false } = data;
     // const state = 70;
     const lookAllot = (
       <a
@@ -74,7 +74,7 @@ export function initAllocationColumns(callbackAction: Function) {
           ALLOW_FLOW_ENUM.Reject,
           ALLOW_FLOW_ENUM.Identification
         ],
-        btn: (
+        btn: isRecipientReCallAudit && (
           <a
             className={`${style.button} ${style.getApproval}`}
             onClick={() => callbackAction(ModalType.ROLLBACK, data)}

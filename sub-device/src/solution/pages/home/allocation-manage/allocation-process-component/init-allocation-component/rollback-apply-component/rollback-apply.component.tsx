@@ -1,13 +1,12 @@
 import * as React from 'react';
-import style from './rollback-apply.component.less';
 import { useRollbackApplyStore } from './rollback-apply.component.store';
-import { IRollbackApplyProps } from './rollback-apply.interface';
+import { IRollbackApplyProps, STATE } from './rollback-apply.interface';
 import { Modal, Form, Input, Radio } from 'antd';
-
 export default function RollbackApplyComponent(props: IRollbackApplyProps) {
   const { state, form, selfSubmit, selfClose, opinionSelect } = useRollbackApplyStore(props);
+
   const { visible } = props;
-  const { confirmLoading, opinion } = state;
+  const { confirmLoading, opinion, rejectAuditRemark, status = 0 } = state;
   const layout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 }
@@ -17,15 +16,16 @@ export default function RollbackApplyComponent(props: IRollbackApplyProps) {
       <React.Fragment>
         <Form {...layout} form={form}>
           <Form.Item name="name" label="申请详情">
-            对方申请将调拨状态回退到（待确认/待验货）
+            对方申请将调拨状态回退到 (
+            {STATE.findIndex((flow: any) => flow.value === status - 10) > 1 ? '待验货' : '待确认'})
           </Form.Item>
           <Form.Item name="name" label="申请理由">
-            操作失误
+            {rejectAuditRemark || '-'}
           </Form.Item>
           <Form.Item name="opinion" label="处理意见" rules={[{ required: true }]}>
             <Radio.Group onChange={e => opinionSelect(e.target.value)}>
               <Radio value={1}>通过</Radio>
-              <Radio value={2}>驳回</Radio>
+              <Radio value={0}>驳回</Radio>
             </Radio.Group>
           </Form.Item>
           {opinion == 2 && (
@@ -43,14 +43,7 @@ export default function RollbackApplyComponent(props: IRollbackApplyProps) {
       visible={visible}
       width={600}
       onCancel={selfClose}
-      onOk={() => {
-        form
-          .validateFields()
-          .then(values => selfSubmit(values))
-          .catch(info => {
-            console.log('Validate Failed:', info);
-          });
-      }}
+      onOk={selfSubmit}
       maskClosable={false}
       destroyOnClose={true}
       confirmLoading={confirmLoading}

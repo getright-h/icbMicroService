@@ -144,5 +144,5 @@ export function useDetailStore() {
   function handleModalCancel() {
     setStateWrap({ currentData: {}, importVisible: false, rollbackVisible: false });
   }
-  return { state, callbackAction, handleModalCancel, getAlloactionDetail };
+  return { state, callbackAction, handleModalCancel, getAlloactionDetail, allocationOperate };
 }

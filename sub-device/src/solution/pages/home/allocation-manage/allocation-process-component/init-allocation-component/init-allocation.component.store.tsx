@@ -169,6 +169,7 @@ export function useInitAllocationStore() {
     handleModalCancel,
     openModal,
     onChange,
-    getTableData
+    getTableData,
+    allocationOperate
   };
 }

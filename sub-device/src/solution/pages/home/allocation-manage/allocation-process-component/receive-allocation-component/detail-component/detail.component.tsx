@@ -126,12 +126,13 @@ export default function DetailComponent() {
   }
   return (
     <div className={style.mainForm}>
+      {/* 此处申请驳回将 退回 待确认 待验货 */}
       <IHeaderTitleComponent pageName={'调拨单详情'} className="flexJusBetw">
         {[
-          ALLOW_FLOW_ENUM.Reject,
-          ALLOW_FLOW_ENUM.Inspection,
-          ALLOW_FLOW_ENUM.Returning,
-          ALLOW_FLOW_ENUM.Identification
+          ALLOW_FLOW_ENUM.Reject,  // 已驳回
+          ALLOW_FLOW_ENUM.Inspection, // 待验货
+          ALLOW_FLOW_ENUM.Returning, // 退货中
+          ALLOW_FLOW_ENUM.Identification // 已收货
         ].includes(detail.state) && (
           <Button danger type={'primary'} onClick={() => callbackAction(ModalType.APPLY_REVOKE, detail)}>
             申请撤销

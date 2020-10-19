@@ -8,7 +8,7 @@ import { IHeaderTitleComponent } from '~framework/components/component.module';
 import DeviceImportComponent from '../device-import-component/device-import.component';
 import RollbackApplyComponent from '../rollback-apply-component/rollback-apply.component';
 export default function DetailComponent() {
-  const { state, callbackAction, handleModalCancel, getAlloactionDetail } = useDetailStore();
+  const { state, callbackAction, handleModalCancel, getAlloactionDetail, allocationOperate } = useDetailStore();
   const { deviceData, detail = {}, importVisible, currentData, rollbackVisible } = state;
   const layout = {
     labelCol: { span: 8 },
@@ -182,7 +182,13 @@ export default function DetailComponent() {
         data={currentData}
         getAlloactionDetail={getAlloactionDetail}
       />
-      <RollbackApplyComponent visible={rollbackVisible} close={handleModalCancel} />
+      <RollbackApplyComponent
+        allocationOperate={allocationOperate}
+        getAlloactionDetail={getAlloactionDetail}
+        data={currentData}
+        visible={rollbackVisible}
+        close={handleModalCancel}
+      />
     </div>
   );
 }

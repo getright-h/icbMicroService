@@ -20,7 +20,8 @@ export default function InitAllocationComponent() {
     handleModalCancel,
     openModal,
     getTableData,
-    onChange
+    onChange,
+    allocationOperate
   } = useInitAllocationStore();
   const { isLoading, searchForm, tableData, total, importVisible, rollbackVisible, currentData } = state;
   function renderSelectItems() {
@@ -111,7 +112,13 @@ export default function InitAllocationComponent() {
         data={currentData}
         getTableData={getTableData}
       />
-      <RollbackApplyComponent visible={rollbackVisible} close={handleModalCancel} />
+      <RollbackApplyComponent
+        allocationOperate={allocationOperate}
+        visible={rollbackVisible}
+        close={handleModalCancel}
+        data={currentData}
+        getTableData={getTableData}
+      />
     </React.Fragment>
   );
 }
