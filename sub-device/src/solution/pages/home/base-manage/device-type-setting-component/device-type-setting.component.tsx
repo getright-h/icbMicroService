@@ -4,6 +4,7 @@ import { useDeviceTypeSettingStore } from './device-type-setting.component.store
 import { devicetypeColumns } from './device-setting-column';
 import { TablePageTelComponent, IHeaderTitleComponent, ITableComponent } from '~/framework/components/component.module';
 import { Button, Input } from 'antd';
+import AddDeviceTypeModalComponent from './add-device-type-component/add-device-type.component';
 export default function DeviceTypeSettingComponent() {
   const { state } = useDeviceTypeSettingStore();
   const {
@@ -81,6 +82,7 @@ export default function DeviceTypeSettingComponent() {
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
       />
+      <AddDeviceTypeModalComponent />
     </div>
   );
 }
