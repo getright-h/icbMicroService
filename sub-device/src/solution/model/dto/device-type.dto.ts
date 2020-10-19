@@ -35,27 +35,27 @@ export interface IDeviceDetail {
 }
 // 新增设备类型
 export interface IAddDeviceTypeDTO {
-  id: string;
-  name : string; // 名称 ,
-alias : string; // 别名 ,
-image : string; // 图片 ,
-supplierId : string; // 供应商Id ,
-locationStyle : string; // 定位方式 ,
-isWideVoltage: boolean; // 是否宽电压 ,
-workVoltage : string; // 工作电压/电流 ,
-led : string; // LED ,
-batteryDesc : string; // 内置电池描述 ,
-standbyCurrent : string; // 待机电流 ,
-color : string; // 颜色 ,
-size : string; // 尺寸 ,
-weight : string; // 重量 ,
-waterProof : string; // 防水等级 ,
-functionMark : string; // 功能标志 ,
-instructionsMark : string; // 指令标志 ,
-alarmMark : string; // 告警标志 ,
-isWired: boolean; // 是否有线 ,
-sort: number; // 排序 ,
-remark : string; // 备注
+  id?: string;
+  name ?: string; // 名称 ,
+alias ?: string; // 别名 ,
+image ?: string; // 图片 ,
+supplierId ?: string; // 供应商Id ,
+locationStyle ?: string; // 定位方式 ,
+isWideVoltage?: boolean; // 是否宽电压 ,
+workVoltage ?: string; // 工作电压/电流 ,
+led ?: string; // LED ,
+batteryDesc ?: string; // 内置电池描述 ,
+standbyCurrent ?: string; // 待机电流 ,
+color ?: string; // 颜色 ,
+size ?: string; // 尺寸 ,
+weight ?: string; // 重量 ,
+waterProof ?: string; // 防水等级 ,
+functionMark ?: string; // 功能标志 ,
+instructionsMark ?: string; // 指令标志 ,
+alarmMark ?: string; // 告警标志 ,
+isWired?: boolean; // 是否有线 ,
+sort?: number; // 排序 ,
+remark ?: string; // 备注
 }
 // 删除设备型号 && 设备详情
 export interface IDeviceTypeDTO  {

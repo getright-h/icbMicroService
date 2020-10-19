@@ -52,5 +52,7 @@ export const ROUTERS = {
   supplierSetting: () =>
     import('~/solution/pages/home/base-manage/supplier-setting-component/supplier-setting.component'),
   deviceTypeSetting: () =>
-    import('~/solution/pages/home/base-manage/device-type-setting-component/device-type-setting.component')
+    import('~/solution/pages/home/base-manage/device-type-setting-component/device-type-setting.component'),
+  addSupplier: () =>
+    import('~/solution/pages/home/base-manage/supplier-setting-component/add-supplier-component/add-supplier.component')
 };

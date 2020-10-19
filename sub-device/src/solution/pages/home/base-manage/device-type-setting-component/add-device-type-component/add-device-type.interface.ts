@@ -2,4 +2,18 @@
  * @export state变量定义和初始化
  * @class IAddDeviceTypeState
  */
-export class IAddDeviceTypeState {}
+import { IAddDeviceTypeDTO } from '~model/dto/device-type.dto';
+export class IAddDeviceTypeState {
+  imageList: any[] = [];
+  searchForm: IAddDeviceTypeDTO = {
+    supplierId: '930c550d87b3cd2b483108d85bebd3cd'
+  };
+  submitLoading: boolean;
+  visible: boolean;
+}
+
+export interface IAddDeviceType {
+  visible: boolean;
+  fetchData: Function;
+  close: Function;
+}

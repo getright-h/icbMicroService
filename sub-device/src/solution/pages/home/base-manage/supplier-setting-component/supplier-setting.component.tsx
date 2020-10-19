@@ -2,33 +2,43 @@ import * as React from 'react';
 import style from './supplier-setting.component.less';
 import { useSupplierSettingStore } from './supplier-setting.component.store';
 import { sppplierColumns } from './supplier-setting-column';
-import { TablePageTelComponent, IHeaderTitleComponent, ITableComponent } from '~/framework/components/component.module';
+import {
+  TablePageTelComponent,
+  IHeaderTitleComponent,
+  ITableComponent,
+  ISelectLoadingComponent
+} from '~/framework/components/component.module';
+import { ModalType } from '../base-manage.const';
+import AddSupplierComponent from './add-supplier-component/add-supplier.component';
 import { Button, Input, Select } from 'antd';
 export default function SupplierSettingComponent() {
   const {
     state,
-    callbackAction,
     changeTablePageIndex,
     onChange,
     searchClick,
     searchValueChange,
-    getMonitorGroupList
+    getMonitorGroupList,
+    callbackAction,
+    handleCloseVisible,
+    getTableList
   } = useSupplierSettingStore();
-  const { isLoading, searchForm = {}, tableData, total } = state;
+  const { isLoading, searchForm = {}, tableData, total, addSupplierVisible } = state;
   function renderSelectItems() {
     return (
       <>
         <div className="push-search-item">
-          <span className="label">查询设备型号:</span>
-          <Select
-            allowClear
-            placeholder="请输入设备号/车架号"
-            onChange={e => {
-              onChange(e, 'keyword');
-            }}
-          >
-            {' '}
-          </Select>
+          <span className="label">选择供应商:</span>
+          <ISelectLoadingComponent
+            reqUrl={'querySupplierList'}
+            placeholder="输入供应商名称"
+            getCurrentSelectInfo={(value: any, option: any) => onChange(value, 'supplier')}
+          />
+        </div>
+        <div className="push-search-item">
+          <Button type="primary" onClick={searchClick}>
+            查询
+          </Button>
         </div>
       </>
     );
@@ -36,11 +46,8 @@ export default function SupplierSettingComponent() {
   function renderSearchButtons() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary" onClick={searchClick}>
-          查询
-        </Button>
-        <Button type="primary" onClick={searchClick}>
-          新增设备型号
+        <Button type="primary" onClick={() => callbackAction(ModalType.ADD)}>
+          新增供应商
         </Button>
       </div>
     );
@@ -82,6 +89,7 @@ export default function SupplierSettingComponent() {
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
       />
+      <AddSupplierComponent close={handleCloseVisible} visible={addSupplierVisible} />
     </div>
   );
 }

@@ -26,5 +26,11 @@ export const baseManageRoutes: IRoute[] = [
     component: ROUTERS.deviceTypeSetting,
     lazyload: true,
     exact: true
+  },
+  {
+    path: `${MODULE_PATH}/addSupplier`,
+    component: ROUTERS.addSupplier,
+    lazyload: true,
+    exact: true
   }
 ];
