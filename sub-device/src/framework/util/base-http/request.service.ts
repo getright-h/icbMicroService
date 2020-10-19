@@ -36,6 +36,8 @@ class RequestService {
     let returnInfo = process.env.MAIN;
     if (!!~url.indexOf('VerifyCode')) {
       returnInfo = process.env.LOGIN;
+    } else if (!!~url.indexOf('vehicle')) {
+      returnInfo = process.env.MONITOR;
     } else {
       returnInfo = process.env.MAIN;
     }

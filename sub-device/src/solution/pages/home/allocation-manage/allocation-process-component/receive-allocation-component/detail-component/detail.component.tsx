@@ -129,7 +129,7 @@ export default function DetailComponent() {
       {/* 此处申请驳回将 退回 待确认 待验货 */}
       <IHeaderTitleComponent pageName={'调拨单详情'} className="flexJusBetw">
         {[
-          ALLOW_FLOW_ENUM.Reject,  // 已驳回
+          ALLOW_FLOW_ENUM.Reject, // 已驳回
           ALLOW_FLOW_ENUM.Inspection, // 待验货
           ALLOW_FLOW_ENUM.Returning, // 退货中
           ALLOW_FLOW_ENUM.Identification // 已收货
