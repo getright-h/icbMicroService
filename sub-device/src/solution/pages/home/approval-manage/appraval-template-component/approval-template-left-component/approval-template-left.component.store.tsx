@@ -145,8 +145,21 @@ export function useApprovalTemplateLeftStore() {
         [key]: value
       }
     });
-    // TODO:
-    // searchCurrentSelectInfo(getState().loadStoreOrganizationParams);
+    searchCurrentSelectInfo(getState().loadStoreOrganizationParams);
+  }
+
+  // 选择当前的机构信息，这边进行搜索
+  function searchCurrentSelectInfo(params: { typeId: string; id: string }) {
+    warehouseListService.queryStoreOrganization(params).subscribe(res => {
+      const expandedKeys: string[] = [];
+      res.forEach(item => {
+        expandedKeys.push(item.id);
+      });
+
+      setStateWrap({
+        expandedKeys
+      });
+    });
   }
 
   function closeAddTemplateTypeModal(isRefresh: boolean, id: string) {

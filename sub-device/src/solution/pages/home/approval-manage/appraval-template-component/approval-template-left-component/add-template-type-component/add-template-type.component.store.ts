@@ -3,15 +3,17 @@ import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { EventDataNode } from 'antd/lib/tree';
 import { forkJoin } from 'rxjs';
 import { WarehouseListService } from '~/solution/model/services/warehouse-list.service';
-import { dealWithTreeData, updateTreeData } from '~/framework/util/common/treeFunction';
+import { dealWithTreeData, getCheckedList, updateTreeData } from '~/framework/util/common/treeFunction';
 import { TREE_MAP } from '../../appraval-template.interface';
 import { useEffect, useContext } from 'react';
 import { IGlobalState } from '~/solution/context/global/global.interface';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 import { QueryStoreOrganizationReturn } from '~/solution/model/dto/warehouse-list.dto';
+import { DataNode } from 'rc-tree/lib/interface';
+import _ from 'lodash';
 
 export function useAddTemplateTypeStore(props: IAddTemplateTypeProps) {
-  const { state, setStateWrap } = useStateStore(new IAddTemplateTypeState());
+  const { state, setStateWrap, getState } = useStateStore(new IAddTemplateTypeState());
   const warehouseListService: WarehouseListService = new WarehouseListService();
   const { gState }: IGlobalState = useContext(GlobalContext);
   useEffect(() => {
@@ -37,10 +39,11 @@ export function useAddTemplateTypeStore(props: IAddTemplateTypeProps) {
   }
 
   function onCheck(checkedKeys: any) {
-    console.log(checkedKeys);
+    const checkedObject = getCheckedList(state.treeData, checkedKeys);
 
     setStateWrap({
-      checkedKeys
+      checkedKeys,
+      checkedObject
     });
   }
 
@@ -65,18 +68,59 @@ export function useAddTemplateTypeStore(props: IAddTemplateTypeProps) {
   function queryStoreOrganizationListSub(parentId: string, treeNode: EventDataNode, resolve: Function) {
     forkJoin(warehouseListService.queryStoreOrganizationListSub({ parentId })).subscribe((res: any) => {
       treeNode.children = [...dealWithTreeData(res[1], TREE_MAP, true), ...dealWithTreeData(res[0], TREE_MAP, false)];
+
+      const treeData = updateTreeData(state.treeData, treeNode.key, treeNode.children);
+      const checkedObject = getCheckedList(treeData, state.checkedKeys);
+      // 统计现在勾选的节点数
       setStateWrap({
-        treeData: updateTreeData(state.treeData, treeNode.key, treeNode.children)
+        treeData,
+        checkedObject
       });
       resolve();
     });
   }
 
-  function getCurrentSelectInfo<T>(key: string, value: string) {}
+  // 搜索得到想要的key获取当前组
+  function getCurrentSelectInfo<T>(value: T, key: string) {
+    setStateWrap({
+      loadStoreOrganizationParams: {
+        ...state.loadStoreOrganizationParams,
+        [key]: value
+      }
+    });
+    searchCurrentSelectInfo(getState().loadStoreOrganizationParams);
+  }
+
+  // 选择当前的机构信息，这边进行搜索
+  function searchCurrentSelectInfo(params: { typeId: string; id: string }) {
+    warehouseListService.queryStoreOrganization(params).subscribe(res => {
+      const expandedKeys: string[] = [];
+      res.forEach(item => {
+        expandedKeys.push(item.id);
+      });
+
+      setStateWrap({
+        expandedKeys
+      });
+    });
+  }
 
   function onExpand(expandedKeys: []) {
     setStateWrap({
       expandedKeys
+    });
+  }
+
+  function onChangeHaveChooseShop(id: string) {
+    document.getElementById(id).focus();
+  }
+
+  function removeHaveChecked(item: DataNode) {
+    const checkedKeys = state.checkedKeys.filter(option => {
+      return option !== item.key;
+    });
+    setStateWrap({
+      checkedKeys
     });
   }
 
@@ -86,5 +130,15 @@ export function useAddTemplateTypeStore(props: IAddTemplateTypeProps) {
       queryStoreOrganizationListSub(treeNode.id, treeNode, resolve);
     });
   }
-  return { state, handleOk, handleCancel, getCurrentSelectInfo, onLoadData, onExpand, onCheck };
+  return {
+    state,
+    handleOk,
+    onChangeHaveChooseShop,
+    handleCancel,
+    getCurrentSelectInfo,
+    onLoadData,
+    onExpand,
+    removeHaveChecked,
+    onCheck
+  };
 }
