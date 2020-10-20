@@ -5,14 +5,18 @@ import { Modal, Form, Input, Radio } from 'antd';
 import { ISelectLoadingComponent, IUploadImgComponent } from '~framework/components/component.module';
 import { IAddDeviceType } from './add-device-type.interface';
 export default function AddDeviceTypeModalComponent(props: IAddDeviceType) {
-  const { state, onChange, onSubmit } = useAddDeviceTypeStore();
+  const { state, onChange, onSubmit } = useAddDeviceTypeStore(props);
   const { searchForm = {}, imageList = [] } = state;
-  const { visible, close } = props;
+  const { visible, close, data = {} } = props;
 
   return (
     <Modal title={'新增设备型号'} visible={visible} width={700} onOk={onSubmit} onCancel={() => close()}>
       {' '}
-      <Form>
+      <Form
+        initialValues={{
+          ...data
+        }}
+      >
         <div className={style.rowList}>
           <Form.Item label="设备型号">
             <Input

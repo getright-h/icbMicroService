@@ -8,4 +8,7 @@ export class IDeviceTypeSettingState {
     size: 10
   };
   addDeviceTypeVisible = false;
+  tableData: any[] = [];
+  currentData: any = {};
+  total = 0;
 }

@@ -1,19 +1,19 @@
 import * as React from 'react';
-import { ModalType } from '~shared/constant/common.const';
+import { ModalType } from '../base-manage.const';
 import { Space } from 'antd';
 export function devicetypeColumns(callbackAction: Function) {
   return [
     {
       title: '设备型号',
-      dataIndex: 'deviceType'
+      dataIndex: 'name'
     },
     {
       title: '供应商',
-      dataIndex: 'supplier'
+      dataIndex: 'supplierName'
     },
     {
       title: '创建人',
-      dataIndex: 'creator'
+      dataIndex: 'creatorName'
     },
     {
       title: '创建时间',
@@ -27,7 +27,7 @@ export function devicetypeColumns(callbackAction: Function) {
         <Space>
           <a
             onClick={() => {
-              callbackAction(ModalType.LOOK, data);
+              callbackAction(ModalType.ALERT, data);
             }}
             key={0}
           >
@@ -35,7 +35,7 @@ export function devicetypeColumns(callbackAction: Function) {
           </a>
           <a
             onClick={() => {
-              callbackAction(ModalType.LOOK, data);
+              callbackAction(ModalType.DEL, data);
             }}
             key={1}
           >

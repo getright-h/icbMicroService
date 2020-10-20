@@ -50,26 +50,13 @@ export default function DeviceTypeSettingComponent() {
     );
   }
   function RenderTable() {
-    const data = [];
-    for (let i = 0; i < 46; i++) {
-      data.push({
-        key: i,
-        supplier: `owner ${i}`,
-        creator: 156654651654,
-        createTime: Math.random()
-          .toString(16)
-          .slice(4, 16),
-        contract: i
-      });
-    }
-
     return (
       <ITableComponent
         columns={devicetypeColumns(callbackAction)}
         isLoading={isLoading}
         pageIndex={searchForm.index}
         pageSize={searchForm.size}
-        data={data}
+        data={tableData}
         total={total}
         isPagination={true}
         changeTablePageIndex={(index: number, pageSize: number) => changeTablePageIndex(index, pageSize)}

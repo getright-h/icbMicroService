@@ -16,4 +16,5 @@ export interface IAddDeviceType {
   visible: boolean;
   fetchData: Function;
   close: Function;
+  data: any;
 }

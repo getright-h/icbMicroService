@@ -14,9 +14,10 @@ export function useDeviceTypeSettingStore() {
   // 获取设备型号列表
   function getTableList() {
     const { searchForm } = state;
-    deviceTypeService.queryStockDevicePagedList(searchForm).subscribe(
+    deviceTypeService.queryDeviceTypePagedList(searchForm).subscribe(
       (res: any) => {
         console.log(res);
+        setStateWrap({ tableData: res.dataList || [] });
       },
       (error: any) => {
         console.log(error);
@@ -27,6 +28,9 @@ export function useDeviceTypeSettingStore() {
     switch (actionType) {
       case ModalType.ADD:
         setStateWrap({ addDeviceTypeVisible: true });
+        break;
+      case ModalType.ALERT:
+        setStateWrap({ addDeviceTypeVisible: true, currentData: data });
         break;
     }
   }
