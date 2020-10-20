@@ -17,6 +17,7 @@ export class IAppravalTemplateState {
     size: PAGE_SIZE
   };
   total = 0;
+  addMoveTemplateVisible = false;
   tableData: any = [];
 }
 export const TREE_MAP = {

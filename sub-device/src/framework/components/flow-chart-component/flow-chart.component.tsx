@@ -2,7 +2,6 @@ import * as React from 'react';
 import style from './flow-chart.component.less';
 import { useFlowChartStore } from './flow-chart.component.store';
 import { Divider } from 'antd';
-import { CaretDownOutlined } from '@ant-design/icons';
 
 export default function FlowChartComponent() {
   const data = [

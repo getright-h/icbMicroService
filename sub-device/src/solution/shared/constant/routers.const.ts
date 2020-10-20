@@ -35,5 +35,9 @@ export const ROUTERS = {
   approvalManageModule: () => import('~pages/home/approval-manage/approval-manage.module'),
   approvalManage: () => import('~pages/home/approval-manage/approval-manage-component/approval-manage.component'),
   approvalTemplate: () =>
-    import('~/solution/pages/home/approval-manage/appraval-template-component/appraval-template.component')
+    import('~/solution/pages/home/approval-manage/appraval-template-component/appraval-template.component'),
+  addTemplate: () =>
+    import(
+      '~/solution/pages/home/approval-manage/appraval-template-component/add-template-component/add-template.component'
+    )
 };
