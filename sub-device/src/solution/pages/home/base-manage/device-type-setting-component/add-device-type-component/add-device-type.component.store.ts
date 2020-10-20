@@ -10,18 +10,30 @@ export function useAddDeviceTypeStore(props: IAddDeviceType) {
   const deviceTypeService: DeviceTypeService = new DeviceTypeService();
   const [form] = Form.useForm();
   function onSubmit() {
+    setStateWrap({ submitLoading: true });
+    form
+      .validateFields()
+      .then(value => {
+        console.log(value, 22);
+        addDeviceType();
+      })
+      .catch(() => {
+        setStateWrap({ submitLoading: false });
+      });
+  }
+
+  function addDeviceType() {
     const { searchForm, imageList } = state;
     searchForm.image = imageList.toString();
-    setStateWrap({ submitLoading: true });
+
     deviceTypeService.insetDeviceType(searchForm).subscribe(
       (res: any) => {
-        console.log(res);
+        setStateWrap({ submitLoading: false });
       },
       (error: any) => {
         console.log(error);
       }
     );
-    setStateWrap({ submitLoading: false });
   }
   function onChange(value: any, valueType: string) {
     const { searchForm } = state;

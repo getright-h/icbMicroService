@@ -305,6 +305,4 @@ export enum ModalType {
 /**************************************数据报表************************************* */
 
 //设备路线表 环节
-export enum DEVICE_ROUTE_ENUM{
-
-}
+export enum DEVICE_ROUTE_ENUM {}

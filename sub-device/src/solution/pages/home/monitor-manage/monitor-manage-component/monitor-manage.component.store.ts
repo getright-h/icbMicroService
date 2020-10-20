@@ -3,7 +3,7 @@ import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect } from 'react';
 import { ShowNotification } from '~/framework/util/common';
 import { AllocationManageService } from '~/solution/model/services/allocation-manage.service';
-import { ModalType } from '~shared/constant/common.const';
+import { ModalType } from '../monitor-manage.const';
 import { Modal } from 'antd';
 import { Subscription } from 'rxjs';
 import { useHistory } from 'react-router-dom';
@@ -48,40 +48,29 @@ export function useMonitorManageStore() {
     getTableData();
   }
 
-  function callbackAction<T>(actionType: number, data: T) {
-    setStateWrap({ currentId: data.id, currentData: { ...data, actionType }, currentActionType: actionType });
+  function callbackAction<T>(actionType: number, data?: T) {
+    setStateWrap({ currentData: { ...data } });
     switch (actionType) {
-      case ModalType.LOOK:
-        history.push(`/home/allocation/receiveDetail/${data.id}`);
+      case ModalType.ADD_GROUP:
+        setStateWrap({ addGroupModalVisible: true });
         break;
-      case ModalType.RECIVE:
-        renderReciveModal(data);
+      case ModalType.ADD_CAR:
+        setStateWrap({ addCarModalVisible: true });
         break;
-      case ModalType.REJECT:
-        setStateWrap({
-          rejectVisibleModal: true
-        });
+      case ModalType.DEL:
+        renderDelMonitorModal(data);
         break;
-      case ModalType.MOVE:
-        break;
-      case ModalType.PASS:
-        break;
-      case ModalType.SET_RETURN:
-        setStateWrap({
-          rejectVisibleModal: true
-        });
-        break;
-      default:
+      case ModalType.BATCH_TRANFROM:
         break;
     }
   }
   /**
-   * 渲染接收Modal操作
+   * 渲染删除监控组
    * @param data
    */
-  function renderReciveModal(data: any) {
+  function renderDelMonitorModal(data: any) {
     confirm({
-      content: '是否确认接收',
+      content: '是否确认删除',
       onOk: () => {}
     });
   }
@@ -95,7 +84,7 @@ export function useMonitorManageStore() {
   }
 
   function handleModalCancel() {
-    setStateWrap({ visibleModal: false, rejectVisibleModal: false });
+    setStateWrap({ addGroupModalVisible: false, addCarModalVisible: false });
   }
 
   return {

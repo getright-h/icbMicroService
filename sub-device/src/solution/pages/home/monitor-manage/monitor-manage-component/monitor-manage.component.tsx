@@ -5,7 +5,8 @@ import { useMonitorManageStore } from './monitor-manage.component.store';
 import { IHeaderTitleComponent, ITableComponent } from '~framework/components/component.module';
 import { monitorColumns } from './monitor-manage-column';
 import { Form, Button, Input } from 'antd';
-
+import { ModalType } from '../monitor-manage.const';
+import AddMonitorGroupComponent from './add-monitor-group-component/add-monitor-group.component';
 export default function MonitorManageComponent() {
   const {
     state,
@@ -13,10 +14,11 @@ export default function MonitorManageComponent() {
     changeTablePageIndex,
     onChange,
     searchClick,
+    handleModalCancel,
     searchValueChange,
     getMonitorGroupList
   } = useMonitorManageStore();
-  const { isLoading, searchForm = {}, tableData, total } = state;
+  const { isLoading, searchForm = {}, tableData, total, currentData, addGroupModalVisible } = state;
   function renderSelectItems() {
     return (
       <>
@@ -89,10 +91,12 @@ export default function MonitorManageComponent() {
     <div className={style.monitor}>
       <IHeaderTitleComponent pageName={'监控组管理'}>
         <div className={style.btnArea}>
-          <Button>添加监控组</Button>
+          <Button onClick={() => callbackAction(ModalType.ADD_GROUP)}>添加监控组</Button>
           <div>
-            <Button>添加监控车辆</Button>
-            <Button style={{ marginLeft: 20 }}>批量转组</Button>
+            <Button onClick={() => callbackAction(ModalType.ADD_CAR)}>添加监控车辆</Button>
+            <Button style={{ marginLeft: 20 }} onClick={() => callbackAction(ModalType.BATCH_TRANFROM)}>
+              批量转组
+            </Button>
           </div>
         </div>
       </IHeaderTitleComponent>
@@ -102,6 +106,7 @@ export default function MonitorManageComponent() {
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
       />
+      <AddMonitorGroupComponent close={handleModalCancel} data={currentData} visible={addGroupModalVisible} />
     </div>
   );
 }
