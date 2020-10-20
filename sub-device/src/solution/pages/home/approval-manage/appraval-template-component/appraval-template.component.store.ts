@@ -12,7 +12,9 @@ export function useApprovalTemplateStore(appravalTemplateState: { currentSelectN
 
   function addTemplate() {}
 
+  function moveTemplate() {}
+
   function handleFormDataChange(key: string, value: string) {}
 
-  return { state, getTableData, changeTablePageIndex, callbackAction, addTemplate, handleFormDataChange };
+  return { state, getTableData, changeTablePageIndex, callbackAction, addTemplate, handleFormDataChange, moveTemplate };
 }

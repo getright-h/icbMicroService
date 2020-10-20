@@ -1,40 +1,21 @@
 import { IApprovalTemplateLeftState } from './approval-template-left.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
-import { IGlobalState } from '~/solution/context/global/global.interface';
-import { useContext, useEffect, Key } from 'react';
+import { useContext, Key, useRef } from 'react';
 import * as React from 'react';
-import { GlobalContext } from '~/solution/context/global/global.provider';
 import { WarehouseListService } from '~/solution/model/services/warehouse-list.service';
-import { dealWithTreeData, deleteTreeDataByKey, updateTreeData } from '~/framework/util/common/treeFunction';
-import { QueryStoreOrganizationReturn } from '~/solution/model/dto/warehouse-list.dto';
-import { TREE_MAP } from '../appraval-template.interface';
-import { forkJoin } from 'rxjs';
 import { EventDataNode } from 'antd/lib/tree';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { ShowNotification } from '~/framework/util/common';
 import confirm from 'antd/lib/modal/confirm';
 import { setTreeSelectNode } from '../appraval-template-redux/appraval-template-action';
 import { AppravalTemplateManageContext } from '../appraval-template.component';
+import { OrganizationExportFunction } from '~/solution/components/organization-controller-component/organization-controller.interface';
 
 export function useApprovalTemplateLeftStore() {
   const { dispatch } = useContext(AppravalTemplateManageContext);
-  const { state, setStateWrap, getState } = useStateStore(new IApprovalTemplateLeftState());
-  const { gState }: IGlobalState = useContext(GlobalContext);
-
+  const { state, setStateWrap } = useStateStore(new IApprovalTemplateLeftState());
+  const organizationControllerRef: { current: OrganizationExportFunction } = useRef();
   const warehouseListService: WarehouseListService = new WarehouseListService();
-  useEffect(() => {
-    queryOrganizationTypeListByTypeId();
-  }, []);
-
-  // 根据根据系统id查找机构类型
-  function queryOrganizationTypeListByTypeId(id?: string) {
-    warehouseListService.queryStoreOrganization({ typeId: gState.myInfo.typeId, id }).subscribe(res => {
-      const treeData = dealWithTreeData<QueryStoreOrganizationReturn>(res, TREE_MAP, false);
-      setStateWrap({
-        treeData
-      });
-    });
-  }
 
   // 点击选择当前的组
   function onSelect(selectedKeys: Key[], e: { node: EventDataNode }) {
@@ -79,10 +60,7 @@ export function useApprovalTemplateLeftStore() {
 
   // 在当前的tree上操作并显示相应的效果
   function deleteCurrentTreeData(id: string) {
-    const treeData = deleteTreeDataByKey(getState().treeData, id);
-    setStateWrap({
-      treeData: treeData
-    });
+    organizationControllerRef.current.deleteCurrentTreeData(id);
   }
 
   // 组的操作
@@ -108,60 +86,6 @@ export function useApprovalTemplateLeftStore() {
     });
   }
 
-  // 点击展开加载数据
-  function onLoadData(treeNode: EventDataNode | any): Promise<void> {
-    return new Promise(resolve => {
-      queryStoreOrganizationListSub(treeNode.id, treeNode, resolve);
-    });
-  }
-
-  /**
-   *
-   * 根据父级Id查询子级机构
-   * @param {string} id 父级id
-   */
-  function queryStoreOrganizationListSub(parentId: string, treeNode: EventDataNode, resolve: Function) {
-    forkJoin(
-      warehouseListService.queryStoreOrganizationListSub({ parentId }),
-      // 查询组的列表
-      warehouseListService.queryStoreListByOrganizationId({ organizationId: parentId })
-    ).subscribe((res: any) => {
-      treeNode.children = [
-        ...dealWithTreeData(res[1], TREE_MAP, true, approvalAction),
-        ...dealWithTreeData(res[0], TREE_MAP, false)
-      ];
-      setStateWrap({
-        treeData: updateTreeData(state.treeData, treeNode.key, treeNode.children)
-      });
-      resolve();
-    });
-  }
-
-  // 搜索得到想要的key获取当前组
-  function getCurrentSelectInfo<T>(value: T, key: string) {
-    setStateWrap({
-      loadStoreOrganizationParams: {
-        ...state.loadStoreOrganizationParams,
-        [key]: value
-      }
-    });
-    searchCurrentSelectInfo(getState().loadStoreOrganizationParams);
-  }
-
-  // 选择当前的机构信息，这边进行搜索
-  function searchCurrentSelectInfo(params: { typeId: string; id: string }) {
-    warehouseListService.queryStoreOrganization(params).subscribe(res => {
-      const expandedKeys: string[] = [];
-      res.forEach(item => {
-        expandedKeys.push(item.id);
-      });
-
-      setStateWrap({
-        expandedKeys
-      });
-    });
-  }
-
   function closeAddTemplateTypeModal(isRefresh: boolean, id: string) {
     setStateWrap({
       isEditApprovalModal: false,
@@ -169,7 +93,7 @@ export function useApprovalTemplateLeftStore() {
       editApprovalId: ''
     });
 
-    isRefresh && queryOrganizationTypeListByTypeId();
+    isRefresh && organizationControllerRef.current.queryOrganizationTypeListByTypeId();
   }
 
   function onExpand(expandedKeys: []) {
@@ -178,5 +102,16 @@ export function useApprovalTemplateLeftStore() {
     });
   }
 
-  return { state, addTemplateType, onLoadData, getCurrentSelectInfo, onSelect, closeAddTemplateTypeModal, onExpand };
+  const queryChildInfo = (item: any) => warehouseListService.queryStoreListByOrganizationId(item);
+
+  return {
+    state,
+    addTemplateType,
+    approvalAction,
+    onSelect,
+    closeAddTemplateTypeModal,
+    organizationControllerRef,
+    onExpand,
+    queryChildInfo
+  };
 }

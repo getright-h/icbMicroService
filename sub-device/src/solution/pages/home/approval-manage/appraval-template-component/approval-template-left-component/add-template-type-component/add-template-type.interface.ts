@@ -13,12 +13,7 @@ export class IAddTemplateTypeProps {
 
 export class IAddTemplateTypeState {
   expandedKeys: string[] = [];
-  loadStoreOrganizationParams = {
-    typeId: 'c59c75eec2d3cc075cca08d84386bcb9',
-    id: ''
-  };
   checkedKeys: string[] = [];
   confirmLoading = false;
-  treeData: DataNode[] = [];
   checkedObject: DataNode[] = [];
 }

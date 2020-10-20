@@ -1,64 +1,26 @@
-import { IWarehouseListLeftState, TREE_MAP } from './warehouse-list-left.interface';
+import { IWarehouseListLeftState } from './warehouse-list-left.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
-import { Key, useEffect, useContext } from 'react';
+import { Key, useContext, useRef } from 'react';
 import * as React from 'react';
 import { WarehouseListService } from '~/solution/model/services/warehouse-list.service';
-import { IGlobalState } from '~/solution/context/global/global.interface';
-import { GlobalContext } from '~/solution/context/global/global.provider';
-import { dealWithTreeData, deleteTreeDataByKey, updateTreeData } from '~/framework/util/common/treeFunction';
-import { QueryStoreOrganizationReturn } from '~/solution/model/dto/warehouse-list.dto';
+import { deleteTreeDataByKey } from '~/framework/util/common/treeFunction';
 import { EventDataNode } from 'antd/lib/tree';
 import { WarehouseListManageContext } from '../warehouse-list.component';
-import { openOrCloseAddWarehouseModal, setTreeSelectNode } from '../warehouse-list-redux/warehouse-list-action';
-import { forkJoin } from 'rxjs';
+import { setTreeSelectNode } from '../warehouse-list-redux/warehouse-list-action';
 import confirm from 'antd/lib/modal/confirm';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { ShowNotification } from '../../../../../../framework/util/common/showNotification';
+import { OrganizationExportFunction } from '~/solution/components/organization-controller-component/organization-controller.interface';
 
 export function useWarehouseListLeftStore() {
   const { dispatch } = useContext(WarehouseListManageContext);
-  const { gState }: IGlobalState = useContext(GlobalContext);
-
+  const organizationControllerRef: { current: OrganizationExportFunction } = useRef();
   const warehouseListService: WarehouseListService = new WarehouseListService();
-  const { state, setStateWrap, getState } = useStateStore(new IWarehouseListLeftState());
-  useEffect(() => {
-    queryOrganizationTypeListByTypeId();
-  }, []);
-
-  // 根据根据系统id查找机构类型
-  function queryOrganizationTypeListByTypeId(id?: string) {
-    warehouseListService.queryStoreOrganization({ typeId: gState.myInfo.typeId, id }).subscribe(res => {
-      const treeData = dealWithTreeData<QueryStoreOrganizationReturn>(res, TREE_MAP, false);
-      setStateWrap({
-        treeData
-      });
-    });
-  }
+  const { state, setStateWrap } = useStateStore(new IWarehouseListLeftState());
 
   // 添加仓库，显示弹窗
   function addWarehouse() {
     setStateWrap({ addWarehouseVisible: true });
-  }
-
-  /**
-   *
-   * 根据父级Id查询子级机构
-   * @param {string} id 父级id
-   */
-  function queryStoreOrganizationListSub(parentId: string, treeNode: EventDataNode, resolve: Function) {
-    forkJoin(
-      warehouseListService.queryStoreOrganizationListSub({ parentId }),
-      warehouseListService.queryStoreListByOrganizationId({ organizationId: parentId })
-    ).subscribe((res: any) => {
-      treeNode.children = [
-        ...dealWithTreeData(res[1], TREE_MAP, true, warehouseAction),
-        ...dealWithTreeData(res[0], TREE_MAP, false)
-      ];
-      setStateWrap({
-        treeData: updateTreeData(state.treeData, treeNode.key, treeNode.children)
-      });
-      resolve();
-    });
   }
 
   // 仓库的操作
@@ -75,6 +37,8 @@ export function useWarehouseListLeftStore() {
       </div>
     );
   }
+
+  const queryChildInfo = (item: any) => warehouseListService.queryStoreListByOrganizationId(item);
 
   // 删除仓库的弹窗
   function deleteWarehouse(element: any) {
@@ -106,10 +70,7 @@ export function useWarehouseListLeftStore() {
 
   // 在当前的tree上操作并显示相应的效果
   function deleteCurrentTreeData(id: string) {
-    const treeData = deleteTreeDataByKey(getState().treeData, id);
-    setStateWrap({
-      treeData: treeData
-    });
+    organizationControllerRef.current.deleteCurrentTreeData(id);
   }
 
   function editWarehouse(element: any) {
@@ -117,13 +78,6 @@ export function useWarehouseListLeftStore() {
       addWarehouseVisible: true,
       isEditWarehouseModal: true,
       editWarehouseId: element.id
-    });
-  }
-
-  // 点击展开加载数据
-  function onLoadData(treeNode: EventDataNode | any): Promise<void> {
-    return new Promise(resolve => {
-      queryStoreOrganizationListSub(treeNode.id, treeNode, resolve);
     });
   }
 
@@ -135,39 +89,13 @@ export function useWarehouseListLeftStore() {
     setTreeSelectNode(e.node, dispatch);
   }
 
-  // 搜索得到想要的key获取当前仓库
-  function getCurrentSelectInfo<T>(value: T, key: string) {
-    setStateWrap({
-      loadStoreOrganizationParams: {
-        ...state.loadStoreOrganizationParams,
-        [key]: value
-      }
-    });
-    searchCurrentSelectInfo(getState().loadStoreOrganizationParams);
-  }
-
-  // 选择当前的机构信息，这边进行搜索
-  function searchCurrentSelectInfo(params: { typeId: string; id: string }) {
-    warehouseListService.queryStoreOrganization(params).subscribe(res => {
-      const expandedKeys: string[] = [];
-      res.forEach(item => {
-        expandedKeys.push(item.id);
-      });
-
-      setStateWrap({
-        expandedKeys
-      });
-    });
-  }
-
   function closeAddWarehouseModal(isRefresh: boolean, id: string) {
     setStateWrap({
       isEditWarehouseModal: false,
       addWarehouseVisible: false,
       editWarehouseId: ''
     });
-
-    isRefresh && queryOrganizationTypeListByTypeId();
+    isRefresh && organizationControllerRef.current.queryOrganizationTypeListByTypeId();
   }
 
   function onExpand(expandedKeys: []) {
@@ -178,11 +106,13 @@ export function useWarehouseListLeftStore() {
 
   return {
     state,
-    onLoadData,
     onSelect,
-    getCurrentSelectInfo,
     addWarehouse,
+    warehouseAction,
     closeAddWarehouseModal,
-    onExpand
+    onExpand,
+
+    queryChildInfo,
+    organizationControllerRef
   };
 }

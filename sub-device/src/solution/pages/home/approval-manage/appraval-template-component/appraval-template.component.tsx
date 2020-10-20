@@ -20,6 +20,7 @@ export default function AppravalTemplateComponent() {
   const {
     state,
     changeTablePageIndex,
+    moveTemplate,
     callbackAction,
     addTemplate,
     handleFormDataChange,
@@ -72,6 +73,16 @@ export default function AppravalTemplateComponent() {
     );
   }
 
+  function renderOtherSearchBtns() {
+    return (
+      <div className="other-search-button-item">
+        <Button type="primary" onClick={() => moveTemplate()} loading={isLoading}>
+          移动模板
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <AppravalTemplateManageContext.Provider value={{ reduxState: appravalTemplateState, dispatch }}>
       <TablePageTelComponent
@@ -79,6 +90,7 @@ export default function AppravalTemplateComponent() {
         rightFlex={5}
         pageName={'仓库管理'}
         PageLeftComponent={ApprovalTemplateLeftComponent}
+        otherSearchBtns={renderOtherSearchBtns()}
         searchButton={renderSearchButtons()}
         selectItems={renderSelectItems()}
         table={renderTable()}

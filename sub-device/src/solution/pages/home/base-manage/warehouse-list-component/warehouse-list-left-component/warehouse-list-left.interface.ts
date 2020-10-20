@@ -9,7 +9,6 @@ export class IWarehouseListLeftState {
   };
   expandedKeys: string[] = [];
   treeSelectedKeys: string[] = [];
-  treeData: DataNode[] = [];
   isEditWarehouseModal = false;
   editWarehouseId: '';
   addWarehouseVisible: boolean;

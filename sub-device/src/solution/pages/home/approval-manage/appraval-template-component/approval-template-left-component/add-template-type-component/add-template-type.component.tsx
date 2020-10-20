@@ -3,35 +3,22 @@ import style from './add-template-type.component.less';
 import { useAddTemplateTypeStore } from './add-template-type.component.store';
 import { IAddTemplateTypeProps } from './add-template-type.interface';
 import { Button, Form, Input, Modal, Select, Tree } from 'antd';
-import { ISelectLoadingComponent } from '~/framework/components/component.module';
-import { GlobalContext } from '~/solution/context/global/global.provider';
 import _ from 'lodash';
 import { flatAtree } from '~/framework/util/common/treeFunction';
 import { HomeOutlined } from '@ant-design/icons';
+import OrganizationControllerComponent from '~/solution/components/organization-controller-component/organization-controller.component';
 const { Option } = Select;
 export default function AddTemplateTypeComponent(props: IAddTemplateTypeProps) {
-  const {
-    state,
-    handleOk,
-    handleCancel,
-    onChangeHaveChooseShop,
-    onExpand,
-    onCheck,
-    getCurrentSelectInfo,
-    onLoadData
-  } = useAddTemplateTypeStore(props);
+  const { state, handleOk, handleCancel, onChangeHaveChooseShop, onExpand, onCheck } = useAddTemplateTypeStore(props);
   const { isEdit, addApprovalTypeVisible } = props;
-  const { confirmLoading, expandedKeys, treeData, checkedKeys, checkedObject } = state;
-  const { gState } = React.useContext(GlobalContext);
+  const { confirmLoading, expandedKeys, checkedKeys, checkedObject } = state;
   function RenderLinkOrganization() {
     const checkedObjectFlat = React.useCallback(() => flatAtree(checkedObject), [checkedObject]);
     return (
       <div className={style.linkOrganization}>
         <div>
           <span>选择: </span>
-          <div className={style.chooseOrganization}>
-            <RenderTree />
-          </div>
+          <div className={style.chooseOrganization}>{RenderTree()}</div>
         </div>
         <div>
           <span>已选: </span>
@@ -79,32 +66,15 @@ export default function AddTemplateTypeComponent(props: IAddTemplateTypeProps) {
   }
 
   function RenderTree() {
+    const prganizationControllerComponentProps = {
+      expandedKeys,
+      onExpand,
+      getCheckedInfo: onCheck,
+      checkedKeys
+    };
     return (
       <div className={style.approvalListLeft}>
-        <div className={style.searchApproval}>
-          <ISelectLoadingComponent
-            placeholder="请输入机构名称"
-            width={'100%'}
-            showSearch
-            searchForm={{
-              systemId: gState.myInfo.systemId
-            }}
-            reqUrl="queryStoreOrganization"
-            getCurrentSelectInfo={value => getCurrentSelectInfo<string>(value, 'id')}
-          />
-        </div>
-        <div className={style.searchItem}>
-          <Tree
-            loadData={onLoadData}
-            expandedKeys={expandedKeys}
-            onExpand={onExpand}
-            checkedKeys={checkedKeys}
-            onCheck={onCheck}
-            blockNode
-            treeData={treeData}
-            checkable
-          />
-        </div>
+        <OrganizationControllerComponent checkable {...prganizationControllerComponentProps} />
       </div>
     );
   }
@@ -123,7 +93,7 @@ export default function AddTemplateTypeComponent(props: IAddTemplateTypeProps) {
         <Input placeholder="请输入模板类型" />
       </Form.Item>
       <Form.Item name="organization" label="关联机构" rules={[{ required: true }]}>
-        <RenderLinkOrganization />
+        {RenderLinkOrganization()}
       </Form.Item>
     </Modal>
   );
