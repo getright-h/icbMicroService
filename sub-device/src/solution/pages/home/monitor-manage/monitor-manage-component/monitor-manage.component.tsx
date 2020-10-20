@@ -1,8 +1,7 @@
 import * as React from 'react';
 import style from './monitor-manage.component.less';
-import { TablePageTelComponent } from '~/framework/components/component.module';
 import { useMonitorManageStore } from './monitor-manage.component.store';
-import { IHeaderTitleComponent, ITableComponent } from '~framework/components/component.module';
+import { IHeaderTitleComponent, ITableComponent, TablePageTelComponent } from '~framework/components/component.module';
 import { monitorColumns } from './monitor-manage-column';
 import { Form, Button, Input } from 'antd';
 import { ModalType } from '../monitor-manage.const';
