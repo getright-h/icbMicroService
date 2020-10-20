@@ -72,14 +72,14 @@ export const PAGES_MENU = {
           path: 'warehouse',
           title: '仓库设置'
         },
-        {
-          path: 'carTypeSetting',
-          title: '车型设置'
-        },
-        {
-          path: 'supplierSetting',
-          title: '供应商设置'
-        },
+        // {
+        //   path: 'carTypeSetting',
+        //   title: '车型设置'
+        // },
+        // {
+        //   path: 'supplierSetting',
+        //   title: '供应商设置'
+        // },
         {
           path: 'deviceTypeSetting',
           title: '设备型号设置'

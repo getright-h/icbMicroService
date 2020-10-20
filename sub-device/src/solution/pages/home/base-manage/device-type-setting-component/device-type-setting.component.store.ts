@@ -1,12 +1,12 @@
 import { IDeviceTypeSettingState } from './device-type-setting.interface';
 import { ModalType } from '../base-manage.const';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
-import { Form } from 'antd';
+import { Form, Modal } from 'antd';
 import { ShowNotification } from '~/framework/util/common';
 import { DeviceTypeService } from '~/solution/model/services/device-type.service';
 import { useEffect } from 'react';
 import { Subscription } from 'rxjs';
-
+const { confirm } = Modal;
 export function useDeviceTypeSettingStore() {
   const { state, setStateWrap } = useStateStore(new IDeviceTypeSettingState());
   const deviceTypeService: DeviceTypeService = new DeviceTypeService();
@@ -32,9 +32,20 @@ export function useDeviceTypeSettingStore() {
       case ModalType.ALERT:
         setStateWrap({ addDeviceTypeVisible: true, currentData: data });
         break;
+      case ModalType.DEL:
+        renderDelDeviceType(data);
+        break;
     }
   }
 
+  function renderDelDeviceType(data: any) {
+    confirm({
+      content: '确认删除设备',
+      onOk: () => {
+        console.log('object');
+      }
+    });
+  }
   function handleCloseVisible() {
     setStateWrap({
       addDeviceTypeVisible: false
