@@ -37,6 +37,7 @@ class RequestService {
     if (!!~url.indexOf('VerifyCode')) {
       returnInfo = process.env.LOGIN;
     } else if (!!~url.indexOf('vehicle/manage/') || !!~url.indexOf('dispatch/manage/')) {
+      returnInfo = process.env.VEHICLE;
     } else {
       returnInfo = process.env.MAIN;
     }

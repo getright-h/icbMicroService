@@ -6,20 +6,57 @@ import { Observable } from 'rxjs';
 
 export abstract class VoucherManageDTO {
   // 你的抽象方法，具体在 Service 中实现
-  abstract example(params: ExampleRequestParam): Observable<ExampleResponseResult>;
+  abstract getDispatchPagedList(params: DispatchListRequestParam): Observable<DispatchListResponse>;
+  abstract getDispatchDetail(id: string): Observable<DispatchDetail>;
+  abstract insertDispatch(params: SetDispatchParam): Observable<boolean>;
+  abstract setDispatch(params: SetDispatchParam): Observable<boolean>;
+  abstract deleteDispatch(id: string): Observable<boolean>;
 }
 
-// 示例 Dto
-export interface ExampleRequestParam {
-  // 示例参数
-  exampleParam1: string;
-  exampleParam2: string;
-  exampleParam3: string;
-  exampleParam4: string;
+export interface DispatchListRequestParam {
+  vinNo: string;
+  index: number;
+  size: number;
+  beginTime: number;
+  endTime: number;
 }
 
-// 响应 Dto
-export interface ExampleResponseResult {
-  data: any;
+export interface DispatchListResponse {
+  dataList: DispatchDetail[];
+  total: number;
   status: boolean;
+}
+
+export interface DispatchDetail {
+  id: string;
+  name: string;
+  time: string;
+  mobile: string;
+  address: string;
+  pictureList: string[];
+  remark: string;
+  createTime: string;
+  createTimeStamp: number;
+  creatorId: string;
+  creatorName: string;
+  deviceCodeList: DeviceItem[];
+  vinNo: string;
+}
+
+interface DeviceItem {
+  deviceCode: string;
+  typeId: string;
+  typeName: string;
+}
+
+export interface SetDispatchParam {
+  id?: string;
+  name: string;
+  time: string;
+  mobile: string;
+  address: string;
+  pictureList: string[];
+  remark: string;
+  deviceCodeList: DeviceItem[];
+  vinNo: string;
 }
