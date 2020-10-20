@@ -9,6 +9,7 @@ export class IRollbackApplyState {
   opinion: number = null;
   rejectAuditRemark = '';
   status: number;
+  deviceList: any[] = [];
 }
 /**
  * @export props变量定义和初始化

@@ -1,13 +1,23 @@
 import * as React from 'react';
 import style from './device-line.component.less';
 import { useDeviceLineStore } from './device-line.component.store';
-import { TablePageTelComponent, TimePickerComponent } from '~/framework/components/component.module';
+import { TablePageTelComponent } from '~/framework/components/component.module';
 import { IHeaderTitleComponent, ITableComponent } from '~framework/components/component.module';
 import { deviceLineColumns } from './device-line-column';
 import { Form, Button, Input, Select } from 'antd';
+import DeviceRouteModalComponent from './device-route-modal-component/device-route-modal.component';
 export default function DeviceLineComponent() {
-  const { state, onChange, searchClick, cleanClick, callbackAction, changeTablePageIndex } = useDeviceLineStore();
-  const { searchForm = {}, tableData, isLoading, total } = state;
+  const {
+    state,
+    form,
+    onChange,
+    searchClick,
+    searchClean,
+    getFlowNode,
+    changeTablePageIndex,
+    handleModalCancel
+  } = useDeviceLineStore();
+  const { searchForm = {}, tableData, isLoading, total, routeModalVisible, currentData } = state;
   const formItemLayout = {
     labelCol: {
       xs: { span: 24 },
@@ -20,24 +30,30 @@ export default function DeviceLineComponent() {
   };
   function renderSelectItems() {
     return (
-      <Form layout={'inline'} {...formItemLayout}>
-        <Form.Item label={'查找设备'}>
+      <Form layout={'inline'} {...formItemLayout} form={form}>
+        <Form.Item name={'deviceValue'} label={'查找设备'}>
           <Input
             style={{ width: 200 }}
             allowClear
             placeholder={'设备号, SIM卡号'}
             onChange={e => {
-              onChange(e.target.value, 'keyword');
+              onChange(e.target.value, 'deviceValue');
             }}
           ></Input>
         </Form.Item>
-        <Form.Item label={'环节'}>
-          <Select style={{ width: 100 }}>
+        <Form.Item label={'环节'} name={'route'}>
+          <Select
+            style={{ width: 100 }}
+            onChange={e => {
+              onChange(e, 'route');
+            }}
+          >
             <Select.Option value={-1}>全部</Select.Option>
-            <Select.Option value={1}>在库</Select.Option>
-            <Select.Option value={1}>遗失</Select.Option>
-            <Select.Option value={1}>调拨中</Select.Option>
-            <Select.Option value={1}>已绑定</Select.Option>
+            <Select.Option value={1}>不知道</Select.Option>
+            <Select.Option value={2}>在库</Select.Option>
+            <Select.Option value={3}>遗失</Select.Option>
+            <Select.Option value={4}>调拨中</Select.Option>
+            <Select.Option value={-100}>已绑定</Select.Option>
           </Select>
         </Form.Item>
       </Form>
@@ -49,7 +65,7 @@ export default function DeviceLineComponent() {
         <Button type="primary" onClick={searchClick}>
           查询
         </Button>
-        <Button type="primary" onClick={cleanClick}>
+        <Button type="primary" onClick={searchClean}>
           清空
         </Button>
       </div>
@@ -58,7 +74,7 @@ export default function DeviceLineComponent() {
   function RenderTable() {
     return (
       <ITableComponent
-        columns={deviceLineColumns(callbackAction)}
+        columns={deviceLineColumns(getFlowNode)}
         isLoading={isLoading}
         pageIndex={searchForm.index}
         pageSize={searchForm.size}
@@ -78,6 +94,7 @@ export default function DeviceLineComponent() {
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
       />
+      <DeviceRouteModalComponent visible={routeModalVisible} data={currentData} close={handleModalCancel} />
     </div>
   );
 }

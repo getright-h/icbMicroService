@@ -69,3 +69,11 @@ size : number;
 beginTime ?: number;
 endTime ?: number;
 }
+// 查询设备路径
+export interface DeviceTypeRoutePagedListDto {
+  index: number;
+  size: number;
+  route?: number;
+  deviceValue?: string;
+  StorePositionId?: string;
+}

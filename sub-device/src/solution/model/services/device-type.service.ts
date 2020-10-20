@@ -30,7 +30,8 @@ const DEVICE_TYPE = 'material/manage/deviceType';
 const QUERY_DEVICE_TYPE_PAGED_LIST = 'material/manage/queryDeviceTypePagedList';
 // 设备类型详情
 const DEVICE_TYPE_DETAIL = 'material/manage/deviceTypeDetail';
-
+//设备路径分页列表
+const QUERY_DEVICE_PAGED_LIST = 'material/manage/queryDevicePagedList';
 @DepUtil.Injectable()
 export class DeviceTypeService {
   @DepUtil.Inject(RequestService)
@@ -48,16 +49,19 @@ export class DeviceTypeService {
   insetDeviceType(params: IAddDeviceTypeDTO): Observable<IReturn> {
     return this.requestService.post(INSET_DEVICE_TYPE, params);
   }
-  updateDeviceType(params: ExampleRequestParam): Observable<IReturn> {
+  updateDeviceType(params: IDeviceTypeDTO): Observable<IReturn> {
     return this.requestService.post(UPDATE_DEVICE_TYPE, params);
   }
-  deviceType(params: ExampleRequestParam): Observable<IReturn> {
+  deviceType(params: IDeviceTypeDTO): Observable<IReturn> {
     return this.requestService.post(DEVICE_TYPE, params);
   }
-  queryDeviceTypePagedList(params: ExampleRequestParam): Observable<IReturn> {
+  queryDeviceTypePagedList(params: DeviceTypePagedListDto): Observable<IReturn> {
     return this.requestService.post(QUERY_DEVICE_TYPE_PAGED_LIST, params);
   }
-  deviceTypeDetail(params: ExampleRequestParam): Observable<IReturn> {
+  queryDevicePagedList(params: any): Observable<IReturn> {
+    return this.requestService.post(QUERY_DEVICE_PAGED_LIST, params);
+  }
+  deviceTypeDetail(params: IDeviceTypeDTO): Observable<IReturn> {
     return this.requestService.post(DEVICE_TYPE_DETAIL, params);
   }
 }

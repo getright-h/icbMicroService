@@ -29,6 +29,7 @@ export function useRollbackApplyStore(props: IRollbackApplyProps) {
     const params: any = {
       id,
       allotId,
+      deviceList: state.deviceList || [],
       operation: !!opinion ? ALLOW_FLOW_KEYCODE_ENUM.RecallAuditPass : ALLOW_FLOW_KEYCODE_ENUM.RecallAuditReject
     };
 
@@ -62,10 +63,11 @@ export function useRollbackApplyStore(props: IRollbackApplyProps) {
     if (!id) return;
     allocationManageServiceSubscription = allocationManageService.queryAllPromoterDetail({ id }).subscribe(
       (res: any) => {
-        const { rejectAuditRemark = '', state = '' } = res;
+        const { rejectAuditRemark = '', state = '', deviceTypeList = [] } = res;
         setStateWrap({
           rejectAuditRemark,
-          status: state
+          status: state,
+          deviceList: deviceTypeList
         });
       },
       (error: any) => {
