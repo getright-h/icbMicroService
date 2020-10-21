@@ -37,14 +37,14 @@ export default function AddDeviceTypeModalComponent(props: IAddDeviceType) {
           </Form.Item>
         </div>
         <div className={style.rowList}>
-          <Form.Item label="供应商" name={'supplierId'} rules={[{ required: true }]}>
+          <Form.Item label="供应商" name={'supplierId'}>
             <ISelectLoadingComponent
               reqUrl="querySupplierList"
               placeholder={'请选择供应商'}
               getCurrentSelectInfo={(value: string, option: any) => onChange(value, 'supplierId')}
             />
           </Form.Item>
-          <Form.Item label="定位方式" name={'locationStyle'} rules={[{ required: true }]}>
+          <Form.Item label="定位方式" name={'locationStyle'}>
             <Input
               placeholder={'请输入'}
               onChange={e => {
@@ -54,7 +54,7 @@ export default function AddDeviceTypeModalComponent(props: IAddDeviceType) {
           </Form.Item>
         </div>
         <div className={style.rowList}>
-          <Form.Item label="是否宽带电压" name={'isWideVoltage'} rules={[{ required: true }]}>
+          <Form.Item label="是否宽带电压" name={'isWideVoltage'}>
             <Radio.Group
               onChange={e => {
                 onChange(e.target.value, 'isWideVoltage');
@@ -64,7 +64,7 @@ export default function AddDeviceTypeModalComponent(props: IAddDeviceType) {
               <Radio value={false}>否</Radio>
             </Radio.Group>
           </Form.Item>
-          <Form.Item label="工作电压/电流" name={'workVoltage'} rules={[{ required: true }]}>
+          <Form.Item label="工作电压/电流" name={'workVoltage'}>
             <Input
               placeholder={'请输入'}
               onChange={e => {
@@ -74,7 +74,7 @@ export default function AddDeviceTypeModalComponent(props: IAddDeviceType) {
           </Form.Item>
         </div>
         <div className={style.rowList}>
-          <Form.Item label="LED" name={'led'} rules={[{ required: true }]}>
+          <Form.Item label="LED" name={'led'}>
             <Input
               placeholder={'请输入'}
               onChange={e => {
@@ -82,7 +82,7 @@ export default function AddDeviceTypeModalComponent(props: IAddDeviceType) {
               }}
             ></Input>
           </Form.Item>
-          <Form.Item label="待机电流" name={'standbyCurrent'} rules={[{ required: true }]}>
+          <Form.Item label="待机电流" name={'standbyCurrent'}>
             <Input
               placeholder={'请输入'}
               onChange={e => {
@@ -92,7 +92,7 @@ export default function AddDeviceTypeModalComponent(props: IAddDeviceType) {
           </Form.Item>
         </div>
         <div className={style.rowList}>
-          <Form.Item label="颜色" name={'color'} rules={[{ required: true }]}>
+          <Form.Item label="颜色" name={'color'}>
             <Input
               placeholder={'请输入'}
               onChange={e => {
@@ -100,7 +100,7 @@ export default function AddDeviceTypeModalComponent(props: IAddDeviceType) {
               }}
             ></Input>
           </Form.Item>
-          <Form.Item label="内置电池描述" name={'batteryDesc'} rules={[{ required: true }]}>
+          <Form.Item label="内置电池描述" name={'batteryDesc'}>
             <Input
               placeholder={'请输入'}
               onChange={e => {
@@ -110,7 +110,7 @@ export default function AddDeviceTypeModalComponent(props: IAddDeviceType) {
           </Form.Item>
         </div>
         <div className={style.rowList}>
-          <Form.Item label="图片" name={'image'} rules={[{ required: true }]}>
+          <Form.Item label="图片" name={'image'}>
             <IUploadImgComponent
               maxImgNumber={1}
               fileList={imageList}
@@ -121,7 +121,7 @@ export default function AddDeviceTypeModalComponent(props: IAddDeviceType) {
           </Form.Item>
         </div>
         <div className={style.rowList}>
-          <Form.Item label="备注" name={'remark'} rules={[{ required: true }]}>
+          <Form.Item label="备注" name={'remark'}>
             <Input.TextArea
               style={{ width: 500 }}
               placeholder={'请输入'}
