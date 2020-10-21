@@ -15,12 +15,10 @@ export default function DeviceTypeSettingComponent() {
     changeTablePageIndex,
     onChange,
     searchClick,
-    searchValueChange,
-    getMonitorGroupList,
     handleCloseVisible,
     getTableList
   } = useDeviceTypeSettingStore();
-  const { isLoading, searchForm = {}, tableData, total, addDeviceTypeVisible } = state;
+  const { isLoading, searchForm = {}, tableData, total, addDeviceTypeVisible, currentData } = state;
   function renderSelectItems() {
     return (
       <>
@@ -30,7 +28,7 @@ export default function DeviceTypeSettingComponent() {
             allowClear
             placeholder="选择设备型号"
             onChange={e => {
-              onChange(e.target.value, 'keyword');
+              onChange(e.target.value, 'name');
             }}
           />
         </div>
@@ -73,7 +71,12 @@ export default function DeviceTypeSettingComponent() {
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
       />
-      <AddDeviceTypeModalComponent visible={addDeviceTypeVisible} close={handleCloseVisible} fetchData={getTableList} />
+      <AddDeviceTypeModalComponent
+        data={currentData}
+        visible={addDeviceTypeVisible}
+        close={handleCloseVisible}
+        fetchData={getTableList}
+      />
     </div>
   );
 }

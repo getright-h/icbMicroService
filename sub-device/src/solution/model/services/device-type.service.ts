@@ -53,7 +53,7 @@ export class DeviceTypeService {
     return this.requestService.post(UPDATE_DEVICE_TYPE, params);
   }
   deviceType(params: IDeviceTypeDTO): Observable<IReturn> {
-    return this.requestService.post(DEVICE_TYPE, params);
+    return this.requestService.delete(DEVICE_TYPE, params);
   }
   queryDeviceTypePagedList(params: DeviceTypePagedListDto): Observable<IReturn> {
     return this.requestService.post(QUERY_DEVICE_TYPE_PAGED_LIST, params);
@@ -62,6 +62,6 @@ export class DeviceTypeService {
     return this.requestService.post(QUERY_DEVICE_PAGED_LIST, params);
   }
   deviceTypeDetail(params: IDeviceTypeDTO): Observable<IReturn> {
-    return this.requestService.post(DEVICE_TYPE_DETAIL, params);
+    return this.requestService.get(DEVICE_TYPE_DETAIL, params);
   }
 }
