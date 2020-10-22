@@ -5,26 +5,20 @@ import AddWarehouseComponent from '../add-warehouse-component/add-warehouse.comp
 import style from './warehouse-list-left.component.less';
 import { useWarehouseListLeftStore } from './warehouse-list-left.component.store';
 import { GlobalContext } from '~/solution/context/global/global.provider';
+import OrganizationControllerComponent from '~/solution/components/organization-controller-component/organization-controller.component';
 
 export default function WarehouseListLeftComponent() {
   const {
     state,
-    getCurrentSelectInfo,
-    onLoadData,
     onSelect,
     addWarehouse,
     closeAddWarehouseModal,
-    onExpand
+    organizationControllerRef,
+    onExpand,
+    warehouseAction,
+    queryChildInfo
   } = useWarehouseListLeftStore();
-  const { gState } = React.useContext(GlobalContext);
-  const {
-    treeData,
-    treeSelectedKeys,
-    addWarehouseVisible,
-    editWarehouseId,
-    expandedKeys,
-    isEditWarehouseModal
-  } = state;
+  const { treeSelectedKeys, addWarehouseVisible, editWarehouseId, expandedKeys, isEditWarehouseModal } = state;
 
   // component --- 渲染添加仓库的modal
   function RenderAddWarehouseModal() {
@@ -37,32 +31,21 @@ export default function WarehouseListLeftComponent() {
     return <AddWarehouseComponent {...addWarehouseComponentProps}></AddWarehouseComponent>;
   }
 
+  const prganizationControllerComponentProps = {
+    warehouseAction,
+    onSelect,
+    expandedKeys,
+    treeSelectedKeys,
+    onExpand,
+    ref: organizationControllerRef,
+    queryChildInfo
+  };
   return (
     <div className={style.warehouseListLeft}>
       <Button type="primary" style={{ width: '100%' }} onClick={addWarehouse}>
         新增仓库 +{' '}
       </Button>
-      <div className={style.searchWarehouse}>
-        <ISelectLoadingComponent
-          placeholder="请输入机构名称"
-          width={'100%'}
-          showSearch
-          searchForm={{
-            systemId: gState.myInfo.systemId
-          }}
-          reqUrl="queryStoreOrganization"
-          getCurrentSelectInfo={value => getCurrentSelectInfo<string>(value, 'id')}
-        />
-      </div>
-      <Tree
-        loadData={onLoadData}
-        onSelect={onSelect}
-        expandedKeys={expandedKeys}
-        selectedKeys={treeSelectedKeys}
-        onExpand={onExpand}
-        blockNode
-        treeData={treeData}
-      />
+      <OrganizationControllerComponent {...prganizationControllerComponentProps} />
       <RenderAddWarehouseModal />
     </div>
   );

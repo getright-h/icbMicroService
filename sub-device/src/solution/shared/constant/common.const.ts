@@ -54,10 +54,10 @@ export const PAGES_MENU = {
       path: 'home/data',
       title: '数据报表',
       children: [
-        {
-          path: 'deviceMonitor',
-          title: '设备监控'
-        },
+        // {
+        //   path: 'deviceMonitor',
+        //   title: '设备监控'
+        // },
         {
           path: 'deviceLine',
           title: '设备路线表'
@@ -81,10 +81,14 @@ export const PAGES_MENU = {
         //   title: '供应商设置'
         // },
         {
-          path: 'deviceTypeSetting',
-          title: '设备型号设置'
+          path: 'vehicle',
+          title: '车辆管理'
         }
       ]
+    },
+    {
+      path: 'home/voucher/manage',
+      title: '安装凭证管理'
     }
   ]
 };
@@ -305,4 +309,38 @@ export enum ModalType {
 /**************************************数据报表************************************* */
 
 //设备路线表 环节
-export enum DEVICE_ROUTE_ENUM {}
+export enum DEVICE_ROUTE_ENUM {
+  UnKnow = -100,
+  All = -1,
+  InStore = 1,
+  Loss = 2,
+  Allot = 3,
+  Bind = 4
+}
+
+export const DEVICE_ROUTE = [
+  {
+    title: '全部',
+    value: DEVICE_ROUTE_ENUM.All
+  },
+  {
+    title: '未知',
+    value: DEVICE_ROUTE_ENUM.UnKnow
+  },
+  {
+    title: '在库中',
+    value: DEVICE_ROUTE_ENUM.InStore
+  },
+  {
+    title: '已遗失',
+    value: DEVICE_ROUTE_ENUM.Loss
+  },
+  {
+    title: '调拨中',
+    value: DEVICE_ROUTE_ENUM.Allot
+  },
+  {
+    title: '已绑定',
+    value: DEVICE_ROUTE_ENUM.Bind
+  }
+];

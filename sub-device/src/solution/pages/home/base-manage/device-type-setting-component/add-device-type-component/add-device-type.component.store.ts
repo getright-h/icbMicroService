@@ -9,6 +9,8 @@ export function useAddDeviceTypeStore(props: IAddDeviceType) {
   const { state, setStateWrap } = useStateStore(new IAddDeviceTypeState());
   const deviceTypeService: DeviceTypeService = new DeviceTypeService();
   const [form] = Form.useForm();
+  let insetDeviceTypeSubscription: Subscription;
+  let updateDeviceTypeSubscription: Subscription;
   function onSubmit() {
     setStateWrap({ submitLoading: true });
     form
@@ -24,10 +26,33 @@ export function useAddDeviceTypeStore(props: IAddDeviceType) {
 
   function addDeviceType() {
     const { searchForm, imageList } = state;
-    searchForm.image = imageList.toString();
-
-    deviceTypeService.insetDeviceType(searchForm).subscribe(
+    console.log(searchForm);
+    searchForm.supplierId = 'a8bfea91c100cb39449c08d85bebb643';
+    insetDeviceTypeSubscription = deviceTypeService.insetDeviceType(searchForm).subscribe(
       (res: any) => {
+        props.fetchData && props.fetchData();
+        props.close && props.close();
+        ShowNotification.success('添加成功!');
+        form.resetFields();
+
+        setStateWrap({ submitLoading: false });
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    );
+  }
+
+  function alertDeviceType() {
+    const { searchForm, imageList } = state;
+    searchForm.id = props.data.id;
+    searchForm.supplierId = 'a8bfea91c100cb39449c08d85bebb643';
+    updateDeviceTypeSubscription = deviceTypeService.updateDeviceType(searchForm).subscribe(
+      (res: any) => {
+        props.fetchData && props.fetchData();
+        props.close && props.close();
+        ShowNotification.success('修改成功!');
+        form.resetFields();
         setStateWrap({ submitLoading: false });
       },
       (error: any) => {
@@ -40,10 +65,20 @@ export function useAddDeviceTypeStore(props: IAddDeviceType) {
     setStateWrap({
       searchForm: {
         ...searchForm,
-        [valueType]: value
+        [valueType]: value.toString()
       }
     });
   }
-  useEffect(() => {}, [props.data?.id]);
-  return { state, form, onChange, onSubmit };
+  useEffect(() => {
+    form.resetFields();
+    setStateWrap({
+      searchForm: props.data || {}
+    });
+    form.setFieldsValue(props.data);
+    return () => {
+      insetDeviceTypeSubscription && insetDeviceTypeSubscription.unsubscribe();
+      updateDeviceTypeSubscription && updateDeviceTypeSubscription.unsubscribe();
+    };
+  }, [JSON.stringify(props.data)]);
+  return { state, form, onChange, onSubmit, alertDeviceType };
 }

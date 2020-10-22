@@ -110,7 +110,7 @@ export default function EditOrderComponent(props: IEditOrderProps) {
       title={props.id ? '编辑采购单' : '新增采购单'}
       visible={visible}
       width={750}
-      onCancel={selfClose}
+      onCancel={() => selfClose(false)}
       onOk={() => {
         form
           .validateFields()

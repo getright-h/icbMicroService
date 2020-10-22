@@ -4,20 +4,22 @@ import { useAddDeviceTypeStore } from './add-device-type.component.store';
 import { Modal, Form, Input, Radio } from 'antd';
 import { ISelectLoadingComponent, IUploadImgComponent } from '~framework/components/component.module';
 import { IAddDeviceType } from './add-device-type.interface';
-export default function AddDeviceTypeModalComponent(props: IAddDeviceType) {
-  const { state, form, onChange, onSubmit } = useAddDeviceTypeStore(props);
-  const { searchForm = {}, imageList = [] } = state;
-  const { visible, close, data = {} } = props;
+import { ModalType } from '../../base-manage.const';
 
+export default function AddDeviceTypeModalComponent(props: IAddDeviceType) {
+  const { state, form, onChange, onSubmit, alertDeviceType } = useAddDeviceTypeStore(props);
+  const { searchForm = {}, imageList = [] } = state;
+  const { visible, close } = props;
   return (
-    <Modal title={'新增设备型号'} visible={visible} width={700} onOk={onSubmit} onCancel={() => close()}>
+    <Modal
+      title={ModalType.ALERT === searchForm.actionType ? '修改设备型号' : '新增设备型号'}
+      visible={visible}
+      width={700}
+      onOk={ModalType.ALERT === searchForm.actionType ? alertDeviceType : onSubmit}
+      onCancel={() => close()}
+    >
       {' '}
-      <Form
-        initialValues={{
-          ...data
-        }}
-        form={form}
-      >
+      <Form form={form}>
         <div className={style.rowList}>
           <Form.Item label="设备型号" name={'name'} rules={[{ required: true }]}>
             <Input
@@ -113,7 +115,7 @@ export default function AddDeviceTypeModalComponent(props: IAddDeviceType) {
           <Form.Item label="图片" name={'image'}>
             <IUploadImgComponent
               maxImgNumber={1}
-              fileList={imageList}
+              fileList={searchForm.image || []}
               getFileList={url => {
                 onChange(url, 'image');
               }}

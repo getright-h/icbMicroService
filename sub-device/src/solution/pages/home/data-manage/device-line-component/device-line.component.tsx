@@ -5,6 +5,7 @@ import { TablePageTelComponent } from '~/framework/components/component.module';
 import { IHeaderTitleComponent, ITableComponent } from '~framework/components/component.module';
 import { deviceLineColumns } from './device-line-column';
 import { Form, Button, Input, Select } from 'antd';
+import { DEVICE_ROUTE } from '~shared/constant/common.const';
 import DeviceRouteModalComponent from './device-route-modal-component/device-route-modal.component';
 export default function DeviceLineComponent() {
   const {
@@ -30,7 +31,14 @@ export default function DeviceLineComponent() {
   };
   function renderSelectItems() {
     return (
-      <Form layout={'inline'} {...formItemLayout} form={form}>
+      <Form
+        layout={'inline'}
+        {...formItemLayout}
+        form={form}
+        initialValues={{
+          route: -1
+        }}
+      >
         <Form.Item name={'deviceValue'} label={'查找设备'}>
           <Input
             style={{ width: 200 }}
@@ -48,12 +56,11 @@ export default function DeviceLineComponent() {
               onChange(e, 'route');
             }}
           >
-            <Select.Option value={-1}>全部</Select.Option>
-            <Select.Option value={1}>不知道</Select.Option>
-            <Select.Option value={2}>在库</Select.Option>
-            <Select.Option value={3}>遗失</Select.Option>
-            <Select.Option value={4}>调拨中</Select.Option>
-            <Select.Option value={-100}>已绑定</Select.Option>
+            {DEVICE_ROUTE.map((route: any, index: number) => (
+              <Select.Option key={index} value={route.value}>
+                {route.title}
+              </Select.Option>
+            ))}
           </Select>
         </Form.Item>
       </Form>

@@ -17,7 +17,7 @@ export default function AddWarehouseComponent(props: IAddWarehouseProps) {
   } = useAddWarehouseStore(props);
   const { gState } = React.useContext(GlobalContext);
   const { confirmLoading, editOrganizationName, editmanageName, areaDetail } = state;
-  const { addWarehouseVisible } = props;
+  const { addWarehouseVisible, isEdit } = props;
   const layout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 }
@@ -33,7 +33,7 @@ export default function AddWarehouseComponent(props: IAddWarehouseProps) {
   );
   return (
     <Modal
-      title="添加仓库"
+      title={`${isEdit ? '编辑' : '创建'}仓库`}
       visible={addWarehouseVisible}
       onOk={handleOk}
       destroyOnClose

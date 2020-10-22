@@ -17,32 +17,83 @@ export function useDeviceTypeSettingStore() {
     deviceTypeService.queryDeviceTypePagedList(searchForm).subscribe(
       (res: any) => {
         console.log(res);
-        setStateWrap({ tableData: res.dataList || [] });
+        setStateWrap({ tableData: res.dataList || [], total: res.total });
       },
       (error: any) => {
         console.log(error);
       }
     );
   }
+  function searchClick() {
+    const { searchForm } = state;
+    searchForm.index = 1;
+    setStateWrap({ searchForm });
+    getTableList();
+  }
+
+  function changeTablePageIndex(index: number, pageSize: number) {
+    const { searchForm } = state;
+    searchForm.index = index;
+    searchForm.size = pageSize;
+    setStateWrap({ searchForm });
+    getTableList();
+  }
   function callbackAction(actionType: number, data?: any) {
     switch (actionType) {
       case ModalType.ADD:
-        setStateWrap({ addDeviceTypeVisible: true });
+        setStateWrap({ addDeviceTypeVisible: true, currentData: {} });
         break;
       case ModalType.ALERT:
-        setStateWrap({ addDeviceTypeVisible: true, currentData: data });
+        getDeviceTypeDetail(data.id);
+
         break;
       case ModalType.DEL:
-        renderDelDeviceType(data);
+        renderDelDeviceTypeModal(data);
         break;
     }
   }
 
-  function renderDelDeviceType(data: any) {
+  function renderDelDeviceTypeModal(data: any) {
     confirm({
-      content: '确认删除设备',
+      content: `确认删除设备型号${data.name || '-'}`,
       onOk: () => {
-        console.log('object');
+        delDeviceType(data.id).then(res => console.log(res));
+      }
+    });
+  }
+
+  function getDeviceTypeDetail(id: string) {
+    if (!id) return;
+    deviceTypeService.deviceTypeDetail({ id }).subscribe(
+      (res: any) => {
+        const image = res.image && [{ uid: res.image, url: res.image }];
+        setStateWrap({ addDeviceTypeVisible: true, currentData: { ...res, image, actionType: ModalType.ALERT } });
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    );
+  }
+  function delDeviceType(id: string) {
+    if (!id) return null;
+    return new Promise((reslove: any, reject: any) => {
+      deviceTypeService.deviceType({ id }).subscribe(
+        res => {
+          console.log(res);
+          reslove(res);
+        },
+        error => {
+          reject(error);
+        }
+      );
+    });
+  }
+  function onChange(value: any, valueType: string) {
+    const { searchForm } = state;
+    setStateWrap({
+      searchForm: {
+        ...searchForm,
+        [valueType]: value
       }
     });
   }
@@ -57,5 +108,5 @@ export function useDeviceTypeSettingStore() {
       queryStockDevicePagedListSubscription && queryStockDevicePagedListSubscription.unsubscribe();
     };
   }, []);
-  return { state, callbackAction, handleCloseVisible, getTableList };
+  return { state, callbackAction, handleCloseVisible, getTableList, onChange, searchClick, changeTablePageIndex };
 }

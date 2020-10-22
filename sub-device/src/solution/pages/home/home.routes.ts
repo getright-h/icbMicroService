@@ -1,6 +1,5 @@
 import { IRoute } from '~framework/interfaces/IRoute';
 import { ROUTERS } from '~/solution/shared/constant/routers.const';
-import { RedirectStrategy } from '~/framework/aop/strategy/redirect.strategy';
 const MODULE_PATH = 'home';
 export const homeRoutes: IRoute[] = [
   {
@@ -19,13 +18,26 @@ export const homeRoutes: IRoute[] = [
     lazyload: true
   },
   {
+    path: `${MODULE_PATH}/approvalManage`,
+    component: ROUTERS.approvalManageModule
+  },
+  {
     path: `${MODULE_PATH}/data`,
     component: ROUTERS.dataManagModule,
     lazyload: true
   },
   {
     path: `${MODULE_PATH}/monitor`,
-    component: ROUTERS.monitorManagModule,
+    component: ROUTERS.monitorManagModule
+  },
+  {
+    path: `${MODULE_PATH}/voucher`,
+    component: ROUTERS.voucherManageModule,
+    lazyload: true
+  },
+  {
+    path: `${MODULE_PATH}/customer`,
+    component: ROUTERS.customerManageModule,
     lazyload: true
   }
 ];
