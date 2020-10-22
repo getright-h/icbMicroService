@@ -6,7 +6,6 @@ import WarehouseListLeftComponent from './warehouse-list-left-component/warehous
 import { useWarehouseListStore } from './warehouse-list.component.store';
 import { wareHouseListColumns } from './warehouse-list.columns';
 import { Button, Input } from 'antd';
-import { openOrCloseShippingSpaceModal } from './warehouse-list-redux/warehouse-list-action';
 import AddShippingSpaceComponent from './add-shipping-space-component/add-shipping-space.component';
 export const WarehouseListManageContext = React.createContext({
   reduxState: warehouseListInitialState,

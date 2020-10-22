@@ -11,7 +11,8 @@ export default function ITableComponent(props: IITableProps) {
     isPagination = true,
     rowSelection = null,
     rowKey = 'id',
-    summary = false
+    summary = false,
+    expandable = null
   } = props;
   const { state } = useITableStore(props);
 
@@ -25,6 +26,7 @@ export default function ITableComponent(props: IITableProps) {
       scroll={{ x: 'max-content' }}
       rowSelection={rowSelection}
       summary={summary}
+      expandable={expandable}
     />
   );
 }
