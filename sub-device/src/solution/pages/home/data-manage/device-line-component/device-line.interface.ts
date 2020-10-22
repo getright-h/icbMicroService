@@ -14,4 +14,5 @@ export class IDeviceLineState {
   visibleModal = false;
   routeModalVisible = false;
   currentData: any = {};
+  flowList: any[] = [];
 }

@@ -81,6 +81,38 @@ export const PAGES_MENU = {
         //   title: '供应商设置'
         // },
         {
+          path: 'deviceTypeSetting',
+          title: '设备型号设置'
+        }
+        // {
+        //   path: 'allocationTemplate',
+        //   title: '调拨模板管理'
+        // }
+      ]
+    },
+    {
+      path: 'home/approvalManage',
+      title: '审批管理',
+      children: [
+        {
+          path: 'approvalManage',
+          title: '审批管理'
+        },
+        {
+          path: 'approveTemplate',
+          title: '审批模板'
+        }
+      ]
+    },
+    {
+      path: 'home/customer',
+      title: '客户管理',
+      children: [
+        {
+          path: 'owner',
+          title: '车主管理'
+        },
+        {
           path: 'vehicle',
           title: '车辆管理'
         }

@@ -18,7 +18,7 @@ export default function DeviceLineComponent() {
     changeTablePageIndex,
     handleModalCancel
   } = useDeviceLineStore();
-  const { searchForm = {}, tableData, isLoading, total, routeModalVisible, currentData } = state;
+  const { searchForm = {}, tableData, isLoading, total, routeModalVisible, currentData, flowList } = state;
   const formItemLayout = {
     labelCol: {
       xs: { span: 24 },
@@ -101,7 +101,13 @@ export default function DeviceLineComponent() {
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
       />
-      <DeviceRouteModalComponent visible={routeModalVisible} data={currentData} close={handleModalCancel} />
+      <DeviceRouteModalComponent
+        visible={routeModalVisible}
+        data={{
+          ...currentData
+        }}
+        close={handleModalCancel}
+      />
     </div>
   );
 }

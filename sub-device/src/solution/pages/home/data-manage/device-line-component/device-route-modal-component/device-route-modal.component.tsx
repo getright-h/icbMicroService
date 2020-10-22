@@ -6,21 +6,27 @@ const { Step } = Steps;
 export default function DeviceRouteModalComponent(props: IDeviceLineProp) {
   const { state, onSubmit } = useDeviceRouteModalStore(props);
   const { visible, data } = props;
+  console.log(data, 777);
   return (
     <Modal visible={visible} title={'查看节点详情'} onOk={onSubmit} onCancel={onSubmit}>
       <Form>
-        <Form.Item label={'设备号'}>{data.typeName || '-'}</Form.Item>
+        <Form.Item label={'设备号'}>{data.typeName ? data.typeName : '-'}</Form.Item>
         <Form.Item label={'节点详情'}>
-          <Steps progressDot current={1} direction="vertical">
-            <Step
-              description={
-                <Row gutter={[8, 8]}>
-                  <Col span={10}>2020年10月20日10:55:06</Col>
-                  <Col span={8}>仓库</Col>
-                  <Col span={6}>备注:</Col>
-                </Row>
-              }
-            />
+          <Steps progressDot direction="vertical">
+            {data.flowList &&
+              Array.isArray(data.flowList) &&
+              data.flowList.map((flow: any) => (
+                <Step
+                  key={flow.id}
+                  description={
+                    <Row gutter={[8, 8]}>
+                      <Col span={10}>{flow.createTime}</Col>
+                      <Col span={8}>{flow.storePositionName}</Col>
+                      <Col span={6}>{flow.remark}</Col>
+                    </Row>
+                  }
+                />
+              ))}
           </Steps>
         </Form.Item>
       </Form>

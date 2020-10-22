@@ -34,10 +34,29 @@ export function useDeviceLineStore() {
       }
     );
   }
+  function getFlowNodeDetail(code: string) {
+    if (!code) Promise.reject(null);
+    return new Promise((reslove: any, reject: any) => {
+      deviceTypeService.queryDeviceFlowRecordInfoList({ code }).subscribe(
+        (res: any) => {
+          reslove(res);
+        },
+        (error: any) => {
+          reject(error);
+        }
+      );
+    });
+  }
   function getFlowNode(data: any) {
-    setStateWrap({
-      currentData: data,
-      routeModalVisible: true
+    getFlowNodeDetail(data.code).then((res: any) => {
+      setStateWrap({
+        routeModalVisible: true,
+        currentData: {
+          ...state.currentData,
+          ...data,
+          flowList: res
+        }
+      });
     });
   }
   function onChange(value: any, valueType: string) {
