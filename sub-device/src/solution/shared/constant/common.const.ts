@@ -376,3 +376,8 @@ export const DEVICE_ROUTE = [
     value: DEVICE_ROUTE_ENUM.Bind
   }
 ];
+
+export enum SEX_ENUM {
+  '女',
+  '男'
+}

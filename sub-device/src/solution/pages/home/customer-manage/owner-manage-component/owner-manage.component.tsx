@@ -21,8 +21,7 @@ export default function OwnerManageComponent() {
     changeTablePageIndex,
     searchClick,
     onSelectRows,
-    handleModalCancel,
-    openModal
+    handleModalCancel
   } = useOwnerManageStore();
   const { isLoading, tableData, total, pageIndex, pageSize, editVisible, detailVisible, currentId } = state;
   function renderSelectItems() {
@@ -34,25 +33,35 @@ export default function OwnerManageComponent() {
       <Form {...layout} form={searchForm} style={{ width: '90%' }}>
         <Row gutter={24}>
           <Col span={8}>
-            <Form.Item name="keyword" label="查询车主">
-              <Input allowClear placeholder="车主名/电话号/证件号"></Input>
+            <Form.Item name="name" label="车主姓名">
+              <Input allowClear placeholder="请输入车主姓名"></Input>
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item name="gender" label="车主性别">
+            <Form.Item name="mobile" label="车主电话">
+              <Input allowClear placeholder="请输入车主电话"></Input>
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item name="certificateNo" label="车主证件">
+              <Input allowClear placeholder="请输入车主证件号"></Input>
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item name="sex" label="车主性别">
               <Select placeholder="请选择车主性别">
                 <Select.Option value={-1}>全部</Select.Option>
+                <Select.Option value={0}>女</Select.Option>
                 <Select.Option value={1}>男</Select.Option>
-                <Select.Option value={2}>女</Select.Option>
               </Select>
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item name="level" label="车主跟进等级">
+            <Form.Item name="follow" label="车主跟进等级">
               <Select placeholder="请选择跟进等级">
                 <Select.Option value={-1}>全部</Select.Option>
-                <Select.Option value={1}>A</Select.Option>
-                <Select.Option value={2}>B</Select.Option>
+                <Select.Option value={1}>仅短信方式</Select.Option>
+                <Select.Option value={-200}>暂无</Select.Option>
               </Select>
             </Form.Item>
           </Col>

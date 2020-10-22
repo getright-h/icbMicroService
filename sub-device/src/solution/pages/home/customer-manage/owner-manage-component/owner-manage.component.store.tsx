@@ -13,32 +13,25 @@ export function useOwnerManageStore() {
   const [searchForm] = Form.useForm();
 
   useEffect(() => {
-    getTableData();
+    initSearchForm();
   }, []);
 
   function getTableData() {
-    // setStateWrap({ isLoading: true });
-    // customerManageService.__getTableData__(state.searchForm).subscribe(
-    //   res => {
-    //     setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
-    //   },
-    //   err => {
-    //     setStateWrap({ isLoading: false });
-    //     ShowNotification.error(err);
-    //   }
-    // );
-    const tableData = [
-      {
-        id: '327',
-        userName: 'JY',
-        relateVehicle: '97855',
-        vehicleInfo: {
-          number: '97855',
-          type: 'AAA'
+    setStateWrap({ isLoading: true });
+    customerManageService
+      .queryOwnerPagedList({
+        ...searchForm.getFieldsValue(),
+        index: state.pageIndex,
+        size: state.pageSize
+      })
+      .subscribe(
+        res => {
+          setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
+        },
+        err => {
+          setStateWrap({ isLoading: false });
         }
-      }
-    ];
-    setStateWrap({ tableData });
+      );
   }
 
   function searchClick() {
@@ -49,9 +42,10 @@ export function useOwnerManageStore() {
   function initSearchForm() {
     searchForm.resetFields();
     searchForm.setFieldsValue({
-      gender: -1,
-      level: -1
+      sex: -1,
+      follow: -1
     });
+    searchClick();
   }
 
   function callbackAction(actionType: number, data?: any) {
@@ -72,17 +66,16 @@ export function useOwnerManageStore() {
           icon: <ExclamationCircleOutlined />,
           onOk: () =>
             new Promise((resolve, reject) => {
-              //   customerManageService.deleteOwner(data.id).subscribe(
-              //     (res: any) => {
-              //       ShowNotification.success('已删除！');
-              //       getTableData();
-              //       resolve();
-              //     },
-              //     (err: any) => {
-              //       ShowNotification.error(err);
-              //       reject();
-              //     }
-              //   );
+              customerManageService.deleteOwner(data.id).subscribe(
+                (res: any) => {
+                  ShowNotification.success('已删除！');
+                  searchClick();
+                  resolve();
+                },
+                (err: any) => {
+                  reject();
+                }
+              );
             })
         });
         break;
@@ -96,16 +89,9 @@ export function useOwnerManageStore() {
     getTableData();
   }
 
-  function handleModalCancel() {
+  function handleModalCancel(isSuccess = false) {
     setStateWrap({ editVisible: false, detailVisible: false });
-  }
-  function openModal(type: ModalType) {
-    switch (type) {
-      case ModalType.CREATE:
-        break;
-      default:
-        break;
-    }
+    isSuccess && searchClick();
   }
   function onSelectRows(selectedRowKeys: any) {
     console.log('selectedRowKeys changed: ', selectedRowKeys);
@@ -118,7 +104,6 @@ export function useOwnerManageStore() {
     changeTablePageIndex,
     searchClick,
     handleModalCancel,
-    openModal,
     onSelectRows
   };
 }

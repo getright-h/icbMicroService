@@ -5,31 +5,27 @@ export function ownerManageColumns(callbackAction: Function) {
   return [
     {
       title: '姓名',
-      dataIndex: 'userName'
+      dataIndex: 'name'
     },
     {
       title: '电话',
-      dataIndex: 'userPhone'
+      dataIndex: 'mobile'
     },
     {
       title: '性别',
-      dataIndex: 'gender'
+      dataIndex: 'sexText'
     },
     {
       title: '证件号',
-      dataIndex: 'license'
+      dataIndex: 'certificateNo'
     },
     {
       title: '关联车辆',
-      dataIndex: 'relateVehicle'
+      dataIndex: 'plateNo'
     },
     {
       title: '跟进方式',
-      dataIndex: 'level'
-    },
-    {
-      title: '状态',
-      dataIndex: 'status'
+      dataIndex: 'followText'
     },
     {
       title: '操作',

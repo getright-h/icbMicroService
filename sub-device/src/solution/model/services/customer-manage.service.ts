@@ -24,7 +24,7 @@ const INSERT_OWNER = 'vehicle/manage/insertOwner';
 const UPDATE_OWNER = 'vehicle/manage/updateOwner';
 const DELETE_OWNER = 'vehicle/manage/owner';
 
-const QUERY_VEHICLE_PAGED_LIST = 'vehicle/manage/queryOwnerPagedList';
+const QUERY_VEHICLE_PAGED_LIST = 'vehicle/manage/queryVehiclePagedList';
 const GET_VEHICLE_DETAIL = 'vehicle/manage/vehicleDetail';
 const INSERT_VEHICLE = 'vehicle/manage/insertVehicle';
 const UPDATE_VEHICLE = 'vehicle/manage/updateVehicle';

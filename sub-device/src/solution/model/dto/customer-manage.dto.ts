@@ -21,15 +21,15 @@ export abstract class CustomerManageDTO {
 }
 
 export interface OwnerListRequestParam {
-  name: string;
-  mobile: string;
-  certificateNo: string;
-  sex: number;
-  follow: number;
   index: number;
   size: number;
-  beginTime: number;
-  endTime: number;
+  name?: string;
+  mobile?: string;
+  certificateNo?: string;
+  sex?: number;
+  follow?: number;
+  beginTime?: number;
+  endTime?: number;
 }
 
 export interface OwnerListResponseResult {
@@ -96,17 +96,17 @@ export interface SetOwnerRequestParam {
 }
 
 export interface VehicleListRequestParam {
-  strValue: string;
-  device: string;
-  serverBeginTime: number;
-  serverEndTime: number;
-  distributorId: string;
-  financeId: string;
-  mobile: string;
+  strValue?: string;
+  device?: string;
+  serverBeginTime?: number;
+  serverEndTime?: number;
+  distributorId?: string;
+  financeId?: string;
+  mobile?: string;
   index: number;
   size: number;
-  beginTime: number;
-  endTime: number;
+  beginTime?: number;
+  endTime?: number;
 }
 
 export interface VehicleListResponseResult {
@@ -154,7 +154,9 @@ interface Vehicle {
   color: string;
   buyTime: string;
   distributorId: string;
+  distributorName: string;
   financeId: string;
+  financeName: string;
   image: string;
   serverBeginTime: string;
   serverTime: number;
