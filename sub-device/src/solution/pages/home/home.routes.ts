@@ -19,7 +19,16 @@ export const homeRoutes: IRoute[] = [
   },
   {
     path: `${MODULE_PATH}/approvalManage`,
-    component: ROUTERS.approvalManageModule,
+    component: ROUTERS.approvalManageModule
+  },
+  {
+    path: `${MODULE_PATH}/data`,
+    component: ROUTERS.dataManagModule,
+    lazyload: true
+  },
+  {
+    path: `${MODULE_PATH}/monitor`,
+    component: ROUTERS.monitorManagModule,
     lazyload: true
   }
 ];

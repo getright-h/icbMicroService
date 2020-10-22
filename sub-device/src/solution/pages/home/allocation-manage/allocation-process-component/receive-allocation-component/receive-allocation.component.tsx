@@ -1,13 +1,11 @@
 import * as React from 'react';
-import style from './receive-allocation.component.less';
 import { TablePageTelComponent, TimePickerComponent } from '~/framework/components/component.module';
 import { ITableComponent } from '~/framework/components/component.module';
 import { receiveAllocationColumns } from './receive-allocation.column';
 import { useReceiveAllocationStore } from './receive-allocation.component.store';
-
+import { ALLOW_FLOW } from '~shared/constant/common.const';
 import { Button, Input, Select } from 'antd';
-import { ModalType } from './receive-allocation.interface';
-
+import RejectAllocationComponent from './reject-allocation-component/reject-allocation.component';
 const { Option } = Select;
 
 export default function ReceiveAllocationComponent() {
@@ -18,9 +16,11 @@ export default function ReceiveAllocationComponent() {
     searchClick,
     handleModalCancel,
     openModal,
-    onChange
+    onChange,
+    getTableData,
+    allocationOperate
   } = useReceiveAllocationStore();
-  const { isLoading, searchForm, tableData, total, visibleModal } = state;
+  const { isLoading, searchForm, tableData, total, currentData, rejectVisibleModal, currentActionType } = state;
   function renderSelectItems() {
     return (
       <>
@@ -47,13 +47,17 @@ export default function ReceiveAllocationComponent() {
         <div className="push-search-item">
           <span className="label">调拨状态:</span>
           <Select
-            defaultValue=""
+            defaultValue={-1}
             placeholder="请选择"
             onChange={value => {
-              onChange(value, 'status');
+              onChange(value, 'state');
             }}
           >
-            <Option value="">全部</Option>
+            {ALLOW_FLOW.map((item: any, index: number) => (
+              <Option key={index} value={item.value}>
+                {item.title}
+              </Option>
+            ))}
           </Select>
         </div>
         <div className="push-search-item">
@@ -78,7 +82,7 @@ export default function ReceiveAllocationComponent() {
       <ITableComponent
         columns={receiveAllocationColumns(callbackAction)}
         isLoading={isLoading}
-        pageIndex={searchForm.page}
+        pageIndex={searchForm.index}
         pageSize={searchForm.size}
         data={tableData}
         total={total}
@@ -95,6 +99,14 @@ export default function ReceiveAllocationComponent() {
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
       ></TablePageTelComponent>
+      <RejectAllocationComponent
+        allocationOperate={allocationOperate}
+        visible={rejectVisibleModal}
+        data={currentData}
+        getTableData={getTableData}
+        close={handleModalCancel}
+        currentActionType={currentActionType}
+      />
     </React.Fragment>
   );
 }

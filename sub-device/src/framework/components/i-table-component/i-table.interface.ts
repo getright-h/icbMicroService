@@ -20,4 +20,5 @@ export interface IITableProps {
   rowSelection?: any;
   rowKey?: string;
   summary?: any;
+  title?: string;
 }

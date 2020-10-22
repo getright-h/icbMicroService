@@ -5,16 +5,23 @@
 export class IReceiveAllocationState {
   isLoading = false;
   searchForm = {
-    page: 1,
-    size: 10
+    index: 1,
+    size: 10,
+    state: -1
   };
   tableData: any = [];
   total = 0;
   visibleModal = false;
+  rejectVisibleModal = false;
   currentId = '';
+  currentData = {};
+  currentActionType: any;
 }
-export enum ModalType {
-  CREATE,
-  EDIT,
-  DELETE
-}
+// export enum ModalType {
+//   LOOK,
+//   RECIVE,
+//   REJECT,
+//   MOVE,
+//   PASS,
+//   RETURN
+// }

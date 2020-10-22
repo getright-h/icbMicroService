@@ -5,15 +5,12 @@ import {
   QueryOrganizationListParam,
   QueryPurchaseListParam,
   QueryStorePositionListParam,
-  QuerySupplierListParam
+  QuerySupplierListParam,
+  QueryAllotFlowTemplatePagedListParam
 } from '../dto/drap-choose-loading.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
 import { DepUtil } from '~/framework/aop/inject';
-
-/**
- * 真实开发中，请将示例代码移除
- */
 
 const QUERY_ORGANIZATION_PAGED_LIST = 'store/manage/queryOrganizationPagedList';
 const QUERY_DEVICE_TYPE_PAGED_LIST = 'material/manage/queryDeviceTypePagedList';
@@ -22,7 +19,7 @@ const QUERY_STOREOR_GANIZATION = 'store/manage/queryOrganizationPagedList';
 const QUERY_STORE_USER = 'store/manage/queryStoreUser';
 const QUERY_PURCHASE_SELECT_LIST = 'allot/manage/queryPurchasePagedListSelected';
 const QUERY_STORE_POSITION_LIST = 'store/manage/queryStorePositionPagedListByStoreIdSelected';
-
+const QUERY_ALLOT_FLOW_TEMPLATE_PAGED_LIST = 'allot/manage/queryAllotFlowTemplatePagedList';
 @DepUtil.Injectable()
 export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
   @DepUtil.Inject(RequestService)
@@ -59,5 +56,9 @@ export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
   //仓位列表
   queryStorePositionList(params: QueryStorePositionListParam): Observable<DrapChooseLoadingReturn> {
     return this.requestService.post(QUERY_STORE_POSITION_LIST, params);
+  }
+  // 调拨模板列表
+  queryAllotFlowTemplatePagedList(params: QueryAllotFlowTemplatePagedListParam): Observable<IReturn> {
+    return this.requestService.post(QUERY_ALLOT_FLOW_TEMPLATE_PAGED_LIST, params);
   }
 }

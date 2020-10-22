@@ -9,9 +9,13 @@ export const baseManageRoutes: IRoute[] = [
     lazyload: true,
     exact: true
   },
+  // {
+  //   path: `${MODULE_PATH}/allocationTemplate`,
+  //   component: ROUTERS.allocationTemplate,
+  // },
   {
-    path: `${MODULE_PATH}/allocationTemplate`,
-    component: ROUTERS.allocationTemplate,
+    path: `${MODULE_PATH}/carTypeSetting`,
+    component: ROUTERS.carTypeSetting,
     lazyload: true,
     exact: true
   },
@@ -20,5 +24,23 @@ export const baseManageRoutes: IRoute[] = [
     component: ROUTERS.addOrEditallocationTemplate,
     lazyload: true,
     exact: false
+  },
+  {
+    path: `${MODULE_PATH}/supplierSetting`,
+    component: ROUTERS.supplierSetting,
+    lazyload: true,
+    exact: true
+  },
+  {
+    path: `${MODULE_PATH}/deviceTypeSetting`,
+    component: ROUTERS.deviceTypeSetting,
+    lazyload: true,
+    exact: true
+  },
+  {
+    path: `${MODULE_PATH}/addSupplier`,
+    component: ROUTERS.addSupplier,
+    lazyload: true,
+    exact: true
   }
 ];

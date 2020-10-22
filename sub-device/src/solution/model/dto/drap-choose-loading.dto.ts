@@ -59,3 +59,12 @@ export interface QueryStorePositionListParam {
   index: number;
   size: number;
 }
+
+export interface QueryAllotFlowTemplatePagedListParam {
+  name: string;
+  organizationId: string;
+  index: 0;
+  size: 0;
+  beginTime: 0;
+  endTime: 0;
+}

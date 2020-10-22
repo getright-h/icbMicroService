@@ -25,7 +25,7 @@ class RequestService {
   private createAuthHeaders(): any {
     const headers = { token: '' };
     // const token = localStorage.getItem('TOKENINFO');
-    const token = 'session:a5b14162-fc99-48f1-a3bf-c1fc71ab7943';
+    const token = 'session:9e65cab6-c238-4059-9794-03a41d64ac06';
     if (token) {
       headers.token = token;
     }
@@ -36,6 +36,8 @@ class RequestService {
     let returnInfo = process.env.MAIN;
     if (!!~url.indexOf('VerifyCode')) {
       returnInfo = process.env.LOGIN;
+    } else if (!!~url.indexOf('vehicle')) {
+      returnInfo = process.env.MONITOR;
     } else {
       returnInfo = process.env.MAIN;
     }
