@@ -56,5 +56,20 @@ export const ROUTERS = {
   deviceTypeSetting: () =>
     import('~/solution/pages/home/base-manage/device-type-setting-component/device-type-setting.component'),
   addSupplier: () =>
-    import('~/solution/pages/home/base-manage/supplier-setting-component/add-supplier-component/add-supplier.component')
+    import('~/solution/pages/home/base-manage/supplier-setting-component/add-supplier-component/add-supplier.component'),
+  voucherManageModule: () => import('~/solution/pages/home/voucher-manage/voucher-manage.module'),
+  voucherManage: () => import('~/solution/pages/home/voucher-manage/voucher-manage-component/voucher-manage.component'),
+  customerManageModule: () => import('~/solution/pages/home/customer-manage/customer-manage.module'),
+  ownerManageComponent: () =>
+    import('~/solution/pages/home/customer-manage/owner-manage-component/owner-manage.component'),
+  vehicleManageComponent: () =>
+    import('~/solution/pages/home/customer-manage/vehicle-manage-component/vehicle-manage.component'),
+  editVehicle: () =>
+    import(
+      '~/solution/pages/home/customer-manage/vehicle-manage-component/edit-vehicle-component/edit-vehicle.component'
+    ),
+  vehicleDetail: () =>
+    import(
+      '~/solution/pages/home/customer-manage/vehicle-manage-component/vehicle-detail-component/vehicle-detail.component'
+    )
 };

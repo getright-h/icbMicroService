@@ -28,7 +28,15 @@ export const homeRoutes: IRoute[] = [
   },
   {
     path: `${MODULE_PATH}/monitor`,
-    component: ROUTERS.monitorManagModule,
+    component: ROUTERS.monitorManagModule
+  },{
+    path: `${MODULE_PATH}/voucher`,
+    component: ROUTERS.voucherManageModule,
+    lazyload: true
+  },
+  {
+    path: `${MODULE_PATH}/customer`,
+    component: ROUTERS.customerManageModule,
     lazyload: true
   }
 ];
