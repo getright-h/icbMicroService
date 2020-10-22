@@ -40,7 +40,6 @@ export function dealWithTreeData<T>(
       treeDataChild.selectable = isWarehouse;
       return treeDataChild;
     });
-  console.log(treeData);
 
   return treeData ? treeData : [];
 }
@@ -52,7 +51,7 @@ export function updateTreeData(list: any[], key: React.Key, children: any[] | an
       if (node.key === key) {
         return {
           ...node,
-          isLeaf: !children.length,
+          isLeaf: children && !children.length,
           children
         };
       } else if (node.children) {
@@ -80,5 +79,31 @@ export function deleteTreeDataByKey(list: any[], key: string) {
         result.push(node);
       }
     });
+  return result;
+}
+
+export function getCheckedList(list: Array<any>, checkedKeys: string[], checkedObject: any[] = []) {
+  list &&
+    list.map(node => {
+      if (checkedKeys.includes(node.id)) {
+        checkedObject.push(node);
+      } else if (node.children) {
+        getCheckedList(node.children, checkedKeys, checkedObject);
+      }
+    });
+  return checkedObject;
+}
+
+export function flatAtree(arr: Array<any>) {
+  let result: Array<any> = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (Array.isArray(arr[i].children)) {
+      result.push(arr[i]);
+      //判断是否是数组
+      result = result.concat(flatAtree(arr[i].children)); //自身递归与以前result合并，重新对result赋值
+    } else {
+      result.push(arr[i]); //直接追加
+    }
+  }
   return result;
 }

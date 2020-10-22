@@ -21,4 +21,5 @@ export interface IITableProps {
   rowKey?: string;
   summary?: any;
   title?: string;
+  expandable?: any;
 }

@@ -63,9 +63,9 @@ export function useAddWarehouseStore(props: IAddWarehouseProps) {
           confirmLoading: false
         });
         // 关闭的时候销毁当前的modal
-        ShowNotification.success('创建仓库成功');
+        ShowNotification.success(`${props.isEdit ? '编辑' : '创建'}仓库成功`);
         // 通知父应用刷新树列表
-        props.closeAddWarehouseModal(!props.isEdit);
+        props.closeAddWarehouseModal(!props.isEdit, formInfo.organizationId);
       },
       error => {
         setStateWrap({
@@ -106,7 +106,6 @@ export function useAddWarehouseStore(props: IAddWarehouseProps) {
       organizationCode: code
     };
     form.setFieldsValue({ organizationId: valueInfo });
-    setStateWrap({ editOrganizationName });
   }
 
   // 获取当前管理人员的信息
