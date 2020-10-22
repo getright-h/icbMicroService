@@ -56,7 +56,9 @@ export const ROUTERS = {
   deviceTypeSetting: () =>
     import('~/solution/pages/home/base-manage/device-type-setting-component/device-type-setting.component'),
   addSupplier: () =>
-    import('~/solution/pages/home/base-manage/supplier-setting-component/add-supplier-component/add-supplier.component'),
+    import(
+      '~/solution/pages/home/base-manage/supplier-setting-component/add-supplier-component/add-supplier.component'
+    ),
   voucherManageModule: () => import('~/solution/pages/home/voucher-manage/voucher-manage.module'),
   voucherManage: () => import('~/solution/pages/home/voucher-manage/voucher-manage-component/voucher-manage.component'),
   customerManageModule: () => import('~/solution/pages/home/customer-manage/customer-manage.module'),
