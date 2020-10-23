@@ -3,7 +3,7 @@ import style from './device-line.component.less';
 import { useDeviceLineStore } from './device-line.component.store';
 import { TablePageTelComponent } from '~/framework/components/component.module';
 import { IHeaderTitleComponent, ITableComponent } from '~framework/components/component.module';
-import { deviceLineColumns } from './device-line-column';
+import { deviceLineColumns, OwnerExpandedRow } from './device-line-column';
 import { Form, Button, Input, Select } from 'antd';
 import { DEVICE_ROUTE } from '~shared/constant/common.const';
 import DeviceRouteModalComponent from './device-route-modal-component/device-route-modal.component';
@@ -81,6 +81,7 @@ export default function DeviceLineComponent() {
   function RenderTable() {
     return (
       <ITableComponent
+        rowKey="code"
         columns={deviceLineColumns(getFlowNode)}
         isLoading={isLoading}
         pageIndex={searchForm.index}
@@ -88,6 +89,10 @@ export default function DeviceLineComponent() {
         data={tableData}
         total={total}
         isPagination={true}
+        expandable={{
+          expandedRowRender: OwnerExpandedRow,
+          expandIconColumnIndex: 3
+        }}
         changeTablePageIndex={(index: number, pageSize: number) => changeTablePageIndex(index, pageSize)}
       ></ITableComponent>
     );

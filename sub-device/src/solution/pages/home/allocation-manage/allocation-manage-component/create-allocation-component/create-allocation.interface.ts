@@ -6,7 +6,15 @@ import { SetAllotFlowTemplateParam } from '~model/dto/template-service.dto';
 export class ICreateAllocationState {
   id: string;
   searchForm: SetAllotFlowTemplateParam = {
-    name: ''
+    name: '',
+    content: [
+      {
+        key: 0,
+        number: 0,
+        typeId: '',
+        typeName: ''
+      }
+    ]
   };
   submitLoading = false;
   flowList: Array<Array<IFlowNode>>;
@@ -16,8 +24,8 @@ export interface IFlowNode {
   attributeId: string;
   flowId: string;
   id: string;
-  isMultiple: false;
-  isSelected: false;
+  isMultiple: boolean;
+  isSelected: boolean;
   name: string;
   organizationCode: string;
   organizationId: string;

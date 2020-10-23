@@ -340,7 +340,15 @@ export enum ModalType {
 }
 /**************************************数据报表************************************* */
 
-//设备路线表 环节
+/**
+ * 设备路线表 环节
+ * @description UnKnow 全部
+ * @description All 未知
+ * @description InStore 在库中
+ * @description Loss 已遗失
+ * @description Allot 调拨中
+ * @description Bind 已绑定
+ */
 export enum DEVICE_ROUTE_ENUM {
   UnKnow = -100,
   All = -1,
