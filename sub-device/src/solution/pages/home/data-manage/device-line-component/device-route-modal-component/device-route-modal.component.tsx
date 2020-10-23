@@ -15,10 +15,16 @@ export default function DeviceRouteModalComponent(props: IDeviceLineProp) {
     }
 
     if (flow.route === DEVICE_ROUTE_ENUM.Allot) {
+      // 调拨中
       return '调拨中 等待接口调试';
     }
 
-    return flow.storePositionName;
+    if (flow.route === DEVICE_ROUTE_ENUM.Bind) {
+      // 绑定车主
+      return '调拨中 等待接口调试';
+    }
+    // 在库
+    return `${flow.storeName}-${flow.storePositionName}`;
   }
   return (
     <Modal visible={visible} title={'查看节点详情'} onOk={onSubmit} onCancel={onSubmit} width={700}>
