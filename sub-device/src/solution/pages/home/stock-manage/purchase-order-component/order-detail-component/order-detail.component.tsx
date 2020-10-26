@@ -27,7 +27,9 @@ export default function OrderDetailComponent(props: IOrderDetailProps) {
           <Form.Item label="供应商">{details.supplierName}</Form.Item>
           <Form.Item label="采购单图片">
             {details?.imageList.map(image => (
-              <ImageDisplayComponent imageUrl={image} key={image} />
+              <span key={image} style={{ marginRight: '10px' }}>
+                <ImageDisplayComponent imageUrl={image} />
+              </span>
             ))}
           </Form.Item>
           <Form.Item label="采购单创建时间">{details.createTime}</Form.Item>

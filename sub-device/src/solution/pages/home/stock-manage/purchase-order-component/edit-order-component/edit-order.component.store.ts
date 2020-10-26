@@ -1,7 +1,7 @@
 import { IEditOrderState, IEditOrderProps } from './edit-order.interface';
 import { useService, useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form } from 'antd';
-import { useCallback, useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { ShowNotification } from '~/framework/util/common';
 import { StockManageService } from '~/solution/model/services/stock-manage.service';
 import moment from 'moment';
@@ -35,7 +35,6 @@ export function useEditOrderStore(props: IEditOrderProps) {
         });
         setStateWrap({
           editSupplierName: res.supplierName,
-          editPurchaseTime: res.purchaseTime,
           editDeviceList: res.deviceList,
           imageList: imageList || []
         });
@@ -52,10 +51,6 @@ export function useEditOrderStore(props: IEditOrderProps) {
         setStateWrap({ editSupplierName: option?.info.name });
         break;
     }
-  }
-
-  function handleTimeChange(dateString: string) {
-    setStateWrap({ editPurchaseTime: dateString });
   }
 
   function handleDeviceListChange(typeName: string, option: any, index: number) {
@@ -120,7 +115,6 @@ export function useEditOrderStore(props: IEditOrderProps) {
     }
   }
   function selfClose(isSuccess = false) {
-    setStateWrap({ editPurchaseTime: '' });
     form.resetFields();
     props.close?.(isSuccess);
   }
@@ -132,7 +126,6 @@ export function useEditOrderStore(props: IEditOrderProps) {
     selfClose,
     getCurrentSelectInfo,
     handleDeviceListChange,
-    handleTimeChange,
     setTotalAmount
   };
 }
