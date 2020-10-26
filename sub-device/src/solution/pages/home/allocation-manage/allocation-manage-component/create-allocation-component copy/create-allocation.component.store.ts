@@ -211,86 +211,9 @@ export function useCreateAllocationStore() {
     }
     setStateWrap({ searchForm });
   }
-  function addNode() {
-    const { NodeList } = state;
-    const length = NodeList.length;
-    NodeList.push([
-      {
-        key: length + 1
-      }
-    ]);
-    setStateWrap({
-      NodeList
-    });
-    setFLowList();
-  }
 
-  /**
-   * 流程新增 环节
-   * 更新 flowList 而不是直接替换
-   * NodeList
-   * [
-   * {
-   *  key: 1
-   * }]
-   *
-   * [
-   *  [{key: 1, flow: xx, key: xxx}, {key: 1, flow: xx, key: xxx}]
-   * ]
-   *
-   * NodeList 与 flowList 通过一个共同的Key去建立联系
-   * 如果有相同的Key 则更新 原有的 flowList
-   *
-   * 如果没有 相同的Key 则 加入新的 流程环节
-   * */
-  function setFLowList() {
-    const { NodeList, flowList } = state;
-
-    console.log(NodeList, 222);
-    const newFlowList: any[] = [];
-    for (let i = 0; i < NodeList.length; i++) {
-      const first_index = [];
-      const cur_flow_len = flowList[i] && flowList[i].length;
-      const cur_node_len = NodeList[i].length;
-      if (cur_flow_len == cur_node_len) continue;
-      if (!flowList[i]) flowList[i] = [];
-      flowList[i].push({
-        flowId: i + '-' + j,
-        name: '测试' + i + '-' + j,
-        isSelected: false
-      });
-      // i 代表每一层,
-      for (let j = 0; j < NodeList[i].length; j++) {
-        // const second_index = {
-        //   flowId: i + '-' + j,
-        //   name: '测试' + i + '-' + j,
-        //   isSelected: false
-        // };
-        // first_index.push(second_index);
-        // newFlowList.push(first_index);
-      }
-    }
-    setStateWrap({
-      flowList
-    });
-  }
-
-  function addItem(first_Index: number, key: any) {
-    const { NodeList } = state;
-    NodeList[first_Index].push({
-      key: NodeList[first_Index].length + 1
-    });
-    setStateWrap({ NodeList });
-    setFLowList();
-  }
-
-  function reduceItem(first_Index: number, key: any) {
-    const { NodeList, flowList } = state;
-    setFLowList();
-  }
   useEffect(() => {
     getDefaultParams();
-    setFLowList();
     return () => {
       templateServiceServiceSubscription && templateServiceServiceSubscription.unsubscribe();
       queryAllotFlowTemplateNodeListByTemplateIdSubscription &&
@@ -305,9 +228,6 @@ export function useCreateAllocationStore() {
     createNewAllocation,
     removeTypeDevice,
     updateTypeDevice,
-    selectAlloactionTemplateFlowNode,
-    addNode,
-    addItem,
-    reduceItem
+    selectAlloactionTemplateFlowNode
   };
 }

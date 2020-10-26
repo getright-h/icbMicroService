@@ -12,18 +12,14 @@ export default function CreateAllocationComponent() {
     createNewAllocation,
     removeTypeDevice,
     updateTypeDevice,
-    addNode,
-    selectAlloactionTemplateFlowNode,
-    addItem,
-    reduceItem
+    selectAlloactionTemplateFlowNode
   } = useCreateAllocationStore();
-  const { searchForm = {}, submitLoading, flowList = [], NodeList = [] } = state;
+  const { searchForm = {}, submitLoading, flowList = [] } = state;
   const layout = {
-    labelCol: { span: 4 },
+    labelCol: { span: 8 },
     wrapperCol: { span: 16 }
   };
-  console.log(flowList, 111);
-  console.log(NodeList, 333);
+
   function ArrowComponent() {
     return (
       <div className={style.arrowWapepr}>
@@ -36,66 +32,27 @@ export default function CreateAllocationComponent() {
   return (
     <div className={style.mainForm}>
       <IHeaderTitleComponent pageName={'创建调拨单'} />
-      <div className={style.createAllot}>
-        <div className={style.left}>
-          <Form {...layout} initialValues={{ deviceList: [{}] }} form={form}>
-            {NodeList.length > 0 &&
-              NodeList.map((node: any, index: number) => (
-                <Form.Item
-                  key={'node' + index}
-                  label={`节点${index}: `}
-                  required={true}
-                  className="form-item"
-                  style={{ alignItems: 'start', marginBottom: 0 }}
-                >
-                  {Array.isArray(node) &&
-                    node.length > 0 &&
-                    node.map((item: any, number: number) => (
-                      <Space key={'flow' + number} className={style.space} align="start">
-                        <Form.Item name={['typeName']} className={style.fieldItem} key={'typename' + number}>
-                          <ISelectLoadingComponent
-                            reqUrl="queryDeviceTypeList"
-                            placeholder="请选择机构"
-                            getCurrentSelectInfo={(value: string, option: any) => {
-                              updateTypeDevice({ value, option, node }, 'type');
-                            }}
-                          />
-                        </Form.Item>
-                        <Form.Item name={['number']} className={`${style.fieldItem}`}>
-                          <ISelectLoadingComponent
-                            reqUrl="queryDeviceTypeList"
-                            placeholder="请选择仓库"
-                            getCurrentSelectInfo={(value: string, option: any) => {
-                              updateTypeDevice({ value, option, node }, 'type');
-                            }}
-                          />
-                        </Form.Item>
-                        <div className={style.fieldAddButton}>
-                          <PlusOutlined
-                            onClick={() => {
-                              addItem(index, item.key);
-                            }}
-                          />
-                          {index != 0 && (
-                            <MinusOutlined
-                              onClick={() => {
-                                reduceItem(index, item.key);
-                              }}
-                            />
-                          )}
-                        </div>
-                      </Space>
-                    ))}
-                </Form.Item>
-              ))}
-          </Form>
-          <Button onClick={() => addNode()}>添加节点</Button>
-        </div>
-        <div className={style.right}>
-          <Form>
-            <Form.Item name="name" rules={[{ required: true }]}>
-              {Array.isArray(flowList) &&
-                flowList.map((flows: any, index: number) => (
+      <Form {...layout} initialValues={{ deviceList: [{}] }} form={form}>
+        <div className={style.formPart}>
+          <div className={style.formItems}>
+            <div className={style.formLeft}>
+              <Form.Item name={'name'} label="调拨单名称" wrapperCol={{ span: 8 }} rules={[{ required: true }]}>
+                <Input placeholder="请输入调拨单名称" onChange={e => onChange(e.target.value || '', 'name')} />
+              </Form.Item>
+              <Form.Item name="name" label="调拨模板" wrapperCol={{ span: 8 }} rules={[{ required: true }]}>
+                <ISelectLoadingComponent
+                  reqUrl="queryAllotFlowTemplatePagedList"
+                  placeholder="选择调拨模板"
+                  selectedValue={searchForm.allotTemplateId}
+                  getCurrentSelectInfo={(value: string, option: any) => {
+                    onChange(value || '', 'allotTemplateId');
+                  }}
+                />
+
+                <a href="">添加模板</a>
+              </Form.Item>
+              <Form.Item name="name" label="流程节点（勾选多选项）" rules={[{ required: true }]}>
+                {flowList.map((flows: any, index: number) => (
                   <div key={index}>
                     <div className={`${style.flowNodeWapper} ${index == 0 && style.minWidth}`}>
                       {Array.isArray(flows) && flows.length > 1 ? (
@@ -119,56 +76,7 @@ export default function CreateAllocationComponent() {
                     {index < flowList.length - 1 && ArrowComponent()}
                   </div>
                 ))}
-            </Form.Item>
-          </Form>
-        </div>
-      </div>
-      <div className={style.approval}></div>
-      <Form {...layout} initialValues={{ deviceList: [{}] }} form={form}>
-        <div className={style.formPart}>
-          <div className={style.formItems}>
-            <div className={style.formLeft}>
-              <Form.Item name={'name'} label="调拨单名称" wrapperCol={{ span: 8 }} rules={[{ required: true }]}>
-                <Input placeholder="请输入调拨单名称" onChange={e => onChange(e.target.value || '', 'name')} />
               </Form.Item>
-              <Form.Item name="name" label="调拨模板" wrapperCol={{ span: 8 }} rules={[{ required: true }]}>
-                <ISelectLoadingComponent
-                  reqUrl="queryAllotFlowTemplatePagedList"
-                  placeholder="选择调拨模板"
-                  selectedValue={searchForm.allotTemplateId}
-                  getCurrentSelectInfo={(value: string, option: any) => {
-                    onChange(value || '', 'allotTemplateId');
-                  }}
-                />
-
-                <a href="">添加模板</a>
-              </Form.Item>
-              {/* <Form.Item name="name" label="流程节点（勾选多选项）" rules={[{ required: true }]}>
-                {flowList.map((flows: any, index: number) => (
-                  <div key={index}>
-                    <div className={`${style.flowNodeWapper} ${index == 0 && style.minWidth}`}>
-                      {Array.isArray(flows) && flows.length > 1 ? (
-                        flows.map((flow: any) => (
-                          <div
-                            className={style.node}
-                            key={flow.flowId}
-                            onClick={() => selectAlloactionTemplateFlowNode(index, flow.flowId)}
-                          >
-                            <i className={flow.isSelected ? style.checked : style.notchecked}></i>
-                            <span>{flow.name || flow.storeName}</span>
-                          </div>
-                        ))
-                      ) : (
-                        <div className={style.node}>
-                        
-                          <span>{flows[0].name || flows[0].storeName}</span>
-                        </div>
-                      )}
-                    </div>
-                    {index < flowList.length - 1 && ArrowComponent()}
-                  </div>
-                ))}
-              </Form.Item> */}
 
               <Form.List name="deviceList">
                 {(fields, { add, remove }) => {

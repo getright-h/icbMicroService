@@ -17,32 +17,7 @@ export class ICreateAllocationState {
     ]
   };
   submitLoading = false;
-  flowList: Array<Array<IFlowNode>> = [
-    // [
-    //   { flowId: 1, name: '测试', isSelected: false },
-    //   { flowId: 2, name: '测试', isSelected: false }
-    // ],
-    // [
-    //   { flowId: 3, name: '测试', isSelected: false },
-    //   { flowId: 4, name: '测试', isSelected: false }
-    // ],
-    // [
-    //   { flowId: 5, name: '测试', isSelected: false },
-    //   { flowId: 6, name: '测试', isSelected: false }
-    // ]
-  ];
-  NodeList = [
-    [
-      {
-        key: 1
-      }
-    ],
-    [
-      {
-        key: 2
-      }
-    ]
-  ];
+  flowList: Array<Array<IFlowNode>>;
 }
 
 export interface IFlowNode {
