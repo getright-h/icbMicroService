@@ -8,8 +8,8 @@ export default function WarehouseCascaderComponent(props: IWarehouseCascaderProp
   return (
     <Cascader
       disabled={!props.organizationId}
-      // value={state.value}s
-      style={{ width: '100%' }}
+      // value={state.value}
+      style={{ width: '100px' }}
       options={state.warehouseOptions}
       loadData={loadAreaData}
       onChange={onChange}

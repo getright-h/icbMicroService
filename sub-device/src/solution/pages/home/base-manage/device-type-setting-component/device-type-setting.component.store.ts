@@ -2,7 +2,6 @@ import { IDeviceTypeSettingState } from './device-type-setting.interface';
 import { ModalType } from '../base-manage.const';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form, Modal } from 'antd';
-import { ShowNotification } from '~/framework/util/common';
 import { DeviceTypeService } from '~/solution/model/services/device-type.service';
 import { useEffect } from 'react';
 import { Subscription } from 'rxjs';

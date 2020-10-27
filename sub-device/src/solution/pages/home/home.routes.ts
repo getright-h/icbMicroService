@@ -19,7 +19,8 @@ export const homeRoutes: IRoute[] = [
   },
   {
     path: `${MODULE_PATH}/approvalManage`,
-    component: ROUTERS.approvalManageModule
+    component: ROUTERS.approvalManageModule,
+    lazyload: true
   },
   {
     path: `${MODULE_PATH}/data`,
@@ -28,8 +29,10 @@ export const homeRoutes: IRoute[] = [
   },
   {
     path: `${MODULE_PATH}/monitor`,
-    component: ROUTERS.monitorManagModule
-  },{
+    component: ROUTERS.monitorManagModule,
+    lazyload: true
+  },
+  {
     path: `${MODULE_PATH}/voucher`,
     component: ROUTERS.voucherManageModule,
     lazyload: true
