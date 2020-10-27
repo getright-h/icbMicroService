@@ -11,8 +11,17 @@ export function useVehicleDetailStore() {
   const params = useParams();
 
   useEffect(() => {
-    params.hasOwnProperty('id') && setStateWrap({ id: params['id'] });
+    if (params.hasOwnProperty('id')) {
+      setStateWrap({ id: params['id'] });
+      getDetails(params['id']);
+    }
   }, []);
+
+  function getDetails(id: string) {
+    customerManageService.getVehicleDetail(id).subscribe(res => {
+      setStateWrap({ details: res });
+    });
+  }
 
   function linkToEdit() {
     history.push(`/home/customer/editVehicle/${state.id}`);

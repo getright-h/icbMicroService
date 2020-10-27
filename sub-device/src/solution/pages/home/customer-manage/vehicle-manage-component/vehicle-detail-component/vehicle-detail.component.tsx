@@ -1,10 +1,13 @@
 import { Button, Descriptions } from 'antd';
 import * as React from 'react';
+import { ImageDisplayComponent } from '~/framework/components/component.module';
+import UnbindDeviceComponent from '../unbind-device-component/unbind-device.component';
 import style from './vehicle-detail.component.less';
 import { useVehicleDetailStore } from './vehicle-detail.component.store';
 
 export default function VehicleDetailComponent() {
   const { state, linkToEdit } = useVehicleDetailStore();
+  const { details } = state;
 
   function renderHeader(title: string, rightChild?: Function) {
     return (
@@ -24,55 +27,61 @@ export default function VehicleDetailComponent() {
   }
 
   function ownerInfo() {
+    const { owner } = details;
     return (
       <Descriptions style={{ padding: '10px 50px' }}>
-        <Descriptions.Item label="车主姓名">Zhou Maomao</Descriptions.Item>
-        <Descriptions.Item label="车主电话">1810000000</Descriptions.Item>
-        <Descriptions.Item label="车主性别">男</Descriptions.Item>
-        <Descriptions.Item label="证件类型">身份证</Descriptions.Item>
-        <Descriptions.Item label="证件号">111111111111111111</Descriptions.Item>
+        <Descriptions.Item label="车主姓名">{owner.ownerName || '-'}</Descriptions.Item>
+        <Descriptions.Item label="车主电话">{owner.ownerMobile || '-'}</Descriptions.Item>
+        <Descriptions.Item label="车主性别">{owner.sexText || '-'}</Descriptions.Item>
+        <Descriptions.Item label="证件类型">{owner.certificateTypeText || '-'}</Descriptions.Item>
+        <Descriptions.Item label="证件号">{owner.certificateNo || '-'}</Descriptions.Item>
       </Descriptions>
     );
   }
 
   function vehicleInfo() {
+    const { vehicle } = details;
     return (
       <Descriptions style={{ padding: '10px 50px' }}>
-        <Descriptions.Item label="车架号">a</Descriptions.Item>
-        <Descriptions.Item label="车牌号">a</Descriptions.Item>
-        <Descriptions.Item label="车辆发动机号">a</Descriptions.Item>
-        <Descriptions.Item label="车辆品牌">a</Descriptions.Item>
-        <Descriptions.Item label="生产厂家">a</Descriptions.Item>
-        <Descriptions.Item label="车型">a</Descriptions.Item>
-        <Descriptions.Item label="配置">a</Descriptions.Item>
-        <Descriptions.Item label="车辆颜色">a</Descriptions.Item>
-        <Descriptions.Item label="购买日期">a</Descriptions.Item>
-        <Descriptions.Item label="经销商">a</Descriptions.Item>
-        <Descriptions.Item label="金融公司">a</Descriptions.Item>
-        <Descriptions.Item label="车辆图片">a</Descriptions.Item>
-        <Descriptions.Item label="服务开始时间">a</Descriptions.Item>
-        <Descriptions.Item label="服务时长">a</Descriptions.Item>
+        <Descriptions.Item label="车架号">{vehicle.vinNo || '-'}</Descriptions.Item>
+        <Descriptions.Item label="车牌号">{vehicle.plateNo || '-'}</Descriptions.Item>
+        <Descriptions.Item label="车辆发动机号">{vehicle.engineNo || '-'}</Descriptions.Item>
+        <Descriptions.Item label="车辆品牌">{vehicle.brandName || '-'}</Descriptions.Item>
+        <Descriptions.Item label="生产厂家">{vehicle.factoryName || '-'}</Descriptions.Item>
+        <Descriptions.Item label="车型">{vehicle.versionName || '-'}</Descriptions.Item>
+        <Descriptions.Item label="配置">{vehicle.configName || '-'}</Descriptions.Item>
+        <Descriptions.Item label="车辆颜色">{vehicle.color || '-'}</Descriptions.Item>
+        <Descriptions.Item label="购买日期">{vehicle.buyTime || '-'}</Descriptions.Item>
+        <Descriptions.Item label="经销商">{vehicle.distributorName || '-'}</Descriptions.Item>
+        <Descriptions.Item label="金融公司" span={2}>
+          {vehicle.financeName || '-'}
+        </Descriptions.Item>
+        <Descriptions.Item label="车辆图片" span={3}>
+          {vehicle.imageList.map((image: string) => (
+            <ImageDisplayComponent imageUrl={image} key={image} />
+          ))}
+        </Descriptions.Item>
+        <Descriptions.Item label="服务开始时间">{vehicle.serverBeginTime || '-'}</Descriptions.Item>
+        <Descriptions.Item label="服务时长">
+          {vehicle.serverTime ? `${vehicle.serverTime} 个月` : '-'}
+        </Descriptions.Item>
       </Descriptions>
     );
   }
 
   function deviceInfo() {
-    const deviceList = [
-      { id: '1', code: '0826', type: 'MHW-1' },
-      { id: '2', code: '1013', type: 'FF-22' }
-    ];
+    const { deviceList } = details;
     return (
       <Descriptions style={{ padding: '10px 50px' }}>
         <Descriptions.Item label="绑定设备">
           <div>
-            {deviceList.map(device => (
-              <div key={device.code} className={style.deviceItem}>
-                <span>
-                  {device.code}({device.type})
-                </span>
-                <Button type="link">解绑</Button>
-              </div>
-            ))}
+            {deviceList.length
+              ? deviceList.map((device: any) => (
+                  <div key={device} className={style.deviceItem}>
+                    <span>{device}</span>
+                  </div>
+                ))
+              : '-'}
           </div>
         </Descriptions.Item>
       </Descriptions>
@@ -85,11 +94,11 @@ export default function VehicleDetailComponent() {
         return <Button onClick={linkToEdit}>编辑</Button>;
       })}
       {renderSubHeader('车主信息')}
-      {ownerInfo()}
+      {details && ownerInfo()}
       {renderSubHeader('车辆信息')}
-      {vehicleInfo()}
+      {details && vehicleInfo()}
       {renderSubHeader('设备信息')}
-      {deviceInfo()}
+      {details && deviceInfo()}
     </React.Fragment>
   );
 }

@@ -5,6 +5,7 @@
 export class IUnbindDeviceState {
   confirmLoading = false;
   unbindType = 0; // 0 直接解绑，1 解绑入库
+  selectStoreId: string;
 }
 /**
  * @export props变量定义和初始化
@@ -12,5 +13,6 @@ export class IUnbindDeviceState {
  */
 export class IUnbindDeviceProps {
   visible: boolean;
-  close: () => void;
+  close: (isSuccess: boolean) => void;
+  info: any;
 }

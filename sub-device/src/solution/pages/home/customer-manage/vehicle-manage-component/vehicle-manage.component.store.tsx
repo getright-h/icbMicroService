@@ -4,8 +4,10 @@ import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect } from 'react';
 import { ShowNotification } from '~/framework/util/common';
 import { CustomerManageService } from '~/solution/model/services/customer-manage.service';
-import { Form } from 'antd';
+import { Form, Modal } from 'antd';
 import { useHistory } from 'react-router-dom';
+import moment from 'moment';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 export function useVehicleManageStore() {
   const { state, setStateWrap } = useStateStore(new IVehicleManageState());
@@ -18,31 +20,29 @@ export function useVehicleManageStore() {
   }, []);
 
   function getTableData() {
-    // setStateWrap({ isLoading: true });
-    // customerManageService.__getTableData__(state.searchForm).subscribe(
-    //   res => {
-    //     setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
-    //   },
-    //   err => {
-    //     setStateWrap({ isLoading: false });
-    //     ShowNotification.error(err);
-    //   }
-    // );
-    const tableData = [
-      {
-        id: '327',
-        owner: 'JY',
-        deviceList: [
-          { id: '1', code: '0826', type: 'MHW-1' },
-          { id: '1', code: '1013', type: 'FF-22' }
-        ]
-      }
-    ];
-    setStateWrap({ tableData });
+    setStateWrap({ isLoading: true });
+    customerManageService
+      .queryVehiclePagedList({
+        ...searchForm.getFieldsValue(),
+        serverBeginTime: state.timeInfo[0] ? moment(state.timeInfo[0]).valueOf() : 0,
+        serverEndTime: state.timeInfo[1] ? moment(state.timeInfo[1]).valueOf() : 0,
+        index: state.pageIndex,
+        size: state.pageSize
+      })
+      .subscribe(
+        res => {
+          setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
+        },
+        err => {
+          setStateWrap({ isLoading: false });
+        }
+      );
   }
 
   function initSearchForm() {
     searchForm.resetFields();
+    setStateWrap({ timeInfo: [] });
+    searchClick();
   }
 
   function searchClick() {
@@ -60,11 +60,26 @@ export function useVehicleManageStore() {
         history.push(`/home/customer/vehicleDetail/${data.id}`);
         break;
       case ModalType.DELETE:
+        Modal.confirm({
+          title: '是否确认删除该车辆？',
+          icon: <ExclamationCircleOutlined />,
+          onOk: () =>
+            new Promise((resolve, reject) => {
+              customerManageService.deleteVehicle(data.id).subscribe(
+                (res: any) => {
+                  ShowNotification.success('已删除！');
+                  searchClick();
+                  resolve();
+                },
+                (err: any) => {
+                  reject();
+                }
+              );
+            })
+        });
         break;
       case ModalType.UNBIND:
-        setStateWrap({ isUnbindDevice: true });
-        console.log('unbind', data);
-
+        setStateWrap({ isUnbindDevice: true, unbindInfo: data });
         break;
       default:
         break;
@@ -76,12 +91,17 @@ export function useVehicleManageStore() {
     getTableData();
   }
 
-  function handleModalCancel() {
+  function handleModalCancel(isSuccess = false) {
     setStateWrap({ isUnbindDevice: false });
+    isSuccess && searchClick();
   }
 
   function onSelectRows(selectedRowKeys: any) {
     console.log('selectedRowKeys changed: ', selectedRowKeys);
+  }
+
+  function getDateTimeInfo(timeInfo: any) {
+    setStateWrap({ timeInfo });
   }
   return {
     state,
@@ -91,6 +111,7 @@ export function useVehicleManageStore() {
     changeTablePageIndex,
     searchClick,
     handleModalCancel,
-    onSelectRows
+    onSelectRows,
+    getDateTimeInfo
   };
 }
