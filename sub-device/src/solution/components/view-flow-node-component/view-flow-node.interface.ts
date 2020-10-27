@@ -2,13 +2,11 @@ import { FlowList } from '~/solution/model/dto/allocation-template.dto';
 
 /**
  * @export state变量定义和初始化
- * @class IFlowChartState
+ * @class IViewFlowNodeState
  */
-export class IFlowChartState {
-  data: any;
-}
+export class IViewFlowNodeState {}
 
-export class FlowChartComponentProps {
+export class ViewFlowNodeComponentProps {
   flowNodeSettingField: [{ attributeList: FlowList[]; flowNodeSettingFieldId: string }];
   canEdit: boolean;
 }

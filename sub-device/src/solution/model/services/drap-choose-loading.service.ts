@@ -12,6 +12,7 @@ import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
 import { DepUtil } from '~/framework/aop/inject';
 
+const QUERYSTORE_LIST_BY_ORGANIZATIONID = 'store/manage/queryStoreListByOrganizationId';
 const QUERY_ORGANIZATION_PAGED_LIST = 'store/manage/queryOrganizationPagedList';
 const QUERY_DEVICE_TYPE_PAGED_LIST = 'material/manage/queryDeviceTypePagedList';
 const QUERY_SUPPLIER_LIST = 'store/manage/querySupplierList';
@@ -20,6 +21,7 @@ const QUERY_STORE_USER = 'store/manage/queryStoreUser';
 const QUERY_PURCHASE_SELECT_LIST = 'allot/manage/queryPurchasePagedListSelected';
 const QUERY_STORE_POSITION_LIST = 'store/manage/queryStorePositionPagedListByStoreIdSelected';
 const QUERY_ALLOT_FLOW_TEMPLATE_PAGED_LIST = 'allot/manage/queryAllotFlowTemplatePagedList';
+const QUERYSTOREPOSITIONPAGEDLISTBYSTOREID = 'store/manage/queryStorePositionPagedListByStoreId';
 @DepUtil.Injectable()
 export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
   @DepUtil.Inject(RequestService)
@@ -40,9 +42,18 @@ export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
   querySupplierList(params: QuerySupplierListParam): Observable<DrapChooseLoadingReturn> {
     return this.requestService.post(QUERY_SUPPLIER_LIST, params);
   }
+
+  // 获取仓位列表
+  queryStorePositionPagedListByStoreId(params: QuerySupplierListParam): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.post(QUERYSTOREPOSITIONPAGEDLISTBYSTOREID, params);
+  }
   // 采购单
   queryPurchaseSelectList(params: QueryPurchaseListParam): Observable<DrapChooseLoadingReturn> {
     return this.requestService.post(QUERY_PURCHASE_SELECT_LIST, params);
+  }
+  // 根据Id查询仓库列表
+  queryStoreListByOrganizationId(params: { organizationId: string }): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.get(QUERYSTORE_LIST_BY_ORGANIZATIONID, params);
   }
 
   // 获取机构名称
@@ -58,7 +69,7 @@ export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
     return this.requestService.post(QUERY_STORE_POSITION_LIST, params);
   }
   // 调拨模板列表
-  queryAllotFlowTemplatePagedList(params: QueryAllotFlowTemplatePagedListParam): Observable<IReturn> {
+  queryAllotFlowTemplatePagedList(params: QueryAllotFlowTemplatePagedListParam): Observable<DrapChooseLoadingReturn> {
     return this.requestService.post(QUERY_ALLOT_FLOW_TEMPLATE_PAGED_LIST, params);
   }
 }

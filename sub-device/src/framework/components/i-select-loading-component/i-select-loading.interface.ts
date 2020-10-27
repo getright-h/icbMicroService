@@ -9,7 +9,9 @@ export class IISelectLoadingState {
 }
 export interface IISelectLoadingProps {
   placeholder: string;
+  isData?: boolean;
   width?: number | string;
+  allowClear?: boolean;
   className?: string;
   selectedValue?: string;
   reqUrl: string;

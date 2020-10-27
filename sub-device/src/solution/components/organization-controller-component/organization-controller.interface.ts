@@ -26,7 +26,7 @@ export class IOrganizationControllerProps {
 
 export const TREE_MAP = {
   title: 'name',
-  key: 'id'
+  key: 'code'
 };
 
 export interface OrganizationExportFunction {

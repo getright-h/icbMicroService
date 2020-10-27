@@ -1,0 +1,31 @@
+import { TYPES } from './add-template-types';
+import { Dispatch } from 'react';
+import { IFormInfo } from './add-template-reducer';
+import { FlowList } from '~/solution/model/dto/allocation-template.dto';
+export function setFormInfoAction(dispatch: Dispatch<any>, formInfo: IFormInfo[]) {
+  return dispatch({
+    type: TYPES.SET_FORM_INFO,
+    payload: formInfo
+  });
+}
+
+export function setCurrentSelectItemAction(dispatch: Dispatch<any>, currentSelectItem: IFormInfo) {
+  return dispatch({
+    type: TYPES.SET_CURRENT_SELECT_ITEM,
+    payload: currentSelectItem
+  });
+}
+
+export function setCurrentParamsAction(dispatch: Dispatch<any>, payload: any) {
+  return dispatch({
+    type: TYPES.SET_CURRENT_PARAMS,
+    payload: payload
+  });
+}
+
+export function setFlowNodeSettingFieldAction(dispatch: Dispatch<any>, flowNodeSettingField: FlowList[]) {
+  return dispatch({
+    type: TYPES.SET_FLOWNODE_SETTING_FIELD,
+    payload: flowNodeSettingField
+  });
+}

@@ -2,53 +2,36 @@ import * as React from 'react';
 import style from './flow-chart.component.less';
 import { useFlowChartStore } from './flow-chart.component.store';
 import { Divider } from 'antd';
+import { FlowChartComponentProps } from './flow-chart.interface';
+import { FlowList } from '~/solution/model/dto/allocation-template.dto';
 
-export default function FlowChartComponent() {
-  const data = [
-    [
-      {
-        title: '总仓库'
-      }
-    ],
-    [
-      {
-        title: '子仓库1'
-      },
-      {
-        title: '子仓库2'
-      },
-      {
-        title: '子仓库1'
-      },
-      {
-        title: '子仓库2'
-      },
-      {
-        title: '子仓库1'
-      },
-      {
-        title: '子仓库2'
-      }
-    ]
-  ];
-  const { state } = useFlowChartStore();
+export default function FlowChartComponent(props: FlowChartComponentProps) {
+  const { state } = useFlowChartStore(props);
+  const { canEdit, flowNodeSettingField } = props;
+
   // 当有单个子元素的时候
-  function renderSinglePlace(title: Array<{ title: string }>) {
+  function renderSinglePlace(title: FlowList[], indexF: number) {
     return (
       <>
-        <div className={style.box1}>{title[0].title}</div>
+        <div className={style.box1}>
+          {title[0].storePositionName && !canEdit
+            ? `${title[0].storeName} - ${title[0].storePositionName}`
+            : `节点${title[0].sort}`}
+        </div>
       </>
     );
   }
 
   // 当有多个子元素的时候
-  function renderMutiplePlace(title: Array<{ title: string }>) {
+  function renderMutiplePlace(title: FlowList[], indexF: number) {
     return (
       <div className={style.box0}>
         {title.map((item, index) => {
           return (
-            <div key={index} className={style.box2}>
-              {item.title}
+            <div key={item.flowNodeSettingFieldId} className={style.box2}>
+              {item.storePositionName && !canEdit
+                ? `${item.storeName} - ${title[0].storePositionName}`
+                : `节点${item.sort}`}
             </div>
           );
         })}
@@ -67,23 +50,24 @@ export default function FlowChartComponent() {
   }
   return (
     <div className={style.boxContent}>
-      {data.map((item, index) => {
-        const returnInfo = null;
-        if (item.length == 1) {
-          returnInfo = renderSinglePlace(item);
-        } else {
-          returnInfo = renderMutiplePlace(item);
-        }
-        if (index + 1 < data.length) {
-          returnInfo = (
-            <>
-              {returnInfo}
-              {renderAline()}
-            </>
-          );
-        }
-        return returnInfo;
-      })}
+      {flowNodeSettingField &&
+        flowNodeSettingField.map((item, index: number) => {
+          let returnInfo = null;
+          if (item.attributeList.length == 1) {
+            returnInfo = renderSinglePlace(item.attributeList, index + 1);
+          } else {
+            returnInfo = renderMutiplePlace(item.attributeList, index + 1);
+          }
+          if (index + 1 < flowNodeSettingField.length) {
+            returnInfo = (
+              <>
+                {returnInfo}
+                {renderAline()}
+              </>
+            );
+          }
+          return returnInfo;
+        })}
     </div>
   );
 }
