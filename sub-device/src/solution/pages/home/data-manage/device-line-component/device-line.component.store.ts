@@ -5,13 +5,11 @@ import { useEffect } from 'react';
 import { Form } from 'antd';
 import { DeviceTypeService } from '~/solution/model/services/device-type.service';
 import { ShowNotification } from '~/framework/util/common';
-import { useHistory } from 'react-router-dom';
 import { Subscription } from 'rxjs';
 export function useDeviceLineStore() {
   const { state, setStateWrap } = useStateStore(new IDeviceLineState());
   const deviceTypeService: DeviceTypeService = new DeviceTypeService();
   let queryDevicePagedListSubscribable: Subscription;
-  const history = useHistory();
   const [form] = Form.useForm();
   useEffect(() => {
     getTableData();

@@ -40,14 +40,15 @@ export default function DeviceRouteModalComponent(props: IDeviceLineProp) {
                   description={
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                       <p>{flow.createTime}</p>
-                      <p style={{ marginLeft: 30, marginRight: 30 }}>{renderDeviceSort(flow)}</p>
+                      <p style={{ marginLeft: 30, marginRight: 30, flex: 1 }}>{renderDeviceSort(flow)}</p>
                       <p
                         style={{
                           overflow: 'hidden',
                           height: 25,
                           width: 250,
                           whiteSpace: 'nowrap',
-                          textOverflow: 'ellipsis'
+                          textOverflow: 'ellipsis',
+                          flex: 1
                         }}
                       >
                         <Popover placement="topRight" content={'奥术大师大所多大声道'} trigger="click">

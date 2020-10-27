@@ -54,10 +54,16 @@ export function OwnerExpandedRow(record: any, index: number) {
 
   return (
     // <Table size="small" columns={columns} dataSource={data} pagination={false} rowKey={row => row.id} />
-    <Row gutter={[24, 40]} style={{ marginLeft: 30 }} key={data.id}>
-      <Col span={8}>绑定车主: {data.owner}</Col>
-      <Col span={8}>绑定车主: {data.carBand}</Col>
-      <Col span={8}>绑定车主: {data.phone}</Col>
+    <Row gutter={[24, 40]} key={data.id} style={{ margin: 0 }}>
+      <Col span={4} style={{ padding: 0 }}>
+        绑定车主: {data.owner}
+      </Col>
+      <Col span={4} style={{ padding: 0 }}>
+        绑定车主: {data.carBand}
+      </Col>
+      <Col span={4} style={{ padding: 0 }}>
+        绑定车主: {data.phone}
+      </Col>
     </Row>
   );
 }

@@ -5,7 +5,7 @@ import { TablePageTelComponent } from '~/framework/components/component.module';
 import { IHeaderTitleComponent, ITableComponent } from '~framework/components/component.module';
 import { deviceLineColumns, OwnerExpandedRow } from './device-line-column';
 import { Form, Button, Input, Select } from 'antd';
-import { DEVICE_ROUTE } from '~shared/constant/common.const';
+import { DEVICE_ROUTE, DEVICE_ROUTE_ENUM } from '~shared/constant/common.const';
 import DeviceRouteModalComponent from './device-route-modal-component/device-route-modal.component';
 export default function DeviceLineComponent() {
   const {
@@ -18,7 +18,7 @@ export default function DeviceLineComponent() {
     changeTablePageIndex,
     handleModalCancel
   } = useDeviceLineStore();
-  const { searchForm = {}, tableData, isLoading, total, routeModalVisible, currentData, flowList } = state;
+  const { searchForm, tableData, isLoading, total, routeModalVisible, currentData, flowList } = state;
   const formItemLayout = {
     labelCol: {
       xs: { span: 24 },
@@ -91,7 +91,9 @@ export default function DeviceLineComponent() {
         isPagination={true}
         expandable={{
           expandedRowRender: OwnerExpandedRow,
-          expandIconColumnIndex: 3
+          expandIconColumnIndex: 3,
+          rowExpandable: (record: any) => record.route == DEVICE_ROUTE_ENUM.Bind,
+          onExpand: (isExpand: boolean, record: any) => console.log('row, 展开数据', record)
         }}
         changeTablePageIndex={(index: number, pageSize: number) => changeTablePageIndex(index, pageSize)}
       ></ITableComponent>
