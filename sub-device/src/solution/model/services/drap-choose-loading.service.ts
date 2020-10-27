@@ -6,11 +6,15 @@ import {
   QueryPurchaseListParam,
   QueryStorePositionListParam,
   QuerySupplierListParam,
-  QueryAllotFlowTemplatePagedListParam
+  QueryAllotFlowTemplatePagedListParam,
+  QueryOwnerListParam,
+  QueryDeviceListParam,
+  QueryStoreListParam
 } from '../dto/drap-choose-loading.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
 import { DepUtil } from '~/framework/aop/inject';
+import { IReturn } from '../dto/template-service.dto';
 
 const QUERY_ORGANIZATION_PAGED_LIST = 'store/manage/queryOrganizationPagedList';
 const QUERY_DEVICE_TYPE_PAGED_LIST = 'material/manage/queryDeviceTypePagedList';
@@ -20,6 +24,9 @@ const QUERY_STORE_USER = 'store/manage/queryStoreUser';
 const QUERY_PURCHASE_SELECT_LIST = 'allot/manage/queryPurchasePagedListSelected';
 const QUERY_STORE_POSITION_LIST = 'store/manage/queryStorePositionPagedListByStoreIdSelected';
 const QUERY_ALLOT_FLOW_TEMPLATE_PAGED_LIST = 'allot/manage/queryAllotFlowTemplatePagedList';
+const QUERY_OWNER_LIST = 'vehicle/manage/queryOwnerPagedList';
+const QUERY_DEVICE_LIST = 'material/manage/queryDeviceSelected';
+const QUERY_STORE_LIST = 'store/manage/queryStorePagedListSelected';
 @DepUtil.Injectable()
 export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
   @DepUtil.Inject(RequestService)
@@ -60,5 +67,17 @@ export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
   // 调拨模板列表
   queryAllotFlowTemplatePagedList(params: QueryAllotFlowTemplatePagedListParam): Observable<IReturn> {
     return this.requestService.post(QUERY_ALLOT_FLOW_TEMPLATE_PAGED_LIST, params);
+  }
+  // 车主
+  queryOwnerList(params: QueryOwnerListParam): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.post(QUERY_OWNER_LIST, params);
+  }
+  // 仓库(不需要机构id)
+  queryStoreList(params: QueryStoreListParam): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.post(QUERY_STORE_LIST, params);
+  }
+  // 绑定设备选择
+  queryDeviceList(params: QueryDeviceListParam): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.post(QUERY_DEVICE_LIST, params);
   }
 }

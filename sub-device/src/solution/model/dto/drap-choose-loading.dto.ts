@@ -68,3 +68,21 @@ export interface QueryAllotFlowTemplatePagedListParam {
   beginTime: 0;
   endTime: 0;
 }
+
+export interface QueryOwnerListParam {
+  name: string;
+  index: number;
+  size: number;
+}
+
+export interface QueryDeviceListParam {
+  code: string;
+  index: number;
+  size: number;
+}
+
+export interface QueryStoreListParam {
+  name: string;
+  index: number;
+  size: number;
+}

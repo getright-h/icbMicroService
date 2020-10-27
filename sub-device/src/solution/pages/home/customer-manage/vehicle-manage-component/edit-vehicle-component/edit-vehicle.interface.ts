@@ -29,4 +29,6 @@ export class IEditVehicleState {
   vehicleFactoryList: VehicleLayout[] = [];
   vehicleVersionList: VehicleLayout[] = [];
   vehicleConfigList: VehicleLayout[] = [];
+  isUnbindDevice = false;
+  unbindInfo: any;
 }
