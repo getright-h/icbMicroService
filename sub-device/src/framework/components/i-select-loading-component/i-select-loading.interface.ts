@@ -19,4 +19,5 @@ export interface IISelectLoadingProps {
   searchKey?: string;
   showSearch?: boolean;
   pageSize?: number;
+  dropdownMatchSelectWidth?: boolean | number;
 }
