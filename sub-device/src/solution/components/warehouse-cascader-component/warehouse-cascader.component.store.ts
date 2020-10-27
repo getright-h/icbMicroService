@@ -8,7 +8,7 @@ export function useWarehouseCascaderStore(props: IWarehouseCascaderProps) {
   const warehouseListService: WarehouseListService = useService(WarehouseListService);
   useEffect(() => {
     loadDefaultValueData([], []);
-  }, []);
+  }, [props.organizationId]);
 
   useEffect(() => {
     setStateWrap({ value: props.value });

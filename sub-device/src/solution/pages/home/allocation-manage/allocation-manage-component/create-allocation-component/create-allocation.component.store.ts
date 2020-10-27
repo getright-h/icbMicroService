@@ -1,6 +1,6 @@
 import { ICreateAllocationState, IFlowNode } from './create-allocation.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { Form } from 'antd';
 import { ShowNotification, getQueryParams } from '~/framework/util/common';
 import { TemplateServiceService } from '~/solution/model/services/template-service.service';
@@ -89,7 +89,6 @@ export function useCreateAllocationStore() {
     for (let i = 1; i <= nodeLength; i++) {
       flowList.push(flowListData.filter((flow: IFlowNode) => flow.sort == i));
     }
-    console.log(flowList);
     setStateWrap({ flowList });
   }
   /**
@@ -213,80 +212,72 @@ export function useCreateAllocationStore() {
   }
   function addNode() {
     const { NodeList } = state;
-    const length = NodeList.length;
-    NodeList.push([
-      {
-        key: length + 1
-      }
-    ]);
+    NodeList.push([{}]);
     setStateWrap({
       NodeList
     });
     setFLowList();
   }
 
-  /**
-   * 流程新增 环节
-   * 更新 flowList 而不是直接替换
-   * NodeList
-   * [
-   * {
-   *  key: 1
-   * }]
-   *
-   * [
-   *  [{key: 1, flow: xx, key: xxx}, {key: 1, flow: xx, key: xxx}]
-   * ]
-   *
-   * NodeList 与 flowList 通过一个共同的Key去建立联系
-   * 如果有相同的Key 则更新 原有的 flowList
-   *
-   * 如果没有 相同的Key 则 加入新的 流程环节
-   * */
   function setFLowList() {
     const { NodeList, flowList } = state;
-
-    console.log(NodeList, 222);
-    const newFlowList: any[] = [];
     for (let i = 0; i < NodeList.length; i++) {
-      const first_index = [];
       const cur_flow_len = flowList[i] && flowList[i].length;
       const cur_node_len = NodeList[i].length;
       if (cur_flow_len == cur_node_len) continue;
       if (!flowList[i]) flowList[i] = [];
-      flowList[i].push({
-        flowId: i + '-' + j,
-        name: '测试' + i + '-' + j,
-        isSelected: false
-      });
-      // i 代表每一层,
-      for (let j = 0; j < NodeList[i].length; j++) {
-        // const second_index = {
-        //   flowId: i + '-' + j,
-        //   name: '测试' + i + '-' + j,
-        //   isSelected: false
-        // };
-        // first_index.push(second_index);
-        // newFlowList.push(first_index);
-      }
+      flowList[i].push(...NodeList[i]);
     }
     setStateWrap({
       flowList
     });
   }
 
-  function addItem(first_Index: number, key: any) {
-    const { NodeList } = state;
-    NodeList[first_Index].push({
-      key: NodeList[first_Index].length + 1
+  /**
+   *
+   * @param field
+   * @param add
+   * @param index 数组第一层 表示环节
+   */
+  function addFlowNode(index: number, number: number) {
+    const { NodeList = [] } = state;
+    NodeList[index].push({});
+    setStateWrap({
+      NodeList
     });
-    setStateWrap({ NodeList });
     setFLowList();
   }
 
-  function reduceItem(first_Index: number, key: any) {
-    const { NodeList, flowList } = state;
+  function removeFlowNode(index: number, number: number) {
+    const { NodeList = [] } = state;
+    NodeList[index].splice(number, 1);
+    setStateWrap({
+      NodeList: NodeList.filter(node => node.length)
+    });
     setFLowList();
+  }
+
+  function getCurrentSelectInfo(info: any, type: string, index: number, number: number) {
+    const { NodeList } = state;
+    NodeList[index][number].organizationId = info.value;
+    NodeList[index][number].label = info.children;
+    NodeList[index][number].isSelect = false;
+    setStateWrap({
+      [type]: info.value,
+      NodeList
+    });
+  }
+
+  function setCascaderInfo(info: any, type: any, index: number, number: number) {
+    console.log(info);
+    const { NodeList } = state;
+    NodeList[index][number].warehouse = info[0].children.length
+      ? info[0].label + '-' + info[0].children[0].label
+      : info[0].label;
+    NodeList[index][number].warehouseId = info[0].children.length ? info[0].children[0].value : info[0].value;
+    setStateWrap({
+      NodeList
+    });
   }
   useEffect(() => {
     getDefaultParams();
@@ -307,7 +298,9 @@ export function useCreateAllocationStore() {
     updateTypeDevice,
     selectAlloactionTemplateFlowNode,
     addNode,
-    addItem,
-    reduceItem
+    addFlowNode,
+    removeFlowNode,
+    getCurrentSelectInfo,
+    setCascaderInfo
   };
 }

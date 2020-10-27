@@ -3,6 +3,9 @@ import style from './create-allocation.component.less';
 import { useCreateAllocationStore } from './create-allocation.component.store';
 import { Form, Input, Checkbox, Select, Space, Button, InputNumber } from 'antd';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
+import { useCallback } from 'react';
+import { GlobalContext } from '~/solution/context/global/global.provider';
+import WarehouseCascaderComponent from '~/solution/components/warehouse-cascader-component/warehouse-cascader.component';
 import { IHeaderTitleComponent, ISelectLoadingComponent } from '~framework/components/component.module';
 export default function CreateAllocationComponent() {
   const {
@@ -14,16 +17,18 @@ export default function CreateAllocationComponent() {
     updateTypeDevice,
     addNode,
     selectAlloactionTemplateFlowNode,
-    addItem,
-    reduceItem
+    addFlowNode,
+    removeFlowNode,
+    setCascaderInfo,
+    getCurrentSelectInfo
   } = useCreateAllocationStore();
   const { searchForm = {}, submitLoading, flowList = [], NodeList = [] } = state;
   const layout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 16 }
   };
-  console.log(flowList, 111);
-  console.log(NodeList, 333);
+  console.log(NodeList);
+  const { gState } = React.useContext(GlobalContext);
   function ArrowComponent() {
     return (
       <div className={style.arrowWapepr}>
@@ -33,69 +38,68 @@ export default function CreateAllocationComponent() {
       </div>
     );
   }
+
   return (
     <div className={style.mainForm}>
       <IHeaderTitleComponent pageName={'创建调拨单'} />
       <div className={style.createAllot}>
         <div className={style.left}>
-          <Form {...layout} initialValues={{ deviceList: [{}] }} form={form}>
-            {NodeList.length > 0 &&
-              NodeList.map((node: any, index: number) => (
-                <Form.Item
-                  key={'node' + index}
-                  label={`节点${index}: `}
-                  required={true}
-                  className="form-item"
-                  style={{ alignItems: 'start', marginBottom: 0 }}
-                >
+          {NodeList.length > 0 &&
+            NodeList.map((node: any, index: number) => (
+              <Form key={index} initialValues={{ sights: [{}] }}>
+                <Form.Item label={'流程节点'}>
                   {Array.isArray(node) &&
-                    node.length > 0 &&
-                    node.map((item: any, number: number) => (
-                      <Space key={'flow' + number} className={style.space} align="start">
-                        <Form.Item name={['typeName']} className={style.fieldItem} key={'typename' + number}>
+                    node.map((field: any, number: number) => (
+                      <Space key={field.name} style={{ alignItems: 'flex-start', marginRight: 30 }}>
+                        <Form.Item>
                           <ISelectLoadingComponent
-                            reqUrl="queryDeviceTypeList"
-                            placeholder="请选择机构"
-                            getCurrentSelectInfo={(value: string, option: any) => {
-                              updateTypeDevice({ value, option, node }, 'type');
-                            }}
+                            placeholder={'请选择机构'}
+                            showSearch={true}
+                            searchForm={{ systemId: gState.myInfo.systemId }}
+                            reqUrl={'queryStoreOrganization'}
+                            getCurrentSelectInfo={(info: any, option: any) =>
+                              getCurrentSelectInfo(option, 'organizationId', index, number)
+                            }
                           />
                         </Form.Item>
-                        <Form.Item name={['number']} className={`${style.fieldItem}`}>
-                          <ISelectLoadingComponent
-                            reqUrl="queryDeviceTypeList"
-                            placeholder="请选择仓库"
-                            getCurrentSelectInfo={(value: string, option: any) => {
-                              updateTypeDevice({ value, option, node }, 'type');
-                            }}
+
+                        <Form.Item
+                          name={[field.name, 'storeId']}
+                          fieldKey={[field.fieldKey, 'storeId']}
+                          rules={[{ type: 'array' }]}
+                          style={{ display: 'inline-block', margin: '0px 8px' }}
+                        >
+                          <WarehouseCascaderComponent
+                            setInfo={(value: any, selectedOptions: any) =>
+                              setCascaderInfo(selectedOptions, 'selectedOptions', index, number)
+                            }
+                            organizationId={field.organizationId}
                           />
                         </Form.Item>
-                        <div className={style.fieldAddButton}>
-                          <PlusOutlined
-                            onClick={() => {
-                              addItem(index, item.key);
-                            }}
-                          />
-                          {index != 0 && (
-                            <MinusOutlined
-                              onClick={() => {
-                                reduceItem(index, item.key);
-                              }}
-                            />
-                          )}
-                        </div>
+                        <PlusOutlined
+                          style={{ marginRight: '10px' }}
+                          onClick={() => {
+                            addFlowNode(index, number);
+                          }}
+                        />
+                        <MinusOutlined
+                          onClick={() => {
+                            removeFlowNode(index, number);
+                          }}
+                        />
                       </Space>
                     ))}
                 </Form.Item>
-              ))}
-          </Form>
+              </Form>
+            ))}
+
           <Button onClick={() => addNode()}>添加节点</Button>
         </div>
         <div className={style.right}>
           <Form>
             <Form.Item name="name" rules={[{ required: true }]}>
-              {Array.isArray(flowList) &&
-                flowList.map((flows: any, index: number) => (
+              {Array.isArray(NodeList) &&
+                NodeList.map((flows: any, index: number) => (
                   <div key={index}>
                     <div className={`${style.flowNodeWapper} ${index == 0 && style.minWidth}`}>
                       {Array.isArray(flows) && flows.length > 1 ? (
@@ -105,18 +109,17 @@ export default function CreateAllocationComponent() {
                             key={flow.flowId}
                             onClick={() => selectAlloactionTemplateFlowNode(index, flow.flowId)}
                           >
-                            <i className={flow.isSelected ? style.checked : style.notchecked}></i>
-                            <span>{flow.name || flow.storeName}</span>
+                            {/* <i className={flow.isSelected ? style.checked : style.notchecked}></i> */}
+                            <span>{flow.warehouse && flow.warehouse}</span>
                           </div>
                         ))
                       ) : (
                         <div className={style.node}>
-                          {/* 如果当前节点只有一个选项,那么默认选中,并且不显示,复选框 */}
-                          <span>{flows[0].name || flows[0].storeName}</span>
+                          <span>{flows[0].warehouse && flows[0].warehouse}</span>
                         </div>
                       )}
                     </div>
-                    {index < flowList.length - 1 && ArrowComponent()}
+                    {index < NodeList.length - 1 && ArrowComponent()}
                   </div>
                 ))}
             </Form.Item>
