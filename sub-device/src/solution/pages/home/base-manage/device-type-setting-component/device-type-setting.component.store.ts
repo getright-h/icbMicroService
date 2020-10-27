@@ -65,7 +65,8 @@ export function useDeviceTypeSettingStore() {
     if (!id) return;
     deviceTypeService.deviceTypeDetail({ id }).subscribe(
       (res: any) => {
-        setStateWrap({ addDeviceTypeVisible: true, currentData: { ...res, actionType: ModalType.ALERT } });
+        const image = res.image && [{ uid: res.image, url: res.image }];
+        setStateWrap({ addDeviceTypeVisible: true, currentData: { ...res, image, actionType: ModalType.ALERT } });
       },
       (error: any) => {
         console.log(error);

@@ -10,7 +10,6 @@ export default function AddDeviceTypeModalComponent(props: IAddDeviceType) {
   const { state, form, onChange, onSubmit, alertDeviceType } = useAddDeviceTypeStore(props);
   const { searchForm = {}, imageList = [] } = state;
   const { visible, close } = props;
-  console.log(searchForm, 2222);
   return (
     <Modal
       title={ModalType.ALERT === searchForm.actionType ? '修改设备型号' : '新增设备型号'}
@@ -116,7 +115,7 @@ export default function AddDeviceTypeModalComponent(props: IAddDeviceType) {
           <Form.Item label="图片" name={'image'}>
             <IUploadImgComponent
               maxImgNumber={1}
-              fileList={imageList}
+              fileList={searchForm.image || []}
               getFileList={url => {
                 onChange(url, 'image');
               }}

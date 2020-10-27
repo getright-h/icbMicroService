@@ -26,6 +26,7 @@ export function useAddDeviceTypeStore(props: IAddDeviceType) {
 
   function addDeviceType() {
     const { searchForm, imageList } = state;
+    console.log(searchForm);
     searchForm.supplierId = 'a8bfea91c100cb39449c08d85bebb643';
     insetDeviceTypeSubscription = deviceTypeService.insetDeviceType(searchForm).subscribe(
       (res: any) => {
@@ -64,7 +65,7 @@ export function useAddDeviceTypeStore(props: IAddDeviceType) {
     setStateWrap({
       searchForm: {
         ...searchForm,
-        [valueType]: value
+        [valueType]: value.toString()
       }
     });
   }
