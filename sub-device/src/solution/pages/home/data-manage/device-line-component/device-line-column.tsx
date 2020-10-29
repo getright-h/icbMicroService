@@ -45,24 +45,17 @@ export function deviceLineColumns(getFlowNode: Function) {
 }
 
 export function OwnerExpandedRow(record: any, index: number) {
-  const data = {
-    id: record.code,
-    owner: '庄周',
-    carBand: '鱼',
-    phone: '1388888888'
-  };
-
+  const { ownerName = '-', carBand = '-', ownerMobile = '-' } = record;
   return (
-    // <Table size="small" columns={columns} dataSource={data} pagination={false} rowKey={row => row.id} />
-    <Row gutter={[24, 40]} key={data.id} style={{ margin: 0 }}>
+    <Row gutter={[24, 40]} key={record.id} style={{ margin: 0 }}>
       <Col span={4} style={{ padding: 0 }}>
-        绑定车主: {data.owner}
+        绑定车主: {ownerName}
       </Col>
       <Col span={4} style={{ padding: 0 }}>
-        绑定车主: {data.carBand}
+        绑定车牌: {carBand}
       </Col>
       <Col span={4} style={{ padding: 0 }}>
-        绑定车主: {data.phone}
+        车主电话: {ownerMobile}
       </Col>
     </Row>
   );

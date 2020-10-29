@@ -23,6 +23,10 @@ const QUERY_VEHICLE_GROUPLIST = 'vehicle/manage/queryVehicleGroupList';
 const QUERY_VEHICLE_GROUP_DETAIL = 'vehicle/manage/queryVehicleGroupDetail';
 // 监控车辆设备列表
 const QUERY_VEHICLE_GROUP_PAGED_LIST = 'vehicle/manage/queryVehicleGroupPagedList';
+// 计算车辆数据
+const CALCULATION_MONITOR_VEHICLE_NUMBER = 'vehicle/manage/calculationMonitorVehicleNumber';
+// 监控组搜索
+const QUERY_GROUP_SEARCH_LIST = 'vehicle/manage/queryGroupSearchList';
 @DepUtil.Injectable()
 export class MonitorService {
   @DepUtil.Inject(RequestService)
@@ -51,5 +55,11 @@ export class MonitorService {
   }
   queryVehicleGroupPagedList(params: any): Observable<any> {
     return this.requestService.post(QUERY_VEHICLE_GROUP_PAGED_LIST, params);
+  }
+  calculationMonitorVehicleNumber(params: any): Observable<any> {
+    return this.requestService.post(CALCULATION_MONITOR_VEHICLE_NUMBER, params);
+  }
+  queryGroupSearchList(params: any): Observable<any> {
+    return this.requestService.get(QUERY_GROUP_SEARCH_LIST, params);
   }
 }

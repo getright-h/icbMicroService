@@ -16,7 +16,9 @@ export default function AddMonitorCarComponent(props: IAddMonitorCarProps) {
     addCarDeviceList = [],
     delCarDeviceList = [],
     addChoseList = [],
-    delChoseList = []
+    delChoseList = [],
+    selectedVehicleCount,
+    totalVehicleCount
   } = state;
   const { addMonitorModal = false, colse } = props;
   function RenderTree() {
@@ -89,7 +91,7 @@ export default function AddMonitorCarComponent(props: IAddMonitorCarProps) {
           <h2>预览</h2>
           <div className={style.modalRightWapper}>
             <div className={style.rightTop}>
-              <h2 className={style.subTitle}>已选车辆（xx）</h2>
+              <h2 className={style.subTitle}>已选车辆（{selectedVehicleCount}）</h2>
               <div className={style.chooesed}>
                 {checkedObject.map((org: any) => (
                   <div key={org.id}>
@@ -104,7 +106,7 @@ export default function AddMonitorCarComponent(props: IAddMonitorCarProps) {
               </div>
             </div>
             <div className={style.rightBottom}>
-              <h2 className={style.subTitle}>去除车辆（xx）</h2>
+              <h2 className={style.subTitle}>去除车辆（{delChoseList.length}）</h2>
               <div className={style.chooesed}>
                 {delChoseList.map((device: any) => (
                   <div key={device + 'chose_del'}>
@@ -113,7 +115,7 @@ export default function AddMonitorCarComponent(props: IAddMonitorCarProps) {
                 ))}
               </div>
             </div>
-            <p className={style.total}>车辆总计： （xx）</p>
+            <p className={style.total}>车辆总计： （{totalVehicleCount}）</p>
           </div>
         </div>
       </div>

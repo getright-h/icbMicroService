@@ -91,6 +91,7 @@ export default function DeviceLineComponent() {
         total={total}
         isPagination={true}
         expandable={{
+          expandable: false,
           expandedRowRender: OwnerExpandedRow,
           expandIconColumnIndex: 3,
           rowExpandable: (record: any) => record.route == DEVICE_ROUTE_ENUM.Bind,

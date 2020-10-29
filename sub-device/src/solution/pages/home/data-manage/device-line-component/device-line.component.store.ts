@@ -42,7 +42,20 @@ export function useDeviceLineStore() {
     queryVehicleInformationByCodeSubscribable = deviceTypeService
       .queryVehicleInformationByCode({ deviceCode: code })
       .subscribe((res: any) => {
-        console.log(res);
+        const { ownerName = '-', carBand = '-', ownerMobile = '-' } = record;
+        if (res) {
+          const { tableData } = state;
+          tableData.forEach((data: any) => {
+            if (data.code === code) {
+              data.ownerMobile = ownerMobile;
+              data.ownerName = ownerName;
+              data.carBand = carBand;
+            }
+          });
+          setStateWrap({
+            tableData
+          });
+        }
       });
   }
 

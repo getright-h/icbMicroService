@@ -31,7 +31,6 @@ export function useAddMonitorGroupStore(props: AddMonitorGroupProp) {
       },
       (error: any) => {
         setStateWrap({ submitLoading: false });
-        ShowNotification.success('添加失败');
       }
     );
   }

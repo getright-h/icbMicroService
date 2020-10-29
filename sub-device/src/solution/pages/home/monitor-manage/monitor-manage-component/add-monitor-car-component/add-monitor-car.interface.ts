@@ -13,6 +13,8 @@ export class IAddMonitorCarState {
   checkedKeys: string[] = [];
   confirmLoading = false;
   checkedObject: DataNode[] = [];
+  selectedVehicleCount = 0;
+  totalVehicleCount = 0;
 }
 
 export interface IAddMonitorCarProps {

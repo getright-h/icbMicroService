@@ -15,6 +15,7 @@ export function useAddMonitorCarStore(porps: IAddMonitorCarProps) {
   const [form] = Form.useForm();
   let getCartDeviceListSubscription: Subscription;
   let insertVehicleGroupSubscription: Subscription;
+  let calculationMonitorVehicleNumberSubscription: Subscription;
   useEffect(() => {
     return () => {
       getCartDeviceListSubscription && getCartDeviceListSubscription.unsubscribe();
@@ -38,12 +39,29 @@ export function useAddMonitorCarStore(porps: IAddMonitorCarProps) {
         });
       });
   }
-
-  function insertVehicleGroup() {
-    const { checkedKeys, addChoseList = [], delChoseList = [] } = state;
+  function calculationMonitorVehicleNumber() {
+    const { organizationCodeList, checkedKeys, addChoseList = [], delChoseList = [] } = state;
     const params = {
       groupId: porps.groupId || '40105ebae7c7c7551b2308d87064ff23',
-      organizationIdList: checkedKeys,
+      organizationIdList: organizationCodeList,
+      vehicleVinNoList: addChoseList,
+      removeList: delChoseList
+    };
+    calculationMonitorVehicleNumberSubscription = monitorService
+      .calculationMonitorVehicleNumber(params)
+      .subscribe((res: any) => {
+        setStateWrap({
+          selectedVehicleCount: res.selectedVehicleCount || 0,
+          totalVehicleCount: res.totalVehicleCount || 0
+        });
+      });
+  }
+
+  function insertVehicleGroup() {
+    const { organizationCodeList, checkedKeys, addChoseList = [], delChoseList = [] } = state;
+    const params = {
+      groupId: porps.groupId || '40105ebae7c7c7551b2308d87064ff23',
+      organizationIdList: organizationCodeList,
       vehicleVinNoList: addChoseList,
       removeList: delChoseList
     };
@@ -77,6 +95,7 @@ export function useAddMonitorCarStore(porps: IAddMonitorCarProps) {
       addChoseList,
       delChoseList
     });
+    calculationMonitorVehicleNumber();
   }
   function onExpand(expandedKeys: []) {
     setStateWrap({
@@ -85,10 +104,13 @@ export function useAddMonitorCarStore(porps: IAddMonitorCarProps) {
   }
   function onCheck(treeData: DataNode[], checkedKeys: any = state.checkedKeys) {
     const checkedObject = getCheckedList(treeData, checkedKeys);
+    console.log(checkedObject);
     setStateWrap({
       checkedKeys,
-      checkedObject
+      checkedObject,
+      organizationCodeList: checkedObject.map((device: any) => device.organizationId)
     });
+    calculationMonitorVehicleNumber();
   }
   return { state, form, getCartDeviceList, onSelectCar, onExpand, onCheck, insertVehicleGroup };
 }
