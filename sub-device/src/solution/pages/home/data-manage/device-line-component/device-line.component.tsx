@@ -3,9 +3,9 @@ import style from './device-line.component.less';
 import { useDeviceLineStore } from './device-line.component.store';
 import { TablePageTelComponent } from '~/framework/components/component.module';
 import { IHeaderTitleComponent, ITableComponent } from '~framework/components/component.module';
-import { deviceLineColumns } from './device-line-column';
+import { deviceLineColumns, OwnerExpandedRow } from './device-line-column';
 import { Form, Button, Input, Select } from 'antd';
-import { DEVICE_ROUTE } from '~shared/constant/common.const';
+import { DEVICE_ROUTE, DEVICE_ROUTE_ENUM } from '~shared/constant/common.const';
 import DeviceRouteModalComponent from './device-route-modal-component/device-route-modal.component';
 export default function DeviceLineComponent() {
   const {
@@ -16,9 +16,10 @@ export default function DeviceLineComponent() {
     searchClean,
     getFlowNode,
     changeTablePageIndex,
-    handleModalCancel
+    handleModalCancel,
+    queryVehicleInformationByCode
   } = useDeviceLineStore();
-  const { searchForm = {}, tableData, isLoading, total, routeModalVisible, currentData } = state;
+  const { searchForm, tableData, isLoading, total, routeModalVisible, currentData, flowList } = state;
   const formItemLayout = {
     labelCol: {
       xs: { span: 24 },
@@ -81,6 +82,7 @@ export default function DeviceLineComponent() {
   function RenderTable() {
     return (
       <ITableComponent
+        rowKey="code"
         columns={deviceLineColumns(getFlowNode)}
         isLoading={isLoading}
         pageIndex={searchForm.index}
@@ -88,6 +90,12 @@ export default function DeviceLineComponent() {
         data={tableData}
         total={total}
         isPagination={true}
+        expandable={{
+          expandedRowRender: OwnerExpandedRow,
+          expandIconColumnIndex: 3,
+          rowExpandable: (record: any) => record.route == DEVICE_ROUTE_ENUM.Bind,
+          onExpand: (isExpand: boolean, record: any) => queryVehicleInformationByCode(isExpand, record)
+        }}
         changeTablePageIndex={(index: number, pageSize: number) => changeTablePageIndex(index, pageSize)}
       ></ITableComponent>
     );
@@ -95,13 +103,21 @@ export default function DeviceLineComponent() {
 
   return (
     <div className={style.deviceLine}>
-      <IHeaderTitleComponent pageName={'设备路线表'}></IHeaderTitleComponent>
+      <IHeaderTitleComponent pageName={'设备路线表'} className={'flexJusBetw'}>
+        {<Button>批量导出</Button>}
+      </IHeaderTitleComponent>
       <TablePageTelComponent
         selectItems={renderSelectItems()}
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
       />
-      <DeviceRouteModalComponent visible={routeModalVisible} data={currentData} close={handleModalCancel} />
+      <DeviceRouteModalComponent
+        visible={routeModalVisible}
+        data={{
+          ...currentData
+        }}
+        close={handleModalCancel}
+      />
     </div>
   );
 }

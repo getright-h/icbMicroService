@@ -1,34 +1,51 @@
 import { IMonitorManageState } from './monitor-manage.interface';
-import { useStateStore } from '~/framework/aop/hooks/use-base-store';
+import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
 import { useEffect } from 'react';
 import { ShowNotification } from '~/framework/util/common';
-import { AllocationManageService } from '~/solution/model/services/allocation-manage.service';
+import { MonitorService } from '~/solution/model/services/monitor.service';
 import { ModalType } from '../monitor-manage.const';
 import { Modal } from 'antd';
 import { Subscription } from 'rxjs';
 import { useHistory } from 'react-router-dom';
+import { DataNode } from 'rc-tree/lib/interface';
+import { getCheckedList } from '~/framework/util/common/treeFunction';
 const { confirm } = Modal;
 export function useMonitorManageStore() {
   const { state, setStateWrap } = useStateStore(new IMonitorManageState());
 
-  const allocationManageService: AllocationManageService = new AllocationManageService();
-  let setAllotFlowSubscription: Subscription;
+  const monitorService = useService(MonitorService);
+  let queryVehicleGroupPagedListSubscription: Subscription;
   const history = useHistory();
   useEffect(() => {
+    getTableData();
     return () => {
-      setAllotFlowSubscription && setAllotFlowSubscription.unsubscribe();
+      queryVehicleGroupPagedListSubscription && queryVehicleGroupPagedListSubscription.unsubscribe();
     };
   }, []);
-
   function getTableData() {
     setStateWrap({ isLoading: true });
-    allocationManageService.queryAllotRecipientPagedList(state.searchForm).subscribe(
-      res => {
+    queryVehicleGroupPagedListSubscription = monitorService.queryVehicleGroupPagedList(state.searchForm).subscribe(
+      (res: any) => {
         setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
       },
-      err => {
+      (error: any) => {
         setStateWrap({ isLoading: false });
-        ShowNotification.error(err);
+        ShowNotification.error(error);
+      }
+    );
+  }
+
+  function delCarGroup(data: any) {
+    const { id = '' } = data;
+    if (!id) return;
+    monitorService.vehicleGroup({ id }).subscribe(
+      (res: any) => {
+        ShowNotification.success('删除成功');
+        getTableData();
+      },
+      (error: any) => {
+        ShowNotification.warning('删除失败');
+        console.log(error);
       }
     );
   }
@@ -61,6 +78,7 @@ export function useMonitorManageStore() {
         renderDelMonitorModal(data);
         break;
       case ModalType.BATCH_TRANFROM:
+        setStateWrap({ transformModalVisible: true });
         break;
     }
   }
@@ -71,7 +89,9 @@ export function useMonitorManageStore() {
   function renderDelMonitorModal(data: any) {
     confirm({
       content: '是否确认删除',
-      onOk: () => {}
+      onOk: () => {
+        delCarGroup(data);
+      }
     });
   }
 
@@ -84,9 +104,20 @@ export function useMonitorManageStore() {
   }
 
   function handleModalCancel() {
-    setStateWrap({ addGroupModalVisible: false, addCarModalVisible: false });
+    setStateWrap({ addGroupModalVisible: false, addCarModalVisible: false, transformModalVisible: false });
   }
-
+  function onExpand(expandedKeys: []) {
+    setStateWrap({
+      expandedKeys
+    });
+  }
+  function onCheck(treeData: DataNode[], checkedKeys: any = state.checkedKeys) {
+    const checkedObject = getCheckedList(treeData, checkedKeys);
+    setStateWrap({
+      checkedKeys,
+      checkedObject
+    });
+  }
   return {
     state,
     callbackAction,
@@ -94,6 +125,8 @@ export function useMonitorManageStore() {
     searchClick,
     handleModalCancel,
     onChange,
-    getTableData
+    getTableData,
+    onExpand,
+    onCheck
   };
 }

@@ -5,7 +5,10 @@ import { IHeaderTitleComponent, ITableComponent, TablePageTelComponent } from '~
 import { monitorColumns } from './monitor-manage-column';
 import { Form, Button, Input } from 'antd';
 import { ModalType } from '../monitor-manage.const';
+import OrganizationControllerComponent from '~/solution/components/organization-controller-component/organization-controller.component';
 import AddMonitorGroupComponent from './add-monitor-group-component/add-monitor-group.component';
+import AddMonitorCarComponent from './add-monitor-car-component/add-monitor-car.component';
+import TransformMonitorComponent from './transform-monitor-component/transform-monitor.component';
 export default function MonitorManageComponent() {
   const {
     state,
@@ -15,9 +18,23 @@ export default function MonitorManageComponent() {
     searchClick,
     handleModalCancel,
     searchValueChange,
-    getMonitorGroupList
+    getMonitorGroupList,
+    onExpand,
+    onCheck
   } = useMonitorManageStore();
-  const { isLoading, searchForm = {}, tableData, total, currentData, addGroupModalVisible } = state;
+  const {
+    isLoading,
+    searchForm = {},
+    tableData,
+    total,
+    currentData,
+    addGroupModalVisible = false,
+    addCarModalVisible = false,
+    transformModalVisible = false,
+    groupId,
+    expandedKeys,
+    checkedKeys
+  } = state;
   function renderSelectItems() {
     return (
       <>
@@ -44,26 +61,13 @@ export default function MonitorManageComponent() {
     );
   }
   function RenderTable() {
-    const data = [];
-    for (let i = 0; i < 46; i++) {
-      data.push({
-        key: i,
-        name: `owner ${i}`,
-        phone: 156654651654,
-        deviceCode: Math.random()
-          .toString(16)
-          .slice(4, 16),
-        totalNUmber: i
-      });
-    }
-
     return (
       <ITableComponent
         columns={monitorColumns(callbackAction)}
         isLoading={isLoading}
         pageIndex={searchForm.index}
         pageSize={searchForm.size}
-        data={data}
+        data={tableData}
         total={total}
         isPagination={true}
         rowSelection={[]}
@@ -72,17 +76,16 @@ export default function MonitorManageComponent() {
     );
   }
 
-  function renderPageLeft() {
-    const { Search } = Input;
+  function RenderTree() {
+    const prganizationControllerComponentProps = {
+      expandedKeys,
+      onExpand,
+      getCheckedInfo: onCheck,
+      checkedKeys
+    };
     return (
-      <div className={style.monitorGroup}>
-        <Search
-          style={{ marginBottom: 8 }}
-          placeholder="输入监控组名称"
-          onChange={searchValueChange}
-          onSearch={getMonitorGroupList}
-          enterButton
-        />
+      <div>
+        <OrganizationControllerComponent checkable {...prganizationControllerComponentProps} />
       </div>
     );
   }
@@ -101,10 +104,12 @@ export default function MonitorManageComponent() {
       </IHeaderTitleComponent>
       <TablePageTelComponent
         selectItems={renderSelectItems()}
-        pageLeft={renderPageLeft}
+        pageLeft={RenderTree}
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
       />
+      <TransformMonitorComponent close={handleModalCancel} visible={transformModalVisible} />
+      <AddMonitorCarComponent addMonitorModal={addCarModalVisible} colse={handleModalCancel} groupId={groupId} />
       <AddMonitorGroupComponent close={handleModalCancel} data={currentData} visible={addGroupModalVisible} />
     </div>
   );

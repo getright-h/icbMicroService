@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useReducer } from 'react';
+import React, { useState, useMemo, useRef, useReducer } from 'react';
 import { emptyFunction } from '~/framework/util/common';
 import { IAction } from '~/solution/shared/interfaces/common.interface';
 type Partial<T> = {
@@ -6,17 +6,17 @@ type Partial<T> = {
 };
 export function useStateStore<T>(initialState?: T) {
   const [state, setState] = useState(initialState);
-  let newState = state;
+  const newState = useRef(state);
   const setStateWrap = (value: Partial<T>, callback?: Function) => {
     setState(state => {
-      newState = { ...state, ...value };
-      callback && callback(newState);
-      return newState;
+      newState.current = { ...state, ...value };
+      callback && callback(newState.current);
+      return newState.current;
     });
     return newState;
   };
 
-  const getState = () => newState;
+  const getState = () => newState.current;
 
   return {
     state,

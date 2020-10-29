@@ -29,6 +29,9 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
         if (res && res.dataList) {
           const optionList = [...(isSearch ? [] : state.optionList), ...res.dataList];
           setStateWrap({ optionList, fetching: false });
+        } else if (props.isData) {
+          const optionList = [...(isSearch ? [] : state.optionList), ...res];
+          setStateWrap({ optionList, fetching: false });
         } else if (scrollPage.current == 1 && (!res || !res.dataList)) {
           setStateWrap({ optionList: [], fetching: false });
         } else {

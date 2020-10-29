@@ -2,7 +2,6 @@ import { IDeviceTypeSettingState } from './device-type-setting.interface';
 import { ModalType } from '../base-manage.const';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form, Modal } from 'antd';
-import { ShowNotification } from '~/framework/util/common';
 import { DeviceTypeService } from '~/solution/model/services/device-type.service';
 import { useEffect } from 'react';
 import { Subscription } from 'rxjs';
@@ -57,7 +56,9 @@ export function useDeviceTypeSettingStore() {
     confirm({
       content: `确认删除设备型号${data.name || '-'}`,
       onOk: () => {
-        delDeviceType(data.id).then(res => console.log(res));
+        delDeviceType(data.id).then(res => {
+          getTableList();
+        });
       }
     });
   }
@@ -66,7 +67,8 @@ export function useDeviceTypeSettingStore() {
     if (!id) return;
     deviceTypeService.deviceTypeDetail({ id }).subscribe(
       (res: any) => {
-        setStateWrap({ addDeviceTypeVisible: true, currentData: { ...res, actionType: ModalType.ALERT } });
+        const image = res.image && [{ uid: res.image, url: res.image }];
+        setStateWrap({ addDeviceTypeVisible: true, currentData: { ...res, image, actionType: ModalType.ALERT } });
       },
       (error: any) => {
         console.log(error);
@@ -78,7 +80,6 @@ export function useDeviceTypeSettingStore() {
     return new Promise((reslove: any, reject: any) => {
       deviceTypeService.deviceType({ id }).subscribe(
         res => {
-          console.log(res);
           reslove(res);
         },
         error => {

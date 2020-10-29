@@ -26,6 +26,10 @@ function OrganizationControllerComponent(props: IOrganizationControllerProps, re
         />
       </div>
       <Tree
+        style={{
+          zIndex: 'auto',
+          background: '#fff'
+        }}
         loadData={onLoadData}
         onSelect={onSelect}
         expandedKeys={expandedKeys}

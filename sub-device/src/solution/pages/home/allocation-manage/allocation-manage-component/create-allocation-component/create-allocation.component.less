@@ -55,13 +55,17 @@
     min-height: 50px;
     margin: 0 auto;
     border: 1px solid;
-    justify-content: space-around;
+    justify-content: space-between;
+    flex-wrap: wrap;
     align-items: center;
     &:last-child {
       max-width: 200px;
     }
     .node {
       cursor: pointer;
+      width: 247px;
+      height: 30px;
+      text-align: center;
       i {
         display: inline-block;
         width: 15px;
@@ -105,5 +109,15 @@
       bottom: -12px;
       left: -10px;
     }
+  }
+}
+
+.createAllot {
+  display: flex;
+  .left {
+flex: 1;
+  }
+  .right {
+    width: 500px;
   }
 }

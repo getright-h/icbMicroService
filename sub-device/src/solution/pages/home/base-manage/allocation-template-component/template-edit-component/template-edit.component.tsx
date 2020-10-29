@@ -92,7 +92,7 @@ export default function TemplateEditComponent() {
                 {(fields, { add, remove }) => {
                   return (
                     <>
-                      {fields.map((field: any, index) => {
+                      {flowNodeSettingField.map((field: any, index) => {
                         const isChild = index >= 1 && field.sort == flowNodeSettingField[index - 1].sort;
                         return (
                           <Form.Item

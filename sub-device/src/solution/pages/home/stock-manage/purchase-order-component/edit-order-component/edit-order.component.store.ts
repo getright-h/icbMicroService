@@ -76,6 +76,7 @@ export function useEditOrderStore(props: IEditOrderProps) {
   }
 
   function selfSubmit(values: any) {
+    console.log(values, 'value');
     setStateWrap({ confirmLoading: true });
     const confirmForm = {
       ...values,

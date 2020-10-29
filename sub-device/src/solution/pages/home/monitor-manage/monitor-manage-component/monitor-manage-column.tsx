@@ -1,6 +1,7 @@
 import * as React from 'react';
-import style from './monitor-manage.component.less';
-import { ALLOW_FLOW_ENUM, ModalType } from '~shared/constant/common.const';
+import { ALLOW_FLOW_ENUM } from '~shared/constant/common.const';
+import { ModalType } from '../monitor-manage.const';
+import { Space } from 'antd';
 export function monitorColumns(callbackAction: Function) {
   /**
    * @description 根据[  调拨状态 ] 渲染操作按钮
@@ -9,37 +10,45 @@ export function monitorColumns(callbackAction: Function) {
     const { state } = data;
 
     const btnState = [
+      {
+        condition: [],
+        btn: (
+          <a onClick={() => callbackAction(ModalType.DETAIL, data)} key={3}>
+            详情
+          </a>
+        )
+      },
       // 删除
       {
         condition: [],
         btn: (
-          <a className={style.button} onClick={() => callbackAction(ModalType.REJECT, data)} key={2}>
+          <a onClick={() => callbackAction(ModalType.DEL, data)} key={2}>
             删除
           </a>
         )
       },
 
-      // 通过操作 & 退货操作
+      //转组
       {
-        condition: [ALLOW_FLOW_ENUM.Inspection],
+        condition: [],
         btn: (
-          <a className={style.button} onClick={() => callbackAction(ModalType.SET_RETURN, data)} key={4}>
+          <a onClick={() => callbackAction(ModalType.BATCH_TRANFROM, data)} key={4}>
             转组
           </a>
         )
       }
     ];
-    const btnArray = btnState.filter((item: any) => item.condition.includes(state)).map((btn: any) => btn.btn);
-    return <React.Fragment>{btnArray}</React.Fragment>;
+    const btnArray = btnState.filter((item: any) => item.condition).map((btn: any) => btn.btn);
+    return <Space size="small">{btnArray}</Space>;
   }
   return [
     {
       title: '车主',
-      dataIndex: 'owner'
+      dataIndex: 'ownerName'
     },
     {
       title: '电话',
-      dataIndex: 'phone'
+      dataIndex: 'ownerMobile'
     },
     {
       title: '设备号',
@@ -47,7 +56,7 @@ export function monitorColumns(callbackAction: Function) {
     },
     {
       title: '车架号',
-      dataIndex: 'totalNUmber'
+      dataIndex: 'vinNo'
     },
     {
       title: '操作',

@@ -32,6 +32,11 @@ const QUERY_DEVICE_TYPE_PAGED_LIST = 'material/manage/queryDeviceTypePagedList';
 const DEVICE_TYPE_DETAIL = 'material/manage/deviceTypeDetail';
 //设备路径分页列表
 const QUERY_DEVICE_PAGED_LIST = 'material/manage/queryDevicePagedList';
+//设备路线流程节点详情
+const QUERY_DEVICE_FLOW_RECORD_INFO_LIST = 'material/manage/queryDeviceFlowRecordInfoList';
+// 查询已绑定车主的信息
+const QUERY_VEHICLE_INFORMATION_BY_CODE = 'vehicle/manage/queryVehicleInformationByCode';
+
 @DepUtil.Injectable()
 export class DeviceTypeService {
   @DepUtil.Inject(RequestService)
@@ -63,5 +68,11 @@ export class DeviceTypeService {
   }
   deviceTypeDetail(params: IDeviceTypeDTO): Observable<IReturn> {
     return this.requestService.get(DEVICE_TYPE_DETAIL, params);
+  }
+  queryDeviceFlowRecordInfoList(params: IDeviceTypeDTO): Observable<IReturn> {
+    return this.requestService.get(QUERY_DEVICE_FLOW_RECORD_INFO_LIST, params);
+  }
+  queryVehicleInformationByCode(params: { deviceCode: string }): Observable<IReturn> {
+    return this.requestService.get(QUERY_VEHICLE_INFORMATION_BY_CODE, params);
   }
 }
