@@ -5,10 +5,11 @@
 export class IVoucherManageState {
   isLoading = false;
   searchForm = {
-    page: 1,
+    index: 1,
     size: 10,
     beginTime: '',
-    endTime: ''
+    endTime: '',
+    vinNo: ''
   };
   tableData: any = [];
   total = 0;

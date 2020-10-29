@@ -8,21 +8,15 @@ export function useVoucherDetailStore(props: IVoucherDetailProps) {
   const voucherManageService: VoucherManageService = new VoucherManageService();
 
   useEffect(() => {
-    getDetails();
-  }, []);
+    if (props.id && props.visible) {
+      getDetails(props.id);
+    }
+  }, [props.id, props.visible]);
 
-  function getDetails() {
-    // setStateWrap({ isLoading: true });
-    // voucherManageService.__getTableData__(state.searchForm).subscribe(
-    //   res => {
-    //     setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
-    //   },
-    //   err => {
-    //     setStateWrap({ isLoading: false });
-    //     ShowNotification.error(err);
-    //   }
-    // );
-    setStateWrap({ details: { vehicle: '97855' } });
+  function getDetails(id: string) {
+    voucherManageService.getDispatchDetail(id).subscribe(res => {
+      setStateWrap({ details: res });
+    });
   }
   function selfClose() {
     props?.close();

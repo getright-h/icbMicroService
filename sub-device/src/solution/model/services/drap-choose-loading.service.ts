@@ -9,7 +9,8 @@ import {
   QueryAllotFlowTemplatePagedListParam,
   QueryOwnerListParam,
   QueryDeviceListParam,
-  QueryStoreListParam
+  QueryStoreListParam,
+  QueryVehicleListParam
 } from '../dto/drap-choose-loading.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
@@ -25,8 +26,10 @@ const QUERY_PURCHASE_SELECT_LIST = 'allot/manage/queryPurchasePagedListSelected'
 const QUERY_STORE_POSITION_LIST = 'store/manage/queryStorePositionPagedListByStoreIdSelected';
 const QUERY_ALLOT_FLOW_TEMPLATE_PAGED_LIST = 'allot/manage/queryAllotFlowTemplatePagedList';
 const QUERY_OWNER_LIST = 'vehicle/manage/queryOwnerPagedList';
-const QUERY_DEVICE_LIST = 'material/manage/queryDeviceSelected';
+const QUERY_DEVICE_LIST = 'material/manage/queryNormalStateDevicePagedList';
 const QUERY_STORE_LIST = 'store/manage/queryStorePagedListSelected';
+const QUERY_VEHICLE_LIST = 'vehicle/manage/queryVehiclePagedList';
+
 @DepUtil.Injectable()
 export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
   @DepUtil.Inject(RequestService)
@@ -79,5 +82,9 @@ export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
   // 绑定设备选择
   queryDeviceList(params: QueryDeviceListParam): Observable<DrapChooseLoadingReturn> {
     return this.requestService.post(QUERY_DEVICE_LIST, params);
+  }
+  // 车架号查找车辆
+  queryVehicleList(params: QueryVehicleListParam): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.post(QUERY_VEHICLE_LIST, params);
   }
 }

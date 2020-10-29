@@ -29,13 +29,19 @@ export default function ISelectLoadingComponent(props: IISelectLoadingProps) {
           if (reqUrl === 'queryDeviceList') {
             return (
               <Select.Option value={item.code} key={`${item.code}${item.sim}`} info={item}>
-                {item.code}
+                {`${item.code}（${item.typeName}）`}
               </Select.Option>
             );
           } else if (reqUrl === 'queryStoreList') {
             return (
               <Select.Option value={item.id} key={`${item.id}${item.index}`} info={item}>
                 {`${item.name}（${item.organizationName}）`}
+              </Select.Option>
+            );
+          } else if (reqUrl === 'queryVehicleList') {
+            return (
+              <Select.Option value={item.vinNo} key={`${item.id}${item.index}`} info={item}>
+                {item.vinNo}
               </Select.Option>
             );
           } else {

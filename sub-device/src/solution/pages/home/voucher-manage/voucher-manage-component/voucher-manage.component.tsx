@@ -32,7 +32,7 @@ export default function VoucherManageComponent() {
             allowClear
             placeholder="请输入车架号"
             onChange={e => {
-              onChange(e.target.value, 'keyword');
+              onChange(e.target.value, 'vinNo');
             }}
           />
         </div>
@@ -60,12 +60,12 @@ export default function VoucherManageComponent() {
       <ITableComponent
         columns={voucherManageColumns(callbackAction)}
         isLoading={isLoading}
-        pageIndex={searchForm.page}
+        pageIndex={searchForm.index}
         pageSize={searchForm.size}
         data={tableData}
         total={total}
         isPagination={true}
-        changeTablePageIndex={(index: number, pageSize: number) => changeTablePageIndex(index, pageSize)}
+        changeTablePageIndex={(index: number, size: number) => changeTablePageIndex(index, size)}
       ></ITableComponent>
     );
   }

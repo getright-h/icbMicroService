@@ -77,12 +77,19 @@ export interface QueryOwnerListParam {
 
 export interface QueryDeviceListParam {
   code: string;
+  organizationId: string;
   index: number;
   size: number;
 }
 
 export interface QueryStoreListParam {
   name: string;
+  index: number;
+  size: number;
+}
+
+export interface QueryVehicleListParam {
+  strValue: string;
   index: number;
   size: number;
 }

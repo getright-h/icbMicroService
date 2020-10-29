@@ -5,26 +5,22 @@ export function voucherManageColumns(callbackAction: Function) {
   return [
     {
       title: '车架号',
-      dataIndex: 'vehicleFrameNumber'
+      dataIndex: 'vinNo'
     },
     {
       title: '关联设备',
-      dataIndex: 'deviceList',
+      dataIndex: 'deviceCodeList',
       render: (list: any) => {
-        return list.map((device: any) => device.name).join('，');
+        return list.map((device: any) => `${device.deviceCode}（${device.typeName}）`).join('，');
       }
     },
     {
       title: '安装时间',
-      dataIndex: 'createTime'
+      dataIndex: 'time'
     },
     {
       title: '安装工',
-      dataIndex: 'creater'
-    },
-    {
-      title: '状态',
-      dataIndex: 'status'
+      dataIndex: 'name'
     },
     {
       title: '操作',
