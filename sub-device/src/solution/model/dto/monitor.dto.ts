@@ -6,16 +6,15 @@ import { Observable } from 'rxjs';
 
 export abstract class MonitorDTO {
   // 你的抽象方法，具体在 Service 中实现
-  abstract example(params: ExampleRequestParam): Observable<ExampleResponseResult>;
+  abstract example(params: InsertMonitorVehicleparams): Observable<ExampleResponseResult>;
 }
 
 // 示例 Dto
-export interface ExampleRequestParam {
-  // 示例参数
-  exampleParam1: string;
-  exampleParam2: string;
-  exampleParam3: string;
-  exampleParam4: string;
+export interface InsertMonitorVehicleparams {
+  groupId: string; //组id ,
+  organizationCodeList : any[]; // 机构code列表 ,
+  vehicleVinNoList : any[]; // 车架号列表 ,
+  removeList : any[]; // 去除的车
 }
 
 // 响应 Dto

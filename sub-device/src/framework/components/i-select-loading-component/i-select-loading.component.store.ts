@@ -21,7 +21,7 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
     setStateWrap({ fetching: true });
     getOptionListSubscription = drapChooseLoadingService[reqUrl]({
       ...searchParams.current,
-      name: searchName.current,
+
       index: scrollPage.current,
       size: props.pageSize || 100
     }).subscribe(

@@ -16,7 +16,8 @@ export default function DeviceLineComponent() {
     searchClean,
     getFlowNode,
     changeTablePageIndex,
-    handleModalCancel
+    handleModalCancel,
+    queryVehicleInformationByCode
   } = useDeviceLineStore();
   const { searchForm, tableData, isLoading, total, routeModalVisible, currentData, flowList } = state;
   const formItemLayout = {
@@ -93,7 +94,7 @@ export default function DeviceLineComponent() {
           expandedRowRender: OwnerExpandedRow,
           expandIconColumnIndex: 3,
           rowExpandable: (record: any) => record.route == DEVICE_ROUTE_ENUM.Bind,
-          onExpand: (isExpand: boolean, record: any) => console.log('row, 展开数据', record)
+          onExpand: (isExpand: boolean, record: any) => queryVehicleInformationByCode(isExpand, record)
         }}
         changeTablePageIndex={(index: number, pageSize: number) => changeTablePageIndex(index, pageSize)}
       ></ITableComponent>

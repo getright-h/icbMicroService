@@ -10,11 +10,13 @@ export function useDeviceLineStore() {
   const { state, setStateWrap } = useStateStore(new IDeviceLineState());
   const deviceTypeService: DeviceTypeService = new DeviceTypeService();
   let queryDevicePagedListSubscribable: Subscription;
+  let queryVehicleInformationByCodeSubscribable: Subscription;
   const [form] = Form.useForm();
   useEffect(() => {
     getTableData();
     return () => {
       queryDevicePagedListSubscribable && queryDevicePagedListSubscribable.unsubscribe();
+      queryVehicleInformationByCodeSubscribable && queryVehicleInformationByCodeSubscribable.unsubscribe();
     };
   }, []);
 
@@ -32,6 +34,18 @@ export function useDeviceLineStore() {
       }
     );
   }
+
+  function queryVehicleInformationByCode(isExpand: boolean, record: any) {
+    console.log(isExpand, record);
+    if (!isExpand) return;
+    const { code = '' } = record;
+    queryVehicleInformationByCodeSubscribable = deviceTypeService
+      .queryVehicleInformationByCode({ deviceCode: code })
+      .subscribe((res: any) => {
+        console.log(res);
+      });
+  }
+
   function getFlowNodeDetail(code: string) {
     if (!code) Promise.reject(null);
     return new Promise((reslove: any, reject: any) => {
@@ -121,6 +135,7 @@ export function useDeviceLineStore() {
     openModal,
     onChange,
     searchClean,
-    getFlowNode
+    getFlowNode,
+    queryVehicleInformationByCode
   };
 }

@@ -25,6 +25,11 @@ export interface QueryDeviceTypeListParam {
   index: number;
   size: number;
 }
+export interface QueryVehiclePagedListParam {
+  strValue?: string;
+  index: number;
+  size: number;
+}
 export interface QuerySupplierListParam {
   name?: string;
   typeId: string;

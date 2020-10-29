@@ -6,7 +6,8 @@ import {
   QueryPurchaseListParam,
   QueryStorePositionListParam,
   QuerySupplierListParam,
-  QueryAllotFlowTemplatePagedListParam
+  QueryAllotFlowTemplatePagedListParam,
+  QueryVehiclePagedListParam
 } from '../dto/drap-choose-loading.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
@@ -20,6 +21,9 @@ const QUERY_STORE_USER = 'store/manage/queryStoreUser';
 const QUERY_PURCHASE_SELECT_LIST = 'allot/manage/queryPurchasePagedListSelected';
 const QUERY_STORE_POSITION_LIST = 'store/manage/queryStorePositionPagedListByStoreIdSelected';
 const QUERY_ALLOT_FLOW_TEMPLATE_PAGED_LIST = 'allot/manage/queryAllotFlowTemplatePagedList';
+const QUERY_VEHICLE_PAGED_LIST = 'vehicle/manage/queryVehiclePagedList';
+const QUERY_ROLE_LIST = 'vehicle/manage/queryRoleList';
+
 @DepUtil.Injectable()
 export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
   @DepUtil.Inject(RequestService)
@@ -58,7 +62,15 @@ export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
     return this.requestService.post(QUERY_STORE_POSITION_LIST, params);
   }
   // 调拨模板列表
-  queryAllotFlowTemplatePagedList(params: QueryAllotFlowTemplatePagedListParam): Observable<IReturn> {
+  queryAllotFlowTemplatePagedList(params: QueryAllotFlowTemplatePagedListParam): Observable<DrapChooseLoadingReturn> {
     return this.requestService.post(QUERY_ALLOT_FLOW_TEMPLATE_PAGED_LIST, params);
+  }
+  // 获取车辆列表
+  queryVehiclePagedList(params: QueryVehiclePagedListParam): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.post(QUERY_VEHICLE_PAGED_LIST, params);
+  }
+  // 获取角色列表
+  queryRoleList(params: QueryVehiclePagedListParam): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.post(QUERY_ROLE_LIST, params);
   }
 }
