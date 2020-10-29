@@ -5,33 +5,36 @@ import { FormType, IFormInfo, AddTemplateState } from '../add-template-redux/add
 import {
   setCurrentParamsAction,
   setFormInfoAction,
-  setCurrentSelectItemAction
+  setCurrentSelectItemAction,
+  setTemplateNameAction
 } from '../add-template-redux/add-template-action';
 
 export function useFormSettingStore(dispatch: Dispatch<any>, reduxState: AddTemplateState) {
-  const { state, setStateWrap } = useStateStore(new IFormSettingState());
+  const { state } = useStateStore(new IFormSettingState());
   const { currentSelectItem } = reduxState;
   function setFormInfo(formInfo: IFormInfo[]) {
     let selectItem;
     formInfo = formInfo.map(item => {
-      if (!item.id.includes(item.controllerEnum)) {
-        item.id = new Date().getTime() + '_' + item.controllerEnum;
+      console.log('item', item);
+
+      if (Number(item.id) < 999999) {
+        item.id = String(new Date().getTime());
         selectItem = item;
       }
       return item;
     });
+    console.log(formInfo, selectItem ? selectItem : currentSelectItem);
+
     setCurrentParamsAction(dispatch, { formInfo, currentSelectItem: selectItem ? selectItem : currentSelectItem });
   }
 
   function onFormEditClick(form: IFormInfo) {
-    if (form.controllerEnum == FormType.AssignDevice) return;
+    if (form.type == FormType.AssignDevice) return;
     setCurrentSelectItemAction(dispatch, form);
   }
 
   function onChangetemplateName(value: ChangeEvent<HTMLInputElement>) {
-    setStateWrap({
-      templateName: value.target.value
-    });
+    setTemplateNameAction(dispatch, value.target.value);
   }
 
   function deleteCurrentItem(id: string) {
@@ -50,10 +53,6 @@ export function useFormSettingStore(dispatch: Dispatch<any>, reduxState: AddTemp
       }
       return item;
     });
-    console.log(key, value);
-
-    console.log('formInfo', formInfo);
-
     setCurrentParamsAction(dispatch, { formInfo, currentSelectItem: form });
   }
   return {

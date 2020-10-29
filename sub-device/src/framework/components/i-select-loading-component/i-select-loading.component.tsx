@@ -4,13 +4,14 @@ import { IISelectLoadingProps } from './i-select-loading.interface';
 import { useISelectLoadingStore } from './i-select-loading.component.store';
 
 export default function ISelectLoadingComponent(props: IISelectLoadingProps) {
-  const { placeholder, disabled, getCurrentSelectInfo, width = '100%', allowClear = true } = props;
+  const { placeholder, disabled, getCurrentSelectInfo, width = '100%', allowClear = true, mode } = props;
   const { state, optionScroll, fetchOptions } = useISelectLoadingStore(props);
   const { optionList, fetching } = state;
   return (
     <Select
       style={{ width }}
       loading={fetching}
+      mode={mode}
       disabled={disabled || false}
       placeholder={placeholder}
       filterOption={false}

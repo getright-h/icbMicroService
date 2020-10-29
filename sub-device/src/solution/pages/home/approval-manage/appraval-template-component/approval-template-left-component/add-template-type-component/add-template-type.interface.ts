@@ -12,6 +12,7 @@ export class IAddTemplateTypeProps {
 }
 
 export class IAddTemplateTypeState {
+  name: string;
   expandedKeys: string[] = [];
   checkedKeys: string[] = [];
   confirmLoading = false;

@@ -9,10 +9,20 @@ import { HomeOutlined } from '@ant-design/icons';
 import OrganizationControllerComponent from '~/solution/components/organization-controller-component/organization-controller.component';
 const { Option } = Select;
 export default function AddTemplateTypeComponent(props: IAddTemplateTypeProps) {
-  const { state, handleOk, handleCancel, onChangeHaveChooseShop, onExpand, onCheck } = useAddTemplateTypeStore(props);
+  const {
+    state,
+    handleOk,
+    handleCancel,
+    onChangeHaveChooseShop,
+    changeTemplateName,
+    onExpand,
+    onCheck
+  } = useAddTemplateTypeStore(props);
   const { isEdit, addApprovalTypeVisible } = props;
-  const { confirmLoading, expandedKeys, checkedKeys, checkedObject } = state;
+  const { confirmLoading, expandedKeys, checkedKeys, checkedObject, name } = state;
   function RenderLinkOrganization() {
+    console.log(checkedObject);
+
     const checkedObjectFlat = React.useCallback(() => flatAtree(checkedObject), [checkedObject]);
     return (
       <div className={style.linkOrganization}>
@@ -90,7 +100,7 @@ export default function AddTemplateTypeComponent(props: IAddTemplateTypeProps) {
       onCancel={handleCancel}
     >
       <Form.Item name="name" label="模板类型" rules={[{ required: true }]}>
-        <Input placeholder="请输入模板类型" />
+        <Input placeholder="请输入模板类型" value={name} onChange={e => changeTemplateName(e.target.value)} />
       </Form.Item>
       <Form.Item name="organization" label="关联机构" rules={[{ required: true }]}>
         {RenderLinkOrganization()}
