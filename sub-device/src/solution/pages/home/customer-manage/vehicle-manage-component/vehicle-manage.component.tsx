@@ -105,8 +105,12 @@ export default function VehicleManageComponent() {
         <Button type="primary" onClick={() => callbackAction(ModalType.CREATE)}>
           新建
         </Button>
-        <Button onClick={() => callbackAction(ModalType.IMPORT)}>批量导入</Button>
-        <Button onClick={() => callbackAction(ModalType.EXPORT)}>批量导出</Button>
+        <Button onClick={() => callbackAction(ModalType.IMPORT)} disabled>
+          批量导入
+        </Button>
+        <Button onClick={() => callbackAction(ModalType.EXPORT)} disabled>
+          批量导出
+        </Button>
       </div>
     );
   }
@@ -124,7 +128,7 @@ export default function VehicleManageComponent() {
         data={tableData}
         total={total}
         isPagination={true}
-        rowSelection={rowSelection}
+        // rowSelection={rowSelection}
         // expandable={{
         //   expandedRowRender: vehicleManageExpandedRow,
         //   expandIconColumnIndex: 1

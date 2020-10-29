@@ -54,8 +54,8 @@ export function useVoucherEditStore(props: IVoucherEditProps) {
         };
       })
     };
-    console.log(values);
-    console.log(confirmForm);
+    // console.log(values);
+    // console.log(confirmForm);
     if (props.id) {
       // 编辑
       voucherManageService

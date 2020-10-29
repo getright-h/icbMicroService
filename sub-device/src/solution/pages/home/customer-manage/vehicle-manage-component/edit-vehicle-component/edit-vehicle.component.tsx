@@ -1,6 +1,5 @@
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Col, DatePicker, Descriptions, Form, Input, Radio, Row, Select, Space } from 'antd';
-import moment from 'moment';
 import * as React from 'react';
 import { ISelectLoadingComponent, IUploadImgComponent } from '~/framework/components/component.module';
 import UnbindDeviceComponent from '../unbind-device-component/unbind-device.component';
@@ -21,7 +20,7 @@ export default function EditVehicleComponent() {
     unbindDevice,
     modalCancel
   } = useEditVehicleStore();
-  const { isEdit, createUserType, extraFormData, bindedDeviceList, ownerInfo, imageList } = state;
+  const { isEdit, createUserType, extraFormData, bindedDeviceList, ownerInfo, imageList, confirmLoading } = state;
   const layout = {
     labelCol: { span: 8 },
     wrapperCol: { span: 16 }
@@ -75,7 +74,7 @@ export default function EditVehicleComponent() {
           <Row gutter={32}>
             {createUserType == 1 && (
               <Col span={6}>
-                <Form.Item label="搜索用户" name={['owner', 'id']} rules={[{ required: true }]}>
+                <Form.Item label="搜索用户" name={['owner', 'id']} rules={[{ required: true, message: '请选择用户' }]}>
                   {queryOwnerList}
                 </Form.Item>
               </Col>
@@ -121,7 +120,10 @@ export default function EditVehicleComponent() {
       getCurrentSelectInfo: (value: string, option: any) => {
         getCurrentSelectInfo('distributor', option);
       },
-      searchForm: { systemId: process.env.SYSTEM_ID, typeId: 'ad947c18cbdcc646982808d86eb6828f' }
+      searchForm: {
+        systemId: process.env.SYSTEM_ID,
+        typeId: 'c59c75eec2d3cc075cca08d84386bcb9'
+      }
     });
     const queryFinanceList = ISelectLoadingComponent({
       reqUrl: 'queryOrganizationList',
@@ -130,18 +132,17 @@ export default function EditVehicleComponent() {
       getCurrentSelectInfo: (value: string, option: any) => {
         getCurrentSelectInfo('finance', option);
       },
-      searchForm: { systemId: process.env.SYSTEM_ID, typeId: 'f247ca73916ac014b40908d86eb6ae8a' }
+      searchForm: {
+        systemId: process.env.SYSTEM_ID,
+        typeId: 'f247ca73916ac014b40908d86eb6ae8a'
+      }
     });
     return (
       <section className={style.formWrapper}>
         <Form {...layout} form={form}>
           <Row gutter={32}>
             <Col span={6}>
-              <Form.Item
-                label="车架号"
-                name={['vehicle', 'vinNo']}
-                // rules={[{ required: true }]}
-              >
+              <Form.Item label="车架号" name={['vehicle', 'vinNo']} rules={[{ required: true }]}>
                 <Input placeholder="请输入车架号" />
               </Form.Item>
             </Col>
@@ -247,7 +248,11 @@ export default function EditVehicleComponent() {
               </Form.Item>
             </Col>
             <Col span={6} offset={1}>
-              <Form.Item label="经销商" name={['vehicle', 'distributorId']}>
+              <Form.Item
+                label="经销商"
+                name={['vehicle', 'distributorId']}
+                rules={[{ required: true, message: '请选择经销商' }]}
+              >
                 {queryDistributorList}
               </Form.Item>
             </Col>
@@ -297,11 +302,7 @@ export default function EditVehicleComponent() {
   function renderDeviceForm() {
     return (
       <section className={style.formWrapper}>
-        <Form
-          {...layout}
-          form={form}
-          // initialValues={{ codeList: [{}] }}
-        >
+        <Form {...layout} form={form}>
           <Row gutter={32}>
             <Col span={12}>
               <Form.List name="codeList">
@@ -315,28 +316,25 @@ export default function EditVehicleComponent() {
                             reqUrl="queryDeviceList"
                             placeholder="选择设备"
                             searchKey=""
+                            searchKeyName="code"
+                            searchForm={{ organizationId: form.getFieldValue(['vehicle', 'distributorId']) }}
                             getCurrentSelectInfo={(value: string, option: any) => handleDeviceListChange(value, index)}
                           />
                           <div className={style.fieldAddButton}>
-                            {/* <PlusOutlined
-                              onClick={() => {
-                                add();
-                              }}
-                            /> */}
-                            {/* {index != 0 && ( */}
                             <MinusOutlined
                               onClick={() => {
                                 remove(field.name);
                               }}
                             />
-                            {/* )} */}
                           </div>
                         </Space>
                       ))}
                       <Button
                         style={{ width: '240px' }}
                         type="dashed"
-                        onClick={() => add()}
+                        onClick={() => {
+                          form.validateFields().then(() => add());
+                        }}
                         block
                         icon={<PlusOutlined />}
                       >
@@ -381,6 +379,7 @@ export default function EditVehicleComponent() {
       <section className={style.submitButtons}>
         <Button
           type="primary"
+          loading={confirmLoading}
           onClick={() => {
             form
               .validateFields()

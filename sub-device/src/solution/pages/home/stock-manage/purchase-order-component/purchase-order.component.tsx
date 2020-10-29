@@ -9,12 +9,10 @@ import { ITableComponent } from '~/framework/components/component.module';
 import { purchaseOrderColumns } from './purchase-order.column';
 import { usePurchaseOrderStore } from './purchase-order.component.store';
 
-import { Button, Col, Form, Input, Row, Select, Table } from 'antd';
+import { Button, Col, Form, Input, Row, Table } from 'antd';
 import { ModalType } from './purchase-order.interface';
 import EditOrderComponent from './edit-order-component/edit-order.component';
 import OrderDetailComponent from './order-detail-component/order-detail.component';
-
-const { Option } = Select;
 
 export default function PurchaseOrderComponent() {
   const {
@@ -78,7 +76,9 @@ export default function PurchaseOrderComponent() {
         <Button type="primary" onClick={() => callbackAction(ModalType.CREATE)}>
           新增采购单
         </Button>
-        <Button onClick={() => callbackAction(ModalType.EXPORT)}>导出采购单</Button>
+        <Button onClick={() => callbackAction(ModalType.EXPORT)} disabled>
+          导出采购单
+        </Button>
       </div>
     );
   }

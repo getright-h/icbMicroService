@@ -15,14 +15,9 @@ export function useDeviceEditStore(props: IDeviceEditProps) {
   }, [props.id]);
 
   function getDetails(id: string) {
-    stockManageService.queryStockDeviceDetail(id).subscribe(
-      res => {
-        setStateWrap({ details: res });
-      },
-      err => {
-        ShowNotification.error(err);
-      }
-    );
+    stockManageService.queryStockDeviceDetail(id).subscribe(res => {
+      setStateWrap({ details: res });
+    });
   }
 
   function getCurrentSelectInfo(typeName: string, option: Record<string, any>) {
@@ -43,6 +38,7 @@ export function useDeviceEditStore(props: IDeviceEditProps) {
   }
 
   function selfSubmit(values: any) {
+    setStateWrap({ confirmLoading: true });
     const confirmForm = {
       ...values,
       purchaseId: values.purchaseId || '',
@@ -50,14 +46,15 @@ export function useDeviceEditStore(props: IDeviceEditProps) {
       storeId: state.details.storeId,
       materialId: state.details.materialId
     };
-    console.log(confirmForm);
+    // console.log(confirmForm);
     stockManageService.materialStockUpdate(confirmForm).subscribe(
       (res: any) => {
         ShowNotification.success('编辑成功！');
+        setStateWrap({ confirmLoading: false });
         selfClose(true);
       },
       (err: any) => {
-        ShowNotification.error(err);
+        setStateWrap({ confirmLoading: false });
       }
     );
   }

@@ -8,7 +8,7 @@ import { Form, Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 export function useOwnerManageStore() {
-  const { state, setStateWrap } = useStateStore(new IOwnerManageState());
+  const { state, setStateWrap, getState } = useStateStore(new IOwnerManageState());
   const customerManageService: CustomerManageService = new CustomerManageService();
   const [searchForm] = Form.useForm();
 
@@ -18,11 +18,12 @@ export function useOwnerManageStore() {
 
   function getTableData() {
     setStateWrap({ isLoading: true });
+    const { pageIndex, pageSize } = getState();
     customerManageService
       .queryOwnerPagedList({
         ...searchForm.getFieldsValue(),
-        index: state.pageIndex,
-        size: state.pageSize
+        index: pageIndex,
+        size: pageSize
       })
       .subscribe(
         res => {
@@ -45,7 +46,6 @@ export function useOwnerManageStore() {
       sex: -1,
       follow: -1
     });
-    searchClick();
   }
 
   function callbackAction(actionType: number, data?: any) {

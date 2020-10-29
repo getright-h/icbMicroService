@@ -19,30 +19,25 @@ export function useEditOrderStore(props: IEditOrderProps) {
   }, [props.id, props.visible]);
 
   function getDetails(id: string) {
-    stockManageService.queryPurchaseDetail(id).subscribe(
-      res => {
-        form.setFieldsValue({
-          ...res,
-          totalAmount: res.sumAmount,
-          purchaseTime: moment(res.purchaseTime, 'YYYY-MM-DD HH:mm:ss'),
-          image: res.imageList
-        });
-        const imageList = res.imageList.map(image => {
-          return {
-            uid: image,
-            url: image
-          };
-        });
-        setStateWrap({
-          editSupplierName: res.supplierName,
-          editDeviceList: res.deviceList,
-          imageList: imageList || []
-        });
-      },
-      err => {
-        ShowNotification.error(err);
-      }
-    );
+    stockManageService.queryPurchaseDetail(id).subscribe(res => {
+      form.setFieldsValue({
+        ...res,
+        totalAmount: res.sumAmount,
+        purchaseTime: moment(res.purchaseTime, 'YYYY-MM-DD HH:mm:ss'),
+        image: res.imageList
+      });
+      const imageList = res.imageList.map(image => {
+        return {
+          uid: image,
+          url: image
+        };
+      });
+      setStateWrap({
+        editSupplierName: res.supplierName,
+        editDeviceList: res.deviceList,
+        imageList: imageList || []
+      });
+    });
   }
 
   function getCurrentSelectInfo(typeName: string, option: any) {
@@ -96,7 +91,6 @@ export function useEditOrderStore(props: IEditOrderProps) {
         },
         err => {
           setStateWrap({ confirmLoading: false });
-          ShowNotification.error(err);
         }
       );
     } else {
@@ -109,7 +103,6 @@ export function useEditOrderStore(props: IEditOrderProps) {
         },
         err => {
           setStateWrap({ confirmLoading: false });
-          ShowNotification.error(err);
         }
       );
     }

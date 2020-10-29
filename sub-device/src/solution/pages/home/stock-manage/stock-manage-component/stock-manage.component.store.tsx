@@ -6,7 +6,6 @@ import { StockManageService } from '~/solution/model/services/stock-manage.servi
 import { Form, Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { EventDataNode } from 'antd/lib/tree';
-import { Subscription } from 'rxjs';
 
 export function useStockManageStore(stockListState: { currentSelectNode: EventDataNode }) {
   const { state, setStateWrap, getState } = useStateStore(new IStockManageState());
@@ -19,8 +18,6 @@ export function useStockManageStore(stockListState: { currentSelectNode: EventDa
 
   useEffect(() => {
     if (stockListState.currentSelectNode) {
-      console.log('curNode', stockListState.currentSelectNode);
-
       setStateWrap(
         {
           selectedOrgId: stockListState.currentSelectNode.key as string
@@ -34,13 +31,14 @@ export function useStockManageStore(stockListState: { currentSelectNode: EventDa
 
   function getTableData() {
     setStateWrap({ isLoading: true });
+    const { pageIndex, pageSize } = getState();
     stockManageService
       .queryStockDeviceList({
         ...searchForm.getFieldsValue(),
         storeId: getState().selectedOrgId,
         duration: searchForm.getFieldValue('duration') || -1,
-        index: state.pageIndex,
-        size: state.pageSize
+        index: pageIndex,
+        size: pageSize
       })
       .subscribe(
         res => {
@@ -53,7 +51,6 @@ export function useStockManageStore(stockListState: { currentSelectNode: EventDa
         },
         err => {
           setStateWrap({ isLoading: false });
-          ShowNotification.error(err);
         }
       );
   }
@@ -93,7 +90,6 @@ export function useStockManageStore(stockListState: { currentSelectNode: EventDa
                   resolve();
                 },
                 (err: any) => {
-                  ShowNotification.error(err);
                   reject();
                 }
               );
@@ -113,7 +109,6 @@ export function useStockManageStore(stockListState: { currentSelectNode: EventDa
                   resolve();
                 },
                 (err: any) => {
-                  ShowNotification.error(err);
                   reject();
                 }
               );

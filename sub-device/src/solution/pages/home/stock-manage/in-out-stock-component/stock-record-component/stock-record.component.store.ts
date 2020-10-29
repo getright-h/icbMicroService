@@ -2,7 +2,6 @@ import { IStockRecordState, IStockRecordProps } from './stock-record.interface';
 import { useService, useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect } from 'react';
 import { StockManageService } from '~/solution/model/services/stock-manage.service';
-import { ShowNotification } from '~/framework/util/common';
 
 export function useStockRecordStore(props: IStockRecordProps) {
   const { state, setStateWrap } = useStateStore(new IStockRecordState());
@@ -13,14 +12,9 @@ export function useStockRecordStore(props: IStockRecordProps) {
   }, [props.id]);
 
   function getDetails(id: string) {
-    stockManageService.queryInOutRecordDetail(id).subscribe(
-      res => {
-        setStateWrap({ details: res });
-      },
-      err => {
-        ShowNotification.error(err);
-      }
-    );
+    stockManageService.queryInOutRecordDetail(id).subscribe(res => {
+      setStateWrap({ details: res });
+    });
   }
 
   function selfClose() {

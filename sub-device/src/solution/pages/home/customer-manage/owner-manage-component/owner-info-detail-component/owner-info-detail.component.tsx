@@ -1,7 +1,7 @@
 import * as React from 'react';
 import style from './owner-info-detail.component.less';
 import { useOwnerInfoDetailStore } from './owner-info-detail.component.store';
-import { IOwnerInfoDetailProps } from './owner-info-detail.interface';
+import { IOwnerInfoDetailProps, WorkEnum } from './owner-info-detail.interface';
 import { Modal, Form } from 'antd';
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import { SEX_ENUM } from '~/solution/shared/constant/common.const';
@@ -32,7 +32,7 @@ export default function OwnerInfoDetailComponent(props: IOwnerInfoDetailProps) {
       <React.Fragment>
         <Form {...layout}>
           <Form.Item label="车主年龄">{details.age || '-'}</Form.Item>
-          <Form.Item label="工作领域">{details.work || '-'}</Form.Item>
+          <Form.Item label="工作领域">{WorkEnum[details.work] || '-'}</Form.Item>
           <Form.Item label="备用电话">{details.spareMobile || '-'}</Form.Item>
           <Form.Item label="电子邮箱">{details.email || '-'}</Form.Item>
           <Form.Item label="地址">

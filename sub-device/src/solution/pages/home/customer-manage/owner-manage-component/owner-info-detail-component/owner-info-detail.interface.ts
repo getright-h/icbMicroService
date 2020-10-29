@@ -18,3 +18,8 @@ export class IOwnerInfoDetailProps {
   visible: boolean;
   close: () => void;
 }
+
+export enum WorkEnum {
+  'IT/互联网' = 1,
+  '暂无' = -200
+}

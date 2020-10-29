@@ -78,7 +78,6 @@ export function useEditVehicleStore() {
   }
 
   function getCurrentSelectOwner(value: string, option: any) {
-    console.log(option);
     if (value) {
       customerManageService.getOwnerDetail(value).subscribe(res => {
         setStateWrap({
@@ -108,28 +107,34 @@ export function useEditVehicleStore() {
   }
 
   function handleSubmit(values: any) {
+    setStateWrap({ confirmLoading: true });
     const confirmForm = {
       ...values,
       vehicle: {
         ...values.vehicle,
         ...state.extraFormData,
-        buyTime: moment(values.vehicle.buyTime).format('YYYY-MM-DD HH:mm:ss'),
-        serverBeginTime: moment(values.vehicle.serverBeginTime).format('YYYY-MM-DD HH:mm:ss')
+        buyTime: values.vehicle.buyTime ? moment(values.vehicle.buyTime).format('YYYY-MM-DD HH:mm:ss') : '',
+        serverBeginTime: values.vehicle.serverBeginTime
+          ? moment(values.vehicle.serverBeginTime).format('YYYY-MM-DD HH:mm:ss')
+          : ''
       }
     };
     // console.log('values', values);
     // console.log('confirm', confirmForm);
     if (state.isEdit) {
       customerManageService.updateVehicle({ id: state.id, ...confirmForm }).subscribe(res => {
+        setStateWrap({ confirmLoading: false });
         ShowNotification.success('编辑成功！');
         history.push(`/home/customer/vehicleDetail/${state.id}`);
       });
     } else {
       customerManageService.insertVehicle(confirmForm).subscribe(res => {
+        setStateWrap({ confirmLoading: false });
         ShowNotification.success('新增成功！');
         history.push('/home/customer/vehicle');
       });
     }
+    setStateWrap({ confirmLoading: false });
   }
 
   function cancelSubmit() {

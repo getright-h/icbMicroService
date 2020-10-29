@@ -8,7 +8,7 @@ import moment from 'moment';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 export function usePurchaseOrderStore() {
-  const { state, setStateWrap } = useStateStore(new IPurchaseOrderState());
+  const { state, setStateWrap, getState } = useStateStore(new IPurchaseOrderState());
   const stockManageService: StockManageService = useService(StockManageService);
   const [searchForm] = Form.useForm();
 
@@ -19,13 +19,14 @@ export function usePurchaseOrderStore() {
 
   function getTableData() {
     setStateWrap({ isLoading: true });
+    const { pageIndex, pageSize } = getState();
     stockManageService
       .queryPurchaseList({
         ...searchForm.getFieldsValue(),
         beginTime: state.timeInfo[0] ? moment(state.timeInfo[0]).valueOf() : 0,
         endTime: state.timeInfo[1] ? moment(state.timeInfo[1]).valueOf() : 0,
-        index: state.pageIndex,
-        size: state.pageSize
+        index: pageIndex,
+        size: pageSize
       })
       .subscribe(
         res => {
@@ -39,7 +40,6 @@ export function usePurchaseOrderStore() {
         },
         err => {
           setStateWrap({ isLoading: false });
-          ShowNotification.error(err);
         }
       );
   }
@@ -74,7 +74,6 @@ export function usePurchaseOrderStore() {
                   resolve();
                 },
                 (err: any) => {
-                  ShowNotification.error(err);
                   reject();
                 }
               );

@@ -10,7 +10,7 @@ import moment from 'moment';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 export function useVehicleManageStore() {
-  const { state, setStateWrap } = useStateStore(new IVehicleManageState());
+  const { state, setStateWrap, getState } = useStateStore(new IVehicleManageState());
   const customerManageService: CustomerManageService = new CustomerManageService();
   const [searchForm] = Form.useForm();
   const history = useHistory();
@@ -21,13 +21,14 @@ export function useVehicleManageStore() {
 
   function getTableData() {
     setStateWrap({ isLoading: true });
+    const { pageIndex, pageSize } = getState();
     customerManageService
       .queryVehiclePagedList({
         ...searchForm.getFieldsValue(),
         serverBeginTime: state.timeInfo[0] ? moment(state.timeInfo[0]).valueOf() : 0,
         serverEndTime: state.timeInfo[1] ? moment(state.timeInfo[1]).valueOf() : 0,
-        index: state.pageIndex,
-        size: state.pageSize
+        index: pageIndex,
+        size: pageSize
       })
       .subscribe(
         res => {
@@ -42,7 +43,6 @@ export function useVehicleManageStore() {
   function initSearchForm() {
     searchForm.resetFields();
     setStateWrap({ timeInfo: [] });
-    searchClick();
   }
 
   function searchClick() {
