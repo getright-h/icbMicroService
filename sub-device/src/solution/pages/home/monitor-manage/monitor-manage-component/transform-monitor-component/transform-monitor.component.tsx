@@ -19,8 +19,8 @@ export default function TransformMonitorComponent(props: ITransformMonitorProps)
       getCheckedInfo: onCheck,
       checkedKeys,
       isGroup: true,
-      checkable: false,
-      queryChildInfo
+      queryChildInfo,
+      onlyLeafCanSelect: true
     };
     return (
       <div>
@@ -33,7 +33,7 @@ export default function TransformMonitorComponent(props: ITransformMonitorProps)
       <Form {...layout} form={form}>
         <Form.Item label={'已选车辆数'}>{data?.selectedRowKeys.length ? data.selectedRowKeys.length : 1}</Form.Item>
         <Form.Item label={'监控组原名'}>{data?.currentMonitorGroup.name}</Form.Item>
-        <Form.Item label={'转移目标组名'} rules={[{ required: true }]}>
+        <Form.Item label={'转移目标组名'} name={'selectedGroupIdList'} rules={[{ required: true }]}>
           {RenderTree()}
         </Form.Item>
         <Form.Item style={{ marginLeft: 70 }} name={'copy'}>

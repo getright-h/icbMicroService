@@ -7,6 +7,8 @@ import { Subscription } from 'rxjs';
 import { DataNode } from 'rc-tree/lib/interface';
 import { getCheckedList } from '~/framework/util/common/treeFunction';
 import { Form } from 'antd';
+import { ShowNotification } from '~/framework/util/common';
+import { PropertySafetyFilled } from '@ant-design/icons';
 
 export function useAddMonitorCarStore(porps: IAddMonitorCarProps) {
   const { state, setStateWrap } = useStateStore(new IAddMonitorCarState());
@@ -17,37 +19,33 @@ export function useAddMonitorCarStore(porps: IAddMonitorCarProps) {
   let insertVehicleGroupSubscription: Subscription;
   let calculationMonitorVehicleNumberSubscription: Subscription;
   useEffect(() => {
-    queryChildInfo();
     return () => {
       getCartDeviceListSubscription && getCartDeviceListSubscription.unsubscribe();
+      calculationMonitorVehicleNumberSubscription && calculationMonitorVehicleNumberSubscription.unsubscribe();
     };
-  });
+  }, []);
   function getCartDeviceList(type: string) {
     getCartDeviceListSubscription = drapChooseLoadingService
       .queryVehiclePagedList({ index: 1, size: 100 })
       .subscribe((res: any) => {
         setStateWrap({
-          [`${type}CarDeviceList`]:
-            [
-              ...res.dataList,
-              { id: 1, vinNo: 'xxxxxx' },
-              { id: 8, vinNo: 'xxxxxx1' },
-              { id: 6, vinNo: 'xxxxxx2' },
-              { id: 5, vinNo: 'xxxxxx3' },
-              { id: 4, vinNo: 'xxxxxx5' },
-              { id: 3, vinNo: 'xxxxxx9' }
-            ] || []
+          [`${type}CarDeviceList`]: [...res.dataList] || []
         });
       });
   }
-  function calculationMonitorVehicleNumber() {
-    const { organizationCodeList, checkedKeys, addChoseList = [], delChoseList = [] } = state;
+  function calculationMonitorVehicleNumber(state: any) {
+    const { checkedKeys, addChoseList = [], delChoseList = [] } = state;
     const params = {
-      groupId: porps.groupId || '40105ebae7c7c7551b2308d87064ff23',
-      organizationIdList: organizationCodeList,
+      groupId: porps.groupId,
+      organizationIdList: checkedKeys,
       vehicleVinNoList: addChoseList,
       removeList: delChoseList
     };
+    console.log(params);
+    if (!params.groupId) {
+      ShowNotification.warning('请选择监控组!');
+      return;
+    }
     calculationMonitorVehicleNumberSubscription = monitorService
       .calculationMonitorVehicleNumber(params)
       .subscribe((res: any) => {
@@ -59,16 +57,29 @@ export function useAddMonitorCarStore(porps: IAddMonitorCarProps) {
   }
 
   function insertVehicleGroup() {
-    const { organizationCodeList, checkedKeys, addChoseList = [], delChoseList = [] } = state;
+    const { checkedKeys, addChoseList = [], delChoseList = [] } = state;
     const params = {
-      groupId: porps.groupId || '40105ebae7c7c7551b2308d87064ff23',
-      organizationIdList: organizationCodeList,
+      groupId: porps.groupId,
+      organizationIdList: checkedKeys,
       vehicleVinNoList: addChoseList,
       removeList: delChoseList
     };
-    insertVehicleGroupSubscription = monitorService.insertMonitorVehicle(params).subscribe((res: any) => {
-      console.log(res);
-    });
+    if (!params.groupId) {
+      ShowNotification.warning('请选择监控组!');
+      return;
+    }
+    setStateWrap({ confirmLoading: true });
+    insertVehicleGroupSubscription = monitorService.insertMonitorVehicle(params).subscribe(
+      (res: any) => {
+        setStateWrap({ confirmLoading: false });
+        ShowNotification.success('添加成功!');
+        porps.colse && porps.colse();
+        porps.getMonitorGroupList && porps.getMonitorGroupList();
+      },
+      (error: any) => {
+        setStateWrap({ confirmLoading: false });
+      }
+    );
   }
 
   function onSelectCar(value: any, type: string) {
@@ -92,11 +103,13 @@ export function useAddMonitorCarStore(porps: IAddMonitorCarProps) {
       }
     }
 
-    setStateWrap({
-      addChoseList,
-      delChoseList
-    });
-    calculationMonitorVehicleNumber();
+    setStateWrap(
+      {
+        addChoseList,
+        delChoseList
+      },
+      (state: any) => calculationMonitorVehicleNumber(state)
+    );
   }
   function onExpand(expandedKeys: []) {
     setStateWrap({
@@ -105,15 +118,15 @@ export function useAddMonitorCarStore(porps: IAddMonitorCarProps) {
   }
   function onCheck(treeData: DataNode[], checkedKeys: any = state.checkedKeys) {
     const checkedObject = getCheckedList(treeData, checkedKeys);
-    setStateWrap({
-      checkedKeys,
-      checkedObject,
-      organizationCodeList: checkedObject.map((device: any) => device.organizationId)
-    });
-    calculationMonitorVehicleNumber();
+    console.log(checkedKeys);
+    setStateWrap(
+      {
+        checkedKeys,
+        checkedObject
+      },
+      (state: any) => calculationMonitorVehicleNumber(state)
+    );
   }
 
-  const queryChildInfo = (item: any) => monitorService.queryVehicleGroupList(item);
-
-  return { state, form, getCartDeviceList, onSelectCar, onExpand, onCheck, insertVehicleGroup, queryChildInfo };
+  return { state, form, getCartDeviceList, onSelectCar, onExpand, onCheck, insertVehicleGroup };
 }

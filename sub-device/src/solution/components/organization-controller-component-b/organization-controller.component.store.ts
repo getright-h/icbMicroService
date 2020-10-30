@@ -16,7 +16,7 @@ import { forkJoin } from 'rxjs';
 export function useOrganizationControllerStore(props: IOrganizationControllerProps, ref: any) {
   const { state, setStateWrap, getState } = useStateStore(new IOrganizationControllerState());
   const warehouseListService: WarehouseListService = new WarehouseListService();
-  const { warehouseAction, onExpand, queryChildInfo, onlyLeafCanSelect } = props;
+  const { warehouseAction, onExpand, queryChildInfo } = props;
   const { gState }: IGlobalState = useContext(GlobalContext);
   useEffect(() => {
     console.log(props);
@@ -27,7 +27,7 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
   // 根据根据系统id查找机构类型
   function queryOrganizationTypeListByTypeId(id?: string) {
     warehouseListService.queryStoreOrganization({ typeId: gState.myInfo.typeId, id }).subscribe(res => {
-      const treeData = dealWithTreeData<QueryStoreOrganizationReturn>(res, TREE_MAP, false, onlyLeafCanSelect);
+      const treeData = dealWithTreeData<QueryStoreOrganizationReturn>(res, TREE_MAP, false);
       setStateWrap({
         treeData
       });
@@ -59,10 +59,10 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     forkJoin(warehouseListService.queryStoreOrganizationListSub({ parentId }), queryChildInfoSubscription).subscribe(
       (res: any) => {
         const queryChildInfoData: DataNode[] = queryChildInfo
-          ? dealWithTreeData(res[1], TREE_MAP, true, onlyLeafCanSelect, warehouseAction)
+          ? dealWithTreeData(res[1], TREE_MAP, true, warehouseAction)
           : [];
 
-        treeNode.children = [...queryChildInfoData, ...dealWithTreeData(res[0], TREE_MAP, false, onlyLeafCanSelect)];
+        treeNode.children = [...queryChildInfoData, ...dealWithTreeData(res[0], TREE_MAP, false)];
         const treeData = updateTreeData(state.treeData, treeNode.key, treeNode.children);
         console.log(treeData);
 
@@ -90,11 +90,6 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     searchCurrentSelectInfo(getState().loadStoreOrganizationParams);
   }
 
-  // 获取当前选择的监控组
-  function getCurrentGroup<T>(value: T, key: string) {
-    const { info = {} } = value;
-    getCurrentSelectInfo(info.organizationId, 'id');
-  }
   // 选择当前的机构信息，这边进行搜索
   function searchCurrentSelectInfo(params: { typeId: string; id: string }) {
     console.log(params);
@@ -126,5 +121,5 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     queryOrganizationTypeListByTypeId
   }));
 
-  return { state, onLoadData, getCurrentSelectInfo, onCheck, getCurrentGroup };
+  return { state, onLoadData, getCurrentSelectInfo, onCheck };
 }

@@ -9,7 +9,7 @@ export class IMonitorManageState {
   transformModalVisible = false;
   currentData: any = {};
   searchForm: any = {
-    groupId: '40105ebae7c7c7551b2308d87064ff23'
+    groupId: ''
   };
   tableData: any[] = [];
   total = 0;

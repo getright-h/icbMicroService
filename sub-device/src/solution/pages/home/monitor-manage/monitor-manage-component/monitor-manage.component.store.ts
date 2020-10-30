@@ -42,7 +42,7 @@ export function useMonitorManageStore() {
   function delCarGroup(data: any) {
     const { id = '' } = data;
     if (!id) return;
-    monitorService.vehicleGroup({ id }).subscribe(
+    monitorService.groupRelation({ id }).subscribe(
       (res: any) => {
         ShowNotification.success('删除成功');
         getTableData();
@@ -69,7 +69,7 @@ export function useMonitorManageStore() {
     getTableData();
   }
 
-  function callbackAction<T>(actionType: number, data?: T) {
+  function callbackAction<T>(actionType: number, data?: T | any) {
     setStateWrap({ currentData: { ...data } });
     switch (actionType) {
       case ModalType.ADD_GROUP:
@@ -83,6 +83,8 @@ export function useMonitorManageStore() {
         break;
       case ModalType.BATCH_TRANFROM:
         setStateWrap({ transformModalVisible: true });
+      case ModalType.DETAIL:
+        history.push(`/home/customer/vehicleDetail/${data.vehicleId}`);
         break;
     }
   }
@@ -122,9 +124,9 @@ export function useMonitorManageStore() {
       checkedObject
     });
   }
-  function onSelectChange(selectedRowKeys: string[]) {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
-    setStateWrap({ selectedRowKeys, transformDisable: !selectedRowKeys.length });
+  function onSelectChange(selectedRowKeys: string[], selectedObject: any) {
+    const selected = selectedObject.map((select: any) => select.vehicleId);
+    setStateWrap({ selectedRowKeys: selected, transformDisable: !selected.length });
   }
 
   const queryChildInfo = (item: any) => {

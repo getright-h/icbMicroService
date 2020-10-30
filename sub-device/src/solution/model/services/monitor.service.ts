@@ -27,6 +27,8 @@ const QUERY_VEHICLE_GROUP_PAGED_LIST = 'vehicle/manage/queryVehicleGroupPagedLis
 const CALCULATION_MONITOR_VEHICLE_NUMBER = 'vehicle/manage/calculationMonitorVehicleNumber';
 // 监控组搜索
 const QUERY_GROUP_SEARCH_LIST = 'vehicle/manage/queryGroupSearchList';
+// 删除监控组内车辆
+const GROUP_RELATION = 'vehicle/manage/groupRelation';
 @DepUtil.Injectable()
 export class MonitorService {
   @DepUtil.Inject(RequestService)
@@ -61,5 +63,8 @@ export class MonitorService {
   }
   queryGroupSearchList(params: any): Observable<any> {
     return this.requestService.get(QUERY_GROUP_SEARCH_LIST, params);
+  }
+  groupRelation(params: { id: string }): Observable<any> {
+    return this.requestService.delete(GROUP_RELATION, params);
   }
 }

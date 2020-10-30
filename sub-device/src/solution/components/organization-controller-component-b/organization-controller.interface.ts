@@ -22,12 +22,12 @@ export class IOrganizationControllerProps {
   onExpand?: (expandedKeys: string[]) => void;
   queryChildInfo?: any;
   getCheckedInfo?: (treeData: DataNode[], checkedKeys?: []) => void;
-  onlyLeafCanSelect?: boolean = false;
+  isGroup?: boolean;
 }
 
 export const TREE_MAP = {
   title: 'name',
-  key: 'id'
+  key: 'code'
 };
 
 export interface OrganizationExportFunction {

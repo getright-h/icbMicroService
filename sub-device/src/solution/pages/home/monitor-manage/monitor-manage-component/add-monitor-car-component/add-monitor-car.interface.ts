@@ -21,4 +21,5 @@ export interface IAddMonitorCarProps {
   addMonitorModal: boolean;
   colse: Function;
   groupId: string;
+  getMonitorGroupList: Function;
 }

@@ -9,7 +9,7 @@ import OrganizationControllerComponent from '~/solution/components/organization-
 import AddMonitorGroupComponent from './add-monitor-group-component/add-monitor-group.component';
 import AddMonitorCarComponent from './add-monitor-car-component/add-monitor-car.component';
 import TransformMonitorComponent from './transform-monitor-component/transform-monitor.component';
-import { transform } from 'lodash';
+
 export default function MonitorManageComponent() {
   const {
     state,
@@ -22,6 +22,7 @@ export default function MonitorManageComponent() {
     queryChildInfo,
     onExpand,
     onSelect,
+    getTableData,
     deletemonitorGroup,
     editmonitorGroup,
     onSelectChange
@@ -36,7 +37,6 @@ export default function MonitorManageComponent() {
     addGroupModalVisible = false,
     addCarModalVisible = false,
     transformModalVisible = false,
-    groupId,
     expandedKeys,
     checkedKeys,
     transformDisable = true,
@@ -125,7 +125,8 @@ export default function MonitorManageComponent() {
         <div className={style.btnArea}>
           <Button onClick={() => callbackAction(ModalType.ADD_GROUP)}>添加监控组</Button>
           <div>
-            <Button onClick={() => callbackAction(ModalType.ADD_CAR)}>添加监控车辆</Button>
+            {currentMonitorGroup.id && <Button onClick={() => callbackAction(ModalType.ADD_CAR)}>添加监控车辆</Button>}
+
             <Button
               disabled={transformDisable}
               type={!transformDisable ? 'primary' : 'default'}
@@ -152,7 +153,12 @@ export default function MonitorManageComponent() {
           ...currentData
         }}
       />
-      <AddMonitorCarComponent addMonitorModal={addCarModalVisible} colse={handleModalCancel} groupId={groupId} />
+      <AddMonitorCarComponent
+        addMonitorModal={addCarModalVisible}
+        colse={handleModalCancel}
+        groupId={currentMonitorGroup.id}
+        getMonitorGroupList={getTableData}
+      />
       <AddMonitorGroupComponent close={handleModalCancel} data={currentData} visible={addGroupModalVisible} />
     </div>
   );

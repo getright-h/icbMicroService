@@ -5,6 +5,7 @@ export function dealWithTreeData<T>(
   res: T[],
   treeMap: Record<string, any>,
   isWarehouse?: boolean,
+  onlyLeafCanSelect?: boolean,
   content?: (element: any) => React.ReactNode
 ) {
   const treeData: any[] =
@@ -38,6 +39,7 @@ export function dealWithTreeData<T>(
       );
       treeDataChild['isLeaf'] = isWarehouse;
       treeDataChild.selectable = isWarehouse;
+      onlyLeafCanSelect && (treeDataChild.disableCheckbox = !isWarehouse);
       return treeDataChild;
     });
 
