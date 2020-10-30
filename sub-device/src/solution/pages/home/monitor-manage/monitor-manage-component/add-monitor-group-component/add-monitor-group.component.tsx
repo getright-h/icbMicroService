@@ -9,7 +9,7 @@ export default function AddMonitorGroupComponent(props: AddMonitorGroupProp) {
   const { state, form, onchange, addMonitorGroup, close } = useAddMonitorGroupStore(props);
   const { gState } = React.useContext(GlobalContext);
   const { submitLoading } = state;
-  const { visible } = props;
+  const { visible, data } = props;
   const layout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 }
@@ -17,7 +17,7 @@ export default function AddMonitorGroupComponent(props: AddMonitorGroupProp) {
   return (
     <Modal
       visible={visible}
-      title={'添加监控组'}
+      title={data.id ? '修改监控组' : '添加监控组'}
       onOk={() => {
         form.validateFields().then(values => addMonitorGroup(values));
       }}
@@ -25,16 +25,17 @@ export default function AddMonitorGroupComponent(props: AddMonitorGroupProp) {
       onCancel={() => close()}
     >
       <Form {...layout} form={form}>
-        <Form.Item label="所在机构" name={'organization'} rules={[{ required: true }]}>
+        <Form.Item label="所在机构" name={'organizationId'} rules={[{ required: true }]}>
           <ISelectLoadingComponent
             placeholder="请输入机构名称"
             width={'100%'}
             showSearch
+            searchKey={''}
             searchForm={{
               systemId: gState.myInfo.systemId
             }}
             reqUrl="queryStoreOrganization"
-            getCurrentSelectInfo={(value: any, option: any) => onchange(option.info || {}, 'organization')}
+            getCurrentSelectInfo={(value: any, option: any) => onchange(option.info || {}, 'organizationId')}
           />
         </Form.Item>
         <Form.Item label="监控组名称" name={'name'} rules={[{ required: true }]}>

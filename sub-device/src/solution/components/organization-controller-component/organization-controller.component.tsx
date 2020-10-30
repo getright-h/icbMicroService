@@ -8,22 +8,32 @@ import { IOrganizationControllerProps } from './organization-controller.interfac
 
 function OrganizationControllerComponent(props: IOrganizationControllerProps, ref: any) {
   const { state, onLoadData, getCurrentSelectInfo, onCheck } = useOrganizationControllerStore(props, ref);
-  const { onSelect, expandedKeys, treeSelectedKeys, onExpand, checkedKeys, checkable } = props;
+  const { onSelect, expandedKeys, treeSelectedKeys, onExpand, checkedKeys, checkable, isGroup = false } = props;
   const { gState } = React.useContext(GlobalContext);
   const { treeData } = state;
   return (
     <>
       <div className={style.searchWarehouse}>
-        <ISelectLoadingComponent
-          placeholder="请输入机构名称"
-          width={'100%'}
-          showSearch
-          searchForm={{
-            systemId: gState.myInfo.systemId
-          }}
-          reqUrl="queryStoreOrganization"
-          getCurrentSelectInfo={value => getCurrentSelectInfo<string>(value, 'id')}
-        />
+        {isGroup ? (
+          <ISelectLoadingComponent
+            placeholder="请输入监控组名称"
+            width={'100%'}
+            showSearch
+            reqUrl="queryGroupSearchList"
+            getCurrentSelectInfo={(value: any, option: any) => getCurrentSelectInfo<string>(option, 'name')}
+          />
+        ) : (
+          <ISelectLoadingComponent
+            placeholder="请输入机构名称"
+            width={'100%'}
+            showSearch
+            searchForm={{
+              systemId: gState.myInfo.systemId
+            }}
+            reqUrl="queryStoreOrganization"
+            getCurrentSelectInfo={value => getCurrentSelectInfo<string>(value, 'id')}
+          />
+        )}
       </div>
       <Tree
         style={{

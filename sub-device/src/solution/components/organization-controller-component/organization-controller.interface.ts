@@ -22,6 +22,7 @@ export class IOrganizationControllerProps {
   onExpand?: (expandedKeys: string[]) => void;
   queryChildInfo?: any;
   getCheckedInfo?: (treeData: DataNode[], checkedKeys?: []) => void;
+  isGroup?: boolean;
 }
 
 export const TREE_MAP = {

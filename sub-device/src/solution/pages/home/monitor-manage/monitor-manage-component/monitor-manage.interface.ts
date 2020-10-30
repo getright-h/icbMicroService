@@ -17,6 +17,10 @@ export class IMonitorManageState {
   groupId = '';
   checkedKeys: string[] = [];
   confirmLoading = false;
+  transformDisable = true;
   checkedObject: DataNode[] = [];
   expandedKeys: string[] = [];
+  treeSelectedKeys: string[] = [];
+  selectedRowKeys: string[] = [];
+  currentMonitorGroup: any = {};
 }

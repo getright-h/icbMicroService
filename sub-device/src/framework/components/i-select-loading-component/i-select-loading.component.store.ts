@@ -21,16 +21,17 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
     setStateWrap({ fetching: true });
     getOptionListSubscription = drapChooseLoadingService[reqUrl]({
       ...searchParams.current,
-
+      name: searchName.current,
       index: scrollPage.current,
       size: props.pageSize || 100
     }).subscribe(
       (res: any) => {
-        if (res && res.dataList) {
+        if (res) {
+          if (Array.isArray(res)) {
+            res.dataList = res;
+          }
+          if (!res.dataList) return;
           const optionList = [...(isSearch ? [] : state.optionList), ...res.dataList];
-          setStateWrap({ optionList, fetching: false });
-        } else if (props.isData) {
-          const optionList = [...(isSearch ? [] : state.optionList), ...res];
           setStateWrap({ optionList, fetching: false });
         } else if (scrollPage.current == 1 && (!res || !res.dataList)) {
           setStateWrap({ optionList: [], fetching: false });
@@ -69,7 +70,7 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
   }
   useEffect(() => {
     setStateWrap({ value: props.selectedValue });
-    // getOptionList();
+    getOptionList();
   }, [props.selectedValue]);
 
   useEffect(() => {

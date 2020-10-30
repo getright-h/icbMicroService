@@ -24,6 +24,7 @@ const QUERY_STORE_POSITION_LIST = 'store/manage/queryStorePositionPagedListBySto
 const QUERY_ALLOT_FLOW_TEMPLATE_PAGED_LIST = 'allot/manage/queryAllotFlowTemplatePagedList';
 const QUERY_VEHICLE_PAGED_LIST = 'vehicle/manage/queryVehiclePagedList';
 const QUERY_ROLE_LIST = 'vehicle/manage/queryRoleList';
+const QUERY_GROUP_SEARCH_LIST = 'vehicle/manage/queryGroupSearchList';
 
 const QUERYSTOREPOSITIONPAGEDLISTBYSTOREID = 'store/manage/queryStorePositionPagedListByStoreId';
 @DepUtil.Injectable()
@@ -83,5 +84,9 @@ export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
   // 获取角色列表
   queryRoleList(params: QueryVehiclePagedListParam): Observable<DrapChooseLoadingReturn> {
     return this.requestService.post(QUERY_ROLE_LIST, params);
+  }
+  //监控组搜索
+  queryGroupSearchList(params: QueryVehiclePagedListParam): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.get(QUERY_GROUP_SEARCH_LIST, params);
   }
 }

@@ -17,6 +17,7 @@ export function useAddMonitorCarStore(porps: IAddMonitorCarProps) {
   let insertVehicleGroupSubscription: Subscription;
   let calculationMonitorVehicleNumberSubscription: Subscription;
   useEffect(() => {
+    queryChildInfo();
     return () => {
       getCartDeviceListSubscription && getCartDeviceListSubscription.unsubscribe();
     };
@@ -104,7 +105,6 @@ export function useAddMonitorCarStore(porps: IAddMonitorCarProps) {
   }
   function onCheck(treeData: DataNode[], checkedKeys: any = state.checkedKeys) {
     const checkedObject = getCheckedList(treeData, checkedKeys);
-    console.log(checkedObject);
     setStateWrap({
       checkedKeys,
       checkedObject,
@@ -112,5 +112,8 @@ export function useAddMonitorCarStore(porps: IAddMonitorCarProps) {
     });
     calculationMonitorVehicleNumber();
   }
-  return { state, form, getCartDeviceList, onSelectCar, onExpand, onCheck, insertVehicleGroup };
+
+  const queryChildInfo = (item: any) => monitorService.queryVehicleGroupList(item);
+
+  return { state, form, getCartDeviceList, onSelectCar, onExpand, onCheck, insertVehicleGroup, queryChildInfo };
 }

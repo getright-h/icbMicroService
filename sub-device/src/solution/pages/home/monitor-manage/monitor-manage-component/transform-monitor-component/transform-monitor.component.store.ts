@@ -1,12 +1,15 @@
 import { ITransformMonitorState } from './transform-monitor.interface';
-import { useStateStore } from '~/framework/aop/hooks/use-base-store';
+import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
 import { ITransformMonitorProps } from './transform-monitor.interface';
 import { Form } from 'antd';
+import { MonitorService } from '~/solution/model/services/monitor.service';
 import { DataNode } from 'rc-tree/lib/interface';
 import { getCheckedList } from '~/framework/util/common/treeFunction';
+import { useEffect } from 'react';
 export function useTransformMonitorStore(props: ITransformMonitorProps) {
   const { state, setStateWrap } = useStateStore(new ITransformMonitorState());
   const [form] = Form.useForm();
+  const monitorService = useService(MonitorService);
   function close() {
     form.resetFields();
     props.close && props.close();
@@ -38,5 +41,13 @@ export function useTransformMonitorStore(props: ITransformMonitorProps) {
       checkedObject
     });
   }
-  return { state, form, close, onSubmit, onchange, onExpand, onCheck };
+
+  const queryChildInfo = (item: any) => {
+    if (!item) return null;
+    return monitorService.queryVehicleGroupList(item);
+  };
+  useEffect(() => {
+    return () => {};
+  }, [JSON.stringify(props?.data)]);
+  return { state, form, close, onSubmit, onchange, onExpand, onCheck, queryChildInfo };
 }

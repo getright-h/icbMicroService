@@ -7,7 +7,15 @@ import { PlusCircleTwoTone, MinusCircleTwoTone } from '@ant-design/icons';
 import OrganizationControllerComponent from '~/solution/components/organization-controller-component/organization-controller.component';
 
 export default function AddMonitorCarComponent(props: IAddMonitorCarProps) {
-  const { state, onExpand, onCheck, onSelectCar, getCartDeviceList, insertVehicleGroup } = useAddMonitorCarStore(props);
+  const {
+    state,
+    onExpand,
+    onCheck,
+    onSelectCar,
+    getCartDeviceList,
+    insertVehicleGroup,
+    queryChildInfo
+  } = useAddMonitorCarStore(props);
   const {
     confirmLoading,
     expandedKeys,
@@ -26,7 +34,8 @@ export default function AddMonitorCarComponent(props: IAddMonitorCarProps) {
       expandedKeys,
       onExpand,
       getCheckedInfo: onCheck,
-      checkedKeys
+      checkedKeys,
+      queryChildInfo
     };
     return (
       <div>

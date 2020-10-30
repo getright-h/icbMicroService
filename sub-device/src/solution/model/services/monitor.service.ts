@@ -39,7 +39,7 @@ export class MonitorService {
     return this.requestService.post(SET_VEHICLE_GROUP, params);
   }
   vehicleGroup(params: { id: string }): Observable<any> {
-    return this.requestService.get(VEHICLE_GROUP, params);
+    return this.requestService.delete(VEHICLE_GROUP, params);
   }
   insertMonitorVehicle(params: any): Observable<any> {
     return this.requestService.post(INSERT_MONITOR_VEHICLE, params);
@@ -48,7 +48,7 @@ export class MonitorService {
     return this.requestService.post(TRANSFER_GROUP, params);
   }
   queryVehicleGroupList(params: any): Observable<any> {
-    return this.requestService.post(QUERY_VEHICLE_GROUPLIST, params);
+    return this.requestService.get(QUERY_VEHICLE_GROUPLIST, params);
   }
   queryVehicleGroupDetail(params: any): Observable<any> {
     return this.requestService.post(QUERY_VEHICLE_GROUP_DETAIL, params);
