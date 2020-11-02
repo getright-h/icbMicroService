@@ -5,18 +5,18 @@ import { useEffect } from 'react';
 import { Form } from 'antd';
 import { DeviceTypeService } from '~/solution/model/services/device-type.service';
 import { ShowNotification } from '~/framework/util/common';
-import { useHistory } from 'react-router-dom';
 import { Subscription } from 'rxjs';
 export function useDeviceLineStore() {
   const { state, setStateWrap } = useStateStore(new IDeviceLineState());
   const deviceTypeService: DeviceTypeService = new DeviceTypeService();
   let queryDevicePagedListSubscribable: Subscription;
-  const history = useHistory();
+  let queryVehicleInformationByCodeSubscribable: Subscription;
   const [form] = Form.useForm();
   useEffect(() => {
     getTableData();
     return () => {
       queryDevicePagedListSubscribable && queryDevicePagedListSubscribable.unsubscribe();
+      queryVehicleInformationByCodeSubscribable && queryVehicleInformationByCodeSubscribable.unsubscribe();
     };
   }, []);
 
@@ -34,10 +34,41 @@ export function useDeviceLineStore() {
       }
     );
   }
+
+  function queryVehicleInformationByCode(isExpand: boolean, record: any) {
+    console.log(isExpand, record);
+    if (!isExpand) return;
+    const { code = '' } = record;
+    queryVehicleInformationByCodeSubscribable = deviceTypeService
+      .queryVehicleInformationByCode({ deviceCode: code })
+      .subscribe((res: any) => {
+        console.log(res);
+      });
+  }
+
+  function getFlowNodeDetail(code: string) {
+    if (!code) Promise.reject(null);
+    return new Promise((reslove: any, reject: any) => {
+      deviceTypeService.queryDeviceFlowRecordInfoList({ code }).subscribe(
+        (res: any) => {
+          reslove(res);
+        },
+        (error: any) => {
+          reject(error);
+        }
+      );
+    });
+  }
   function getFlowNode(data: any) {
-    setStateWrap({
-      currentData: data,
-      routeModalVisible: true
+    getFlowNodeDetail(data.code).then((res: any) => {
+      setStateWrap({
+        routeModalVisible: true,
+        currentData: {
+          ...state.currentData,
+          ...data,
+          flowList: res
+        }
+      });
     });
   }
   function onChange(value: any, valueType: string) {
@@ -104,6 +135,7 @@ export function useDeviceLineStore() {
     openModal,
     onChange,
     searchClean,
-    getFlowNode
+    getFlowNode,
+    queryVehicleInformationByCode
   };
 }

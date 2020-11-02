@@ -59,7 +59,8 @@ remark ?: string; // 备注
 }
 // 删除设备型号 && 设备详情
 export interface IDeviceTypeDTO  {
-  id: string;
+  id?: string;
+  code?: string;
 }
 //查询设备类型分页列表 
 export interface DeviceTypePagedListDto  {

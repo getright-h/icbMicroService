@@ -16,38 +16,39 @@ export function useAddDeviceTypeStore(props: IAddDeviceType) {
     form
       .validateFields()
       .then(value => {
-        console.log(value, 22);
-        addDeviceType();
+        const submitForm = {
+          ...value,
+          image: value.image && value.image.toString()
+        };
+        if (props.data.id) {
+          alertDeviceType({ ...submitForm, id: props.data.id });
+        } else {
+          addDeviceType(submitForm);
+        }
       })
       .catch(() => {
         setStateWrap({ submitLoading: false });
       });
   }
 
-  function addDeviceType() {
-    const { searchForm, imageList } = state;
-    console.log(searchForm);
-    searchForm.supplierId = 'a8bfea91c100cb39449c08d85bebb643';
-    insetDeviceTypeSubscription = deviceTypeService.insetDeviceType(searchForm).subscribe(
+  function addDeviceType(submitForm: any) {
+    insetDeviceTypeSubscription = deviceTypeService.insetDeviceType(submitForm).subscribe(
       (res: any) => {
         props.fetchData && props.fetchData();
         props.close && props.close();
         ShowNotification.success('添加成功!');
         form.resetFields();
-
         setStateWrap({ submitLoading: false });
       },
       (error: any) => {
         console.log(error);
+        setStateWrap({ submitLoading: false });
       }
     );
   }
 
-  function alertDeviceType() {
-    const { searchForm, imageList } = state;
-    searchForm.id = props.data.id;
-    searchForm.supplierId = 'a8bfea91c100cb39449c08d85bebb643';
-    updateDeviceTypeSubscription = deviceTypeService.updateDeviceType(searchForm).subscribe(
+  function alertDeviceType(submitForm: any) {
+    updateDeviceTypeSubscription = deviceTypeService.updateDeviceType(submitForm).subscribe(
       (res: any) => {
         props.fetchData && props.fetchData();
         props.close && props.close();
@@ -56,23 +57,16 @@ export function useAddDeviceTypeStore(props: IAddDeviceType) {
         setStateWrap({ submitLoading: false });
       },
       (error: any) => {
-        console.log(error);
+        setStateWrap({ submitLoading: false });
       }
     );
   }
-  function onChange(value: any, valueType: string) {
-    const { searchForm } = state;
-    setStateWrap({
-      searchForm: {
-        ...searchForm,
-        [valueType]: value.toString()
-      }
-    });
-  }
+
   useEffect(() => {
     form.resetFields();
     setStateWrap({
-      searchForm: props.data || {}
+      searchForm: props.data || {},
+      imageList: props.data.image || []
     });
     form.setFieldsValue(props.data);
     return () => {
@@ -80,5 +74,5 @@ export function useAddDeviceTypeStore(props: IAddDeviceType) {
       updateDeviceTypeSubscription && updateDeviceTypeSubscription.unsubscribe();
     };
   }, [JSON.stringify(props.data)]);
-  return { state, form, onChange, onSubmit, alertDeviceType };
+  return { state, form, onSubmit, alertDeviceType };
 }

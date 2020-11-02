@@ -25,7 +25,7 @@ class RequestService {
   private createAuthHeaders(): any {
     const headers = { token: '' };
     // const token = localStorage.getItem('TOKENINFO');
-    const token = 'session:9e65cab6-c238-4059-9794-03a41d64ac06';
+    const token = 'session:9791f3bc-389e-4158-96ce-9c6ac3108e04';
     if (token) {
       headers.token = token;
     }

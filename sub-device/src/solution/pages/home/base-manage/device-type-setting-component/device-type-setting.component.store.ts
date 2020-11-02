@@ -56,7 +56,9 @@ export function useDeviceTypeSettingStore() {
     confirm({
       content: `确认删除设备型号${data.name || '-'}`,
       onOk: () => {
-        delDeviceType(data.id).then(res => console.log(res));
+        delDeviceType(data.id).then(res => {
+          getTableList();
+        });
       }
     });
   }
@@ -78,7 +80,6 @@ export function useDeviceTypeSettingStore() {
     return new Promise((reslove: any, reject: any) => {
       deviceTypeService.deviceType({ id }).subscribe(
         res => {
-          console.log(res);
           reslove(res);
         },
         error => {

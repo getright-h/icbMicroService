@@ -1,6 +1,6 @@
 import { ICreateAllocationState, IFlowNode } from './create-allocation.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
-import { useEffect, useCallback } from 'react';
+import { useEffect } from 'react';
 import { Form } from 'antd';
 import { ShowNotification, getQueryParams } from '~/framework/util/common';
 import { TemplateServiceService } from '~/solution/model/services/template-service.service';
@@ -89,6 +89,7 @@ export function useCreateAllocationStore() {
     for (let i = 1; i <= nodeLength; i++) {
       flowList.push(flowListData.filter((flow: IFlowNode) => flow.sort == i));
     }
+    console.log(flowList);
     setStateWrap({ flowList });
   }
   /**
@@ -210,78 +211,9 @@ export function useCreateAllocationStore() {
     }
     setStateWrap({ searchForm });
   }
-  function addNode() {
-    const { NodeList } = state;
-    NodeList.push([{}]);
-    setStateWrap({
-      NodeList
-    });
-    setFLowList();
-  }
 
-  function setFLowList() {
-    const { NodeList, flowList } = state;
-    for (let i = 0; i < NodeList.length; i++) {
-      const cur_flow_len = flowList[i] && flowList[i].length;
-      const cur_node_len = NodeList[i].length;
-      if (cur_flow_len == cur_node_len) continue;
-      if (!flowList[i]) flowList[i] = [];
-      flowList[i].push(...NodeList[i]);
-    }
-    setStateWrap({
-      flowList
-    });
-  }
-
-  /**
-   *
-   * @param field
-   * @param add
-   * @param index 数组第一层 表示环节
-   */
-  function addFlowNode(index: number, number: number) {
-    const { NodeList = [] } = state;
-    NodeList[index].push({});
-    setStateWrap({
-      NodeList
-    });
-    setFLowList();
-  }
-
-  function removeFlowNode(index: number, number: number) {
-    const { NodeList = [] } = state;
-    NodeList[index].splice(number, 1);
-    setStateWrap({
-      NodeList: NodeList.filter(node => node.length)
-    });
-    setFLowList();
-  }
-
-  function getCurrentSelectInfo(info: any, type: string, index: number, number: number) {
-    const { NodeList } = state;
-    NodeList[index][number].organizationId = info.value;
-    NodeList[index][number].label = info.children;
-    NodeList[index][number].isSelect = false;
-    setStateWrap({
-      [type]: info.value,
-      NodeList
-    });
-  }
-
-  function setCascaderInfo(info: any, type: any, index: number, number: number) {
-    console.log(info);
-    const { NodeList } = state;
-    NodeList[index][number].warehouse = info[0].children.length
-      ? info[0].label + '-' + info[0].children[0].label
-      : info[0].label;
-    NodeList[index][number].warehouseId = info[0].children.length ? info[0].children[0].value : info[0].value;
-    setStateWrap({
-      NodeList
-    });
-  }
   useEffect(() => {
     getDefaultParams();
-    setFLowList();
     return () => {
       templateServiceServiceSubscription && templateServiceServiceSubscription.unsubscribe();
       queryAllotFlowTemplateNodeListByTemplateIdSubscription &&
@@ -296,11 +228,6 @@ export function useCreateAllocationStore() {
     createNewAllocation,
     removeTypeDevice,
     updateTypeDevice,
-    selectAlloactionTemplateFlowNode,
-    addNode,
-    addFlowNode,
-    removeFlowNode,
-    getCurrentSelectInfo,
-    setCascaderInfo
+    selectAlloactionTemplateFlowNode
   };
 }
