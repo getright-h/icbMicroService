@@ -1,27 +1,30 @@
 import { IAction } from '~/solution/shared/interfaces/common.interface';
 import { TYPES } from './add-template-types';
-import { FlowList } from '~/solution/model/dto/allocation-template.dto';
+import { AllotNodeFlowInput } from '~/solution/model/dto/allocation-template.dto';
 export interface IFormInfo {
   id: string;
   canDelete: boolean;
-  title: string;
+  controlKey: string;
   canEdit?: boolean;
-  controllerEnum: FormType;
+  controlValue: string;
+  type: FormType;
   isRequired: boolean;
   value: string;
   name: string;
 }
 
 export enum FormType {
-  Input = 'Input',
-  FlowNode = 'FlowNode',
-  AssignDevice = 'AssignDevice'
+  Input = 1,
+  FlowNode = 100,
+  AssignDevice = 101
 }
 
 export interface AddTemplateState {
-  flowNodeSettingField: FlowList[];
+  flowNodeSettingField: AllotNodeFlowInput[];
   formInfo: IFormInfo[];
+  templateType: number;
   currentSelectItem: IFormInfo;
+  templateName: string;
   approverInput: ApproverInput[];
 }
 
@@ -35,17 +38,20 @@ export interface ApproverInput {
 export interface AttributeList {
   id?: string;
   mode: number;
-  userId: string;
+  personId: string;
   roleList: string[];
   userName: string;
 }
 
 export const addTemplateInitialState: AddTemplateState = {
   flowNodeSettingField: [],
+  templateType: undefined,
+  templateName: undefined,
   currentSelectItem: {
-    id: '1603357241127_Input',
-    title: '调拨单名称',
-    controllerEnum: FormType.Input,
+    id: '1603357241128',
+    controlKey: '调拨单名称',
+    controlValue: '',
+    type: FormType.Input,
     isRequired: true,
     value: '',
     name: 'Input 输入框',
@@ -53,18 +59,20 @@ export const addTemplateInitialState: AddTemplateState = {
   },
   formInfo: [
     {
-      id: '1603357241127_Input',
-      title: '调拨单名称',
-      controllerEnum: FormType.Input,
+      id: '1603357241128',
+      controlKey: '调拨单名称',
+      controlValue: '',
+      type: FormType.Input,
       isRequired: true,
       value: '',
       name: 'Input 输入框',
       canDelete: false
     },
     {
-      id: '1603357241128_FlowNode',
-      title: '流程节点',
-      controllerEnum: FormType.FlowNode,
+      id: '1603357241129',
+      controlKey: '流程节点',
+      controlValue: '',
+      type: FormType.FlowNode,
       isRequired: true,
       canEdit: true,
       value: '',
@@ -72,9 +80,10 @@ export const addTemplateInitialState: AddTemplateState = {
       canDelete: false
     },
     {
-      id: '1603357241128_AssignDevice',
-      title: '调拨设备',
-      controllerEnum: FormType.AssignDevice,
+      id: '16033572411210',
+      controlKey: '调拨设备',
+      controlValue: '',
+      type: FormType.AssignDevice,
       isRequired: true,
       canEdit: true,
       value: '',
@@ -99,9 +108,12 @@ export function AddTemplateReducer(state = addTemplateInitialState, action: IAct
         ...state,
         flowNodeSettingField: payload
       };
+    case TYPES.INIT_TEMPLATE_FORM:
+      return {
+        ...state,
+        ...payload
+      };
     case TYPES.SET_FORM_INFO:
-      console.log();
-
       return {
         ...state,
         formInfo: payload
@@ -111,6 +123,17 @@ export function AddTemplateReducer(state = addTemplateInitialState, action: IAct
         ...state,
         currentSelectItem: payload
       };
+    case TYPES.SET_APPROVER_INPUT:
+      return {
+        ...state,
+        approverInput: payload
+      };
+    case TYPES.SET_TEMPLATE_NAME:
+      return {
+        ...state,
+        ...payload
+      };
+
     case TYPES.SET_CURRENT_PARAMS:
       return {
         ...state,

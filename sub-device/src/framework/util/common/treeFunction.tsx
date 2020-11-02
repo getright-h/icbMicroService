@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { DatabaseOutlined, AppstoreOutlined } from '@ant-design/icons';
 import { Popover } from 'antd';
+// 是否需要
 export function dealWithTreeData<T>(
   res: T[],
   treeMap: Record<string, any>,
   isWarehouse?: boolean,
-  content?: (element: any) => React.ReactNode
+  content?: (element: any) => React.ReactNode,
+  canSelectAll?: boolean,
+  organizationChecked?: boolean
 ) {
   const treeData: any[] =
     !!res &&
@@ -37,7 +40,8 @@ export function dealWithTreeData<T>(
         </div>
       );
       treeDataChild['isLeaf'] = isWarehouse;
-      treeDataChild.selectable = isWarehouse;
+      treeDataChild.selectable = canSelectAll || isWarehouse;
+      treeDataChild.checkable = isWarehouse || !!organizationChecked;
       return treeDataChild;
     });
 

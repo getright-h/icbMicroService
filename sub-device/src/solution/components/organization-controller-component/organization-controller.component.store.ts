@@ -16,18 +16,29 @@ import { forkJoin } from 'rxjs';
 export function useOrganizationControllerStore(props: IOrganizationControllerProps, ref: any) {
   const { state, setStateWrap, getState } = useStateStore(new IOrganizationControllerState());
   const warehouseListService: WarehouseListService = new WarehouseListService();
-  const { warehouseAction, onExpand, queryChildInfo } = props;
+  const { warehouseAction, onExpand, queryChildInfo, currentOrganazation } = props;
   const { gState }: IGlobalState = useContext(GlobalContext);
   useEffect(() => {
-    console.log(props);
-
     queryOrganizationTypeListByTypeId();
-  }, []);
+  }, [currentOrganazation]);
 
   // 根据根据系统id查找机构类型
   function queryOrganizationTypeListByTypeId(id?: string) {
     warehouseListService.queryStoreOrganization({ typeId: gState.myInfo.typeId, id }).subscribe(res => {
-      const treeData = dealWithTreeData<QueryStoreOrganizationReturn>(res, TREE_MAP, false);
+      // 如果只要求显示一个currentOrganazation 才执行这行过滤数据的代码
+      if (currentOrganazation) {
+        res = res.filter(item => {
+          return item.id == currentOrganazation;
+        });
+      }
+      const treeData = dealWithTreeData<QueryStoreOrganizationReturn>(
+        res,
+        TREE_MAP,
+        false,
+        undefined,
+        undefined,
+        props.organizationChecked
+      );
       setStateWrap({
         treeData
       });
@@ -36,7 +47,6 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
 
   // 点击展开加载数据
   function onLoadData(treeNode: EventDataNode | any): Promise<void> {
-    console.log('queryChildInfo');
     return new Promise(resolve => {
       queryStoreOrganizationListSub(treeNode.id, treeNode, resolve);
     });
@@ -52,7 +62,6 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
    * @param {string} id 父级id
    */
   function queryStoreOrganizationListSub(parentId: string, treeNode: EventDataNode | any, resolve: Function) {
-    console.log('queryStoreOrganizationListSub', queryChildInfo);
     const queryChildInfoSubscription = queryChildInfo
       ? queryChildInfo({ organizationId: parentId })
       : Promise.resolve();
@@ -62,9 +71,11 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
           ? dealWithTreeData(res[1], TREE_MAP, true, warehouseAction)
           : [];
 
-        treeNode.children = [...queryChildInfoData, ...dealWithTreeData(res[0], TREE_MAP, false)];
+        treeNode.children = [
+          ...queryChildInfoData,
+          ...dealWithTreeData(res[0], TREE_MAP, false, undefined, undefined, props.organizationChecked)
+        ];
         const treeData = updateTreeData(state.treeData, treeNode.key, treeNode.children);
-        console.log(treeData);
 
         props.checkable && props.getCheckedInfo(treeData);
         setStateWrap({
@@ -77,8 +88,6 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
 
   // 搜索得到想要的key获取当前仓库
   function getCurrentSelectInfo<T>(value: T, key: string) {
-    console.log(state.loadStoreOrganizationParams);
-
     setStateWrap({
       loadStoreOrganizationParams: {
         ...state.loadStoreOrganizationParams,
@@ -92,16 +101,11 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
 
   // 选择当前的机构信息，这边进行搜索
   function searchCurrentSelectInfo(params: { typeId: string; id: string }) {
-    console.log(params);
-
     warehouseListService.queryStoreOrganization(params).subscribe(res => {
-      console.log(res);
-
       const expandedKeys: string[] = [];
       res.forEach(item => {
         expandedKeys.push(item.id);
       });
-      console.log(onExpand);
 
       onExpand(expandedKeys);
     });

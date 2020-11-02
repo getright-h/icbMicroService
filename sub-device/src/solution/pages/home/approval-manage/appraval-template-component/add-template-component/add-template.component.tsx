@@ -13,7 +13,7 @@ export const AddTemplateManageContext = React.createContext({
 export default function AddTemplateComponent() {
   const [addTemplateState, dispatch] = React.useReducer(AddTemplateReducer, addTemplateInitialState);
 
-  const { state, next, prev, commit } = useAddTemplateStore(addTemplateState);
+  const { state, next, prev, commit } = useAddTemplateStore(addTemplateState, dispatch);
 
   const { current } = state;
   const STEPS = [

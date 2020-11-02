@@ -54,3 +54,13 @@ export interface FlowList {
   sort?: number;
   isSelected?: boolean;
 }
+
+
+export interface AllotNodeFlowInput {
+  id?:string;
+  name: string;
+  flowNodeSettingFieldId: string;
+  sort: string;
+  isEdit: boolean;
+  attributeList?: FlowList[]
+}

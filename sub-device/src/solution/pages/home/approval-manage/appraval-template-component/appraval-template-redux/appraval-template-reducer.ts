@@ -3,9 +3,9 @@ import { TYPES } from './appraval-template-types';
 import { EventDataNode } from 'antd/lib/tree';
 
 export const appravalTemplateInitialState: {
-  currentSelectNode: EventDataNode;
+  currentSelectNode: { isAll: boolean; node: EventDataNode };
 } = {
-  currentSelectNode: undefined
+  currentSelectNode: { isAll: true, node: undefined }
 };
 
 export function AppravalTemplateReducer(state = appravalTemplateInitialState, action: IAction<any>) {

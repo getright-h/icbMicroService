@@ -1,49 +1,64 @@
 import * as React from 'react';
 import style from './add-flow-node.component.less';
 import { useAddFlowNodeStore } from './add-flow-node.component.store';
-import { Form, Button } from 'antd';
+import { Form, Button, Switch } from 'antd';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 import { ISelectLoadingComponent } from '~/framework/components/component.module';
 import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { IAddFlowNodeProps } from './add-flow-node.interface';
 import { AddTemplateManageContext } from '../add-template.component';
-import { FlowList } from '~/solution/model/dto/allocation-template.dto';
+import { AllotNodeFlowInput, FlowList } from '~/solution/model/dto/allocation-template.dto';
 
 export default function AddFlowNodeComponent(props: IAddFlowNodeProps) {
   const { reduxState } = React.useContext(AddTemplateManageContext);
-  const { addFlowNode, addFatherFlowNode, getCurrentSelectInfo, removeFlowNode } = useAddFlowNodeStore(props);
+  const {
+    addFlowNode,
+    addFatherFlowNode,
+    getCurrentSelectInfo,
+    onChangeCustomInfo,
+    removeFlowNode
+  } = useAddFlowNodeStore(props);
   const { gState } = React.useContext(GlobalContext);
-  const { canEdit } = props;
 
   const { flowNodeSettingField } = reduxState;
 
+  function IsCanEdit(field: AllotNodeFlowInput | any) {
+    return (
+      <div>
+        <Form.Item label="当前节点是否可编辑" rules={[{ required: true }]}>
+          <Switch checked={field.isEdit} onChange={value => onChangeCustomInfo<boolean>(field, 'isEdit', value)} />
+        </Form.Item>
+      </div>
+    );
+  }
+
   const ISelectLoadingComponentX = React.useCallback(
-    field =>
+    (field, isEdit) =>
       ISelectLoadingComponent({
         placeholder: '机构',
         showSearch: true,
         width: '100px',
         allowClear: false,
-        selectedValue: canEdit ? undefined : field.organizationName,
+        selectedValue: isEdit ? undefined : field.organizationName,
         searchForm: {
           systemId: gState.myInfo.systemId
         },
-        disabled: canEdit,
+        disabled: isEdit,
         reqUrl: 'queryStoreOrganization',
         getCurrentSelectInfo: (...info) => getCurrentSelectInfo(field, ...info, 'organization')
       }),
     []
   );
   const ISelectLoadingComponentY = React.useCallback(
-    field =>
+    (field, isEdit) =>
       ISelectLoadingComponent({
         placeholder: '仓库',
         showSearch: true,
         width: '100px',
-        selectedValue: canEdit ? undefined : field.storeName,
+        selectedValue: isEdit ? undefined : field.storeName,
         isData: true,
         allowClear: false,
-        disabled: canEdit,
+        disabled: isEdit,
         searchForm: {
           organizationId: field.organizationId
         },
@@ -53,14 +68,14 @@ export default function AddFlowNodeComponent(props: IAddFlowNodeProps) {
     []
   );
   const ISelectLoadingComponentZ = React.useCallback(
-    field =>
+    (field, isEdit) =>
       ISelectLoadingComponent({
         placeholder: '仓位',
         showSearch: true,
         allowClear: false,
         width: '100px',
-        disabled: canEdit,
-        selectedValue: canEdit ? undefined : field.storePositionName,
+        disabled: isEdit,
+        selectedValue: isEdit ? undefined : field.storePositionName,
         searchForm: {
           storeId: field.storeId,
           name: '',
@@ -95,7 +110,7 @@ export default function AddFlowNodeComponent(props: IAddFlowNodeProps) {
           <div className={style.formLeft}>
             <>
               {flowNodeSettingField &&
-                flowNodeSettingField.map((field: any, index: number) => {
+                flowNodeSettingField.map((field, index: number) => {
                   return (
                     <div key={field.flowNodeSettingFieldId}>
                       <span>{`选择节点${index + 1}: `}</span>
@@ -103,14 +118,14 @@ export default function AddFlowNodeComponent(props: IAddFlowNodeProps) {
                         return (
                           <div style={{ display: 'flex' }} key={item.childNodeId}>
                             <Form.Item style={{ display: 'inline-block', width: '100px' }}>
-                              {ISelectLoadingComponentX(item)}
+                              {ISelectLoadingComponentX(item, field.isEdit)}
                             </Form.Item>
 
                             <Form.Item style={{ display: 'inline-block', width: '100px' }}>
-                              {ISelectLoadingComponentY(item)}
+                              {ISelectLoadingComponentY(item, field.isEdit)}
                             </Form.Item>
                             <Form.Item style={{ display: 'inline-block', width: '100px' }}>
-                              {ISelectLoadingComponentZ(item)}
+                              {ISelectLoadingComponentZ(item, field.isEdit)}
                             </Form.Item>
                             <PlusCircleOutlined
                               style={{ margin: '0 3px', lineHeight: '32px' }}
@@ -127,6 +142,7 @@ export default function AddFlowNodeComponent(props: IAddFlowNodeProps) {
                           </div>
                         );
                       })}
+                      {IsCanEdit(field)}
                     </div>
                   );
                 })}

@@ -1,4 +1,5 @@
 import { DataNode } from 'rc-tree/lib/interface';
+import { QueryStoreOrganizationReturn } from '~/solution/model/dto/warehouse-list.dto';
 
 /**
  * @export state变量定义和初始化
@@ -11,8 +12,13 @@ export class IMoveTemplateState {
     id: ''
   };
   checkedKeys: string[] = [];
+  treeData: DataNode[] = [];
   confirmLoading = false;
   checkedObject: DataNode[] = [];
+  allTemplate: [];
+  organazationList: QueryStoreOrganizationReturn[] = [];
+  groupIdList: string[] = [];
+  formTemplateIdList: string[] = [];
 }
 
 export class IMoveTemplateProps {
