@@ -41,7 +41,7 @@ export default function AppravalTemplateComponent() {
         pageSize={searchForm.size}
         data={tableData}
         total={total}
-        isPagination={true}
+        isPagination={false}
         changeTablePageIndex={(index: number, pageSize: number) => changeTablePageIndex(index, pageSize)}
       ></ITableComponent>
     );
@@ -53,7 +53,12 @@ export default function AppravalTemplateComponent() {
         <Button type="primary" onClick={() => getTableData()} loading={isLoading}>
           查询
         </Button>
-        <Button type="primary" onClick={() => addTemplate()} loading={isLoading}>
+        <Button
+          type="primary"
+          disabled={appravalTemplateState.currentSelectNode.isAll}
+          onClick={() => addTemplate()}
+          loading={isLoading}
+        >
           创建模板
         </Button>
       </div>
@@ -63,11 +68,11 @@ export default function AppravalTemplateComponent() {
   function renderSelectItems() {
     return (
       <div className="push-search-item">
-        <span className="label">仓位名：</span>
+        <span className="label">模板名称</span>
         <Input
           disabled={!currentSelectNode}
           allowClear
-          placeholder="请输入仓位名"
+          placeholder="请输入模板名称"
           value={searchForm.name}
           onChange={($event: any) => handleFormDataChange($event, 'name')}
         />

@@ -33,8 +33,8 @@ export function useFormSettingStore(dispatch: Dispatch<any>, reduxState: AddTemp
     setCurrentSelectItemAction(dispatch, form);
   }
 
-  function onChangetemplateName(value: ChangeEvent<HTMLInputElement>) {
-    setTemplateNameAction(dispatch, value.target.value);
+  function onChangeTemplateName(value: string | any, key = 'templateName') {
+    setTemplateNameAction(dispatch, { [key]: value });
   }
 
   function deleteCurrentItem(id: string) {
@@ -60,7 +60,7 @@ export function useFormSettingStore(dispatch: Dispatch<any>, reduxState: AddTemp
     setFormInfo,
     onChangeCustomInfo,
     onFormEditClick,
-    onChangetemplateName,
+    onChangeTemplateName,
     deleteCurrentItem
   };
 }

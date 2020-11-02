@@ -3,5 +3,7 @@ import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 
 export function useApprovalManageStore() {
   const { state, setStateWrap } = useStateStore(new IApprovalManageState());
-  return { state };
+  function getTableData() {}
+  function callbackAction() {}
+  return { state, getTableData, callbackAction };
 }

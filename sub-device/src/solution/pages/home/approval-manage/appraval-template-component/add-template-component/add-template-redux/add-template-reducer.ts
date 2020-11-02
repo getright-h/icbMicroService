@@ -22,6 +22,7 @@ export enum FormType {
 export interface AddTemplateState {
   flowNodeSettingField: AllotNodeFlowInput[];
   formInfo: IFormInfo[];
+  templateType: number;
   currentSelectItem: IFormInfo;
   templateName: string;
   approverInput: ApproverInput[];
@@ -44,6 +45,7 @@ export interface AttributeList {
 
 export const addTemplateInitialState: AddTemplateState = {
   flowNodeSettingField: [],
+  templateType: undefined,
   templateName: undefined,
   currentSelectItem: {
     id: '1603357241128',
@@ -124,7 +126,7 @@ export function AddTemplateReducer(state = addTemplateInitialState, action: IAct
     case TYPES.SET_TEMPLATE_NAME:
       return {
         ...state,
-        templateName: payload
+        ...payload
       };
 
     case TYPES.SET_CURRENT_PARAMS:

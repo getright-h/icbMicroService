@@ -4,12 +4,13 @@ import { AddTemplateState, FormType } from './add-template-redux/add-template-re
 import { ApprovalManageService } from '../../../../../model/services/approval-manage.service';
 import { message } from 'antd';
 import { ShowNotification } from '../../../../../../framework/util/common/showNotification';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 export function useAddTemplateStore(addTemplateState: AddTemplateState) {
   const { state, setStateWrap } = useStateStore(new IAddTemplateState());
   const approvalManageService: ApprovalManageService = useService(ApprovalManageService);
   const history = useHistory();
+  const { id }: any = useParams();
   function next() {
     if (!addTemplateState.templateName) {
       message.warning('请输入模板名称');
@@ -43,6 +44,8 @@ export function useAddTemplateStore(addTemplateState: AddTemplateState) {
   }
 
   function prev() {
+    console.log(addTemplateState);
+
     setStateWrap({
       current: state.current - 1
     });
@@ -54,13 +57,13 @@ export function useAddTemplateStore(addTemplateState: AddTemplateState) {
       return;
     }
     const commitInfo = {
-      templateName: '',
-      businessType: 1,
+      templateName: addTemplateState.templateName,
+      businessType: addTemplateState.templateType,
       controlList: [{}],
-      approverList: [{}]
+      approverList: [{}],
+      groupId: id
     };
     // 拼凑数据类型
-    commitInfo.templateName = addTemplateState.templateName;
     commitInfo.controlList = addTemplateState.formInfo.map((item: any) => {
       if (item.type == FormType.FlowNode) {
         item.controlValue = JSON.stringify(addTemplateState.flowNodeSettingField);
@@ -71,7 +74,7 @@ export function useAddTemplateStore(addTemplateState: AddTemplateState) {
     console.log(commitInfo);
     approvalManageService.insertApprovalFormTemplate(commitInfo).subscribe(() => {
       ShowNotification.success('添加成功');
-      history.push('home/approvalManage/approveTemplate');
+      history.push('./home/approvalManage/approveTemplate');
     });
   }
   return { state, next, prev, commit };

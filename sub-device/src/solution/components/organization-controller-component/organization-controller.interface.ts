@@ -16,6 +16,7 @@ export class IOrganizationControllerProps {
   warehouseAction?: (element?: any) => ReactNode;
   onSelect?: (selectedKeys?: Key[], e?: { node: EventDataNode }) => void;
   expandedKeys?: string[];
+  currentOrganazation?: string = '';
   checkedKeys?: string[];
   checkable?: boolean;
   treeSelectedKeys?: string[];

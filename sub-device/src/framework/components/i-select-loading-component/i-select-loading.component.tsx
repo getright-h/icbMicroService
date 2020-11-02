@@ -26,7 +26,7 @@ export default function ISelectLoadingComponent(props: IISelectLoadingProps) {
     >
       {optionList &&
         optionList.map((item: { id: string | number; name: string; telephone: string }, index: number) => (
-          <Select.Option value={item.id} key={`${item.id}${index}`} info={item}>
+          <Select.Option value={item.id} key={`${item.id}`} info={item}>
             {item.telephone ? item.name + ' ' + item.telephone : item.name}
           </Select.Option>
         ))}

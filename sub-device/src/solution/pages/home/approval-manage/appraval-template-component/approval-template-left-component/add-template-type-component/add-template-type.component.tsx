@@ -18,11 +18,9 @@ export default function AddTemplateTypeComponent(props: IAddTemplateTypeProps) {
     onExpand,
     onCheck
   } = useAddTemplateTypeStore(props);
-  const { isEdit, addApprovalTypeVisible } = props;
-  const { confirmLoading, expandedKeys, checkedKeys, checkedObject, name } = state;
+  const { isEdit, addApprovalTypeVisible, organazationList } = props;
+  const { confirmLoading, expandedKeys, checkedKeys, checkedObject, parentOrganizationId } = state;
   function RenderLinkOrganization() {
-    console.log(checkedObject);
-
     const checkedObjectFlat = React.useCallback(() => flatAtree(checkedObject), [checkedObject]);
     return (
       <div className={style.linkOrganization}>
@@ -80,13 +78,14 @@ export default function AddTemplateTypeComponent(props: IAddTemplateTypeProps) {
       expandedKeys,
       onExpand,
       getCheckedInfo: onCheck,
-      checkedKeys
+      checkedKeys,
+      currentOrganazation: parentOrganizationId
     };
-    return (
+    return parentOrganizationId ? (
       <div className={style.approvalListLeft}>
         <OrganizationControllerComponent checkable {...prganizationControllerComponentProps} />
       </div>
-    );
+    ) : null;
   }
 
   return (
@@ -100,7 +99,18 @@ export default function AddTemplateTypeComponent(props: IAddTemplateTypeProps) {
       onCancel={handleCancel}
     >
       <Form.Item name="name" label="模板类型" rules={[{ required: true }]}>
-        <Input placeholder="请输入模板类型" value={name} onChange={e => changeTemplateName(e.target.value)} />
+        <Input placeholder="请输入模板类型" onChange={value => changeTemplateName(value.target.value, 'name')} />
+      </Form.Item>
+      <Form.Item name="organization" label="关联机构" rules={[{ required: true }]}>
+        <Select onChange={value => changeTemplateName(value, 'parentOrganizationId')} placeholder="请选择关联机构">
+          {organazationList.map(item => {
+            return (
+              <Option value={item.id} key={item.id}>
+                {item.name}
+              </Option>
+            );
+          })}
+        </Select>
       </Form.Item>
       <Form.Item name="organization" label="关联机构" rules={[{ required: true }]}>
         {RenderLinkOrganization()}

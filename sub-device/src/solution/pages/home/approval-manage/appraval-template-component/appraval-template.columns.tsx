@@ -4,6 +4,10 @@ import { Divider, Switch } from 'antd';
 export function approvalTemplateColumns(action: Function): ColumnsType<any> {
   return [
     {
+      title: '模板类型',
+      dataIndex: 'name'
+    },
+    {
       title: '模板名称',
       dataIndex: 'name'
     },
@@ -13,13 +17,17 @@ export function approvalTemplateColumns(action: Function): ColumnsType<any> {
     },
     {
       title: '创建时间',
-      dataIndex: 'positionAddress'
+      dataIndex: 'createTime'
+    },
+    {
+      title: '创建机构',
+      dataIndex: 'createTime'
     },
     {
       title: '是否启动',
-      dataIndex: 'isDefaultText',
+      dataIndex: 'state',
       render: text => {
-        return <Switch checkedChildren="开启" unCheckedChildren="关闭" checked={text} />;
+        return <Switch checkedChildren="开启" unCheckedChildren="禁用" checked={!!text} />;
       }
     },
     {

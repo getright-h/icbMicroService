@@ -16,7 +16,7 @@ export const approvalManageRoutes: IRoute[] = [
     exact: true
   },
   {
-    path: `${MODULE_PATH}/addTemplate`,
+    path: `${MODULE_PATH}/addTemplate/:id`,
     component: ROUTERS.addTemplate,
     lazyload: true,
     exact: true

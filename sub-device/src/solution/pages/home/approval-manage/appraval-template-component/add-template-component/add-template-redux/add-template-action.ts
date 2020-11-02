@@ -23,7 +23,7 @@ export function setApproverInputAction(dispatch: Dispatch<any>, approverInput: A
   });
 }
 
-export function setTemplateNameAction(dispatch: Dispatch<any>, payload: string) {
+export function setTemplateNameAction(dispatch: Dispatch<any>, payload: any) {
   return dispatch({
     type: TYPES.SET_TEMPLATE_NAME,
     payload: payload
