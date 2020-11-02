@@ -41,7 +41,6 @@ export default function AppravalTemplateComponent() {
         pageSize={searchForm.size}
         data={tableData}
         total={total}
-        isPagination={false}
         changeTablePageIndex={(index: number, pageSize: number) => changeTablePageIndex(index, pageSize)}
       ></ITableComponent>
     );
@@ -95,7 +94,7 @@ export default function AppravalTemplateComponent() {
       addMoveTemplateVisible,
       closeMoveTemplateModal
     };
-    return <MoveTemplateComponent {...addMoveTemplateProps}></MoveTemplateComponent>;
+    return addMoveTemplateVisible && <MoveTemplateComponent {...addMoveTemplateProps}></MoveTemplateComponent>;
   }
 
   return (
@@ -110,7 +109,7 @@ export default function AppravalTemplateComponent() {
         selectItems={renderSelectItems()}
         table={renderTable()}
       ></TablePageTelComponent>
-      <RenderMovingTemplateModal />
+      {RenderMovingTemplateModal()}
     </AppravalTemplateManageContext.Provider>
   );
 }

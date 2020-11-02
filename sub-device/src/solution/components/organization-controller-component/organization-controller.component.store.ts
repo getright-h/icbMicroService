@@ -31,7 +31,14 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
           return item.id == currentOrganazation;
         });
       }
-      const treeData = dealWithTreeData<QueryStoreOrganizationReturn>(res, TREE_MAP, false);
+      const treeData = dealWithTreeData<QueryStoreOrganizationReturn>(
+        res,
+        TREE_MAP,
+        false,
+        undefined,
+        undefined,
+        props.organizationChecked
+      );
       setStateWrap({
         treeData
       });
@@ -40,7 +47,6 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
 
   // 点击展开加载数据
   function onLoadData(treeNode: EventDataNode | any): Promise<void> {
-    console.log('queryChildInfo');
     return new Promise(resolve => {
       queryStoreOrganizationListSub(treeNode.id, treeNode, resolve);
     });
@@ -65,7 +71,10 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
           ? dealWithTreeData(res[1], TREE_MAP, true, warehouseAction)
           : [];
 
-        treeNode.children = [...queryChildInfoData, ...dealWithTreeData(res[0], TREE_MAP, false)];
+        treeNode.children = [
+          ...queryChildInfoData,
+          ...dealWithTreeData(res[0], TREE_MAP, false, undefined, undefined, props.organizationChecked)
+        ];
         const treeData = updateTreeData(state.treeData, treeNode.key, treeNode.children);
 
         props.checkable && props.getCheckedInfo(treeData);
@@ -79,8 +88,6 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
 
   // 搜索得到想要的key获取当前仓库
   function getCurrentSelectInfo<T>(value: T, key: string) {
-    console.log(state.loadStoreOrganizationParams);
-
     setStateWrap({
       loadStoreOrganizationParams: {
         ...state.loadStoreOrganizationParams,

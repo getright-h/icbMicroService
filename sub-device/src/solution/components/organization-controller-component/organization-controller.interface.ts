@@ -18,6 +18,7 @@ export class IOrganizationControllerProps {
   expandedKeys?: string[];
   currentOrganazation?: string = '';
   checkedKeys?: string[];
+  organizationChecked?: boolean;
   checkable?: boolean;
   treeSelectedKeys?: string[];
   onExpand?: (expandedKeys: string[]) => void;

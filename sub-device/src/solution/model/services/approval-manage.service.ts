@@ -21,6 +21,9 @@ const QUERY_APPROVAL_FORMLIST_BYGROUPID = 'approval/manage/queryApprovalFormList
 const APPROVAL_GROUP = 'approval/manage/approvalGroup';
 const QUERY_APPROVAL_GROUPDETAIL = 'approval/manage/queryApprovalGroupDetail';
 const QUERYAPPROVALFORMTEMPLATEPAGEDLIST = 'approval/manage/queryApprovalFormTemplatePagedList';
+const QUERY_APPROVAL_FORM_DETAIL = 'approval/manage/queryApprovalFormDetail';
+const SET_APPROVAL_GROUP = 'approval/manage/setApprovalGroup';
+const SETFORM_TEMPLATE_STATE = 'approval/manage/setFormTemplateState';
 @DepUtil.Injectable()
 export class ApprovalManageService extends ApprovalManageDTO {
   @DepUtil.Inject(RequestService)
@@ -29,13 +32,25 @@ export class ApprovalManageService extends ApprovalManageDTO {
     super();
   }
 
+  queryApprovalFormDetail(params: { id: string }): Observable<InsertApprovalFormTemplateParams> {
+    return this.requestService.get(QUERY_APPROVAL_FORM_DETAIL, params);
+  }
   // 车主管理列表
   insertApprovalFormTemplate(params: InsertApprovalFormTemplateParams | any) {
     return this.requestService.post(INSERTAPPROVALFORMTEMPLATE, params);
   }
 
+  // 启用禁用模板
+  setFormTemplateState(params: { id: string }) {
+    return this.requestService.post(SETFORM_TEMPLATE_STATE, params);
+  }
+
   insertApprovalGroup(params: InsertApprovalGroupParams) {
     return this.requestService.post(INSERT_APPROVAL_GROUP, params);
+  }
+
+  setApprovalGroup(params: InsertApprovalGroupParams) {
+    return this.requestService.post(SET_APPROVAL_GROUP, params);
   }
 
   queryApprovalFormTemplatePagedList(

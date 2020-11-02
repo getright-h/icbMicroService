@@ -1,6 +1,7 @@
 import { ColumnsType } from 'antd/lib/table';
 import * as React from 'react';
 import { Divider, Switch } from 'antd';
+import { ModalType } from '~/solution/shared/constant/common.const';
 export function approvalTemplateColumns(action: Function): ColumnsType<any> {
   return [
     {
@@ -26,8 +27,15 @@ export function approvalTemplateColumns(action: Function): ColumnsType<any> {
     {
       title: '是否启动',
       dataIndex: 'state',
-      render: text => {
-        return <Switch checkedChildren="开启" unCheckedChildren="禁用" checked={!!text} />;
+      render: (text, row) => {
+        return (
+          <Switch
+            checkedChildren="开启"
+            onChange={value => action(row, ModalType.MOVE, value)}
+            unCheckedChildren="禁用"
+            checked={!!text}
+          />
+        );
       }
     },
     {
@@ -38,9 +46,9 @@ export function approvalTemplateColumns(action: Function): ColumnsType<any> {
       render: (text, row) => {
         return (
           <React.Fragment>
-            <a onClick={() => action(row, '编辑')}>编辑</a>
+            <a onClick={() => action(row, ModalType.EDIT)}>编辑</a>
             <Divider type="vertical" />
-            <a onClick={() => action(row, '删除')}>删除</a>
+            <a onClick={() => action(row, ModalType.DELETE)}>删除</a>
           </React.Fragment>
         );
       }

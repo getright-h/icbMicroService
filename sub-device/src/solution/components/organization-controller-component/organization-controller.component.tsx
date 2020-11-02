@@ -9,6 +9,7 @@ import { IOrganizationControllerProps } from './organization-controller.interfac
 function OrganizationControllerComponent(props: IOrganizationControllerProps, ref: any) {
   const { state, onLoadData, getCurrentSelectInfo, onCheck } = useOrganizationControllerStore(props, ref);
   const { onSelect, expandedKeys, treeSelectedKeys, onExpand, checkedKeys, checkable } = props;
+
   const { gState } = React.useContext(GlobalContext);
   const { treeData } = state;
   return (

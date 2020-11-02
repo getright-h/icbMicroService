@@ -7,7 +7,8 @@ export function dealWithTreeData<T>(
   treeMap: Record<string, any>,
   isWarehouse?: boolean,
   content?: (element: any) => React.ReactNode,
-  canSelectAll?: boolean
+  canSelectAll?: boolean,
+  organizationChecked?: boolean
 ) {
   const treeData: any[] =
     !!res &&
@@ -40,7 +41,7 @@ export function dealWithTreeData<T>(
       );
       treeDataChild['isLeaf'] = isWarehouse;
       treeDataChild.selectable = canSelectAll || isWarehouse;
-      treeDataChild.checkable = isWarehouse;
+      treeDataChild.checkable = isWarehouse || !!organizationChecked;
       return treeDataChild;
     });
 

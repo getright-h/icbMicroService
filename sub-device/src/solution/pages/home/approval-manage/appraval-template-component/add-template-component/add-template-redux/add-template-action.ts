@@ -16,6 +16,13 @@ export function setCurrentSelectItemAction(dispatch: Dispatch<any>, currentSelec
   });
 }
 
+export function initTemplateForm(dispatch: Dispatch<any>, payload: any) {
+  return dispatch({
+    type: TYPES.INIT_TEMPLATE_FORM,
+    payload
+  });
+}
+
 export function setApproverInputAction(dispatch: Dispatch<any>, approverInput: ApproverInput[]) {
   return dispatch({
     type: TYPES.SET_APPROVER_INPUT,

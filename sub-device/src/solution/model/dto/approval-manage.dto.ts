@@ -14,6 +14,7 @@ export interface InsertApprovalFormTemplateParams {
   controlList: ControlList[];
   approverList: ApproverList[];
   businessData: string;
+  groupId?: string;
   businessType: number;
 }
 
@@ -84,6 +85,7 @@ export interface QueryApprovalGroupListResult {
 }
 export interface InsertApprovalGroupParams {
   name: string;
+  id?: string;
   organizationList: string[];
   parentOrganizationId: string;
   type: number;
@@ -102,7 +104,7 @@ interface AttributeList {
   personId: string;
 }
 
-interface ControlList {
+export interface ControlList {
   id: string;
   controlKey: string;
   controlValue: string;

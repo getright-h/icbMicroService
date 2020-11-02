@@ -19,7 +19,7 @@ export default function AddTemplateTypeComponent(props: IAddTemplateTypeProps) {
     onCheck
   } = useAddTemplateTypeStore(props);
   const { isEdit, addApprovalTypeVisible, organazationList } = props;
-  const { confirmLoading, expandedKeys, checkedKeys, checkedObject, parentOrganizationId } = state;
+  const { confirmLoading, expandedKeys, checkedKeys, checkedObject, parentOrganizationId, name } = state;
   function RenderLinkOrganization() {
     const checkedObjectFlat = React.useCallback(() => flatAtree(checkedObject), [checkedObject]);
     return (
@@ -79,8 +79,11 @@ export default function AddTemplateTypeComponent(props: IAddTemplateTypeProps) {
       onExpand,
       getCheckedInfo: onCheck,
       checkedKeys,
+      organizationChecked: true,
       currentOrganazation: parentOrganizationId
     };
+    console.log(prganizationControllerComponentProps);
+
     return parentOrganizationId ? (
       <div className={style.approvalListLeft}>
         <OrganizationControllerComponent checkable {...prganizationControllerComponentProps} />
@@ -98,11 +101,19 @@ export default function AddTemplateTypeComponent(props: IAddTemplateTypeProps) {
       confirmLoading={confirmLoading}
       onCancel={handleCancel}
     >
-      <Form.Item name="name" label="模板类型" rules={[{ required: true }]}>
-        <Input placeholder="请输入模板类型" onChange={value => changeTemplateName(value.target.value, 'name')} />
+      <Form.Item label="模板类型" rules={[{ required: true }]}>
+        <Input
+          placeholder="请输入模板类型"
+          value={name}
+          onChange={value => changeTemplateName(value.target.value, 'name')}
+        />
       </Form.Item>
-      <Form.Item name="organization" label="关联机构" rules={[{ required: true }]}>
-        <Select onChange={value => changeTemplateName(value, 'parentOrganizationId')} placeholder="请选择关联机构">
+      <Form.Item label="关联机构" rules={[{ required: true }]}>
+        <Select
+          value={parentOrganizationId}
+          onChange={value => changeTemplateName(value, 'parentOrganizationId')}
+          placeholder="请选择关联机构"
+        >
           {organazationList.map(item => {
             return (
               <Option value={item.id} key={item.id}>

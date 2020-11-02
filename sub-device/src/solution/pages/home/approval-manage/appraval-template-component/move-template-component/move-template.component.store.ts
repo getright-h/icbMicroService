@@ -17,7 +17,6 @@ export function useMoveTemplateStore(props: IMoveTemplateProps) {
   useEffect(() => {
     // 获取所有的模板
     getAllTemplate();
-
     queryOrganizationTypeListByTypeId();
   }, []);
 

@@ -108,6 +108,11 @@ export function AddTemplateReducer(state = addTemplateInitialState, action: IAct
         ...state,
         flowNodeSettingField: payload
       };
+    case TYPES.INIT_TEMPLATE_FORM:
+      return {
+        ...state,
+        ...payload
+      };
     case TYPES.SET_FORM_INFO:
       return {
         ...state,

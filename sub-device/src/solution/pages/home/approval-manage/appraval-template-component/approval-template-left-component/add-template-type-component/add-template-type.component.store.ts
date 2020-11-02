@@ -18,15 +18,31 @@ export function useAddTemplateTypeStore(props: IAddTemplateTypeProps) {
 
   function getGroupDetail() {
     approvalManageService.queryApprovalGroupDetail({ id: props.groupId }).subscribe(res => {
-      console.log(res);
+      let expandedKeys: string[] = [];
+      const checkedObject: any[] = [];
+      const checkedKeys: string[] = [];
+      res.organizationList.forEach((item: any) => {
+        // 让当前选中的标签的父节点展开
+        if (item.isSelected) {
+          item.parentId && expandedKeys.push(item.parentId);
+          checkedKeys.push(item.id);
+          item.key = item.id;
+          item.title = item.name;
+          checkedObject.push(item);
+        } else {
+          expandedKeys.push(item.id);
+        }
+        // 去重
+        expandedKeys = [...new Set(expandedKeys)];
+      });
 
-      // name: string;
-      // type: number;
-      // expandedKeys: string[] = [];
-      // parentOrganizationId: string;
-      // checkedKeys: string[] = [];
-      // confirmLoading = false;
-      // checkedObject: DataNode[] = [];
+      setStateWrap({
+        name: res.name,
+        parentOrganizationId: res.parentOrganizationId,
+        checkedKeys: checkedKeys,
+        checkedObject: checkedObject
+      });
+      onExpand(expandedKeys);
     });
   }
   // 确定创建
@@ -54,21 +70,26 @@ export function useAddTemplateTypeStore(props: IAddTemplateTypeProps) {
     });
   }
 
-  async function addTemplateType() {
-    approvalManageService
-      .insertApprovalGroup({ name, organizationList: checkedKeys, type, parentOrganizationId })
-      .subscribe(() => {
-        setStateWrap({
-          confirmLoading: false
-        });
-        // 是否刷新左边栏
-        props.closeAddTemplateTypeModal(!props.isEdit);
+  function addTemplateType() {
+    const url = props.groupId ? 'setApprovalGroup' : 'insertApprovalGroup';
+    console.log(url);
+
+    approvalManageService[url]({
+      name,
+      organizationList: checkedKeys,
+      type,
+      parentOrganizationId,
+      id: props.groupId
+    }).subscribe(() => {
+      setStateWrap({
+        confirmLoading: false
       });
+      // 是否刷新左边栏
+      props.closeAddTemplateTypeModal(!props.isEdit);
+    });
   }
 
   function changeTemplateName(value: any, key: string) {
-    console.log(value, key);
-
     if (key == 'name') {
       setStateWrap({
         [key]: value
@@ -76,8 +97,11 @@ export function useAddTemplateTypeStore(props: IAddTemplateTypeProps) {
       return;
     } else if (getState().parentOrganizationId !== value && key == 'parentOrganizationId') {
       setStateWrap({
-        [key]: value
+        [key]: value,
+        checkedKeys: checkedKeys,
+        checkedObject: []
       });
+      onExpand([]);
       // 构建当前的机构树
     }
   }
@@ -87,7 +111,9 @@ export function useAddTemplateTypeStore(props: IAddTemplateTypeProps) {
     props.closeAddTemplateTypeModal();
   }
 
-  function onExpand(expandedKeys: []) {
+  function onExpand(expandedKeys: string[]) {
+    console.log('onExpand');
+
     setStateWrap({
       expandedKeys
     });
