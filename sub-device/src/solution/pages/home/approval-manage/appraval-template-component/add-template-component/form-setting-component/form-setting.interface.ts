@@ -12,12 +12,11 @@ export class IFormSettingState {
 export const ToolMap = [
   {
     id: '1',
-    title: 'Input 输入框',
-    controllerEnum: FormType.Input,
+    controlKey: 'Input 输入框',
+    type: FormType.Input,
     isRequired: true,
     value: '',
     name: 'Input 输入框',
-
     canDelete: true
   }
   // {

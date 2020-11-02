@@ -1,7 +1,7 @@
 import * as React from 'react';
 import style from './form-setting.component.less';
 import { useFormSettingStore } from './form-setting.component.store';
-import { Form, Input, Switch, Button, PageHeader } from 'antd';
+import { Form, Input, Switch, Button, PageHeader, Select } from 'antd';
 import { ToolMap } from './form-setting.interface';
 import { ReactSortable } from 'react-sortablejs';
 import { useCallback } from 'react';
@@ -11,23 +11,22 @@ import ViewFlowNodeComponent from '~/solution/components/view-flow-node-componen
 import AssignDeviceComponent from '../assign-device-component/assign-device.component';
 import { AddTemplateManageContext } from '../add-template.component';
 import { FormType } from '../add-template-redux/add-template-reducer';
+const { Option } = Select;
 export default function FormSettingComponent() {
   const { reduxState, dispatch } = React.useContext(AddTemplateManageContext);
   const {
-    state,
     setFormInfo,
     onFormEditClick,
     onChangeCustomInfo,
     deleteCurrentItem,
-    onChangetemplateName
+    onChangeTemplateName
   } = useFormSettingStore(dispatch, reduxState);
-  const { templateName } = state;
 
-  const { flowNodeSettingField, formInfo, currentSelectItem } = reduxState;
+  const { flowNodeSettingField, formInfo, currentSelectItem, templateName } = reduxState;
   const GlobalComponent = {
-    Input,
-    FlowNode: ViewFlowNodeComponent,
-    AssignDevice: AssignDeviceComponent
+    [FormType.Input]: Input,
+    [FormType.FlowNode]: ViewFlowNodeComponent,
+    [FormType.AssignDevice]: AssignDeviceComponent
   };
 
   function IsRequire() {
@@ -59,7 +58,7 @@ export default function FormSettingComponent() {
   function EditField() {
     let returnElement = null;
 
-    switch (currentSelectItem.controllerEnum) {
+    switch (currentSelectItem.type) {
       case FormType.Input:
         const props = {
           style: { width: '150px' },
@@ -73,8 +72,8 @@ export default function FormSettingComponent() {
                 <Input
                   {...props}
                   allowClear
-                  onChange={value => onChangeCustomInfo(currentSelectItem, 'title', value.target.value)}
-                  value={currentSelectItem.title}
+                  onChange={value => onChangeCustomInfo(currentSelectItem, 'controlKey', value.target.value)}
+                  value={currentSelectItem.controlKey}
                 />
               </Form.Item>
             </div>
@@ -87,7 +86,6 @@ export default function FormSettingComponent() {
           <>
             <AddFlowNodeComponent canEdit={currentSelectItem.canEdit} />
             <IsRequire />
-            <IsCanEdit />
           </>
         );
         break;
@@ -106,15 +104,26 @@ export default function FormSettingComponent() {
   const [list, setList] = React.useState(ToolMap);
   return (
     <div className={style.formSetting}>
-      <Form.Item name="name" label="模板类型" rules={[{ required: true }]}>
+      <Form.Item label="模板名称">
         <Input
           style={{ width: '500px' }}
-          onChange={onChangetemplateName}
+          onChange={value => onChangeTemplateName(value.target.value)}
           value={templateName}
           placeholder="请输入模板名称，例： 机构名 + 模板名"
         />
       </Form.Item>
-      <Form.Item name="name" label="配置表单" rules={[{ required: true }]}></Form.Item>
+      <Form.Item label="模板类型">
+        <Select
+          value={reduxState.templateType}
+          onChange={value => onChangeTemplateName(value, 'templateType')}
+          placeholder="请选择关联机构"
+        >
+          <Option value={1} key={1}>
+            调拨模板
+          </Option>
+        </Select>
+      </Form.Item>
+      <Form.Item label="配置表单" rules={[{ required: true }]}></Form.Item>
       <div className={style.formContent}>
         <div className={style.formContentLeft}>
           <div>
@@ -133,7 +142,7 @@ export default function FormSettingComponent() {
               {list.map((item, index) => {
                 return (
                   <div className={style.listDev} key={index}>
-                    {item.title}
+                    {item.controlKey}
                   </div>
                 );
               })}
@@ -159,12 +168,12 @@ export default function FormSettingComponent() {
             delay={2}
           >
             {formInfo.map((item, index) => {
-              const ComponentInfo: any = GlobalComponent[item.controllerEnum];
+              const ComponentInfo: any = GlobalComponent[item.type];
               let props: any = {
                 style: { width: '300px' },
-                placeholder: `请输入${item.title}`
+                placeholder: `请输入${item.controlKey}`
               };
-              item.controllerEnum == FormType.FlowNode &&
+              item.type == FormType.FlowNode &&
                 (props = {
                   flowNodeSettingField,
                   canEdit: item.canEdit,
@@ -181,13 +190,13 @@ export default function FormSettingComponent() {
                   <div
                     style={{
                       width: '100%',
-                      display: item.controllerEnum !== FormType.FlowNode && 'flex',
+                      display: item.type !== FormType.FlowNode && 'flex',
                       alignItems: 'center'
                     }}
                   >
                     {item.isRequired && <span style={{ color: 'red' }}>*</span>}
-                    <span style={{ margin: '0 10px' }}>{item.title}: </span>
-                    <ComponentInfo {...props} disable />
+                    <span style={{ margin: '0 10px' }}>{item.controlKey}: </span>
+                    <ComponentInfo {...props} disabled={true} />
                   </div>
                   <div>
                     {item.canDelete && (

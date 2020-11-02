@@ -11,6 +11,7 @@ export interface IISelectLoadingProps {
   placeholder: string;
   isData?: boolean;
   width?: number | string;
+  mode?: "multiple" | "tags";
   allowClear?: boolean;
   className?: string;
   selectedValue?: string;

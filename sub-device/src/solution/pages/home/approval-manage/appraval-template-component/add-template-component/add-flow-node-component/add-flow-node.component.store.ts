@@ -1,7 +1,7 @@
 import { IAddFlowNodeProps, IAddFlowNodeState } from './add-flow-node.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form } from 'antd';
-import { FlowList } from '~/solution/model/dto/allocation-template.dto';
+import { AllotNodeFlowInput, FlowList } from '~/solution/model/dto/allocation-template.dto';
 import { setFlowNodeSettingFieldAction } from '../add-template-redux/add-template-action';
 import { AddTemplateManageContext } from '../add-template.component';
 
@@ -11,7 +11,7 @@ export function useAddFlowNodeStore(props: IAddFlowNodeProps) {
   let { flowNodeSettingField } = reduxState;
   const [form] = Form.useForm();
   // 添加流程节点
-  function addFlowNode(field: { attributeList: FlowList[]; flowNodeSettingFieldId: string }) {
+  function addFlowNode(field: AllotNodeFlowInput) {
     field.attributeList.push({
       childNodeId: createRandomId()
     });
@@ -26,9 +26,23 @@ export function useAddFlowNodeStore(props: IAddFlowNodeProps) {
     setFlowNodeSettingFieldAction(dispatch, flowNodeSettingField);
   }
 
+  function onChangeCustomInfo<T>(field: AllotNodeFlowInput, key: string, value: T) {
+    field[key] = value;
+    flowNodeSettingField = flowNodeSettingField.map((item: any) => {
+      if (item.flowNodeSettingFieldId == field.flowNodeSettingFieldId) {
+        return field;
+      }
+      return item;
+    });
+    console.log(flowNodeSettingField);
+
+    setFlowNodeSettingFieldAction(dispatch, flowNodeSettingField);
+  }
+
   function addFatherFlowNode() {
     flowNodeSettingField.push({
       flowNodeSettingFieldId: createRandomId(),
+      isEdit: false,
       attributeList: [
         {
           childNodeId: createRandomId()
@@ -38,15 +52,22 @@ export function useAddFlowNodeStore(props: IAddFlowNodeProps) {
     setFlowNodeSettingFieldAction(dispatch, flowNodeSettingField);
   }
 
-  function removeFlowNode(field: { attributeList: FlowList[]; flowNodeSettingFieldId: string }, index: number) {
+  function removeFlowNode(field: AllotNodeFlowInput, index: number) {
+    const flowNodeSettingFieldC: any[] = [];
     field.attributeList.splice(index, 1);
-    flowNodeSettingField = flowNodeSettingField.map((item: any) => {
+
+    flowNodeSettingField.forEach((item: any) => {
       if (item.flowNodeSettingFieldId == field.flowNodeSettingFieldId) {
-        return field;
+        if (field.attributeList.length) {
+          flowNodeSettingFieldC.push(field);
+        }
+      } else {
+        flowNodeSettingFieldC.push(item);
       }
-      return item;
     });
-    setFlowNodeSettingFieldAction(dispatch, flowNodeSettingField);
+    console.log();
+
+    setFlowNodeSettingFieldAction(dispatch, flowNodeSettingFieldC);
   }
 
   function setCascaderInfo(field: FlowList, ids: string[], idItem: any) {
@@ -108,5 +129,14 @@ export function useAddFlowNodeStore(props: IAddFlowNodeProps) {
 
     setFlowNodeSettingFieldAction(dispatch, flowNodeSettingField);
   }
-  return { state, form, addFlowNode, setCascaderInfo, getCurrentSelectInfo, removeFlowNode, addFatherFlowNode };
+  return {
+    state,
+    form,
+    addFlowNode,
+    setCascaderInfo,
+    getCurrentSelectInfo,
+    removeFlowNode,
+    addFatherFlowNode,
+    onChangeCustomInfo
+  };
 }

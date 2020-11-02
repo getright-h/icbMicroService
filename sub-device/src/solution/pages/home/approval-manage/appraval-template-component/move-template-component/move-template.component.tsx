@@ -1,14 +1,13 @@
 import * as React from 'react';
 import style from './move-template.component.less';
 import { useMoveTemplateStore } from './move-template.component.store';
-import { Modal } from 'antd';
+import { Modal, Checkbox, Col, Tree } from 'antd';
 import { IMoveTemplateProps } from './move-template.interface';
-import OrganizationControllerComponent from '~/solution/components/organization-controller-component/organization-controller.component';
 
 export default function MoveTemplateComponent(props: IMoveTemplateProps) {
-  const { state, handleOk, handleCancel, onExpand, onCheck } = useMoveTemplateStore(props);
+  const { state, handleOk, handleCancel, onCheckData, onLoadData, onChangeTemplate } = useMoveTemplateStore(props);
   const { addMoveTemplateVisible } = props;
-  const { confirmLoading, expandedKeys, checkedKeys } = state;
+  const { confirmLoading, allTemplate, treeData, groupIdList, formTemplateIdList } = state;
   function RenderChooseTemplate() {
     return (
       <div className={style.linkOrganization}>
@@ -31,20 +30,36 @@ export default function MoveTemplateComponent(props: IMoveTemplateProps) {
     return (
       <div>
         <div className={style.searchApproval}></div>
-        <div className={style.searchItem}></div>
+        <div className={style.searchItem}>
+          <Checkbox.Group style={{ width: '100%' }} value={formTemplateIdList} onChange={onChangeTemplate}>
+            {allTemplate &&
+              allTemplate.map((item: { id: string; name: string }) => {
+                return (
+                  <Col span={24} key={item.id}>
+                    <Checkbox value={item.id}>{item.name}</Checkbox>
+                  </Col>
+                );
+              })}
+          </Checkbox.Group>
+        </div>
       </div>
     );
   }
 
   function RenderRight() {
-    const prganizationControllerComponentProps = {
-      expandedKeys,
-      onExpand,
-      getCheckedInfo: onCheck,
-      checkedKeys
-    };
     // 移动至
-    return <OrganizationControllerComponent checkable {...prganizationControllerComponentProps} />;
+    return (
+      <div style={{ textAlign: 'center' }}>
+        <Tree
+          checkable
+          loadData={onLoadData}
+          checkedKeys={groupIdList}
+          onCheck={onCheckData}
+          blockNode
+          treeData={treeData}
+        />
+      </div>
+    );
   }
 
   return (

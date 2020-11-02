@@ -1,6 +1,6 @@
 import { TYPES } from './add-template-types';
 import { Dispatch } from 'react';
-import { IFormInfo } from './add-template-reducer';
+import { ApproverInput, IFormInfo } from './add-template-reducer';
 import { FlowList } from '~/solution/model/dto/allocation-template.dto';
 export function setFormInfoAction(dispatch: Dispatch<any>, formInfo: IFormInfo[]) {
   return dispatch({
@@ -13,6 +13,27 @@ export function setCurrentSelectItemAction(dispatch: Dispatch<any>, currentSelec
   return dispatch({
     type: TYPES.SET_CURRENT_SELECT_ITEM,
     payload: currentSelectItem
+  });
+}
+
+export function initTemplateForm(dispatch: Dispatch<any>, payload: any) {
+  return dispatch({
+    type: TYPES.INIT_TEMPLATE_FORM,
+    payload
+  });
+}
+
+export function setApproverInputAction(dispatch: Dispatch<any>, approverInput: ApproverInput[]) {
+  return dispatch({
+    type: TYPES.SET_APPROVER_INPUT,
+    payload: approverInput
+  });
+}
+
+export function setTemplateNameAction(dispatch: Dispatch<any>, payload: any) {
+  return dispatch({
+    type: TYPES.SET_TEMPLATE_NAME,
+    payload: payload
   });
 }
 

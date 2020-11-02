@@ -33,9 +33,10 @@ const QUERY_STORE_LIST = 'store/manage/queryStorePagedListSelected';
 const QUERY_VEHICLE_LIST = 'vehicle/manage/queryVehiclePagedList';
 
 const QUERY_VEHICLE_PAGED_LIST = 'vehicle/manage/queryVehiclePagedList';
-const QUERY_ROLE_LIST = 'vehicle/manage/queryRoleList';
 
 const QUERYSTOREPOSITIONPAGEDLISTBYSTOREID = 'store/manage/queryStorePositionPagedListByStoreId';
+const QUERY_USER_PAGED_LIST = 'approval/manage/queryUserPagedList';
+const QUERY_ROLE_LIST = 'approval/manage/queryRoleList';
 @DepUtil.Injectable()
 export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
   @DepUtil.Inject(RequestService)
@@ -68,6 +69,16 @@ export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
   // 根据Id查询仓库列表
   queryStoreListByOrganizationId(params: { organizationId: string }): Observable<DrapChooseLoadingReturn> {
     return this.requestService.get(QUERYSTORE_LIST_BY_ORGANIZATIONID, params);
+  }
+
+  //查询人员列表
+  queryUserPagedList(params: QueryPurchaseListParam): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.post(QUERY_USER_PAGED_LIST, params);
+  }
+
+  // 查询角色列表
+  queryRoleList(params: QueryPurchaseListParam): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.get(QUERY_ROLE_LIST, params);
   }
 
   // 获取机构名称
@@ -105,9 +116,5 @@ export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
   // 获取车辆列表
   queryVehiclePagedList(params: QueryVehiclePagedListParam): Observable<DrapChooseLoadingReturn> {
     return this.requestService.post(QUERY_VEHICLE_PAGED_LIST, params);
-  }
-  // 获取角色列表
-  queryRoleList(params: QueryVehiclePagedListParam): Observable<DrapChooseLoadingReturn> {
-    return this.requestService.post(QUERY_ROLE_LIST, params);
   }
 }

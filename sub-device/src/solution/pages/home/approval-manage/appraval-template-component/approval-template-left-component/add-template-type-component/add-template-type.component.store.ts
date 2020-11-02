@@ -1,13 +1,60 @@
 import { IAddTemplateTypeProps, IAddTemplateTypeState } from './add-template-type.interface';
-import { useStateStore } from '~/framework/aop/hooks/use-base-store';
+import { useService, useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { getCheckedList } from '~/framework/util/common/treeFunction';
 import { DataNode } from 'rc-tree/lib/interface';
 import _ from 'lodash';
+import { ApprovalManageService } from '../../../../../../model/services/approval-manage.service';
+import { message } from 'antd';
+import { useEffect } from 'react';
 
 export function useAddTemplateTypeStore(props: IAddTemplateTypeProps) {
-  const { state, setStateWrap } = useStateStore(new IAddTemplateTypeState());
+  const { state, setStateWrap, getState } = useStateStore(new IAddTemplateTypeState());
+  const approvalManageService: ApprovalManageService = useService(ApprovalManageService);
+  const { name, checkedKeys, type, parentOrganizationId } = state;
+
+  useEffect(() => {
+    props.groupId && getGroupDetail();
+  }, [props.groupId]);
+
+  function getGroupDetail() {
+    approvalManageService.queryApprovalGroupDetail({ id: props.groupId }).subscribe(res => {
+      let expandedKeys: string[] = [];
+      const checkedObject: any[] = [];
+      const checkedKeys: string[] = [];
+      res.organizationList.forEach((item: any) => {
+        // 让当前选中的标签的父节点展开
+        if (item.isSelected) {
+          item.parentId && expandedKeys.push(item.parentId);
+          checkedKeys.push(item.id);
+          item.key = item.id;
+          item.title = item.name;
+          checkedObject.push(item);
+        } else {
+          expandedKeys.push(item.id);
+        }
+        // 去重
+        expandedKeys = [...new Set(expandedKeys)];
+      });
+
+      setStateWrap({
+        name: res.name,
+        parentOrganizationId: res.parentOrganizationId,
+        checkedKeys: checkedKeys,
+        checkedObject: checkedObject
+      });
+      onExpand(expandedKeys);
+    });
+  }
   // 确定创建
   function handleOk() {
+    if (!name) {
+      message.warning('请输入模板名');
+      return;
+    }
+    if (!(checkedKeys && checkedKeys.length)) {
+      message.warning('请选择机构');
+      return;
+    }
     setStateWrap({
       confirmLoading: true
     });
@@ -17,19 +64,46 @@ export function useAddTemplateTypeStore(props: IAddTemplateTypeProps) {
 
   function onCheck(treeData: DataNode[], checkedKeys: any = state.checkedKeys) {
     const checkedObject = getCheckedList(treeData, checkedKeys);
-
     setStateWrap({
       checkedKeys,
       checkedObject
     });
   }
 
-  async function addTemplateType() {
-    setStateWrap({
-      confirmLoading: false
+  function addTemplateType() {
+    const url = props.groupId ? 'setApprovalGroup' : 'insertApprovalGroup';
+    console.log(url);
+
+    approvalManageService[url]({
+      name,
+      organizationList: checkedKeys,
+      type,
+      parentOrganizationId,
+      id: props.groupId
+    }).subscribe(() => {
+      setStateWrap({
+        confirmLoading: false
+      });
+      // 是否刷新左边栏
+      props.closeAddTemplateTypeModal(!props.isEdit);
     });
-    // 是否刷新左边栏
-    props.closeAddTemplateTypeModal(!props.isEdit);
+  }
+
+  function changeTemplateName(value: any, key: string) {
+    if (key == 'name') {
+      setStateWrap({
+        [key]: value
+      });
+      return;
+    } else if (getState().parentOrganizationId !== value && key == 'parentOrganizationId') {
+      setStateWrap({
+        [key]: value,
+        checkedKeys: checkedKeys,
+        checkedObject: []
+      });
+      onExpand([]);
+      // 构建当前的机构树
+    }
   }
 
   // 关闭当前的modal
@@ -37,7 +111,9 @@ export function useAddTemplateTypeStore(props: IAddTemplateTypeProps) {
     props.closeAddTemplateTypeModal();
   }
 
-  function onExpand(expandedKeys: []) {
+  function onExpand(expandedKeys: string[]) {
+    console.log('onExpand');
+
     setStateWrap({
       expandedKeys
     });
@@ -62,6 +138,7 @@ export function useAddTemplateTypeStore(props: IAddTemplateTypeProps) {
     onChangeHaveChooseShop,
     handleCancel,
     onExpand,
+    changeTemplateName,
     removeHaveChecked,
     onCheck
   };

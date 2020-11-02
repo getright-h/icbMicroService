@@ -1,4 +1,4 @@
-import { FlowList } from '~/solution/model/dto/allocation-template.dto';
+import { AllotNodeFlowInput } from '~/solution/model/dto/allocation-template.dto';
 
 /**
  * @export state变量定义和初始化
@@ -7,6 +7,5 @@ import { FlowList } from '~/solution/model/dto/allocation-template.dto';
 export class IViewFlowNodeState {}
 
 export class ViewFlowNodeComponentProps {
-  flowNodeSettingField: [{ attributeList: FlowList[]; flowNodeSettingFieldId: string }];
-  canEdit: boolean;
+  flowNodeSettingField: AllotNodeFlowInput[];
 }

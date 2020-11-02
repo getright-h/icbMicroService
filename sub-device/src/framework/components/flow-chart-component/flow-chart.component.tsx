@@ -7,23 +7,23 @@ import { FlowList } from '~/solution/model/dto/allocation-template.dto';
 
 export default function FlowChartComponent(props: FlowChartComponentProps) {
   const { state } = useFlowChartStore(props);
-  const { canEdit, flowNodeSettingField } = props;
+  const { flowNodeSettingField } = props;
 
   // 当有单个子元素的时候
-  function renderSinglePlace(title: FlowList[], indexF: number) {
+  function renderSinglePlace(title: FlowList[], indexF: number, canEdit: boolean) {
     return (
       <>
         <div className={style.box1}>
           {title[0].storePositionName && !canEdit
             ? `${title[0].storeName} - ${title[0].storePositionName}`
-            : `节点${title[0].sort}`}
+            : `节点${indexF}`}
         </div>
       </>
     );
   }
 
   // 当有多个子元素的时候
-  function renderMutiplePlace(title: FlowList[], indexF: number) {
+  function renderMutiplePlace(title: FlowList[], indexF: number, canEdit: boolean) {
     return (
       <div className={style.box0}>
         {title.map((item, index) => {
@@ -31,7 +31,7 @@ export default function FlowChartComponent(props: FlowChartComponentProps) {
             <div key={item.flowNodeSettingFieldId} className={style.box2}>
               {item.storePositionName && !canEdit
                 ? `${item.storeName} - ${title[0].storePositionName}`
-                : `节点${item.sort}`}
+                : `节点${indexF}`}
             </div>
           );
         })}
@@ -54,9 +54,9 @@ export default function FlowChartComponent(props: FlowChartComponentProps) {
         flowNodeSettingField.map((item, index: number) => {
           let returnInfo = null;
           if (item.attributeList.length == 1) {
-            returnInfo = renderSinglePlace(item.attributeList, index + 1);
+            returnInfo = renderSinglePlace(item.attributeList, index + 1, item.isEdit);
           } else {
-            returnInfo = renderMutiplePlace(item.attributeList, index + 1);
+            returnInfo = renderMutiplePlace(item.attributeList, index + 1, item.isEdit);
           }
           if (index + 1 < flowNodeSettingField.length) {
             returnInfo = (

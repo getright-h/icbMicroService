@@ -24,3 +24,9 @@ export const TREE_MAP = {
   title: 'name',
   key: 'id'
 };
+
+export enum ModalType {
+  CREATE,
+  EDIT,
+  DELETE
+}

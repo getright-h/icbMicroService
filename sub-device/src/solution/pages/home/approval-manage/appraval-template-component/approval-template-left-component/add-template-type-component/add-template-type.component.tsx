@@ -9,9 +9,17 @@ import { HomeOutlined } from '@ant-design/icons';
 import OrganizationControllerComponent from '~/solution/components/organization-controller-component/organization-controller.component';
 const { Option } = Select;
 export default function AddTemplateTypeComponent(props: IAddTemplateTypeProps) {
-  const { state, handleOk, handleCancel, onChangeHaveChooseShop, onExpand, onCheck } = useAddTemplateTypeStore(props);
-  const { isEdit, addApprovalTypeVisible } = props;
-  const { confirmLoading, expandedKeys, checkedKeys, checkedObject } = state;
+  const {
+    state,
+    handleOk,
+    handleCancel,
+    onChangeHaveChooseShop,
+    changeTemplateName,
+    onExpand,
+    onCheck
+  } = useAddTemplateTypeStore(props);
+  const { isEdit, addApprovalTypeVisible, organazationList } = props;
+  const { confirmLoading, expandedKeys, checkedKeys, checkedObject, parentOrganizationId, name } = state;
   function RenderLinkOrganization() {
     const checkedObjectFlat = React.useCallback(() => flatAtree(checkedObject), [checkedObject]);
     return (
@@ -70,13 +78,17 @@ export default function AddTemplateTypeComponent(props: IAddTemplateTypeProps) {
       expandedKeys,
       onExpand,
       getCheckedInfo: onCheck,
-      checkedKeys
+      checkedKeys,
+      organizationChecked: true,
+      currentOrganazation: parentOrganizationId
     };
-    return (
+    console.log(prganizationControllerComponentProps);
+
+    return parentOrganizationId ? (
       <div className={style.approvalListLeft}>
         <OrganizationControllerComponent checkable {...prganizationControllerComponentProps} />
       </div>
-    );
+    ) : null;
   }
 
   return (
@@ -89,8 +101,27 @@ export default function AddTemplateTypeComponent(props: IAddTemplateTypeProps) {
       confirmLoading={confirmLoading}
       onCancel={handleCancel}
     >
-      <Form.Item name="name" label="模板类型" rules={[{ required: true }]}>
-        <Input placeholder="请输入模板类型" />
+      <Form.Item label="模板类型" rules={[{ required: true }]}>
+        <Input
+          placeholder="请输入模板类型"
+          value={name}
+          onChange={value => changeTemplateName(value.target.value, 'name')}
+        />
+      </Form.Item>
+      <Form.Item label="关联机构" rules={[{ required: true }]}>
+        <Select
+          value={parentOrganizationId}
+          onChange={value => changeTemplateName(value, 'parentOrganizationId')}
+          placeholder="请选择关联机构"
+        >
+          {organazationList.map(item => {
+            return (
+              <Option value={item.id} key={item.id}>
+                {item.name}
+              </Option>
+            );
+          })}
+        </Select>
       </Form.Item>
       <Form.Item name="organization" label="关联机构" rules={[{ required: true }]}>
         {RenderLinkOrganization()}

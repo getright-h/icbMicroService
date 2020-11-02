@@ -4,13 +4,14 @@ import { IISelectLoadingProps } from './i-select-loading.interface';
 import { useISelectLoadingStore } from './i-select-loading.component.store';
 
 export default function ISelectLoadingComponent(props: IISelectLoadingProps) {
-  const { placeholder, disabled, getCurrentSelectInfo, width = '100%', reqUrl, allowClear = true } = props;
+  const { placeholder, disabled, getCurrentSelectInfo, width = '100%', reqUrl, allowClear = true, mode } = props;
   const { state, optionScroll, fetchOptions } = useISelectLoadingStore(props);
   const { optionList, fetching } = state;
   return (
     <Select
       style={{ width }}
       loading={fetching}
+      mode={mode}
       disabled={disabled || false}
       placeholder={placeholder}
       filterOption={false}
@@ -34,19 +35,19 @@ export default function ISelectLoadingComponent(props: IISelectLoadingProps) {
             );
           } else if (reqUrl === 'queryStoreList') {
             return (
-              <Select.Option value={item.id} key={`${item.id}${item.index}`} info={item}>
+              <Select.Option value={item.id} key={item.id} info={item}>
                 {`${item.name}（${item.organizationName}）`}
               </Select.Option>
             );
           } else if (reqUrl === 'queryVehicleList') {
             return (
-              <Select.Option value={item.vinNo} key={`${item.id}${item.index}`} info={item}>
+              <Select.Option value={item.vinNo} key={item.id} info={item}>
                 {item.vinNo}
               </Select.Option>
             );
           } else {
             return (
-              <Select.Option value={item.id} key={`${item.id}${index}`} info={item}>
+              <Select.Option value={item.id} key={item.id} info={item}>
                 {item.telephone ? item.name + ' ' + item.telephone : item.name}
               </Select.Option>
             );
