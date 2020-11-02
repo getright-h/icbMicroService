@@ -42,7 +42,7 @@ export class ApprovalManageService extends ApprovalManageDTO {
 
   // 启用禁用模板
   setFormTemplateState(params: { id: string }) {
-    return this.requestService.post(SETFORM_TEMPLATE_STATE, params);
+    return this.requestService.get(SETFORM_TEMPLATE_STATE, params);
   }
 
   insertApprovalGroup(params: InsertApprovalGroupParams) {
