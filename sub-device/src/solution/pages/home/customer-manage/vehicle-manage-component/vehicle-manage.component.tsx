@@ -62,7 +62,7 @@ export default function VehicleManageComponent() {
                 reqUrl="queryOrganizationList"
                 placeholder="请选择所属经销商"
                 getCurrentSelectInfo={(value: string, option: any) =>
-                  searchForm.setFieldsValue({ distributorId: option?.info?.name })
+                  searchForm.setFieldsValue({ distributorId: value })
                 }
                 searchForm={{ systemId: process.env.SYSTEM_ID, typeId: 'ad947c18cbdcc646982808d86eb6828f' }}
               />
@@ -73,9 +73,7 @@ export default function VehicleManageComponent() {
               <ISelectLoadingComponent
                 reqUrl="queryOrganizationList"
                 placeholder="请选择所属金融机构"
-                getCurrentSelectInfo={(value: string, option: any) =>
-                  searchForm.setFieldsValue({ financeId: option?.info?.name })
-                }
+                getCurrentSelectInfo={(value: string, option: any) => searchForm.setFieldsValue({ financeId: value })}
                 searchForm={{ systemId: process.env.SYSTEM_ID, typeId: 'f247ca73916ac014b40908d86eb6ae8a' }}
               />
             </Form.Item>
