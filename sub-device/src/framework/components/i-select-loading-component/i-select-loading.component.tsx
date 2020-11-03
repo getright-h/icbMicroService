@@ -4,7 +4,16 @@ import { IISelectLoadingProps } from './i-select-loading.interface';
 import { useISelectLoadingStore } from './i-select-loading.component.store';
 
 export default function ISelectLoadingComponent(props: IISelectLoadingProps) {
-  const { placeholder, disabled, getCurrentSelectInfo, width = '100%', reqUrl, allowClear = true, mode } = props;
+  const {
+    placeholder,
+    disabled,
+    getCurrentSelectInfo,
+    width = '100%',
+    reqUrl,
+    allowClear = true,
+    mode,
+    showSearch = true
+  } = props;
   const { state, optionScroll, fetchOptions } = useISelectLoadingStore(props);
   const { optionList, fetching } = state;
   return (
@@ -20,7 +29,7 @@ export default function ISelectLoadingComponent(props: IISelectLoadingProps) {
       onChange={getCurrentSelectInfo}
       onPopupScroll={optionScroll}
       onFocus={() => fetchOptions(false)}
-      showSearch={props.showSearch || true}
+      showSearch={showSearch}
       onSearch={$event => fetchOptions(true, $event)}
       allowClear={allowClear}
       dropdownMatchSelectWidth={props.dropdownMatchSelectWidth ?? true}

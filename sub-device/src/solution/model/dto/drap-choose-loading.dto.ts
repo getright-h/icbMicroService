@@ -43,6 +43,12 @@ export interface QueryPurchaseListParam {
   name?: string;
 }
 
+export interface DrapChooseLoadingParams {
+  name?: string;
+  index: number;
+  size: number;
+}
+
 export interface DrapChooseLoadingReturn {
   data: any;
   status: boolean;
@@ -95,6 +101,13 @@ export interface QueryStoreListParam {
 
 export interface QueryVehicleListParam {
   strValue: string;
+  index: number;
+  size: number;
+}
+
+export interface QueryApprovalFormTemplateParams {
+  name?: string;
+  groupId?: string;
   index: number;
   size: number;
 }

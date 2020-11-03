@@ -2,42 +2,44 @@ import * as React from 'react';
 import { IApprovalTableState, ModalType } from './approval-table.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect } from 'react';
-import { ShowNotification } from '~/framework/util/common';
+import { ApprovalManageService } from '~/solution/model/services/approval-manage.service';
+import { Form } from 'antd';
 
 export function useApprovalTableStore() {
-  const { state, setStateWrap } = useStateStore(new IApprovalTableState());
-  // const approvalTableService: ApprovalTableService = new ApprovalTableService();
+  const { state, setStateWrap, getState } = useStateStore(new IApprovalTableState());
+  const approvalManageService: ApprovalManageService = new ApprovalManageService();
+  const [searchForm] = Form.useForm();
 
   useEffect(() => {
     getTableData();
   }, []);
 
   function getTableData() {
-    // setStateWrap({ isLoading: true });
-    // approvalTableService.__getTableData__(state.searchForm).subscribe(
-    //   res => {
-    //     setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
-    //   },
-    //   err => {
-    //     setStateWrap({ isLoading: false });
-    //     ShowNotification.error(err);
-    //   }
-    // );
+    setStateWrap({ isLoading: true });
+    const { pageIndex, pageSize } = getState();
+    approvalManageService
+      .queryApprovalApplyList({
+        ...searchForm.getFieldsValue(),
+        index: pageIndex,
+        size: pageSize
+      })
+      .subscribe(
+        res => {
+          setStateWrap({ tableData: res.data, total: res.total, isLoading: false });
+        },
+        err => {
+          setStateWrap({ isLoading: false });
+        }
+      );
   }
 
-  function onChange(value: any, valueType: string) {
-    setStateWrap({
-      searchForm: {
-        ...state.searchForm,
-        [valueType]: value
-      }
-    });
-  }
   function searchClick() {
-    const { searchForm } = state;
-    searchForm.index = 1;
-    setStateWrap({ searchForm });
+    setStateWrap({ pageIndex: 1 });
     getTableData();
+  }
+
+  function initSearchForm() {
+    searchForm.resetFields();
   }
 
   function callbackAction<T>(actionType: number, data: T) {
@@ -45,18 +47,15 @@ export function useApprovalTableStore() {
     switch (actionType) {
       case ModalType.EDIT:
         break;
-      case ModalType.DELETE:
+      case ModalType.WITHDRAW:
         break;
       default:
         break;
     }
   }
 
-  function changeTablePageIndex(index: number, pageSize: number) {
-    const { searchForm } = state;
-    searchForm.index = index;
-    searchForm.size = pageSize;
-    setStateWrap({ searchForm });
+  function changeTablePageIndex(pageIndex: number, pageSize: number) {
+    setStateWrap({ pageIndex, pageSize });
     getTableData();
   }
 
@@ -71,14 +70,19 @@ export function useApprovalTableStore() {
         break;
     }
   }
+  function setGroupId(value: string) {
+    setStateWrap({ curGroupId: value || '' });
+    searchForm.setFieldsValue({ templateId: null });
+  }
   return {
     state,
+    searchForm,
     callbackAction,
     changeTablePageIndex,
     searchClick,
     handleModalCancel,
     openModal,
-    getTableData,
-    onChange
+    initSearchForm,
+    setGroupId
   };
 }

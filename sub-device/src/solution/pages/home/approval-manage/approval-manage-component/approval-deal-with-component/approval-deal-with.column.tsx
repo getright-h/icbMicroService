@@ -4,31 +4,32 @@ export function approvalDealWithColumns(callbackAction: Function) {
   return [
     {
       title: '处理状态',
-      dataIndex: 'userName'
+      dataIndex: 'processStatusText'
     },
     {
       title: '模板类型',
-      dataIndex: 'createTime'
+      dataIndex: 'groupName'
     },
     {
       title: '模板名称',
-      dataIndex: 'status'
+      dataIndex: 'templateName'
     },
     {
       title: '申请人',
-      dataIndex: 'status'
+      dataIndex: 'creatorName'
     },
     {
       title: '申请时间',
-      dataIndex: 'status'
+      dataIndex: 'createTime'
     },
     {
       title: '创建机构',
-      dataIndex: 'status'
+      dataIndex: 'organizationName'
     },
     {
       title: '上级备注',
-      dataIndex: 'status'
+      dataIndex: 'approverRemark',
+      render: (render: any) => <span>{render.remark}</span>
     },
     {
       title: '操作',

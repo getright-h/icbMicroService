@@ -389,3 +389,39 @@ export enum SEX_ENUM {
   '女',
   '男'
 }
+
+export enum APPROVAL_APPLY_STATUS_ENUM {
+  All = -1,
+  Revoke = 0,
+  Auditing = 100,
+  Audited = 200,
+  Success = 300,
+  Refused = 400
+}
+
+export const APPROVAL_APPLY_STATUS = [
+  {
+    title: '全部',
+    value: APPROVAL_APPLY_STATUS_ENUM.All
+  },
+  {
+    title: '流程撤回',
+    value: APPROVAL_APPLY_STATUS_ENUM.Revoke
+  },
+  {
+    title: '提交审核',
+    value: APPROVAL_APPLY_STATUS_ENUM.Auditing
+  },
+  {
+    title: '正在审核',
+    value: APPROVAL_APPLY_STATUS_ENUM.Audited
+  },
+  {
+    title: '审核通过',
+    value: APPROVAL_APPLY_STATUS_ENUM.Success
+  },
+  {
+    title: '审核拒绝',
+    value: APPROVAL_APPLY_STATUS_ENUM.Refused
+  }
+];

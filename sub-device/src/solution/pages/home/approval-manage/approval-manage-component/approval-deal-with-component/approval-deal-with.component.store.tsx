@@ -2,42 +2,45 @@ import * as React from 'react';
 import { IApprovalDealWithState, ModalType } from './approval-deal-with.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect } from 'react';
-import { ShowNotification } from '~/framework/util/common';
+import { ApprovalManageService } from '~/solution/model/services/approval-manage.service';
+import { Form } from 'antd';
 
 export function useApprovalDealWithStore() {
-  const { state, setStateWrap } = useStateStore(new IApprovalDealWithState());
-  // const approvalDealWithService: ApprovalDealWithService = new ApprovalDealWithService();
+  const { state, setStateWrap, getState } = useStateStore(new IApprovalDealWithState());
+  const approvalManageService: ApprovalManageService = new ApprovalManageService();
+  const [searchForm] = Form.useForm();
 
   useEffect(() => {
     getTableData();
   }, []);
 
   function getTableData() {
-    // setStateWrap({ isLoading: true });
-    // approvalDealWithService.__getTableData__(state.searchForm).subscribe(
-    //   res => {
-    //     setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
-    //   },
-    //   err => {
-    //     setStateWrap({ isLoading: false });
-    //     ShowNotification.error(err);
-    //   }
-    // );
+    setStateWrap({ isLoading: true });
+    const { pageIndex, pageSize } = getState();
+    approvalManageService
+      .queryApprovalProcessList({
+        ...searchForm.getFieldsValue(),
+        processStatus: !!searchForm.getFieldValue('processStatus'),
+        index: pageIndex,
+        size: pageSize
+      })
+      .subscribe(
+        res => {
+          setStateWrap({ tableData: res.data, total: res.total, isLoading: false });
+        },
+        err => {
+          setStateWrap({ isLoading: false });
+        }
+      );
   }
 
-  function onChange(value: any, valueType: string) {
-    setStateWrap({
-      searchForm: {
-        ...state.searchForm,
-        [valueType]: value
-      }
-    });
-  }
   function searchClick() {
-    const { searchForm } = state;
-    searchForm.page = 1;
-    setStateWrap({ searchForm });
+    setStateWrap({ pageIndex: 1 });
     getTableData();
+  }
+
+  function initSearchForm() {
+    searchForm.resetFields();
   }
 
   function callbackAction<T>(actionType: number, data: T) {
@@ -45,18 +48,13 @@ export function useApprovalDealWithStore() {
     switch (actionType) {
       case ModalType.EDIT:
         break;
-      case ModalType.DELETE:
-        break;
       default:
         break;
     }
   }
 
-  function changeTablePageIndex(index: number, pageSize: number) {
-    const { searchForm } = state;
-    searchForm.page = index;
-    searchForm.size = pageSize;
-    setStateWrap({ searchForm });
+  function changeTablePageIndex(pageIndex: number, pageSize: number) {
+    setStateWrap({ pageIndex, pageSize });
     getTableData();
   }
 
@@ -71,13 +69,19 @@ export function useApprovalDealWithStore() {
         break;
     }
   }
+  function setGroupId(value: string) {
+    setStateWrap({ curGroupId: value || '' });
+    searchForm.setFieldsValue({ templateId: null });
+  }
   return {
     state,
+    searchForm,
     callbackAction,
     changeTablePageIndex,
     searchClick,
     handleModalCancel,
     openModal,
-    onChange
+    initSearchForm,
+    setGroupId
   };
 }

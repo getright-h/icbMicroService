@@ -4,7 +4,11 @@ import {
   InsertApprovalGroupParams,
   QueryApprovalFormTemplatePagedList,
   QueryApprovalGroupListResult,
-  QueryApprovalFormTemplatePagedListReturn
+  QueryApprovalFormTemplatePagedListReturn,
+  QueryApprovalApplyListParams,
+  QueryApprovalApplyListReturn,
+  QueryApprovalProcessListParams,
+  QueryApprovalProcessListReturn
 } from '../dto/approval-manage.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
@@ -24,6 +28,9 @@ const QUERYAPPROVALFORMTEMPLATEPAGEDLIST = 'approval/manage/queryApprovalFormTem
 const QUERY_APPROVAL_FORM_DETAIL = 'approval/manage/queryApprovalFormDetail';
 const SET_APPROVAL_GROUP = 'approval/manage/setApprovalGroup';
 const SETFORM_TEMPLATE_STATE = 'approval/manage/setFormTemplateState';
+
+const QUERY_APPROVAL_APPLY_LIST = 'approval/flow/FlowApplyList';
+const QUERY_APPROVAL_PROCESS_LIST = 'approval/flow/FlowProcessList';
 @DepUtil.Injectable()
 export class ApprovalManageService extends ApprovalManageDTO {
   @DepUtil.Inject(RequestService)
@@ -76,5 +83,19 @@ export class ApprovalManageService extends ApprovalManageDTO {
 
   queryApprovalGroupDetail(params: { id: string }) {
     return this.requestService.get(QUERY_APPROVAL_GROUPDETAIL, params);
+  }
+
+  // 审核申请列表
+  queryApprovalApplyList(
+    params: QueryApprovalApplyListParams
+  ): Observable<{ data: QueryApprovalApplyListReturn[]; total: number }> {
+    return this.requestService.post(QUERY_APPROVAL_APPLY_LIST, params);
+  }
+
+  // 审核处理列表
+  queryApprovalProcessList(
+    params: QueryApprovalProcessListParams
+  ): Observable<{ data: QueryApprovalProcessListReturn[]; total: number }> {
+    return this.requestService.post(QUERY_APPROVAL_PROCESS_LIST, params);
   }
 }

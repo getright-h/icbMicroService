@@ -11,7 +11,9 @@ import {
   QueryDeviceListParam,
   QueryStoreListParam,
   QueryVehicleListParam,
-  QueryVehiclePagedListParam
+  QueryVehiclePagedListParam,
+  DrapChooseLoadingParams,
+  QueryApprovalFormTemplateParams
 } from '../dto/drap-choose-loading.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
@@ -37,6 +39,9 @@ const QUERY_VEHICLE_PAGED_LIST = 'vehicle/manage/queryVehiclePagedList';
 const QUERYSTOREPOSITIONPAGEDLISTBYSTOREID = 'store/manage/queryStorePositionPagedListByStoreId';
 const QUERY_USER_PAGED_LIST = 'approval/manage/queryUserPagedList';
 const QUERY_ROLE_LIST = 'approval/manage/queryRoleList';
+
+const QUERY_APPROVAL_PAGED_LIST = 'approval/manage/queryApprovalGroupPagedList';
+const QUERY_APPROVAL_FORM_TEMPLATE_PAGED_LIST = 'approval/manage/queryApprovalFormTemplatePagedList';
 @DepUtil.Injectable()
 export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
   @DepUtil.Inject(RequestService)
@@ -116,5 +121,14 @@ export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
   // 获取车辆列表
   queryVehiclePagedList(params: QueryVehiclePagedListParam): Observable<DrapChooseLoadingReturn> {
     return this.requestService.post(QUERY_VEHICLE_PAGED_LIST, params);
+  }
+
+  // 监控组
+  queryApprovalPagedList(params: DrapChooseLoadingParams): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.post(QUERY_APPROVAL_PAGED_LIST, params);
+  }
+  // 监控组ID查询模板列表
+  queryApprovalFormTemplatePagedList(params: QueryApprovalFormTemplateParams): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.post(QUERY_APPROVAL_FORM_TEMPLATE_PAGED_LIST, params);
   }
 }

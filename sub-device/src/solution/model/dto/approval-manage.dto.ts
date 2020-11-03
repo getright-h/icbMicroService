@@ -1,5 +1,3 @@
-import { Observable } from 'rxjs';
-
 /**
  * 真实开发中，请将示例代码移除
  */
@@ -111,4 +109,74 @@ export interface ControlList {
   title: string;
   isRequired: boolean;
   type: number;
+}
+
+export interface QueryApprovalApplyListParams {
+  status: number;
+  groupId: string;
+  templateId: string;
+  creatorId: string;
+  organizationId: string;
+  sTime: number;
+  eTime: number;
+  index: number;
+  size: number;
+}
+
+export interface QueryApprovalApplyListReturn {
+  approverRemark: ApproverRemark;
+  id: string;
+  groupId: string;
+  groupName: string;
+  templateId: string;
+  templateName: string;
+  organizationId: string;
+  organizationName: string;
+  status: number;
+  statusText: string;
+  creatorId: string;
+  creatorName: string;
+  createTime: string;
+  createTimeStamp: number;
+}
+
+interface ApproverRemark {
+  id: string;
+  flowId: string;
+  userName: string;
+  userId: string;
+  remark: string;
+  createTime: string;
+}
+
+export interface QueryApprovalProcessListParams {
+  processStatus: number;
+  groupId: string;
+  templateId: string;
+  creatorId: string;
+  organizationId: string;
+  sTime: number;
+  eTime: number;
+  index: number;
+  size: number;
+}
+
+export interface QueryApprovalProcessListReturn {
+  approverRemark: ApproverRemark;
+  passed: boolean;
+  nodePassed: boolean;
+  processStatusText: string;
+  id: string;
+  groupId: string;
+  groupName: string;
+  templateId: string;
+  templateName: string;
+  organizationId: string;
+  organizationName: string;
+  status: number;
+  statusText: string;
+  creatorId: string;
+  creatorName: string;
+  createTime: string;
+  createTimeStamp: number;
 }
