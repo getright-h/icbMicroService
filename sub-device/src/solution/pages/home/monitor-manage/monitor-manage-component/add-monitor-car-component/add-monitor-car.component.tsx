@@ -26,11 +26,13 @@ export default function AddMonitorCarComponent(props: IAddMonitorCarProps) {
       expandedKeys,
       onExpand,
       getCheckedInfo: onCheck,
-      checkedKeys
+      checkedKeys,
+      checkable: true,
+      organizationChecked: true
     };
     return (
       <div>
-        <OrganizationControllerComponent checkable {...prganizationControllerComponentProps} />
+        <OrganizationControllerComponent {...prganizationControllerComponentProps} />
       </div>
     );
   }

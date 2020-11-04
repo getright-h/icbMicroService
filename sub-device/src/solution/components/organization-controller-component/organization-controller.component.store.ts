@@ -68,7 +68,7 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     forkJoin(warehouseListService.queryStoreOrganizationListSub({ parentId }), queryChildInfoSubscription).subscribe(
       (res: any) => {
         const queryChildInfoData: DataNode[] = queryChildInfo
-          ? dealWithTreeData(res[1], TREE_MAP, true, onlyLeafCanSelect, warehouseAction)
+          ? dealWithTreeData(res[1], TREE_MAP, true, warehouseAction)
           : [];
 
         treeNode.children = [

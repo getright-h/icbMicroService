@@ -67,7 +67,6 @@ export function useDeviceLineStore() {
   }
 
   function queryVehicleInformationByCode(isExpand: boolean, record: any) {
-    console.log(isExpand, record);
     if (!isExpand) return;
     const { code = '' } = record;
     queryVehicleInformationByCodeSubscribable = deviceTypeService

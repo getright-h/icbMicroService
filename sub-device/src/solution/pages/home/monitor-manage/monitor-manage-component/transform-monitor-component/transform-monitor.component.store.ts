@@ -6,6 +6,7 @@ import { MonitorService } from '~/solution/model/services/monitor.service';
 import { DataNode } from 'rc-tree/lib/interface';
 import { getCheckedList } from '~/framework/util/common/treeFunction';
 import { useEffect } from 'react';
+import { ShowNotification } from '~/framework/util/common';
 export function useTransformMonitorStore(props: ITransformMonitorProps) {
   const { state, setStateWrap } = useStateStore(new ITransformMonitorState());
   const [form] = Form.useForm();
@@ -62,7 +63,8 @@ export function useTransformMonitorStore(props: ITransformMonitorProps) {
     };
     monitorService.transferGroup({ ...param }).subscribe(
       (res: any) => {
-        console.log(res);
+        ShowNotification.success('转组成功');
+        props.close && props.close();
       },
       (error: any) => {
         console.log(error);

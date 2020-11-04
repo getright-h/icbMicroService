@@ -41,7 +41,8 @@ export default function MonitorManageComponent() {
     checkedKeys,
     transformDisable = true,
     selectedRowKeys = [],
-    currentMonitorGroup
+    currentMonitorGroup,
+    transformSelected
   } = state;
   function renderSelectItems() {
     return (
@@ -79,6 +80,7 @@ export default function MonitorManageComponent() {
         total={total}
         isPagination={true}
         rowSelection={{
+          preserveSelectedRowKeys: true,
           selectedRowKeys,
           onChange: onSelectChange
         }}
@@ -149,7 +151,7 @@ export default function MonitorManageComponent() {
         visible={transformModalVisible}
         data={{
           currentMonitorGroup: currentMonitorGroup,
-          selectedRowKeys: selectedRowKeys,
+          selectedRowKeys: transformSelected,
           ...currentData
         }}
       />
