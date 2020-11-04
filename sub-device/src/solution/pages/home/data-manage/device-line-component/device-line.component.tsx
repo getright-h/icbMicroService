@@ -91,11 +91,9 @@ export default function DeviceLineComponent() {
         total={total}
         isPagination={true}
         expandable={{
-          expandable: false,
           expandedRowRender: OwnerExpandedRow,
           expandIconColumnIndex: 3,
-          rowExpandable: (record: any) => record.route == DEVICE_ROUTE_ENUM.Bind,
-          onExpand: (isExpand: boolean, record: any) => queryVehicleInformationByCode(isExpand, record)
+          rowExpandable: (record: any) => record.route == DEVICE_ROUTE_ENUM.Bind
         }}
         changeTablePageIndex={(index: number, pageSize: number) => changeTablePageIndex(index, pageSize)}
       ></ITableComponent>

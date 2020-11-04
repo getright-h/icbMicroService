@@ -83,6 +83,7 @@ export function useMonitorManageStore() {
         break;
       case ModalType.BATCH_TRANFROM:
         setStateWrap({ transformModalVisible: true });
+        break;
       case ModalType.DETAIL:
         history.push(`/home/customer/vehicleDetail/${data.vehicleId}`);
         break;

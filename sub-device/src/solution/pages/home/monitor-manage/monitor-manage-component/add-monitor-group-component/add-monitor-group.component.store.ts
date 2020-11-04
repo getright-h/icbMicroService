@@ -68,6 +68,7 @@ export function useAddMonitorGroupStore(props: AddMonitorGroupProp) {
     form.resetFields();
     const { data = {} } = props;
     form.setFieldsValue(data);
+    console.log(form);
     return () => {
       insertVehicleGroupSubscription && insertVehicleGroupSubscription.unsubscribe();
     };

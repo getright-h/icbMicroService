@@ -39,7 +39,10 @@ export default function AddMonitorCarComponent(props: IAddMonitorCarProps) {
       visible={addMonitorModal}
       width={700}
       confirmLoading={confirmLoading}
-      onOk={insertVehicleGroup}
+      onOk={() => {
+        insertVehicleGroup();
+      }}
+      destroyOnClose={true}
       onCancel={() => colse()}
       title={'添加监控车辆'}
     >
@@ -52,7 +55,7 @@ export default function AddMonitorCarComponent(props: IAddMonitorCarProps) {
                 <span>选择机构</span> {RenderTree()}
               </div>
               <div style={{ height: 170, margin: 0 }}>
-                <Form.Item label="选择车辆">
+                <Form.Item label="选择车辆" name="vinNo">
                   <Select
                     placeholder={'请输入车架号'}
                     onFocus={() => getCartDeviceList('add')}
@@ -68,7 +71,7 @@ export default function AddMonitorCarComponent(props: IAddMonitorCarProps) {
                 </Form.Item>
               </div>
               <div style={{ height: 160, margin: 0 }}>
-                <Form.Item label="去除车辆">
+                <Form.Item label="去除车辆" name={'vinRemoveNo'}>
                   <Select
                     placeholder={'请输入车架号'}
                     onFocus={() => getCartDeviceList('del')}

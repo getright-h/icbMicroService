@@ -8,7 +8,6 @@ import { DataNode } from 'rc-tree/lib/interface';
 import { getCheckedList } from '~/framework/util/common/treeFunction';
 import { Form } from 'antd';
 import { ShowNotification } from '~/framework/util/common';
-import { PropertySafetyFilled } from '@ant-design/icons';
 
 export function useAddMonitorCarStore(porps: IAddMonitorCarProps) {
   const { state, setStateWrap } = useStateStore(new IAddMonitorCarState());
@@ -19,11 +18,12 @@ export function useAddMonitorCarStore(porps: IAddMonitorCarProps) {
   let insertVehicleGroupSubscription: Subscription;
   let calculationMonitorVehicleNumberSubscription: Subscription;
   useEffect(() => {
+    console.log(11);
     return () => {
       getCartDeviceListSubscription && getCartDeviceListSubscription.unsubscribe();
       calculationMonitorVehicleNumberSubscription && calculationMonitorVehicleNumberSubscription.unsubscribe();
     };
-  }, []);
+  }, [porps.addMonitorModal]);
   function getCartDeviceList(type: string) {
     getCartDeviceListSubscription = drapChooseLoadingService
       .queryVehiclePagedList({ index: 1, size: 100 })

@@ -70,7 +70,7 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
   }
   useEffect(() => {
     setStateWrap({ value: props.selectedValue });
-    // getOptionList();
+    getOptionList();
   }, [props.selectedValue]);
 
   useEffect(() => {
