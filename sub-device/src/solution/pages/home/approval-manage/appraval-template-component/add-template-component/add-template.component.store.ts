@@ -7,6 +7,8 @@ import { ShowNotification } from '../../../../../../framework/util/common/showNo
 import { useHistory, useParams } from 'react-router-dom';
 import { Dispatch, useEffect, useRef } from 'react';
 import { ControlList } from '../../../../../model/dto/approval-manage.dto';
+import { initTemplateForm } from './add-template-redux/add-template-action';
+import { AllotNodeFlowInput } from '~/solution/model/dto/allocation-template.dto';
 
 export function useAddTemplateStore(addTemplateState: AddTemplateState, dispatch: Dispatch<any>) {
   const { state, setStateWrap } = useStateStore(new IAddTemplateState());
@@ -15,7 +17,7 @@ export function useAddTemplateStore(addTemplateState: AddTemplateState, dispatch
   const { id, isEdit }: any = useParams();
   const groupId = useRef('');
   useEffect(() => {
-    if (isEdit) {
+    if (!!Number(isEdit)) {
       initForm();
       return;
     }
@@ -24,18 +26,32 @@ export function useAddTemplateStore(addTemplateState: AddTemplateState, dispatch
 
   function initForm() {
     approvalManageService.queryApprovalFormDetail({ id }).subscribe(res => {
-      const initData: any = addTemplateInitialState;
+      const initData: any = { ...addTemplateInitialState };
       initData.templateName = res.templateName;
       groupId.current = res.groupId;
       initData.formInfo = res.controlList;
-      initData.formInfo.forEach((item: ControlList) => {
+      initData.id = res.id;
+      initData.formInfo = initData.formInfo.map((item: ControlList) => {
+        item.id = item.id || createRandomId();
         if (item.type == FormType.FlowNode) {
-          initData.flowNodeSettingField = JSON.parse(item.controlValue);
+          initData.flowNodeSettingField = JSON.parse(item.controlValue).map(
+            (itemFlowNodeSettingField: AllotNodeFlowInput) => {
+              itemFlowNodeSettingField.flowNodeSettingFieldId = createRandomId();
+              itemFlowNodeSettingField.attributeList = itemFlowNodeSettingField.attributeList.map(itemChild => {
+                itemChild.childNodeId = createRandomId();
+                return itemChild;
+              });
+              return itemFlowNodeSettingField;
+            }
+          );
         }
+        return item;
       });
 
       initData.templateType = res.businessType;
       initData.approverInput = res.approverList;
+      initData.currentSelectItem = initData.formInfo[0];
+      initTemplateForm(dispatch, initData);
     });
   }
   function next() {
@@ -84,6 +100,7 @@ export function useAddTemplateStore(addTemplateState: AddTemplateState, dispatch
       return;
     }
     const commitInfo = {
+      id,
       templateName: addTemplateState.templateName,
       businessType: addTemplateState.templateType,
       controlList: [{}],
@@ -99,10 +116,23 @@ export function useAddTemplateStore(addTemplateState: AddTemplateState, dispatch
     });
     commitInfo.approverList = addTemplateState.approverInput;
     console.log(commitInfo);
-    approvalManageService.insertApprovalFormTemplate(commitInfo).subscribe(() => {
+    const url = isEdit ? 'setApprovalFormTemplate' : 'insertApprovalFormTemplate';
+    approvalManageService[url](commitInfo).subscribe(() => {
       ShowNotification.success('添加成功');
-      history.push('./home/approvalManage/approveTemplate');
+      history.push('../../../../home/approvalManage/approveTemplate');
     });
+  }
+
+  function createRandomId() {
+    return (
+      (Math.random() * 10000000).toString(16).substr(0, 4) +
+      '-' +
+      new Date().getTime() +
+      '-' +
+      Math.random()
+        .toString()
+        .substr(2, 5)
+    );
   }
   return { state, next, prev, commit };
 }

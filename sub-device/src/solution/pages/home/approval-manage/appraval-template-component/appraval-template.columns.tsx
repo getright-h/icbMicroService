@@ -6,7 +6,7 @@ export function approvalTemplateColumns(action: Function): ColumnsType<any> {
   return [
     {
       title: '模板类型',
-      dataIndex: 'name'
+      dataIndex: 'businessTypeText'
     },
     {
       title: '模板名称',
@@ -22,7 +22,7 @@ export function approvalTemplateColumns(action: Function): ColumnsType<any> {
     },
     {
       title: '创建机构',
-      dataIndex: 'createTime'
+      dataIndex: 'organizationName'
     },
     {
       title: '是否启动',

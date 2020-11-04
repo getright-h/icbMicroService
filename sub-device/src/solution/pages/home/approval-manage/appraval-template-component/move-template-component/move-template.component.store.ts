@@ -8,6 +8,7 @@ import { dealWithTreeData, updateTreeData } from '~/framework/util/common/treeFu
 import { QueryStoreOrganizationReturn } from '~/solution/model/dto/warehouse-list.dto';
 import { IGlobalState } from '~/solution/context/global/global.interface';
 import { GlobalContext } from '~/solution/context/global/global.provider';
+import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 
 export function useMoveTemplateStore(props: IMoveTemplateProps) {
   const { state, setStateWrap } = useStateStore(new IMoveTemplateState());
@@ -19,6 +20,12 @@ export function useMoveTemplateStore(props: IMoveTemplateProps) {
     getAllTemplate();
     queryOrganizationTypeListByTypeId();
   }, []);
+
+  function onChangeIsCopy(e: CheckboxChangeEvent) {
+    setStateWrap({
+      isCopy: e.target.value
+    });
+  }
 
   // 根据根据系统id查找机构类型
   function queryOrganizationTypeListByTypeId(id?: string) {
@@ -86,7 +93,20 @@ export function useMoveTemplateStore(props: IMoveTemplateProps) {
       confirmLoading: true
     });
     // 传true表示这个时候需要刷新列表
-    props.closeMoveTemplateModal(true);
+    const { formTemplateIdList, groupIdList, isCopy } = state;
+    approvalManageService.moveApprovalFormTemplate({ formTemplateIdList, groupIdList, isCopy }).subscribe(
+      () => {
+        props.closeMoveTemplateModal(true);
+        setStateWrap({
+          confirmLoading: false
+        });
+      },
+      () => {
+        setStateWrap({
+          confirmLoading: false
+        });
+      }
+    );
   }
 
   function handleCancel() {
@@ -104,5 +124,15 @@ export function useMoveTemplateStore(props: IMoveTemplateProps) {
       checkedKeys
     });
   }
-  return { state, handleOk, onCheckData, handleCancel, onExpand, onCheck, onChangeTemplate, onLoadData };
+  return {
+    state,
+    handleOk,
+    onCheckData,
+    onChangeIsCopy,
+    handleCancel,
+    onExpand,
+    onCheck,
+    onChangeTemplate,
+    onLoadData
+  };
 }

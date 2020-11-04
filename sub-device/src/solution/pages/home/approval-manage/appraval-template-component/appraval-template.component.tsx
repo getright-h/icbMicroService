@@ -73,7 +73,7 @@ export default function AppravalTemplateComponent() {
           allowClear
           placeholder="请输入模板名称"
           value={searchForm.name}
-          onChange={($event: any) => handleFormDataChange($event, 'name')}
+          onChange={($event: any) => handleFormDataChange('name', $event.target.value)}
         />
       </div>
     );
@@ -82,7 +82,7 @@ export default function AppravalTemplateComponent() {
   function renderOtherSearchBtns() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary" onClick={() => moveTemplate()} loading={isLoading}>
+        <Button type="primary" onClick={() => moveTemplate()}>
           移动模板
         </Button>
       </div>

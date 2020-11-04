@@ -11,6 +11,7 @@ export class IMoveTemplateState {
     typeId: 'c59c75eec2d3cc075cca08d84386bcb9',
     id: ''
   };
+  isCopy = false;
   checkedKeys: string[] = [];
   treeData: DataNode[] = [];
   confirmLoading = false;

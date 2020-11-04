@@ -10,7 +10,7 @@ import AddFlowNodeComponent from '../add-flow-node-component/add-flow-node.compo
 import ViewFlowNodeComponent from '~/solution/components/view-flow-node-component/view-flow-node.component';
 import AssignDeviceComponent from '../assign-device-component/assign-device.component';
 import { AddTemplateManageContext } from '../add-template.component';
-import { FormType } from '../add-template-redux/add-template-reducer';
+import { FormType, IFormInfo } from '../add-template-redux/add-template-reducer';
 const { Option } = Select;
 export default function FormSettingComponent() {
   const { reduxState, dispatch } = React.useContext(AddTemplateManageContext);
@@ -167,7 +167,7 @@ export default function FormSettingComponent() {
             delayOnTouchStart={true}
             delay={2}
           >
-            {formInfo.map((item, index) => {
+            {formInfo.map((item: IFormInfo) => {
               const ComponentInfo: any = GlobalComponent[item.type];
               let props: any = {
                 style: { width: '300px' },
