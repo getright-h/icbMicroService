@@ -33,6 +33,7 @@ const MOVE_APPROVALFORM_TEMPLATE = 'approval/manage/moveApprovalFormTemplate';
 
 const QUERY_APPROVAL_APPLY_LIST = 'approval/flow/FlowApplyList';
 const QUERY_APPROVAL_PROCESS_LIST = 'approval/flow/FlowProcessList';
+const SET_APPROVAL_FORM_TEMPLATE = 'approval/manage/setApprovalFormTemplate';
 @DepUtil.Injectable()
 export class ApprovalManageService extends ApprovalManageDTO {
   @DepUtil.Inject(RequestService)
@@ -44,7 +45,7 @@ export class ApprovalManageService extends ApprovalManageDTO {
   queryApprovalFormDetail(params: { id: string }): Observable<InsertApprovalFormTemplateParams> {
     return this.requestService.get(QUERY_APPROVAL_FORM_DETAIL, params);
   }
-  // 车主管理列表
+
   insertApprovalFormTemplate(params: InsertApprovalFormTemplateParams | any) {
     return this.requestService.post(INSERTAPPROVALFORMTEMPLATE, params);
   }
@@ -108,5 +109,9 @@ export class ApprovalManageService extends ApprovalManageDTO {
     params: QueryApprovalProcessListParams
   ): Observable<{ data: QueryApprovalProcessListReturn[]; total: number }> {
     return this.requestService.post(QUERY_APPROVAL_PROCESS_LIST, params);
+  }
+
+  setApprovalFormTemplate(params: InsertApprovalFormTemplateParams | any) {
+    return this.requestService.post(SET_APPROVAL_FORM_TEMPLATE, params);
   }
 }

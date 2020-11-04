@@ -40,7 +40,7 @@ export interface AttributeList {
   mode: number;
   personId: string;
   roleList: string[];
-  userName: string;
+  personName: string;
 }
 
 export const addTemplateInitialState: AddTemplateState = {

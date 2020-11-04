@@ -5,7 +5,7 @@ import { Card, Button, Divider, Switch } from 'antd';
 import { CloseOutlined, UserOutlined } from '@ant-design/icons';
 import Avatar from 'antd/lib/avatar/avatar';
 import { AddTemplateManageContext } from '../add-template.component';
-import { AttributeList } from '../add-template-redux/add-template-reducer';
+import { ApproverInput, AttributeList } from '../add-template-redux/add-template-reducer';
 import AddApprovalLineComponent from './add-approval-line-component/add-approval-line.component';
 
 export default function ApprovalLineComponent() {
@@ -42,7 +42,7 @@ export default function ApprovalLineComponent() {
           icon={<CloseOutlined />}
           onClick={() => deleteUserInfo(userInfo, index)}
         />
-        <div>{userInfo.userName}</div>
+        <div>{userInfo.personName}</div>
       </div>
     );
   }
@@ -59,7 +59,7 @@ export default function ApprovalLineComponent() {
   return (
     <div>
       <span> 添加审批人:</span>
-      {approverInput.map((approverInputItem, index) => {
+      {approverInput.map((approverInputItem: ApproverInput, index: number) => {
         return (
           <div className={style.cardStyle} key={index}>
             <Card title={`${index + 1}级审批人`}>

@@ -30,6 +30,7 @@ export function useAddTemplateStore(addTemplateState: AddTemplateState, dispatch
       initData.templateName = res.templateName;
       groupId.current = res.groupId;
       initData.formInfo = res.controlList;
+      initData.id = res.id;
       initData.formInfo = initData.formInfo.map((item: ControlList) => {
         item.id = item.id || createRandomId();
         if (item.type == FormType.FlowNode) {
@@ -43,8 +44,6 @@ export function useAddTemplateStore(addTemplateState: AddTemplateState, dispatch
               return itemFlowNodeSettingField;
             }
           );
-
-          console.log(initData.flowNodeSettingField);
         }
         return item;
       });
@@ -101,6 +100,7 @@ export function useAddTemplateStore(addTemplateState: AddTemplateState, dispatch
       return;
     }
     const commitInfo = {
+      id,
       templateName: addTemplateState.templateName,
       businessType: addTemplateState.templateType,
       controlList: [{}],
@@ -116,7 +116,8 @@ export function useAddTemplateStore(addTemplateState: AddTemplateState, dispatch
     });
     commitInfo.approverList = addTemplateState.approverInput;
     console.log(commitInfo);
-    approvalManageService.insertApprovalFormTemplate(commitInfo).subscribe(() => {
+    const url = isEdit ? 'setApprovalFormTemplate' : 'insertApprovalFormTemplate';
+    approvalManageService[url](commitInfo).subscribe(() => {
       ShowNotification.success('添加成功');
       history.push('../../../../home/approvalManage/approveTemplate');
     });

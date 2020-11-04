@@ -44,7 +44,7 @@ export function useApprovalLineStore() {
         approverInput[currentIndex.current].attributeList.push({
           mode: state.currentMode,
           personId: item.key,
-          userName: item.info.name
+          personName: item.info.name
         });
       });
     } else {
@@ -52,7 +52,7 @@ export function useApprovalLineStore() {
         approverInput[currentIndex.current].attributeList.push({
           mode: state.currentMode,
           personId: item.key,
-          userName: item.info.name
+          personName: item.info.name
         });
       });
     }
