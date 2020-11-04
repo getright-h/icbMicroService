@@ -5,15 +5,23 @@ import { Modal, Checkbox, Col, Tree } from 'antd';
 import { IMoveTemplateProps } from './move-template.interface';
 
 export default function MoveTemplateComponent(props: IMoveTemplateProps) {
-  const { state, handleOk, handleCancel, onCheckData, onLoadData, onChangeTemplate } = useMoveTemplateStore(props);
+  const {
+    state,
+    handleOk,
+    handleCancel,
+    onCheckData,
+    onChangeIsCopy,
+    onLoadData,
+    onChangeTemplate
+  } = useMoveTemplateStore(props);
   const { addMoveTemplateVisible } = props;
-  const { confirmLoading, allTemplate, treeData, groupIdList, formTemplateIdList } = state;
+  const { confirmLoading, allTemplate, isCopy, treeData, groupIdList, formTemplateIdList } = state;
   function RenderChooseTemplate() {
     return (
       <div className={style.linkOrganization}>
         <div>
           <span>选择模板: </span>
-          <div className={style.haveChooseOrganization}>
+          <div className={`${style.haveChooseOrganization} ${style.haveChooseTemplate}`}>
             <RenderLeft />
           </div>
         </div>
@@ -67,12 +75,15 @@ export default function MoveTemplateComponent(props: IMoveTemplateProps) {
       title={'创建移动类型'}
       visible={addMoveTemplateVisible}
       onOk={handleOk}
-      width={1000}
+      width={700}
       destroyOnClose
       confirmLoading={confirmLoading}
       onCancel={handleCancel}
     >
       {RenderChooseTemplate()}
+      <Checkbox onChange={onChangeIsCopy} value={isCopy}>
+        复制并移动副本
+      </Checkbox>
     </Modal>
   );
 }

@@ -110,38 +110,39 @@ export default function AddFlowNodeComponent(props: IAddFlowNodeProps) {
           <div className={style.formLeft}>
             <>
               {flowNodeSettingField &&
-                flowNodeSettingField.map((field, index: number) => {
+                flowNodeSettingField.map((field: any, index: number) => {
                   return (
                     <div key={field.flowNodeSettingFieldId}>
                       <span>{`选择节点${index + 1}: `}</span>
-                      {field.attributeList.map((item: FlowList, indexItem: number) => {
-                        return (
-                          <div style={{ display: 'flex' }} key={item.childNodeId}>
-                            <Form.Item style={{ display: 'inline-block', width: '100px' }}>
-                              {ISelectLoadingComponentX(item, field.isEdit)}
-                            </Form.Item>
+                      {field.attributeList &&
+                        field.attributeList.map((item: FlowList, indexItem: number) => {
+                          return (
+                            <div style={{ display: 'flex' }} key={item.childNodeId}>
+                              <Form.Item style={{ display: 'inline-block', width: '100px' }}>
+                                {ISelectLoadingComponentX(item, field.isEdit)}
+                              </Form.Item>
 
-                            <Form.Item style={{ display: 'inline-block', width: '100px' }}>
-                              {ISelectLoadingComponentY(item, field.isEdit)}
-                            </Form.Item>
-                            <Form.Item style={{ display: 'inline-block', width: '100px' }}>
-                              {ISelectLoadingComponentZ(item, field.isEdit)}
-                            </Form.Item>
-                            <PlusCircleOutlined
-                              style={{ margin: '0 3px', lineHeight: '32px' }}
-                              onClick={() => {
-                                addFlowNode(field);
-                              }}
-                            />
-                            <MinusCircleOutlined
-                              style={{ lineHeight: '32px' }}
-                              onClick={() => {
-                                removeFlowNode(field, indexItem);
-                              }}
-                            />
-                          </div>
-                        );
-                      })}
+                              <Form.Item style={{ display: 'inline-block', width: '100px' }}>
+                                {ISelectLoadingComponentY(item, field.isEdit)}
+                              </Form.Item>
+                              <Form.Item style={{ display: 'inline-block', width: '100px' }}>
+                                {ISelectLoadingComponentZ(item, field.isEdit)}
+                              </Form.Item>
+                              <PlusCircleOutlined
+                                style={{ margin: '0 3px', lineHeight: '32px' }}
+                                onClick={() => {
+                                  addFlowNode(field);
+                                }}
+                              />
+                              <MinusCircleOutlined
+                                style={{ lineHeight: '32px' }}
+                                onClick={() => {
+                                  removeFlowNode(field, indexItem);
+                                }}
+                              />
+                            </div>
+                          );
+                        })}
                       {IsCanEdit(field)}
                     </div>
                   );

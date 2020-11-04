@@ -100,7 +100,7 @@ export const addTemplateInitialState: AddTemplateState = {
   ]
 };
 
-export function AddTemplateReducer(state = addTemplateInitialState, action: IAction<any>) {
+export function AddTemplateReducer(state: AddTemplateState, action: IAction<any>) {
   const { type, payload } = action;
   switch (type) {
     case TYPES.SET_FLOWNODE_SETTING_FIELD:

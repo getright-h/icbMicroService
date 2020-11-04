@@ -24,6 +24,8 @@ const QUERYAPPROVALFORMTEMPLATEPAGEDLIST = 'approval/manage/queryApprovalFormTem
 const QUERY_APPROVAL_FORM_DETAIL = 'approval/manage/queryApprovalFormDetail';
 const SET_APPROVAL_GROUP = 'approval/manage/setApprovalGroup';
 const SETFORM_TEMPLATE_STATE = 'approval/manage/setFormTemplateState';
+const APPROVAL_FORM_TEMPLATE = 'approval/manage/approvalFormTemplate';
+const MOVE_APPROVALFORM_TEMPLATE = 'approval/manage/moveApprovalFormTemplate';
 @DepUtil.Injectable()
 export class ApprovalManageService extends ApprovalManageDTO {
   @DepUtil.Inject(RequestService)
@@ -76,5 +78,15 @@ export class ApprovalManageService extends ApprovalManageDTO {
 
   queryApprovalGroupDetail(params: { id: string }) {
     return this.requestService.get(QUERY_APPROVAL_GROUPDETAIL, params);
+  }
+
+  // 删除模板
+  deleteApprovalFormTemplate(params: { id: string }) {
+    return this.requestService.delete(APPROVAL_FORM_TEMPLATE, params);
+  }
+
+  // 移动模板
+  moveApprovalFormTemplate(params: { formTemplateIdList: string[]; groupIdList: string[]; isCopy: boolean }) {
+    return this.requestService.post(MOVE_APPROVALFORM_TEMPLATE, params);
   }
 }

@@ -92,41 +92,43 @@ export default function TemplateEditComponent() {
                 {(fields, { add, remove }) => {
                   return (
                     <>
-                      {flowNodeSettingField.map((field: any, index) => {
-                        const isChild = index >= 1 && field.sort == flowNodeSettingField[index - 1].sort;
-                        return (
-                          <Form.Item
-                            style={{ marginTop: isChild ? '10px' : '0' }}
-                            key={field.name}
-                            colon={false}
-                            label={isChild ? ' ' : '选择节点: '}
-                          >
-                            <Form.Item style={{ display: 'inline-block', width: 'calc(40% - 8px)' }}>
-                              {ISelectLoadingComponentX()}
-                            </Form.Item>
-
+                      {flowNodeSettingField &&
+                        flowNodeSettingField.length &&
+                        flowNodeSettingField.map((field: any, index) => {
+                          const isChild = index >= 1 && field.sort == flowNodeSettingField[index - 1].sort;
+                          return (
                             <Form.Item
-                              name={[field.name, 'storeId']}
-                              fieldKey={[field.fieldKey, 'storeId']}
-                              rules={[{ type: 'array' }]}
-                              style={{ display: 'inline-block', width: 'calc(40% - 8px)', margin: '0px 8px' }}
+                              style={{ marginTop: isChild ? '10px' : '0' }}
+                              key={field.name}
+                              colon={false}
+                              label={isChild ? ' ' : '选择节点: '}
                             >
-                              {WarehouseCascaderComponentC(field)}
+                              <Form.Item style={{ display: 'inline-block', width: 'calc(40% - 8px)' }}>
+                                {ISelectLoadingComponentX()}
+                              </Form.Item>
+
+                              <Form.Item
+                                name={[field.name, 'storeId']}
+                                fieldKey={[field.fieldKey, 'storeId']}
+                                rules={[{ type: 'array' }]}
+                                style={{ display: 'inline-block', width: 'calc(40% - 8px)', margin: '0px 8px' }}
+                              >
+                                {WarehouseCascaderComponentC(field)}
+                              </Form.Item>
+                              <PlusCircleOutlined
+                                style={{ marginRight: '10px' }}
+                                onClick={() => {
+                                  addFlowNode(field.sort, add, index);
+                                }}
+                              />
+                              <MinusCircleOutlined
+                                onClick={() => {
+                                  remove(field.name);
+                                }}
+                              />
                             </Form.Item>
-                            <PlusCircleOutlined
-                              style={{ marginRight: '10px' }}
-                              onClick={() => {
-                                addFlowNode(field.sort, add, index);
-                              }}
-                            />
-                            <MinusCircleOutlined
-                              onClick={() => {
-                                remove(field.name);
-                              }}
-                            />
-                          </Form.Item>
-                        );
-                      })}
+                          );
+                        })}
                       {AddButton(add)}
                     </>
                   );

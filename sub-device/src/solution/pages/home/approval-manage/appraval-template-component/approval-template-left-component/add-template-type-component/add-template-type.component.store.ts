@@ -80,13 +80,20 @@ export function useAddTemplateTypeStore(props: IAddTemplateTypeProps) {
       type,
       parentOrganizationId,
       id: props.groupId
-    }).subscribe(() => {
-      setStateWrap({
-        confirmLoading: false
-      });
-      // 是否刷新左边栏
-      props.closeAddTemplateTypeModal(!props.isEdit);
-    });
+    }).subscribe(
+      () => {
+        setStateWrap({
+          confirmLoading: false
+        });
+        // 是否刷新左边栏
+        props.closeAddTemplateTypeModal(!props.isEdit);
+      },
+      () => {
+        setStateWrap({
+          confirmLoading: false
+        });
+      }
+    );
   }
 
   function changeTemplateName(value: any, key: string) {

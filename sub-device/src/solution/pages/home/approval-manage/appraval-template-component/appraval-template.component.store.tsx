@@ -22,6 +22,9 @@ export function useApprovalTemplateStore(appravalTemplateState: {
   }, [currentSelectNode]);
 
   function getTableData() {
+    setStateWrap({
+      isLoading: true
+    });
     approvalManageService
       .queryApprovalFormTemplatePagedList({
         groupId: (currentSelectNode.node && currentSelectNode.node.key) || '',
@@ -29,12 +32,20 @@ export function useApprovalTemplateStore(appravalTemplateState: {
         beginTime: 0,
         endTime: 0
       })
-      .subscribe(res => {
-        setStateWrap({
-          tableData: res.dataList,
-          total: res.total
-        });
-      });
+      .subscribe(
+        res => {
+          setStateWrap({
+            tableData: res.dataList,
+            total: res.total,
+            isLoading: false
+          });
+        },
+        () => {
+          setStateWrap({
+            isLoading: false
+          });
+        }
+      );
   }
 
   function changeTablePageIndex(index: number, pageSize: number) {
@@ -48,14 +59,14 @@ export function useApprovalTemplateStore(appravalTemplateState: {
     getTableData();
   }
 
-  function callbackAction<T>(data: any, actionType: number) {
+  function callbackAction<T>(data: any, actionType: number, value: boolean) {
     switch (actionType) {
       case ModalType.EDIT:
         history.push(`/home/approvalManage/addTemplate/${data.id}/1`);
         break;
       case ModalType.MOVE:
         // 启用禁用
-        openOrCloseTemplate(data);
+        openOrCloseTemplate(data, value);
         break;
       case ModalType.DELETE:
         deleteTempate(data);
@@ -70,11 +81,11 @@ export function useApprovalTemplateStore(appravalTemplateState: {
     confirm({
       title: '删除',
       icon: <ExclamationCircleOutlined />,
-      content: '是否删除当前组',
+      content: '是否删除当前模板',
       okText: '删除',
       onOk() {
         return new Promise(resolve => {
-          confirmDeleteWarehouse(resolve, element);
+          confirmDeleteTemplate(resolve, element);
         });
       },
       onCancel() {
@@ -83,24 +94,27 @@ export function useApprovalTemplateStore(appravalTemplateState: {
     });
   }
 
-  function confirmDeleteWarehouse(resolve: Function, element: any) {
-    approvalManageService.deleteApprovalGroup({ id: element.id }).subscribe(() => {
+  function confirmDeleteTemplate(resolve: Function, element: any) {
+    approvalManageService.deleteApprovalFormTemplate({ id: element.id }).subscribe(() => {
       ShowNotification.success('删除成功');
-
+      getTableData();
       resolve();
     });
   }
 
-  function openOrCloseTemplate(data: { id: string }) {
-    approvalManageService.setFormTemplateState({ id: data.id }).subscribe(() => {
-      setStateWrap({
-        searchForm: {
-          ...state.searchForm,
-          index: 1
-        }
-      });
-      getTableData();
+  function openOrCloseTemplate(data: { id: string }, value: boolean) {
+    // 直接编辑当前的数据不重新加载数据
+    const tableData = state.tableData.map((item: any) => {
+      if (data.id == item.id) {
+        item.state = value ? 1 : 0;
+      }
+      return item;
     });
+
+    setStateWrap({
+      tableData
+    });
+    approvalManageService.setFormTemplateState({ id: data.id }).subscribe();
   }
 
   function addTemplate() {

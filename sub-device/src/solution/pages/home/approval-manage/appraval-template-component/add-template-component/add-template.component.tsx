@@ -6,12 +6,14 @@ import style from './add-template.component.less';
 import { useAddTemplateStore } from './add-template.component.store';
 import ApprovalLineComponent from './approval-line-component/approval-line.component';
 import FormSettingComponent from './form-setting-component/form-setting.component';
+
 export const AddTemplateManageContext = React.createContext({
-  reduxState: addTemplateInitialState,
+  reduxState: undefined,
   dispatch: undefined
 });
 export default function AddTemplateComponent() {
-  const [addTemplateState, dispatch] = React.useReducer(AddTemplateReducer, addTemplateInitialState);
+  const [addTemplateState, dispatch] = React.useReducer(AddTemplateReducer, { ...addTemplateInitialState });
+  console.log(addTemplateState);
 
   const { state, next, prev, commit } = useAddTemplateStore(addTemplateState, dispatch);
 

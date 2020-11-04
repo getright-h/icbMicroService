@@ -16,10 +16,11 @@ export function useAddFlowNodeStore(props: IAddFlowNodeProps) {
       childNodeId: createRandomId()
     });
 
-    flowNodeSettingField = flowNodeSettingField.map((item: any) => {
+    flowNodeSettingField = flowNodeSettingField.map((item: any, index: number) => {
       if (item.flowNodeSettingFieldId == field.flowNodeSettingFieldId) {
         return field;
       }
+      item.sort = index;
       return item;
     });
 
@@ -43,6 +44,7 @@ export function useAddFlowNodeStore(props: IAddFlowNodeProps) {
     flowNodeSettingField.push({
       flowNodeSettingFieldId: createRandomId(),
       isEdit: false,
+      sort: flowNodeSettingField.length || 0,
       attributeList: [
         {
           childNodeId: createRandomId()
@@ -104,7 +106,6 @@ export function useAddFlowNodeStore(props: IAddFlowNodeProps) {
     field[`${key}Id`] = id;
     field[`${key}Name`] = idItem.info.name;
     field[`${key}Code`] = idItem.info.code;
-    console.log(field);
 
     switch (key) {
       case 'organization':
