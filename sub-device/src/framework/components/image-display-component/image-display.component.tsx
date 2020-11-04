@@ -12,7 +12,10 @@ export default function ImageDisplayComponent(props: IImageDisplayProps) {
   const { imageUrl, width, height } = props;
 
   return (
-    <div className={style.previewImg} style={{ width: width || '100px', height: height || '100px' }}>
+    <div
+      className={style.previewImg}
+      style={{ width: width || '100px', height: height || '100px', display: 'inline-block' }}
+    >
       <div className={style.showImg}>
         <img src={imageUrl} />
       </div>

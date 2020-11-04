@@ -7,11 +7,18 @@ import {
   QueryStorePositionListParam,
   QuerySupplierListParam,
   QueryAllotFlowTemplatePagedListParam,
-  QueryVehiclePagedListParam
+  QueryOwnerListParam,
+  QueryDeviceListParam,
+  QueryStoreListParam,
+  QueryVehicleListParam,
+  QueryVehiclePagedListParam,
+  DrapChooseLoadingParams,
+  QueryApprovalFormTemplateParams
 } from '../dto/drap-choose-loading.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
 import { DepUtil } from '~/framework/aop/inject';
+import { IReturn } from '../dto/template-service.dto';
 
 const QUERYSTORE_LIST_BY_ORGANIZATIONID = 'store/manage/queryStoreListByOrganizationId';
 const QUERY_ORGANIZATION_PAGED_LIST = 'store/manage/queryOrganizationPagedList';
@@ -22,11 +29,19 @@ const QUERY_STORE_USER = 'store/manage/queryStoreUser';
 const QUERY_PURCHASE_SELECT_LIST = 'allot/manage/queryPurchasePagedListSelected';
 const QUERY_STORE_POSITION_LIST = 'store/manage/queryStorePositionPagedListByStoreIdSelected';
 const QUERY_ALLOT_FLOW_TEMPLATE_PAGED_LIST = 'allot/manage/queryAllotFlowTemplatePagedList';
+const QUERY_OWNER_LIST = 'vehicle/manage/queryOwnerPagedList';
+const QUERY_DEVICE_LIST = 'material/manage/queryNormalStateDevicePagedList';
+const QUERY_STORE_LIST = 'store/manage/queryStorePagedListSelected';
+const QUERY_VEHICLE_LIST = 'vehicle/manage/queryVehiclePagedList';
+
 const QUERY_VEHICLE_PAGED_LIST = 'vehicle/manage/queryVehiclePagedList';
 
 const QUERYSTOREPOSITIONPAGEDLISTBYSTOREID = 'store/manage/queryStorePositionPagedListByStoreId';
 const QUERY_USER_PAGED_LIST = 'approval/manage/queryUserPagedList';
 const QUERY_ROLE_LIST = 'approval/manage/queryRoleList';
+
+const QUERY_APPROVAL_PAGED_LIST = 'approval/manage/queryApprovalGroupPagedList';
+const QUERY_APPROVAL_FORM_TEMPLATE_PAGED_LIST = 'approval/manage/queryApprovalFormTemplatePagedList';
 @DepUtil.Injectable()
 export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
   @DepUtil.Inject(RequestService)
@@ -87,8 +102,33 @@ export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
   queryAllotFlowTemplatePagedList(params: QueryAllotFlowTemplatePagedListParam): Observable<DrapChooseLoadingReturn> {
     return this.requestService.post(QUERY_ALLOT_FLOW_TEMPLATE_PAGED_LIST, params);
   }
+  // 车主
+  queryOwnerList(params: QueryOwnerListParam): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.post(QUERY_OWNER_LIST, params);
+  }
+  // 仓库(不需要机构id)
+  queryStoreList(params: QueryStoreListParam): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.post(QUERY_STORE_LIST, params);
+  }
+  // 绑定设备选择
+  queryDeviceList(params: QueryDeviceListParam): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.post(QUERY_DEVICE_LIST, params);
+  }
+  // 车架号查找车辆
+  queryVehicleList(params: QueryVehicleListParam): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.post(QUERY_VEHICLE_LIST, params);
+  }
   // 获取车辆列表
   queryVehiclePagedList(params: QueryVehiclePagedListParam): Observable<DrapChooseLoadingReturn> {
     return this.requestService.post(QUERY_VEHICLE_PAGED_LIST, params);
+  }
+
+  // 监控组
+  queryApprovalPagedList(params: DrapChooseLoadingParams): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.post(QUERY_APPROVAL_PAGED_LIST, params);
+  }
+  // 监控组ID查询模板列表
+  queryApprovalFormTemplatePagedList(params: QueryApprovalFormTemplateParams): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.post(QUERY_APPROVAL_FORM_TEMPLATE_PAGED_LIST, params);
   }
 }

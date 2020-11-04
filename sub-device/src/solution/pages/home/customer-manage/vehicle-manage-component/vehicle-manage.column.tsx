@@ -7,58 +7,60 @@ export function vehicleManageColumns(callbackAction: Function) {
   return [
     {
       title: '车主',
-      dataIndex: 'owner'
+      dataIndex: 'ownerName'
     },
     {
       title: '电话',
-      dataIndex: 'phone'
+      dataIndex: 'ownerMobile'
     },
     {
       title: '车牌号',
-      dataIndex: 'vehicleNumber'
+      dataIndex: 'plateNo'
     },
     {
       title: '车架号',
-      dataIndex: 'vehicleFrameNumber'
+      dataIndex: 'vinNo'
     },
     {
       title: '设备号',
-      dataIndex: 'deviceList',
-      render: (deviceList: any[]) => {
-        return deviceList.map(device => (
-          <div key={device.code}>
-            {device.code}
-            <CloseCircleOutlined
-              className={style.deleteDevice}
-              onClick={() => callbackAction(ModalType.UNBIND, device)}
-            />
-          </div>
-        ));
+      dataIndex: 'deviceCodeList',
+      render: (deviceCodeList: any[], data: any) => {
+        return deviceCodeList.length
+          ? deviceCodeList.map(device => (
+              <div key={device}>
+                {device}
+                <CloseCircleOutlined
+                  className={style.deleteDevice}
+                  onClick={() => callbackAction(ModalType.UNBIND, { code: device, id: data.id })}
+                />
+              </div>
+            ))
+          : '-';
       }
     },
     {
       title: '车型',
-      dataIndex: 'vehicleType'
+      dataIndex: 'versionName'
     },
     {
       title: '经销商',
-      dataIndex: 'distributor'
+      dataIndex: 'distributorName'
     },
     {
       title: '金融公司',
-      dataIndex: 'financial'
+      dataIndex: 'financeName'
     },
     {
       title: '安装时间',
-      dataIndex: 'installTime'
+      dataIndex: 'buyTime'
     },
     {
       title: '服务开始时间',
-      dataIndex: 'startTime'
+      dataIndex: 'serverBeginTime'
     },
     {
       title: '服务到期时间',
-      dataIndex: 'endTime'
+      dataIndex: 'serverEndTime'
     },
     {
       title: '操作',

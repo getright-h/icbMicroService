@@ -10,6 +10,8 @@ export class IVehicleManageState {
   total = 0;
   isUnbindDevice = false;
   currentId = '';
+  timeInfo: string[] = [];
+  unbindInfo: any;
 }
 export enum ModalType {
   CREATE,

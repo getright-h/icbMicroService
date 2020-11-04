@@ -3,15 +3,24 @@ import style from './approval-table.component.less';
 import { ISelectLoadingComponent, TablePageTelComponent } from '~/framework/components/component.module';
 import { ITableComponent } from '~/framework/components/component.module';
 import { useApprovalTableStore } from './approval-table.component.store';
-import { Form } from 'antd';
+import { Col, Form, Row, Select } from 'antd';
 import { Button } from 'antd';
 import { approvalTableColumns } from './approval-table.column';
 import { GlobalContext } from '../../../../../context/global/global.provider';
+import { APPROVAL_APPLY_STATUS } from '~/solution/shared/constant/common.const';
 
 export default function ApprovalTableComponent() {
-  const { state, callbackAction, changeTablePageIndex, searchClick } = useApprovalTableStore();
+  const {
+    state,
+    searchForm,
+    callbackAction,
+    changeTablePageIndex,
+    searchClick,
+    initSearchForm,
+    setGroupId
+  } = useApprovalTableStore();
   const { gState } = React.useContext(GlobalContext);
-  const { isLoading, searchForm, tableData, total } = state;
+  const { isLoading, pageIndex, pageSize, tableData, total } = state;
 
   function renderApplyForApprovalButtons() {
     return (
@@ -19,19 +28,18 @@ export default function ApprovalTableComponent() {
         <Button type="primary" onClick={() => searchClick()}>
           查询
         </Button>
+        <Button onClick={() => initSearchForm()}>清空</Button>
       </div>
     );
   }
 
-  function renderISelectLoadingComponent({ placeholder, searchForm, reqUrl }: any) {
+  function renderISelectLoadingComponent({ placeholder, searchForm, reqUrl, onChange, options }: any) {
     const props = {
       placeholder,
-      showSearch: true,
-      width: '150px',
-      searchForm: {
-        systemId: gState.myInfo.systemId
-      },
-      reqUrl: 'queryStoreOrganization'
+      searchForm,
+      reqUrl,
+      getCurrentSelectInfo: (value: string, option: any) => onChange && onChange(value, option),
+      ...options
     };
     return ISelectLoadingComponent(props);
   }
@@ -42,64 +50,84 @@ export default function ApprovalTableComponent() {
       <ITableComponent
         columns={approvalTableColumns(callbackAction)}
         isLoading={isLoading}
-        pageIndex={searchForm.index}
-        pageSize={searchForm.size}
+        pageIndex={pageIndex}
+        pageSize={pageSize}
         data={tableData}
         total={total}
         isPagination={true}
-        changeTablePageIndex={(index: number, pageSize: number) => changeTablePageIndex(index, pageSize)}
+        changeTablePageIndex={(pageIndex: number, pageSize: number) => changeTablePageIndex(pageIndex, pageSize)}
       ></ITableComponent>
     );
   }
 
   function renderApplyForApprovalSelectItems() {
+    const layout = {
+      labelCol: { span: 8 },
+      wrapperCol: { span: 16 }
+    };
     return (
-      <Form name="nest-messages" layout="inline">
-        <Form.Item name={['user', 'name']} label="类型机构">
-          {renderISelectLoadingComponent({
-            placeholder: '请输入类型机构',
-            searchForm: {
-              systemId: gState.myInfo.systemId
-            },
-            reqUrl: 'queryStoreOrganization'
-          })}
-        </Form.Item>
-        <Form.Item name={['user', 'email']} label="模板名称">
-          {renderISelectLoadingComponent({
-            placeholder: '请输入模板名称',
-            searchForm: {
-              systemId: gState.myInfo.systemId
-            },
-            reqUrl: 'queryStoreOrganization'
-          })}
-        </Form.Item>
-        <Form.Item name={['user', 'age']} label="申请人">
-          {renderISelectLoadingComponent({
-            placeholder: '请输入申请人',
-            searchForm: {
-              systemId: gState.myInfo.systemId
-            },
-            reqUrl: 'queryStoreOrganization'
-          })}
-        </Form.Item>
-        <Form.Item name={['user', 'website']} label="创建机构">
-          {renderISelectLoadingComponent({
-            placeholder: '请输入创建机构',
-            searchForm: {
-              systemId: gState.myInfo.systemId
-            },
-            reqUrl: 'queryStoreOrganization'
-          })}
-        </Form.Item>
-        <Form.Item name={['user', 'introduction']} label="审批状态">
-          {renderISelectLoadingComponent({
-            placeholder: '请输入审批状态',
-            searchForm: {
-              systemId: gState.myInfo.systemId
-            },
-            reqUrl: 'queryStoreOrganization'
-          })}
-        </Form.Item>
+      <Form {...layout} form={searchForm} style={{ width: '90%' }} initialValues={{ status: -1 }}>
+        <Row>
+          <Col span={6}>
+            <Form.Item name="groupId" label="模板类型">
+              {renderISelectLoadingComponent({
+                placeholder: '请输入模板类型',
+                onChange: setGroupId,
+                reqUrl: 'queryApprovalPagedList'
+              })}
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item name="templateId" label="模板名称">
+              {renderISelectLoadingComponent({
+                placeholder: '请输入模板名称',
+                searchForm: {
+                  groupId: searchForm.getFieldValue('groupId')
+                },
+                options: {
+                  disabled: !state.curGroupId
+                },
+                reqUrl: 'queryApprovalFormTemplatePagedList'
+              })}
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item name="creatorId" label="申请人">
+              {renderISelectLoadingComponent({
+                placeholder: '请输入申请人',
+                searchForm: {
+                  systemId: gState.myInfo.systemId
+                },
+                options: {
+                  dropdownMatchSelectWidth: false
+                },
+                reqUrl: 'queryUserPagedList'
+              })}
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item name="organizationId" label="创建机构">
+              {renderISelectLoadingComponent({
+                placeholder: '请输入创建机构',
+                searchForm: {
+                  systemId: gState.myInfo.systemId
+                },
+                reqUrl: 'queryStoreOrganization'
+              })}
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item name="status" label="审批状态">
+              <Select placeholder="请选择审批状态">
+                {APPROVAL_APPLY_STATUS.map((status: any, index: number) => (
+                  <Select.Option key={`apply-${index}`} value={status.value}>
+                    {status.title}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </Col>
+        </Row>
       </Form>
     );
   }

@@ -3,12 +3,15 @@ import { IVoucherManageState, ModalType } from './voucher-manage.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect } from 'react';
 import { VoucherManageService } from '~/solution/model/services/voucher-manage.service';
-import { ShowNotification } from '~/framework/util/common';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { Modal } from 'antd';
+import moment from 'moment';
+import 'moment/locale/zh-cn';
+import { ShowNotification } from '~/framework/util/common';
+moment.locale('zh-cn');
 
 export function useVoucherManageStore() {
-  const { state, setStateWrap } = useStateStore(new IVoucherManageState());
+  const { state, setStateWrap, getState } = useStateStore(new IVoucherManageState());
   const voucherManageService: VoucherManageService = new VoucherManageService();
 
   useEffect(() => {
@@ -16,27 +19,22 @@ export function useVoucherManageStore() {
   }, []);
 
   function getTableData() {
-    // setStateWrap({ isLoading: true });
-    // voucherManageService.__getTableData__(state.searchForm).subscribe(
-    //   res => {
-    //     setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
-    //   },
-    //   err => {
-    //     setStateWrap({ isLoading: false });
-    //     ShowNotification.error(err);
-    //   }
-    // );
-    const tableData = [
-      {
-        id: '327',
-        vehicleFrameNumber: 'XJQFZHSZD',
-        deviceList: [
-          { id: '1', name: 'XZX-330' },
-          { id: '2', name: 'JY23333' }
-        ]
-      }
-    ];
-    setStateWrap({ tableData });
+    setStateWrap({ isLoading: true });
+    const { searchForm } = getState();
+    voucherManageService
+      .getDispatchPagedList({
+        ...searchForm,
+        beginTime: searchForm.beginTime ? moment(searchForm.beginTime).valueOf() : 0,
+        endTime: searchForm.endTime ? moment(searchForm.endTime).valueOf() : 0
+      })
+      .subscribe(
+        res => {
+          setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
+        },
+        err => {
+          setStateWrap({ isLoading: false });
+        }
+      );
   }
 
   function onChange(value: any, valueType: string) {
@@ -49,18 +47,23 @@ export function useVoucherManageStore() {
   }
 
   function getDateTimeInfo(timeInfo: any) {
-    const { searchForm } = state;
-    searchForm.beginTime = timeInfo[0];
-    searchForm.endTime = timeInfo[1];
-    setStateWrap({ searchForm });
+    setStateWrap({
+      searchForm: {
+        ...state.searchForm,
+        beginTime: timeInfo[0],
+        endTime: timeInfo[1]
+      }
+    });
   }
 
   function searchClick() {
-    const { searchForm } = state;
-    searchForm.page = 1;
-    setStateWrap({ searchForm });
+    setStateWrap({
+      searchForm: {
+        ...state.searchForm,
+        index: 1
+      }
+    });
     getTableData();
-    console.log(searchForm);
   }
 
   function callbackAction(actionType: number, data?: any) {
@@ -81,17 +84,16 @@ export function useVoucherManageStore() {
           icon: <ExclamationCircleOutlined />,
           onOk: () =>
             new Promise((resolve, reject) => {
-              // voucherManageService.deleteVoucher(data.id).subscribe(
-              //   (res: any) => {
-              //     ShowNotification.success('已删除！');
-              //     getTableData();
-              //     resolve();
-              //   },
-              //   (err: any) => {
-              //     ShowNotification.error(err);
-              //     reject();
-              //   }
-              // );
+              voucherManageService.deleteDispatch(data.id).subscribe(
+                (res: any) => {
+                  ShowNotification.success('已删除！');
+                  searchClick();
+                  resolve();
+                },
+                (err: any) => {
+                  reject();
+                }
+              );
             })
         });
         break;
@@ -100,16 +102,20 @@ export function useVoucherManageStore() {
     }
   }
 
-  function changeTablePageIndex(index: number, pageSize: number) {
-    const { searchForm } = state;
-    searchForm.page = index;
-    searchForm.size = pageSize;
-    setStateWrap({ searchForm });
+  function changeTablePageIndex(index: number, size: number) {
+    setStateWrap({
+      searchForm: {
+        ...state.searchForm,
+        index,
+        size
+      }
+    });
     getTableData();
   }
 
-  function handleModalCancel() {
+  function handleModalCancel(isSuccess?: boolean) {
     setStateWrap({ editVisible: false, detailVisible: false });
+    isSuccess && searchClick();
   }
   return {
     state,

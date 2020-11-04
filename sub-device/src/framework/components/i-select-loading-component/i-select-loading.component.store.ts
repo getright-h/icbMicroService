@@ -6,7 +6,7 @@ import _ from 'lodash';
 import { Subscription } from 'rxjs';
 
 export function useISelectLoadingStore(props: IISelectLoadingProps) {
-  const { reqUrl } = props;
+  const { reqUrl, searchKeyName = 'name' } = props;
   const { state, setStateWrap } = useStateStore(new IISelectLoadingState());
   const drapChooseLoadingService = useService(DrapChooseLoadingService);
   let getOptionListSubscription: Subscription;
@@ -21,7 +21,7 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
     setStateWrap({ fetching: true });
     getOptionListSubscription = drapChooseLoadingService[reqUrl]({
       ...searchParams.current,
-
+      [searchKeyName]: searchName.current,
       index: scrollPage.current,
       size: props.pageSize || 100
     }).subscribe(

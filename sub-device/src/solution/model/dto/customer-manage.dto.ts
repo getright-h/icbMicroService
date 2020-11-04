@@ -12,7 +12,7 @@ export abstract class CustomerManageDTO {
   abstract updateOwner(params: SetOwnerRequestParam): Observable<boolean>;
   abstract deleteOwner(id: string): Observable<boolean>;
   abstract queryVehiclePagedList(params: VehicleListRequestParam): Observable<VehicleListResponseResult>;
-  abstract getVehicleDetail(id: string): Observable<VehicleDetailResponseDetail>;
+  abstract getVehicleDetail(id: string): Observable<VehicleDetailResponse>;
   abstract insertVehicle(params: SetVehicleRequestParam): Observable<boolean>;
   abstract updateVehicle(params: SetVehicleRequestParam): Observable<boolean>;
   abstract deleteVehicle(id: string): Observable<boolean>;
@@ -21,15 +21,15 @@ export abstract class CustomerManageDTO {
 }
 
 export interface OwnerListRequestParam {
-  name: string;
-  mobile: string;
-  certificateNo: string;
-  sex: number;
-  follow: number;
   index: number;
   size: number;
-  beginTime: number;
-  endTime: number;
+  name?: string;
+  mobile?: string;
+  certificateNo?: string;
+  sex?: number;
+  follow?: number;
+  beginTime?: number;
+  endTime?: number;
 }
 
 export interface OwnerListResponseResult {
@@ -96,17 +96,18 @@ export interface SetOwnerRequestParam {
 }
 
 export interface VehicleListRequestParam {
-  strValue: string;
-  device: string;
-  serverBeginTime: number;
-  serverEndTime: number;
-  distributorId: string;
-  financeId: string;
-  mobile: string;
+  strValue?: string;
+  device?: string;
+  serverBeginTime?: number;
+  serverEndTime?: number;
+  distributorId?: string;
+  financeId?: string;
+  mobile?: string;
   index: number;
   size: number;
-  beginTime: number;
-  endTime: number;
+  beginTime?: number;
+  endTime?: number;
+  deviceNumber?: number;
 }
 
 export interface VehicleListResponseResult {
@@ -132,13 +133,13 @@ interface VehicleListItem {
   deviceCodeList: string[];
 }
 
-export interface VehicleDetailResponseDetail {
-  owner: Owner;
-  vehicle: Vehicle;
+export interface VehicleDetailResponse {
+  owner: OwnerInfo;
+  vehicle: VehicleInfo;
   deviceList: string[];
 }
 
-interface Vehicle {
+interface VehicleInfo {
   id: string;
   vinNo: string;
   plateNo: string;
@@ -154,19 +155,22 @@ interface Vehicle {
   color: string;
   buyTime: string;
   distributorId: string;
+  distributorName: string;
   financeId: string;
+  financeName: string;
   image: string;
+  imageList: string[];
   serverBeginTime: string;
   serverTime: number;
 }
 
-interface Owner {
+export interface OwnerInfo {
   id: string;
-  ownerName: string;
-  ownerMobile: string;
-  sexText: string;
-  certificateTypeText: string;
-  certificateNo: string;
+  ownerName?: string;
+  ownerMobile?: string;
+  sexText?: string;
+  certificateTypeText?: string;
+  certificateNo?: string;
 }
 
 export interface SetVehicleRequestParam {
@@ -174,7 +178,7 @@ export interface SetVehicleRequestParam {
   ownerId?: string;
   owner?: OwnerEdit;
   vehicle: VehicleEdit;
-  codeList: string[];
+  codeList?: string[];
 }
 
 interface OwnerEdit {
@@ -196,13 +200,13 @@ interface VehicleEdit {
   configId: string;
   configName: string;
   color: string;
-  buyTime: string;
+  buyTime: string | moment.Moment;
   distributorId: string;
   distributorName: string;
   financeId: string;
   financeName: string;
   imageList: string[];
-  serverBeginTime: string;
+  serverBeginTime: string | moment.Moment;
   serverTime: number;
 }
 
@@ -211,4 +215,11 @@ export interface DeviceUnbindRequestParam {
   code: string;
   storeId?: string;
   storePositionId?: string;
+}
+
+export interface VehicleLayout {
+  key: string;
+  name: string;
+  value: string;
+  code: string;
 }

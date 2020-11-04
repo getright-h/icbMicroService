@@ -4,7 +4,9 @@
  */
 export class IVoucherEditState {
   confirmLoading = false;
-  details: any;
+  isEdit = false;
+  pictureList: any[] = [];
+  deviceCodeList: string[] = [];
 }
 /**
  * @export props变量定义和初始化
@@ -13,5 +15,5 @@ export class IVoucherEditState {
 export class IVoucherEditProps {
   id: string;
   visible: boolean;
-  close: () => void;
+  close: (isSuccess?: boolean) => void;
 }

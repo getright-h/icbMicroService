@@ -162,7 +162,8 @@ export default function StockManageComponent() {
           onClick={() => {
             callbackAction(ModalType.IMPORT);
           }}
-          disabled={!currentSelectNode}
+          // disabled={!currentSelectNode}
+          disabled
         >
           批量导入
         </Button>
@@ -170,7 +171,8 @@ export default function StockManageComponent() {
           onClick={() => {
             callbackAction(ModalType.EXPORT);
           }}
-          disabled={!currentSelectNode}
+          // disabled={!currentSelectNode}
+          disabled
         >
           批量导出
         </Button>
@@ -192,7 +194,7 @@ export default function StockManageComponent() {
         total={total}
         isPagination={true}
         changeTablePageIndex={(pageIndex: number, pageSize: number) => changeTablePageIndex(pageIndex, pageSize)}
-        rowSelection={rowSelection}
+        // rowSelection={rowSelection}
         rowKey="materialId"
       ></ITableComponent>
     );

@@ -15,11 +15,10 @@ export default function EditOrderComponent(props: IEditOrderProps) {
     selfClose,
     getCurrentSelectInfo,
     handleDeviceListChange,
-    handleTimeChange,
     setTotalAmount
   } = useEditOrderStore(props);
   const { visible } = props;
-  const { confirmLoading, editSupplierName, editPurchaseTime, imageList } = state;
+  const { confirmLoading, editSupplierName, imageList } = state;
   const formItemLayout = {
     labelCol: {
       xs: { span: 24 },
@@ -80,11 +79,7 @@ export default function EditOrderComponent(props: IEditOrderProps) {
             style={{ width: '200px' }}
             showTime={{ format: 'YYYY-MM-DD HH:mm:ss' }}
             format="YYYY-MM-DD HH:mm:ss"
-            defaultValue={editPurchaseTime && moment(editPurchaseTime)}
             placeholder="请选择时间"
-            onChange={(date: moment.Moment, dateString: string) => {
-              handleTimeChange(dateString);
-            }}
           />
         </Form.Item>
         <Form.Item label="供应商" name="supplierId">

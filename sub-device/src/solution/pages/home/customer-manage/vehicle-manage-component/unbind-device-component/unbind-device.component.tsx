@@ -4,11 +4,12 @@ import { useUnbindDeviceStore } from './unbind-device.component.store';
 import { IUnbindDeviceProps } from './unbind-device.interface';
 import { Modal, Form, Input, Button, Select } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { ISelectLoadingComponent } from '~/framework/components/component.module';
 
 export default function UnbindDeviceComponent(props: IUnbindDeviceProps) {
-  const { state, form, selfSubmit, selfClose, changeModal, deviceUnbind } = useUnbindDeviceStore(props);
+  const { state, form, selfSubmit, selfClose, changeModal, deviceUnbind, getSelectStore } = useUnbindDeviceStore(props);
   const { visible } = props;
-  const { confirmLoading, unbindType } = state;
+  const { confirmLoading, unbindType, selectStoreId } = state;
   const layout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 18 }
@@ -20,10 +21,26 @@ export default function UnbindDeviceComponent(props: IUnbindDeviceProps) {
           <Form.Item label="选择入库位置" required={true}>
             <Input.Group compact>
               <Form.Item name={'storeId'} noStyle rules={[{ required: true, message: '请选择仓库' }]}>
-                <Select placeholder="请选择仓库" style={{ width: '50%' }}></Select>
+                <ISelectLoadingComponent
+                  width="50%"
+                  reqUrl="queryStoreList"
+                  dropdownMatchSelectWidth={false}
+                  placeholder="请选择仓库"
+                  searchKey=""
+                  getCurrentSelectInfo={(value: string, option: any) => getSelectStore(value)}
+                />
               </Form.Item>
               <Form.Item name={'positionId'} noStyle rules={[{ required: true, message: '请选择仓位' }]}>
-                <Select placeholder="请选择仓位" style={{ width: '50%' }}></Select>
+                <ISelectLoadingComponent
+                  width="50%"
+                  reqUrl="queryStorePositionList"
+                  dropdownMatchSelectWidth={false}
+                  placeholder="请选择仓位"
+                  searchKey=""
+                  disabled={!selectStoreId}
+                  searchForm={{ storeId: selectStoreId }}
+                  getCurrentSelectInfo={(value: string, option: any) => form.setFieldsValue({ positionId: value })}
+                />
               </Form.Item>
             </Input.Group>
           </Form.Item>
@@ -36,7 +53,7 @@ export default function UnbindDeviceComponent(props: IUnbindDeviceProps) {
       title="解绑入库"
       visible={visible}
       width={600}
-      onCancel={selfClose}
+      onCancel={() => selfClose()}
       onOk={() => {
         form
           .validateFields()
@@ -56,15 +73,15 @@ export default function UnbindDeviceComponent(props: IUnbindDeviceProps) {
       title="设备解绑"
       visible={visible}
       width={600}
-      onCancel={selfClose}
+      onCancel={() => selfClose()}
       footer={[
         <Button key="stock" type="primary" onClick={changeModal}>
           解绑入库
         </Button>,
-        <Button key="unbind" type="primary" onClick={deviceUnbind}>
+        <Button key="unbind" type="primary" onClick={deviceUnbind} loading={confirmLoading}>
           直接解绑
         </Button>,
-        <Button key="cancel" onClick={selfClose}>
+        <Button key="cancel" onClick={() => selfClose()}>
           取消
         </Button>
       ]}

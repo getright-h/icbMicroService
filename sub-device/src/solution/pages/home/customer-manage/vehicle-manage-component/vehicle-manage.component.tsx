@@ -1,6 +1,10 @@
 import * as React from 'react';
 import style from './vehicle-manage.component.less';
-import { TablePageTelComponent, TimePickerComponent } from '~/framework/components/component.module';
+import {
+  ISelectLoadingComponent,
+  TablePageTelComponent,
+  TimePickerComponent
+} from '~/framework/components/component.module';
 import { ITableComponent } from '~/framework/components/component.module';
 import { vehicleManageColumns, vehicleManageExpandedRow } from './vehicle-manage.column';
 import { useVehicleManageStore } from './vehicle-manage.component.store';
@@ -20,7 +24,8 @@ export default function VehicleManageComponent() {
     changeTablePageIndex,
     searchClick,
     handleModalCancel,
-    onSelectRows
+    onSelectRows,
+    getDateTimeInfo
   } = useVehicleManageStore();
   const { isLoading, tableData, total, pageIndex, pageSize, isUnbindDevice } = state;
   function renderSelectItems() {
@@ -32,12 +37,12 @@ export default function VehicleManageComponent() {
       <Form {...layout} form={searchForm} style={{ width: '90%' }}>
         <Row gutter={24}>
           <Col span={8}>
-            <Form.Item name="keyword" label="查询车辆">
+            <Form.Item name="strValue" label="查询车辆">
               <Input allowClear placeholder="车牌号/车架号" />
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item name="owner" label="查询车主">
+            <Form.Item name="mobile" label="查询车主">
               <Input allowClear placeholder="手机号" />
             </Form.Item>
           </Col>
@@ -47,23 +52,35 @@ export default function VehicleManageComponent() {
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item name="timeInfo" label="采购时间">
-              <TimePickerComponent pickerType="dateRange" />
+            <Form.Item name="timeInfo" label="服务到期时间">
+              <TimePickerComponent pickerType="dateRange" getDateTimeInfo={getDateTimeInfo} />
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item name="distributor" label="所属经销商">
-              <Select></Select>
+            <Form.Item name="distributorId" label="所属经销商">
+              <ISelectLoadingComponent
+                reqUrl="queryOrganizationList"
+                placeholder="请选择所属经销商"
+                getCurrentSelectInfo={(value: string, option: any) =>
+                  searchForm.setFieldsValue({ distributorId: value })
+                }
+                searchForm={{ systemId: process.env.SYSTEM_ID, typeId: 'ad947c18cbdcc646982808d86eb6828f' }}
+              />
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item name="financial" label="所属金融机构">
-              <Select></Select>
+            <Form.Item name="financeId" label="所属金融机构">
+              <ISelectLoadingComponent
+                reqUrl="queryOrganizationList"
+                placeholder="请选择所属金融机构"
+                getCurrentSelectInfo={(value: string, option: any) => searchForm.setFieldsValue({ financeId: value })}
+                searchForm={{ systemId: process.env.SYSTEM_ID, typeId: 'f247ca73916ac014b40908d86eb6ae8a' }}
+              />
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item name="count" label="单个车辆设备数">
-              <Input />
+            <Form.Item name="deviceNumber" label="单个车辆设备数">
+              <Input placeholder="请输入设备数" />
             </Form.Item>
           </Col>
         </Row>
@@ -86,8 +103,12 @@ export default function VehicleManageComponent() {
         <Button type="primary" onClick={() => callbackAction(ModalType.CREATE)}>
           新建
         </Button>
-        <Button onClick={() => callbackAction(ModalType.IMPORT)}>批量导入</Button>
-        <Button onClick={() => callbackAction(ModalType.EXPORT)}>批量导出</Button>
+        <Button onClick={() => callbackAction(ModalType.IMPORT)} disabled>
+          批量导入
+        </Button>
+        <Button onClick={() => callbackAction(ModalType.EXPORT)} disabled>
+          批量导出
+        </Button>
       </div>
     );
   }
@@ -105,11 +126,11 @@ export default function VehicleManageComponent() {
         data={tableData}
         total={total}
         isPagination={true}
-        rowSelection={rowSelection}
-        expandable={{
-          expandedRowRender: vehicleManageExpandedRow,
-          expandIconColumnIndex: 1
-        }}
+        // rowSelection={rowSelection}
+        // expandable={{
+        //   expandedRowRender: vehicleManageExpandedRow,
+        //   expandIconColumnIndex: 1
+        // }}
         changeTablePageIndex={(pageIndex: number, pageSize: number) => changeTablePageIndex(pageIndex, pageSize)}
       ></ITableComponent>
     );
@@ -124,7 +145,7 @@ export default function VehicleManageComponent() {
         otherSearchBtns={renderOtherButtons()}
         table={<RenderTable />}
       ></TablePageTelComponent>
-      <UnbindDeviceComponent visible={isUnbindDevice} close={handleModalCancel} />
+      <UnbindDeviceComponent visible={isUnbindDevice} close={handleModalCancel} info={state.unbindInfo} />
     </React.Fragment>
   );
 }

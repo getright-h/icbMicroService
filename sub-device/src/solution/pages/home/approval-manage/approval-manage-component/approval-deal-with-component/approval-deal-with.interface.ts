@@ -4,14 +4,13 @@
  */
 export class IApprovalDealWithState {
   isLoading = false;
-  searchForm = {
-    page: 1,
-    size: 10
-  };
+  pageIndex = 1;
+  pageSize = 10;
   tableData: any = [];
   total = 0;
   visibleModal = false;
   currentId = '';
+  curGroupId = '';
 }
 export enum ModalType {
   CREATE,

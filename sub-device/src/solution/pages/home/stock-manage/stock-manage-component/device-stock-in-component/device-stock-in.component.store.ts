@@ -43,7 +43,6 @@ export function useDeviceStockInStore(props: IDeviceStockInProps) {
         selfClose(true);
       },
       (err: any) => {
-        ShowNotification.error(err);
         setStateWrap({ confirmLoading: false });
       }
     );

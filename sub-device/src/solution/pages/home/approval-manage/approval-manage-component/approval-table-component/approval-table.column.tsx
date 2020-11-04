@@ -1,33 +1,34 @@
 import { ColumnsType } from 'antd/lib/table';
 import * as React from 'react';
-import { Divider, Switch } from 'antd';
+import { Divider } from 'antd';
+import { ModalType } from './approval-table.interface';
+import { APPROVAL_APPLY_STATUS_ENUM } from '~/solution/shared/constant/common.const';
 export function approvalTableColumns(action: Function): ColumnsType<any> {
   return [
     {
       title: '审批状态',
-      dataIndex: 'name'
+      dataIndex: 'statusText'
     },
     {
       title: '模板类型',
-      dataIndex: 'stockNumber'
+      dataIndex: 'groupName'
     },
     {
       title: '模板名称',
-      dataIndex: 'positionAddress'
+      dataIndex: 'templateName'
     },
     {
       title: '申请人',
-      dataIndex: 'isDefaultText'
+      dataIndex: 'creatorName'
     },
     {
       title: '申请时间',
-      dataIndex: 'positionAddress'
+      dataIndex: 'createTime'
     },
     {
       title: '创建机构',
-      dataIndex: 'positionAddress'
+      dataIndex: 'organizationName'
     },
-
     {
       title: '操作',
       dataIndex: 'action',
@@ -36,9 +37,13 @@ export function approvalTableColumns(action: Function): ColumnsType<any> {
       render: (text, row) => {
         return (
           <React.Fragment>
-            <a onClick={() => action(row, '详情')}>编辑</a>
-            <Divider type="vertical" />
-            <a onClick={() => action(row, '撤回')}>删除</a>
+            <a onClick={() => action(row, ModalType.EDIT)}>详情</a>
+            {row.status === APPROVAL_APPLY_STATUS_ENUM.Auditing && (
+              <React.Fragment>
+                <Divider type="vertical" />
+                <a onClick={() => action(row, ModalType.WITHDRAW)}>撤回</a>
+              </React.Fragment>
+            )}
           </React.Fragment>
         );
       }

@@ -7,4 +7,5 @@ export class IApprovalManageState {
   searchForm = { index: 1, size: 10 };
   tableData: any[] = [];
   total = 0;
+  currentTab = '1';
 }

@@ -6,7 +6,8 @@ import {
   OwnerListResponseResult,
   SetOwnerRequestParam,
   SetVehicleRequestParam,
-  VehicleDetailResponseDetail,
+  VehicleDetailResponse,
+  VehicleLayout,
   VehicleListRequestParam,
   VehicleListResponseResult
 } from '../dto/customer-manage.dto';
@@ -24,13 +25,18 @@ const INSERT_OWNER = 'vehicle/manage/insertOwner';
 const UPDATE_OWNER = 'vehicle/manage/updateOwner';
 const DELETE_OWNER = 'vehicle/manage/owner';
 
-const QUERY_VEHICLE_PAGED_LIST = 'vehicle/manage/queryOwnerPagedList';
+const QUERY_VEHICLE_PAGED_LIST = 'vehicle/manage/queryVehiclePagedList';
 const GET_VEHICLE_DETAIL = 'vehicle/manage/vehicleDetail';
 const INSERT_VEHICLE = 'vehicle/manage/insertVehicle';
 const UPDATE_VEHICLE = 'vehicle/manage/updateVehicle';
 const DELETE_VEHICLE = 'vehicle/manage/vehicle';
 const UNBINDING_DEVICE_TO_STORE = 'vehicle/manage/unBindingPutStore';
 const UNBINDING_DEVICE = 'vehicle/manage/unBinding';
+
+const VEHICLE_BRAND = 'vehicle/manage/vehicleBrand';
+const VEHICLE_FACTORY = 'vehicle/manage/vehicleFactory';
+const VEHICLE_VERSION = 'vehicle/manage/vehicleVersion';
+const VEHICLE_CONFIG = 'vehicle/manage/vehicleConfig';
 
 @DepUtil.Injectable()
 export class CustomerManageService extends CustomerManageDTO {
@@ -66,7 +72,7 @@ export class CustomerManageService extends CustomerManageDTO {
     return this.requestService.post(QUERY_VEHICLE_PAGED_LIST, params);
   }
   // 车辆详情
-  getVehicleDetail(id: string): Observable<VehicleDetailResponseDetail> {
+  getVehicleDetail(id: string): Observable<VehicleDetailResponse> {
     return this.requestService.get(GET_VEHICLE_DETAIL, { id });
   }
   // 新增车辆
@@ -88,5 +94,21 @@ export class CustomerManageService extends CustomerManageDTO {
   // 直接解绑
   deviceUnbind(params: DeviceUnbindRequestParam): Observable<boolean> {
     return this.requestService.get(UNBINDING_DEVICE, params);
+  }
+  // 车辆品牌
+  getVehicleBrand(params: { name?: string }): Observable<Array<VehicleLayout>> {
+    return this.requestService.get(VEHICLE_BRAND, params);
+  }
+  // 车辆型号
+  getVehicleFactory(params: { name?: string; code?: string }): Observable<Array<VehicleLayout>> {
+    return this.requestService.get(VEHICLE_FACTORY, params);
+  }
+  // 车辆系列
+  getVehicleVersion(params: { name?: string; code?: string }): Observable<Array<VehicleLayout>> {
+    return this.requestService.get(VEHICLE_VERSION, params);
+  }
+  // 车辆配置
+  getVehicleConfig(params: { name?: string; id?: string }): Observable<Array<VehicleLayout>> {
+    return this.requestService.get(VEHICLE_CONFIG, params);
   }
 }

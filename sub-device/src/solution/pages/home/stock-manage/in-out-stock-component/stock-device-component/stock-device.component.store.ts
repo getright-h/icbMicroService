@@ -1,7 +1,6 @@
 import { IStockDeviceState, IStockDeviceProps } from './stock-device.interface';
 import { useService, useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect } from 'react';
-import { ShowNotification } from '~/framework/util/common';
 import { StockManageService } from '~/solution/model/services/stock-manage.service';
 
 export function useStockDeviceStore(props: IStockDeviceProps) {
@@ -13,14 +12,9 @@ export function useStockDeviceStore(props: IStockDeviceProps) {
   }, [props.id]);
 
   function getDetails(id: string) {
-    stockManageService.queryInOutRecordDetail(id).subscribe(
-      res => {
-        setStateWrap({ tableData: res.contentList });
-      },
-      err => {
-        ShowNotification.error(err);
-      }
-    );
+    stockManageService.queryInOutRecordDetail(id).subscribe(res => {
+      setStateWrap({ tableData: res.contentList });
+    });
   }
 
   function selfClose() {
