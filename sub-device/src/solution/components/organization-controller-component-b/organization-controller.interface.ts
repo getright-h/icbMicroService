@@ -16,21 +16,18 @@ export class IOrganizationControllerProps {
   warehouseAction?: (element?: any) => ReactNode;
   onSelect?: (selectedKeys?: Key[], e?: { node: EventDataNode }) => void;
   expandedKeys?: string[];
-  currentOrganazation?: string = '';
   checkedKeys?: string[];
-  organizationChecked?: boolean;
   checkable?: boolean;
   treeSelectedKeys?: string[];
   onExpand?: (expandedKeys: string[]) => void;
   queryChildInfo?: any;
   getCheckedInfo?: (treeData: DataNode[], checkedKeys?: []) => void;
-  onlyLeafCanSelect?: boolean = false;
   isGroup?: boolean;
 }
 
 export const TREE_MAP = {
   title: 'name',
-  key: 'id'
+  key: 'code'
 };
 
 export interface OrganizationExportFunction {

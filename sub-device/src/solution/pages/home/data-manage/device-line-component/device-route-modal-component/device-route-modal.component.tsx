@@ -14,15 +14,15 @@ export default function DeviceRouteModalComponent(props: IDeviceLineProp) {
       return flow.routeText;
     }
 
-    if (flow.route === DEVICE_ROUTE_ENUM.Allot) {
-      // 调拨中
-      return '调拨中 等待接口调试';
-    }
+    // if (flow.route === DEVICE_ROUTE_ENUM.Allot) {
+    //   // 调拨中
+    //   return '调拨中 等待接口调试';
+    // }
 
-    if (flow.route === DEVICE_ROUTE_ENUM.Bind) {
-      // 绑定车主
-      return '调拨中 等待接口调试';
-    }
+    // if (flow.route === DEVICE_ROUTE_ENUM.Bind) {
+    //   // 绑定车主
+    //   return '调拨中 等待接口调试';
+    // }
     // 在库
     return `${flow.storeName}-${flow.storePositionName}`;
   }
@@ -51,8 +51,8 @@ export default function DeviceRouteModalComponent(props: IDeviceLineProp) {
                           flex: 1
                         }}
                       >
-                        <Popover placement="topRight" content={'奥术大师大所多大声道'} trigger="click">
-                          <span>备注:{flow.remark || '奥术大师大所多大声道'}</span>
+                        <Popover placement="topRight" content={flow.remark || '-'} trigger="click">
+                          <span>备注:{flow.remark || '-'}</span>
                         </Popover>
                       </p>
                     </div>

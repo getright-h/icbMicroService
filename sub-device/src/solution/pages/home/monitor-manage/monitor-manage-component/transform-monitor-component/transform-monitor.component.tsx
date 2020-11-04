@@ -5,8 +5,8 @@ import { Modal, Form, Checkbox, Input, Switch } from 'antd';
 import OrganizationControllerComponent from '~/solution/components/organization-controller-component/organization-controller.component';
 
 export default function TransformMonitorComponent(props: ITransformMonitorProps) {
-  const { state, form, close, onSubmit, onchange, onCheck, onExpand } = useTransformMonitorStore(props);
-  const { visible = false } = props;
+  const { state, form, close, onSubmit, onchange, onCheck, onExpand, queryChildInfo } = useTransformMonitorStore(props);
+  const { visible = false, data = {} } = props;
   const { submitLoading = false, checkedKeys, expandedKeys } = state;
   const layout = {
     labelCol: { span: 8 },
@@ -17,7 +17,10 @@ export default function TransformMonitorComponent(props: ITransformMonitorProps)
       expandedKeys,
       onExpand,
       getCheckedInfo: onCheck,
-      checkedKeys
+      checkedKeys,
+      isGroup: true,
+      queryChildInfo,
+      onlyLeafCanSelect: true
     };
     return (
       <div>
@@ -28,9 +31,9 @@ export default function TransformMonitorComponent(props: ITransformMonitorProps)
   return (
     <Modal title={'车辆转组'} visible={visible} onCancel={close} onOk={onSubmit} confirmLoading={submitLoading}>
       <Form {...layout} form={form}>
-        <Form.Item label={'已选车辆数'}></Form.Item>
-        <Form.Item label={'监控组原名'}></Form.Item>
-        <Form.Item label={'转移目标组名'} rules={[{ required: true }]}>
+        <Form.Item label={'已选车辆数'}>{data?.selectedRowKeys.length ? data.selectedRowKeys.length : 1}</Form.Item>
+        <Form.Item label={'监控组原名'}>{data?.currentMonitorGroup.name}</Form.Item>
+        <Form.Item label={'转移目标组名'} name={'selectedGroupIdList'} rules={[{ required: true }]}>
           {RenderTree()}
         </Form.Item>
         <Form.Item style={{ marginLeft: 70 }} name={'copy'}>

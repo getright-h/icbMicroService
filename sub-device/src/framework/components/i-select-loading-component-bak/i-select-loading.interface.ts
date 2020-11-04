@@ -9,8 +9,8 @@ export class IISelectLoadingState {
 }
 export interface IISelectLoadingProps {
   placeholder: string;
+  isData?: boolean;
   width?: number | string;
-  mode?: 'multiple' | 'tags';
   allowClear?: boolean;
   className?: string;
   selectedValue?: string;
@@ -21,6 +21,4 @@ export interface IISelectLoadingProps {
   searchKey?: string;
   showSearch?: boolean;
   pageSize?: number;
-  dropdownMatchSelectWidth?: boolean | number;
-  searchKeyName?: string;
 }
