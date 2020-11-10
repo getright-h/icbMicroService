@@ -35,11 +35,10 @@ const QUERY_STORE_LIST = 'store/manage/queryStorePagedListSelected';
 const QUERY_VEHICLE_LIST = 'vehicle/manage/queryVehiclePagedList';
 
 const QUERY_VEHICLE_PAGED_LIST = 'vehicle/manage/queryVehiclePagedList';
-
+const QUERY_ROLE_LIST = 'vehicle/manage/queryRoleList';
+const QUERY_GROUP_SEARCH_LIST = 'vehicle/manage/queryGroupSearchList';
 const QUERYSTOREPOSITIONPAGEDLISTBYSTOREID = 'store/manage/queryStorePositionPagedListByStoreId';
 const QUERY_USER_PAGED_LIST = 'approval/manage/queryUserPagedList';
-const QUERY_ROLE_LIST = 'approval/manage/queryRoleList';
-
 const QUERY_APPROVAL_PAGED_LIST = 'approval/manage/queryApprovalGroupPagedList';
 const QUERY_APPROVAL_FORM_TEMPLATE_PAGED_LIST = 'approval/manage/queryApprovalFormTemplatePagedList';
 @DepUtil.Injectable()
@@ -130,5 +129,9 @@ export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
   // 监控组ID查询模板列表
   queryApprovalFormTemplatePagedList(params: QueryApprovalFormTemplateParams): Observable<DrapChooseLoadingReturn> {
     return this.requestService.post(QUERY_APPROVAL_FORM_TEMPLATE_PAGED_LIST, params);
+  }
+  //监控组搜索
+  queryGroupSearchList(params: QueryVehiclePagedListParam): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.get(QUERY_GROUP_SEARCH_LIST, params);
   }
 }

@@ -3,26 +3,32 @@ import style from './monitor-manage.component.less';
 import { useMonitorManageStore } from './monitor-manage.component.store';
 import { IHeaderTitleComponent, ITableComponent, TablePageTelComponent } from '~framework/components/component.module';
 import { monitorColumns } from './monitor-manage-column';
-import { Form, Button, Input } from 'antd';
+import { Button, Input } from 'antd';
 import { ModalType } from '../monitor-manage.const';
 import OrganizationControllerComponent from '~/solution/components/organization-controller-component/organization-controller.component';
 import AddMonitorGroupComponent from './add-monitor-group-component/add-monitor-group.component';
 import AddMonitorCarComponent from './add-monitor-car-component/add-monitor-car.component';
 import TransformMonitorComponent from './transform-monitor-component/transform-monitor.component';
+
 export default function MonitorManageComponent() {
   const {
     state,
+    organizationControllerRef,
     callbackAction,
     changeTablePageIndex,
     onChange,
     searchClick,
     handleModalCancel,
-    searchValueChange,
-    getMonitorGroupList,
+    queryChildInfo,
     onExpand,
-    onCheck
+    onSelect,
+    getTableData,
+    deletemonitorGroup,
+    editmonitorGroup,
+    onSelectChange
   } = useMonitorManageStore();
   const {
+    treeSelectedKeys,
     isLoading,
     searchForm = {},
     tableData,
@@ -31,9 +37,11 @@ export default function MonitorManageComponent() {
     addGroupModalVisible = false,
     addCarModalVisible = false,
     transformModalVisible = false,
-    groupId,
     expandedKeys,
-    checkedKeys
+    checkedKeys,
+    transformDisable = true,
+    selectedRowKeys = [],
+    currentMonitorGroup
   } = state;
   function renderSelectItems() {
     return (
@@ -44,7 +52,7 @@ export default function MonitorManageComponent() {
             allowClear
             placeholder="请输入设备号/车架号"
             onChange={e => {
-              onChange(e.target.value, 'keyword');
+              onChange(e.target.value, 'vinNo');
             }}
           />
         </div>
@@ -70,18 +78,40 @@ export default function MonitorManageComponent() {
         data={tableData}
         total={total}
         isPagination={true}
-        rowSelection={[]}
+        rowSelection={{
+          selectedRowKeys,
+          onChange: onSelectChange
+        }}
         changeTablePageIndex={(index: number, pageSize: number) => changeTablePageIndex(index, pageSize)}
       ></ITableComponent>
     );
   }
 
+  function monitorGroupAction(element: any) {
+    return (
+      <div className="actions">
+        <a onClick={() => deletemonitorGroup(element)} className="a-link">
+          删除
+        </a>
+        <p></p>
+        <a onClick={() => editmonitorGroup(element)} className="a-link">
+          修改
+        </a>
+      </div>
+    );
+  }
   function RenderTree() {
     const prganizationControllerComponentProps = {
+      warehouseAction: monitorGroupAction,
+      onSelect,
       expandedKeys,
       onExpand,
-      getCheckedInfo: onCheck,
-      checkedKeys
+      treeSelectedKeys,
+      checkedKeys,
+      queryChildInfo,
+      checkable: false,
+      isGroup: true,
+      ref: organizationControllerRef
     };
     return (
       <div>
@@ -95,8 +125,14 @@ export default function MonitorManageComponent() {
         <div className={style.btnArea}>
           <Button onClick={() => callbackAction(ModalType.ADD_GROUP)}>添加监控组</Button>
           <div>
-            <Button onClick={() => callbackAction(ModalType.ADD_CAR)}>添加监控车辆</Button>
-            <Button style={{ marginLeft: 20 }} onClick={() => callbackAction(ModalType.BATCH_TRANFROM)}>
+            {currentMonitorGroup.id && <Button onClick={() => callbackAction(ModalType.ADD_CAR)}>添加监控车辆</Button>}
+
+            <Button
+              disabled={transformDisable}
+              type={!transformDisable ? 'primary' : 'default'}
+              style={{ marginLeft: 20 }}
+              onClick={() => callbackAction(ModalType.BATCH_TRANFROM)}
+            >
               批量转组
             </Button>
           </div>
@@ -108,8 +144,21 @@ export default function MonitorManageComponent() {
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
       />
-      <TransformMonitorComponent close={handleModalCancel} visible={transformModalVisible} />
-      <AddMonitorCarComponent addMonitorModal={addCarModalVisible} colse={handleModalCancel} groupId={groupId} />
+      <TransformMonitorComponent
+        close={handleModalCancel}
+        visible={transformModalVisible}
+        data={{
+          currentMonitorGroup: currentMonitorGroup,
+          selectedRowKeys: selectedRowKeys,
+          ...currentData
+        }}
+      />
+      <AddMonitorCarComponent
+        addMonitorModal={addCarModalVisible}
+        colse={handleModalCancel}
+        groupId={currentMonitorGroup.id}
+        getMonitorGroupList={getTableData}
+      />
       <AddMonitorGroupComponent close={handleModalCancel} data={currentData} visible={addGroupModalVisible} />
     </div>
   );

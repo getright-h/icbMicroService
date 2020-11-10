@@ -1,6 +1,8 @@
 import { IMonitorManageState } from './monitor-manage.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
 import { useEffect } from 'react';
+import { Key, useContext, useRef } from 'react';
+import { EventDataNode } from 'antd/lib/tree';
 import { ShowNotification } from '~/framework/util/common';
 import { MonitorService } from '~/solution/model/services/monitor.service';
 import { ModalType } from '../monitor-manage.const';
@@ -9,10 +11,12 @@ import { Subscription } from 'rxjs';
 import { useHistory } from 'react-router-dom';
 import { DataNode } from 'rc-tree/lib/interface';
 import { getCheckedList } from '~/framework/util/common/treeFunction';
+import { OrganizationExportFunction } from '~/solution/components/organization-controller-component/organization-controller.interface';
+
 const { confirm } = Modal;
 export function useMonitorManageStore() {
   const { state, setStateWrap } = useStateStore(new IMonitorManageState());
-
+  const organizationControllerRef: { current: OrganizationExportFunction } = useRef();
   const monitorService = useService(MonitorService);
   let queryVehicleGroupPagedListSubscription: Subscription;
   const history = useHistory();
@@ -38,7 +42,7 @@ export function useMonitorManageStore() {
   function delCarGroup(data: any) {
     const { id = '' } = data;
     if (!id) return;
-    monitorService.vehicleGroup({ id }).subscribe(
+    monitorService.groupRelation({ id }).subscribe(
       (res: any) => {
         ShowNotification.success('删除成功');
         getTableData();
@@ -65,7 +69,7 @@ export function useMonitorManageStore() {
     getTableData();
   }
 
-  function callbackAction<T>(actionType: number, data?: T) {
+  function callbackAction<T>(actionType: number, data?: T | any) {
     setStateWrap({ currentData: { ...data } });
     switch (actionType) {
       case ModalType.ADD_GROUP:
@@ -79,6 +83,9 @@ export function useMonitorManageStore() {
         break;
       case ModalType.BATCH_TRANFROM:
         setStateWrap({ transformModalVisible: true });
+        break;
+      case ModalType.DETAIL:
+        history.push(`/home/customer/vehicleDetail/${data.vehicleId}`);
         break;
     }
   }
@@ -118,8 +125,64 @@ export function useMonitorManageStore() {
       checkedObject
     });
   }
+  function onSelectChange(selectedRowKeys: string[], selectedObject: any) {
+    const selected = selectedObject.map((select: any) => select.vehicleId);
+    setStateWrap({ selectedRowKeys: selected, transformDisable: !selected.length });
+  }
+
+  const queryChildInfo = (item: any) => {
+    if (!item) return null;
+    return monitorService.queryVehicleGroupList(item);
+  };
+
+  function onSelect(selectedKeys: Key[], e: { node: EventDataNode }) {
+    const { searchForm, currentMonitorGroup } = state;
+    searchForm.groupId = e.node?.id;
+    currentMonitorGroup.name = e.node?.name;
+    currentMonitorGroup.id = e.node?.id;
+    setStateWrap({
+      treeSelectedKeys: [e.node.key as string],
+      searchForm,
+      currentMonitorGroup
+    });
+    getTableData();
+    // setTreeSelectNode(e.node, dispatch);
+  }
+  function deletemonitorGroup(element: any) {
+    // 获取当前仓位
+    confirm({
+      title: '删除',
+      content: `是否确认删除监控组--【${element.name}】？`,
+      okText: '删除',
+      onOk() {
+        return new Promise(resolve => {
+          confirmDeleteWarehouse(resolve, element);
+        });
+      },
+      onCancel() {
+        console.log('Cancel');
+      }
+    });
+  }
+  function editmonitorGroup(element: any) {
+    callbackAction(ModalType.ADD_GROUP, element);
+  }
+
+  function confirmDeleteWarehouse(resolve: Function, element: any) {
+    monitorService.vehicleGroup({ id: element.id }).subscribe(() => {
+      // 删除完毕后关闭弹窗，然后在当前的 treeData 上删除
+      ShowNotification.success('删除成功！');
+      resolve();
+      deleteCurrentTreeData(element.id);
+    });
+  }
+  // 在当前的tree上操作并显示相应的效果
+  function deleteCurrentTreeData(id: string) {
+    organizationControllerRef.current.deleteCurrentTreeData(id);
+  }
   return {
     state,
+    organizationControllerRef,
     callbackAction,
     changeTablePageIndex,
     searchClick,
@@ -127,6 +190,11 @@ export function useMonitorManageStore() {
     onChange,
     getTableData,
     onExpand,
-    onCheck
+    onCheck,
+    queryChildInfo,
+    onSelect,
+    deletemonitorGroup,
+    editmonitorGroup,
+    onSelectChange
   };
 }
