@@ -176,8 +176,7 @@ export default function FormSettingComponent() {
               item.type == FormType.FlowNode &&
                 (props = {
                   flowNodeSettingField,
-                  canEdit: item.canEdit,
-                  style: {}
+                  canEdit: item.canEdit
                 });
               return (
                 <div

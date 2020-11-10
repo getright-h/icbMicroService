@@ -9,6 +9,7 @@ export abstract class ApprovalManageDTO {
 export interface InsertApprovalFormTemplateParams {
   id: string;
   templateName: string;
+  formInstanceId: string;
   controlList: ControlList[];
   approverList: ApproverList[];
   businessData: string;
@@ -89,17 +90,18 @@ export interface InsertApprovalGroupParams {
   type: number;
 }
 
-interface ApproverList {
-  id: string;
+export interface ApproverList {
+  id?: string;
   sort: number;
   isAllPass: boolean;
   attributeList: AttributeList[];
 }
 
-interface AttributeList {
+export interface AttributeList {
   id: string;
   mode: number;
   personId: string;
+  personName: string;
 }
 
 export interface ControlList {

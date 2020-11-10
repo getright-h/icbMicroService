@@ -1,4 +1,4 @@
-const DoError = {
+export const DoError = {
   checkVehicleFrameNumber: (value: string) => {
     const vehicleFrameNumberReg = /^[A-Za-z0-9]{17}$/;
     if (value && vehicleFrameNumberReg.test(value.trim())) {
@@ -10,7 +10,7 @@ const DoError = {
     return !!value;
   },
   checkImageIsComplete: (value: Array<any>) => {
-    const state = value.every(function (item: any) {
+    const state = value.every(function(item: any) {
       return !!item.imageUrl;
     });
     return state;
@@ -55,4 +55,4 @@ const DoError = {
     });
     return message;
   }
-}
+};

@@ -20,5 +20,17 @@ export const approvalManageRoutes: IRoute[] = [
     component: ROUTERS.addTemplate,
     lazyload: true,
     exact: true
+  },
+  {
+    path: `${MODULE_PATH}/approvalManageDetail/:id`,
+    component: ROUTERS.approvalManageDetail,
+    lazyload: true,
+    exact: true
+  },
+  {
+    path: `${MODULE_PATH}/approvalTemplateFormModal/:id/:groupName/:groupId`,
+    component: ROUTERS.approvalTemplateFormModal,
+    lazyload: true,
+    exact: true
   }
 ];

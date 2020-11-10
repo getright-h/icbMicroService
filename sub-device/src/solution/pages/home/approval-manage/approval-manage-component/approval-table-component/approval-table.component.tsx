@@ -8,6 +8,8 @@ import { Button } from 'antd';
 import { approvalTableColumns } from './approval-table.column';
 import { GlobalContext } from '../../../../../context/global/global.provider';
 import { APPROVAL_APPLY_STATUS } from '~/solution/shared/constant/common.const';
+import ApprovalApplyComponent from '../approval-apply-component/approval-apply.component';
+import ApprovalTemplateFormModalComponent from '../approval-template-form-modal-component/approval-template-form-modal.component';
 
 export default function ApprovalTableComponent() {
   const {
@@ -17,10 +19,12 @@ export default function ApprovalTableComponent() {
     changeTablePageIndex,
     searchClick,
     initSearchForm,
-    setGroupId
+    setGroupId,
+    getCurrentTemplateId,
+    changeChooseModalVisible
   } = useApprovalTableStore();
   const { gState } = React.useContext(GlobalContext);
-  const { isLoading, pageIndex, pageSize, tableData, total } = state;
+  const { isLoading, pageIndex, pageSize, tableData, total, chooseModalVisible } = state;
 
   function renderApplyForApprovalButtons() {
     return (
@@ -134,19 +138,26 @@ export default function ApprovalTableComponent() {
 
   function renderOtherSearchRenderApplyForApprovalBtns() {
     return (
-      <div className="other-search-button-item">
+      <div className="other-search-button-item" onClick={() => changeChooseModalVisible(true)}>
         <Button type="primary">发起申请</Button>
       </div>
     );
   }
 
   return (
-    <TablePageTelComponent
-      // pageName={'审批申请'}
-      otherSearchBtns={renderOtherSearchRenderApplyForApprovalBtns()}
-      searchButton={renderApplyForApprovalButtons()}
-      selectItems={renderApplyForApprovalSelectItems()}
-      table={renderRenderApplyForApprovalTable()}
-    ></TablePageTelComponent>
+    <>
+      <TablePageTelComponent
+        // pageName={'审批申请'}
+        otherSearchBtns={renderOtherSearchRenderApplyForApprovalBtns()}
+        searchButton={renderApplyForApprovalButtons()}
+        selectItems={renderApplyForApprovalSelectItems()}
+        table={renderRenderApplyForApprovalTable()}
+      ></TablePageTelComponent>
+      {ApprovalApplyComponent({
+        visible: chooseModalVisible,
+        handlePropsOk: getCurrentTemplateId,
+        changeVisible: changeChooseModalVisible
+      })}
+    </>
   );
 }

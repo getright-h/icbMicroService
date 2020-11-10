@@ -12,13 +12,15 @@ export default function ISelectLoadingComponent(props: IISelectLoadingProps) {
     reqUrl,
     allowClear = true,
     mode,
-    showSearch = true
+    showSearch = true,
+    labelInValue
   } = props;
   const { state, optionScroll, fetchOptions } = useISelectLoadingStore(props);
   const { optionList, fetching } = state;
   return (
     <Select
       style={{ width }}
+      labelInValue={labelInValue}
       loading={fetching}
       mode={mode}
       disabled={disabled || false}

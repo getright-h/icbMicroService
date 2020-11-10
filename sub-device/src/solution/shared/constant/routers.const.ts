@@ -73,5 +73,13 @@ export const ROUTERS = {
   vehicleDetail: () =>
     import(
       '~/solution/pages/home/customer-manage/vehicle-manage-component/vehicle-detail-component/vehicle-detail.component'
+    ),
+  approvalManageDetail: () =>
+    import(
+      '~/solution/pages/home/approval-manage/approval-manage-component/approval-manage-detail-component/approval-manage-detail.component'
+    ),
+  approvalTemplateFormModal: () =>
+    import(
+      '~/solution/pages/home/approval-manage/approval-manage-component/approval-template-form-modal-component/approval-template-form-modal.component'
     )
 };
