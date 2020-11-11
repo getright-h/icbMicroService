@@ -20,7 +20,7 @@ export default function FlowNodeComponent(props: IFlowNodeProps) {
         showSearch: true,
         width: '100px',
         allowClear: false,
-        selectedValue: isEdit ? undefined : field.organizationName,
+        selectedValue: field?.organizationName,
         searchForm: {
           systemId: gState.myInfo.systemId
         },
@@ -36,7 +36,7 @@ export default function FlowNodeComponent(props: IFlowNodeProps) {
         placeholder: '仓库',
         showSearch: true,
         width: '100px',
-        selectedValue: isEdit ? undefined : field.storeName,
+        selectedValue: field?.storeName,
         isData: true,
         allowClear: false,
         disabled: !isEdit,
@@ -56,7 +56,7 @@ export default function FlowNodeComponent(props: IFlowNodeProps) {
         allowClear: false,
         width: '100px',
         disabled: !isEdit,
-        selectedValue: isEdit ? undefined : field.storePositionName,
+        selectedValue: field?.storePositionName,
         searchForm: {
           storeId: field.storeId,
           name: '',
@@ -78,15 +78,15 @@ export default function FlowNodeComponent(props: IFlowNodeProps) {
             <span>{`选择节点${index + 1}: `}</span>
             <div>
               {field.attributeList &&
-                field.attributeList.map((item: FlowList) => {
+                field.attributeList.map((item: FlowList, index) => {
                   return (
-                    <div key={item.flowId} style={{ display: 'flex', alignItems: 'center' }}>
+                    <div key={item.flowId + index} style={{ display: 'flex', alignItems: 'center' }}>
                       <div className={style.chooseInfo}>{ISelectLoadingComponentX(item, field.isEdit)}</div>
                       <div className={style.chooseInfo}>{ISelectLoadingComponentY(item, field.isEdit)}</div>
                       <div className={style.chooseInfo}>{ISelectLoadingComponentZ(item, field.isEdit)}</div>
                       {
                         <Checkbox
-                          checked={item.checked}
+                          checked={item.isSelected}
                           onChange={$event => onChangeCheckedInfo(item, $event.target.checked)}
                         ></Checkbox>
                       }

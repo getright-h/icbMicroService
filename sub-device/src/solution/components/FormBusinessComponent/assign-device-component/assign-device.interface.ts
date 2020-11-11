@@ -14,4 +14,5 @@ export interface ITypeInfo {
   typeId: string;
   typeName: string;
   number: number;
+  onlyShow: true;
 }

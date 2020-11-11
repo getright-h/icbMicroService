@@ -1,21 +1,29 @@
 import * as React from 'react';
 import style from './approval-manage-detail.component.less';
 import { useApprovalManageDetailStore } from './approval-manage-detail.component.store';
-import { PageHeader, Button, Modal, Input } from 'antd';
+import { PageHeader, Button, Modal, Input, Spin } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import { FormType } from '../../appraval-template-component/add-template-component/add-template-redux/add-template-reducer';
 import FlowChartComponent from '~/framework/components/flow-chart-component/flow-chart.component';
-import AssignDeviceComponent from '~/solution/components/FormBusinessComponent/assign-device-component/assign-device.component';
 import { ControlList } from '~/solution/model/dto/approval-manage.dto';
 import ApprovalerListComponent from '~/solution/components/FormBusinessComponent/approvaler-list-component/approvaler-list.component';
+import AssignDeviceShowComponent from '~/solution/components/FormBusinessComponent/assign-device-show-component/assign-device-show.component';
 
 export default function ApprovalManageDetailComponent() {
-  const { state, refuseOrPassApproval, onRemarkChange, handleCancel, handleOk } = useApprovalManageDetailStore();
+  const {
+    state,
+    refuseOrPassApproval,
+    onRemarkChange,
+    cancelApproval,
+    handleCancel,
+    handleOk,
+    goBack
+  } = useApprovalManageDetailStore();
   const { visible, remark, confirmLoading, isRefuse, formTemplate } = state;
   const GlobalComponent = {
     [FormType.Input]: Text,
     [FormType.FlowNode]: FlowChartComponent,
-    [FormType.AssignDevice]: AssignDeviceComponent
+    [FormType.AssignDevice]: AssignDeviceShowComponent
   };
 
   function Text({ value }: { value: string }) {
@@ -36,11 +44,17 @@ export default function ApprovalManageDetailComponent() {
         flowNodeSettingField: controll.controlValue
       };
     }
+    if (controll.type == FormType.AssignDevice) {
+      props = {
+        ...props,
+        data: JSON.parse(controll.controlValue)
+      };
+    }
     return props;
   }
 
   return (
-    <>
+    <Spin spinning={!formTemplate?.instanceForm}>
       <PageHeader
         className="site-page-header"
         extra={[
@@ -79,6 +93,12 @@ export default function ApprovalManageDetailComponent() {
             <ApprovalerListComponent approverInput={formTemplate?.instanceForm?.approverList} />
           </div>
         )}
+        <div style={{ textAlign: 'center' }}>
+          <Button type="primary" onClick={cancelApproval} className={style.submitButton}>
+            撤销
+          </Button>
+          <Button onClick={goBack}>取消</Button>
+        </div>
       </div>
       <Modal
         title={isRefuse ? '审核驳回' : '审核通过'}
@@ -96,6 +116,6 @@ export default function ApprovalManageDetailComponent() {
           onChange={($event: any) => onRemarkChange($event.target.value)}
         />
       </Modal>
-    </>
+    </Spin>
   );
 }

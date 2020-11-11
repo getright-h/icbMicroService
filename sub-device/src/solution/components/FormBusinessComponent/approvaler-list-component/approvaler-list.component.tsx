@@ -20,7 +20,7 @@ export default function ApprovalerListComponent(props: IApprovalerListProps) {
   }
   function UserItem(userInfo: AttributeList, index: number) {
     return (
-      <div className={style.userItem} key={userInfo.personId}>
+      <div className={style.userItem} key={userInfo.personId + index}>
         <Avatar size={64} icon={<UserOutlined />} />
         <div>{userInfo.personName}</div>
       </div>
@@ -30,7 +30,7 @@ export default function ApprovalerListComponent(props: IApprovalerListProps) {
     <div className={style.cardStyle}>
       {approverInput?.map((approverInputItem: ApproverList, index: number) => {
         return approverInputItem.attributeList.length ? (
-          <div key={index} className={style.renderAline}>
+          <div key={approverInputItem.id} className={style.renderAline}>
             <Card title={`${index + 1}级审批人`}>
               <div className={style.userList}>
                 {approverInputItem.attributeList.map(item => {
@@ -38,7 +38,7 @@ export default function ApprovalerListComponent(props: IApprovalerListProps) {
                 })}
               </div>
             </Card>
-            {index != approverInput.length - 2 && RenderAline()}
+            {index != approverInput.length - 1 && RenderAline()}
           </div>
         ) : null;
       })}

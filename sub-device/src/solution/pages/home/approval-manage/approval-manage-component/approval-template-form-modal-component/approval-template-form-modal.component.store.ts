@@ -29,7 +29,7 @@ export function useApprovalTemplateFormModalStore() {
           let flowNodeValue: AllotNodeFlowInput[] = JSON.parse(control.controlValue);
           flowNodeValue = flowNodeValue.map(item => {
             item.attributeList.map(itemChild => {
-              itemChild.checked = true;
+              itemChild.isSelected = true;
               return itemChild;
             });
             return item;

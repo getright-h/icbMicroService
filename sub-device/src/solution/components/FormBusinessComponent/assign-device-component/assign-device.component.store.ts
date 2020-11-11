@@ -7,9 +7,11 @@ export function useAssignDeviceStore(props: IAssignDeviceStateProps) {
   const { state, setStateWrap } = useStateStore(new IAssignDeviceState());
   const [form] = useForm();
   useEffect(() => {}, []);
+
   function handleDeviceChange(typeName: string, option: any) {
     // typeName == 'type' && setStateWrap({ editTypeName: option?.info.name });
     props.handleDeviceChange(form.getFieldsValue().deviceList);
   }
+
   return { state, form, handleDeviceChange };
 }

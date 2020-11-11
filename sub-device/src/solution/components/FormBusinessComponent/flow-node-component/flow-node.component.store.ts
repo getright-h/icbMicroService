@@ -1,6 +1,7 @@
 import { IFlowNodeState, IFlowNodeProps } from './flow-node.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { AllotNodeFlowInput, FlowList } from '~/solution/model/dto/allocation-template.dto';
+import { message } from 'antd';
 
 export function useFlowNodeStore(props: IFlowNodeProps) {
   const { state, setStateWrap } = useStateStore(new IFlowNodeState());
@@ -10,6 +11,7 @@ export function useFlowNodeStore(props: IFlowNodeProps) {
     field[`${key}Id`] = id;
     field[`${key}Name`] = idItem.info.name;
     field[`${key}Code`] = idItem.info.code;
+    console.log(key);
 
     switch (key) {
       case 'organization':
@@ -35,26 +37,31 @@ export function useFlowNodeStore(props: IFlowNodeProps) {
       return fieldItem;
     });
 
-    console.log('flowNodeSettingFieldReturn', flowNodeSettingFieldReturn);
-
     postCurrentChooseInfo(flowNodeSettingFieldReturn);
   }
 
   function onChangeCheckedInfo(field: FlowList, $event: boolean) {
-    field.checked = $event;
-    const flowNodeSettingFieldReturn = flowNodeSettingField.map((fieldItem: AllotNodeFlowInput) => {
+    let messageText = '';
+    let flowNodeSettingFieldReturn = JSON.parse(JSON.stringify(flowNodeSettingField)); // 深拷贝
+    flowNodeSettingFieldReturn = flowNodeSettingFieldReturn.map((fieldItem: AllotNodeFlowInput) => {
+      let total = 0;
       fieldItem.attributeList = fieldItem.attributeList.map((fieldChildItem: FlowList) => {
         if (fieldChildItem.flowId == field.flowId) {
-          fieldChildItem = { ...fieldChildItem, ...field };
+          fieldChildItem.isSelected = $event;
         }
+
+        fieldChildItem.isSelected && total++;
         return fieldChildItem;
       });
+
+      if (total == 0) {
+        messageText = '请保证每个节点都有一条数据';
+      }
       return fieldItem;
     });
+    console.log(11222);
 
-    console.log('flowNodeSettingFieldReturn', flowNodeSettingFieldReturn);
-
-    postCurrentChooseInfo(flowNodeSettingFieldReturn);
+    messageText ? message.info(messageText) : postCurrentChooseInfo(flowNodeSettingFieldReturn);
   }
   return { state, getCurrentSelectInfo, onChangeCheckedInfo };
 }

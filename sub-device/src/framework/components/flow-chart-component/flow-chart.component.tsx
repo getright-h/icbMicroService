@@ -14,7 +14,7 @@ export default function FlowChartComponent(props: FlowChartComponentProps) {
     return (
       <>
         <div className={style.box1}>
-          {title[0].storePositionName && ((!canEdit && !hasChecked) || (hasChecked && title[0].checked))
+          {title[0].storePositionName && ((!canEdit && !hasChecked) || (hasChecked && title[0].isSelected))
             ? `${title[0].storeName} - ${title[0].storePositionName}`
             : `节点${indexF}(${title[0].storePositionName ? '未勾选' : '未填写'})`}
         </div>
@@ -29,7 +29,7 @@ export default function FlowChartComponent(props: FlowChartComponentProps) {
         {title.map((item, index) => {
           return (
             <div key={item.childNodeId} className={style.box2}>
-              {item.storePositionName && ((!canEdit && !hasChecked) || (hasChecked && title[0].checked))
+              {item.storePositionName && ((!canEdit && !hasChecked) || (hasChecked && title[0].isSelected))
                 ? `${item.storeName} - ${item.storePositionName}`
                 : `节点${indexF}(${item.storePositionName ? '未勾选' : '未填写'})`}
             </div>

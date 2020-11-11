@@ -49,7 +49,14 @@ export function useAddTemplateStore(addTemplateState: AddTemplateState, dispatch
       });
 
       initData.templateType = res.businessType;
-      initData.approverInput = res.approverList;
+      initData.approverInput = [
+        ...res.approverList,
+        {
+          sort: res.approverList.length + 1,
+          isAllPass: true,
+          attributeList: []
+        }
+      ];
       initData.currentSelectItem = initData.formInfo[0];
       initTemplateForm(dispatch, initData);
     });
@@ -87,8 +94,6 @@ export function useAddTemplateStore(addTemplateState: AddTemplateState, dispatch
   }
 
   function prev() {
-    console.log(addTemplateState);
-
     setStateWrap({
       current: state.current - 1
     });
@@ -114,9 +119,10 @@ export function useAddTemplateStore(addTemplateState: AddTemplateState, dispatch
       }
       return item;
     });
-    commitInfo.approverList = addTemplateState.approverInput;
-    console.log(commitInfo);
-    const url = isEdit ? 'setApprovalFormTemplate' : 'insertApprovalFormTemplate';
+    commitInfo.approverList = addTemplateState.approverInput.filter(item => {
+      return item.attributeList.length;
+    });
+    const url = !!Number(isEdit) ? 'setApprovalFormTemplate' : 'insertApprovalFormTemplate';
     approvalManageService[url](commitInfo).subscribe(() => {
       ShowNotification.success('添加成功');
       history.push('../../../../home/approvalManage/approveTemplate');
