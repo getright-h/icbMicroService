@@ -1,6 +1,7 @@
 import { IAction } from '~/solution/shared/interfaces/common.interface';
 import { TYPES } from './add-template-types';
 import { AllotNodeFlowInput } from '~/solution/model/dto/allocation-template.dto';
+import { ApproverList } from '../../../../../../model/dto/approval-manage.dto';
 export interface IFormInfo {
   id: string;
   canDelete: boolean;

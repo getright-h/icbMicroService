@@ -37,7 +37,7 @@ export function approvalTableColumns(action: Function): ColumnsType<any> {
       render: (text, row) => {
         return (
           <React.Fragment>
-            <a onClick={() => action(row, ModalType.EDIT)}>详情</a>
+            <a onClick={() => action(row, ModalType.DETAIL)}>详情</a>
             {row.status === APPROVAL_APPLY_STATUS_ENUM.Auditing && (
               <React.Fragment>
                 <Divider type="vertical" />

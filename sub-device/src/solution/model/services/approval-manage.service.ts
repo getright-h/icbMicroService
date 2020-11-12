@@ -30,10 +30,14 @@ const SET_APPROVAL_GROUP = 'approval/manage/setApprovalGroup';
 const SETFORM_TEMPLATE_STATE = 'approval/manage/setFormTemplateState';
 const APPROVAL_FORM_TEMPLATE = 'approval/manage/approvalFormTemplate';
 const MOVE_APPROVALFORM_TEMPLATE = 'approval/manage/moveApprovalFormTemplate';
-
 const QUERY_APPROVAL_APPLY_LIST = 'approval/flow/FlowApplyList';
 const QUERY_APPROVAL_PROCESS_LIST = 'approval/flow/FlowProcessList';
 const SET_APPROVAL_FORM_TEMPLATE = 'approval/manage/setApprovalFormTemplate';
+const FLOW_PROCESS = 'approval/flow/process';
+const FLOW_REVOKE = 'approval/flow/revoke';
+const QUERY_APPROVAL_INSTANCE_DETAIL = 'approval/manage/queryApprovalInstanceDetail';
+const FLOW_CREATE = 'approval/flow/create';
+const FLOW_INFO = 'approval/flow/info';
 @DepUtil.Injectable()
 export class ApprovalManageService extends ApprovalManageDTO {
   @DepUtil.Inject(RequestService)
@@ -113,5 +117,29 @@ export class ApprovalManageService extends ApprovalManageDTO {
 
   setApprovalFormTemplate(params: InsertApprovalFormTemplateParams | any) {
     return this.requestService.post(SET_APPROVAL_FORM_TEMPLATE, params);
+  }
+
+  // 撤回审批申请
+  flowRevoke(params: { id: string }) {
+    return this.requestService.post(FLOW_REVOKE, params);
+  }
+
+  flowProcess(params: { id: string; remark: string; passed: boolean }) {
+    return this.requestService.post(FLOW_PROCESS, params);
+  }
+
+  queryApprovalInstanceDetail(params: {
+    type: number;
+    formInstanceId: string;
+  }): Observable<InsertApprovalFormTemplateParams> {
+    return this.requestService.get(QUERY_APPROVAL_INSTANCE_DETAIL, params);
+  }
+
+  flowCreate(params: InsertApprovalFormTemplateParams) {
+    return this.requestService.post(FLOW_CREATE, params);
+  }
+
+  flowInfo(params: { id: string }) {
+    return this.requestService.get(FLOW_INFO, params);
   }
 }

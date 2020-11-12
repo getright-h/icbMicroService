@@ -5,6 +5,7 @@
 export class IApprovalTableState {
   isLoading = false;
   pageIndex = 1;
+  chooseModalVisible = false;
   pageSize = 10;
   tableData: any = [];
   total = 0;
@@ -15,5 +16,6 @@ export class IApprovalTableState {
 export enum ModalType {
   CREATE,
   EDIT,
-  WITHDRAW
+  WITHDRAW,
+  DETAIL
 }

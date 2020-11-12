@@ -9,6 +9,8 @@ export class IISelectLoadingState {
 }
 export interface IISelectLoadingProps {
   placeholder: string;
+  labelInValue?: boolean;
+  isData?: boolean;
   width?: number | string;
   mode?: 'multiple' | 'tags';
   allowClear?: boolean;

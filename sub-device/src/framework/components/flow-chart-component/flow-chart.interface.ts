@@ -10,4 +10,5 @@ export class IFlowChartState {
 
 export class FlowChartComponentProps {
   flowNodeSettingField: AllotNodeFlowInput[];
+  hasChecked?: boolean;
 }

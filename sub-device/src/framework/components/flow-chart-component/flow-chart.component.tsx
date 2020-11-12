@@ -7,16 +7,16 @@ import { FlowList } from '~/solution/model/dto/allocation-template.dto';
 
 export default function FlowChartComponent(props: FlowChartComponentProps) {
   const { state } = useFlowChartStore(props);
-  const { flowNodeSettingField } = props;
+  const { flowNodeSettingField, hasChecked } = props;
 
   // 当有单个子元素的时候
   function renderSinglePlace(title: FlowList[], indexF: number, canEdit: boolean) {
     return (
       <>
         <div className={style.box1}>
-          {title[0].storePositionName && !canEdit
+          {title[0].storePositionName && ((!canEdit && !hasChecked) || (hasChecked && title[0].isSelected))
             ? `${title[0].storeName} - ${title[0].storePositionName}`
-            : `节点${indexF}`}
+            : `节点${indexF}(${title[0].storePositionName ? '未勾选' : '未填写'})`}
         </div>
       </>
     );
@@ -28,10 +28,10 @@ export default function FlowChartComponent(props: FlowChartComponentProps) {
       <div className={style.box0}>
         {title.map((item, index) => {
           return (
-            <div key={item.flowNodeSettingFieldId} className={style.box2}>
-              {item.storePositionName && !canEdit
-                ? `${item.storeName} - ${title[0].storePositionName}`
-                : `节点${indexF}`}
+            <div key={item.childNodeId} className={style.box2}>
+              {item.storePositionName && ((!canEdit && !hasChecked) || (hasChecked && title[0].isSelected))
+                ? `${item.storeName} - ${item.storePositionName}`
+                : `节点${indexF}(${item.storePositionName ? '未勾选' : '未填写'})`}
             </div>
           );
         })}
@@ -42,7 +42,7 @@ export default function FlowChartComponent(props: FlowChartComponentProps) {
   // 连接 的箭头
   function renderAline() {
     return (
-      <div>
+      <div className={style.renderAline}>
         <Divider type="vertical" style={{ height: '50px' }} plain></Divider>
         <div className={style.arrowhead}></div>
       </div>

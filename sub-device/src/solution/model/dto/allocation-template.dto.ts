@@ -39,8 +39,9 @@ export interface InsertAllotFlowTemplateParams {
 
 export interface FlowList {
   warehouseCascaderArray?: Array<string>;
-  flowNodeSettingFieldId?: string;
+  // flowNodeSettingFieldId?: string;
   flowId?: string;
+  checked?: boolean;
   childNodeId?: string;
   attributeId?: string;
   organizationId?: string;

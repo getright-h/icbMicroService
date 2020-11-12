@@ -72,24 +72,6 @@ export function useAddFlowNodeStore(props: IAddFlowNodeProps) {
     setFlowNodeSettingFieldAction(dispatch, flowNodeSettingFieldC);
   }
 
-  function setCascaderInfo(field: FlowList, ids: string[], idItem: any) {
-    const store = idItem[0];
-    const storePositionId = idItem[1];
-    field.warehouseCascaderArray = ids;
-    field.storeId = store.value;
-    field.storeName = store.label;
-    field.storePositionId = storePositionId && storePositionId.value;
-    field.storePositionName = storePositionId && storePositionId.label;
-
-    flowNodeSettingField = flowNodeSettingField.map((fieldItem: FlowList) => {
-      if (fieldItem.flowNodeSettingFieldId == field.flowNodeSettingFieldId) {
-        fieldItem = { ...fieldItem, ...field };
-      }
-      return fieldItem;
-    });
-    setFlowNodeSettingFieldAction(dispatch, flowNodeSettingField);
-  }
-
   function createRandomId() {
     return (
       (Math.random() * 10000000).toString(16).substr(0, 4) +
@@ -121,10 +103,13 @@ export function useAddFlowNodeStore(props: IAddFlowNodeProps) {
         break;
     }
 
-    flowNodeSettingField = flowNodeSettingField.map((fieldItem: FlowList) => {
-      if (fieldItem.flowNodeSettingFieldId == field.flowNodeSettingFieldId) {
-        fieldItem = { ...fieldItem, ...field };
-      }
+    flowNodeSettingField = flowNodeSettingField.map((fieldItem: AllotNodeFlowInput) => {
+      fieldItem.attributeList = fieldItem.attributeList.map((fieldChildItem: FlowList) => {
+        if (fieldChildItem.childNodeId == field.childNodeId) {
+          fieldChildItem = { ...fieldChildItem, ...field };
+        }
+        return fieldChildItem;
+      });
       return fieldItem;
     });
 
@@ -134,7 +119,6 @@ export function useAddFlowNodeStore(props: IAddFlowNodeProps) {
     state,
     form,
     addFlowNode,
-    setCascaderInfo,
     getCurrentSelectInfo,
     removeFlowNode,
     addFatherFlowNode,
