@@ -11,8 +11,8 @@ import { ITypeInfo } from '~/solution/components/FormBusinessComponent/assign-de
 import ApprovalerListComponent from '~/solution/components/FormBusinessComponent/approvaler-list-component/approvaler-list.component';
 
 export default function ApprovalTemplateFormModalComponent() {
-  const { state, getFlowNodeSettingFieldReturn, goBack, submitApproval } = useApprovalTemplateFormModalStore();
-  const { formTemplate } = state;
+  const { state, getFlowNodeSettingFieldReturn, goBack, submitApproval, isEdit } = useApprovalTemplateFormModalStore();
+  const { formTemplate, submitLoading } = state;
   // const { templateName, controlList } = formTemplate;
   const GlobalComponent = {
     [FormType.Input]: Input,
@@ -77,8 +77,8 @@ export default function ApprovalTemplateFormModalComponent() {
           )}
         </div>
 
-        <Button type="primary" onClick={submitApproval} className={style.submitButton}>
-          提交审批
+        <Button type="primary" onClick={submitApproval} loading={submitLoading} className={style.submitButton}>
+          {!isEdit ? '提交审批' : '编辑审批'}
         </Button>
         <Button onClick={goBack}>取消</Button>
       </div>

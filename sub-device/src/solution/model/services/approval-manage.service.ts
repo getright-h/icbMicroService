@@ -38,6 +38,7 @@ const FLOW_REVOKE = 'approval/flow/revoke';
 const QUERY_APPROVAL_INSTANCE_DETAIL = 'approval/manage/queryApprovalInstanceDetail';
 const FLOW_CREATE = 'approval/flow/create';
 const FLOW_INFO = 'approval/flow/info';
+const FLOW_EDIT = 'approval/flow/edit';
 @DepUtil.Injectable()
 export class ApprovalManageService extends ApprovalManageDTO {
   @DepUtil.Inject(RequestService)
@@ -141,5 +142,9 @@ export class ApprovalManageService extends ApprovalManageDTO {
 
   flowInfo(params: { id: string }) {
     return this.requestService.get(FLOW_INFO, params);
+  }
+
+  flowEdit(params: InsertApprovalFormTemplateParams) {
+    return this.requestService.post(FLOW_EDIT, params);
   }
 }

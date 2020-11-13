@@ -32,5 +32,11 @@ export const approvalManageRoutes: IRoute[] = [
     component: ROUTERS.approvalTemplateFormModal,
     lazyload: true,
     exact: true
+  },
+  {
+    path: `${MODULE_PATH}/approvalEditTemplateFormModal/:id/:isEdit`,
+    component: ROUTERS.approvalTemplateFormModal,
+    lazyload: true,
+    exact: true
   }
 ];

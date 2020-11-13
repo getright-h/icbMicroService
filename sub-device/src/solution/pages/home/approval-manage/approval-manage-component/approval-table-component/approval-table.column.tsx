@@ -44,6 +44,13 @@ export function approvalTableColumns(action: Function): ColumnsType<any> {
                 <a onClick={() => action(row, ModalType.WITHDRAW)}>撤回</a>
               </React.Fragment>
             )}
+            {(row.status === APPROVAL_APPLY_STATUS_ENUM.Audited ||
+              row.status === APPROVAL_APPLY_STATUS_ENUM.Refused) && (
+              <React.Fragment>
+                <Divider type="vertical" />
+                <a onClick={() => action(row, ModalType.EDIT)}>编辑</a>
+              </React.Fragment>
+            )}
           </React.Fragment>
         );
       }

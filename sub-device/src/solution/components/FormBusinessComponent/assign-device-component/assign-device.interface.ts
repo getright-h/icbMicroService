@@ -8,6 +8,7 @@ import { FormListFieldData } from 'antd/lib/form/FormList';
 export class IAssignDeviceState {}
 export class IAssignDeviceStateProps {
   handleDeviceChange: (typeName: string) => void;
+  value: any;
 }
 
 export interface ITypeInfo {

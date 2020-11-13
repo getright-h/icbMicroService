@@ -69,6 +69,7 @@ export function useApprovalManageDetailStore() {
 
   function confirmWithdrawApproval(resolve: Function) {
     approvalManageService.flowRevoke({ id }).subscribe(() => {
+      history.back();
       resolve();
     });
   }

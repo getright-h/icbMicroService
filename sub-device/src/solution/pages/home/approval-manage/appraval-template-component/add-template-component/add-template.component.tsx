@@ -12,7 +12,10 @@ export const AddTemplateManageContext = React.createContext({
   dispatch: undefined
 });
 export default function AddTemplateComponent() {
-  const [addTemplateState, dispatch] = React.useReducer(AddTemplateReducer, { ...addTemplateInitialState });
+  const [addTemplateState, dispatch] = React.useReducer(
+    AddTemplateReducer,
+    JSON.parse(JSON.stringify(addTemplateInitialState))
+  );
   console.log(addTemplateState);
 
   const { state, next, prev, commit } = useAddTemplateStore(addTemplateState, dispatch);

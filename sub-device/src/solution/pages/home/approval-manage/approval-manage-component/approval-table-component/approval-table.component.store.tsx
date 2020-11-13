@@ -72,6 +72,9 @@ export function useApprovalTableStore() {
       case ModalType.WITHDRAW:
         withdrawApproval(data);
         break;
+      case ModalType.EDIT:
+        history.push(`./approvalEditTemplateFormModal/${data.id}/1`);
+        break;
       default:
         break;
     }
