@@ -4,6 +4,7 @@ import { catchError, map } from 'rxjs/operators';
 import { DepUtil } from '~/framework/aop/inject';
 import * as Sentry from '@sentry/browser';
 import { ShowNotification } from '~/framework/util/common';
+import { StorageUtil } from '../storage/index';
 
 export interface HttpResponseModel {
   message: string;
@@ -24,8 +25,8 @@ class RequestService {
 
   private createAuthHeaders(): any {
     const headers = { token: '' };
-    // const token = localStorage.getItem('TOKENINFO');
-    const token = 'session:9791f3bc-389e-4158-96ce-9c6ac3108e04';
+    const token = StorageUtil.getLocalStorage('token');
+
     if (token) {
       headers.token = token;
     }
@@ -34,7 +35,7 @@ class RequestService {
 
   private getRootUrl(url: string) {
     let returnInfo = process.env.MAIN;
-    if (!!~url.indexOf('VerifyCode')) {
+    if (!!~url.indexOf('VerifyCode') || !!~url.indexOf('Login')) {
       returnInfo = process.env.LOGIN;
     } else if (!!~url.indexOf('approval')) {
       returnInfo = process.env.APPROVAL_MANAGE;
@@ -149,7 +150,7 @@ class RequestService {
         if (status && parseInt(status) >= 500) {
           error = '服务器错误，请联系管理员。';
         } else if (status === 401) {
-          localStorage.getItem('TOKENINFO');
+          StorageUtil.removeLocalStorage('DEVICE_TOKEN');
           // this.route.navigateByUrl('login');
           error = '登录失效，请重新登录。';
         } else if (status && parseInt(status) >= 400) {

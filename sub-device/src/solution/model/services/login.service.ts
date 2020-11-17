@@ -1,8 +1,8 @@
 import { LoginDTO, LoginParam, LoginResult } from '../dto/login.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
-import { Observable, Subscriber } from 'rxjs';
+import { Observable } from 'rxjs';
 import { DepUtil } from '~/framework/aop/inject';
-import { delay } from 'rxjs/operators';
+import { VCodeInfo } from '~/solution/model/dto/login.dto';
 
 /**
  * 真实开发中，请将示例代码移除

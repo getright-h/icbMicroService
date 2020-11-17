@@ -47,13 +47,17 @@ function LoginComponentOrigin(props: IProps) {
         </div>
         <div className={style.loginBox}>
           <Form className="login-form" ref={loginForm} onFinish={store.handleSubmit} initialValues={{ checked: true }}>
-            <Form.Item rules={[{ required: true, message: '请输入用户名' }]}>
+            <Form.Item name="account" rules={[{ required: true, message: '请输入用户名' }]}>
               <Input prefix={<UserOutlined />} placeholder="请输入用户名" />
             </Form.Item>
-            <Form.Item rules={[{ required: true, message: '请输入登录密码' }]}>
+            <Form.Item name="password" rules={[{ required: true, message: '请输入登录密码' }]}>
               <Input prefix={<LockOutlined />} type="password" placeholder="请输入登录密码" />
             </Form.Item>
-            <Form.Item className={style.formFlexItem} rules={[{ required: true, message: '请输入验证码' }]}>
+            <Form.Item
+              name="vcode"
+              className={style.formFlexItem}
+              rules={[{ required: true, message: '请输入验证码' }]}
+            >
               <Input
                 prefix={<SafetyCertificateOutlined />}
                 className={style.vcodeInput}
