@@ -1,6 +1,9 @@
+import { Divider } from 'antd';
+import { ColumnsType } from 'antd/lib/table';
 import * as React from 'react';
 import { ModalType } from './approval-deal-with.interface';
-export function approvalDealWithColumns(callbackAction: Function) {
+import { APPROVAL_APPLY_STATUS_ENUM } from '~/solution/shared/constant/common.const';
+export function approvalDealWithColumns(action: Function): ColumnsType<any> {
   return [
     {
       title: '处理状态',
@@ -35,16 +38,24 @@ export function approvalDealWithColumns(callbackAction: Function) {
       title: '操作',
       fixed: 'right' as 'right',
       dataIndex: 'action',
-      render: (render: any, data: any, index: number) => {
+      width: 200,
+      render: (text, row) => {
         return (
           <React.Fragment>
-            <a
-              onClick={() => {
-                callbackAction(ModalType.EDIT, data);
-              }}
-            >
-              详情
-            </a>
+            <a onClick={() => action(row, ModalType.DETAIL)}>详情</a>
+            {row.status === APPROVAL_APPLY_STATUS_ENUM.Auditing && (
+              <React.Fragment>
+                <Divider type="vertical" />
+                <a onClick={() => action(row, ModalType.WITHDRAW)}>撤回</a>
+              </React.Fragment>
+            )}
+            {(row.status === APPROVAL_APPLY_STATUS_ENUM.Audited ||
+              row.status === APPROVAL_APPLY_STATUS_ENUM.Refused) && (
+              <React.Fragment>
+                <Divider type="vertical" />
+                <a onClick={() => action(row, ModalType.EDIT)}>编辑</a>
+              </React.Fragment>
+            )}
           </React.Fragment>
         );
       }

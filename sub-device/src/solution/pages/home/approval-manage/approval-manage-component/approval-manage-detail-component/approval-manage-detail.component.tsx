@@ -18,7 +18,8 @@ export default function ApprovalManageDetailComponent() {
     cancelApproval,
     handleCancel,
     handleOk,
-    goBack
+    goBack,
+    isDeal
   } = useApprovalManageDetailStore();
   const { visible, remark, confirmLoading, isRefuse, formTemplate } = state;
   const GlobalComponent = {
@@ -67,7 +68,7 @@ export default function ApprovalManageDetailComponent() {
     }
   ];
   const extra =
-    formTemplate?.status == APPROVAL_APPLY_STATUS_ENUM.Auditing
+    formTemplate?.status == APPROVAL_APPLY_STATUS_ENUM.Auditing && !!Number(isDeal)
       ? [
           <Button key="3" onClick={() => refuseOrPassApproval(true)} danger>
             审核驳回

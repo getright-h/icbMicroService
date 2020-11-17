@@ -4,12 +4,14 @@ import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect } from 'react';
 import { ApprovalManageService } from '~/solution/model/services/approval-manage.service';
 import { Form } from 'antd';
+import { QueryApprovalApplyListReturn } from '~/solution/model/dto/approval-manage.dto';
+import { useHistory } from 'react-router-dom';
 
 export function useApprovalDealWithStore() {
   const { state, setStateWrap, getState } = useStateStore(new IApprovalDealWithState());
   const approvalManageService: ApprovalManageService = new ApprovalManageService();
   const [searchForm] = Form.useForm();
-
+  const history = useHistory();
   useEffect(() => {
     getTableData();
   }, []);
@@ -43,10 +45,14 @@ export function useApprovalDealWithStore() {
     searchForm.resetFields();
   }
 
-  function callbackAction<T>(actionType: number, data: T) {
+  function callbackAction(data: QueryApprovalApplyListReturn, actionType: number) {
     setStateWrap({ currentId: data.id });
     switch (actionType) {
+      case ModalType.DETAIL:
+        history.push(`./approvalManageDetail/${data.id}/1`);
+        break;
       case ModalType.EDIT:
+        history.push(`./approvalEditTemplateFormModal/${data.id}/1`);
         break;
       default:
         break;

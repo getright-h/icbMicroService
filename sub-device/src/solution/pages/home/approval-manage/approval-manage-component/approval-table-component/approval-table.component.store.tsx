@@ -67,7 +67,7 @@ export function useApprovalTableStore() {
     setStateWrap({ currentId: data.id });
     switch (actionType) {
       case ModalType.DETAIL:
-        history.push(`./approvalManageDetail/${data.id}`);
+        history.push(`./approvalManageDetail/${data.id}/0`);
         break;
       case ModalType.WITHDRAW:
         withdrawApproval(data);
