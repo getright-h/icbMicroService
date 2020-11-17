@@ -16,7 +16,7 @@ import { forkJoin } from 'rxjs';
 export function useOrganizationControllerStore(props: IOrganizationControllerProps, ref: any) {
   const { state, setStateWrap, getState } = useStateStore(new IOrganizationControllerState());
   const warehouseListService: WarehouseListService = new WarehouseListService();
-  const { warehouseAction, onExpand, queryChildInfo, currentOrganazation } = props;
+  const { warehouseAction, onExpand, queryChildInfo, currentOrganazation, onlyLeafCanSelect } = props;
   const { gState }: IGlobalState = useContext(GlobalContext);
   useEffect(() => {
     queryOrganizationTypeListByTypeId();
@@ -68,7 +68,7 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     forkJoin(warehouseListService.queryStoreOrganizationListSub({ parentId }), queryChildInfoSubscription).subscribe(
       (res: any) => {
         const queryChildInfoData: DataNode[] = queryChildInfo
-          ? dealWithTreeData(res[1], TREE_MAP, true, onlyLeafCanSelect, warehouseAction)
+          ? dealWithTreeData(res[1], TREE_MAP, true, warehouseAction)
           : [];
 
         treeNode.children = [
@@ -101,7 +101,7 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
 
   // 获取当前选择的监控组
   function getCurrentGroup<T>(value: T, key: string) {
-    const { info = {} } = value;
+    const { info }: any = value;
     getCurrentSelectInfo(info.organizationId, 'id');
   }
   // 选择当前的机构信息，这边进行搜索
