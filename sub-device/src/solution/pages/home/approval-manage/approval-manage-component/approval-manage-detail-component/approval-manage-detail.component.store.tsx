@@ -13,7 +13,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 export function useApprovalManageDetailStore() {
   const { state, setStateWrap } = useStateStore(new IApprovalManageDetailState());
-  const { id }: { id: string } = useParams();
+  const { id, isDeal }: { id: string, isDeal:string } = useParams();
   const { remark, isRefuse } = state;
 
   const approvalManageService: ApprovalManageService = useService(ApprovalManageService);
@@ -130,5 +130,5 @@ export function useApprovalManageDetailStore() {
     });
   }
 
-  return { state, refuseOrPassApproval, cancelApproval, goBack, onRemarkChange, handleOk, handleCancel };
+  return { state, refuseOrPassApproval, cancelApproval, goBack, onRemarkChange, handleOk, handleCancel, isDeal };
 }
