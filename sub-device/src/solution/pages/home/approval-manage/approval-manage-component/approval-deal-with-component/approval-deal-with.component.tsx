@@ -64,7 +64,7 @@ export default function ApprovalDealWithComponent() {
       wrapperCol: { span: 16 }
     };
     return (
-      <Form {...layout} form={searchForm} style={{ width: '90%' }} initialValues={{ processStatus: null }}>
+      <Form {...layout} form={searchForm} style={{ width: '90%' }} initialValues={{ processStatus: -1 }}>
         <Row>
           <Col span={6}>
             <Form.Item name="groupId" label="模板类型">

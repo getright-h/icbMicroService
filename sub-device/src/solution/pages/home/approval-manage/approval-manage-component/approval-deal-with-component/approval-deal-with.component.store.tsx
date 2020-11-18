@@ -22,7 +22,7 @@ export function useApprovalDealWithStore() {
     approvalManageService
       .queryApprovalProcessList({
         ...searchForm.getFieldsValue(),
-        processStatus: !!searchForm.getFieldValue('processStatus'),
+        processStatus: searchForm.getFieldValue('processStatus'),
         index: pageIndex,
         size: pageSize
       })
