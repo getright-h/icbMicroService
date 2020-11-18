@@ -1,19 +1,23 @@
 #/usr/bin
+# 当前镜像版本号
 version="1.0.0";
-imageName= "sub-device__test"
-containerName= "sub-device__test"
-port="2100"
+# 镜像名
+imageName="sub-device_test";
+containerName="sub-device_test";
+# jenkins服务器开放的的前端访问端口
+port="2155";
+# 镜像中server暴露的端口号
+exposePort="9527";
 
+echo "--> yarn install"
 cd ../..
-# yarn
-# yarn build-dev
+sudo yarn install && sudo yarn build:dev
 
-echo "--> copy files···"
-cp -rf Dockerfile ecosystem.config.js server/* ./dist
-echo "--> install node dependencies···"
+echo "--> copy files shell.dev.sh"
+sudo cp -rf Dockerfile ./dist
+cd ./dist
+
 echo "--> docker build"
-cd dist
-yarn install
 sudo docker build -t "$imageName":"$version" .
 sudo docker rm -f "$containerName" || echo 'continue'
-sudo docker run -d -p "$port":9527 --privileged --restart=always --name "$containerName" "$imageName":"$version"
+sudo docker run -d -p "$port":"$exposePort" --privileged --restart=always --name "$containerName" "$imageName":"$version"

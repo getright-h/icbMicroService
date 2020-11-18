@@ -41,6 +41,7 @@ export interface FlowList {
   warehouseCascaderArray?: Array<string>;
   // flowNodeSettingFieldId?: string;
   flowId?: string;
+  id?: string;
   checked?: boolean;
   childNodeId?: string;
   attributeId?: string;

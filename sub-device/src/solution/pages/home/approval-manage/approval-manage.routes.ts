@@ -22,13 +22,19 @@ export const approvalManageRoutes: IRoute[] = [
     exact: true
   },
   {
-    path: `${MODULE_PATH}/approvalManageDetail/:id`,
+    path: `${MODULE_PATH}/approvalManageDetail/:id/:isDeal`,
     component: ROUTERS.approvalManageDetail,
     lazyload: true,
     exact: true
   },
   {
     path: `${MODULE_PATH}/approvalTemplateFormModal/:id/:groupName/:groupId`,
+    component: ROUTERS.approvalTemplateFormModal,
+    lazyload: true,
+    exact: true
+  },
+  {
+    path: `${MODULE_PATH}/approvalEditTemplateFormModal/:id/:isEdit`,
     component: ROUTERS.approvalTemplateFormModal,
     lazyload: true,
     exact: true

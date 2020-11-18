@@ -22,6 +22,7 @@ export const CHECK_VALID_OBJECT = {
 
 export interface FormTemplateInfo {
   statusText: string;
+  remarks: Array<{ remark: string; userName: string }>;
   status: number;
   templateId: string;
   instanceForm: InsertApprovalFormTemplateParams;

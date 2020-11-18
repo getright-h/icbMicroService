@@ -87,7 +87,7 @@ export default function FlowNodeComponent(props: IFlowNodeProps) {
                       {
                         <Checkbox
                           checked={item.isSelected}
-                          onChange={$event => onChangeCheckedInfo(item, $event.target.checked)}
+                          onChange={$event => onChangeCheckedInfo(item, $event.target.checked, field.id)}
                         ></Checkbox>
                       }
                     </div>

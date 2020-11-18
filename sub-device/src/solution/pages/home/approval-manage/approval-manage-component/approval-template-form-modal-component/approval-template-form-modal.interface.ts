@@ -6,4 +6,5 @@ import { InsertApprovalFormTemplateParams } from '~/solution/model/dto/approval-
  */
 export class IApprovalTemplateFormModalState {
   formTemplate: InsertApprovalFormTemplateParams;
+  submitLoading: boolean;
 }

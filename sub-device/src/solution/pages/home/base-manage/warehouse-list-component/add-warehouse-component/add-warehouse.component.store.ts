@@ -40,6 +40,8 @@ export function useAddWarehouseStore(props: IAddWarehouseProps) {
     setStateWrap({
       confirmLoading: true
     });
+    console.log(form.getFieldsValue());
+
     form
       .validateFields()
       .then(value => {
@@ -82,6 +84,8 @@ export function useAddWarehouseStore(props: IAddWarehouseProps) {
 
   // 设置当前的地址信息
   function setAreaInfo(value: any, selectedOptions: any) {
+    console.log(value, selectedOptions);
+
     if (selectedOptions.length >= 3) {
       formData.current = {
         ...formData.current,

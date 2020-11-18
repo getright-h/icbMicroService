@@ -15,5 +15,6 @@ export class IApprovalDealWithState {
 export enum ModalType {
   CREATE,
   EDIT,
-  DELETE
+  WITHDRAW,
+  DETAIL
 }

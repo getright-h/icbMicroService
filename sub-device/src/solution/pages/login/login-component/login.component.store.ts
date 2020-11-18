@@ -50,7 +50,8 @@ export class LoginStore extends ReducerStore<IState> {
       verificationCodeInfo: {
         sessionId: this.codeKey,
         codeStrValue: values.vcode
-      }
+      },
+      systemCode: '04'
     };
 
     // 登陆操作

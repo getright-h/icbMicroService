@@ -21,6 +21,7 @@ export function useAddTemplateStore(addTemplateState: AddTemplateState, dispatch
       initForm();
       return;
     }
+
     groupId.current = id;
   }, [id]);
 

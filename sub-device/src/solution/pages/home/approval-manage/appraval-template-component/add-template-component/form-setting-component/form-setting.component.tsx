@@ -42,18 +42,18 @@ export default function FormSettingComponent() {
     );
   }
 
-  function IsCanEdit() {
-    return (
-      <div>
-        <Form.Item label="是否可编辑" rules={[{ required: true }]}>
-          <Switch
-            checked={currentSelectItem.canEdit}
-            onChange={value => onChangeCustomInfo<boolean>(currentSelectItem, 'canEdit', value)}
-          />
-        </Form.Item>
-      </div>
-    );
-  }
+  // function IsCanEdit() {
+  //   return (
+  //     <div>
+  //       <Form.Item label="是否可编辑" rules={[{ required: true }]}>
+  //         <Switch
+  //           checked={currentSelectItem.canEdit}
+  //           onChange={value => onChangeCustomInfo<boolean>(currentSelectItem, 'canEdit', value)}
+  //         />
+  //       </Form.Item>
+  //     </div>
+  //   );
+  // }
 
   function EditField() {
     let returnElement = null;

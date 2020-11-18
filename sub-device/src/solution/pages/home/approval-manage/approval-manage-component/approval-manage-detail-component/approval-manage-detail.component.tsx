@@ -1,13 +1,14 @@
 import * as React from 'react';
 import style from './approval-manage-detail.component.less';
 import { useApprovalManageDetailStore } from './approval-manage-detail.component.store';
-import { PageHeader, Button, Modal, Input, Spin } from 'antd';
+import { PageHeader, Button, Modal, Input, Spin, Table } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import { FormType } from '../../appraval-template-component/add-template-component/add-template-redux/add-template-reducer';
 import FlowChartComponent from '~/framework/components/flow-chart-component/flow-chart.component';
 import { ControlList } from '~/solution/model/dto/approval-manage.dto';
 import ApprovalerListComponent from '~/solution/components/FormBusinessComponent/approvaler-list-component/approvaler-list.component';
 import AssignDeviceShowComponent from '~/solution/components/FormBusinessComponent/assign-device-show-component/assign-device-show.component';
+import { APPROVAL_APPLY_STATUS_ENUM } from '~/solution/shared/constant/common.const';
 
 export default function ApprovalManageDetailComponent() {
   const {
@@ -17,7 +18,8 @@ export default function ApprovalManageDetailComponent() {
     cancelApproval,
     handleCancel,
     handleOk,
-    goBack
+    goBack,
+    isDeal
   } = useApprovalManageDetailStore();
   const { visible, remark, confirmLoading, isRefuse, formTemplate } = state;
   const GlobalComponent = {
@@ -53,18 +55,35 @@ export default function ApprovalManageDetailComponent() {
     return props;
   }
 
-  return (
-    <Spin spinning={!formTemplate?.instanceForm}>
-      <PageHeader
-        className="site-page-header"
-        extra={[
+  const columns = [
+    {
+      title: '审批人',
+      dataIndex: 'userName',
+      key: 'userName'
+    },
+    {
+      title: '备注',
+      dataIndex: 'remark',
+      key: 'remark'
+    }
+  ];
+  const extra =
+    formTemplate?.status == APPROVAL_APPLY_STATUS_ENUM.Auditing && !!Number(isDeal)
+      ? [
           <Button key="3" onClick={() => refuseOrPassApproval(true)} danger>
             审核驳回
           </Button>,
           <Button key="2" onClick={() => refuseOrPassApproval()}>
             审核通过
           </Button>
-        ]}
+        ]
+      : [];
+
+  return (
+    <Spin spinning={!formTemplate?.instanceForm}>
+      <PageHeader
+        className="site-page-header"
+        extra={extra}
         title={formTemplate?.statusText}
         subTitle={formTemplate?.instanceForm?.templateName}
       />
@@ -93,10 +112,24 @@ export default function ApprovalManageDetailComponent() {
             <ApprovalerListComponent approverInput={formTemplate?.instanceForm?.approverList} />
           </div>
         )}
+        {
+          <div style={{ display: 'flex' }}>
+            <span style={{ margin: '20px 13px', lineHeight: '32px', width: '100px' }}>备注: </span>
+            <Table
+              style={{ marginBottom: '15px', marginTop: '16px' }}
+              columns={columns}
+              pagination={false}
+              bordered
+              dataSource={formTemplate?.remarks}
+            />
+          </div>
+        }
         <div style={{ textAlign: 'center' }}>
-          <Button type="primary" onClick={cancelApproval} className={style.submitButton}>
-            撤销
-          </Button>
+          {formTemplate?.status == APPROVAL_APPLY_STATUS_ENUM.Auditing && (
+            <Button type="primary" onClick={cancelApproval} className={style.submitButton}>
+              撤销
+            </Button>
+          )}
           <Button onClick={goBack}>取消</Button>
         </div>
       </div>

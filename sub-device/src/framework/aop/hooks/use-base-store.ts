@@ -25,19 +25,6 @@ export function useStateStore<T>(initialState?: T) {
   };
 }
 
-// export function useRefInit<T>(initInfo: T) {
-//   const useRefInit = useRef(initInfo);
-//   const initRef: any = new Proxy(useRefInit, {
-//     get() {
-//       return useRefInit.current;
-//     },
-//     set(target, value) {
-//       return Reflect.set(target, 'current', value);
-//     }
-//   });
-//   return initRef;
-// }
-
 export class ReducerStore<T> {
   state: T;
   dispatch: React.Dispatch<IAction<any>> = emptyFunction;

@@ -59,7 +59,7 @@ export default function AddWarehouseComponent(props: IAddWarehouseProps) {
         <Form.Item label="仓库地址" name="areaDetail" rules={[{ required: true, message: '请选择省市区' }]}>
           <Input.Group compact>
             <Form.Item noStyle name="areaDetail">
-              <IAreaCascaderComponentForm />
+              {IAreaCascaderComponentForm()}
             </Form.Item>
             <Form.Item name="addressDetail" noStyle rules={[{ required: true, message: '请输入详细地址' }]}>
               <Input style={{ width: '70%', marginTop: 10 }} placeholder="请输入详细地址" />
