@@ -42,13 +42,13 @@ export function approvalDealWithColumns(action: Function): ColumnsType<any> {
         return (
           <React.Fragment>
             <a onClick={() => action(row, ModalType.DETAIL)}>详情</a>
-            {(row.status === APPROVAL_APPLY_STATUS_ENUM.Audited ||
+            {/* {(row.status === APPROVAL_APPLY_STATUS_ENUM.Audited ||
               row.status === APPROVAL_APPLY_STATUS_ENUM.Refused) && (
               <React.Fragment>
                 <Divider type="vertical" />
                 <a onClick={() => action(row, ModalType.EDIT)}>编辑</a>
               </React.Fragment>
-            )}
+            )} */}
           </React.Fragment>
         );
       }

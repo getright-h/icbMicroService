@@ -68,7 +68,7 @@ export default function ApprovalManageDetailComponent() {
     }
   ];
   const extra =
-    formTemplate?.status == APPROVAL_APPLY_STATUS_ENUM.Auditing && !!Number(isDeal)
+    formTemplate?.processStatus == APPROVAL_APPLY_STATUS_ENUM.Audited && !!Number(isDeal)
       ? [
           <Button key="3" onClick={() => refuseOrPassApproval(true)} danger>
             审核驳回
@@ -84,7 +84,7 @@ export default function ApprovalManageDetailComponent() {
       <PageHeader
         className="site-page-header"
         extra={extra}
-        title={formTemplate?.statusText}
+        title={!!Number(isDeal) ? formTemplate?.processText : formTemplate?.statusText}
         subTitle={formTemplate?.instanceForm?.templateName}
       />
       {formTemplate?.instanceForm && (
