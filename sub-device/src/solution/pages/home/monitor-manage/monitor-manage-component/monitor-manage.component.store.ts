@@ -127,7 +127,7 @@ export function useMonitorManageStore() {
   }
   function onSelectChange(selectedRowKeys: string[], selectedObject: any) {
     const selected = selectedObject.map((select: any) => select.vehicleId);
-    setStateWrap({ selectedRowKeys: selected, transformDisable: !selected.length });
+    setStateWrap({ selectedRowKeys: selectedRowKeys, transformSelected: selected, transformDisable: !selected.length });
   }
 
   const queryChildInfo = (item: any) => {

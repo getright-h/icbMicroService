@@ -22,5 +22,6 @@ export class IMonitorManageState {
   expandedKeys: string[] = [];
   treeSelectedKeys: string[] = [];
   selectedRowKeys: string[] = [];
+  transformSelected: string[] = [];
   currentMonitorGroup: any = {};
 }
