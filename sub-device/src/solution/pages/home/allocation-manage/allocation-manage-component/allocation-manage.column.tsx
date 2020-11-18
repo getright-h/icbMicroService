@@ -1,7 +1,58 @@
 import * as React from 'react';
-import { Divider } from 'antd';
-import { AllOT_STATE_ENUM, AllOT_APPROVAL_STATE_ENUM, ModalType } from '~shared/constant/common.const';
+import { Space } from 'antd';
+import { APPROVAL_FLOW_STATUS_ENUM, AllOT_STATE_ENUM, ModalType } from '~shared/constant/common.const';
 export function allocationManageColumns(callbackAction: Function) {
+  function renderOperateBtn(data: any) {
+    const { state, approvalState } = data;
+    const btn = [];
+    const detailBtn = () => (
+      <a
+        onClick={() => {
+          callbackAction(ModalType.SEE, data);
+        }}
+        key={0}
+      >
+        详情
+      </a>
+    );
+
+    const delBtn = () => (
+      <a
+        onClick={() => {
+          callbackAction(ModalType.DELETE, data);
+        }}
+        key={1}
+      >
+        删除
+      </a>
+    );
+
+    const goToAllocate = () => (
+      <a
+        onClick={() => {
+          callbackAction(ModalType.ALLOCATE, data);
+        }}
+        key={2}
+      >
+        去调拨
+      </a>
+    );
+    btn.push(...[detailBtn()]);
+    if (state == AllOT_STATE_ENUM.NOT_ALLOT && approvalState == APPROVAL_FLOW_STATUS_ENUM.Refused) {
+      btn.push(delBtn);
+    }
+    if (state == AllOT_STATE_ENUM.NOT_ALLOT && approvalState == APPROVAL_FLOW_STATUS_ENUM.Success) {
+      btn.push(...[goToAllocate(), delBtn()]);
+    }
+    // if (state == AllOT_STATE_ENUM.HAD_ALLOT && approvalState == APPROVAL_FLOW_STATUS_ENUM.Success) {
+    //   btn.push(...[detailBtn]);
+    // }
+    // if (state == AllOT_STATE_ENUM.HAD_ALLOT && approvalState == APPROVAL_FLOW_STATUS_ENUM.Audited) {
+    //   btn.push(...[detailBtn]);
+    // }
+    return btn;
+  }
+
   return [
     {
       title: '调拨单号',
@@ -46,47 +97,13 @@ export function allocationManageColumns(callbackAction: Function) {
     },
     {
       title: '审批状态',
-      dataIndex: 'stateText_'
+      dataIndex: 'approvalStateText'
     },
     {
       title: '操作',
       fixed: 'right' as 'right',
       dataIndex: 'action',
-      render: (render: any, data: any, index: number) => {
-        return (
-          <React.Fragment>
-            <a onClick={() => callbackAction(ModalType.SEE, data)}>查看</a>
-            <Divider type="vertical" />
-            <a
-              onClick={() => {
-                callbackAction(ModalType.ALLOCATE, data);
-              }}
-            >
-              去调拨
-            </a>
-            <Divider type="vertical" />
-            <a
-              onClick={() => {
-                callbackAction(ModalType.EDIT, data);
-              }}
-            >
-              修改
-            </a>
-            <Divider type="vertical" />
-            <a onClick={() => callbackAction(ModalType.RECORD, data)}>调拨记录</a>
-            <Divider type="vertical" />
-            <a onClick={() => callbackAction(ModalType.DELETE, data)}>删除</a>
-          </React.Fragment>
-        );
-      }
+      render: (render: any, data: any, index: number) => <Space size={'small'}>{renderOperateBtn(data)}</Space>
     }
   ];
-
-  /**
-   * @description 根据[  调拨状态, 审批状态 ] 渲染操作按钮
-   */
-  function renderOperateBtn(data: any) {
-    const { allocaState, approvalState } = data;
-    const btnArray = [];
-  }
 }
