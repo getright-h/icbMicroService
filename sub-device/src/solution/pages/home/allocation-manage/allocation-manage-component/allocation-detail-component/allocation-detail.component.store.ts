@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { Subscription } from 'rxjs';
 import { useHistory } from 'react-router-dom';
 import { getQueryParams } from '~/framework/util/common';
+import { item } from '../../../approval-manage/appraval-template-component/approval-template-left-component/add-template-type-component/add-template-type.component.less';
 
 export function useAllocationDetailStore() {
   const { state, setStateWrap } = useStateStore(new IAllocationDetailState());
@@ -39,12 +40,13 @@ export function useAllocationDetailStore() {
     const flowList = [];
     // 根据获取所有的sort,并且去重来获取流程的节点长度
     const sort: Array<number> = flowListData.map(flow => flow.sort);
+    console.log(sort);
     const nodeLength = sort.length;
     // 数组去重未作处理！！！！
-    for (let i = 1; i <= nodeLength; i++) {
+    for (let i = 0; i <= nodeLength; i++) {
       flowList.push(flowListData.filter((flow: IFlowNode) => flow.sort == i));
     }
-    setStateWrap({ flowList });
+    setStateWrap({ flowList: flowList.filter(item => !!item.length) });
   }
   useEffect(() => {
     getDefaultParams();

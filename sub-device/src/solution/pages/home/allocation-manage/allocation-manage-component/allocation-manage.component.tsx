@@ -107,7 +107,7 @@ export default function AllocationManageComponent() {
         pageName={'调拨单'}
         selectItems={renderSelectItems()}
         searchButton={renderSearchButtons()}
-        otherSearchBtns={renderOtherButtons()}
+        // otherSearchBtns={renderOtherButtons()}
         table={<RenderTable />}
       ></TablePageTelComponent>
       <TransferRecordComponent visible={visibleModal} close={handleModalCancel} />
