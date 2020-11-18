@@ -7,7 +7,8 @@ export function approvalDealWithColumns(action: Function): ColumnsType<any> {
   return [
     {
       title: '处理状态',
-      dataIndex: 'processStatusText'
+      dataIndex: 'audit',
+      render: (text, row) => <span>{text.processStatusText}</span>
     },
     {
       title: '模板类型',
