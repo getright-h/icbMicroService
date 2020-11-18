@@ -117,7 +117,7 @@ export default function ApprovalDealWithComponent() {
           <Col span={6}>
             <Form.Item name="processStatus" label="审批状态">
               <Select placeholder="请选择审批状态">
-                <Select.Option value={null}>全部</Select.Option>
+                <Select.Option value={-1}>全部</Select.Option>
                 <Select.Option value={1}>已处理</Select.Option>
                 <Select.Option value={0}>待处理</Select.Option>
               </Select>
