@@ -125,7 +125,7 @@ export default function ApprovalManageDetailComponent() {
           </div>
         }
         <div style={{ textAlign: 'center' }}>
-          {formTemplate?.status == APPROVAL_APPLY_STATUS_ENUM.Auditing && (
+          {formTemplate?.status == APPROVAL_APPLY_STATUS_ENUM.Auditing && !Number(isDeal) && (
             <Button type="primary" onClick={cancelApproval} className={style.submitButton}>
               撤销
             </Button>
