@@ -20,13 +20,17 @@ export default function ApprovalApplyComponent(props: IApprovalApplyProps) {
     };
     return ISelectLoadingComponent(props);
   }
+  const layout = {
+    labelCol: { span: 8 },
+    wrapperCol: { span: 16 }
+  };
 
   return (
     <>
       <Modal title="申请审批" visible={visible} destroyOnClose onOk={handleOk} onCancel={handleCancel}>
         <Row>
-          <Col span={12}>
-            <Form.Item name="groupId" label="模板类型">
+          <Col span={20}>
+            <Form.Item name="groupId" label="模板类型" {...layout}>
               {renderISelectLoadingComponent({
                 placeholder: '请输入模板类型',
                 onChange: setGroupId,
@@ -34,8 +38,8 @@ export default function ApprovalApplyComponent(props: IApprovalApplyProps) {
               })}
             </Form.Item>
           </Col>
-          <Col span={12}>
-            <Form.Item name="templateId" label="模板名称">
+          <Col span={20}>
+            <Form.Item name="templateId" label="模板名称" {...layout}>
               {renderISelectLoadingComponent({
                 placeholder: '请输入模板名称',
                 onChange: setTemplateId,
