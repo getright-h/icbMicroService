@@ -103,12 +103,12 @@ export default function VehicleManageComponent() {
         <Button type="primary" onClick={() => callbackAction(ModalType.CREATE)}>
           新建
         </Button>
-        <Button onClick={() => callbackAction(ModalType.IMPORT)} disabled>
+        {/* <Button onClick={() => callbackAction(ModalType.IMPORT)} disabled>
           批量导入
         </Button>
         <Button onClick={() => callbackAction(ModalType.EXPORT)} disabled>
           批量导出
-        </Button>
+        </Button> */}
       </div>
     );
   }

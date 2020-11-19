@@ -17,7 +17,7 @@ export default function EditOwnerInfoComponent(props: IEditOwnerInfoProps) {
   function renderForm() {
     return (
       <React.Fragment>
-        <Form {...layout} form={form}>
+        <Form {...layout} form={form} initialValues={{ sex: 1 }}>
           <Form.Item name="name" label="车主姓名" rules={[{ required: true }]}>
             <Input placeholder="请输入用户名" />
           </Form.Item>

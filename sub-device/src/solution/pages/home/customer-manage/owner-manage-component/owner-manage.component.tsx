@@ -85,12 +85,12 @@ export default function OwnerManageComponent() {
         <Button type="primary" onClick={() => callbackAction(ModalType.CREATE)}>
           新建
         </Button>
-        <Button onClick={() => callbackAction(ModalType.IMPORT)} disabled>
+        {/* <Button onClick={() => callbackAction(ModalType.IMPORT)} disabled>
           批量导入
         </Button>
         <Button onClick={() => callbackAction(ModalType.EXPORT)} disabled>
           批量导出
-        </Button>
+        </Button> */}
       </div>
     );
   }
@@ -109,10 +109,10 @@ export default function OwnerManageComponent() {
         total={total}
         isPagination={true}
         // rowSelection={rowSelection}
-        expandable={{
-          expandedRowRender: ownerManageExpandedRow,
-          expandIconColumnIndex: 1
-        }}
+        // expandable={{
+        //   expandedRowRender: ownerManageExpandedRow,
+        //   expandIconColumnIndex: 1
+        // }}
         changeTablePageIndex={(pageIndex: number, pageSize: number) => changeTablePageIndex(pageIndex, pageSize)}
       ></ITableComponent>
     );

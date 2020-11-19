@@ -46,6 +46,7 @@ export function useOwnerManageStore() {
       sex: -1,
       follow: -1
     });
+    searchClick();
   }
 
   function callbackAction(actionType: number, data?: any) {

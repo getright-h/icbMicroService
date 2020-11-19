@@ -16,7 +16,7 @@ export function useVehicleManageStore() {
   const history = useHistory();
 
   useEffect(() => {
-    getTableData();
+    initSearchForm();
   }, []);
 
   function getTableData() {
@@ -43,6 +43,7 @@ export function useVehicleManageStore() {
   function initSearchForm() {
     searchForm.resetFields();
     setStateWrap({ timeInfo: [] });
+    searchClick();
   }
 
   function searchClick() {
