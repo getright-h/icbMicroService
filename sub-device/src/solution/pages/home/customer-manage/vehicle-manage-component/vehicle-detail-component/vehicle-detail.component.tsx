@@ -91,7 +91,11 @@ export default function VehicleDetailComponent() {
   return (
     <React.Fragment>
       {renderHeader('车辆详情', () => {
-        return <Button onClick={linkToEdit}>编辑</Button>;
+        return (
+          <Button type="primary" onClick={linkToEdit}>
+            编辑
+          </Button>
+        );
       })}
       {renderSubHeader('车主信息')}
       {details && ownerInfo()}

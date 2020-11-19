@@ -101,7 +101,7 @@ export default function VehicleManageComponent() {
     return (
       <div className="other-search-button-item">
         <Button type="primary" onClick={() => callbackAction(ModalType.CREATE)}>
-          新建
+          新增车辆
         </Button>
         {/* <Button onClick={() => callbackAction(ModalType.IMPORT)} disabled>
           批量导入

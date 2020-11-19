@@ -76,9 +76,9 @@ export default function PurchaseOrderComponent() {
         <Button type="primary" onClick={() => callbackAction(ModalType.CREATE)}>
           新增采购单
         </Button>
-        <Button onClick={() => callbackAction(ModalType.EXPORT)} disabled>
+        {/* <Button onClick={() => callbackAction(ModalType.EXPORT)} disabled>
           导出采购单
-        </Button>
+        </Button> */}
       </div>
     );
   }
