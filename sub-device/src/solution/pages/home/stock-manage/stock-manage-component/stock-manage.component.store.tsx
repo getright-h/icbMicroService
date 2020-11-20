@@ -136,6 +136,8 @@ export function useStockManageStore(stockListState: { currentSelectNode: EventDa
       state: -1,
       isAlarm: -1
     });
+    setStateWrap({ pageIndex: 1 });
+    getTableData();
   }
 
   function modalCancel(isSuccess?: boolean) {

@@ -19,12 +19,12 @@ export function usePurchaseOrderStore() {
 
   function getTableData() {
     setStateWrap({ isLoading: true });
-    const { pageIndex, pageSize } = getState();
+    const { pageIndex, pageSize, timeInfo } = getState();
     stockManageService
       .queryPurchaseList({
         ...searchForm.getFieldsValue(),
-        beginTime: state.timeInfo[0] ? moment(state.timeInfo[0]).valueOf() : 0,
-        endTime: state.timeInfo[1] ? moment(state.timeInfo[1]).valueOf() : 0,
+        beginTime: timeInfo[0] ? moment(timeInfo[0]).valueOf() : 0,
+        endTime: timeInfo[1] ? moment(timeInfo[1]).valueOf() : 0,
         index: pageIndex,
         size: pageSize
       })
@@ -101,6 +101,7 @@ export function usePurchaseOrderStore() {
   function initSearchform() {
     searchForm.resetFields();
     setStateWrap({ timeInfo: [] });
+    getTableData();
   }
   return {
     state,

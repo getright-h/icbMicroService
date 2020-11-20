@@ -21,7 +21,8 @@ export default function InitAllocationComponent() {
     openModal,
     getTableData,
     onChange,
-    allocationOperate
+    allocationOperate,
+    searchClean
   } = useInitAllocationStore();
   const { isLoading, searchForm, tableData, total, importVisible, rollbackVisible, currentData } = state;
   function renderSelectItems() {
@@ -79,7 +80,7 @@ export default function InitAllocationComponent() {
         <Button type="primary" onClick={searchClick}>
           查询
         </Button>
-        <Button>清空</Button>
+        <Button onClick={searchClean}>清空</Button>
       </div>
     );
   }
