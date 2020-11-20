@@ -17,5 +17,4 @@ export { default as IEditPasswordComponent } from '~/framework/components/i-edit
 export { default as ImageDisplayComponent } from '~/framework/components/image-display-component/image-display.component';
 export { default as IAreaCascaderComponent } from '~/framework/components/i-area-cascader-component/i-area-cascader.component';
 export { default as IHeaderTitleComponent } from '~/framework/components/i-header-title-component/i-header-title.component';
-export { default as RenderGridDesComponent } from '~/framework/components/table-desc-component/table-desc.component';
 //  -- Package End --

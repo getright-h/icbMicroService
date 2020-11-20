@@ -43,8 +43,9 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
     setStateWrap({ submitLoading: true });
     allocationManageService.setAllotFlow(searchForm).subscribe(
       (res: any) => {
-        console.log(res);
-        ShowNotification.success('申请成功');
+        const { isSuccess, isMove } = res;
+        isSuccess && ShowNotification.success('申请成功!');
+        !isSuccess && ShowNotification.warning('申请失败!');
         setStateWrap({ submitLoading: false });
         props.getAlloactionDetail && props.getAlloactionDetail(props.data.id);
         props.getTableData && props.getTableData();

@@ -1,13 +1,13 @@
 import * as React from 'react';
 import style from './init-allocation.component.less';
-import { ALLOW_FLOW_ENUM, ModalType } from '~shared/constant/common.const';
+import { ALLOW_FLOW_ENUM, ModalType, APPROVAL_FLOW_STATUS_ENUM } from '~shared/constant/common.const';
 
 export function initAllocationColumns(callbackAction: Function) {
   /**
    * @description 根据[  调拨状态 ] 渲染操作按钮
    */
   function renderOperateBtn(data: any) {
-    const { state, isRecipientReCallAudit = false } = data;
+    const { state, isRecipientReCallAudit = false, approvalState } = data;
     // const state = 70;
     const lookAllot = (
       <a
@@ -27,11 +27,12 @@ export function initAllocationColumns(callbackAction: Function) {
       // 发起申请操作
       {
         condition: [ALLOW_FLOW_ENUM.Apply],
-        btn: (
-          <a className={style.button} onClick={() => callbackAction(ModalType.CREATE, data)} key={1}>
-            发起申请
-          </a>
-        )
+        btn:
+          APPROVAL_FLOW_STATUS_ENUM.Success === approvalState ? (
+            <a className={style.button} onClick={() => callbackAction(ModalType.CREATE, data)} key={1}>
+              发起申请
+            </a>
+          ) : null
       },
 
       // 撤销操作
@@ -90,7 +91,7 @@ export function initAllocationColumns(callbackAction: Function) {
     // 插入查看操作
     btnArray.unshift(lookAllot);
     // 查看操作 在[发起申请]不存在
-    state == ALLOW_FLOW_ENUM.Apply && btnArray.shift();
+    // state == ALLOW_FLOW_ENUM.Apply && btnArray.shift();
 
     return <React.Fragment>{btnArray}</React.Fragment>;
   }
