@@ -99,6 +99,7 @@ export default function DeviceImportComponent(props: IDeviceImportProps) {
   return (
     <Modal
       title="导入设备"
+      centered={true}
       visible={visible}
       width={800}
       onCancel={selfClose}

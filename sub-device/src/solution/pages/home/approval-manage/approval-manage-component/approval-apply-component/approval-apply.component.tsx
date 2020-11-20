@@ -27,7 +27,7 @@ export default function ApprovalApplyComponent(props: IApprovalApplyProps) {
 
   return (
     <>
-      <Modal title="申请审批" visible={visible} destroyOnClose onOk={handleOk} onCancel={handleCancel}>
+      <Modal title="申请审批" centered={true} visible={visible} destroyOnClose onOk={handleOk} onCancel={handleCancel}>
         <Row>
           <Col span={20}>
             <Form.Item name="groupId" label="模板类型" {...layout}>

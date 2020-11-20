@@ -20,7 +20,7 @@ export default function AddWarehouseComponent(props: IAddWarehouseProps) {
   const { addWarehouseVisible, isEdit } = props;
   const layout = {
     labelCol: { span: 6 },
-    wrapperCol: { span: 14 }
+    wrapperCol: { span: 16 }
   };
   const IAreaCascaderComponentForm: any = React.useCallback(
     () =>
@@ -34,6 +34,7 @@ export default function AddWarehouseComponent(props: IAddWarehouseProps) {
   return (
     <Modal
       title={`${isEdit ? '编辑' : '创建'}仓库`}
+      centered={true}
       visible={addWarehouseVisible}
       onOk={handleOk}
       destroyOnClose

@@ -55,6 +55,7 @@ export function useDeviceTypeSettingStore() {
   function renderDelDeviceTypeModal(data: any) {
     confirm({
       content: `确认删除设备型号${data.name || '-'}`,
+      centered: true,
       onOk: () => {
         delDeviceType(data.id).then(res => {
           getTableList();

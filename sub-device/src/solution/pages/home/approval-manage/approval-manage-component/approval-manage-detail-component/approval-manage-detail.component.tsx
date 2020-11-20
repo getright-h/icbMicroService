@@ -137,6 +137,7 @@ export default function ApprovalManageDetailComponent() {
       )}
       <Modal
         title={isRefuse ? '审核驳回' : '审核通过'}
+        centered={true}
         visible={visible}
         okText={`确认${isRefuse ? '驳回' : '通过'}`}
         onOk={handleOk}

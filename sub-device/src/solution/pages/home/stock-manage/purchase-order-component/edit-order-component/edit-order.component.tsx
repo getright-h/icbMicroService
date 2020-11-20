@@ -103,6 +103,7 @@ export default function EditOrderComponent(props: IEditOrderProps) {
   return (
     <Modal
       title={props.id ? '编辑采购单' : '新增采购单'}
+      centered={true}
       visible={visible}
       width={750}
       onCancel={() => selfClose(false)}
