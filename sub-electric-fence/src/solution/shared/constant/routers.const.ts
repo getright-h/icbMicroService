@@ -12,5 +12,9 @@ export const ROUTERS = {
   MonitoringObjectComponent: () =>
     import(
       '~/solution/pages/home/electric-fence-manage-component/monitoring-object-component/monitoring-object.component'
-    )
+    ),
+  alarmManageModule: () => import('~/solution/pages/home/alarm-manage/alarm-manage.module'),
+  alarmParameter: () =>
+    import('~/solution/pages/home/alarm-manage/alarm-parameter-component/alarm-parameter.component'),
+  alarmConfig: () => import('~/solution/pages/home/alarm-manage/alarm-config-component/alarm-config.component')
 };
