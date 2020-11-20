@@ -32,7 +32,7 @@ export default function ApprovalTableComponent() {
         <Button type="primary" onClick={() => searchClick()}>
           查询
         </Button>
-        <Button onClick={() => initSearchForm()}>清空</Button>
+        <Button onClick={initSearchForm}>清空</Button>
       </div>
     );
   }

@@ -21,12 +21,12 @@ export function useVehicleManageStore() {
 
   function getTableData() {
     setStateWrap({ isLoading: true });
-    const { pageIndex, pageSize } = getState();
+    const { pageIndex, pageSize, timeInfo } = getState();
     customerManageService
       .queryVehiclePagedList({
         ...searchForm.getFieldsValue(),
-        serverBeginTime: state.timeInfo[0] ? moment(state.timeInfo[0]).valueOf() : 0,
-        serverEndTime: state.timeInfo[1] ? moment(state.timeInfo[1]).valueOf() : 0,
+        serverBeginTime: timeInfo[0] ? moment(timeInfo[0]).valueOf() : 0,
+        serverEndTime: timeInfo[1] ? moment(timeInfo[1]).valueOf() : 0,
         index: pageIndex,
         size: pageSize
       })

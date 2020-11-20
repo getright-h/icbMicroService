@@ -9,7 +9,7 @@ import { Modal } from 'antd';
 import { Subscription } from 'rxjs';
 const { confirm } = Modal;
 export function useInitAllocationStore() {
-  const { state, setStateWrap } = useStateStore(new IInitAllocationState());
+  const { state, setStateWrap, getState } = useStateStore(new IInitAllocationState());
   const allocationManageService: AllocationManageService = new AllocationManageService();
   const history = useHistory();
   let setAllotFlowSubscription: Subscription;
@@ -22,7 +22,8 @@ export function useInitAllocationStore() {
 
   function getTableData() {
     setStateWrap({ isLoading: true });
-    allocationManageService.queryAllotPromoterPagedList(state.searchForm).subscribe(
+    const { searchForm } = getState();
+    allocationManageService.queryAllotPromoterPagedList(searchForm).subscribe(
       res => {
         setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
       },
@@ -161,6 +162,19 @@ export function useInitAllocationStore() {
         break;
     }
   }
+  function searchClean() {
+    const initSearchForm = {
+      beginTime: 0,
+      endTime: 0,
+      index: 1,
+      size: 10,
+      state: -1
+    };
+    setStateWrap({
+      searchForm: initSearchForm
+    });
+    getTableData();
+  }
   return {
     state,
     callbackAction,
@@ -170,6 +184,7 @@ export function useInitAllocationStore() {
     openModal,
     onChange,
     getTableData,
-    allocationOperate
+    allocationOperate,
+    searchClean
   };
 }

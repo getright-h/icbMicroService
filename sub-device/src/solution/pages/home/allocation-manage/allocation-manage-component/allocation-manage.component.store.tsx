@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs';
 
 const { confirm } = Modal;
 export function useAllocationManageStore() {
-  const { state, setStateWrap } = useStateStore(new IAllocationManageState());
+  const { state, setStateWrap, getState } = useStateStore(new IAllocationManageState());
   const allocationManageService: AllocationManageService = new AllocationManageService();
   let allocationManageServiceSubscribable: Subscription;
   let deleteAllotSubscribable: Subscription;
@@ -25,7 +25,7 @@ export function useAllocationManageStore() {
   }, []);
 
   function getTableData() {
-    const { searchForm } = state;
+    const { searchForm } = getState();
     setStateWrap({ isLoading: true });
     allocationManageServiceSubscribable = allocationManageService.queryAllotPagedList(searchForm).subscribe(
       res => {
@@ -70,15 +70,16 @@ export function useAllocationManageStore() {
     setStateWrap({
       searchForm: initParams
     });
-    const setState = new Promise((reslove, reject) => {
-      setStateWrap({
-        searchForm: initParams
-      });
-      reslove();
-    });
-    setState.then((res: any) => {
-      getTableData();
-    });
+    // const setState = new Promise((reslove, reject) => {
+    //   setStateWrap({
+    //     searchForm: initParams
+    //   });
+    //   reslove();
+    // });
+    // setState.then((res: any) => {
+    //   getTableData();
+    // });
+    getTableData();
   }
   function callbackAction<T>(actionType: number, data?: any) {
     setStateWrap({ currentId: data ? data.allotId : '' });

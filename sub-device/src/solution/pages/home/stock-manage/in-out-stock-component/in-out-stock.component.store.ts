@@ -17,12 +17,12 @@ export function useInOutStockStore() {
 
   function getTableData() {
     setStateWrap({ isLoading: true });
-    const { pageIndex, pageSize } = getState();
+    const { pageIndex, pageSize, timeInfo } = getState();
     stockManageService
       .queryInOutRecordList({
         ...searchForm.getFieldsValue(),
-        beginTime: state.timeInfo[0] ? moment(state.timeInfo[0]).valueOf() : 0,
-        endTime: state.timeInfo[1] ? moment(state.timeInfo[1]).valueOf() : 0,
+        beginTime: timeInfo[0] ? moment(timeInfo[0]).valueOf() : 0,
+        endTime: timeInfo[1] ? moment(timeInfo[1]).valueOf() : 0,
         index: pageIndex,
         size: pageSize
       })
@@ -80,7 +80,8 @@ export function useInOutStockStore() {
   function initSearchform() {
     searchForm.resetFields();
     searchForm.setFieldsValue({ type: -1 });
-    setStateWrap({ timeInfo: [] });
+    setStateWrap({ timeInfo: [], pageIndex: 1 });
+    getTableData();
   }
 
   return {

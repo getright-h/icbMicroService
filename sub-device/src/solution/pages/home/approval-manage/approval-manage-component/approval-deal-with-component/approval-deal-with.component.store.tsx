@@ -43,6 +43,10 @@ export function useApprovalDealWithStore() {
 
   function initSearchForm() {
     searchForm.resetFields();
+    setStateWrap({
+      pageIndex: 1
+    });
+    getTableData();
   }
 
   function callbackAction(data: QueryApprovalApplyListReturn, actionType: number) {

@@ -16,6 +16,7 @@ export default function ReceiveAllocationComponent() {
     searchClick,
     handleModalCancel,
     openModal,
+    searchClean,
     onChange,
     getTableData,
     allocationOperate
@@ -62,7 +63,10 @@ export default function ReceiveAllocationComponent() {
         </div>
         <div className="push-search-item">
           <span className="label">调拨时间:</span>
-          <TimePickerComponent pickerType="dateRange" />
+          <TimePickerComponent
+            pickerType="dateRange"
+            getDateTimeInfo={(time: any, other: any) => onChange(time, 'time')}
+          />
         </div>
       </>
     );
@@ -73,7 +77,7 @@ export default function ReceiveAllocationComponent() {
         <Button type="primary" onClick={searchClick}>
           查询
         </Button>
-        <Button>清空</Button>
+        <Button onClick={searchClean}>清空</Button>
       </div>
     );
   }
