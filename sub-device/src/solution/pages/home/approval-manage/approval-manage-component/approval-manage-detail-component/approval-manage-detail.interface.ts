@@ -24,6 +24,8 @@ export interface FormTemplateInfo {
   statusText: string;
   remarks: Array<{ remark: string; userName: string }>;
   status: number;
+  processText: string;
+  audit: any;
   templateId: string;
   instanceForm: InsertApprovalFormTemplateParams;
   id: string;

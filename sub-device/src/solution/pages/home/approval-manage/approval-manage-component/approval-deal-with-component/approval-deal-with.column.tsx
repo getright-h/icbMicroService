@@ -7,7 +7,8 @@ export function approvalDealWithColumns(action: Function): ColumnsType<any> {
   return [
     {
       title: '处理状态',
-      dataIndex: 'processStatusText'
+      dataIndex: 'audit',
+      render: (text, row) => <span>{text.processStatusText}</span>
     },
     {
       title: '模板类型',
@@ -31,8 +32,7 @@ export function approvalDealWithColumns(action: Function): ColumnsType<any> {
     },
     {
       title: '上级备注',
-      dataIndex: 'approverRemark',
-      render: (render: any) => <span>{render.remark}</span>
+      dataIndex: 'approverRemark'
     },
     {
       title: '操作',
@@ -43,19 +43,13 @@ export function approvalDealWithColumns(action: Function): ColumnsType<any> {
         return (
           <React.Fragment>
             <a onClick={() => action(row, ModalType.DETAIL)}>详情</a>
-            {row.status === APPROVAL_APPLY_STATUS_ENUM.Auditing && (
-              <React.Fragment>
-                <Divider type="vertical" />
-                <a onClick={() => action(row, ModalType.WITHDRAW)}>撤回</a>
-              </React.Fragment>
-            )}
-            {(row.status === APPROVAL_APPLY_STATUS_ENUM.Audited ||
+            {/* {(row.status === APPROVAL_APPLY_STATUS_ENUM.Audited ||
               row.status === APPROVAL_APPLY_STATUS_ENUM.Refused) && (
               <React.Fragment>
                 <Divider type="vertical" />
                 <a onClick={() => action(row, ModalType.EDIT)}>编辑</a>
               </React.Fragment>
-            )}
+            )} */}
           </React.Fragment>
         );
       }

@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
 import { DEVICE_ROUTE, DEVICE_ROUTE_ENUM } from '~shared/constant/common.const';
 
 export function useDeviceLineStore() {
-  const { state, setStateWrap } = useStateStore(new IDeviceLineState());
+  const { state, setStateWrap, getState } = useStateStore(new IDeviceLineState());
   const deviceTypeService: DeviceTypeService = new DeviceTypeService();
   let queryDevicePagedListSubscribable: Subscription;
   let queryVehicleInformationByCodeSubscribable: Subscription;
@@ -23,7 +23,7 @@ export function useDeviceLineStore() {
   }, []);
 
   function getTableData() {
-    const { searchForm } = state;
+    const { searchForm } = getState();
     setStateWrap({ isLoading: true });
     queryDevicePagedListSubscribable = deviceTypeService.queryDevicePagedList(searchForm).subscribe(
       (res: any) => {
@@ -133,7 +133,7 @@ export function useDeviceLineStore() {
     const initParams = {
       index: 1,
       size: 10,
-      state: -1,
+      route: -1,
       code: ''
     };
     form.resetFields();
@@ -141,15 +141,16 @@ export function useDeviceLineStore() {
     setStateWrap({
       searchForm: initParams
     });
-    const setState = new Promise((reslove, reject) => {
-      setStateWrap({
-        searchForm: initParams
-      });
-      reslove();
-    });
-    setState.then((res: any) => {
-      getTableData();
-    });
+    // const setState = new Promise((reslove, reject) => {
+    //   setStateWrap({
+    //     searchForm: initParams
+    //   });
+    //   reslove();
+    // });
+    // setState.then((res: any) => {
+    //   getTableData();
+    // });
+    getTableData();
   }
 
   function changeTablePageIndex(index: number, pageSize: number) {

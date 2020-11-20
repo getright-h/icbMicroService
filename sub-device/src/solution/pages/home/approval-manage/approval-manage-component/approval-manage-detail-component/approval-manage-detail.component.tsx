@@ -68,7 +68,7 @@ export default function ApprovalManageDetailComponent() {
     }
   ];
   const extra =
-    formTemplate?.status == APPROVAL_APPLY_STATUS_ENUM.Auditing && !!Number(isDeal)
+    formTemplate?.audit?.processStatus == APPROVAL_APPLY_STATUS_ENUM.Audited && !!Number(isDeal)
       ? [
           <Button key="3" onClick={() => refuseOrPassApproval(true)} danger>
             审核驳回
@@ -84,55 +84,57 @@ export default function ApprovalManageDetailComponent() {
       <PageHeader
         className="site-page-header"
         extra={extra}
-        title={formTemplate?.statusText}
+        title={!!Number(isDeal) ? formTemplate?.audit?.processStatusText : formTemplate?.statusText}
         subTitle={formTemplate?.instanceForm?.templateName}
       />
-      <div className={style.formModal}>
-        {formTemplate?.instanceForm?.controlList.map(controll => {
-          const props = getCurrentComponentProps(controll);
-          const ComponentInfo = GlobalComponent[controll.type];
-          return (
-            <div
-              key={controll.controlKey}
-              style={{
-                width: '100%',
-                display: 'flex',
-                marginTop: '10px',
-                textAlign: 'start'
-              }}
-            >
-              <span style={{ margin: '0 10px', width: '100px' }}>{controll.controlKey}: </span>
-              <ComponentInfo {...props} />
+      {formTemplate?.instanceForm && (
+        <div className={style.formModal}>
+          {formTemplate?.instanceForm?.controlList.map(controll => {
+            const props = getCurrentComponentProps(controll);
+            const ComponentInfo = GlobalComponent[controll.type];
+            return (
+              <div
+                key={controll.controlKey}
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  marginTop: '10px',
+                  textAlign: 'start'
+                }}
+              >
+                <span style={{ margin: '0 10px', width: '100px' }}>{controll.controlKey}: </span>
+                <ComponentInfo {...props} />
+              </div>
+            );
+          })}
+          {formTemplate?.instanceForm?.approverList && (
+            <div style={{ display: 'flex' }}>
+              <span style={{ margin: '0 13px', lineHeight: '32px', width: '100px' }}>审批人: </span>
+              <ApprovalerListComponent approverInput={formTemplate?.instanceForm?.approverList} />
             </div>
-          );
-        })}
-        {formTemplate?.instanceForm?.approverList && (
-          <div style={{ display: 'flex' }}>
-            <span style={{ margin: '0 13px', lineHeight: '32px', width: '100px' }}>审批人: </span>
-            <ApprovalerListComponent approverInput={formTemplate?.instanceForm?.approverList} />
-          </div>
-        )}
-        {
-          <div style={{ display: 'flex' }}>
-            <span style={{ margin: '20px 13px', lineHeight: '32px', width: '100px' }}>备注: </span>
-            <Table
-              style={{ marginBottom: '15px', marginTop: '16px' }}
-              columns={columns}
-              pagination={false}
-              bordered
-              dataSource={formTemplate?.remarks}
-            />
-          </div>
-        }
-        <div style={{ textAlign: 'center' }}>
-          {formTemplate?.status == APPROVAL_APPLY_STATUS_ENUM.Auditing && (
-            <Button type="primary" onClick={cancelApproval} className={style.submitButton}>
-              撤销
-            </Button>
           )}
-          <Button onClick={goBack}>取消</Button>
+          {
+            <div style={{ display: 'flex' }}>
+              <span style={{ margin: '20px 13px', lineHeight: '32px', width: '100px' }}>备注: </span>
+              <Table
+                style={{ marginBottom: '15px', marginTop: '16px' }}
+                columns={columns}
+                pagination={false}
+                bordered
+                dataSource={formTemplate?.remarks}
+              />
+            </div>
+          }
+          <div style={{ textAlign: 'center' }}>
+            {formTemplate?.status == APPROVAL_APPLY_STATUS_ENUM.Auditing && !Number(isDeal) && (
+              <Button type="primary" onClick={cancelApproval} className={style.submitButton}>
+                撤销
+              </Button>
+            )}
+            <Button onClick={goBack}>取消</Button>
+          </div>
         </div>
-      </div>
+      )}
       <Modal
         title={isRefuse ? '审核驳回' : '审核通过'}
         visible={visible}

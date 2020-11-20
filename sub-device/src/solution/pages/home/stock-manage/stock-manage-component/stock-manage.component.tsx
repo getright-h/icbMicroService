@@ -158,7 +158,7 @@ export default function StockManageComponent() {
         >
           设备入库
         </Button>
-        <Button
+        {/* <Button
           onClick={() => {
             callbackAction(ModalType.IMPORT);
           }}
@@ -175,7 +175,7 @@ export default function StockManageComponent() {
           disabled
         >
           批量导出
-        </Button>
+        </Button> */}
       </div>
     );
   }

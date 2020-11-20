@@ -26,7 +26,7 @@ export default function ApprovalDealWithComponent() {
         <Button type="primary" onClick={() => searchClick()}>
           查询
         </Button>
-        <Button onClick={() => initSearchForm()}>清空</Button>
+        <Button onClick={initSearchForm}>清空</Button>
       </div>
     );
   }
@@ -64,7 +64,7 @@ export default function ApprovalDealWithComponent() {
       wrapperCol: { span: 16 }
     };
     return (
-      <Form {...layout} form={searchForm} style={{ width: '90%' }} initialValues={{ processStatus: null }}>
+      <Form {...layout} form={searchForm} style={{ width: '90%' }} initialValues={{ processStatus: -1 }}>
         <Row>
           <Col span={6}>
             <Form.Item name="groupId" label="模板类型">
@@ -117,7 +117,7 @@ export default function ApprovalDealWithComponent() {
           <Col span={6}>
             <Form.Item name="processStatus" label="审批状态">
               <Select placeholder="请选择审批状态">
-                <Select.Option value={null}>全部</Select.Option>
+                <Select.Option value={-1}>全部</Select.Option>
                 <Select.Option value={1}>已处理</Select.Option>
                 <Select.Option value={0}>待处理</Select.Option>
               </Select>

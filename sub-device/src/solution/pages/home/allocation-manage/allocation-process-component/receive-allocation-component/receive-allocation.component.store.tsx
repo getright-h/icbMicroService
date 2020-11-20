@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
 import { useHistory } from 'react-router-dom';
 const { confirm } = Modal;
 export function useReceiveAllocationStore() {
-  const { state, setStateWrap } = useStateStore(new IReceiveAllocationState());
+  const { state, setStateWrap, getState } = useStateStore(new IReceiveAllocationState());
   const allocationManageService: AllocationManageService = new AllocationManageService();
   let setAllotFlowSubscription: Subscription;
   const history = useHistory();
@@ -22,7 +22,7 @@ export function useReceiveAllocationStore() {
 
   function getTableData() {
     setStateWrap({ isLoading: true });
-    setAllotFlowSubscription = allocationManageService.queryAllotRecipientPagedList(state.searchForm).subscribe(
+    setAllotFlowSubscription = allocationManageService.queryAllotRecipientPagedList(getState().searchForm).subscribe(
       res => {
         setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
       },
@@ -34,9 +34,14 @@ export function useReceiveAllocationStore() {
   }
 
   function onChange(value: any, valueType: string) {
+    const { searchForm } = state;
+    if (valueType == 'time') {
+      searchForm.beginTime = Date.parse(value[0]);
+      searchForm.endTime = Date.parse(value[1]);
+    }
     setStateWrap({
       searchForm: {
-        ...state.searchForm,
+        ...searchForm,
         [valueType]: value
       }
     });
@@ -168,6 +173,19 @@ export function useReceiveAllocationStore() {
         break;
     }
   }
+  function searchClean() {
+    const initSearchForm = {
+      beginTime: 0,
+      endTime: 0,
+      index: 1,
+      size: 10,
+      state: -1
+    };
+    setStateWrap({
+      searchForm: initSearchForm
+    });
+    getTableData();
+  }
   return {
     state,
     callbackAction,
@@ -177,6 +195,7 @@ export function useReceiveAllocationStore() {
     openModal,
     onChange,
     getTableData,
-    allocationOperate
+    allocationOperate,
+    searchClean
   };
 }

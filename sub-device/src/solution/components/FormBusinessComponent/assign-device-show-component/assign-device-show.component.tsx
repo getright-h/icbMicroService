@@ -20,9 +20,9 @@ export default function AssignDeviceShowComponent(props: IAssignDeviceShowProps)
   ];
   return (
     <Table
-      style={{ marginBottom: '15px', marginTop: '-16px' }}
-      showHeader={false}
+      style={{ marginBottom: '15px' }}
       columns={columns}
+      bordered={true}
       pagination={false}
       dataSource={props.data}
     />

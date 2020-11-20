@@ -22,7 +22,7 @@ export function useApprovalDealWithStore() {
     approvalManageService
       .queryApprovalProcessList({
         ...searchForm.getFieldsValue(),
-        processStatus: !!searchForm.getFieldValue('processStatus'),
+        processStatus: searchForm.getFieldValue('processStatus'),
         index: pageIndex,
         size: pageSize
       })
@@ -43,6 +43,10 @@ export function useApprovalDealWithStore() {
 
   function initSearchForm() {
     searchForm.resetFields();
+    setStateWrap({
+      pageIndex: 1
+    });
+    getTableData();
   }
 
   function callbackAction(data: QueryApprovalApplyListReturn, actionType: number) {
