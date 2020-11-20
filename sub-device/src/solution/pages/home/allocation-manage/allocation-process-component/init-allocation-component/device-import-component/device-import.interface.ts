@@ -8,6 +8,8 @@ export class IDeviceImportState {
   searchForm = {};
   deviceList: Array<any> = [];
   submitLoading = false;
+  fileList: any[] = [];
+  checkResult: any = {};
 }
 /**
  * @export props变量定义和初始化
@@ -16,6 +18,7 @@ export class IDeviceImportState {
 export class IDeviceImportProps {
   data: any;
   visible: boolean;
+  isMove?: boolean;
   close: () => void;
   getTableData?: () => void;
   getAlloactionDetail?: (id: string) => void;

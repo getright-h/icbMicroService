@@ -6,7 +6,7 @@ export function receiveAllocationColumns(callbackAction: Function) {
    * @description 根据[  调拨状态 ] 渲染操作按钮
    */
   function renderOperateBtn(data: any) {
-    const { state } = data;
+    const { state, isMove } = data;
     // const state = 70;
     const lookAllot = (
       <a
@@ -22,6 +22,7 @@ export function receiveAllocationColumns(callbackAction: Function) {
     /**
      * 1.仓库属于节点中，存在流转，出现流转按钮
      * 2.仓库处于流程最末端，不会显示你流转按钮
+     * 根据后端字段显示
      */
     const moveAllot = (
       <a
@@ -29,7 +30,7 @@ export function receiveAllocationColumns(callbackAction: Function) {
         onClick={() => {
           callbackAction(ModalType.MOVE, data);
         }}
-        key={0}
+        key={'move'}
       >
         流转
       </a>
@@ -71,6 +72,7 @@ export function receiveAllocationColumns(callbackAction: Function) {
     const btnArray = btnState.filter((item: any) => item.condition.includes(state)).map((btn: any) => btn.btn);
     // 插入查看操作
     btnArray.unshift(lookAllot);
+    isMove && btnArray.push(moveAllot);
     return <React.Fragment>{btnArray}</React.Fragment>;
   }
   return [
@@ -95,7 +97,7 @@ export function receiveAllocationColumns(callbackAction: Function) {
     },
     {
       title: '调拨总数',
-      dataIndex: 'totalNUmber'
+      dataIndex: 'totalNumber'
     },
     {
       title: '调拨时间',

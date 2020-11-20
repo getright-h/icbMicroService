@@ -13,24 +13,28 @@ export function useInitAllocationStore() {
   const allocationManageService: AllocationManageService = new AllocationManageService();
   const history = useHistory();
   let setAllotFlowSubscription: Subscription;
+  let queryAllotPromoterPagedListSubscription: Subscription;
   useEffect(() => {
     getTableData();
     return () => {
       setAllotFlowSubscription && setAllotFlowSubscription.unsubscribe();
+      queryAllotPromoterPagedListSubscription && queryAllotPromoterPagedListSubscription.unsubscribe();
     };
   }, []);
 
   function getTableData() {
     setStateWrap({ isLoading: true });
-    allocationManageService.queryAllotPromoterPagedList(state.searchForm).subscribe(
-      res => {
-        setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
-      },
-      err => {
-        setStateWrap({ isLoading: false });
-        ShowNotification.error(err);
-      }
-    );
+    queryAllotPromoterPagedListSubscription = allocationManageService
+      .queryAllotPromoterPagedList(state.searchForm)
+      .subscribe(
+        res => {
+          setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
+        },
+        err => {
+          setStateWrap({ isLoading: false });
+          ShowNotification.error(err);
+        }
+      );
   }
 
   function onChange(value: any, valueType: string) {
@@ -99,9 +103,9 @@ export function useInitAllocationStore() {
    * @param data
    */
   function renderRevokeModal(data: any) {
-    const { totalNUmber } = data;
+    const { totalNumber } = data;
     confirm({
-      content: `撤销后设备将退回仓库,共${totalNUmber}个设备,是否确认撤销?`,
+      content: `撤销后设备将退回仓库,共${totalNumber}个设备,是否确认撤销?`,
       onOk: () => {
         const params = {
           operation: ALLOW_FLOW_KEYCODE_ENUM.ReCall

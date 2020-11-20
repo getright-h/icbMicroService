@@ -22,7 +22,7 @@ export function useReceiveAllocationStore() {
 
   function getTableData() {
     setStateWrap({ isLoading: true });
-    allocationManageService.queryAllotRecipientPagedList(state.searchForm).subscribe(
+    setAllotFlowSubscription = allocationManageService.queryAllotRecipientPagedList(state.searchForm).subscribe(
       res => {
         setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
       },
@@ -63,6 +63,9 @@ export function useReceiveAllocationStore() {
         });
         break;
       case ModalType.MOVE:
+        setStateWrap({
+          importVisible: true
+        });
         break;
       case ModalType.PASS:
         renderPassModal(data);
@@ -155,7 +158,7 @@ export function useReceiveAllocationStore() {
   }
 
   function handleModalCancel() {
-    setStateWrap({ visibleModal: false, rejectVisibleModal: false });
+    setStateWrap({ visibleModal: false, rejectVisibleModal: false, importVisible: false });
   }
   function openModal(type: ModalType) {
     switch (type) {

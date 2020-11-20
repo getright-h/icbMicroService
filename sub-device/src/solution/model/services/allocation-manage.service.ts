@@ -22,11 +22,20 @@ const QUERY_ALL_PROMOTER_DETAIL = 'allot/manage/queryAllPromoterDetail';
 const QUERY_ALLOT_RECIPIENT_PAGED_LIST = 'allot/manage/queryAllotRecipientPagedList';
 // 接收调拨详情
 const QUERY_ALLOT_RECIPIENT_DETAIL = 'allot/manage/queryAllotRecipientDetail';
+// 上传Excle 校验设备
+const UPLOAD_ALLOT_DEVICE_EXCEL = 'allot/manage/uploadAllotDeviceExcel';
+// 校验设备
+const CHECK_ALLOT_DEVICE_INFO = 'allot/manage/checkAllotDeviceInfo';
 @DepUtil.Injectable()
 export class AllocationManageService {
   @DepUtil.Inject(RequestService)
   private readonly requestService: RequestService;
-
+  checkAllotDeviceInfo(params: any): Observable<any> {
+    return this.requestService.post(CHECK_ALLOT_DEVICE_INFO, params);
+  }
+  uploadAllotDeviceExcel(params: any): Observable<any> {
+    return this.requestService.post(UPLOAD_ALLOT_DEVICE_EXCEL, params);
+  }
   setAllotFlow(params: any): Observable<any> {
     return this.requestService.post(SET_ALLOT_FLOW, params);
   }
