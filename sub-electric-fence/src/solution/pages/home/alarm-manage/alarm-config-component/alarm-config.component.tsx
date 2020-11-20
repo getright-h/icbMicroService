@@ -30,8 +30,10 @@ export default function AlarmConfigComponent() {
               <Input placeholder="请输入模板名称" />
             </Form.Item>
           </Col>
-          <Col span={6} name="supervisor" label="监管人">
-            <Select placeholder="请选择监管人"></Select>
+          <Col span={6}>
+            <Form.Item name="supervisor" label="监管人">
+              <Select placeholder="请选择监管人"></Select>
+            </Form.Item>
           </Col>
         </Row>
       </Form>
@@ -41,10 +43,17 @@ export default function AlarmConfigComponent() {
   function renderSearchButtons() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary" onclick={searchClick}>
+        <Button type="primary" onClick={searchClick}>
           查询
         </Button>
-        <Button onclick={initSearchForm}>清空</Button>
+        <Button onClick={initSearchForm}>清空</Button>
+      </div>
+    );
+  }
+
+  function renderOtherSearchButtons() {
+    return (
+      <div className="other-search-button-item">
         <Button type="primary">
           <Link to="">报警配置</Link>
         </Button>
@@ -73,6 +82,7 @@ export default function AlarmConfigComponent() {
         pageName={'报警配置管理'}
         selectItems={renderSelectItems()}
         searchButton={renderSearchButtons()}
+        otherSearchBtns={renderOtherSearchButtons()}
         table={<RenderTable />}
       ></TablePageTelComponent>
     </React.Fragment>

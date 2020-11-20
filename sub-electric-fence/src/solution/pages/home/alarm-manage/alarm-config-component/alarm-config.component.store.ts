@@ -29,11 +29,20 @@ export function useAlarmConfigStore() {
     // )
   }
 
-  function searchClick() {}
+  function searchClick() {
+    setStateWrap({ pageIndex: 1 });
+    getTableData();
+  }
 
-  function initSearchForm() {}
+  function initSearchForm() {
+    searchForm.resetFields();
+    searchClick();
+  }
 
-  function changeTablePageIndex() {}
+  function changeTablePageIndex(pageIndex: number, pageSize: number) {
+    setStateWrap({ pageIndex, pageSize });
+    getTableData();
+  }
 
   function callbackAction<T>(actionType: number, data?: T) {}
 
