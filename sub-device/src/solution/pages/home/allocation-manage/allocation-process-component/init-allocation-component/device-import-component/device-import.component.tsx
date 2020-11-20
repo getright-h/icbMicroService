@@ -2,17 +2,43 @@ import * as React from 'react';
 import style from './device-import.component.less';
 import { useDeviceImportStore } from './device-import.component.store';
 import { IDeviceImportProps } from './device-import.interface';
-import { Modal, Form, Input, Radio, Button, Upload, Space, Select, Label } from 'antd';
+import { RenderGridDesComponent } from '~framework/components/component.module';
+import { Modal, Form, Input, Radio, Button, Upload, Space, Table } from 'antd';
 import { UploadOutlined, PlusOutlined, MinusOutlined } from '@ant-design/icons';
-
 export default function DeviceImportComponent(props: IDeviceImportProps) {
-  const { state, form, selfSubmit, selfClose, changeImportType, onChange, removeDevice } = useDeviceImportStore(props);
+  const {
+    state,
+    form,
+    selfSubmit,
+    selfClose,
+    changeImportType,
+    onChange,
+    removeDevice,
+    checkAllotDeviceInfo,
+    customRequest
+  } = useDeviceImportStore(props);
   const { visible, data = {} } = props;
   const { deviceTypeList = [] } = data;
-  const { importType, submitLoading } = state;
+  const { importType, submitLoading, fileList = [], checkResult = {} } = state;
+  const { errorTotal = 0, list = [], successTotal = 0, message = '' } = checkResult;
+  const tableData = list.map((item: any) => item.model);
+  const columns = [
+    {
+      title: '设备号',
+      dataIndex: 'code'
+    },
+    {
+      title: '表内行数',
+      dataIndex: 'rowNumber'
+    },
+    {
+      title: '失败原因',
+      dataIndex: 'remark'
+    }
+  ];
   const layout = {
-    labelCol: { span: 4 },
-    wrapperCol: { span: 16 }
+    labelCol: { span: 5 },
+    wrapperCol: { span: 20 }
   };
   const initialValues = {};
   if (deviceTypeList.length && Array.isArray(deviceTypeList)) {
@@ -35,6 +61,39 @@ export default function DeviceImportComponent(props: IDeviceImportProps) {
           </Form.Item>
           {importType == 1 && <RenderTypeOne />}
           {importType == 2 && <RenderTypeTwo />}
+          <Form.Item label="验证设备">
+            <Button onClick={checkAllotDeviceInfo}>验证设备</Button>
+          </Form.Item>
+          {Object.keys(checkResult).length > 0 && (
+            <>
+              {' '}
+              <Form.Item label="验证设备详情">
+                <Space size={'middle'}>
+                  <span>验证设备: {list.length}</span>
+                  <span>验证成功: {successTotal}</span>
+                  <span style={{ color: 'red' }}>验证失败: {errorTotal}</span>
+                </Space>
+              </Form.Item>
+              {message && (
+                <Form.Item>
+                  <p style={{ color: 'red', marginLeft: '10%', fontSize: '15px' }}>{message}</p>
+                </Form.Item>
+              )}
+              {errorTotal !== 0 && (
+                <Form.Item>
+                  <Table
+                    showHeader
+                    pagination={false}
+                    title={() => <p style={{ textAlign: 'center' }}>失败设备一览表</p>}
+                    bordered
+                    columns={columns}
+                    rowKey={record => record.dataIndex}
+                    dataSource={tableData}
+                  />
+                </Form.Item>
+              )}
+            </>
+          )}
         </Form>
       </React.Fragment>
     );
@@ -43,19 +102,63 @@ export default function DeviceImportComponent(props: IDeviceImportProps) {
     return (
       <Form.Item label="选择文件" style={{ marginBottom: 0 }}>
         <Form.Item name="file" rules={[{ required: true }]} style={{ display: 'inline-block' }}>
-          <Upload>
+          <Upload
+            action="http://192.168.0.252:5301/api/allot/manage/uploadAllotDeviceExcel"
+            customRequest={customRequest}
+          >
             <Button>
               <UploadOutlined /> Click to Upload
             </Button>
           </Upload>
         </Form.Item>
-        <Form.Item style={{ display: 'inline-block', margin: '0 8px' }}>
-          <Button>验证设备</Button>
-        </Form.Item>
-        <Form.Item style={{ display: 'inline-block', margin: '0 8px' }}>
+
+        {/* <Form.Item style={{ display: 'inline-block', margin: '0 8px' }}>
           <a>下载模板</a>
-        </Form.Item>
+        </Form.Item> */}
       </Form.Item>
+    );
+  }
+
+  function RenderCheckResult() {
+    const { errorTotal = 0, list = [], successTotal = 0, message = '' } = checkResult;
+    const data = list.map((item: any) => item.model);
+    const columns = [
+      {
+        title: '设备号',
+        dataIndex: 'code'
+      },
+      {
+        title: '表内行数',
+        dataIndex: 'rowNumber'
+      },
+      {
+        title: '失败原因',
+        dataIndex: 'remark'
+      }
+    ];
+
+    return (
+      <>
+        <Form.Item label="验证设备详情">
+          <Space size={'middle'}>
+            <span>验证设备: {list.length}</span>
+            <span>验证成功: {successTotal}</span>
+            <span style={{ color: 'red' }}>验证失败: {errorTotal}</span>
+          </Space>
+        </Form.Item>
+        <Form.Item>
+          <p style={{ color: 'red' }}>{message}</p>
+        </Form.Item>
+        <Table
+          showHeader
+          pagination={false}
+          title={() => <p style={{ textAlign: 'center' }}>失败设备一览表</p>}
+          bordered
+          columns={columns}
+          rowKey={record => record.dataIndex}
+          dataSource={data}
+        />
+      </>
     );
   }
   function RenderTypeTwo() {

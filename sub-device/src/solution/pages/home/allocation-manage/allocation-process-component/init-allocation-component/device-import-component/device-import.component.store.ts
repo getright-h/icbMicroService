@@ -6,6 +6,7 @@ import { ShowNotification } from '~/framework/util/common';
 import { AllocationManageService } from '~/solution/model/services/allocation-manage.service';
 import { useEffect } from 'react';
 import { Subscription } from 'rxjs';
+import axios from 'axios';
 
 export function useDeviceImportStore(props: IDeviceImportProps) {
   const { state, setStateWrap } = useStateStore(new IDeviceImportState());
@@ -16,19 +17,29 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
   // 不参与页面更新
   const deviceList: any = [];
   function selfSubmit() {
-    const { allotId, id, state } = props.data;
-    console.log(allotId, id, state);
+    // isMove 流转操作
+    const { isMove, data = {} } = props;
+    const { allotId, id } = data;
+    const { checkResult } = state;
+    const { errorTotal = 0, message = '', successList = [] } = checkResult;
+    if ((message && errorTotal) || !Object.keys(checkResult).length) {
+      ShowNotification.warning('设备号有误!');
+      return;
+    }
     if (!allotId || !id) return;
-    deviceList.forEach((device: any) => {
-      device.key != undefined && delete device.key;
-    });
+    // deviceList.forEach((device: any) => {
+    //   device.key != undefined && delete device.key;
+    // });
     const searchForm = {
       id,
       allotId,
       operation: ALLOW_FLOW_KEYCODE_ENUM.Apply,
-      deviceList
+      deviceList: successList
     };
-    ALLOW_FLOW_ENUM.Reject === state && (searchForm.operation = ALLOW_FLOW_KEYCODE_ENUM.ReApply);
+    ALLOW_FLOW_ENUM.Reject === data?.state && (searchForm.operation = ALLOW_FLOW_KEYCODE_ENUM.ReApply);
+    isMove && (searchForm.operation = ALLOW_FLOW_KEYCODE_ENUM.Move);
+    console.log(searchForm);
+
     setStateWrap({ submitLoading: true });
     allocationManageService.setAllotFlow(searchForm).subscribe(
       (res: any) => {
@@ -47,12 +58,48 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
       }
     );
   }
+
+  function customRequest(item: any) {
+    const data = new FormData();
+    data.append('file', item.file);
+    return axios
+      .post(item.action, data, {
+        onUploadProgress: ({ total, loaded }) => {
+          item.onProgress({ percent: Number(Math.round((loaded / total) * 100).toFixed(2)) }, item.file);
+        }
+      })
+      .then(res => {
+        const { data } = res;
+        setStateWrap({
+          fileList: data.data || []
+        });
+      });
+  }
+
+  function checkAllotDeviceInfo(e: any) {
+    const { fileList, importType } = state;
+    const { allotId } = props.data;
+    const params: any = { allotId, list: [] };
+    if (importType == 1) {
+      params.list = fileList;
+    } else {
+      params.list = deviceList;
+    }
+    if (!params.list.length) {
+      ShowNotification.warning('请录入设备号!');
+      return;
+    }
+    allocationManageService.checkAllotDeviceInfo(params).subscribe((res: any) => {
+      setStateWrap({ checkResult: res });
+    });
+  }
   function selfClose() {
     form.resetFields();
     props.close && props.close();
   }
   function changeImportType(value: any) {
-    setStateWrap({ importType: value });
+    // 当在切换的时候数据清除
+    setStateWrap({ importType: value, checkResult: {} });
   }
 
   /**
@@ -63,14 +110,13 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
    * 以ID作为关联
    */
   function onChange(value: any, device: any, key: number) {
-    console.log(device);
-
     const currentDevice = {
       key,
       typeId: device.typeId,
       typeName: device.typeName,
       code: value
     };
+    console.log(currentDevice);
     // 如果存在Key则更新值, 不做增加处理
     const exitIndex = deviceList.findIndex((dev: any) => dev.key == key);
     if (exitIndex != -1) {
@@ -79,6 +125,7 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
       // 不存在则做增加处理
       deviceList.push(currentDevice);
     }
+    console.log(deviceList);
   }
   /**
    * 用于移除设备号
@@ -97,5 +144,15 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
       setAllotFlowSubscription && setAllotFlowSubscription.unsubscribe();
     };
   }, [props.data.id]);
-  return { state, form, selfSubmit, selfClose, changeImportType, onChange, removeDevice };
+  return {
+    state,
+    form,
+    selfSubmit,
+    selfClose,
+    changeImportType,
+    onChange,
+    removeDevice,
+    checkAllotDeviceInfo,
+    customRequest
+  };
 }

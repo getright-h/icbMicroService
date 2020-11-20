@@ -116,7 +116,7 @@ export function initAllocationColumns(callbackAction: Function) {
     },
     {
       title: '调拨总数',
-      dataIndex: 'totalNUmber'
+      dataIndex: 'totalNumber'
     },
     {
       title: '调拨时间',

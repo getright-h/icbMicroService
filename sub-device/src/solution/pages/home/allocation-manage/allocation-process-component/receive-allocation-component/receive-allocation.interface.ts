@@ -13,6 +13,7 @@ export class IReceiveAllocationState {
   total = 0;
   visibleModal = false;
   rejectVisibleModal = false;
+  importVisible = false;
   currentId = '';
   currentData = {};
   currentActionType: any;

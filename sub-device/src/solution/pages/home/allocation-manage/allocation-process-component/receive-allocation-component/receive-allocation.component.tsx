@@ -7,7 +7,7 @@ import { ALLOW_FLOW } from '~shared/constant/common.const';
 import { Button, Input, Select } from 'antd';
 import RejectAllocationComponent from './reject-allocation-component/reject-allocation.component';
 const { Option } = Select;
-
+import DeviceImportComponent from '../init-allocation-component/device-import-component/device-import.component';
 export default function ReceiveAllocationComponent() {
   const {
     state,
@@ -20,7 +20,16 @@ export default function ReceiveAllocationComponent() {
     getTableData,
     allocationOperate
   } = useReceiveAllocationStore();
-  const { isLoading, searchForm, tableData, total, currentData, rejectVisibleModal, currentActionType } = state;
+  const {
+    importVisible,
+    isLoading,
+    searchForm,
+    tableData,
+    total,
+    currentData,
+    rejectVisibleModal,
+    currentActionType
+  } = state;
   function renderSelectItems() {
     return (
       <>
@@ -106,6 +115,13 @@ export default function ReceiveAllocationComponent() {
         getTableData={getTableData}
         close={handleModalCancel}
         currentActionType={currentActionType}
+      />
+      <DeviceImportComponent
+        visible={importVisible}
+        close={handleModalCancel}
+        data={currentData}
+        getTableData={getTableData}
+        isMove={true}
       />
     </React.Fragment>
   );
