@@ -38,6 +38,6 @@ export function AlarmParameterColumn(callbackAction: Function) {
     {
       title: '所属机构',
       dataIndex: 'name'
-    },
+    }
   ];
 }
