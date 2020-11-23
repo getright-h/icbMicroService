@@ -68,9 +68,7 @@ export function useReceiveAllocationStore() {
         });
         break;
       case ModalType.MOVE:
-        setStateWrap({
-          importVisible: true
-        });
+        renderMoveModal(data);
         break;
       case ModalType.PASS:
         renderPassModal(data);
@@ -96,6 +94,29 @@ export function useReceiveAllocationStore() {
           operation: ALLOW_FLOW_KEYCODE_ENUM.Receive
         };
         const msg = '接收成功';
+        allocationOperate(data, params).then((res: any) => {
+          const { isSuccess } = res;
+          if (isSuccess) {
+            getTableData();
+            ShowNotification.success(msg);
+          }
+        });
+      }
+    });
+  }
+
+  /**
+   * 渲染流转Modal操作
+   * @param data
+   */
+  function renderMoveModal(data: any) {
+    confirm({
+      content: '是否确认流转',
+      onOk: () => {
+        const params = {
+          operation: ALLOW_FLOW_KEYCODE_ENUM.Move
+        };
+        const msg = '流转成功';
         allocationOperate(data, params).then((res: any) => {
           const { isSuccess } = res;
           if (isSuccess) {
