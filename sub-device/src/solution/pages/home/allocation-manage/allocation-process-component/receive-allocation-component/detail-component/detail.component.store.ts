@@ -51,6 +51,7 @@ export function useDetailStore() {
         });
         break;
       case ModalType.MOVE:
+        renderMoveModal(data);
         break;
       case ModalType.PASS:
         renderPassModal(data);
@@ -91,7 +92,28 @@ export function useDetailStore() {
       }
     });
   }
-
+  /**
+   * 渲染流转Modal操作
+   * @param data
+   */
+  function renderMoveModal(data: any) {
+    confirm({
+      content: '是否确认流转',
+      onOk: () => {
+        const params = {
+          operation: ALLOW_FLOW_KEYCODE_ENUM.Move
+        };
+        const msg = '流转成功';
+        allocationOperate(data, params).then((res: any) => {
+          const { isSuccess } = res;
+          if (isSuccess) {
+            getAlloactionDetail(id);
+            ShowNotification.success(msg);
+          }
+        });
+      }
+    });
+  }
   /**
    * 渲染通过Modal操作
    * @param data
