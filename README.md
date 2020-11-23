@@ -1,12 +1,6 @@
 #### 主应用对象参数说明
 * 配置地址： /master/src/framework/microApp/fetchChildAppsConfig
 
-* 安装
-  yarn packages:install
-
-* 启动
-  yarn packages:start
-  访问http://localhost:8080/#/home/device/stock/all
 * 参数说明：
  ```javascript
 [
@@ -43,8 +37,11 @@
 通过该模块暴露的方法setState达到传值的效果，这样所有的应用都能在这个模块的onGlobalStateChange方法中捕获到传的值。这边使用redux来达到从onGlobalStateChange传递到自身应用的效果。
 
 #### 启动
-* 子应用可以独立启动
-* 要启动父应用需要使用根目录下 - **npm start**
-* 全部安装依赖模块 - **yarn ainstall**
+* 安装
+  **yarn packages:install**
+
+* 启动
+  **yarn packages:start**
+  访问**http://localhost:8080/#/home/device/stock/all**
  
 ##### 更多详情 请查看http://220.167.101.49:8092/FE-ZeroToOne/microFront-platform/RM-micro-web/wikis/%E5%BE%AE%E5%89%8D%E7%AB%AFqiankun%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F

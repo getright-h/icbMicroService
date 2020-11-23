@@ -6,6 +6,7 @@
   "scripts": {
     "packages:install": "npm-run-all --serial install:*",
     "packages:start": "npm-run-all --parallel start:*",
+    "install:m": "yarn",
     "install:device": "cd sub-device && yarn",
     "start:device": "cd sub-device && yarn start",
     "install:master": "cd master && yarn",
