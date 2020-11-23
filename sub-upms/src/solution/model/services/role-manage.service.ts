@@ -20,7 +20,7 @@ const GET_MENU_PRIVILEGE_LIST = 'prvilege/common/menuPrivilegeList';
 const GET_MENU_TREE = 'prvilege/common/menuTree';
 const ROLE_MENU_PRIVILEGE_DETAIL = 'prvilege/common/roleMenuPrivilegeDetail';
 const SUBMIT_MENU_RELATION = 'prvilege/common/submitMenuRelation';
-const GET_SYSTEM_PRIVILEGES = 'prvilege/GetAllPrivileges';
+const GET_SYSTEM_PRIVILEGES = 'prvilege/GetAllPrivilegesByType';
 
 @DepUtil.Injectable()
 export class RoleManageService extends RoleManageDTO {

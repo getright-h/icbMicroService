@@ -8,8 +8,8 @@ export class IFenceAttentionState {
   searchForm: any = {
     index: 1,
     size: 10,
-    begin: moment().subtract(1, 'months'),
-    end: moment(moment().format('YYYY MM DD') + ' 00:00:00'),
+    begin: moment(moment().format('YYYY MM DD') + ' 00:00:00').subtract(1, 'months'),
+    end: moment(moment().format('YYYY MM DD') + ' 23:59:59'),
     fenceId: '',
     status: '-1',
     thingId: '',

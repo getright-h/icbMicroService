@@ -14,8 +14,8 @@ module.exports = {
     publicPath: PUBLICK_PATH || "",
     // 把子应用打包成 umd 库格式
     
-    // filename:'js/[name].[hash:5].js',
-    // path:path.resolve(__dirname,'../dist'),
+    filename:'js/[name].[hash:5].js',
+    path:path.resolve(__dirname,'../dist'),
     library: `${name}`,
     libraryTarget: "umd",
     jsonpFunction: `webpackJsonp_${name}`

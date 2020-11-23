@@ -1,0 +1,15 @@
+{
+    "collection": "@fch/fch-react-schematic",
+    "type": "web",
+    "defaultSrcRoot": "/src/solution/",
+    "needRouter": [
+        "c"
+    ],
+    "needDto": [
+        "s"
+    ],
+    "baseUrl": {
+      "service": "/src/solution/model/services",
+      "dto": "/src/solution/model/dto"
+    }
+}

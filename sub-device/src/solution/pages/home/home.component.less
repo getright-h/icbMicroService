@@ -1,0 +1,36 @@
+.body-container {
+  padding-top: 6.75rem;
+  min-height: 100vh;
+  display: flex;
+}
+
+.home-main {
+  background: @back-ground;
+  width: 100%;
+}
+
+:global {
+  .ant-layout-sider {
+    height: inherit;
+    border-radius: 0.6rem;
+    padding-top: 2rem;
+    background: @main-theme;
+    box-shadow: 0 8px 20px 0 @border-main;
+  }
+
+  .ant-menu-inline {
+    height: 100%;
+    border-radius: 0.5rem;
+  }
+}
+
+.page-container {
+  overflow-y: auto;
+  width: 100%;
+  margin: 0 2rem 2rem 2rem;
+  border-radius: 0.5rem;
+  height: 80vh;
+  background-color: @main-theme;
+  color: @main-font-color;
+  box-shadow: 0 8px 20px 0 @border-main;
+}

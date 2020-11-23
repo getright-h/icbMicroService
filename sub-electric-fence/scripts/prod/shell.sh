@@ -1,10 +1,12 @@
 #/usr/bin
 version="1.0.0";
 imageName="sub-electric-fence__release";
+cd ../..
+# yarn
+# yarn build-dev
 
-echo "--> docker build"
 echo "--> copy files···"
-cp -rf Dockerfile ecosystem.config.js server/* ./dist
+# cp -rf Dockerfile ecosystem.config.js server/* ./dist
 echo "--> install node dependencies···"
 echo "--> docker build"
 cd dist
