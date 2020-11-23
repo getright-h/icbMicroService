@@ -1,5 +1,12 @@
 #### 主应用对象参数说明
 * 配置地址： /master/src/framework/microApp/fetchChildAppsConfig
+
+* 安装
+  yarn packages:install
+
+* 启动
+  yarn packages:start
+  访问http://localhost:8080/#/home/device/stock/all
 * 参数说明：
  ```javascript
 [

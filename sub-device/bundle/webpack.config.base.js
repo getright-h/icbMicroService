@@ -13,9 +13,9 @@ module.exports = {
     // 把子应用打包成 umd 库格式
     filename:'js/[name].[hash:5].js',
     path:path.resolve(__dirname,'../dist'),
-    // library: `${name}`,
-    // libraryTarget: "umd",
-    // jsonpFunction: `webpackJsonp_${name}`
+    library: `${name}`,
+    libraryTarget: "umd",
+    jsonpFunction: `webpackJsonp_${name}`
   },
   module:{
     rules:[

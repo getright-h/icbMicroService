@@ -10,7 +10,7 @@ DrapChooseComponent.defaultProps = {
   type: '',
   showSearch: true,
   defaultValue: undefined,
-  getCurrentSelectInfo: () => {}
+  getCurrentSelectInfo: info => {}
 };
 
 export default function DrapChooseComponent(props: IDrapChooseProps) {

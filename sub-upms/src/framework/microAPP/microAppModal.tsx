@@ -4,6 +4,7 @@ export interface AppConfig {
     name: string;
     routers: Array<ChildrenObject>;
     routerBase: string,
+    elementInfo: string,
     container: any;
   }
   
@@ -12,6 +13,7 @@ export interface AppConfig {
     title: string;
     icon: string;
     lazyload: boolean;
+    children?: Array<ChildrenObject>;
     exact: boolean;
     componentUrl: string;
     component: any;

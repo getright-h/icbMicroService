@@ -40,7 +40,6 @@ function HomeModule(props: any) {
   function renderLayoutContainer() {
     return (
       <Layout.Content>
-        <Button onClick={sendToChild}>父级向子级传值</Button>
         <div id="subapp-viewport"></div>
       </Layout.Content>
     );

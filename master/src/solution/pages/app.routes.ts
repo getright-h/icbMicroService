@@ -5,7 +5,8 @@ import LoginModule from './login/login.module';
 export const appRoutes: IRoute[] = [
   {
     path: '/home',
-    component: HomeModule
+    component: HomeModule,
+    exact: false
   },
   {
     path: '/login',

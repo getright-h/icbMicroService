@@ -13,10 +13,10 @@ export default function MenuComponent(props: IProps) {
   const { gState }: IGlobalState = React.useContext(GlobalContext);
   function renderMenuItems(menuList: IMenu[]) {
     return menuList.map(menu => {
-      const { icon, title, paths } = menu;
+      const { icon, title, path } = menu;
       return menu.children ? (
         <SubMenu
-          key={paths}
+          key={path}
           title={
             <span>
               <Icon type={icon} />
@@ -27,8 +27,8 @@ export default function MenuComponent(props: IProps) {
           {renderMenuItems(menu.children)}
         </SubMenu>
       ) : (
-        <Menu.Item key={paths}>
-          <Link to={paths}>
+        <Menu.Item key={path}>
+          <Link to={path}>
             <Icon type={icon} />
             <span>{title}</span>
           </Link>
