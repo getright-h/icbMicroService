@@ -59,21 +59,15 @@ export function useDirectiveListStore() {
     }
   }
 
-  function close(refresh?: boolean) {
-    if (refresh) {
-      getTableData();
-    }
-    setStateWrap({
-      patchModalVisible: false
-    });
-  }
   function changeTablePageIndex(pageIndex: number, pageSize: number) {
     setStateWrap({ pageIndex, pageSize });
     getTableData();
   }
 
   function handleModalCancel(isSuccess = false) {
-    setStateWrap({});
+    setStateWrap({
+      patchModalVisible: false
+    });
     isSuccess && searchClick();
   }
 
@@ -84,7 +78,6 @@ export function useDirectiveListStore() {
     callbackAction,
     changeTablePageIndex,
     searchClick,
-    handleModalCancel,
-    close
+    handleModalCancel
   };
 }
