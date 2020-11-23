@@ -1,0 +1,65 @@
+import { IDirectiveListState, ModalType } from './directive-list.interface';
+import { useStateStore } from '~/framework/aop/hooks/use-base-store';
+import { Form } from 'antd';
+import { AlarmManageService } from '~/solution/model/services/alarm-manage.service';
+import { useEffect } from 'react';
+
+export function useDirectiveListStore() {
+  const { state, setStateWrap, getState } = useStateStore(new IDirectiveListState());
+  const alarmManageService: AlarmManageService = new AlarmManageService();
+  const [searchForm] = Form.useForm();
+
+  useEffect(() => {
+   
+  }, []);
+
+  function getTableData() {
+    // setStateWrap({ isLoading: true });
+    // const { pageIndex, pageSize } = getState();
+    // alarmManageService
+    //   .queryOwnerPagedList({
+    //     ...searchForm.getFieldsValue(),
+    //     index: pageIndex,
+    //     size: pageSize
+    //   })
+    //   .subscribe(
+    //     res => {
+    //       setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
+    //     },
+    //     err => {
+    //       setStateWrap({ isLoading: false });
+    //     }
+    //   );
+  }
+
+  function searchClick() {
+    setStateWrap({ pageIndex: 1 });
+    getTableData();
+  }
+
+  function initSearchForm() {
+    searchForm.resetFields();
+    searchClick();
+  }
+
+  function callbackAction<T>(actionType: number, data?: T) {
+    setStateWrap({ currentId: data ? data.id : '' });
+    switch (actionType) {
+      case ModalType.CREATE:
+        setStateWrap({});
+        break;
+      case ModalType.EDIT:
+        setStateWrap({});
+        break;
+      default:
+        break;
+    }
+  }
+
+  return {
+    state,
+    searchForm,
+    initSearchForm,
+    callbackAction,
+  };
+}

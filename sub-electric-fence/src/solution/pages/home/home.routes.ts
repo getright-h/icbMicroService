@@ -11,5 +11,15 @@ export const homeRoutes: IRoute[] = [
     path: `${MODULE_PATH}/alarm`,
     component: ROUTERS.alarmManageModule,
     lazyload: true
+  },
+  {
+    path: `${MODULE_PATH}/report`,
+    component: ROUTERS.reportManageModule,
+    lazyload: true
+  },
+  {
+    path: `${MODULE_PATH}/directive`,
+    component: ROUTERS.directiveModule,
+    lazyload: true
   }
 ];
