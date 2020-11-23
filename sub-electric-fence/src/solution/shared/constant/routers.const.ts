@@ -21,6 +21,7 @@ export const ROUTERS = {
   directiveListComponent: () =>
     import('~/solution/pages/home/directive-manage/directive-list-component/directive-list.component'),
   reportManageModule: () => import('~/solution/pages/home/report-manage/report-manage.module'),
+  PositionMonitorModule: () => import('~/solution/pages/home/position-monitor/position-monitor.module'),
   statisticalListComponent: () =>
     import('~/solution/pages/home/report-manage/state-list-component/state-list.component'),
   recordListComponent: () => import('~/solution/pages/home/report-manage/record-list-component/record-list.component'),
@@ -31,5 +32,7 @@ export const ROUTERS = {
     import('~/solution/pages/home/report-manage/offline-list-component/offline-list.component'),
   dwellListComponent: () => import('~/solution/pages/home/report-manage/dwell-list-component/dwell-list.component'),
   permanentListComponent: () =>
-    import('~/solution/pages/home/report-manage/permanent-list-component/permanent-list.component')
+    import('~/solution/pages/home/report-manage/permanent-list-component/permanent-list.component'),
+  positionMonitor: () =>
+    import('~/solution/pages/home/position-monitor/position-monitor-component/position-monitor.component')
 };

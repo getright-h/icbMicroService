@@ -1,0 +1,44 @@
+.box-content {
+    // align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+.box {
+    border: 1px solid fade( @primary-color,10%);
+    text-align: center;
+}
+
+.box0 {
+    .box();
+    padding: 5px 10px 10px 10px;
+    width: 350px;
+ 
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.box1 {
+    .box();
+    padding: 10px;
+    width: 200px;
+}
+.renderAline {
+    margin-left:88px;
+}
+
+.box2 {
+    .box();
+    margin-top: 5px; 
+    padding: 5px;
+    width: 150px;  
+}
+
+.arrowhead {
+    width: 0;
+    margin-left: 3px;
+    height: 0;
+    border: 6px solid transparent;
+    border-bottom: 0;
+    border-top-color:rgba(0, 0, 0, 0.2) ;
+}

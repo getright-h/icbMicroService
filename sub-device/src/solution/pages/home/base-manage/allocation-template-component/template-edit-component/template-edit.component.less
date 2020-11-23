@@ -1,0 +1,47 @@
+.main-form{
+  .title{
+    padding: 1.25rem;
+    border-bottom: 1px solid #ddd;
+    h1{
+      font-family: Exo;
+      font-size: 1.125rem;
+      font-weight: 500;
+      margin-bottom: 0;
+    }
+  }
+  .form-part{
+    .sub-title{
+      padding: 0 2.25rem;
+      height: 2.2rem;
+      background: fade( @primary-color,5%);
+      h3{
+        line-height: 2rem;
+      }
+    }
+    .form-items{
+      padding-top: 1rem;
+      display: flex;
+      .form-left{
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        .ant-form-item {
+          margin-bottom: 14px;
+        }
+        .buttonField {
+          display: flex;
+          justify-content: center;
+          margin: 0 30px;
+          button {
+            width: 150px;
+            margin-right: 10px;
+          }
+        }
+      }
+      .form-right {
+        width: 50%;
+      }
+    }
+  }
+}
+

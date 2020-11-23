@@ -33,7 +33,7 @@ export function useEditStationStore(props: any, form: FormInstance) {
   function getRoleList() {
     getRoleListSubscription = stationManageService
       .queryRoleList({
-        userId: '',
+        userId: gState.myInfo.userId,
         systemId: gState.myInfo.systemId
       })
       .subscribe((res: any) => {
@@ -78,7 +78,7 @@ export function useEditStationStore(props: any, form: FormInstance) {
     }
   }
   useEffect(() => {
-    initForm();
+    props.visible && initForm();
   }, [props.visible]);
   return { state, selfClose, selfSubmit, getRoleList, selectOrganization };
 }

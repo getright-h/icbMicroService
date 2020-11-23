@@ -1,6 +1,6 @@
 import * as React from 'react';
 import style from './add-user.component.less';
-import { Form, Modal, Input, Radio, Checkbox } from 'antd';
+import { Form, Modal, Input, Radio, Checkbox, Typography } from 'antd';
 import { useAddUserStore } from './add-user.component.store';
 import { IAddUserProps } from './add-user.interface';
 import SelectGroupComponent from './select-group-component/select-group.component';
@@ -122,9 +122,9 @@ export default function AddUserComponent(props: IAddUserProps) {
             sm: { span: 21 }
           }}
         >
-          <Checkbox.Group>
-            {roleOptions &&
-              roleOptions.map((role: RoleInfo) => (
+          {roleOptions.length ? (
+            <Checkbox.Group>
+              {roleOptions.map((role: RoleInfo) => (
                 <Checkbox
                   key={role.id}
                   value={JSON.stringify({ roleId: role.id, roleCode: role.originalCode })}
@@ -133,7 +133,10 @@ export default function AddUserComponent(props: IAddUserProps) {
                   {role.name}
                 </Checkbox>
               ))}
-          </Checkbox.Group>
+            </Checkbox.Group>
+          ) : (
+            <Typography.Text type="danger">当前登录用户无可选关联角色</Typography.Text>
+          )}
         </Form.Item>
       </div>
     );

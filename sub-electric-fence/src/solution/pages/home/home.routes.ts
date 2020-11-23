@@ -21,5 +21,10 @@ export const homeRoutes: IRoute[] = [
     path: `${MODULE_PATH}/directive`,
     component: ROUTERS.directiveModule,
     lazyload: true
+  },
+  {
+    path: `${MODULE_PATH}/positionMonitor`,
+    component: ROUTERS.PositionMonitorModule,
+    lazyload: true
   }
 ];

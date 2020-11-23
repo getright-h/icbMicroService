@@ -3,9 +3,8 @@ import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect, useRef } from 'react';
 declare const AMap: any;
 declare const AMapUI: any;
-import { IMAP } from '~/solution/shared/util/map.util';
 export function useAttentionDetailStore(props: AttentionDetailInfo) {
-  const { state, setStateWrap } = useStateStore(new IAttentionDetailState());
+  const { state } = useStateStore(new IAttentionDetailState());
   const map: any = useRef();
   const centerLocation = useRef([116.433322, 39.900256]);
   useEffect(() => {

@@ -46,6 +46,11 @@ export const PAGES_MENU = {
       ]
     },
     {
+      path: 'home/positionMonitor',
+      title: '定位监控',
+      icon: 'container'
+    },
+    {
       path: 'home/directive',
       title: '指令中心',
       icon: 'container',
