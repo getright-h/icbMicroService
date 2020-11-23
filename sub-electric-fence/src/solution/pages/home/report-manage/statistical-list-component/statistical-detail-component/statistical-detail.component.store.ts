@@ -1,4 +1,4 @@
-import { IDirectiveListState, ModalType } from './directive-list.interface';
+import { IDirectiveListState, ModalType } from './statistical-detail.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form } from 'antd';
 import { AlarmManageService } from '~/solution/model/services/alarm-manage.service';
@@ -42,7 +42,7 @@ export function useDirectiveListStore() {
     searchClick();
   }
 
-  function callbackAction<T>(actionType: number, data?: any) {
+  function callbackAction<T>(actionType: number, data?: T) {
     setStateWrap({ currentId: data ? data.id : '' });
     switch (actionType) {
       case ModalType.CREATE:
@@ -50,9 +50,6 @@ export function useDirectiveListStore() {
         break;
       case ModalType.EDIT:
         setStateWrap({});
-        break;
-      case ModalType.PATCH:
-        setStateWrap({ patchModalVisible: true });
         break;
       default:
         break;
@@ -65,9 +62,7 @@ export function useDirectiveListStore() {
   }
 
   function handleModalCancel(isSuccess = false) {
-    setStateWrap({
-      patchModalVisible: false
-    });
+    setStateWrap({});
     isSuccess && searchClick();
   }
 

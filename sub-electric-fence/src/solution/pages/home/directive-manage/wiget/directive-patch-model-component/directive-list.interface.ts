@@ -6,7 +6,11 @@ export interface IDirectiveModalProps {
   visible: boolean;
   close: Function;
 }
+export class IDirectiveModalState {
+  custom = false;
+  isDevice = true;
+}
 export enum ModalType {
-  CREATE,
-  EDIT
+  CUSTOM,
+  FORM
 }
