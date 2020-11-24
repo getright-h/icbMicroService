@@ -88,6 +88,7 @@ export default function EditOwnerInfoComponent(props: IEditOwnerInfoProps) {
   return (
     <Modal
       title="新增车主"
+      centered={true}
       visible={visible}
       width={600}
       onCancel={() => selfClose(false)}

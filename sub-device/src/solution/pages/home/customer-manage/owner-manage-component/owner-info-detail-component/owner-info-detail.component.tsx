@@ -48,6 +48,7 @@ export default function OwnerInfoDetailComponent(props: IOwnerInfoDetailProps) {
   return (
     <Modal
       title="车主详情"
+      centered={true}
       visible={visible}
       width={600}
       onCancel={selfClose}
