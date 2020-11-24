@@ -38,12 +38,7 @@ export default function MenuComponent(props: IProps) {
   }
 
   return (
-    <Menu
-      mode="inline"
-      defaultSelectedKeys={[currentUrl]}
-      defaultOpenKeys={expandList}
-      inlineCollapsed={gState.collapsed}
-    >
+    <Menu mode="inline" selectedKeys={[currentUrl]} defaultOpenKeys={expandList} inlineCollapsed={gState.collapsed}>
       {MenuItems}
     </Menu>
   );
