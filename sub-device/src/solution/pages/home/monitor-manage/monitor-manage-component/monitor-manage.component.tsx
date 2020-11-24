@@ -9,7 +9,7 @@ import OrganizationControllerComponent from '~/solution/components/organization-
 import AddMonitorGroupComponent from './add-monitor-group-component/add-monitor-group.component';
 import AddMonitorCarComponent from './add-monitor-car-component/add-monitor-car.component';
 import TransformMonitorComponent from './transform-monitor-component/transform-monitor.component';
-
+import SetAlarmModalComponent from './set-alarm-model-component/set-alarm-model-component';
 export default function MonitorManageComponent() {
   const {
     state,
@@ -37,6 +37,7 @@ export default function MonitorManageComponent() {
     addGroupModalVisible = false,
     addCarModalVisible = false,
     transformModalVisible = false,
+    alarmModalVisible = false,
     expandedKeys,
     checkedKeys,
     transformDisable = true,
@@ -128,7 +129,14 @@ export default function MonitorManageComponent() {
           <Button onClick={() => callbackAction(ModalType.ADD_GROUP)}>添加监控组</Button>
           <div>
             {currentMonitorGroup.id && <Button onClick={() => callbackAction(ModalType.ADD_CAR)}>添加监控车辆</Button>}
-
+            <Button
+              disabled={!!currentMonitorGroup.id}
+              type={'primary'}
+              style={{ marginLeft: 20 }}
+              onClick={() => callbackAction(ModalType.ALARM)}
+            >
+              报警设置
+            </Button>
             <Button
               disabled={transformDisable}
               type={!transformDisable ? 'primary' : 'default'}
@@ -161,6 +169,7 @@ export default function MonitorManageComponent() {
         groupId={currentMonitorGroup.id}
         getMonitorGroupList={getTableData}
       />
+      <SetAlarmModalComponent close={handleModalCancel} data={currentData} visible={alarmModalVisible} />
       <AddMonitorGroupComponent close={handleModalCancel} data={currentData} visible={addGroupModalVisible} />
     </div>
   );

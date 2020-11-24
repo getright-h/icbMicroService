@@ -6,9 +6,8 @@ export class IAddMonitorGroupState {
   submitLoading = false;
 }
 
-export interface AddMonitorGroupProp {
+export interface ISetAlarmProp {
   close: Function;
   data: any;
-  getDetail?: Function;
   visible: boolean;
 }

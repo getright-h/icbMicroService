@@ -3,5 +3,6 @@ export enum ModalType {
   ADD_CAR,
   BATCH_TRANFROM,
   DEL,
-  DETAIL
+  DETAIL,
+  ALARM
 }

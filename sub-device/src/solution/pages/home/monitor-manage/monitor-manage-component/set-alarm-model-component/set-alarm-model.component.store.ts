@@ -1,4 +1,4 @@
-import { IAddMonitorGroupState, AddMonitorGroupProp } from './add-monitor-group.interface';
+import { IAddMonitorGroupState, ISetAlarmProp } from './set-alarm-model.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
 import { MonitorService } from '~/solution/model/services/monitor.service';
 import { useEffect } from 'react';
@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { Form } from 'antd';
 import { ShowNotification } from '~/framework/util/common';
 
-export function useAddMonitorGroupStore(props: AddMonitorGroupProp) {
+export function useSetAlarmStore(props: ISetAlarmProp) {
   const { state, setStateWrap } = useStateStore(new IAddMonitorGroupState());
   const monitorService = useService(MonitorService);
   let insertVehicleGroupSubscription: Subscription;
