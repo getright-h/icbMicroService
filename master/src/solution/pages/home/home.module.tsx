@@ -31,7 +31,7 @@ function HomeModule(props: any) {
     const expandList: string[] = getCurrentExpandList(currentUrl);
 
     return (
-      <Layout.Sider trigger={null} collapsible collapsed={gState.collapsed}>
+      <Layout.Sider theme="light" trigger={null} collapsible collapsed={gState.collapsed}>
         <MenuComponent currentUrl={currentUrl} menuList={state.menuList} expandList={expandList} />
       </Layout.Sider>
     );

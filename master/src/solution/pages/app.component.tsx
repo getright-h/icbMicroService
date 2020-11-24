@@ -19,7 +19,7 @@ const App = () => {
   // 主项目用的store 主要用来接收子应用传来的信息
   const store = createStore(MainReducer);
   return (
-    <ConfigProvider locale={zhCN}>
+    <ConfigProvider locale={zhCN} prefixCls={'micMaster'}>
       <Provider store={store}>
         <GlobalProvider>
           <HashRouter>{RoutesService.renderRoutes(appRoutes, false)}</HashRouter>

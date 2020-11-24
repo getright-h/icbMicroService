@@ -13,8 +13,8 @@
     "start:master": "cd master && yarn start",
     "install:fence": "cd sub-electric-fence && yarn",
     "start:fence": "cd sub-electric-fence && yarn start",
-    "install:vue": "cd sub-upms && yarn",
-    "start:vue": "cd sub-upms && yarn start"
+    "install:upms": "cd sub-upms && yarn",
+    "start:upms": "cd sub-upms && yarn start"
   },
   "author": "",
   "license": "ISC",
