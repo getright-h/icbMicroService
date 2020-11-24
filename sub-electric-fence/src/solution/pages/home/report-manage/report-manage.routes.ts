@@ -10,6 +10,12 @@ export const reportManageRoutes: IRoute[] = [
     exact: true
   },
   {
+    path: `${MODULE_PATH}/statistical/detail`,
+    component: ROUTERS.statisticalDetailComponent,
+    lazyload: true,
+    exact: true
+  },
+  {
     path: `${MODULE_PATH}/record`,
     component: ROUTERS.recordListComponent,
     lazyload: true,

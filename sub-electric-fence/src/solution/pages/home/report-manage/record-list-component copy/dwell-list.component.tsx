@@ -1,10 +1,9 @@
 import { Button, Col, Form, Input, Row, Select } from 'antd';
 import * as React from 'react';
-import { ITableComponent, TablePageTelComponent } from '~/solution/components/component.module';
-import { AlarmParameterColumn } from './directive-list.column';
-import { useDirectiveListStore } from './directive-list.component.store';
-import DirectivePatchModalComponent from '../wiget/directive-patch-model-component/directive-patch-moda.component';
-import { ModalType } from './directive-list.interface';
+import { ITableComponent, TablePageTelComponent } from '../statistical-list-component/statistical-list-component copy/node_modules/~/solution/components/component.module';
+import { DwellColumn } from './dwell-list.column';
+import { useDwellListStore } from './dwell-list.component.store';
+
 export default function DirectiveListComponent() {
   const {
     state,
@@ -12,10 +11,9 @@ export default function DirectiveListComponent() {
     callbackAction,
     changeTablePageIndex,
     searchClick,
-    initSearchForm,
-    handleModalCancel
-  } = useDirectiveListStore();
-  const { isLoading, tableData, total, pageIndex, pageSize, patchModalVisible } = state;
+    initSearchForm
+  } = useDwellListStore();
+  const { isLoading, tableData, total, pageIndex, pageSize } = state;
 
   function renderSelectItems() {
     const layout = {
@@ -26,27 +24,12 @@ export default function DirectiveListComponent() {
       <Form {...layout} form={searchForm} style={{ width: '90%' }}>
         <Row gutter={24}>
           <Col span={6}>
-            <Form.Item name="type" label="查询车辆">
-              <Input placeholder="请输入车牌号" />
+            <Form.Item name="type" label="报警类型">
+              <Input placeholder="请输入报警类型" />
             </Form.Item>
           </Col>
           <Col span={6}>
-            <Form.Item name="method" label="查询设备">
-              <Select placeholder="请选择下发方式"></Select>
-            </Form.Item>
-          </Col>
-          <Col span={6}>
-            <Form.Item name="method" label="监控类型">
-              <Select placeholder="请选择下发方式"></Select>
-            </Form.Item>
-          </Col>
-          <Col span={6}>
-            <Form.Item name="method" label="发送时间">
-              <Select placeholder="请选择下发方式"></Select>
-            </Form.Item>
-          </Col>
-          <Col span={6}>
-            <Form.Item name="method" label="监控组">
+            <Form.Item name="method" label="下发方式">
               <Select placeholder="请选择下发方式"></Select>
             </Form.Item>
           </Col>
@@ -61,16 +44,13 @@ export default function DirectiveListComponent() {
           查询
         </Button>
         <Button onClick={initSearchForm}>清空</Button>
-        <Button type="primary" onClick={() => callbackAction(ModalType.PATCH)}>
-          下发指令
-        </Button>
       </div>
     );
   }
   function RenderTable() {
     return (
       <ITableComponent
-        columns={AlarmParameterColumn(callbackAction)}
+        columns={DwellColumn(callbackAction)}
         isLoading={isLoading}
         pageIndex={pageIndex}
         pageSize={pageSize}
@@ -90,7 +70,6 @@ export default function DirectiveListComponent() {
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
       ></TablePageTelComponent>
-      <DirectivePatchModalComponent visible={patchModalVisible} close={handleModalCancel} />
     </React.Fragment>
   );
 }

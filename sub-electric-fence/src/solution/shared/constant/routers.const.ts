@@ -24,6 +24,10 @@ export const ROUTERS = {
   PositionMonitorModule: () => import('~/solution/pages/home/position-monitor/position-monitor.module'),
   statisticalListComponent: () =>
     import('~/solution/pages/home/report-manage/state-list-component/state-list.component'),
+  statisticalDetailComponent: () =>
+    import(
+      '~/solution/pages/home/report-manage/statistical-list-component/statistical-detail-component/statistical-detail.component'
+    ),
   recordListComponent: () => import('~/solution/pages/home/report-manage/record-list-component/record-list.component'),
   odometerListComponent: () =>
     import('~/solution/pages/home/report-manage/odometer-list-component/odometer-list.component'),
