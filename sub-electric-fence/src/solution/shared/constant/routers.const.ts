@@ -34,5 +34,13 @@ export const ROUTERS = {
   permanentListComponent: () =>
     import('~/solution/pages/home/report-manage/permanent-list-component/permanent-list.component'),
   positionMonitor: () =>
-    import('~/solution/pages/home/position-monitor/position-monitor-component/position-monitor.component')
+    import('~/solution/pages/home/position-monitor/position-monitor-component/position-monitor.component'),
+  positionMonitorLeft: () =>
+    import(
+      '~/solution/pages/home/position-monitor/position-monitor-component/position-monitor-left-component/position-monitor-left.component'
+    ),
+  positionMonitorRight: () =>
+    import(
+      '~/solution/pages/home/position-monitor/position-monitor-component/position-monitor-right-component/position-monitor-right.component'
+    )
 };
