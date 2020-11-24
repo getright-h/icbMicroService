@@ -24,7 +24,7 @@ export class IOrganizationControllerProps {
   onExpand?: (expandedKeys: string[]) => void;
   queryChildInfo?: any;
   getCheckedInfo?: (treeData: DataNode[], checkedKeys?: []) => void;
-  onlyLeafCanSelect?: boolean = false;
+  allCanSelect?: boolean = false;
   isGroup?: boolean;
 }
 

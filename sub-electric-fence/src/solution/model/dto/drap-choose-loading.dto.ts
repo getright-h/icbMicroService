@@ -22,3 +22,102 @@ export interface DrapChooseLoadingReturn {
   id: string;
   name: string;
 }
+
+// 下拉加载 Dto
+export interface QueryOrganizationListParam {
+  name?: string;
+  systemId: string;
+  index: number;
+  size: number;
+}
+export interface QueryDeviceTypeListParam {
+  name?: string;
+  index: number;
+  size: number;
+}
+export interface QueryVehiclePagedListParam {
+  strValue?: string;
+  index: number;
+  size: number;
+}
+export interface QuerySupplierListParam {
+  name?: string;
+  typeId: string;
+  index: number;
+  size: number;
+}
+
+export interface QueryPurchaseListParam {
+  index: number;
+  size: number;
+  name?: string;
+}
+
+export interface DrapChooseLoadingParams {
+  name?: string;
+  index: number;
+  size: number;
+}
+
+export interface DrapChooseLoadingReturn {
+  data: any;
+  status: boolean;
+}
+
+export interface QueryStoreOrganizationResult {
+  id: string;
+  organizationId: string;
+  name: string;
+  code: string;
+  parentId: string;
+  parentCode: string;
+  parentName: string;
+}
+
+export interface QueryStorePositionListParam {
+  storeId?: string;
+  name?: string;
+  index: number;
+  size: number;
+}
+
+export interface QueryAllotFlowTemplatePagedListParam {
+  name: string;
+  organizationId: string;
+  index: 0;
+  size: 0;
+  beginTime: 0;
+  endTime: 0;
+}
+
+export interface QueryOwnerListParam {
+  name: string;
+  index: number;
+  size: number;
+}
+
+export interface QueryDeviceListParam {
+  code: string;
+  organizationId: string;
+  index: number;
+  size: number;
+}
+
+export interface QueryStoreListParam {
+  name: string;
+  index: number;
+  size: number;
+}
+
+export interface QueryVehicleListParam {
+  strValue: string;
+  index: number;
+  size: number;
+}
+
+export interface QueryApprovalFormTemplateParams {
+  name?: string;
+  groupId?: string;
+  index: number;
+  size: number;
+}

@@ -12,6 +12,8 @@ function OrganizationControllerComponent(props: IOrganizationControllerProps, re
   );
   const { onSelect, expandedKeys, treeSelectedKeys, onExpand, checkedKeys, checkable, isGroup = false } = props;
   const { treeData } = state;
+  console.log('treeData', treeData);
+
   return (
     <>
       <div className={style.searchWarehouse}>

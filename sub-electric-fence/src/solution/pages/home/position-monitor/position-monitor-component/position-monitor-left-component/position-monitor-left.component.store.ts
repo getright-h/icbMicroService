@@ -7,6 +7,8 @@ import { PositionMonitorContext } from '../position-monitor.component';
 export function usePositionMonitorLeftStore() {
   const { state, setStateWrap } = useStateStore(new IPositionMonitorLeftState());
   const { dispatch } = useContext(PositionMonitorContext);
+  console.log(dispatch);
+
   function onExpand(expandedKeys: []) {
     setStateWrap({
       expandedKeys
@@ -14,6 +16,8 @@ export function usePositionMonitorLeftStore() {
   }
 
   function onSelect(selectedKeys: React.Key[], info: { node: EventDataNode }) {
+    console.log(selectedKeys, info);
+
     setStateWrap({
       treeSelectedKeys: [info.node.key as string]
     });

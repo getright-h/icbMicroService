@@ -8,7 +8,8 @@ export function dealWithTreeData<T>(
   isWarehouse?: boolean,
   content?: (element: any) => React.ReactNode,
   canSelectAll?: boolean,
-  organizationChecked?: boolean
+  organizationChecked?: boolean, // 机构是否需要checked
+  refineTitle?: string
 ) {
   const treeData: any[] =
     !!res &&
@@ -24,6 +25,19 @@ export function dealWithTreeData<T>(
             <span style={{ width: '80px' }} title={element['name']}>
               {element['name']}
             </span>
+          </div>
+          <span style={{ width: '50px' }}>(10)</span>
+          <div
+            style={{ width: '50px', background: 'white', marginRight: '-4px' }}
+            onClick={e => {
+              e.stopPropagation();
+            }}
+          >
+            {isWarehouse && content && (
+              <Popover content={content(element)} trigger="hover">
+                <AppstoreOutlined />
+              </Popover>
+            )}
           </div>
           <div
             style={{ width: '50px', background: 'white', marginRight: '-4px' }}

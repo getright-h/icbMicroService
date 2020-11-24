@@ -14,7 +14,9 @@ import { QueryStoreOrganizationReturn } from '~/solution/model/dto/organization-
 export function useOrganizationControllerStore(props: IOrganizationControllerProps, ref: any) {
   const { state, setStateWrap, getState } = useStateStore(new IOrganizationControllerState());
   const organizationManageService: OrganizationManageService = new OrganizationManageService();
-  const { warehouseAction, onExpand, queryChildInfo, currentOrganazation, onlyLeafCanSelect } = props;
+  const { warehouseAction, onExpand, queryChildInfo, currentOrganazation, allCanSelect } = props;
+  console.log('props', props);
+
   useEffect(() => {
     queryOrganizationTypeListByTypeId();
   }, [currentOrganazation]);
@@ -34,8 +36,8 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
           res,
           TREE_MAP,
           false,
-          undefined,
-          undefined,
+          warehouseAction,
+          allCanSelect,
           props.organizationChecked
         );
         setStateWrap({
@@ -69,12 +71,12 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
       queryChildInfoSubscription
     ).subscribe((res: any) => {
       const queryChildInfoData: DataNode[] = queryChildInfo
-        ? dealWithTreeData(res[1], TREE_MAP, true, warehouseAction)
+        ? dealWithTreeData(res[1], TREE_MAP, true, warehouseAction, allCanSelect)
         : [];
 
       treeNode.children = [
         ...queryChildInfoData,
-        ...dealWithTreeData(res[0], TREE_MAP, false, undefined, undefined, props.organizationChecked)
+        ...dealWithTreeData(res[0], TREE_MAP, false, undefined, allCanSelect, props.organizationChecked)
       ];
       const treeData = updateTreeData(state.treeData, treeNode.key, treeNode.children);
 
