@@ -52,6 +52,7 @@ export default function BulkImportComponent(props: IBulkImportProps) {
     <Modal
       title="标题"
       visible={visible}
+      centered={true}
       width={600}
       onCancel={selfClose}
       onOk={() => {
