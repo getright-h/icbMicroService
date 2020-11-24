@@ -118,6 +118,7 @@ export default function DeviceEditComponent(props: IDeviceEditProps) {
     <Modal
       title="设备详情"
       visible={visible}
+      centered={true}
       width={600}
       onCancel={() => selfClose(false)}
       onOk={() => {
