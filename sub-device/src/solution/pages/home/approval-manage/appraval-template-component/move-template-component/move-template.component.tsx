@@ -73,6 +73,7 @@ export default function MoveTemplateComponent(props: IMoveTemplateProps) {
   return (
     <Modal
       title={'创建移动类型'}
+      centered={true}
       visible={addMoveTemplateVisible}
       onOk={handleOk}
       width={700}

@@ -27,7 +27,7 @@ export default function DeviceRouteModalComponent(props: IDeviceLineProp) {
     return `${flow.storeName}-${flow.storePositionName}`;
   }
   return (
-    <Modal visible={visible} title={'查看节点详情'} onOk={onSubmit} onCancel={onSubmit} width={700}>
+    <Modal visible={visible} centered={true} title={'查看节点详情'} onOk={onSubmit} onCancel={onSubmit} width={700}>
       <Form style={{ width: '100%' }}>
         <Form.Item label={'设备号'}>{data.typeName ? data.typeName : '-'}</Form.Item>
         <Form.Item label={'节点详情'}>

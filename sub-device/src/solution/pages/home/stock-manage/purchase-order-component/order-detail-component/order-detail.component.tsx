@@ -80,6 +80,7 @@ export default function OrderDetailComponent(props: IOrderDetailProps) {
   return (
     <Modal
       title="采购单详情"
+      centered={true}
       visible={visible}
       width={600}
       onCancel={selfClose}

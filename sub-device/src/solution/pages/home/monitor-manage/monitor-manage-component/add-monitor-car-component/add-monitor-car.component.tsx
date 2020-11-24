@@ -39,6 +39,7 @@ export default function AddMonitorCarComponent(props: IAddMonitorCarProps) {
   return (
     <Modal
       visible={addMonitorModal}
+      centered={true}
       width={700}
       confirmLoading={confirmLoading}
       onOk={() => {

@@ -34,6 +34,7 @@ export default function StockRecordComponent(props: IStockRecordProps) {
   return (
     <Modal
       title="出入库详情"
+      centered={true}
       visible={visible}
       width={600}
       onCancel={selfClose}

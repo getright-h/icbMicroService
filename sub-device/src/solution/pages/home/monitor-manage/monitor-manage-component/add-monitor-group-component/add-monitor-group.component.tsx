@@ -41,6 +41,7 @@ export default function AddMonitorGroupComponent(props: AddMonitorGroupProp) {
   return (
     <Modal
       visible={visible}
+      centered={true}
       title={data.id ? '修改监控组' : '添加监控组'}
       onOk={() => {
         form.validateFields().then(values => addMonitorGroup(values));

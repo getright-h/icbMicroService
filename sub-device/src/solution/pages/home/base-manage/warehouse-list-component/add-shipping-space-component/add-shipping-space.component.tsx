@@ -14,6 +14,7 @@ export default function AddShippingSpaceComponent(props: IAddShippingSpaceProps)
   return (
     <Modal
       title={`${props.isEdit ? '编辑仓位' : '添加仓位'}`}
+      centered={true}
       destroyOnClose
       visible={addShippingSpaceVisible}
       onOk={handleOk}

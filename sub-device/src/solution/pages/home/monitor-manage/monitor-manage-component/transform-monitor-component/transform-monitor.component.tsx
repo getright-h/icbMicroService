@@ -29,7 +29,14 @@ export default function TransformMonitorComponent(props: ITransformMonitorProps)
     );
   }
   return (
-    <Modal title={'车辆转组'} visible={visible} onCancel={close} onOk={onSubmit} confirmLoading={submitLoading}>
+    <Modal
+      title={'车辆转组'}
+      centered={true}
+      visible={visible}
+      onCancel={close}
+      onOk={onSubmit}
+      confirmLoading={submitLoading}
+    >
       <Form {...layout} form={form}>
         <Form.Item label={'已选车辆数'}>{data?.selectedRowKeys.length ? data.selectedRowKeys.length : 1}</Form.Item>
         <Form.Item label={'监控组原名'}>{data?.currentMonitorGroup.name}</Form.Item>
