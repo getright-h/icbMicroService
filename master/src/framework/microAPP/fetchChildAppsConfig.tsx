@@ -1,3 +1,4 @@
+import { loader } from './loader';
 export function fetchChildAppsConfig() {
   const MODULE_PATH = '/#/home';
   return new Promise(resolve => {
@@ -10,6 +11,7 @@ export function fetchChildAppsConfig() {
         icon: 'anticon-mobile',
         tokenKey: 'token',
         path: '/home/device',
+        loader,
         children: [
           {
             path: 'stock', // 菜单路径
@@ -302,6 +304,7 @@ export function fetchChildAppsConfig() {
         title: '设备管理模块',
         icon: 'anticon-mobile',
         tokenKey: 'token',
+        loader,
         path: '/home/upms',
         children: [
           {
@@ -379,6 +382,7 @@ export interface ChildrenObject {
 }
 
 export interface AppProps {
+  loader: Function;
   name: string;
   props: any;
   singular?: boolean;

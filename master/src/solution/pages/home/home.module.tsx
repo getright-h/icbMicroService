@@ -41,6 +41,7 @@ function HomeModule(props: any) {
     return (
       <Layout.Content>
         <div id="subapp-viewport"></div>
+        <div id="mic-loading"></div>
       </Layout.Content>
     );
   }

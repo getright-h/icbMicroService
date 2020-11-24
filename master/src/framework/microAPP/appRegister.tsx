@@ -21,10 +21,11 @@ async function registerMainApp(callback: (menuInfo: any) => void) {
 
   callback(res.menuInfo);
   routerInfo.forEach((element: any) => {
-    const { localURL, onLineURL, path, name, children } = element;
+    const { localURL, onLineURL, path, name, children, loader } = element;
     // 根据children去获取子应用响应的路由节点赋值到当前的页面，作用用来生成路由
     apps.push({
       name: name,
+      loader,
       entry: isDev ? localURL : onLineURL,
       container: currentId,
       activeRule: `/#${path}`,
