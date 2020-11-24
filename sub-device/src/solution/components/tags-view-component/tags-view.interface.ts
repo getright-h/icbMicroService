@@ -4,4 +4,5 @@
  */
 export class ITagsViewState {
   visitedViews: any[] = ['/home'];
+  parentWidth: 0;
 }

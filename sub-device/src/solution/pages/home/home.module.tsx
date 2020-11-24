@@ -59,9 +59,7 @@ function HomeModule(props: any) {
             {renderLayoutSider()}
             <div className={style.pageContainer}>
               <>
-                <div className={style.breadcrumb}>
-                  <TagView />
-                </div>
+                <TagView />
                 {RenderLayoutContainer()}
               </>
             </div>
