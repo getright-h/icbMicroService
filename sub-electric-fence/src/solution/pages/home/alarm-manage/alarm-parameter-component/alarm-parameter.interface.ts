@@ -9,8 +9,10 @@ export class IAlarmParameterState {
   tableData: any = [];
   total = 0;
   currentId = '';
+  tempAddVisible = false;
+  tempListVisible = false;
 }
 export enum ModalType {
-  CREATE,
-  EDIT
+  TEMPADD,
+  TEMPLIST
 }

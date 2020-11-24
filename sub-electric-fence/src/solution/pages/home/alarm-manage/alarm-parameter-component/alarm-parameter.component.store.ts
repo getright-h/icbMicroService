@@ -30,6 +30,7 @@ export function useAlarmParameterStore() {
     //       setStateWrap({ isLoading: false });
     //     }
     //   );
+    setStateWrap({ tableData: [{ id: 'aaa', type: '碰撞报警' }] });
   }
 
   function searchClick() {
@@ -45,11 +46,11 @@ export function useAlarmParameterStore() {
   function callbackAction<T>(actionType: number, data?: T) {
     setStateWrap({ currentId: data ? data.id : '' });
     switch (actionType) {
-      case ModalType.CREATE:
-        setStateWrap({});
+      case ModalType.TEMPADD:
+        setStateWrap({ tempAddVisible: true });
         break;
-      case ModalType.EDIT:
-        setStateWrap({});
+      case ModalType.TEMPLIST:
+        setStateWrap({ tempListVisible: true });
         break;
       default:
         break;
@@ -62,7 +63,7 @@ export function useAlarmParameterStore() {
   }
 
   function handleModalCancel(isSuccess = false) {
-    setStateWrap({});
+    setStateWrap({ tempAddVisible: false, tempListVisible: false });
     isSuccess && searchClick();
   }
 

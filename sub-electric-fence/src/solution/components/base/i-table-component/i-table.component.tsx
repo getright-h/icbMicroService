@@ -14,7 +14,7 @@ export default function ITableComponent(props: IITableProps) {
     changeTablePageIndex
   } = props;
   const { state } = useITableStore(props);
-  console.log(state.pagination);
+  // console.log(state.pagination);
 
   return (
     <Table

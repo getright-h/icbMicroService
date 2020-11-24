@@ -31,19 +31,9 @@ export const PAGES_MENU = {
       ]
     },
     {
-      path: 'home/alarm',
-      title: '监控管理',
-      icon: 'container',
-      children: [
-        {
-          path: 'parameter',
-          title: '报警参数管理'
-        },
-        {
-          path: 'config',
-          title: '报警配置管理'
-        }
-      ]
+      path: 'home/alarm/parameter',
+      title: '报警参数管理',
+      icon: 'container'
     },
     {
       path: 'home/positionMonitor',

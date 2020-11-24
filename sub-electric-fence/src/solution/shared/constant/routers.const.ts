@@ -16,7 +16,6 @@ export const ROUTERS = {
   alarmManageModule: () => import('~/solution/pages/home/alarm-manage/alarm-manage.module'),
   alarmParameter: () =>
     import('~/solution/pages/home/alarm-manage/alarm-parameter-component/alarm-parameter.component'),
-  alarmConfig: () => import('~/solution/pages/home/alarm-manage/alarm-config-component/alarm-config.component'),
   directiveModule: () => import('~/solution/pages/home/directive-manage/directive-manage.module'),
   directiveListComponent: () =>
     import('~/solution/pages/home/directive-manage/directive-list-component/directive-list.component'),

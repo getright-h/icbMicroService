@@ -8,10 +8,5 @@ export const alarmManageRoutes: IRoute[] = [
     component: ROUTERS.alarmParameter,
     lazyload: true,
     exact: true
-  },
-  {
-    path: `${MODULE_PATH}/config`,
-    component: ROUTERS.alarmConfig,
-    lazyload: true
   }
 ];

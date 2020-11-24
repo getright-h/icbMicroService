@@ -5,7 +5,7 @@ export function AlarmParameterColumn(callbackAction: Function) {
   return [
     {
       title: '报警类型',
-      dataIndex: 'vinNo'
+      dataIndex: 'type'
     },
     {
       title: '参数说明',
@@ -34,9 +34,9 @@ export function AlarmParameterColumn(callbackAction: Function) {
       render: (render: any, data: any, index: number) => {
         return (
           <React.Fragment>
-            <a onClick={() => callbackAction(ModalType.CREATE, data)}>新增</a>
+            <a onClick={() => callbackAction(ModalType.TEMPADD, data)}>新增</a>
             <Divider type="vertical" />
-            <a onClick={() => callbackAction(ModalType.EDIT, data)}>模板列表</a>
+            <a onClick={() => callbackAction(ModalType.TEMPLIST, data)}>模板列表</a>
           </React.Fragment>
         );
       }
