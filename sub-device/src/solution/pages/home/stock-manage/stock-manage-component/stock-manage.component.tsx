@@ -142,7 +142,9 @@ export default function StockManageComponent() {
         <Button type="primary" onClick={searchClick} disabled={!currentSelectNode}>
           查询
         </Button>
-        <Button onClick={initSearchform}>清空</Button>
+        <Button onClick={initSearchform} disabled={!currentSelectNode}>
+          清空
+        </Button>
       </div>
     );
   }

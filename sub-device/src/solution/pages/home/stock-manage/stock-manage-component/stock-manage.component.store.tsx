@@ -13,7 +13,11 @@ export function useStockManageStore(stockListState: { currentSelectNode: EventDa
   const [searchForm] = Form.useForm();
 
   useEffect(() => {
-    initSearchform();
+    searchForm.resetFields();
+    searchForm.setFieldsValue({
+      state: -1,
+      isAlarm: -1
+    });
   }, []);
 
   useEffect(() => {
@@ -138,8 +142,7 @@ export function useStockManageStore(stockListState: { currentSelectNode: EventDa
       state: -1,
       isAlarm: -1
     });
-    setStateWrap({ pageIndex: 1 });
-    getTableData();
+    searchClick();
   }
 
   function modalCancel(isSuccess?: boolean) {
