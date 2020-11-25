@@ -6,7 +6,9 @@ import { useEffect } from 'react';
 import { setState } from '~/framework/microAPP/appStore';
 import { fetchChildAppsConfig } from '~/framework/microAPP/fetchChildAppsConfig';
 import registerMainApp from '~/framework/microAPP/appRegister';
+import { useStore, useDispatch, useSelector } from 'react-redux';
 export function useHomeStore() {
+  const dispatch = useDispatch();
   const { state, setStateWrap } = useStateStore(new IHomeProps());
 
   useEffect(() => {

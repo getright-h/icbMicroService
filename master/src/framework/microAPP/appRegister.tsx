@@ -17,6 +17,7 @@ async function registerMainApp(callback: (menuInfo: any) => void) {
   //获取当前子项目的相关信息
   const routerInfo: any = await fetchChildAppsConfig();
   const res = resolveRouterInfo(routerInfo);
+  StorageUtil.setLocalStorage('MENU_LIST', JSON.stringify(res.micInfo));
   console.log(res.micInfo);
 
   callback(res.menuInfo);
@@ -91,7 +92,6 @@ function resolveRouterInfo(routerInfo: any[]) {
     // 每一个应用做处理返回响应的微服务子应用信息和菜单信息
     menuInfo.push(...resolveChildProject(childProject, childProject, micInfo, menuInfo));
   });
-
   return { micInfo, menuInfo };
 }
 

@@ -8,6 +8,7 @@ import { GlobalContext } from '~/solution/context/global/global.provider';
 import { IGlobalState } from '~/solution/context/global/global.interface';
 import { useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
+import TagView from '../../components/base/tags-view-component/tags-view.component';
 
 function HomeModule(props: any) {
   const { state, sendToChild } = useHomeStore();
@@ -31,7 +32,13 @@ function HomeModule(props: any) {
     const expandList: string[] = getCurrentExpandList(currentUrl);
 
     return (
-      <Layout.Sider theme="light" trigger={null} collapsible collapsed={gState.collapsed}>
+      <Layout.Sider
+        theme="light"
+        trigger={null}
+        collapsible
+        collapsed={gState.collapsed}
+        style={{ height: '80vh', overflow: 'hidden auto' }}
+      >
         <MenuComponent currentUrl={currentUrl} menuList={state.menuList} expandList={expandList} />
       </Layout.Sider>
     );
@@ -53,7 +60,12 @@ function HomeModule(props: any) {
           <IHomeHeaderComponent></IHomeHeaderComponent>
           <div className={style.bodyContainer}>
             {renderLayoutSider()}
-            <div className={style.pageContainer}>{renderLayoutContainer()}</div>
+            <div className={style.pageContainer}>
+              <>
+                <TagView />
+                {renderLayoutContainer()}
+              </>
+            </div>
           </div>
         </div>
       </Layout>

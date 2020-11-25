@@ -12,7 +12,6 @@ import MainReducer from '../context/redux/reducer/index';
 import { RoutesService } from '~/framework/util/routes/routes.service';
 import { appRoutes } from './app.routes';
 moment.locale('zh-cn');
-
 const App = () => {
   // 项目内部用的hooks provicer
   const { GlobalProvider } = useGlobalContext();
