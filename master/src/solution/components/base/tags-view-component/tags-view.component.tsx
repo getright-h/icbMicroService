@@ -36,7 +36,7 @@ export default function TagsViewComponent() {
                     className={style.close}
                     onClick={(event: any) => handleClick(tagviews, item.path, pathname, event)}
                   >
-                    x
+                    ×
                   </span>
                 )}
               </div>
