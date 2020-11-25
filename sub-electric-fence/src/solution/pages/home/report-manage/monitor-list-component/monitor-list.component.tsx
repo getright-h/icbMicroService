@@ -1,8 +1,9 @@
 import { Button, Col, Form, Input, Row, Select } from 'antd';
 import * as React from 'react';
-import { ITableComponent, TablePageTelComponent } from '../statistical-list-component/statistical-list-component copy/node_modules/~/solution/components/component.module';
-import { DwellColumn } from './dwell-list.column';
-import { useDwellListStore } from './dwell-list.component.store';
+import { ITableComponent, TablePageTelComponent } from '~/solution/components/component.module';
+import { AlarmParameterColumn } from './monitor-list.column';
+
+import { useDirectiveListStore } from './monitor-list.component.store';
 
 export default function DirectiveListComponent() {
   const {
@@ -12,7 +13,7 @@ export default function DirectiveListComponent() {
     changeTablePageIndex,
     searchClick,
     initSearchForm
-  } = useDwellListStore();
+  } = useDirectiveListStore();
   const { isLoading, tableData, total, pageIndex, pageSize } = state;
 
   function renderSelectItems() {
@@ -50,7 +51,7 @@ export default function DirectiveListComponent() {
   function RenderTable() {
     return (
       <ITableComponent
-        columns={DwellColumn(callbackAction)}
+        columns={AlarmParameterColumn(callbackAction)}
         isLoading={isLoading}
         pageIndex={pageIndex}
         pageSize={pageSize}

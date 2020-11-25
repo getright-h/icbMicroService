@@ -22,6 +22,18 @@ export const reportManageRoutes: IRoute[] = [
     exact: true
   },
   {
+    path: `${MODULE_PATH}/follow`,
+    component: ROUTERS.followComponent,
+    lazyload: true,
+    exact: true
+  },
+  {
+    path: `${MODULE_PATH}/monitor`,
+    component: ROUTERS.monitorComponent,
+    lazyload: true,
+    exact: true
+  },
+  {
     path: `${MODULE_PATH}/odometer`,
     component: ROUTERS.odometerListComponent,
     lazyload: true,
