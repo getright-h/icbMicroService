@@ -382,6 +382,7 @@ export interface ChildrenObject {
 }
 
 export interface AppProps {
+  tokenKey: string;
   loader: Function;
   name: string;
   props: any;

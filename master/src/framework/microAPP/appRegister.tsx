@@ -22,9 +22,10 @@ async function registerMainApp(callback: (menuInfo: any) => void) {
 
   callback(res.menuInfo);
   routerInfo.forEach((element: any) => {
-    const { localURL, onLineURL, path, name, children, loader } = element;
+    const { localURL, onLineURL, path, name, children, loader, tokenKey } = element;
     // 根据children去获取子应用响应的路由节点赋值到当前的页面，作用用来生成路由
     apps.push({
+      tokenKey,
       name: name,
       loader,
       entry: isDev ? localURL : onLineURL,
@@ -59,6 +60,7 @@ function registerApps(apps: Array<any>) {
   registerMicroApps(apps, {
     beforeLoad: [
       ((app: AppProps) => {
+        console.log('app===>', app);
         console.log('[LifeCycle] before load %c%s', 'color: green;', app.name);
       }) as any
     ],

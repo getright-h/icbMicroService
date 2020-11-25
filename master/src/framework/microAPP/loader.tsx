@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import LazyloadLoadingComponent from '~/solution/components/base/lazyload-loading-component/lazyload-loading.component';
 /**
- * 渲染子应用
+ * 在拉取子应用资源的时候 设置一个过渡的loading
  */
 function Render(props: any) {
   const { loading } = props;
