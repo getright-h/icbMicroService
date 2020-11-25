@@ -16,7 +16,7 @@ export function fetchChildAppsConfig() {
           {
             path: 'stock', // 菜单路径
             title: '库存管理', // 菜单名
-            icon: 'anticon-mobile', // 图标
+            icon: 'switcher', // 图标
             defaultMountApp: true, // 是否默认启动当前第一个页面
             lazyload: true,
             exact: true,
@@ -49,7 +49,7 @@ export function fetchChildAppsConfig() {
           {
             path: 'allocation',
             title: '设备调拨',
-            icon: 'anticon-mobile', // 图标
+            icon: 'reconciliation', // 图标
             defaultMountApp: false, // 是否默认启动当前第一个页面
             lazyload: true,
             exact: true,
@@ -105,7 +105,7 @@ export function fetchChildAppsConfig() {
           {
             path: 'monitor',
             title: '监控组',
-            icon: 'anticon-mobile', // 图标
+            icon: 'alert', // 图标
             defaultMountApp: false, // 是否默认启动当前第一个页面
             lazyload: true,
             exact: true,
@@ -124,7 +124,7 @@ export function fetchChildAppsConfig() {
           {
             path: 'data',
             title: '数据报表',
-            icon: 'anticon-mobile', // 图标
+            icon: 'project', // 图标
             defaultMountApp: false, // 是否默认启动当前第一个页面
             lazyload: true,
             exact: true,
@@ -150,7 +150,7 @@ export function fetchChildAppsConfig() {
           {
             path: 'baseManage',
             title: '基础管理',
-            icon: 'anticon-mobile', // 图标
+            icon: 'tool', // 图标
             defaultMountApp: false, // 是否默认启动当前第一个页面
             lazyload: true,
             exact: true,
@@ -194,7 +194,7 @@ export function fetchChildAppsConfig() {
           {
             path: 'approvalManage',
             title: '审批管理',
-            icon: 'anticon-mobile', // 图标
+            icon: 'block', // 图标
             defaultMountApp: false, // 是否默认启动当前第一个页面
             lazyload: true,
             exact: true,
@@ -244,7 +244,7 @@ export function fetchChildAppsConfig() {
           {
             path: 'customer',
             title: '客户管理',
-            icon: 'anticon-mobile', // 图标
+            icon: 'team', // 图标
             defaultMountApp: false, // 是否默认启动当前第一个页面
             lazyload: true,
             exact: true,
@@ -288,7 +288,7 @@ export function fetchChildAppsConfig() {
           {
             path: 'voucher/manage',
             title: '安装凭证管理',
-            icon: 'anticon-mobile', // 图标
+            icon: 'key', // 图标
             defaultMountApp: false, // 是否默认启动当前第一个页面
             lazyload: true,
             exact: true,
@@ -302,7 +302,7 @@ export function fetchChildAppsConfig() {
         localURL: '//localhost:8082',
         onLineURL: '//192.168.2.251:2155',
         title: '设备管理模块',
-        icon: 'anticon-mobile',
+        icon: 'team',
         tokenKey: 'token',
         loader,
         path: '/home/upms',
@@ -310,7 +310,7 @@ export function fetchChildAppsConfig() {
           {
             path: 'organizationManage', // 菜单路径
             title: '机构管理', // 菜单名
-            icon: 'anticon-mobile', // 图标
+            icon: 'inbox', // 图标
             defaultMountApp: false, // 是否默认启动当前第一个页面
             lazyload: true,
             exact: true,
@@ -319,7 +319,7 @@ export function fetchChildAppsConfig() {
           {
             path: 'userManage', // 菜单路径
             title: '用户管理', // 菜单名
-            icon: 'anticon-mobile', // 图标
+            icon: 'user', // 图标
             defaultMountApp: false, // 是否默认启动当前第一个页面
             lazyload: true,
             exact: true,
