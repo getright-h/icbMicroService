@@ -14,13 +14,13 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
     },
     wrapperCol: {
       xs: { span: 24 },
-      sm: { span: 16 }
+      sm: { span: 14 }
     }
   };
 
   return (
-    <Modal title={'下发指令'} visible={visible} onOk={submitForm} onCancel={selfClose} style={{ width: '500px' }}>
-      <Form {...formItemLayout} form={form} style={{ width: '500px' }}>
+    <Modal title={'下发指令'} visible={true} onOk={submitForm} onCancel={selfClose} width={'700px'}>
+      <Form {...formItemLayout} form={form}>
         <Form.Item label="选中个数" name="deivce"></Form.Item>
 
         <Form.Item label="处理方式" name={'directiveType'}>
@@ -38,10 +38,10 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
             <Select.Option value={1}>电话</Select.Option>
           </Select>
         </Form.Item>
-        <Form.Item label="短信模板" name={'directiveType'}>
+        <Form.Item label="短信模板" name={'directiveType'} style={{ position: 'relative' }}>
           <div>
-            <Input.TextArea placeholder="多行输入" />
-            <Button>发送短信</Button>
+            <Input.TextArea placeholder="多行输入" style={{ height: 200 }} />
+            <Button style={{ position: 'absolute', right: '-30%', top: 0 }}>发送短信</Button>
           </div>
         </Form.Item>
 
