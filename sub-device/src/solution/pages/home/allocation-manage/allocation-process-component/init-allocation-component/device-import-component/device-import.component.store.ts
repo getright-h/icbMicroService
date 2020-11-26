@@ -4,12 +4,13 @@ import { Form } from 'antd';
 import { ALLOW_FLOW_KEYCODE_ENUM, ALLOW_FLOW_ENUM } from '~shared/constant/common.const';
 import { ShowNotification } from '~/framework/util/common';
 import { AllocationManageService } from '~/solution/model/services/allocation-manage.service';
-import { useEffect } from 'react';
+import { useEffect, MutableRefObject, useRef } from 'react';
 import { Subscription } from 'rxjs';
 import axios from 'axios';
 
 export function useDeviceImportStore(props: IDeviceImportProps) {
   const { state, setStateWrap } = useStateStore(new IDeviceImportState());
+  const returnFileListInfo: MutableRefObject<Array<string>> = useRef([]);
   const allocationManageService: AllocationManageService = new AllocationManageService();
   const [form] = Form.useForm();
   let setAllotFlowSubscription: Subscription;
@@ -17,8 +18,7 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
   // 不参与页面更新
   const deviceList: any = [];
   function selfSubmit() {
-    // isMove 流转操作
-    const { isMove, data = {} } = props;
+    const { data = {} } = props;
     const { allotId, id } = data;
     const { checkResult } = state;
     const { errorTotal = 0, message = '', successList = [] } = checkResult;
@@ -27,23 +27,19 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
       return;
     }
     if (!allotId || !id) return;
-    // deviceList.forEach((device: any) => {
-    //   device.key != undefined && delete device.key;
-    // });
     const searchForm = {
       id,
       allotId,
       operation: ALLOW_FLOW_KEYCODE_ENUM.Apply,
       deviceList: successList
     };
-    ALLOW_FLOW_ENUM.Reject === data?.state && (searchForm.operation = ALLOW_FLOW_KEYCODE_ENUM.ReApply);
-    isMove && (searchForm.operation = ALLOW_FLOW_KEYCODE_ENUM.Move);
-    console.log(searchForm);
+    [ALLOW_FLOW_ENUM.Recall, ALLOW_FLOW_ENUM.Reject, ALLOW_FLOW_ENUM.Return].includes(data?.state) &&
+      (searchForm.operation = ALLOW_FLOW_KEYCODE_ENUM.ReApply);
 
     setStateWrap({ submitLoading: true });
     allocationManageService.setAllotFlow(searchForm).subscribe(
       (res: any) => {
-        const { isSuccess, isMove } = res;
+        const { isSuccess } = res;
         isSuccess && ShowNotification.success('申请成功!');
         !isSuccess && ShowNotification.warning('申请失败!');
         setStateWrap({ submitLoading: false });
@@ -69,20 +65,18 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
           item.onProgress({ percent: Number(Math.round((loaded / total) * 100).toFixed(2)) }, item.file);
         }
       })
-      .then(res => {
-        const { data } = res;
-        setStateWrap({
-          fileList: data.data || []
-        });
+      .then(({ data: response }) => {
+        item.onSuccess(response, item.file);
+        returnFileListInfo.current = response.data;
       });
   }
 
   function checkAllotDeviceInfo(e: any) {
-    const { fileList, importType } = state;
+    const { importType } = state;
     const { allotId } = props.data;
     const params: any = { allotId, list: [] };
     if (importType == 1) {
-      params.list = fileList;
+      params.list = returnFileListInfo.current;
     } else {
       params.list = deviceList;
     }
@@ -117,7 +111,6 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
       typeName: device.typeName,
       code: value
     };
-    console.log(currentDevice);
     // 如果存在Key则更新值, 不做增加处理
     const exitIndex = deviceList.findIndex((dev: any) => dev.key == key);
     if (exitIndex != -1) {
@@ -140,11 +133,11 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
     }
   }
   useEffect(() => {
-    console.log(props, 222);
+    console.log(111);
     return () => {
       setAllotFlowSubscription && setAllotFlowSubscription.unsubscribe();
     };
-  }, [props.data.id]);
+  }, []);
   return {
     state,
     form,
