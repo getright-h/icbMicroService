@@ -68,6 +68,26 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
         break;
     }
   }
+  function handleFormDataChange($event: any, type: string) {
+    console.log($event, type);
+    if (type === 'params') {
+      setStateWrap({
+        isParams: $event
+      });
+    }
+
+    if (type === 'device') {
+      setStateWrap({
+        isDevice: $event
+      });
+    }
+  }
+
+  function selectTemplate(index: number) {
+    setStateWrap({
+      currentIndex: index
+    });
+  }
   function selfClose() {
     form.resetFields();
     props.close && props.close();
@@ -78,6 +98,8 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
     form,
     submitForm,
     callbackAction,
-    selfClose
+    selfClose,
+    handleFormDataChange,
+    selectTemplate
   };
 }
