@@ -19,7 +19,7 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
   };
 
   return (
-    <Modal title={'下发指令'} visible={true} onOk={submitForm} onCancel={selfClose} width={'700px'}>
+    <Modal title={'下发指令'} visible={visible} onOk={submitForm} onCancel={selfClose} width={'700px'}>
       <Form {...formItemLayout} form={form}>
         <Form.Item label="选中个数" name="deivce"></Form.Item>
 
