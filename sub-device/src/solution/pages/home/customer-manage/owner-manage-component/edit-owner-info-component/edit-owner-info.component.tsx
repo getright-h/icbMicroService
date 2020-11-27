@@ -73,7 +73,6 @@ export default function EditOwnerInfoComponent(props: IEditOwnerInfoProps) {
           </Form.Item>
           <Form.Item name="follow" label="客服跟进方式">
             <Select placeholder="请选择跟进方式">
-              <Select.Option value={-1}>全部</Select.Option>
               <Select.Option value={1}>仅短信方式</Select.Option>
               <Select.Option value={-200}>暂无</Select.Option>
             </Select>
