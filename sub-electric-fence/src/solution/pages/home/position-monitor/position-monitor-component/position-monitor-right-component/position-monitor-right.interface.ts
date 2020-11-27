@@ -3,6 +3,5 @@
  * @class IPositionMonitorRightState
  */
 export class IPositionMonitorRightState {
-  locationList: any[] = [];
-  isRule = false;
+  Drawervisible = false;
 }

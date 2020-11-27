@@ -8,3 +8,10 @@ export function setTreeSelectNode(payload: EventDataNode, dispatch: Dispatch<any
     payload
   });
 }
+
+export function setDataAction(payload: any, dispatch: Dispatch<any>) {
+  return dispatch({
+    type: TYPES.SET_DATA,
+    payload
+  });
+}

@@ -2,10 +2,24 @@ import { EventDataNode } from 'antd/lib/tree';
 import { IAction } from '~/solution/shared/interfaces/common.interface';
 import { TYPES } from './position-monitor-types';
 
-export const positionMonitorInitialState: {
+export const positionMonitorInitialState: TPositionMonitor = {
+  currentSelectNode: undefined,
+  rightDrawervisible: false,
+  leftContentVisible: false,
+  leftDrawerVisible: false,
+  checkedCarData: [],
+  currentSelectCar: undefined,
+  selectedRowKeys: []
+};
+
+export type TPositionMonitor = {
   currentSelectNode: EventDataNode;
-} = {
-  currentSelectNode: undefined
+  rightDrawervisible: boolean;
+  leftContentVisible: boolean;
+  leftDrawerVisible: boolean;
+  checkedCarData: any[];
+  currentSelectCar: any;
+  selectedRowKeys: any;
 };
 
 export function PositionMonitorReducer(state = positionMonitorInitialState, action: IAction<any>) {
@@ -15,6 +29,11 @@ export function PositionMonitorReducer(state = positionMonitorInitialState, acti
       return {
         ...state,
         currentSelectNode: payload
+      };
+    case TYPES.SET_DATA:
+      return {
+        ...state,
+        ...payload
       };
     default:
       return state;

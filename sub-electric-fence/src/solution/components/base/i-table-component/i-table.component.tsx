@@ -9,8 +9,12 @@ export default function ITableComponent(props: IITableProps) {
     data = [],
     columns,
     total,
+    size = 'large',
     isPagination = true,
     rowClick = () => {},
+    expandable,
+    rowSelection,
+    showHeader = true,
     changeTablePageIndex
   } = props;
   const { state } = useITableStore(props);
@@ -26,7 +30,11 @@ export default function ITableComponent(props: IITableProps) {
           } // 点击行
         };
       }}
+      showHeader={showHeader}
+      size={size}
       dataSource={data}
+      rowSelection={rowSelection}
+      expandable={expandable}
       columns={columns}
       pagination={isPagination && state.pagination}
       rowKey={row => row.id}

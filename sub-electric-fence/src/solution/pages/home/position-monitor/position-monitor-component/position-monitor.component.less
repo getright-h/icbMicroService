@@ -1,13 +1,18 @@
 .positionMonitor {
     display: flex;
-
+    position: relative;
+    overflow: hidden;
     .positionMonitorLeft {
-      
-        flex: 1;
+        width: 251px;
+        overflow: hidden;
+        height: 80vh;
         padding: 20px;
+        position: relative;
     }
     .positionMonitorRight {
-        height: 100vh;
+        overflow: hidden;
+        position: relative;
+        height: 80vh;
         border-left: 1px solid rgba(226, 225, 235, 0.6);
         flex: 5;
     }
@@ -22,4 +27,38 @@
         font-weight: 700;
     }
     
+}
+
+.closeButton {
+    background-color: white;
+    padding: 5px;
+    cursor: pointer;
+    position: absolute;
+    top: 40vh;
+    display: flex;
+    left: 235px;
+}
+
+.checkedCarInfo {
+    position: absolute;
+    bottom: 150px;
+    cursor: pointer;
+    right: 100px; 
+}
+
+.attention {
+    .checkedCarInfo();
+    bottom: 50px
+}
+.iconStyle {
+    background: rgb(45, 183, 245);
+    color: white;
+    font-size: 43px;
+    padding: 10px;
+    border-radius: 43px;
+}
+.iconStyleAlert {
+    .iconStyle();
+    background: #eee;
+    color: #f50;
 }

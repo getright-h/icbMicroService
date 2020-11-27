@@ -98,6 +98,23 @@ export const IMAP = {
       });
     });
   },
+  drawRectangle: {
+    init(map: any) {
+      return new AMap.MouseTool(map);
+    },
+    gotoDrawRectangle(mouseTool: any) {
+      mouseTool.rectangle({
+        fillColor: '#00b0ff',
+        strokeColor: '#80d8ff'
+        //同Polygon的Option设置
+      });
+    },
+    listenDraw(mouseTool: any, callback: (info: any) => void) {
+      mouseTool.on('draw', function(e: any) {
+        callback(e.obj.Ce.path);
+      });
+    }
+  },
   // 测距
   Rule: {
     init(map: any) {
@@ -143,8 +160,12 @@ export const IMAP = {
   },
   // 添加车辆marker 在地图上
   //callback 异步查询车辆信息
-  bindMarkerClick(markers: any, map: any, callback: (markerInfo: any, map: any, marker: any, infoWindow: any) => {}) {
-    // map.clearMap();
+  bindMarkerClick(
+    markers: any,
+    map: any,
+    callback?: (markerInfo: any, map: any, marker: any, infoWindow: any) => void
+  ) {
+    map.clearMap();
     AMapUI.loadUI(['overlay/SimpleInfoWindow'], (SimpleInfoWindow: any) => {
       markers.forEach(function(marker: any) {
         if (!marker.position) {
@@ -152,7 +173,19 @@ export const IMAP = {
         }
         const markerInfo = new AMap.Marker({
           map,
-          icon: marker.icon,
+          icon: new AMap.Icon({
+            // 图标尺寸
+            size: new AMap.Size(46, 28),
+            // 图标的取图地址
+            image: marker.icon,
+            // 图标所用图片大小
+            imageSize: new AMap.Size(46, 28)
+          }),
+          label: {
+            content: ' <div>川A888888</div>',
+            offset: new AMap.Pixel(-20, 26)
+          },
+          // content: `<div>${marker.position}</div>`,
           zIndex: 9999999,
           position: [marker.position[0], marker.position[1]],
           offset: new AMap.Pixel(-13, -30)
