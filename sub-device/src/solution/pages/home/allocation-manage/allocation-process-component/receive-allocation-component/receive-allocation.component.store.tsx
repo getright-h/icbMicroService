@@ -68,7 +68,9 @@ export function useReceiveAllocationStore() {
         });
         break;
       case ModalType.MOVE:
-        renderMoveModal(data);
+        setStateWrap({
+          importVisible: true
+        });
         break;
       case ModalType.PASS:
         renderPassModal(data);

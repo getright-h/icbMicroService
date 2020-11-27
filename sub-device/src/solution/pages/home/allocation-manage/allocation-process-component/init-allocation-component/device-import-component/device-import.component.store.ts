@@ -18,7 +18,8 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
   // 不参与页面更新
   const deviceList: any = [];
   function selfSubmit() {
-    const { data = {} } = props;
+    // isMove 流转操作
+    const { isMove, data = {} } = props;
     const { allotId, id } = data;
     const { checkResult } = state;
     const { errorTotal = 0, message = '', successList = [] } = checkResult;
@@ -35,7 +36,7 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
     };
     [ALLOW_FLOW_ENUM.Recall, ALLOW_FLOW_ENUM.Reject, ALLOW_FLOW_ENUM.Return].includes(data?.state) &&
       (searchForm.operation = ALLOW_FLOW_KEYCODE_ENUM.ReApply);
-
+    isMove && (searchForm.operation = ALLOW_FLOW_KEYCODE_ENUM.Move);
     setStateWrap({ submitLoading: true });
     allocationManageService.setAllotFlow(searchForm).subscribe(
       (res: any) => {

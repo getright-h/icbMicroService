@@ -6,9 +6,10 @@ import { ColumnsType } from 'antd/lib/table';
 import { ALLOW_FLOW_ENUM, ModalType } from '~shared/constant/common.const';
 import { IHeaderTitleComponent } from '~framework/components/component.module';
 import RejectAllocationComponent from '../reject-allocation-component/reject-allocation.component';
+import DeviceImportComponent from '../../init-allocation-component/device-import-component/device-import.component';
 export default function DetailComponent() {
   const { state, callbackAction, handleModalCancel, allocationOperate, getAlloactionDetail } = useDetailStore();
-  const { currentData, currentActionType, detail = {}, rejectVisibleModal } = state;
+  const { currentData, currentActionType, detail = {}, rejectVisibleModal, importVisible } = state;
   const layout = {
     labelCol: { span: 8 },
     wrapperCol: { span: 12 }
@@ -36,7 +37,8 @@ export default function DetailComponent() {
      * 根据后端字段显示
      */
     const moveAllot = (
-      <a
+      <Button
+        type={'primary'}
         className={style.button}
         onClick={() => {
           callbackAction(ModalType.MOVE, data);
@@ -44,7 +46,7 @@ export default function DetailComponent() {
         key={'move'}
       >
         流转
-      </a>
+      </Button>
     );
     if (!state) {
       return back;
@@ -197,6 +199,13 @@ export default function DetailComponent() {
         getAlloactionDetail={getAlloactionDetail}
         close={handleModalCancel}
         currentActionType={currentActionType}
+      />
+      <DeviceImportComponent
+        visible={importVisible}
+        close={handleModalCancel}
+        data={currentData}
+        getAlloactionDetail={getAlloactionDetail}
+        isMove={true}
       />
     </div>
   );
