@@ -9,8 +9,6 @@ export interface IDirectiveModalProps {
 export class IDirectiveModalState {
   custom = false;
   isDevice = true;
-  isParams = true;
-  currentIndex = -1;
 }
 export enum ModalType {
   CUSTOM,

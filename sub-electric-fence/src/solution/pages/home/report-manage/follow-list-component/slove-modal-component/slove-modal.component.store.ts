@@ -1,4 +1,4 @@
-import { IDirectiveModalState, ModalType, IDirectiveModalProps } from './directive-list.interface';
+import { IDirectiveModalState, ModalType, IDirectiveModalProps } from './slove-modal.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form } from 'antd';
 import { AlarmManageService } from '~/solution/model/services/alarm-manage.service';
@@ -68,26 +68,6 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
         break;
     }
   }
-  function handleFormDataChange($event: any, type: string) {
-    console.log($event, type);
-    if (type === 'params') {
-      setStateWrap({
-        isParams: $event
-      });
-    }
-
-    if (type === 'device') {
-      setStateWrap({
-        isDevice: $event
-      });
-    }
-  }
-
-  function selectTemplate(index: number) {
-    setStateWrap({
-      currentIndex: index
-    });
-  }
   function selfClose() {
     form.resetFields();
     props.close && props.close();
@@ -98,8 +78,6 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
     form,
     submitForm,
     callbackAction,
-    selfClose,
-    handleFormDataChange,
-    selectTemplate
+    selfClose
   };
 }
