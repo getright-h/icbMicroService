@@ -8,5 +8,17 @@ export const positionMonitorRoutes: IRoute[] = [
     component: ROUTERS.positionMonitor,
     lazyload: true,
     exact: true
+  },
+  {
+    path: `${MODULE_PATH}/positionMonitorLeft`,
+    component: ROUTERS.positionMonitorLeft,
+    lazyload: true,
+    exact: true
+  },
+  {
+    path: `${MODULE_PATH}/positionMonitorRight`,
+    component: ROUTERS.positionMonitorRight,
+    lazyload: true,
+    exact: true
   }
 ];

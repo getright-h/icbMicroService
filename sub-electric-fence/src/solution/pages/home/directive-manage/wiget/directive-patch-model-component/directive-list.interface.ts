@@ -6,7 +6,13 @@ export interface IDirectiveModalProps {
   visible: boolean;
   close: Function;
 }
+export class IDirectiveModalState {
+  custom = false;
+  isDevice = true;
+  isParams = true;
+  currentIndex = -1;
+}
 export enum ModalType {
-  CREATE,
-  EDIT
+  CUSTOM,
+  FORM
 }

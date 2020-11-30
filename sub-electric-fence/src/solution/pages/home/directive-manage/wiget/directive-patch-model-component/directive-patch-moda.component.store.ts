@@ -1,24 +1,25 @@
-import { IDirectiveListState, ModalType } from './directive-list.interface';
+import { IDirectiveModalState, ModalType, IDirectiveModalProps } from './directive-list.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form } from 'antd';
 import { AlarmManageService } from '~/solution/model/services/alarm-manage.service';
 import { useEffect } from 'react';
+import { values } from 'lodash';
+import { from } from 'rxjs';
+import { PropTypes } from 'mobx-react';
 
-export function useDirectiveListStore() {
-  const { state, setStateWrap, getState } = useStateStore(new IDirectiveListState());
+export function useDirectiveModalStore(props: IDirectiveModalProps) {
+  const { state, setStateWrap, getState } = useStateStore(new IDirectiveModalState());
   const alarmManageService: AlarmManageService = new AlarmManageService();
-  const [searchForm] = Form.useForm();
+  const [form] = Form.useForm();
 
-  useEffect(() => {
-   
-  }, []);
+  useEffect(() => {}, []);
 
   function getTableData() {
     // setStateWrap({ isLoading: true });
     // const { pageIndex, pageSize } = getState();
     // alarmManageService
     //   .queryOwnerPagedList({
-    //     ...searchForm.getFieldsValue(),
+    //     ...form.getFieldsValue(),
     //     index: pageIndex,
     //     size: pageSize
     //   })
@@ -37,29 +38,68 @@ export function useDirectiveListStore() {
     getTableData();
   }
 
-  function initSearchForm() {
-    searchForm.resetFields();
+  function submitForm() {
+    form.validateFields().then((values: any) => {
+      console.log(values);
+    });
     searchClick();
   }
 
+  function sloveState() {
+    form.validateFields().then((value: any) => {
+      const { device } = value;
+      setStateWrap({
+        isDevice: !!device
+      });
+    });
+  }
   function callbackAction<T>(actionType: number, data?: T) {
-    setStateWrap({ currentId: data ? data.id : '' });
     switch (actionType) {
-      case ModalType.CREATE:
-        setStateWrap({});
+      case ModalType.CUSTOM:
+        const { custom } = state;
+        setStateWrap({
+          custom: !custom
+        });
         break;
-      case ModalType.EDIT:
-        setStateWrap({});
+      case ModalType.FORM:
+        sloveState();
         break;
       default:
         break;
     }
   }
+  function handleFormDataChange($event: any, type: string) {
+    console.log($event, type);
+    if (type === 'params') {
+      setStateWrap({
+        isParams: $event
+      });
+    }
+
+    if (type === 'device') {
+      setStateWrap({
+        isDevice: $event
+      });
+    }
+  }
+
+  function selectTemplate(index: number) {
+    setStateWrap({
+      currentIndex: index
+    });
+  }
+  function selfClose() {
+    form.resetFields();
+    props.close && props.close();
+  }
 
   return {
     state,
-    searchForm,
-    initSearchForm,
+    form,
+    submitForm,
     callbackAction,
+    selfClose,
+    handleFormDataChange,
+    selectTemplate
   };
 }

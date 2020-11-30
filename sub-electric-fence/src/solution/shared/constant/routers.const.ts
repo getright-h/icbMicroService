@@ -23,7 +23,13 @@ export const ROUTERS = {
   PositionMonitorModule: () => import('~/solution/pages/home/position-monitor/position-monitor.module'),
   statisticalListComponent: () =>
     import('~/solution/pages/home/report-manage/state-list-component/state-list.component'),
+  statisticalDetailComponent: () =>
+    import(
+      '~/solution/pages/home/report-manage/statistical-list-component/statistical-detail-component/statistical-detail.component'
+    ),
   recordListComponent: () => import('~/solution/pages/home/report-manage/record-list-component/record-list.component'),
+  followComponent: () => import('~/solution/pages/home/report-manage/follow-list-component/follow-list.component'),
+  monitorComponent: () => import('~/solution/pages/home/report-manage/monitor-list-component/monitor-list.component'),
   odometerListComponent: () =>
     import('~/solution/pages/home/report-manage/odometer-list-component/odometer-list.component'),
   stateListComponent: () => import('~/solution/pages/home/report-manage/state-list-component/state-list.component'),
@@ -33,5 +39,13 @@ export const ROUTERS = {
   permanentListComponent: () =>
     import('~/solution/pages/home/report-manage/permanent-list-component/permanent-list.component'),
   positionMonitor: () =>
-    import('~/solution/pages/home/position-monitor/position-monitor-component/position-monitor.component')
+    import('~/solution/pages/home/position-monitor/position-monitor-component/position-monitor.component'),
+  positionMonitorLeft: () =>
+    import(
+      '~/solution/pages/home/position-monitor/position-monitor-component/position-monitor-left-component/position-monitor-left.component'
+    ),
+  positionMonitorRight: () =>
+    import(
+      '~/solution/pages/home/position-monitor/position-monitor-component/position-monitor-right-component/position-monitor-right.component'
+    )
 };

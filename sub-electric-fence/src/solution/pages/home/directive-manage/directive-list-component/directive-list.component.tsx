@@ -13,7 +13,7 @@ export default function DirectiveListComponent() {
     changeTablePageIndex,
     searchClick,
     initSearchForm,
-    close
+    handleModalCancel
   } = useDirectiveListStore();
   const { isLoading, tableData, total, pageIndex, pageSize, patchModalVisible } = state;
 
@@ -90,7 +90,7 @@ export default function DirectiveListComponent() {
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
       ></TablePageTelComponent>
-      <DirectivePatchModalComponent visible={patchModalVisible} close={close} />
+      <DirectivePatchModalComponent visible={patchModalVisible} close={handleModalCancel} />
     </React.Fragment>
   );
 }
