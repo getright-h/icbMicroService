@@ -21,7 +21,7 @@ export default function AddShippingSpaceComponent(props: IAddShippingSpaceProps)
       confirmLoading={confirmLoading}
       onCancel={handleCancel}
     >
-      <Form {...layout} form={form} initialValues={{ isDefault: true, alarmDay: 0 }}>
+      <Form {...layout} form={form} initialValues={{ isDefault: true }}>
         <Form.Item name="name" label="仓库名" rules={[{ required: true }]}>
           <Input placeholder="请输入仓库名" />
         </Form.Item>

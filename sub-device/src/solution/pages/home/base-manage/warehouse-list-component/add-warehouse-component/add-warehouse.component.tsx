@@ -22,15 +22,17 @@ export default function AddWarehouseComponent(props: IAddWarehouseProps) {
     labelCol: { span: 6 },
     wrapperCol: { span: 16 }
   };
-  const IAreaCascaderComponentForm: any = React.useCallback(
-    () =>
-      IAreaCascaderComponent({
+  function IAreaCascaderComponentForm() {
+    const props = React.useMemo(
+      () => ({
         deep: 2,
         setAreaInfo,
         defaultValue: areaDetail
       }),
-    [areaDetail]
-  );
+      [areaDetail]
+    );
+    return <IAreaCascaderComponent {...props}></IAreaCascaderComponent>;
+  }
   return (
     <Modal
       title={`${isEdit ? '编辑' : '创建'}仓库`}
@@ -42,7 +44,13 @@ export default function AddWarehouseComponent(props: IAddWarehouseProps) {
       onCancel={handleCancel}
     >
       <Form {...layout} form={form} initialValues={{ isDefault: true }}>
-        <Form.Item name="name" label="仓库名" rules={[{ required: true }]}>
+        <Form.Item
+          name="name"
+          label="仓库名"
+          rules={[
+            { required: true, pattern: /^[\u4e00-\u9fa5a-zA-Z0-9]+$/g, message: '仓库名只允许输入中文数字和字母' }
+          ]}
+        >
           <Input placeholder="请输入仓库名" />
         </Form.Item>
         <Form.Item name="organizationId" label="所属组织" rules={[{ required: true }]}>

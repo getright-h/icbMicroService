@@ -15,6 +15,6 @@ export { default as ISelectLoadingComponent } from '~/framework/components/i-sel
 export { default as IUploadImgComponent } from '~/framework/components/i-upload-img-component/i-upload-img.component';
 export { default as IEditPasswordComponent } from '~/framework/components/i-edit-password-component/i-edit-password.component';
 export { default as ImageDisplayComponent } from '~/framework/components/image-display-component/image-display.component';
-export { default as IAreaCascaderComponent } from '~/framework/components/i-area-cascader-component/i-area-cascader.component';
+export { IAreaCascaderComponent } from '~/framework/components/i-area-cascader-component/i-area-cascader.component';
 export { default as IHeaderTitleComponent } from '~/framework/components/i-header-title-component/i-header-title.component';
 //  -- Package End --

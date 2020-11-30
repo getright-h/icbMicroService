@@ -94,7 +94,6 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
         [key]: value
       }
     });
-    console.log(value);
 
     searchCurrentSelectInfo(getState().loadStoreOrganizationParams);
   }
@@ -127,7 +126,8 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
   useImperativeHandle(ref, () => ({
     // changeVal 就是暴露给父组件的方法
     deleteCurrentTreeData,
-    queryOrganizationTypeListByTypeId
+    queryOrganizationTypeListByTypeId,
+    searchCurrentSelectInfo
   }));
 
   return { state, onLoadData, getCurrentSelectInfo, onCheck, getCurrentGroup };

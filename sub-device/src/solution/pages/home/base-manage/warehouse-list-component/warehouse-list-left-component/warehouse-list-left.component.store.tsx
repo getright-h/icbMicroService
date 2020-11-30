@@ -93,9 +93,10 @@ export function useWarehouseListLeftStore() {
     setStateWrap({
       isEditWarehouseModal: false,
       addWarehouseVisible: false,
-      editWarehouseId: ''
+      editWarehouseId: '',
+      expandedKeys: []
     });
-    isRefresh && organizationControllerRef.current.queryOrganizationTypeListByTypeId();
+    organizationControllerRef.current.queryOrganizationTypeListByTypeId();
   }
 
   function onExpand(expandedKeys: []) {

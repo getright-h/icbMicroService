@@ -33,6 +33,7 @@ export function useAddShippingSpaceStore(props: IAddShippingSpaceProps) {
     const formInfo = form.getFieldsValue();
     formInfo.minAlarm = formInfo.minAlarm + '' == '' ? -1 : formInfo.minAlarm;
     formInfo.maxAlarm = formInfo.maxAlarm + '' == '' ? -1 : formInfo.maxAlarm;
+    formInfo.alarmDay = formInfo.alarmDay + '' == '' ? -1 : formInfo.alarmDay;
     warehouseListService.current[URL]({
       ...formInfo,
       storeId: reduxState.currentSelectNode && reduxState.currentSelectNode.key,
