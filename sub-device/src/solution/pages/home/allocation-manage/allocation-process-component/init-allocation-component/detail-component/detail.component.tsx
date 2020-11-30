@@ -90,7 +90,7 @@ export default function DetailComponent() {
           <Button
             type={'primary'}
             className={style.button}
-            onClick={() => callbackAction(ModalType.REAPPLY, data)}
+            onClick={() => callbackAction(ModalType.RETURN, data)}
             key={4}
           >
             收到退货
