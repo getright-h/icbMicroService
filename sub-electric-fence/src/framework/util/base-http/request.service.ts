@@ -39,6 +39,8 @@ class RequestService {
     let returnInfo = process.env.MAIN;
     if (!!~url.indexOf('VerifyCode') || !!~url.indexOf('Login')) {
       returnInfo = process.env.LOGIN;
+    } else if (!!~url.indexOf('gps/')) {
+      returnInfo = process.env.GPS;
     } else {
       returnInfo = process.env.MAIN;
     }
