@@ -40,7 +40,7 @@ export default function ReceiveAllocationComponent() {
             allowClear
             placeholder="请输入调拨单号"
             onChange={e => {
-              onChange(e.target.value, 'keyword');
+              onChange(e.target.value, 'allotCode');
             }}
           />
         </div>
