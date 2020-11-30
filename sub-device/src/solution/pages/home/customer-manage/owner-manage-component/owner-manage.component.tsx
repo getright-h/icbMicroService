@@ -127,8 +127,8 @@ export default function OwnerManageComponent() {
         otherSearchBtns={renderOtherButtons()}
         table={<RenderTable />}
       ></TablePageTelComponent>
-      <EditOwnerInfoComponent visible={editVisible} close={handleModalCancel} id={currentId} />
-      <OwnerInfoDetailComponent visible={detailVisible} close={handleModalCancel} id={currentId} />
+      {editVisible && <EditOwnerInfoComponent visible={editVisible} close={handleModalCancel} id={currentId} />}
+      {detailVisible && <OwnerInfoDetailComponent visible={detailVisible} close={handleModalCancel} id={currentId} />}
     </React.Fragment>
   );
 }

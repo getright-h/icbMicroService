@@ -21,7 +21,11 @@ export default function EditOwnerInfoComponent(props: IEditOwnerInfoProps) {
           <Form.Item name="name" label="车主姓名" rules={[{ required: true }]}>
             <Input placeholder="请输入用户名" />
           </Form.Item>
-          <Form.Item name="mobile" label="车主电话" rules={[{ required: true }]}>
+          <Form.Item
+            name="mobile"
+            label="车主电话"
+            rules={[{ required: true }, { pattern: /^(?:(?:\+|00)86)?1\d{10}$/, message: '请输入正确格式的手机号码' }]}
+          >
             <Input placeholder="请输入电话" />
           </Form.Item>
           <Form.Item name="sex" label="车主性别">
@@ -59,10 +63,19 @@ export default function EditOwnerInfoComponent(props: IEditOwnerInfoProps) {
               <Select.Option value={-200}>暂无</Select.Option>
             </Select>
           </Form.Item>
-          <Form.Item name="spareMobile" label="备用电话">
+          <Form.Item
+            name="spareMobile"
+            label="备用电话"
+            rules={[
+              {
+                pattern: /(^(?:\d{3}-)?\d{8}$)|(^(?:\d{4}-)?\d{7,8}$)|(^(?:(?:\+|00)86)?1\d{10}$)/,
+                message: '请输入正确格式的座机或手机号码'
+              }
+            ]}
+          >
             <Input placeholder="请输入备用电话" />
           </Form.Item>
-          <Form.Item name="email" label="电子邮箱">
+          <Form.Item name="email" label="电子邮箱" rules={[{ type: 'email', message: '请输入正确格式的电子邮箱' }]}>
             <Input placeholder="请输入电子邮箱" />
           </Form.Item>
           <Form.Item name="areaInfo" label="所属地区">
