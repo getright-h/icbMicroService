@@ -46,7 +46,7 @@ export default function InOutStockComponent() {
       wrapperCol: { span: 16 }
     };
     return (
-      <Form {...layout} form={searchForm} style={{ width: '90%' }}>
+      <Form {...layout} form={searchForm} style={{ width: '90%' }} initialValues={{ type: -1 }}>
         <Row gutter={24}>
           <Col span={8}>
             <Form.Item name="storeName" label="仓库名">
