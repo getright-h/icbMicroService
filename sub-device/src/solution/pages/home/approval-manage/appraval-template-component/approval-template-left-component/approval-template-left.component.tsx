@@ -52,6 +52,7 @@ export default function ApprovalTemplateLeftComponent() {
       </a>
       <div style={{ textAlign: 'center' }}>
         <Tree
+          loadedKeys={expandedKeys}
           loadData={onLoadData}
           onSelect={onSelect}
           expandedKeys={expandedKeys}

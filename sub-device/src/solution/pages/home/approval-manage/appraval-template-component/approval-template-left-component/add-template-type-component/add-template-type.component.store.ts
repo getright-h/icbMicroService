@@ -86,7 +86,7 @@ export function useAddTemplateTypeStore(props: IAddTemplateTypeProps) {
           confirmLoading: false
         });
         // 是否刷新左边栏
-        props.closeAddTemplateTypeModal(!props.isEdit);
+        props.closeAddTemplateTypeModal(true);
       },
       () => {
         setStateWrap({

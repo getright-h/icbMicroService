@@ -121,7 +121,6 @@ export function useApprovalTemplateLeftStore() {
       ShowNotification.success('删除成功');
       console.log(getState().treeData);
       const treeData = deleteTreeDataByKey(getState().treeData, element.id);
-      console.log(treeData);
 
       setStateWrap({
         treeData: treeData
@@ -155,7 +154,8 @@ export function useApprovalTemplateLeftStore() {
     setStateWrap({
       isEditApprovalModal: false,
       addApprovalTypeVisible: false,
-      groupId: ''
+      groupId: '',
+      expandedKeys: []
     });
     isRefresh && queryOrganizationTypeListByTypeId();
   }
