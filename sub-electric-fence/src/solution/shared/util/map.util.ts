@@ -109,15 +109,12 @@ export const IMAP = {
       strokeWeight: 6 //线宽
       // strokeStyle: "solid"  //线样式
     });
-
   },
   showCarInfo() {
-    AMapUI.loadUI   (['overlay/SimpleInfoWindow'], (SimpleInfoWindow: any) => {
-      
-
-          const infoWindow = new SimpleInfoWindow({
-            infoTitle: '<strong>车辆状态</strong>',
-            infoBody: `<div class="vehicle-basic-info">
+    AMapUI.loadUI(['overlay/SimpleInfoWindow'], (SimpleInfoWindow: any) => {
+      const infoWindow = new SimpleInfoWindow({
+        infoTitle: '<strong>车辆状态</strong>',
+        infoBody: `<div class="vehicle-basic-info">
             <span class="title">基本信息</span>
             <div class="basic">
                 <span class="item">车牌：<%- licenceNumber %></span>
@@ -140,20 +137,19 @@ export const IMAP = {
             <button id="mybtnDo" class="button_ pop_ pop_def" data-isopen="1">指令</button>
             <button id="mybtnAttention" class="button_ pop_ pop_def" data-isopen="1">报警</button>
             </div>`,
-            infoTplData: {
-              identificationNumber: '',
-              licenceNumber: '',
-              unitName: '',
-              status: '',
-              lalg: '',
-              place: ''
-            },
+        infoTplData: {
+          identificationNumber: '',
+          licenceNumber: '',
+          unitName: '',
+          status: '',
+          lalg: '',
+          place: ''
+        },
 
-            //基点指向marker的头部位置
-            offset: new AMap.Pixel(0, -31)
-          });
-        }
-
+        //基点指向marker的头部位置
+        offset: new AMap.Pixel(0, -31)
+      });
+    });
   },
   drawRectangle: {
     init(map: any) {
