@@ -67,6 +67,10 @@ export function useAddTemplateStore(addTemplateState: AddTemplateState, dispatch
       message.warning('请输入模板名称');
       return;
     }
+    if (!addTemplateState.templateType) {
+      message.warning('请选择模板类型');
+      return;
+    }
     // 仓位名不能为空 流程节点不能为空
     if (!addTemplateState.flowNodeSettingField.length) {
       message.warning('请添加流程节点');

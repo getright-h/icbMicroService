@@ -8,6 +8,8 @@ export function useIAreaCascaderStore(props: IIAreaCascaderProps) {
   const areaChooseService: AreaChooseService = useService(AreaChooseService);
 
   useEffect(() => {
+    console.log(props.defaultValue);
+
     if (props.defaultValue) {
       loadDefaultValueData([...props.defaultValue], []);
       setStateWrap({ value: props.defaultValue });
@@ -15,6 +17,10 @@ export function useIAreaCascaderStore(props: IIAreaCascaderProps) {
       loadDefaultValueData([], []);
     }
   }, [props.defaultValue]);
+
+  useEffect(() => {
+    console.log(1);
+  }, []);
 
   const onChangeArea = (value: any, selectedOptions: any) => {
     setStateWrap({ value });

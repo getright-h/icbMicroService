@@ -18,6 +18,12 @@ export function useAddWarehouseStore(props: IAddWarehouseProps) {
     }
   }, [props.warehouseId]);
 
+  useEffect(() => {
+    return () => {
+      console.log('被销毁啦');
+    };
+  }, []);
+
   // 获取仓库详情用于编辑
   function getWarehouseDetail() {
     warehouseListService.current.getStoreDetail({ id: props.warehouseId }).subscribe(res => {
@@ -65,7 +71,7 @@ export function useAddWarehouseStore(props: IAddWarehouseProps) {
         // 关闭的时候销毁当前的modal
         ShowNotification.success(`${props.isEdit ? '编辑' : '创建'}仓库成功`);
         // 通知父应用刷新树列表
-        props.closeAddWarehouseModal(!props.isEdit, formInfo.organizationId);
+        props.closeAddWarehouseModal(true, formInfo.organizationId);
       },
       error => {
         setStateWrap({

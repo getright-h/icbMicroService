@@ -90,13 +90,21 @@ export function useWarehouseListLeftStore() {
   }
 
   function closeAddWarehouseModal(isRefresh: boolean, id: string) {
-    setStateWrap({
-      isEditWarehouseModal: false,
-      addWarehouseVisible: false,
-      editWarehouseId: '',
-      expandedKeys: []
-    });
-    organizationControllerRef.current.queryOrganizationTypeListByTypeId();
+    if (isRefresh) {
+      setStateWrap({
+        isEditWarehouseModal: false,
+        addWarehouseVisible: false,
+        editWarehouseId: '',
+        expandedKeys: []
+      });
+      organizationControllerRef.current.queryOrganizationTypeListByTypeId();
+    } else {
+      setStateWrap({
+        isEditWarehouseModal: false,
+        addWarehouseVisible: false,
+        editWarehouseId: ''
+      });
+    }
   }
 
   function onExpand(expandedKeys: []) {
