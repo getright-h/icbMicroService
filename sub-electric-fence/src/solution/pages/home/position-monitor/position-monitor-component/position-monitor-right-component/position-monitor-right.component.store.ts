@@ -5,7 +5,11 @@ import * as _ from 'lodash';
 export function usePositionMonitorRightStore() {
   const { state, setStateWrap } = useStateStore(new IPositionMonitorRightState());
 
-  function onClose() {}
+  // 追踪
+  function searchCar() {
+    // 寻找当前的car
+    
+  } 
 
-  return { state, onClose };
+  return { state, searchCar };
 }

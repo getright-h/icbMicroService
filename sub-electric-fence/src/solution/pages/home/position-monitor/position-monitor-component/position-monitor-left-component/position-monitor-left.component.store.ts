@@ -7,7 +7,6 @@ import { PositionMonitorContext } from '../position-monitor.component';
 export function usePositionMonitorLeftStore() {
   const { state, setStateWrap } = useStateStore(new IPositionMonitorLeftState());
   const { dispatch } = useContext(PositionMonitorContext);
-  console.log(dispatch);
 
   function onExpand(expandedKeys: []) {
     setStateWrap({

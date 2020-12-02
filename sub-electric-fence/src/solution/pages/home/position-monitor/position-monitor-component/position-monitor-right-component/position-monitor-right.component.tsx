@@ -3,16 +3,25 @@ import style from './position-monitor-right.component.less';
 import { usePositionMonitorRightStore } from './position-monitor-right.component.store';
 import { IMapComponent, ISelectLoadingComponent } from '~/solution/components/component.module';
 import { Select, Space } from 'antd';
-import PositionMonitorDrawerRightComponent from '../position-monitor-drawer-right-component/position-monitor-drawer-right.component';
 import { PositionMonitorContext } from '../position-monitor.component';
+import PositionMonitorMapbtnTrackComponent from '../position-monitor-mapbtn-track-component/position-monitor-mapbtn-track.component';
 const { Option } = Select;
-export default function PositionMonitorRightComponent() {
+export const PositionMonitorRightComponent = () => {
   const { reduxState, dispatch } = React.useContext(PositionMonitorContext);
   const { checkedCarData, currentSelectCar } = reduxState;
   return (
     <div className={style.positionMonitorRight}>
-      <div>{IMapComponent({ locationCarMarkerList: checkedCarData, currentSelectCar })}</div>
-      {PositionMonitorDrawerRightComponent()}
+      <div>
+        <IMapComponent
+          {...{
+            id: 'mainContainer',
+            needDrawRactangle: true,
+            locationCarMarkerList: checkedCarData,
+            currentSelectCar
+          }}
+        />
+      </div>
+      <PositionMonitorMapbtnTrackComponent />
     </div>
   );
-}
+};

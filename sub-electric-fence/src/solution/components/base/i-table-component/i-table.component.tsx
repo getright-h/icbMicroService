@@ -3,22 +3,21 @@ import { IITableProps } from './i-table.interface';
 import { useITableStore } from './i-table.component.store';
 import { Table } from 'antd';
 
-export default function ITableComponent(props: IITableProps) {
+export default React.memo((props: IITableProps) => {
   const {
     isLoading = false,
     data = [],
     columns,
-    total,
     size = 'large',
     isPagination = true,
     rowClick = () => {},
-    expandable,
+    expandable = {
+      childrenColumnName: 'cool'
+    },
     rowSelection,
-    showHeader = true,
-    changeTablePageIndex
+    showHeader = true
   } = props;
   const { state } = useITableStore(props);
-  console.log(state.pagination);
 
   return (
     <Table
@@ -40,4 +39,4 @@ export default function ITableComponent(props: IITableProps) {
       rowKey={row => row.id}
     />
   );
-}
+});

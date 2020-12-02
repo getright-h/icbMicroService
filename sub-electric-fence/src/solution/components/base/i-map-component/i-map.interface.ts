@@ -7,6 +7,12 @@ export class IIMapState {
 }
 
 export type TIMapProps = {
-  locationCarMarkerList: any[];
-  currentSelectCar: any;
+  locationCarMarkerList?: any[];
+  currentSelectCar?: any;
+  id: string;
+  needSearchAddress?: boolean;
+  height?: string;
+  needISelectCarLoadingComponent?: boolean;
+  needDrawRactangle?: boolean;
+  carLine?: any[];
 };

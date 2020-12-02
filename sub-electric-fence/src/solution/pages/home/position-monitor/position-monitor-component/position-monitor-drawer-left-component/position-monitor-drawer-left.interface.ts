@@ -17,18 +17,46 @@ export class IPositionMonitorDrawerLeftState {
       vehicle: '1',
       status: '1',
       isFromOrganization: true,
-      locationInfo: {
-        coordinates: [116.433322, 39.900256],
-        status: true,
-        markerInfo: {
-          licenceNumber: '186005833',
-          identificationNumber: '1122333',
-          unitName: '成都爱车宝信息技术有限公司',
-          lalg: [116.433322, 39.900256],
-          status: false,
-          place: '无心思路大大大'
+      children: [
+        {
+          id: 44,
+          deviceName: '设备号',
+          deviceNumber: '设备型号',
+          statusText: '在线',
+          status: true,
+          locationInfo: {
+            coordinates: [116.433322, 39.900256],
+            status: true,
+            markerInfo: {
+              licenceNumber: '186005833',
+              identificationNumber: '1122333',
+              unitName: '成都爱车宝信息技术有限公司',
+              lalg: [116.433322, 39.900256],
+              status: false,
+              place: '无心思路大大大'
+            }
+          }
+        },
+        {
+          id: 55,
+          deviceName: '设备号2',
+          deviceNumber: '设备型号2',
+          statusText: '在线2',
+          status: true,
+          locationInfo: {
+            coordinates: [116.433322, 39.800256],
+            status: true,
+            markerInfo: {
+              licenceNumber: '186005833',
+              identificationNumber: '1122333',
+              unitName: '成都爱车宝信息技术有限公司',
+              lalg: [116.433322, 39.900256],
+              status: false,
+              place: '无心思路大大大'
+            }
+          }
         }
-      }
+      ]
     },
     {
       id: 2,
@@ -37,18 +65,46 @@ export class IPositionMonitorDrawerLeftState {
       vehicle: '1',
       status: '1',
       isFromOrganization: true,
-      locationInfo: {
-        coordinates: [116.433322, 39.100256],
-        status: false,
-        markerInfo: {
-          licenceNumber: '186005833',
-          identificationNumber: '1122333',
-          unitName: '成都爱车宝信息技术有限公司',
-          lalg: [116.433322, 39.900256],
+      children: [
+        {
+          id: 22,
+          deviceName: '设备号',
+          deviceNumber: '设备型号',
+          statusText: '在线',
           status: true,
-          place: '无心思路大大大'
+          locationInfo: {
+            coordinates: [116.433322, 37.900256],
+            status: true,
+            markerInfo: {
+              licenceNumber: '186005833',
+              identificationNumber: '1122333',
+              unitName: '成都爱车宝信息技术有限公司',
+              lalg: [116.433322, 39.900256],
+              status: false,
+              place: '无心思路大大大'
+            }
+          }
+        },
+        {
+          id: 33,
+          deviceName: '设备号2',
+          deviceNumber: '设备型号2',
+          statusText: '在线2',
+          status: true,
+          locationInfo: {
+            coordinates: [116.433322, 36.800256],
+            status: true,
+            markerInfo: {
+              licenceNumber: '186005833',
+              identificationNumber: '1122333',
+              unitName: '成都爱车宝信息技术有限公司',
+              lalg: [116.433322, 39.900256],
+              status: false,
+              place: '无心思路大大大'
+            }
+          }
         }
-      }
+      ]
     }
   ];
   total = 0;

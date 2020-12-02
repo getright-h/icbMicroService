@@ -50,7 +50,6 @@ export function usePositionMonitorDrawerLeftStore() {
         return flag;
       });
     } else {
-      changeRows.forEach(() => {});
       filterCheckedCarData = [...checkedCarData, ...changeRows];
     }
 

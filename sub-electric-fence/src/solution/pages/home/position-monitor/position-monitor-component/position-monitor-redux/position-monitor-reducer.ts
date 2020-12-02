@@ -9,6 +9,7 @@ export const positionMonitorInitialState: TPositionMonitor = {
   leftDrawerVisible: false,
   checkedCarData: [],
   currentSelectCar: undefined,
+  refreshTime: '',
   selectedRowKeys: []
 };
 
@@ -18,6 +19,7 @@ export type TPositionMonitor = {
   leftContentVisible: boolean;
   leftDrawerVisible: boolean;
   checkedCarData: any[];
+  refreshTime: string;
   currentSelectCar: any;
   selectedRowKeys: any;
 };

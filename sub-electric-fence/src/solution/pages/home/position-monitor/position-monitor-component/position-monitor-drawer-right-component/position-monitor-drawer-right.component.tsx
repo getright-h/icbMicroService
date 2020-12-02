@@ -6,8 +6,8 @@ import { Collapse, Drawer, Button } from 'antd';
 import { setDataAction } from '../position-monitor-redux/position-monitor-action';
 import { CloseCircleOutlined } from '@ant-design/icons';
 const { Panel } = Collapse;
-export default function PositionMonitorDrawerRightComponent() {
-  const { state, deleteChoosedCar } = usePositionMonitorDrawerRightStore();
+export const PositionMonitorDrawerRightComponent = () => {
+  const { state, deleteChoosedCar, checkedDevice } = usePositionMonitorDrawerRightStore();
   const { reduxState, dispatch } = React.useContext(PositionMonitorContext);
   const { rightDrawervisible, checkedCarData, currentSelectCar } = reduxState;
   function DrawerContent() {
@@ -16,6 +16,7 @@ export default function PositionMonitorDrawerRightComponent() {
         <div>
           <Button
             type="primary"
+            className={style.searchAllCar}
             onClick={() => {
               setDataAction({ currentSelectCar: undefined }, dispatch);
             }}
@@ -32,10 +33,30 @@ export default function PositionMonitorDrawerRightComponent() {
                   <Panel
                     header={RenderUserInfo(item)}
                     style={item.id == currentSelectCar?.id ? { background: '#f5f0ff' } : {}}
-                    key="1"
+                    key={item.id}
                     extra={genExtra(item)}
                   >
-                    {/* <div>{text}</div> */}
+                    <div className={style.panel}>
+                      {item?.children?.map((itemChild: any) => {
+                        return (
+                          <div
+                            key={itemChild.id}
+                            className={style.panelContent}
+                            onClick={() => checkedDevice(item, itemChild)}
+                            style={
+                              item.id == currentSelectCar?.id && itemChild.selected
+                                ? { background: 'rgb(245, 240, 255)' }
+                                : {}
+                            }
+                          >
+                            <span>
+                              {itemChild.deviceName}({itemChild.deviceNumber})
+                            </span>
+                            <span>{itemChild.statusText}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </Panel>
                 );
               })}
@@ -60,9 +81,6 @@ export default function PositionMonitorDrawerRightComponent() {
         onClick={event => {
           event.stopPropagation();
           // 选中当前的car
-
-          console.log(8886);
-
           setDataAction({ currentSelectCar: item }, dispatch);
         }}
       >
@@ -100,4 +118,4 @@ export default function PositionMonitorDrawerRightComponent() {
       {DrawerContent()}
     </Drawer>
   );
-}
+};

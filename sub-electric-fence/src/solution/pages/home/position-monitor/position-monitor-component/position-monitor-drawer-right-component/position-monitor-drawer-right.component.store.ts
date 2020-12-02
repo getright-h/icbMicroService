@@ -19,5 +19,20 @@ export function usePositionMonitorDrawerRightStore() {
 
     setDataAction({ checkedCarData: filterCheckedCarData, currentSelectCar: currentSelectCarData }, dispatch);
   }
-  return { state, deleteChoosedCar };
+
+  function checkedDevice(item: any, itemChild: any) {
+    item.children = item.children.map((itemElement: any) => {
+      if (itemElement.id == itemChild.id) {
+        itemElement.selected = true;
+      } else {
+        itemElement.selected = false;
+      }
+      return itemElement;
+    });
+    item.changeTime = new Date().getTime();
+    console.log(item);
+
+    setDataAction({ currentSelectCar: { ...item } }, dispatch);
+  }
+  return { state, deleteChoosedCar, checkedDevice };
 }

@@ -21,6 +21,7 @@ export function useIMapStore(mapProps: TIMapProps) {
   const isMouseToolVisible = useRef(false);
   const isVisibleSatellite = useRef(false);
   const isVisibleLocationCar = useRef(false);
+  const locationCarMarkerListFlag = useRef([]);
   useEffect(() => {
     initMap();
   }, []);
@@ -31,26 +32,68 @@ export function useIMapStore(mapProps: TIMapProps) {
       renderMarker([mapProps.currentSelectCar]);
       // 多个车不用获取常驻地点
     } else if (mapProps.locationCarMarkerList) {
+      // 比对
       renderMarker(mapProps.locationCarMarkerList);
     }
   }, [mapProps.locationCarMarkerList, mapProps.currentSelectCar]);
 
+  useEffect(() => {
+    //实时追踪的car,car会在最后一个店停下来
+    // 这个地方会进行轨迹修复
+    if (mapProps.carLine) {
+      map.current.clearMap();
+      const carLine = mapProps.carLine.map(item => {
+        item = IMAP.initLonlat(item[0], item[1]);
+        return item;
+      });
+      IMAP.drawLine(map.current, carLine);
+      const position = carLine[carLine.length - 1];
+      console.log([position.lng, position.lat]);
+
+      new AMap.Marker({
+        map: map.current,
+        position: position,
+        icon: 'https://webapi.amap.com/images/car.png',
+        offset: new AMap.Pixel(-26, -13),
+        autoRotation: true,
+        angle: -90
+      });
+      map.setFitView();
+    }
+  }, [mapProps.carLine]);
+
   function renderMarker(data: any) {
     const markersInfo: any = [];
-
     data?.forEach((element: any) => {
       //  描定位点，在传入钱转化成格式
+      // 确定当前使用的是哪个设备
+      let currentMarker = element.children[0];
+      if (data.length == 1 && mapProps.currentSelectCar) {
+        // 说明当前的点是被选中的， 所以可以筛选其中选中的设备
+
+        for (const item of element.children) {
+          if (item.selected) {
+            currentMarker = item;
+            break;
+          }
+        }
+      }
       markersInfo.push({
-        position: element.locationInfo.coordinates,
-        icon: element.locationInfo.status ? require('~assets/image/offline.png') : require('~assets/image/online.png'),
-        markerInfo: element.locationInfo.vehicleInfo,
-        status: element.locationInfo.status
+        position: currentMarker.locationInfo.coordinates,
+        icon: currentMarker.status ? require('~assets/image/offline.png') : require('~assets/image/online.png'),
+        markerInfo: currentMarker.locationInfo,
+        status: currentMarker.statusText
       });
     });
 
     console.log('重绘界面啦', markersInfo);
     //开始画车走起
-    IMAP.bindMarkerClick(markersInfo, map.current, openInfoWin);
+    locationCarMarkerListFlag.current = IMAP.bindMarkerClick(
+      markersInfo,
+      map.current,
+      openInfoWin,
+      locationCarMarkerListFlag.current
+    );
   }
 
   function openInfoWin(markerInfo: any, map: any, marker: any, infoWindow: any) {
@@ -64,20 +107,33 @@ export function useIMapStore(mapProps: TIMapProps) {
         place
       });
       // 点击导航，开始导航
-      // infoWindow.get$InfoBody().on('click', '.button_', marker, function(event) {
-      //   //阻止冒泡
-      //   event.stopPropagation();
-      //   getTrajectoryParagraphHttp(new Date(), marker);
-      // });
+      infoWindow.get$InfoBody().on('click', '#mybtnSearch', marker, function(event: any) {
+        //阻止冒泡
+        event.stopPropagation();
+        mapSearch(marker);
+      });
+
+      infoWindow.get$InfoBody().on('click', '#mybtnWatchLine', marker, function(event: any) {
+        //阻止冒泡
+        event.stopPropagation();
+        followLine(marker);
+      });
       infoWindow.open(map, markerInfo.getPosition());
     });
   }
 
-  function regeoCode(lnglat: [number, number]) {
-    console.log(lnglat);
+  // 追踪
+  function mapSearch(marker: any) {
+    console.log(marker);
+  }
 
+  // 查看轨迹
+  function followLine(marker: any) {
+    console.log(marker);
+  }
+
+  function regeoCode(lnglat: [number, number]) {
     let geocoder: any;
-    let location;
     if (!geocoder) {
       geocoder = new AMap.Geocoder({
         city: '全国', //城市设为北京，默认：“全国”
@@ -97,7 +153,7 @@ export function useIMapStore(mapProps: TIMapProps) {
 
   function initMap() {
     // 获取当前用户定位
-    map.current = IMAP.createMap('container');
+    map.current = IMAP.createMap(mapProps.id);
     IMAP.addBaseController(map.current);
     // 测距
     mouseTool.current = IMAP.Rule.init(map.current);

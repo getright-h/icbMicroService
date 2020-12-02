@@ -1,19 +1,36 @@
 import * as React from 'react';
-import style from './position-monitor-drawer-left.component.less';
 import { usePositionMonitorDrawerLeftStore } from './position-monitor-drawer-left.component.store';
 import { Drawer } from 'antd';
 import { setDataAction } from '../position-monitor-redux/position-monitor-action';
 import { PositionMonitorContext } from '../position-monitor.component';
 import { ISelectLoadingComponent, ITableComponent } from '~/solution/components/component.module';
 import { positionMonitorDrawerLeftColumns } from './position-monitor-drawer-left.column';
+import { SizeType } from 'antd/lib/config-provider/SizeContext';
 
-export default function PositionMonitorDrawerLeftComponent() {
+export const PositionMonitorDrawerLeftComponent = () => {
   const { state, onCheckedUserInfo, onCheckedUserSelectAllInfo } = usePositionMonitorDrawerLeftStore();
   const { isLoading, searchForm, tableData, total, selectedRowKeys } = state;
 
   const { reduxState, dispatch } = React.useContext(PositionMonitorContext);
   const { leftDrawerVisible, currentSelectNode }: any = reduxState;
-
+  const tableParams = React.useMemo(
+    () => ({
+      columns: positionMonitorDrawerLeftColumns(),
+      isLoading,
+      pageIndex: searchForm.index,
+      pageSize: searchForm.size,
+      data: tableData,
+      rowSelection: {
+        onSelect: onCheckedUserInfo,
+        selectedRowKeys: selectedRowKeys,
+        onSelectAll: onCheckedUserSelectAllInfo
+      },
+      size: 'small' as SizeType,
+      total: total,
+      changeTablePageIndex: (index: number, pageSize: number) => changeTablePageIndex()
+    }),
+    [searchForm.index, searchForm.size, isLoading, tableData, selectedRowKeys, total]
+  );
   function changeTablePageIndex() {}
   const ISelectWatchLoadingComponent = React.useCallback(
     () =>
@@ -32,31 +49,14 @@ export default function PositionMonitorDrawerLeftComponent() {
     return (
       <div>
         <div>{ISelectWatchLoadingComponent()}</div>
-        <div style={{ margin: '10px -24px' }}>{renderTable()}</div>
+        <div style={{ margin: '10px -24px' }}>{RenderTable()}</div>
       </div>
     );
   }
 
   // component --- 渲染table
-  function renderTable() {
-    return (
-      <ITableComponent
-        columns={positionMonitorDrawerLeftColumns()}
-        isLoading={isLoading}
-        pageIndex={searchForm.index}
-        pageSize={searchForm.size}
-        data={tableData}
-        // showHeader={false}
-        rowSelection={{
-          onSelect: onCheckedUserInfo,
-          selectedRowKeys: selectedRowKeys,
-          onSelectAll: onCheckedUserSelectAllInfo
-        }}
-        size="small"
-        total={total}
-        changeTablePageIndex={(index: number, pageSize: number) => changeTablePageIndex()}
-      ></ITableComponent>
-    );
+  function RenderTable() {
+    return <ITableComponent {...tableParams} />;
   }
 
   return (
@@ -73,4 +73,4 @@ export default function PositionMonitorDrawerLeftComponent() {
       {DrawerContent()}
     </Drawer>
   );
-}
+};

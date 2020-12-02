@@ -5,10 +5,16 @@ import { useIMapStore } from './i-map.component.store';
 import { ISelectLoadingComponent } from '~/solution/components/component.module';
 import { TIMapProps } from './i-map.interface';
 const { Option } = Select;
-export default function IMapComponent(mapProps: TIMapProps) {
+export const IMapComponent = React.memo((mapProps: TIMapProps) => {
   const { state, startRule, startDrawRactangle, handleChangeCircleFunction, handleCircleLocation } = useIMapStore(
     mapProps
   );
+  const {
+    needSearchAddress = true,
+    needISelectCarLoadingComponent = true,
+    needDrawRactangle,
+    height = '80vh'
+  } = mapProps;
   const { locationList } = state;
   function SearchAddress() {
     return (
@@ -51,13 +57,15 @@ export default function IMapComponent(mapProps: TIMapProps) {
     []
   );
   return (
-    <div id="container" style={{ height: '80vh' }}>
+    <div id={mapProps.id} style={{ height }}>
       <div className={`${style.info} ${style.floatRight}`}>
         <button onClick={startRule}>测距</button>
-        <button onClick={startDrawRactangle}>区域查车</button>
+        {needDrawRactangle && <button onClick={startDrawRactangle}>区域查车</button>}
       </div>
-      <div className={`${style.info} ${style.searchAddress}`}>{SearchAddress()}</div>
-      <div className={`${style.info} ${style.searchCar}`}>{ISelectCarLoadingComponent()}</div>
+      {needSearchAddress && <div className={`${style.info} ${style.searchAddress}`}>{SearchAddress()}</div>}
+      {needISelectCarLoadingComponent && (
+        <div className={`${style.info} ${style.searchCar}`}>{ISelectCarLoadingComponent()}</div>
+      )}
     </div>
   );
-}
+});
