@@ -3,9 +3,11 @@ import style from './position-monitor-mapbtn-track.component.less';
 import { usePositionMonitorMapbtnTrackStore } from './position-monitor-mapbtn-track.component.store';
 import { Drawer } from 'antd';
 import { IMapComponent } from '~/solution/components/component.module';
+import { IPositionMonitorMapbtnTrackProps } from './position-monitor-mapbtn-track.interface';
 
-export default function PositionMonitorMapbtnTrackComponent() {
+export default React.memo((props: IPositionMonitorMapbtnTrackProps) => {
   const { state } = usePositionMonitorMapbtnTrackStore();
+  const { mapbtnTrackrVisible, closeMapbtnPage } = props;
   function DrawerContent() {
     const props = {
       id: 'trackContainer',
@@ -35,8 +37,8 @@ export default function PositionMonitorMapbtnTrackComponent() {
       placement="bottom"
       mask={false}
       closable
-      // onClose={() => setDataAction({ rightDrawervisible: false }, dispatch)}
-      visible={true}
+      onClose={closeMapbtnPage}
+      visible={mapbtnTrackrVisible}
       getContainer={false}
       width={'100vw'}
       height={'100vh'}
@@ -44,4 +46,4 @@ export default function PositionMonitorMapbtnTrackComponent() {
       {DrawerContent()}
     </Drawer>
   );
-}
+});

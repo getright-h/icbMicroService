@@ -100,7 +100,7 @@ export const IMAP = {
   },
   // 绘制路径
   drawLine(map: any, lineArr: any[]) {
-    new AMap.Polyline({
+    return new AMap.Polyline({
       map: map,
       path: lineArr,
       showDir: true,
@@ -110,7 +110,12 @@ export const IMAP = {
       // strokeStyle: "solid"  //线样式
     });
   },
-  showCarInfo() {
+  showCarInfo(
+    markerInfo: any,
+    map: any,
+    marker: any,
+    callback?: (markerInfo: any, map: any, marker: any, infoWindow: any, isBindAction: boolean) => void
+  ) {
     AMapUI.loadUI(['overlay/SimpleInfoWindow'], (SimpleInfoWindow: any) => {
       const infoWindow = new SimpleInfoWindow({
         infoTitle: '<strong>车辆状态</strong>',
@@ -132,10 +137,6 @@ export const IMAP = {
                 </div>
             </div>
             <div>
-            <button id="mybtnSearch" class="button_ pop_ pop_def" data-isopen="1">追踪</button>
-            <button id="mybtnWatchLine" class="button_ pop_ pop_def" data-isopen="1">查看轨迹</button>
-            <button id="mybtnDo" class="button_ pop_ pop_def" data-isopen="1">指令</button>
-            <button id="mybtnAttention" class="button_ pop_ pop_def" data-isopen="1">报警</button>
             </div>`,
         infoTplData: {
           identificationNumber: '',
@@ -149,6 +150,7 @@ export const IMAP = {
         //基点指向marker的头部位置
         offset: new AMap.Pixel(0, -31)
       });
+      callback(markerInfo, map, marker, infoWindow, false);
     });
   },
   drawRectangle: {

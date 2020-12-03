@@ -18,11 +18,11 @@ export interface IITableProps {
   total: number;
   rowSelection?: {};
   showHeader?: boolean;
-  size: SizeType;
+  size?: SizeType;
   pageSize?: number;
   columns?: ColumnsType<any>;
   expandable?: {};
   isPagination?: boolean;
-  pageIndex: number;
-  changeTablePageIndex: (page: number, pageSize?: number) => void;
+  pageIndex?: number;
+  changeTablePageIndex?: (page: number, pageSize?: number) => void;
 }

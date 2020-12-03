@@ -113,7 +113,7 @@ export const PositionMonitorDrawerRightComponent = () => {
       onClose={() => setDataAction({ rightDrawervisible: false }, dispatch)}
       visible={rightDrawervisible}
       getContainer={false}
-      style={{ position: 'absolute' }}
+      style={{ position: 'absolute', zIndex: 99 }}
     >
       {DrawerContent()}
     </Drawer>

@@ -15,4 +15,8 @@ export type TIMapProps = {
   needISelectCarLoadingComponent?: boolean;
   needDrawRactangle?: boolean;
   carLine?: any[];
+  drawDrivingLine?: (id: string) => void;
+  onMapTrack?: (id: string) => void;
+  drivingLineData?: any[];
+  stopMarkers?: any[];
 };

@@ -13,6 +13,10 @@ const autoComplete = new AMap.Autocomplete(autoOptions);
 export function useIMapStore(mapProps: TIMapProps) {
   const { state, setStateWrap } = useStateStore(new IIMapState());
   const map: any = useRef();
+  // 追踪的car的marker
+  const carLineMarkerInfo: any = useRef();
+  // 追踪的car的polyline
+  const polyline = useRef();
   const mouseTool: any = useRef();
   const trafficLayer: any = useRef({});
   const isVisibleTrafficLayer = useRef(false);
@@ -38,27 +42,87 @@ export function useIMapStore(mapProps: TIMapProps) {
   }, [mapProps.locationCarMarkerList, mapProps.currentSelectCar]);
 
   useEffect(() => {
+    //drivingLineData 轨迹回放的点
+    // 发生变化重新绘制播放
+    map.current.clearMap();
+    if (mapProps.drivingLineData && mapProps.drivingLineData.length) {
+      const carLine = mapProps.drivingLineData.map(item => {
+        item = IMAP.initLonlat(item[0], item[1]);
+        return item;
+      });
+      polyline.current = IMAP.drawLine(map.current, carLine);
+      const position = carLine[carLine.length - 1];
+
+      carLineMarkerInfo.current = new AMap.Marker({
+        map: map.current,
+        // position: position,
+        label: {
+          content: '<div>川A888888</div>',
+          offset: new AMap.Pixel(-20, 26)
+        },
+        icon: 'https://webapi.amap.com/images/car.png',
+        offset: new AMap.Pixel(-26, -13),
+        autoRotation: true
+      });
+      // 第三个参数是在窗口需要展示的当前车辆的信息
+      carLineMarkerInfo.current.on('moving', function(e: any) {
+        const newPosition = e.passedPath[e.passedPath.length - 1];
+        // console.log(e.passedPath[e.passedPath.length -1]);
+
+        // IMAP.showCarInfo(
+        //   carLineMarkerInfo.current,
+        //   map.current,
+        //   { position: [newPosition.lng, newPosition.lat] },
+        //   openInfoWin
+        // );
+      });
+      const currentSpeed = 1;
+
+      carLineMarkerInfo.current.moveAlong(carLine, 200 * currentSpeed);
+
+      setTimeout(() => {
+        carLineMarkerInfo.current.moveAlong(carLine, 400);
+      }, 10000);
+
+      map.current.setCenter(position);
+    }
+  }, [mapProps.drivingLineData]);
+
+  useEffect(() => {
+    //
+  }, [mapProps.stopMarkers]);
+
+  useEffect(() => {
     //实时追踪的car,car会在最后一个店停下来
     // 这个地方会进行轨迹修复
     if (mapProps.carLine) {
-      map.current.clearMap();
+      if (carLineMarkerInfo.current) {
+        map.current.remove(carLineMarkerInfo.current);
+      }
+      if (polyline.current) {
+        map.current.remove(polyline.current);
+      }
       const carLine = mapProps.carLine.map(item => {
         item = IMAP.initLonlat(item[0], item[1]);
         return item;
       });
-      IMAP.drawLine(map.current, carLine);
+      polyline.current = IMAP.drawLine(map.current, carLine);
       const position = carLine[carLine.length - 1];
-      console.log([position.lng, position.lat]);
 
-      new AMap.Marker({
+      carLineMarkerInfo.current = new AMap.Marker({
         map: map.current,
         position: position,
+        label: {
+          content: '<div>川A888888</div>',
+          offset: new AMap.Pixel(-20, 26)
+        },
         icon: 'https://webapi.amap.com/images/car.png',
         offset: new AMap.Pixel(-26, -13),
-        autoRotation: true,
-        angle: -90
+        autoRotation: true
       });
-      map.setFitView();
+      // 第三个参数是在窗口需要展示的当前车辆的信息
+      IMAP.showCarInfo(carLineMarkerInfo.current, map.current, { position: [position.lng, position.lat] }, openInfoWin);
+      map.current.setCenter(position);
     }
   }, [mapProps.carLine]);
 
@@ -96,7 +160,7 @@ export function useIMapStore(mapProps: TIMapProps) {
     );
   }
 
-  function openInfoWin(markerInfo: any, map: any, marker: any, infoWindow: any) {
+  function openInfoWin(markerInfo: any, map: any, marker: any, infoWindow: any, isBindAction = true) {
     regeoCode([marker.position[0], marker.position[1]]).then(place => {
       infoWindow.setInfoTplData({
         identificationNumber: marker?.markerInfo?.identificationNumber || '无',
@@ -106,30 +170,35 @@ export function useIMapStore(mapProps: TIMapProps) {
         lalg: `${marker.position[0]}, ${marker.position[1]}`,
         place
       });
-      // 点击导航，开始导航
-      infoWindow.get$InfoBody().on('click', '#mybtnSearch', marker, function(event: any) {
-        //阻止冒泡
-        event.stopPropagation();
-        mapSearch(marker);
-      });
-
-      infoWindow.get$InfoBody().on('click', '#mybtnWatchLine', marker, function(event: any) {
-        //阻止冒泡
-        event.stopPropagation();
-        followLine(marker);
-      });
+      isBindAction && bindAction(infoWindow, marker);
       infoWindow.open(map, markerInfo.getPosition());
+    });
+  }
+
+  function bindAction(infoWindow: any, marker: any) {
+    // 点击导航，开始导航
+    infoWindow.get$InfoBody().on('click', '#mybtnSearch', marker, function(event: any) {
+      //阻止冒泡
+      event.stopPropagation();
+      mapSearch(marker);
+    });
+
+    infoWindow.get$InfoBody().on('click', '#mybtnWatchLine', marker, function(event: any) {
+      //阻止冒泡
+      event.stopPropagation();
+      followLine(marker);
     });
   }
 
   // 追踪
   function mapSearch(marker: any) {
-    console.log(marker);
+    //
+    mapProps.onMapTrack(marker.id);
   }
 
   // 查看轨迹
   function followLine(marker: any) {
-    console.log(marker);
+    mapProps.drawDrivingLine(marker.id);
   }
 
   function regeoCode(lnglat: [number, number]) {

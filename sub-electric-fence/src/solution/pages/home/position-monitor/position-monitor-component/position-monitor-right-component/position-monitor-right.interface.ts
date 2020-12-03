@@ -3,5 +3,6 @@
  * @class IPositionMonitorRightState
  */
 export class IPositionMonitorRightState {
-  Drawervisible = false;
+  mapbtnTrackrVisible = false;
+  mapbtnDrivingVisible = false;
 }

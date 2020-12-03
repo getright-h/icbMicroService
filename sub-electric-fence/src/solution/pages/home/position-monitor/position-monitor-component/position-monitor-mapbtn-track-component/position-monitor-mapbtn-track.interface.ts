@@ -26,3 +26,8 @@ export class IPositionMonitorMapbtnTrackState {
     [116.484648, 39.999861]
   ];
 }
+
+export type IPositionMonitorMapbtnTrackProps = {
+  mapbtnTrackrVisible: boolean;
+  closeMapbtnPage: () => void;
+};

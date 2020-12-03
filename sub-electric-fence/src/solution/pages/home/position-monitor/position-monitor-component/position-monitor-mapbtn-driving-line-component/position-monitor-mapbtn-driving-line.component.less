@@ -1,3 +1,39 @@
-.test {
-    color: #aaaaaa;
+.controllerContent {
+    display: flex;
+    .selectContent {
+       margin-right: 45px;
+       display: flex;
+       align-items: center;
+       & > span {
+           padding-right: 10px;
+       }
+    }
+}
+
+.controllerLine {
+    display: flex;
+    padding-bottom: 20px;
+    margin-top: 30px;
+    .controllerLineContent {
+        width: 30%;
+        .controllerButton {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+    .controllerLineButton {
+        width: 34%;
+        text-align: center;
+      
+    }
+    .iconColor {
+        cursor: pointer;
+        font-size: 25px;
+    }
+}
+
+.tableContent {
+    position: absolute;
+    z-index: 999;
+    width: 100%; 
 }

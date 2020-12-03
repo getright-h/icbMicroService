@@ -10,7 +10,8 @@ export const positionMonitorInitialState: TPositionMonitor = {
   checkedCarData: [],
   currentSelectCar: undefined,
   refreshTime: '',
-  selectedRowKeys: []
+  selectedRowKeys: [],
+  mapbtnTrackrVisible: false
 };
 
 export type TPositionMonitor = {
@@ -22,6 +23,7 @@ export type TPositionMonitor = {
   refreshTime: string;
   currentSelectCar: any;
   selectedRowKeys: any;
+  mapbtnTrackrVisible: boolean;
 };
 
 export function PositionMonitorReducer(state = positionMonitorInitialState, action: IAction<any>) {

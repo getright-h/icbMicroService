@@ -33,7 +33,6 @@ export default class TimePickerComponent extends React.Component<IProps> {
 
   render() {
     const { pickerType, dateFormat, timeFormat, timeInfo } = this.props;
-    console.log(timeInfo);
 
     return (
       <div>
@@ -83,12 +82,18 @@ export default class TimePickerComponent extends React.Component<IProps> {
             defaultValue={
               timeInfo && timeInfo.length > 1 && [moment(timeInfo[0], dateFormat), moment(timeInfo[1], dateFormat)]
             }
+            value={
+              timeInfo && timeInfo.length > 1 && [moment(timeInfo[0], dateFormat), moment(timeInfo[1], dateFormat)]
+            }
             onChange={this.onChange}
           />
         )}
         {pickerType == 'dateTimeRange' && (
           <RangePicker
             defaultValue={
+              timeInfo && timeInfo.length > 1 && [moment(timeInfo[0], dateFormat), moment(timeInfo[1], dateFormat)]
+            }
+            value={
               timeInfo && timeInfo.length > 1 && [moment(timeInfo[0], dateFormat), moment(timeInfo[1], dateFormat)]
             }
             showTime={{ format: timeFormat }}
