@@ -8,6 +8,6 @@ export class ITemplateAddState {
 
 export class ITemplateAddProps {
   visible: boolean;
-  // id: string;
+  info: Record<string, any>;
   close: (isSuccess: boolean) => void;
 }

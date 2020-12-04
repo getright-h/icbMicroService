@@ -1,25 +1,70 @@
 import { Observable } from 'rxjs';
 
-/**
- * 真实开发中，请将示例代码移除
- */
-
 export abstract class AlarmManageDTO {
-  // 你的抽象方法，具体在 Service 中实现
-  abstract example(params: ExampleRequestParam): Observable<ExampleResponseResult>;
+  abstract queryAlarmTemplatePagedList(params: QueryAlarmTemplateListParam): Observable<QueryAlarmTemplateListResponse>;
+  abstract setAlarmCustom(id: string): Observable<boolean>;
+  abstract insertAlarmTemplatePackage(params: EditAlarmPackageItem[]): Observable<boolean>;
+  abstract setAlarmTemplatePackage(params: EditAlarmPackageItem[]): Observable<boolean>;
+  abstract queryTemplatePackageList(id: string): Observable<AlarmPackageContent[]>;
+  abstract queryTemplatePackageDetail(id: string): Observable<AlarmPackageContent[]>;
 }
 
-// 示例 Dto
-export interface ExampleRequestParam {
-  // 示例参数
-  exampleParam1: string;
-  exampleParam2: string;
-  exampleParam3: string;
-  exampleParam4: string;
+export interface QueryAlarmTemplateListParam {
+  code: string;
+  downMode: number;
+  index: number;
+  size: number;
+  beginTime: number;
+  endTime: number;
 }
 
-// 响应 Dto
-export interface ExampleResponseResult {
-  data: any;
-  status: boolean;
+export interface QueryAlarmTemplateListResponse {
+  dataList: AlarmTemplateListItem[];
+  total: number;
+}
+
+export interface AlarmTemplateListItem {
+  id: string;
+  name: string;
+  description: string;
+  downMode: number;
+  downModeText: string;
+  isCustom: boolean;
+  isParam: boolean;
+  code: string;
+  sort: number;
+  modifyId: string;
+  modifyTime: string;
+  packageList: AlarmPackageList[];
+}
+
+interface AlarmPackageList {
+  isSelected: boolean;
+  isPackageCustom: boolean;
+  content: AlarmPackageContent[];
+  id: string;
+  alarmTemplateId: string;
+  alarmKey: string;
+  alarmText: string;
+  alarmValue: string;
+  groupId: string;
+  createTimeStamp: number;
+}
+
+export interface AlarmPackageContent {
+  id: string;
+  alarmTemplateId: string;
+  alarmKey: string;
+  alarmText: string;
+  alarmValue: string;
+  groupId: string;
+  createTimeStamp: number;
+}
+
+export interface EditAlarmPackageItem {
+  id: string;
+  alarmTemplateId: string;
+  alarmKey: string;
+  alarmText: string;
+  alarmValue: string;
 }

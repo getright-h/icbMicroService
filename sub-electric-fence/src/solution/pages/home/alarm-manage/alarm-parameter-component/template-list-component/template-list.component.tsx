@@ -1,32 +1,66 @@
-import { Button, Modal } from 'antd';
+import { CloseOutlined } from '@ant-design/icons';
+import { Button, Form, Modal } from 'antd';
 import * as React from 'react';
+import { AlarmFormItemComponent } from '~/solution/components/component.module';
 import style from './template-list.component.less';
 import { useTemplateListStore } from './template-list.component.store';
 import { ITemplateListProps } from './template-list.interface';
 
 export default function TemplateListComponent(props: ITemplateListProps) {
-  const { state, form, selfClose, selfSubmit } = useTemplateListStore(props);
-  const { confirmLoading } = state;
-  const { visible } = props;
+  const { state, form, selfClose, selectTemplate, submitTemplate, getFormInfo } = useTemplateListStore(props);
+  const { confirmLoading, templateList, selectTempId } = state;
+  const { visible, info } = props;
 
-  function TemplateList() {}
+  function TemplateList() {
+    return (
+      <ul className={style.templateList}>
+        {templateList.length ? (
+          templateList.map(template => (
+            <li
+              className={style.templateItem + ' ' + (template.id === selectTempId ? style.selected : '')}
+              key={template.id}
+              onClick={() => selectTemplate(template.id)}
+            >
+              <span>{template.alarmValue}</span>
+              <CloseOutlined />
+            </li>
+          ))
+        ) : (
+          <p style={{ color: '#ccc', margin: '20px' }}>当前报警类型无模板</p>
+        )}
+      </ul>
+    );
+  }
 
-  function EditField() {}
+  function EditField() {
+    const layout = {
+      labelCol: { span: 4 },
+      wrapperCol: { span: 20 }
+    };
+    return (
+      <div className={style.templateForm}>
+        <Form form={form} {...layout}>
+          {selectTempId ? (
+            <AlarmFormItemComponent
+              initialInfo={info}
+              selectTempId={selectTempId}
+              hasTempName
+              getFormInfo={info => getFormInfo(info)}
+            />
+          ) : (
+            <p style={{ color: '#ccc' }}>未选择模板</p>
+          )}
+        </Form>
+      </div>
+    );
+  }
 
   return (
     <Modal
       title="模板列表"
-      width={600}
+      width={1000}
       visible={visible}
       onCancel={() => selfClose()}
-      // onOk={() => {
-      //   form
-      //     .validateFields()
-      //     .then(values => selfSubmit(values))
-      //     .catch(info => {
-      //       console.log('Validate Failed:', info);
-      //     });
-      // }}
       footer={[
         <Button key="back" onClick={() => selfClose()}>
           返回
@@ -34,12 +68,29 @@ export default function TemplateListComponent(props: ITemplateListProps) {
       ]}
       maskClosable={false}
       destroyOnClose={true}
-      confirmLoading={confirmLoading}
     >
       <div>
-        <div className={style.title}>报警类型：{'XXX'}</div>
+        <div className={style.title}>
+          报警类型：<span>{info.name}</span>
+        </div>
         <div className={style.container}>
-          <div className={style.left}></div>
+          <section className={style.left}>
+            <div className={style.subTitle}>模板</div>
+            <div className={style.template}>
+              <TemplateList />
+            </div>
+          </section>
+          <section className={style.right}>
+            <div className={style.subTitle}>参数</div>
+            <div className={style.template}>
+              <EditField />
+              {selectTempId && (
+                <Button className={style.submit} type="primary" loading={confirmLoading} onClick={submitTemplate}>
+                  保存
+                </Button>
+              )}
+            </div>
+          </section>
         </div>
       </div>
     </Modal>

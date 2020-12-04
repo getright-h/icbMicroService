@@ -1,31 +1,45 @@
 import * as React from 'react';
-import { Divider } from 'antd';
+import { Divider, message, Switch } from 'antd';
 import { ModalType } from './alarm-parameter.interface';
+import { AlarmManageService } from '~/solution/model/services/alarm-manage.service';
 export function AlarmParameterColumn(callbackAction: Function) {
+  const alarmManageService: AlarmManageService = new AlarmManageService();
+
   return [
     {
       title: '报警类型',
-      dataIndex: 'type'
+      dataIndex: 'name'
     },
     {
       title: '参数说明',
-      dataIndex: 'deviceCodeList'
+      dataIndex: 'description'
     },
     {
       title: '下发方式',
-      dataIndex: 'time'
+      dataIndex: 'downModeText'
     },
     {
       title: '支持自定义',
-      dataIndex: 'name'
+      dataIndex: 'isCustom',
+      render: (text: boolean, data: any) => (
+        <Switch
+          defaultChecked={text}
+          onChange={() => {
+            data.isCustom = !data.isCustom;
+            alarmManageService.setAlarmCustom(data.id).subscribe(res => {
+              message.success('切换成功！');
+            });
+          }}
+        />
+      )
     },
     {
       title: '最后修改时间',
-      dataIndex: 'name'
+      dataIndex: 'modifyTime'
     },
     {
       title: '操作人',
-      dataIndex: 'name'
+      dataIndex: 'modifyName'
     },
     {
       title: '操作',
@@ -34,9 +48,13 @@ export function AlarmParameterColumn(callbackAction: Function) {
       render: (render: any, data: any, index: number) => {
         return (
           <React.Fragment>
-            <a onClick={() => callbackAction(ModalType.TEMPADD, data)}>新增</a>
-            <Divider type="vertical" />
-            <a onClick={() => callbackAction(ModalType.TEMPLIST, data)}>模板列表</a>
+            {data.isParam && (
+              <React.Fragment>
+                <a onClick={() => callbackAction(ModalType.TEMPADD, data)}>新增</a>
+                <Divider type="vertical" />
+                <a onClick={() => callbackAction(ModalType.TEMPLIST, data)}>模板列表</a>
+              </React.Fragment>
+            )}
           </React.Fragment>
         );
       }

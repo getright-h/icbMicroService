@@ -1,12 +1,17 @@
+import { AlarmPackageContent } from '~/solution/model/dto/alarm-manage.dto';
+
 /**
  * @export state变量定义和初始化
  * @class ITemplateListState
  */
 export class ITemplateListState {
+  templateList: AlarmPackageContent[] = [];
   confirmLoading = false;
+  selectTempId: string;
+  selectTempInfo: AlarmPackageContent[] = [];
 }
 export class ITemplateListProps {
   visible: boolean;
-  // id: string;
-  close: (isSuccess: boolean) => void;
+  info: Record<string, any>;
+  close: () => void;
 }

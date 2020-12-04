@@ -8,7 +8,7 @@ export class IAlarmParameterState {
   pageSize = 10;
   tableData: any = [];
   total = 0;
-  currentId = '';
+  currentTemplate: Record<string, any>;
   tempAddVisible = false;
   tempListVisible = false;
 }

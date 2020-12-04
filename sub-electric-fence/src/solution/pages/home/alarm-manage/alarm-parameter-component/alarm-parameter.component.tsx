@@ -1,23 +1,24 @@
 import { Button, Col, Form, Input, Row, Select } from 'antd';
 import * as React from 'react';
 import { ITableComponent, TablePageTelComponent } from '~/solution/components/component.module';
+import { AlarmType } from '~/solution/shared/constant/alarm.const';
 import { AlarmParameterColumn } from './alarm-parameter.column';
 import style from './alarm-parameter.component.less';
 import { useAlarmParameterStore } from './alarm-parameter.component.store';
 import TemplateAddComponent from './template-add-component/template-add.component';
 import TemplateListComponent from './template-list-component/template-list.component';
+const Option = Select.Option;
 
 export default function AlarmParameterComponent() {
   const {
     state,
     searchForm,
     callbackAction,
-    changeTablePageIndex,
-    searchClick,
     initSearchForm,
-    handleModalCancel
+    handleModalCancel,
+    getTableData
   } = useAlarmParameterStore();
-  const { isLoading, tableData, total, pageIndex, pageSize, tempAddVisible, tempListVisible } = state;
+  const { isLoading, tableData, total, tempAddVisible, tempListVisible, currentTemplate } = state;
 
   function renderSelectItems() {
     const layout = {
@@ -25,16 +26,29 @@ export default function AlarmParameterComponent() {
       wrapperCol: { span: 16 }
     };
     return (
-      <Form {...layout} form={searchForm} style={{ width: '90%' }}>
+      <Form {...layout} form={searchForm} style={{ width: '90%' }} initialValues={{ downMode: -1, code: '' }}>
         <Row gutter={24}>
           <Col span={8}>
-            <Form.Item name="type" label="报警类型">
-              <Input placeholder="请输入报警类型" />
+            <Form.Item name="code" label="报警类型">
+              <Select placeholder="请选择报警类型">
+                <Option value={''} key={'alarm-all'}>
+                  全部
+                </Option>
+                {AlarmType.map(type => (
+                  <Option value={type.value} key={`alarm-${type.value}`}>
+                    {type.name}
+                  </Option>
+                ))}
+              </Select>
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item name="method" label="下发方式">
-              <Select placeholder="请选择下发方式"></Select>
+            <Form.Item name="downMode" label="下发方式">
+              <Select placeholder="请选择下发方式">
+                <Option value={-1}>全部</Option>
+                <Option value={2}>发送平台</Option>
+                <Option value={1}>发送设备</Option>
+              </Select>
             </Form.Item>
           </Col>
         </Row>
@@ -44,7 +58,7 @@ export default function AlarmParameterComponent() {
   function renderSearchButtons() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary" onClick={searchClick}>
+        <Button type="primary" onClick={getTableData}>
           查询
         </Button>
         <Button onClick={initSearchForm}>清空</Button>
@@ -56,12 +70,12 @@ export default function AlarmParameterComponent() {
       <ITableComponent
         columns={AlarmParameterColumn(callbackAction)}
         isLoading={isLoading}
-        pageIndex={pageIndex}
-        pageSize={pageSize}
+        pageIndex={1}
+        pageSize={50}
         data={tableData}
         total={total}
-        isPagination={true}
-        changeTablePageIndex={(pageIndex: number, pageSize: number) => changeTablePageIndex(pageIndex, pageSize)}
+        isPagination={false}
+        changeTablePageIndex={null}
       ></ITableComponent>
     );
   }
@@ -74,8 +88,12 @@ export default function AlarmParameterComponent() {
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
       ></TablePageTelComponent>
-      <TemplateAddComponent visible={tempAddVisible} close={handleModalCancel} />
-      <TemplateListComponent visible={tempListVisible} close={handleModalCancel} />
+      {tempAddVisible && (
+        <TemplateAddComponent visible={tempAddVisible} close={handleModalCancel} info={currentTemplate} />
+      )}
+      {tempListVisible && (
+        <TemplateListComponent visible={tempListVisible} close={handleModalCancel} info={currentTemplate} />
+      )}
     </React.Fragment>
   );
 }
