@@ -24,7 +24,6 @@ export function useDurationSettingStore(props: IDurationSettingProps) {
         fieldId: createRandomId()
       });
     }
-    console.log('initialFields', initialFields);
 
     setStateWrap({ durationFields });
     props.getFieldsChange(durationFields);

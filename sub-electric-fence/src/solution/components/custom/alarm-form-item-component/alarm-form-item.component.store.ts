@@ -39,6 +39,7 @@ export function useAlarmFormItemStore(props: IAlarmFormItemProp) {
 
   function formatFormData(id: string, formInfo: AlarmTypeItem[]) {
     alarmManageService.queryTemplatePackageDetail(id).subscribe(res => {
+      !hasTempName && res.shift();
       formInfo.map((item, i) => {
         Object.assign(item, res[i]);
       });
