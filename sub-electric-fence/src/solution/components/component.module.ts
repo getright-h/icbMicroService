@@ -1,4 +1,5 @@
 /**
+import { IMAP } from '~/solution/shared/util/map.util';
  * 此文件将由构建工具自动生成注入，请勿手动修改！
  * 此文件将由构建工具自动生成注入，请勿手动修改！
  * 此文件将由构建工具自动生成注入，请勿手动修改！
@@ -18,4 +19,5 @@ export { default as ISelectLoadingComponent } from '~/solution/components/base/i
 export { default as IHeaderTitleComponent } from '~/solution/components/base/i-header-title-component/i-header-title.component';
 
 export { default as AlarmFormItemComponent } from '~/solution/components/custom/alarm-form-item-component/alarm-form-item.component';
+export { IMapComponent } from '~/solution/components/base/i-map-component/i-map.component';
 //  -- Package End --

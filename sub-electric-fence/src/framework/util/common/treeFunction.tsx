@@ -8,8 +8,7 @@ export function dealWithTreeData<T>(
   isWarehouse?: boolean,
   content?: (element: any) => React.ReactNode,
   canSelectAll?: boolean,
-  organizationChecked?: boolean, // 机构是否需要checked
-  refineTitle?: string
+  organizationChecked?: boolean // 机构是否需要checked
 ) {
   const treeData: any[] =
     !!res &&
@@ -22,11 +21,11 @@ export function dealWithTreeData<T>(
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {isWarehouse && <DatabaseOutlined style={{ color: '#7958fa', paddingRight: '4px' }} />}
-            <span style={{ width: '80px' }} title={element['name']}>
+            <span style={{ width: '100px' }} title={element['name']}>
               {element['name']}
             </span>
           </div>
-          <span style={{ width: '50px' }}>(10)</span>
+          <span style={{ width: '20px' }}>(10)</span>
           <div
             style={{ width: '50px', background: 'white', marginRight: '-4px' }}
             onClick={e => {

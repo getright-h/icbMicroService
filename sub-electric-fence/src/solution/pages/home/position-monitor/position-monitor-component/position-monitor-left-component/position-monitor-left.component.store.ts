@@ -2,12 +2,11 @@ import { IPositionMonitorLeftState } from './position-monitor-left.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import React, { useContext, useEffect } from 'react';
 import { EventDataNode } from 'rc-tree/lib/interface';
-import { setTreeSelectNode } from '../position-monitor-redux/position-monitor-action';
+import { setDataAction, setTreeSelectNode } from '../position-monitor-redux/position-monitor-action';
 import { PositionMonitorContext } from '../position-monitor.component';
 export function usePositionMonitorLeftStore() {
   const { state, setStateWrap } = useStateStore(new IPositionMonitorLeftState());
   const { dispatch } = useContext(PositionMonitorContext);
-  console.log(dispatch);
 
   function onExpand(expandedKeys: []) {
     setStateWrap({
@@ -16,8 +15,8 @@ export function usePositionMonitorLeftStore() {
   }
 
   function onSelect(selectedKeys: React.Key[], info: { node: EventDataNode }) {
-    console.log(selectedKeys, info);
-
+    // 显示左边的Drawer 选择相应的数据
+    setDataAction({ leftDrawerVisible: true }, dispatch);
     setStateWrap({
       treeSelectedKeys: [info.node.key as string]
     });

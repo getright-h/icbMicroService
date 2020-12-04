@@ -3,6 +3,6 @@
  * @class IPositionMonitorRightState
  */
 export class IPositionMonitorRightState {
-  locationList: any[] = [];
-  isRule = false;
+  mapbtnTrackrVisible = false;
+  mapbtnDrivingVisible = false;
 }
