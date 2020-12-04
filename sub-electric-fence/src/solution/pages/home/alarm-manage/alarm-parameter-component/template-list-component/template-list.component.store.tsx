@@ -1,15 +1,17 @@
+import * as React from 'react';
 import { ITemplateListProps, ITemplateListState } from './template-list.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
-import { Form, message } from 'antd';
+import { Form, message, Modal } from 'antd';
 import { AlarmManageService } from '~/solution/model/services/alarm-manage.service';
 import { MutableRefObject, useEffect, useRef } from 'react';
 import { AlarmTypeItem } from '~/solution/components/custom/alarm-form-item-component/alarm-form-item.interface';
 import { validateAlarmItems } from '~/solution/components/custom/alarm-form-item-component/alarm.util';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { AlarmPackageContent } from '~/solution/model/dto/alarm-manage.dto';
 
 export function useTemplateListStore(props: ITemplateListProps) {
   const { state, setStateWrap } = useStateStore(new ITemplateListState());
   const alarmManageService: AlarmManageService = new AlarmManageService();
-  const [form] = Form.useForm();
   const formInfoRef: MutableRefObject<AlarmTypeItem[]> = useRef(null);
 
   useEffect(() => {
@@ -50,5 +52,28 @@ export function useTemplateListStore(props: ITemplateListProps) {
     formInfoRef.current = formInfo;
   }
 
-  return { state, form, selfClose, selectTemplate, submitTemplate, getFormInfo };
+  function deleteAlarmTemplate(template: AlarmPackageContent) {
+    Modal.confirm({
+      title: `确定删除模板“${template.alarmValue}”吗？`,
+      icon: <ExclamationCircleOutlined />,
+      okType: 'danger',
+      onOk() {
+        new Promise((resolve, reject) => {
+          alarmManageService.deleteTemplatePackage(template.groupId).subscribe(
+            res => {
+              message.success('删除模板成功！');
+              setStateWrap({ selectTempId: null });
+              initTemplateList(props.info.id);
+              resolve();
+            },
+            err => {
+              reject();
+            }
+          );
+        });
+      }
+    });
+  }
+
+  return { state, selfClose, selectTemplate, submitTemplate, getFormInfo, deleteAlarmTemplate };
 }

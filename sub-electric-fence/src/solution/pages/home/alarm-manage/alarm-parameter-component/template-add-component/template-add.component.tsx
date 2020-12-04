@@ -6,7 +6,7 @@ import { useTemplateAddStore } from './template-add.component.store';
 import { ITemplateAddProps } from './template-add.interface';
 
 export default function TemplateAddComponent(props: ITemplateAddProps) {
-  const { state, form, selfClose, selfSubmit, getFormInfo } = useTemplateAddStore(props);
+  const { state, selfClose, selfSubmit, getFormInfo } = useTemplateAddStore(props);
   const { confirmLoading } = state;
   const { visible, info } = props;
 
@@ -16,7 +16,7 @@ export default function TemplateAddComponent(props: ITemplateAddProps) {
       wrapperCol: { span: 20 }
     };
     return (
-      <Form form={form} {...layout}>
+      <Form {...layout}>
         <Form.Item label="模板类型">{info.name}</Form.Item>
         <AlarmFormItemComponent initialInfo={info} hasTempName getFormInfo={info => getFormInfo(info)} />
       </Form>

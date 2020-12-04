@@ -7,7 +7,15 @@ import { useTemplateListStore } from './template-list.component.store';
 import { ITemplateListProps } from './template-list.interface';
 
 export default function TemplateListComponent(props: ITemplateListProps) {
-  const { state, form, selfClose, selectTemplate, submitTemplate, getFormInfo } = useTemplateListStore(props);
+  const {
+    state,
+    form,
+    selfClose,
+    selectTemplate,
+    submitTemplate,
+    getFormInfo,
+    deleteAlarmTemplate
+  } = useTemplateListStore(props);
   const { confirmLoading, templateList, selectTempId } = state;
   const { visible, info } = props;
 
@@ -22,7 +30,7 @@ export default function TemplateListComponent(props: ITemplateListProps) {
               onClick={() => selectTemplate(template.id)}
             >
               <span>{template.alarmValue}</span>
-              <CloseOutlined />
+              <CloseOutlined onClick={() => deleteAlarmTemplate(template)} />
             </li>
           ))
         ) : (
@@ -39,7 +47,7 @@ export default function TemplateListComponent(props: ITemplateListProps) {
     };
     return (
       <div className={style.templateForm}>
-        <Form form={form} {...layout}>
+        <Form {...layout}>
           {selectTempId ? (
             <AlarmFormItemComponent
               initialInfo={info}

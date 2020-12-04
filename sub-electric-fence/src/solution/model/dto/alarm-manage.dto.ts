@@ -7,6 +7,7 @@ export abstract class AlarmManageDTO {
   abstract setAlarmTemplatePackage(params: EditAlarmPackageItem[]): Observable<boolean>;
   abstract queryTemplatePackageList(id: string): Observable<AlarmPackageContent[]>;
   abstract queryTemplatePackageDetail(id: string): Observable<AlarmPackageContent[]>;
+  abstract deleteTemplatePackage(groupId: string): Observable<boolean>;
 }
 
 export interface QueryAlarmTemplateListParam {

@@ -32,7 +32,6 @@ export function useAlarmFormItemStore(props: IAlarmFormItemProp) {
     if (selectTempId) {
       formatFormData(selectTempId, formInfo);
     } else {
-      console.log('initialFormInfo', formInfo);
       setStateWrap({ formInfo });
     }
   }
@@ -49,7 +48,6 @@ export function useAlarmFormItemStore(props: IAlarmFormItemProp) {
       if (initialInfo.code === AlarmTypeEnum.Running) {
         durationFields = JSON.parse(res.find(item => item.alarmKey === 'Duration').alarmValue);
       }
-      console.log('durationFields', durationFields);
       setStateWrap({ formInfo, durationFields });
       props.getFormInfo(formInfo);
     });
@@ -57,11 +55,12 @@ export function useAlarmFormItemStore(props: IAlarmFormItemProp) {
 
   function handleInputChange(value: any, formItem: AlarmTypeItem) {
     const formInfo = state.formInfo.map(item => {
-      if (item.id == formItem.id) {
+      if (item.alarmKey == formItem.alarmKey) {
         item.alarmValue = value;
       }
       return item;
     });
+
     setStateWrap({ formInfo });
     props.getFormInfo(formInfo);
   }
