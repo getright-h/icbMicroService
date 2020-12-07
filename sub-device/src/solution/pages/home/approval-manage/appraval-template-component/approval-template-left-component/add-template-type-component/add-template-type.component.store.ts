@@ -47,8 +47,9 @@ export function useAddTemplateTypeStore(props: IAddTemplateTypeProps) {
   }
   // 确定创建
   function handleOk() {
-    if (!name) {
-      message.warning('请输入模板名');
+    const pos = /^[\u4e00-\u9fa5a-zA-Z0-9]+$/g;
+    if (!pos.test(name)) {
+      message.warning('模板类型不能为空且只允许输入中文数字和字母');
       return;
     }
     if (!(checkedKeys && checkedKeys.length)) {

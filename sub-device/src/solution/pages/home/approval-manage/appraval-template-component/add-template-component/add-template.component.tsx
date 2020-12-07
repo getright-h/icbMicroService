@@ -16,7 +16,6 @@ export default function AddTemplateComponent() {
     AddTemplateReducer,
     JSON.parse(JSON.stringify(addTemplateInitialState))
   );
-  console.log(addTemplateState);
 
   const { state, next, prev, commit } = useAddTemplateStore(addTemplateState, dispatch);
 
