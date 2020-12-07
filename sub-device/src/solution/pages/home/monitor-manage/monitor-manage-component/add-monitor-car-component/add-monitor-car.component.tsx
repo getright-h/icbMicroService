@@ -31,7 +31,7 @@ export default function AddMonitorCarComponent(props: IAddMonitorCarProps) {
       organizationChecked: true
     };
     return (
-      <div>
+      <div className={style.chooeseOrg}>
         <OrganizationControllerComponent {...prganizationControllerComponentProps} />
       </div>
     );
