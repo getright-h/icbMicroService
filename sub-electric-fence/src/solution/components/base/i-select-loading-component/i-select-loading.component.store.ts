@@ -30,7 +30,13 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
           if (Array.isArray(res)) {
             res.dataList = res;
           }
-          if (!res.dataList) return;
+
+          if (res.data && Array.isArray(res.data)) {
+            res.dataList = res.data;
+          }
+
+          if (!res.dataList && !res.data) return;
+
           const optionList = [...(isSearch ? [] : state.optionList), ...res.dataList];
           setStateWrap({ optionList, fetching: false });
         } else if (scrollPage.current == 1 && (!res || !res.dataList)) {

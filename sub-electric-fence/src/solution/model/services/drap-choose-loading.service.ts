@@ -16,7 +16,8 @@ import {
   QueryVehicleListParam,
   QueryVehiclePagedListParam,
   DrapChooseLoadingParams,
-  QueryApprovalFormTemplateParams
+  QueryApprovalFormTemplateParams,
+  IDirectiveReturn
 } from '../dto/drap-choose-loading.dto';
 
 /**
@@ -47,6 +48,11 @@ const QUERYSTOREPOSITIONPAGEDLISTBYSTOREID = 'store/manage/queryStorePositionPag
 const QUERY_USER_PAGED_LIST = 'approval/manage/queryUserPagedList';
 const QUERY_APPROVAL_PAGED_LIST = 'approval/manage/queryApprovalGroupPagedList';
 const QUERY_APPROVAL_FORM_TEMPLATE_PAGED_LIST = 'approval/manage/queryApprovalFormTemplatePagedList';
+// 报警指令类型
+
+const CMD_TYPES = 'gps/cmd/types';
+// 设备/车辆联合搜索
+const QUERY_VEHICLE_INFO_PAGED_LIST = 'vehicle/manage/queryVehicleInfoPagedList';
 export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
   private readonly requestService: RequestService = new RequestService();
   constructor() {
@@ -153,5 +159,13 @@ export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
   //监控组搜索
   queryGroupSearchList(params: QueryVehiclePagedListParam): Observable<DrapChooseLoadingReturn> {
     return this.requestService.get(QUERY_GROUP_SEARCH_LIST, params);
+  }
+  // 报警指令类型
+  getTypesList(): Observable<{ data: IDirectiveReturn[]; total: number }> {
+    return this.requestService.post(CMD_TYPES);
+  }
+  // 联合搜索
+  queryVehicleInfoPagedList(params: QueryVehiclePagedListParam): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.post(QUERY_VEHICLE_INFO_PAGED_LIST, params);
   }
 }

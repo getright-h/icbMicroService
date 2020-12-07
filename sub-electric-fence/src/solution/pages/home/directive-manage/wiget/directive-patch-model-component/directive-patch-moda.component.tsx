@@ -2,7 +2,15 @@ import { Form, Modal, Radio, Input, Select, Button } from 'antd';
 import * as React from 'react';
 import style from './directive-patch-modal.component.less';
 import { useDirectiveModalStore } from './directive-patch-moda.component.store';
+import {
+  ITableComponent,
+  TablePageTelComponent,
+  ISelectLoadingComponent,
+  TimePickerComponent
+} from '~/solution/components/component.module';
 import { IDirectiveModalProps, ModalType } from './directive-list.interface';
+import { StorageUtil } from '~/framework/util/storage';
+
 export default function DirectivePatchModalComponent(props: IDirectiveModalProps) {
   const { visible, close } = props;
   const {
@@ -12,9 +20,10 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
     callbackAction,
     selfClose,
     handleFormDataChange,
-    selectTemplate
+    selectTemplate,
+    getCurrentSelectInfo
   } = useDirectiveModalStore(props);
-  const { custom, isDevice, isParams, currentIndex } = state;
+  const { custom, isDevice, isParams, currentIndex, currentDirective } = state;
   const formItemLayout = {
     labelCol: {
       xs: { span: 24 },
@@ -43,7 +52,11 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
             name={'deviceList'}
             style={{ marginBottom: 10 }}
           >
-            <Input.TextArea onChange={(e: any) => handleFormDataChange(e.target.value, 'deviceList')} />
+            <Input.TextArea
+              style={{ height: 200 }}
+              placeholder={'请输入设备号, 多个设备换行输入 \n (录入上限为1000个设备号)'}
+              onChange={(e: any) => handleFormDataChange(e.target.value, 'deviceList')}
+            />
           </Form.Item>
         ) : (
           <Form.Item
@@ -52,28 +65,34 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
             name={'monitorGroup'}
             style={{ marginBottom: 10 }}
           >
-            <Select placeholder={'请选择监控组'} onChange={(e: any) => handleFormDataChange(e, 'monitorGroup')}>
-              <Select.Option value={1}>断油电指令</Select.Option>
-              <Select.Option value={2}>自定义指令</Select.Option>
-              <Select.Option value={3}>修改链接</Select.Option>
-            </Select>
+            <ISelectLoadingComponent
+              reqUrl="queryGroupSearchList"
+              placeholder="请输入监控组名称"
+              searchForm={{
+                organizationId: StorageUtil.getLocalStorage('organizationId')
+              }}
+              showSearch={true}
+              getCurrentSelectInfo={(value: any, option: any) => getCurrentSelectInfo(value, option, 'monitorGroup')}
+            />
           </Form.Item>
         )}
 
         <Form.Item label="指令类型" name={'directiveType'} className={style.marginBootom10}>
-          <Select onChange={(e: any) => handleFormDataChange(e, 'directiveType')}>
-            <Select.Option value={3}>断油电指令</Select.Option>
-            <Select.Option value={4}>自定义指令</Select.Option>
-            <Select.Option value={5}>修改链接</Select.Option>
-          </Select>
+          <ISelectLoadingComponent
+            reqUrl="getTypesList"
+            placeholder="请选择指令类型"
+            getCurrentSelectInfo={(value: any, option: any) => getCurrentSelectInfo(value, option, 'directiveType')}
+          />
         </Form.Item>
+        {currentDirective.hasSwitch && (
+          <Form.Item label="下发指令选择" name={'params'} style={{ marginBottom: 0 }}>
+            <Radio.Group defaultValue={isParams} onChange={(e: any) => handleFormDataChange(e.target.value, 'params')}>
+              <Radio value={true}>打开</Radio>
+              <Radio value={false}>关闭</Radio>
+            </Radio.Group>
+          </Form.Item>
+        )}
 
-        <Form.Item label="参数选择" name={'params'} style={{ marginBottom: 0 }}>
-          <Radio.Group defaultValue={isParams} onChange={(e: any) => handleFormDataChange(e.target.value, 'params')}>
-            <Radio value={true}>打开</Radio>
-            <Radio value={false}>关闭</Radio>
-          </Radio.Group>
-        </Form.Item>
         {isParams && (
           <Form.Item label={' '} prefixCls={' '} className={style.templateWapper}>
             <div className={style.template}>
@@ -82,7 +101,7 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
                 .map((tem: any, index) => (
                   <p
                     key={index}
-                    className={index == currentIndex && style.checked}
+                    className={index == currentIndex ? style.checked : ''}
                     onClick={() => selectTemplate(index)}
                   >
                     {tem.name}
@@ -122,9 +141,11 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
         <Form.Item label="指令值" name={'directiveValue'} className={style.marginBootom10}>
           <Input onChange={(e: any) => handleFormDataChange(e.target.value, 'directiveValue')} />
         </Form.Item>
-        <Form.Item label="指令密码" name={'directivePasswd'} className={style.marginBootom10}>
-          <Input onChange={(e: any) => handleFormDataChange(e.target.value, 'directivePasswd')} />
-        </Form.Item>
+        {currentDirective.isVerify && (
+          <Form.Item label="指令密码" name={'directivePasswd'} className={style.marginBootom10}>
+            <Input onChange={(e: any) => handleFormDataChange(e.target.value, 'directivePasswd')} />
+          </Form.Item>
+        )}
       </Form>
     </Modal>
   );

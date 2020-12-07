@@ -1,20 +1,16 @@
 import { IDirectiveModalState, ModalType, IDirectiveModalProps } from './directive-list.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form } from 'antd';
-import { AlarmManageService } from '~/solution/model/services/alarm-manage.service';
+import { DirectiveService } from '~/solution/model/services/directive-manage.service';
 import { useEffect } from 'react';
-import { values } from 'lodash';
-import { from } from 'rxjs';
-import { PropTypes } from 'mobx-react';
 
 export function useDirectiveModalStore(props: IDirectiveModalProps) {
   const { state, setStateWrap, getState } = useStateStore(new IDirectiveModalState());
-  const alarmManageService: AlarmManageService = new AlarmManageService();
+  const directiveService: DirectiveService = new DirectiveService();
   const [form] = Form.useForm();
-
   useEffect(() => {}, []);
 
-  function getTableData() {
+  function getTypeListData() {
     // setStateWrap({ isLoading: true });
     // const { pageIndex, pageSize } = getState();
     // alarmManageService
@@ -33,16 +29,23 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
     //   );
   }
 
-  function searchClick() {
-    setStateWrap({ pageIndex: 1 });
-    getTableData();
+  function getCurrentSelectInfo(value: any, option: any, type: string) {
+    const { info = {} } = option;
+    console.log(info);
+    if (type === 'monitorGroup') {
+    }
+
+    if (type == 'directiveType') {
+      setStateWrap({
+        currentDirective: info
+      });
+    }
   }
 
   function submitForm() {
     form.validateFields().then((values: any) => {
       console.log(values);
     });
-    searchClick();
   }
 
   function sloveState() {
@@ -77,9 +80,11 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
     }
 
     if (type === 'device') {
+      // 切换时要对当前已选择的数据进行清空
       setStateWrap({
         isDevice: $event
       });
+      form.resetFields();
     }
   }
 
@@ -100,6 +105,7 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
     callbackAction,
     selfClose,
     handleFormDataChange,
-    selectTemplate
+    selectTemplate,
+    getCurrentSelectInfo
   };
 }

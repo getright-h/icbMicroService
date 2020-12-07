@@ -73,6 +73,15 @@ export function useDirectiveListStore() {
     isSuccess && searchClick();
   }
 
+  function getCurrentSelectInfo(value: any, option: any, type: string) {
+    if (type == 'dateRange') {
+      console.log(value, option);
+      return;
+    }
+
+    const { info = {} } = option;
+    console.log(info);
+  }
   return {
     state,
     searchForm,
@@ -80,6 +89,7 @@ export function useDirectiveListStore() {
     callbackAction,
     changeTablePageIndex,
     searchClick,
-    handleModalCancel
+    handleModalCancel,
+    getCurrentSelectInfo
   };
 }

@@ -20,24 +20,20 @@ export function AlarmParameterColumn(callbackAction: Function) {
       dataIndex: 'cmdName'
     },
     {
-      title: '下发人',
-      dataIndex: 'userName'
-    },
-    {
       title: '发送时间',
       dataIndex: 'excuteTime'
-    },
-    {
-      title: '指令状态',
-      dataIndex: 'statusText'
     },
     {
       title: '响应时间',
       dataIndex: 'responseTime'
     },
     {
-      title: '监控组',
-      dataIndex: 'vehicleGroupName'
+      title: '指令状态',
+      dataIndex: 'statusText'
+    },
+    {
+      title: '返回时间',
+      dataIndex: 'responseTime'
     },
     {
       title: '创建人',
@@ -55,8 +51,6 @@ export function AlarmParameterColumn(callbackAction: Function) {
         return (
           <React.Fragment>
             <a onClick={() => callbackAction(ModalType.CREATE, data)}>查看</a>
-            <Divider type="vertical" />
-            <a onClick={() => callbackAction(ModalType.EDIT, data)}>模板列表</a>
           </React.Fragment>
         );
       }

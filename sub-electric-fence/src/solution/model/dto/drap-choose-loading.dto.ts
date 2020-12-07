@@ -121,3 +121,12 @@ export interface QueryApprovalFormTemplateParams {
   index: number;
   size: number;
 }
+
+export interface IDirectiveReturn {
+  id?: string; // id ,
+  cmdName?: string; // 指令名称 ,
+  cmdCode?: string; // 指令码 ,
+  sort?: number; //显示顺序 ,
+  isVerify?: boolean; // 需要密码验证 ,
+  hasSwitch?: boolean; // 包含打开关闭按钮
+}

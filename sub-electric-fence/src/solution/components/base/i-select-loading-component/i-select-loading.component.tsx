@@ -56,6 +56,18 @@ export default function ISelectLoadingComponent(props: IISelectLoadingProps) {
                 {item.vinNo}
               </Select.Option>
             );
+          } else if (reqUrl === 'getTypesList') {
+            return (
+              <Select.Option value={item.id} key={item.id} info={item}>
+                {item.cmdName}
+              </Select.Option>
+            );
+          } else if (reqUrl === 'queryVehicleInfoPagedList') {
+            return (
+              <Select.Option value={item.id} key={item.id} info={item}>
+                {`${item.ownerName}（${item.plateNo}）`}
+              </Select.Option>
+            );
           } else {
             return (
               <Select.Option value={item.id} key={item.id} info={item}>

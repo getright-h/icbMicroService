@@ -19,24 +19,31 @@ export default function DirectiveListComponent() {
     changeTablePageIndex,
     searchClick,
     initSearchForm,
-    handleModalCancel
+    handleModalCancel,
+    getCurrentSelectInfo
   } = useDirectiveListStore();
   const { isLoading, tableData, total, pageIndex, pageSize, patchModalVisible } = state;
 
   function renderSelectItems() {
     const layout = {
-      // labelCol: { span: 8 },
+      labelCol: { span: 8 },
       wrapperCol: { span: 25 }
     };
     return (
       <Form {...layout} form={searchForm} style={{ width: '90%' }}>
         <Row gutter={24}>
-          <Col span={6}>
-            <Form.Item name="type" label="查询车辆">
-              <Input placeholder="请输入车牌号" />
+          <Col span={9}>
+            <Form.Item name="type" label="查询车辆/设备">
+              <ISelectLoadingComponent
+                reqUrl="queryVehicleInfoPagedList"
+                placeholder="电话/车牌号/车架号/设备"
+                showSearch={true}
+                searchKeyName="strValue"
+                getCurrentSelectInfo={(value: any, option: any) => getCurrentSelectInfo(value, option, 'strValue')}
+              />
             </Form.Item>
           </Col>
-          <Col span={6}>
+          {/* <Col span={6}>
             <Form.Item name="method" label="查询设备">
               <ISelectLoadingComponent
                 reqUrl="queryDeviceList"
@@ -63,15 +70,22 @@ export default function DirectiveListComponent() {
             <Form.Item name="method" label="监控类型">
               <Select placeholder="请选择下发方式"></Select>
             </Form.Item>
-          </Col>
-          <Col span={6}>
-            <Form.Item name="method" label="监控组">
-              <Select placeholder="请选择下发方式"></Select>
+          </Col> */}
+          <Col span={5}>
+            <Form.Item name="method" label="指令类型">
+              <ISelectLoadingComponent
+                reqUrl="getTypesList"
+                placeholder="请选择指令类型"
+                getCurrentSelectInfo={(value: any, option: any) => getCurrentSelectInfo(value, option, 'directiveType')}
+              />
             </Form.Item>
           </Col>
-          <Col span={12}>
+          <Col span={10}>
             <Form.Item name="method" label="发送时间" wrapperCol={{ span: 24 }} style={{ float: 'left' }}>
-              <TimePickerComponent pickerType="dateTimeRange" />
+              <TimePickerComponent
+                getDateTimeInfo={(value: any, option: any) => getCurrentSelectInfo(value, option, 'dateRange')}
+                pickerType="dateRange"
+              />
             </Form.Item>
           </Col>
         </Row>
