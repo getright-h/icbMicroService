@@ -1,10 +1,16 @@
 import { Button, Col, Form, Input, Row, Select } from 'antd';
 import * as React from 'react';
-import { ITableComponent, TablePageTelComponent } from '~/solution/components/component.module';
+import {
+  ITableComponent,
+  TablePageTelComponent,
+  ISelectLoadingComponent,
+  TimePickerComponent
+} from '~/solution/components/component.module';
 import { AlarmParameterColumn } from './directive-list.column';
 import { useDirectiveListStore } from './directive-list.component.store';
 import DirectivePatchModalComponent from '../wiget/directive-patch-model-component/directive-patch-moda.component';
 import { ModalType } from './directive-list.interface';
+import { StorageUtil } from '~/framework/util/storage';
 export default function DirectiveListComponent() {
   const {
     state,
@@ -19,8 +25,8 @@ export default function DirectiveListComponent() {
 
   function renderSelectItems() {
     const layout = {
-      labelCol: { span: 8 },
-      wrapperCol: { span: 16 }
+      // labelCol: { span: 8 },
+      wrapperCol: { span: 25 }
     };
     return (
       <Form {...layout} form={searchForm} style={{ width: '90%' }}>
@@ -32,7 +38,25 @@ export default function DirectiveListComponent() {
           </Col>
           <Col span={6}>
             <Form.Item name="method" label="查询设备">
-              <Select placeholder="请选择下发方式"></Select>
+              <ISelectLoadingComponent
+                reqUrl="queryDeviceList"
+                placeholder="请输入设备号"
+                showSearch={true}
+                getCurrentSelectInfo={(value: any, option: any) => console.log(value, option)}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item name="method" label="监控组">
+              <ISelectLoadingComponent
+                reqUrl="queryGroupSearchList"
+                placeholder="请输入监控组名称"
+                searchForm={{
+                  organizationId: StorageUtil.getLocalStorage('organizationId')
+                }}
+                showSearch={true}
+                getCurrentSelectInfo={(value: any, option: any) => console.log(value, option)}
+              />
             </Form.Item>
           </Col>
           <Col span={6}>
@@ -41,13 +65,13 @@ export default function DirectiveListComponent() {
             </Form.Item>
           </Col>
           <Col span={6}>
-            <Form.Item name="method" label="发送时间">
+            <Form.Item name="method" label="监控组">
               <Select placeholder="请选择下发方式"></Select>
             </Form.Item>
           </Col>
-          <Col span={6}>
-            <Form.Item name="method" label="监控组">
-              <Select placeholder="请选择下发方式"></Select>
+          <Col span={12}>
+            <Form.Item name="method" label="发送时间" wrapperCol={{ span: 24 }} style={{ float: 'left' }}>
+              <TimePickerComponent pickerType="dateTimeRange" />
             </Form.Item>
           </Col>
         </Row>

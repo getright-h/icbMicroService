@@ -1,12 +1,12 @@
 import { IDirectiveListState, ModalType } from './directive-list.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form } from 'antd';
-import { AlarmManageService } from '~/solution/model/services/alarm-manage.service';
+import { DirectiveService } from '~/solution/model/services/directive-manage.service';
 import { useEffect } from 'react';
 
 export function useDirectiveListStore() {
   const { state, setStateWrap, getState } = useStateStore(new IDirectiveListState());
-  const alarmManageService: AlarmManageService = new AlarmManageService();
+  const directiveService: DirectiveService = new DirectiveService();
   const [searchForm] = Form.useForm();
 
   useEffect(() => {
@@ -14,22 +14,24 @@ export function useDirectiveListStore() {
   }, []);
 
   function getTableData() {
-    // setStateWrap({ isLoading: true });
-    // const { pageIndex, pageSize } = getState();
-    // alarmManageService
-    //   .queryOwnerPagedList({
-    //     ...searchForm.getFieldsValue(),
-    //     index: pageIndex,
-    //     size: pageSize
-    //   })
-    //   .subscribe(
-    //     res => {
-    //       setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
-    //     },
-    //     err => {
-    //       setStateWrap({ isLoading: false });
-    //     }
-    //   );
+    setStateWrap({ isLoading: true });
+    const { pageIndex, pageSize } = getState();
+    directiveService
+      .getCmdList({
+        ...searchForm.getFieldsValue(),
+        index: pageIndex,
+        size: pageSize,
+        beginTime: new Date('2020/12/01').getTime(),
+        endTime: new Date('2020/12/04').getTime()
+      })
+      .subscribe(
+        res => {
+          setStateWrap({ tableData: res.data, total: res.total, isLoading: false });
+        },
+        err => {
+          setStateWrap({ isLoading: false });
+        }
+      );
   }
 
   function searchClick() {

@@ -5,7 +5,7 @@ export function AlarmParameterColumn(callbackAction: Function) {
   return [
     {
       title: '设备号',
-      dataIndex: 'vinNo'
+      dataIndex: 'deviceCode'
     },
     {
       title: '关联车主',
@@ -13,39 +13,39 @@ export function AlarmParameterColumn(callbackAction: Function) {
     },
     {
       title: '关联车牌',
-      dataIndex: 'time'
+      dataIndex: 'plateNumber'
     },
     {
       title: '指令类型',
-      dataIndex: 'name'
+      dataIndex: 'cmdName'
     },
     {
       title: '下发人',
-      dataIndex: 'name'
+      dataIndex: 'userName'
     },
     {
       title: '发送时间',
-      dataIndex: 'name'
+      dataIndex: 'excuteTime'
     },
     {
       title: '指令状态',
-      dataIndex: 'deviceCodeList'
+      dataIndex: 'statusText'
     },
     {
       title: '响应时间',
-      dataIndex: 'time'
+      dataIndex: 'responseTime'
     },
     {
       title: '监控组',
-      dataIndex: 'name'
+      dataIndex: 'vehicleGroupName'
     },
     {
       title: '创建人',
-      dataIndex: 'name'
+      dataIndex: 'userName'
     },
     {
       title: '创建机构',
-      dataIndex: 'name'
+      dataIndex: 'organizationName'
     },
     {
       title: '操作',

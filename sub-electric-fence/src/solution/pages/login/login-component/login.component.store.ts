@@ -61,8 +61,13 @@ export class LoginStore extends ReducerStore<IState> {
   // 执行登陆
   handleLogin = (params: LoginParam) => {
     return this.loginService.login(params).subscribe(
-      res => {
+      (res: any) => {
+        const { extionValueList = [] } = res;
+        const organizationValueStr = extionValueList.find((data: any) => data.key == 'OrganizationIds')?.value;
+        const organizationValueArr = organizationValueStr && JSON.parse(organizationValueStr || '[]');
+        const organizationId = organizationValueArr[0]?.OrganizationId;
         StorageUtil.setLocalStorage('token', res.token);
+        StorageUtil.setLocalStorage('organizationId', organizationId);
         message.success('登录成功');
         this.dispatch(setLoadingAction(false));
         this.props.history.push('/home');

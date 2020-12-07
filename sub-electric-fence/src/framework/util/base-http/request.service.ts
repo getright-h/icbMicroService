@@ -41,6 +41,8 @@ class RequestService {
       returnInfo = process.env.LOGIN;
     } else if (!!~url.indexOf('gps/')) {
       returnInfo = process.env.GPS;
+    } else if (!!~url.indexOf('vehicle/manage/') || !!~url.indexOf('dispatch/manage/')) {
+      returnInfo = process.env.VEHICLE;
     } else {
       returnInfo = process.env.MAIN;
     }
