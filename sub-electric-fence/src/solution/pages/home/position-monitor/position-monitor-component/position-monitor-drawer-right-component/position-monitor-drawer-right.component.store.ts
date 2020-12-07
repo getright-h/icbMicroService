@@ -2,6 +2,8 @@ import { IPositionMonitorDrawerRightState } from './position-monitor-drawer-righ
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { PositionMonitorContext } from '../position-monitor.component';
 import { setDataAction } from '../position-monitor-redux/position-monitor-action';
+import { VehicleInfoParamReture } from '~/solution/model/dto/position-monitor.dto';
+import { DeviceList } from '../../../../../model/dto/position-monitor.dto';
 
 export function usePositionMonitorDrawerRightStore() {
   const { state, setStateWrap } = useStateStore(new IPositionMonitorDrawerRightState());
@@ -20,9 +22,9 @@ export function usePositionMonitorDrawerRightStore() {
     setDataAction({ checkedCarData: filterCheckedCarData, currentSelectCar: currentSelectCarData }, dispatch);
   }
 
-  function checkedDevice(item: any, itemChild: any) {
-    item.children = item.children.map((itemElement: any) => {
-      if (itemElement.id == itemChild.id) {
+  function checkedDevice(item: VehicleInfoParamReture, itemChild: any) {
+    item.deviceList = item.deviceList.map((itemElement: DeviceList) => {
+      if (itemElement.deviceCode == itemChild.deviceCode) {
         itemElement.selected = true;
       } else {
         itemElement.selected = false;
@@ -30,7 +32,6 @@ export function usePositionMonitorDrawerRightStore() {
       return itemElement;
     });
     item.changeTime = new Date().getTime();
-    console.log(item);
 
     setDataAction({ currentSelectCar: { ...item } }, dispatch);
   }

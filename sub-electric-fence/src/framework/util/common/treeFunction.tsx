@@ -25,7 +25,7 @@ export function dealWithTreeData<T>(
               {element['name']}
             </span>
           </div>
-          <span style={{ width: '20px' }}>(10)</span>
+          <span style={{ width: '20px' }}>({element['onlineCount']})</span>
           <div
             style={{ width: '50px', background: 'white', marginRight: '-4px' }}
             onClick={e => {

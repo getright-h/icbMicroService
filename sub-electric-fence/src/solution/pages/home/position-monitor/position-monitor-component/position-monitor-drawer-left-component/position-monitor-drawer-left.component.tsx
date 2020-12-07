@@ -1,15 +1,21 @@
 import * as React from 'react';
 import { usePositionMonitorDrawerLeftStore } from './position-monitor-drawer-left.component.store';
-import { Drawer } from 'antd';
+import { Drawer, Select } from 'antd';
 import { setDataAction } from '../position-monitor-redux/position-monitor-action';
 import { PositionMonitorContext } from '../position-monitor.component';
 import { ISelectLoadingComponent, ITableComponent } from '~/solution/components/component.module';
 import { positionMonitorDrawerLeftColumns } from './position-monitor-drawer-left.column';
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
-
+const { Option } = Select;
 export const PositionMonitorDrawerLeftComponent = () => {
-  const { state, onCheckedUserInfo, onCheckedUserSelectAllInfo } = usePositionMonitorDrawerLeftStore();
-  const { isLoading, searchForm, tableData, total, selectedRowKeys } = state;
+  const {
+    state,
+    onCheckedUserInfo,
+    onCheckedUserSelectAllInfo,
+    queryVehicleGroupList,
+    onCurrentVehicleChange
+  } = usePositionMonitorDrawerLeftStore();
+  const { isLoading, searchForm, tableData, total, selectedRowKeys, vehicleGroupList } = state;
 
   const { reduxState, dispatch } = React.useContext(PositionMonitorContext);
   const { leftDrawerVisible, currentSelectNode }: any = reduxState;
@@ -32,23 +38,27 @@ export const PositionMonitorDrawerLeftComponent = () => {
     [searchForm.index, searchForm.size, isLoading, tableData, selectedRowKeys, total]
   );
   function changeTablePageIndex() {}
-  const ISelectWatchLoadingComponent = React.useCallback(
-    () =>
-      ISelectLoadingComponent({
-        placeholder: '选择监控组',
-        showSearch: true,
-        width: '200px',
-        isData: true,
-        allowClear: false,
-        reqUrl: 'queryStoreListByOrganizationId'
-        // getCurrentSelectInfo: (...info) => getCurrentSelectInfo(field, ...info, 'store')
-      }),
-    []
-  );
+
   function DrawerContent() {
     return (
       <div>
-        <div>{ISelectWatchLoadingComponent()}</div>
+        <div>
+          <Select
+            onChange={onCurrentVehicleChange}
+            placeholder="请选择监控组"
+            allowClear
+            value={searchForm.vehicleGroupId}
+            style={{ width: '200px' }}
+          >
+            {vehicleGroupList.map(item => {
+              return (
+                <Option value={item.id} key={item.id}>
+                  {item.name}
+                </Option>
+              );
+            })}
+          </Select>
+        </div>
         <div style={{ margin: '10px -24px' }}>{RenderTable()}</div>
       </div>
     );
