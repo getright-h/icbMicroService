@@ -34,6 +34,9 @@ export default function ApprovalApplyComponent(props: IApprovalApplyProps) {
               {renderISelectLoadingComponent({
                 placeholder: '请输入模板类型',
                 onChange: setGroupId,
+                searchForm: {
+                  isEnable: true
+                },
                 reqUrl: 'queryApprovalPagedList'
               })}
             </Form.Item>
