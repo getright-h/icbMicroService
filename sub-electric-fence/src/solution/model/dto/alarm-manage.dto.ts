@@ -53,13 +53,14 @@ interface AlarmPackageList {
 }
 
 export interface AlarmPackageContent {
-  id: string;
-  alarmTemplateId: string;
-  alarmKey: string;
-  alarmText: string;
-  alarmValue: string;
-  groupId: string;
-  createTimeStamp: number;
+  id?: string;
+  alarmTemplateId?: string;
+  alarmKey?: string;
+  alarmText?: string;
+  alarmValue?: string;
+  groupId?: string;
+  createTimeStamp?: number;
+  packageList?: any[];
 }
 
 export interface EditAlarmPackageItem {

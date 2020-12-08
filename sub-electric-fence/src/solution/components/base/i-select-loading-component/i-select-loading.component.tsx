@@ -64,7 +64,7 @@ export default function ISelectLoadingComponent(props: IISelectLoadingProps) {
             );
           } else if (reqUrl === 'queryVehicleInfoPagedList') {
             return (
-              <Select.Option value={item.id} key={item.id} info={item}>
+              <Select.Option value={item.id} key={item.id + index} info={item}>
                 {`${item.ownerName}（${item.plateNo}）`}
               </Select.Option>
             );

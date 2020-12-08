@@ -8,7 +8,7 @@ import DurationSettingComponent from './duration-setting-component/duration-sett
 export default function AlarmFormItemComponent(props: IAlarmFormItemProp) {
   const { state, handleInputChange, durationFieldsChange } = useAlarmFormItemStore(props);
   const { formInfo, durationFields } = state;
-
+  const { isEnbaleEdit = true, isShowTemplateName = true } = props;
   function CustomComponent(item: AlarmTypeItem) {
     let returnElement: JSX.Element = null;
     const itemProps = {
@@ -21,6 +21,7 @@ export default function AlarmFormItemComponent(props: IAlarmFormItemProp) {
             <div className={style.inputContainer}>
               {/* {item.prefix && <span className={style.prefix}>{item.prefix}</span>} */}
               <Input
+                disabled={!isEnbaleEdit}
                 placeholder={`请输入${item.alarmText}`}
                 {...itemProps}
                 onChange={e => handleInputChange(e.target.value, item)}

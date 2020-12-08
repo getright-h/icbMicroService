@@ -33,13 +33,13 @@ export interface ITypesReturn {
 }
 
 export interface ICmdSendParam {
-    type: number;// 类型（1：设备号，2：监控组） ,
-    codes: Array<string>//设备号 ,
-    vehicleGroupId: string // 监控组id ,
-    cmdCode: string // 指令码 ,
-    cmdName: string // 指令名称 ,
-    cmdValue: string // 指令内容 ,
-    switch: boolean;
+    type?: number;// 类型（1：设备号，2：监控组） ,
+    codes?: Array<string>//设备号 ,
+    vehicleGroupId?: string // 监控组id ,
+    cmdCode?: string // 指令码 ,
+    cmdName?: string // 指令名称 ,
+    cmdValue?: string // 指令内容 ,
+    switch?: boolean;
 }
 
 export interface DirectiveListReturn {
