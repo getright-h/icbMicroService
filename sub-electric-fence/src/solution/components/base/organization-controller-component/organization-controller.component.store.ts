@@ -24,7 +24,7 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
   // 根据根据系统id查找机构类型
   function queryOrganizationTypeListByTypeId(id?: string) {
     organizationManageService
-      .queryStoreOrganization({ typeId: 'c59c75eec2d3cc075cca08d84386bcb9', id })
+      .queryGpsOrganization({ typeId: 'c59c75eec2d3cc075cca08d84386bcb9', id })
       .subscribe(res => {
         // 如果只要求显示一个currentOrganazation 才执行这行过滤数据的代码
         if (currentOrganazation) {

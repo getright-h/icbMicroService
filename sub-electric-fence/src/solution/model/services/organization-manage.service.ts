@@ -18,6 +18,8 @@ const QUERY_ORGANIZATION_BY_TYPEID = 'prvilege/common/queryOrganizationByTypeId'
 const QUERY_STORE_ORGANIZATION_LIST_SUB = 'store/manage/queryStoreOrganizationListSub';
 const QUERYSTORE_LIST_BY_ORGANIZATIONID = 'store/manage/queryStoreListByOrganizationId';
 const QUERYSTORE_ORGANIZATION = 'store/manage/queryStoreOrganization';
+const QUERY_GPS_ORGANIZATION = 'gps/manage/queryGpsOrganization';
+const QUERY_GPS_ORGANIZATION_LIST_SUB = 'gps/manage/queryGpsOrganizationListSub';
 export class OrganizationManageService extends OrganizationManageDTO {
   private readonly requestService: RequestService = new RequestService();
   constructor() {
@@ -27,6 +29,11 @@ export class OrganizationManageService extends OrganizationManageDTO {
   // 获取当前头部组织的列表
   queryStoreOrganization(params: { typeId: string; id: string }): Observable<QueryStoreOrganizationReturn[]> {
     return this.requestService.get(QUERYSTORE_ORGANIZATION, params);
+  }
+
+  // 获取当前头部组织的列表
+  queryGpsOrganization(params: { typeId: string; id: string }): Observable<QueryStoreOrganizationReturn[]> {
+    return this.requestService.get(QUERY_GPS_ORGANIZATION, params);
   }
 
   // 根据父级id查询子级机构
@@ -42,6 +49,11 @@ export class OrganizationManageService extends OrganizationManageDTO {
   // 获取子集组织
   queryStoreOrganizationListSub(params: { parentId: string }): Observable<QueryStoreOrganizationReturn[]> {
     return this.requestService.get(QUERY_STORE_ORGANIZATION_LIST_SUB, params);
+  }
+
+  // 获取GPS子集组织
+  queryGpsOrganizationListSub(params: { parentId: string }): Observable<QueryStoreOrganizationReturn[]> {
+    return this.requestService.get(QUERY_GPS_ORGANIZATION_LIST_SUB, params);
   }
 
   // 根据系统id查找机构类型

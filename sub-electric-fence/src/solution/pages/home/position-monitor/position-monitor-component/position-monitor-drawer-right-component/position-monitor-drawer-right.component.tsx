@@ -5,6 +5,8 @@ import { usePositionMonitorDrawerRightStore } from './position-monitor-drawer-ri
 import { Collapse, Drawer, Button } from 'antd';
 import { setDataAction } from '../position-monitor-redux/position-monitor-action';
 import { CloseCircleOutlined } from '@ant-design/icons';
+import { DeviceList } from '../../../../../model/dto/position-monitor.dto';
+import { VehicleInfoParamReture } from '~/solution/model/dto/position-monitor.dto';
 const { Panel } = Collapse;
 export const PositionMonitorDrawerRightComponent = () => {
   const { state, deleteChoosedCar, checkedDevice } = usePositionMonitorDrawerRightStore();
@@ -37,10 +39,10 @@ export const PositionMonitorDrawerRightComponent = () => {
                     extra={genExtra(item)}
                   >
                     <div className={style.panel}>
-                      {item?.children?.map((itemChild: any) => {
+                      {item?.deviceList?.map((itemChild: DeviceList) => {
                         return (
                           <div
-                            key={itemChild.id}
+                            key={itemChild.deviceCode}
                             className={style.panelContent}
                             onClick={() => checkedDevice(item, itemChild)}
                             style={
@@ -50,9 +52,9 @@ export const PositionMonitorDrawerRightComponent = () => {
                             }
                           >
                             <span>
-                              {itemChild.deviceName}({itemChild.deviceNumber})
+                              {itemChild.deviceCode}({itemChild.typeName})
                             </span>
-                            <span>{itemChild.statusText}</span>
+                            <span>{itemChild.isOnline ? '在线' : '离线'}</span>
                           </div>
                         );
                       })}
@@ -74,7 +76,7 @@ export const PositionMonitorDrawerRightComponent = () => {
     );
   }
 
-  function RenderUserInfo(item: any) {
+  function RenderUserInfo(item: VehicleInfoParamReture) {
     return (
       <div
         className={style.cardContent}
@@ -85,10 +87,12 @@ export const PositionMonitorDrawerRightComponent = () => {
         }}
       >
         <div>
-          <span>吴小二 川A12233</span>
-          <div>18300603343</div>
+          <span>
+            {item.ownerName} {item.plateNo}
+          </span>
+          <div>{item.ownerMobile}</div>
         </div>
-        <div className={style.cardRigth}>运动</div>
+        <div className={style.cardRigth}>{item.isRunning ? '运动' : '静止'}</div>
       </div>
     );
   }

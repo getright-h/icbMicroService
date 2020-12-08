@@ -1,15 +1,17 @@
 import { IPositionMonitorDrawerLeftState } from './position-monitor-drawer-left.interface';
-import { useStateStore } from '~/framework/aop/hooks/use-base-store';
+import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
 import { PositionMonitorContext } from '../position-monitor.component';
 import { useContext, useEffect } from 'react';
 import { setDataAction } from '../position-monitor-redux/position-monitor-action';
+import { PositionMonitorService } from '../../../../../model/services/position-monitor.service';
+import { IQueryVehicleInfoPagedListParams } from '~/solution/model/dto/position-monitor.dto';
 
 export function usePositionMonitorDrawerLeftStore() {
-  const { state, setStateWrap } = useStateStore(new IPositionMonitorDrawerLeftState());
+  const { state, setStateWrap, getState } = useStateStore(new IPositionMonitorDrawerLeftState());
   const { reduxState, dispatch } = useContext(PositionMonitorContext);
-  const { checkedCarData } = reduxState;
-  const { currentSelectCar } = reduxState;
-
+  const positionMonitorService: PositionMonitorService = useService(PositionMonitorService);
+  const { checkedCarData, currentSelectNode, currentSelectCar } = reduxState;
+  const { searchForm } = state;
   useEffect(() => {
     const selectedRowKeys: any[] = [];
     checkedCarData.forEach(item => {
@@ -18,10 +20,56 @@ export function usePositionMonitorDrawerLeftStore() {
     setStateWrap({ selectedRowKeys });
   }, [checkedCarData]);
 
+  useEffect(() => {
+    console.log(currentSelectNode);
+    if (currentSelectNode?.key) {
+      setStateWrap(
+        {
+          searchForm: {
+            ...state.searchForm,
+            index: 1,
+            size: 10,
+
+            organizationId: currentSelectNode.key + ''
+          }
+        },
+        (state: IPositionMonitorDrawerLeftState) => {
+          queryVehicleInfoPagedList(state.searchForm);
+        }
+      );
+      queryVehicleGroupList();
+    }
+  }, [currentSelectNode]);
+
+  function onCurrentVehicleChange(value: string) {
+    console.log(value);
+
+    setStateWrap(
+      { searchForm: { ...state.searchForm, vehicleGroupId: value, index: 1 } },
+      (state: IPositionMonitorDrawerLeftState) => {
+        queryVehicleInfoPagedList(state.searchForm);
+      }
+    );
+    // 去查询相应的列表信息
+  }
+
+  //根据监控组、车架号、车主电话、车牌号、设备号信息查询车辆信息
+  function queryVehicleInfoPagedList(state?: IQueryVehicleInfoPagedListParams) {
+    positionMonitorService.queryVehicleInfoPagedList(state || getState().searchForm).subscribe(res => {
+      setStateWrap({ tableData: res.dataList, total: res.total });
+    });
+  }
+
   function onCheckedUserInfo(record: any, selected: any) {
     //获取选中的车的信息
     // 判断在现有的车辆中是否有这些车
     onCheckedUserSelectAllInfo(selected, [], [record]);
+  }
+
+  function queryVehicleGroupList() {
+    positionMonitorService.queryVehicleGroupList({ organizationId: currentSelectNode.key + '' }).subscribe(res => {
+      setStateWrap({ vehicleGroupList: res });
+    });
   }
 
   /**
@@ -50,7 +98,7 @@ export function usePositionMonitorDrawerLeftStore() {
         return flag;
       });
     } else {
-      filterCheckedCarData = [...checkedCarData, ...changeRows];
+      filterCheckedCarData = [...changeRows, ...checkedCarData];
     }
 
     setDataAction(
@@ -58,5 +106,5 @@ export function usePositionMonitorDrawerLeftStore() {
       dispatch
     );
   }
-  return { state, onCheckedUserInfo, onCheckedUserSelectAllInfo };
+  return { state, onCurrentVehicleChange, onCheckedUserInfo, onCheckedUserSelectAllInfo, queryVehicleGroupList };
 }

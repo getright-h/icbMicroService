@@ -1,3 +1,5 @@
+import { VehicleInfoParamReture } from '~/solution/model/dto/position-monitor.dto';
+
 /**
  * @export state变量定义和初始化
  * @class IIMapState
@@ -12,7 +14,6 @@ export type TIMapProps = {
   id: string;
   needSearchAddress?: boolean;
   height?: string;
-  needISelectCarLoadingComponent?: boolean;
   needDrawRactangle?: boolean;
   carLine?: any[];
   drawDrivingLine?: (id: string) => void;

@@ -2,19 +2,13 @@ import { Select } from 'antd';
 import * as React from 'react';
 import style from './i-map.component.less';
 import { useIMapStore } from './i-map.component.store';
-import { ISelectLoadingComponent } from '~/solution/components/component.module';
 import { TIMapProps } from './i-map.interface';
 const { Option } = Select;
 export const IMapComponent = React.memo((mapProps: TIMapProps) => {
   const { state, startRule, startDrawRactangle, handleChangeCircleFunction, handleCircleLocation } = useIMapStore(
     mapProps
   );
-  const {
-    needSearchAddress = true,
-    needISelectCarLoadingComponent = true,
-    needDrawRactangle,
-    height = '80vh'
-  } = mapProps;
+  const { needSearchAddress = true, needDrawRactangle, height = '80vh' } = mapProps;
   const { locationList } = state;
   function SearchAddress() {
     return (
@@ -43,19 +37,6 @@ export const IMapComponent = React.memo((mapProps: TIMapProps) => {
     );
   }
 
-  const ISelectCarLoadingComponent = React.useCallback(
-    () =>
-      ISelectLoadingComponent({
-        placeholder: '车主姓名/手机/车牌号',
-        showSearch: true,
-        width: '200px',
-        isData: true,
-        allowClear: false,
-        reqUrl: 'queryStoreListByOrganizationId'
-        // getCurrentSelectInfo: (...info) => getCurrentSelectInfo(field, ...info, 'store')
-      }),
-    []
-  );
   return (
     <div id={mapProps.id} style={{ height }}>
       <div className={`${style.info} ${style.floatRight}`}>
@@ -63,9 +44,6 @@ export const IMapComponent = React.memo((mapProps: TIMapProps) => {
         {needDrawRactangle && <button onClick={startDrawRactangle}>区域查车</button>}
       </div>
       {needSearchAddress && <div className={`${style.info} ${style.searchAddress}`}>{SearchAddress()}</div>}
-      {needISelectCarLoadingComponent && (
-        <div className={`${style.info} ${style.searchCar}`}>{ISelectCarLoadingComponent()}</div>
-      )}
     </div>
   );
 });

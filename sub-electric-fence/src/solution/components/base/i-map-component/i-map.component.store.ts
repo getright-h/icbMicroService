@@ -131,23 +131,25 @@ export function useIMapStore(mapProps: TIMapProps) {
     data?.forEach((element: any) => {
       //  描定位点，在传入钱转化成格式
       // 确定当前使用的是哪个设备
-      let currentMarker = element.children[0];
+      let currentMarker = element.deviceList[0];
       if (data.length == 1 && mapProps.currentSelectCar) {
         // 说明当前的点是被选中的， 所以可以筛选其中选中的设备
 
-        for (const item of element.children) {
+        for (const item of element.deviceList) {
           if (item.selected) {
             currentMarker = item;
             break;
           }
         }
       }
-      markersInfo.push({
-        position: currentMarker.locationInfo.coordinates,
-        icon: currentMarker.status ? require('~assets/image/offline.png') : require('~assets/image/online.png'),
-        markerInfo: currentMarker.locationInfo,
-        status: currentMarker.statusText
-      });
+      if (currentMarker && currentMarker.coordinates) {
+        markersInfo.push({
+          position: currentMarker.coordinates,
+          icon: currentMarker.isOnline ? require('~assets/image/offline.png') : require('~assets/image/online.png'),
+          markerInfo: element,
+          status: currentMarker.isOnline
+        });
+      }
     });
 
     console.log('重绘界面啦', markersInfo);
@@ -331,5 +333,13 @@ export function useIMapStore(mapProps: TIMapProps) {
     }
     isMouseToolVisible.current = !isMouseToolVisible.current;
   }
-  return { state, satellite, toggle, startRule, handleCircleLocation, handleChangeCircleFunction, startDrawRactangle };
+  return {
+    state,
+    satellite,
+    toggle,
+    startRule,
+    handleCircleLocation,
+    handleChangeCircleFunction,
+    startDrawRactangle
+  };
 }
