@@ -9,6 +9,7 @@ export default function AddDeviceTypeModalComponent(props: IAddDeviceType) {
   const { state, form, onSubmit } = useAddDeviceTypeStore(props);
   const { imageList = [], submitLoading } = state;
   const { visible, close, data } = props;
+
   const querySupplierList = ISelectLoadingComponent({
     width: '200px',
     reqUrl: 'querySupplierList',

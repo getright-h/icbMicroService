@@ -7,9 +7,10 @@ import { GlobalContext } from '~/solution/context/global/global.provider';
 import { Form, Modal, Input } from 'antd';
 export default function AddMonitorGroupComponent(props: AddMonitorGroupProp) {
   const { state, form, onchange, addMonitorGroup, close } = useAddMonitorGroupStore(props);
+  console.log(props, 'props');
   const { gState } = React.useContext(GlobalContext);
-  const { submitLoading } = state;
-  const { visible, data } = props;
+  const { submitLoading, organization = {} } = state;
+  const { visible, data = {} } = props;
   const layout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 }
@@ -17,8 +18,8 @@ export default function AddMonitorGroupComponent(props: AddMonitorGroupProp) {
   const queryRoleList = ISelectLoadingComponent({
     width: '200px',
     reqUrl: 'queryRoleList',
-    placeholder: '请选择供应商',
-    searchKey: '',
+    placeholder: '请选择监管角色',
+    searchKey: data.roleName || '',
     getCurrentSelectInfo: (value: string, option: any) => {
       onchange(value, 'roleId');
     },
@@ -29,8 +30,8 @@ export default function AddMonitorGroupComponent(props: AddMonitorGroupProp) {
   const queryOrgList = ISelectLoadingComponent({
     width: '200px',
     reqUrl: 'queryStoreOrganization',
-    placeholder: '请选择供应商',
-    searchKey: '',
+    placeholder: '请选择机构',
+    searchKey: organization.organizationName || '',
     getCurrentSelectInfo: (value: string, option: any) => {
       onchange(option.info || {}, 'organizationId');
     },

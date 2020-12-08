@@ -71,7 +71,7 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
   useEffect(() => {
     setStateWrap({ value: props.selectedValue });
     // 解开用于解决 修改信息时候,下拉框由于没有列表数据,而只是暂时ID
-    getOptionList();
+    // getOptionList();
   }, [props.selectedValue]);
 
   useEffect(() => {
