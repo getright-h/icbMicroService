@@ -154,23 +154,32 @@ export default function MonitorManageComponent() {
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
       />
-      <TransformMonitorComponent
-        close={handleModalCancel}
-        visible={transformModalVisible}
-        data={{
-          currentMonitorGroup: currentMonitorGroup,
-          selectedRowKeys: transformSelected,
-          ...currentData
-        }}
-      />
-      <AddMonitorCarComponent
-        addMonitorModal={addCarModalVisible}
-        colse={handleModalCancel}
-        groupId={currentMonitorGroup.id}
-        getMonitorGroupList={getTableData}
-      />
-      <SetAlarmModalComponent close={handleModalCancel} data={currentData} visible={alarmModalVisible} />
-      <AddMonitorGroupComponent close={handleModalCancel} data={currentData} visible={addGroupModalVisible} />
+
+      {transformModalVisible && (
+        <TransformMonitorComponent
+          close={handleModalCancel}
+          visible={transformModalVisible}
+          data={{
+            currentMonitorGroup: currentMonitorGroup,
+            selectedRowKeys: transformSelected,
+            ...currentData
+          }}
+        />
+      )}
+      {addCarModalVisible && (
+        <AddMonitorCarComponent
+          addMonitorModal={addCarModalVisible}
+          colse={handleModalCancel}
+          groupId={currentMonitorGroup.id}
+          getMonitorGroupList={getTableData}
+        />
+      )}
+      {alarmModalVisible && (
+        <SetAlarmModalComponent close={handleModalCancel} data={currentData} visible={alarmModalVisible} />
+      )}
+      {addGroupModalVisible && (
+        <AddMonitorGroupComponent close={handleModalCancel} data={currentData} visible={addGroupModalVisible} />
+      )}
     </div>
   );
 }

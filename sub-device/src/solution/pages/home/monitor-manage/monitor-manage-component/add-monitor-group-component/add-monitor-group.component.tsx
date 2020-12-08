@@ -52,35 +52,13 @@ export default function AddMonitorGroupComponent(props: AddMonitorGroupProp) {
       <Form {...layout} form={form}>
         <Form.Item label="所在机构" name={'organizationId'} rules={[{ required: true }]}>
           {queryOrgList}
-          {/* <ISelectLoadingComponent
-            placeholder="请输入机构名称"
-            width={'100%'}
-            showSearch
-            searchKey={''}
-            searchForm={{
-              systemId: gState.myInfo.systemId
-            }}
-            reqUrl="queryStoreOrganization"
-            getCurrentSelectInfo={(value: any, option: any) => onchange(option.info || {}, 'organizationId')}
-          /> */}
         </Form.Item>
         <Form.Item label="监控组名称" name={'name'} rules={[{ required: true }]}>
           <Input placeholder="请输入监控组名称" onChange={(e: any) => onchange(e.target.value, 'name')} />
         </Form.Item>
         <Form.Item label="监管角色" name={'roleId'} rules={[{ required: true }]}>
           {queryRoleList}
-          {/* <ISelectLoadingComponent
-            placeholder="请选择角色"
-            width={'100%'}
-            showSearch
-            searchForm={{
-              systemId: gState.myInfo.systemId
-            }}
-            reqUrl="queryRoleList"
-            getCurrentSelectInfo={value => onchange(value, 'roleId')}
-          /> */}
         </Form.Item>
-
         <Form.Item label="备注" name={'remark'}>
           <Input placeholder="请输入备注信息" onChange={(e: any) => onchange(e.target.value, 'remark')} />
         </Form.Item>
