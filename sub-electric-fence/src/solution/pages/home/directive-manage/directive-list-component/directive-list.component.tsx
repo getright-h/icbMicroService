@@ -98,7 +98,9 @@ export default function DirectiveListComponent() {
         <Button type="primary" onClick={searchClick} loading={isLoading}>
           查询
         </Button>
-        <Button onClick={initSearchForm} loading={isLoading}>清空</Button>
+        <Button onClick={initSearchForm} loading={isLoading}>
+          清空
+        </Button>
         <Button type="primary" onClick={() => callbackAction(ModalType.PATCH)}>
           下发指令
         </Button>
