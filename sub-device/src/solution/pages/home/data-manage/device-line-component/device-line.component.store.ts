@@ -28,16 +28,17 @@ export function useDeviceLineStore() {
     queryDevicePagedListSubscribable = deviceTypeService.queryDevicePagedList(searchForm).subscribe(
       (res: any) => {
         const { dataList = [], total = 0 } = res;
-        queryVehicleInformation(dataList).then((res: any) => {
-          for (let i = 0; i < dataList.length; i++) {
-            for (let j = 0; j < res.length; j++) {
-              if (res[j] && dataList[i].code == res[j].code) {
-                dataList[i].info = res[j];
-              }
-            }
-          }
-          setStateWrap({ tableData: dataList, total: total, isLoading: false });
-        });
+        // queryVehicleInformation(dataList).then((res: any) => {
+        //   for (let i = 0; i < dataList.length; i++) {
+        //     for (let j = 0; j < res.length; j++) {
+        //       if (res[j] && dataList[i].code == res[j].code) {
+        //         dataList[i].info = res[j];
+        //       }
+        //     }
+        //   }
+
+        // });
+        setStateWrap({ tableData: dataList, total: total, isLoading: false });
       },
       err => {
         setStateWrap({ isLoading: false });
