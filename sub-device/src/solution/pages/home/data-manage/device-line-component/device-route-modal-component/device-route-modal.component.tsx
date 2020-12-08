@@ -25,46 +25,17 @@ export default function DeviceRouteModalComponent(props: IDeviceLineProp) {
     //   return '调拨中 等待接口调试';
     // }
     // 在库
-    return `${flow.storeName}-${flow.storePositionName}`;
+    return `${flow.storeName}`;
   }
   return (
     <Modal visible={visible} centered={true} title={'查看节点详情'} onOk={onSubmit} onCancel={onSubmit} width={700}>
       <Form style={{ width: '100%' }}>
-        <Form.Item label={'设备号'}>{data.typeName ? data.typeName : '-'}</Form.Item>
+        <Form.Item label={'设备号'}>{data.code ? data.code : '-'}</Form.Item>
         <Form.Item label={'节点详情'}>
           <Timeline>
             {data.flowList &&
               Array.isArray(data.flowList) &&
               data.flowList.map((flow: any, index: number) => (
-                // <Step
-                //   key={flow.id}
-                //   description={
-                //     <div
-                //       style={{
-                //         display: 'flex',
-                //         justifyContent: 'space-between',
-                //         color: index === data.flowList.length - 1 && '#000'
-                //       }}
-                //     >
-                //       <p>{flow.createTime}</p>
-                //       <p style={{ marginLeft: 30, marginRight: 30, flex: 1 }}>{renderDeviceSort(flow)}</p>
-                //       <p
-                //         style={{
-                //           overflow: 'hidden',
-                //           height: 25,
-                //           width: 250,
-                //           whiteSpace: 'nowrap',
-                //           textOverflow: 'ellipsis',
-                //           flex: 1
-                //         }}
-                //       >
-                //         <Popover placement="topRight" content={flow.remark || '-'} trigger="click">
-                //           <span>备注:{flow.remark || '-'}</span>
-                //         </Popover>
-                //       </p>
-                //     </div>
-                //   }
-                // />
                 <Timeline.Item key={flow.id} style={{ marginTop: 10 }}>
                   <div
                     style={{
@@ -85,8 +56,8 @@ export default function DeviceRouteModalComponent(props: IDeviceLineProp) {
                         flex: 1
                       }}
                     >
-                      <Popover placement="topRight" content={flow.remark || '-'} trigger="click">
-                        <span>备注:{flow.remark || '-'}</span>
+                      <Popover placement="topRight" content={flow.remark} trigger="click">
+                        <span>备注:{flow.remark}</span>
                       </Popover>
                     </p>
                   </div>
