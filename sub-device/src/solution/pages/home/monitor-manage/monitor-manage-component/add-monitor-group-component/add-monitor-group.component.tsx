@@ -7,7 +7,7 @@ import { GlobalContext } from '~/solution/context/global/global.provider';
 import { Form, Modal, Input } from 'antd';
 export default function AddMonitorGroupComponent(props: AddMonitorGroupProp) {
   const { state, form, onchange, addMonitorGroup, close } = useAddMonitorGroupStore(props);
-  console.log(props, 'props');
+
   const { gState } = React.useContext(GlobalContext);
   const { submitLoading, organization = {} } = state;
   const { visible, data = {} } = props;
