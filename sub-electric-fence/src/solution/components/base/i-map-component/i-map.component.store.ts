@@ -26,71 +26,40 @@ export function useIMapStore(mapProps: TIMapProps) {
   const isVisibleSatellite = useRef(false);
   const isVisibleLocationCar = useRef(false);
   const locationCarMarkerListFlag = useRef([]);
+  // 轨迹
+  const notPassedArr = useRef([]);
+  const havePassedArr = useRef([]);
+  const currentAllPoints = useRef([]);
+  const infoWindowInfo: any = useRef();
+  const finishedRun = useRef(false);
+  const {
+    currentSelectCar,
+    setEndRunning,
+    locationCarMarkerList,
+    runCurrentPoint,
+    stopMarkers,
+    isRunning,
+    carSpeed,
+    currentPoint
+  } = mapProps;
   useEffect(() => {
     initMap();
   }, []);
 
   useEffect(() => {
     // 单个车选中，需要获取常驻地点
-    if (mapProps.currentSelectCar) {
-      renderMarker([mapProps.currentSelectCar]);
+    if (currentSelectCar) {
+      renderMarker([currentSelectCar]);
       // 多个车不用获取常驻地点
-    } else if (mapProps.locationCarMarkerList) {
+    } else if (locationCarMarkerList) {
       // 比对
-      renderMarker(mapProps.locationCarMarkerList);
+      renderMarker(locationCarMarkerList);
     }
-  }, [mapProps.locationCarMarkerList, mapProps.currentSelectCar]);
+  }, [locationCarMarkerList, currentSelectCar]);
 
   useEffect(() => {
-    //drivingLineData 轨迹回放的点
-    // 发生变化重新绘制播放
-    map.current.clearMap();
-    if (mapProps.drivingLineData && mapProps.drivingLineData.length) {
-      const carLine = mapProps.drivingLineData.map(item => {
-        item = IMAP.initLonlat(item[0], item[1]);
-        return item;
-      });
-      polyline.current = IMAP.drawLine(map.current, carLine);
-      const position = carLine[carLine.length - 1];
-
-      carLineMarkerInfo.current = new AMap.Marker({
-        map: map.current,
-        // position: position,
-        label: {
-          content: '<div>川A888888</div>',
-          offset: new AMap.Pixel(-20, 26)
-        },
-        icon: 'https://webapi.amap.com/images/car.png',
-        offset: new AMap.Pixel(-26, -13),
-        autoRotation: true
-      });
-      // 第三个参数是在窗口需要展示的当前车辆的信息
-      carLineMarkerInfo.current.on('moving', function(e: any) {
-        const newPosition = e.passedPath[e.passedPath.length - 1];
-        // console.log(e.passedPath[e.passedPath.length -1]);
-
-        // IMAP.showCarInfo(
-        //   carLineMarkerInfo.current,
-        //   map.current,
-        //   { position: [newPosition.lng, newPosition.lat] },
-        //   openInfoWin
-        // );
-      });
-      const currentSpeed = 1;
-
-      carLineMarkerInfo.current.moveAlong(carLine, 200 * currentSpeed);
-
-      setTimeout(() => {
-        carLineMarkerInfo.current.moveAlong(carLine, 400);
-      }, 10000);
-
-      map.current.setCenter(position);
-    }
-  }, [mapProps.drivingLineData]);
-
-  useEffect(() => {
-    //
-  }, [mapProps.stopMarkers]);
+    //常驻地址
+  }, [stopMarkers]);
 
   useEffect(() => {
     //实时追踪的car,car会在最后一个店停下来
@@ -126,6 +95,102 @@ export function useIMapStore(mapProps: TIMapProps) {
     }
   }, [mapProps.carLine]);
 
+  /**
+   * // 轨迹回放
+   * 包含暂停开始速度切换功能，停留点标记
+   */
+  useEffect(() => {
+    //drivingLineData 轨迹回放的点
+    // 发生变化重新绘制播放
+    map.current.clearMap();
+    if (mapProps.drivingLineData && mapProps.drivingLineData.length) {
+      const carLine = mapProps.drivingLineData.map(item => {
+        item = IMAP.initLonlat(item[0], item[1]);
+        return item;
+      });
+      polyline.current = IMAP.drawLine(map.current, carLine);
+      const position = carLine[carLine.length - 1];
+      carLineMarkerInfo.current = new AMap.Marker({
+        map: map.current,
+        label: {
+          content: '<div>川A888888</div>',
+          offset: new AMap.Pixel(-20, 26)
+        },
+        icon: 'https://webapi.amap.com/images/car.png',
+        offset: new AMap.Pixel(-26, -13),
+        autoRotation: true
+      });
+      // 第三个参数是在窗口需要展示的当前车辆的信息
+      carLineMarkerInfo.current.on('moving', function(e: any) {
+        havePassedArr.current = e.passedPath;
+        const newPosition = e.passedPath[e.passedPath.length - 2];
+        let currentIndex = 0;
+        carLine.forEach((item, index) => {
+          // 这里计算剩下的点，便于后面去转换速度
+          if (item.lng == newPosition.lng && item.lat == newPosition.lat) {
+            currentIndex = index;
+          }
+        });
+
+        runCurrentPoint(currentIndex);
+
+        currentAllPoints.current = carLine;
+        if (carLine[carLine.length - 1] == e.passedPath[e.passedPath.length - 1]) {
+          currentIndex = carLine.length - 1;
+          // 通知父组件这边跑完了
+          setEndRunning();
+          finishedRun.current = true;
+        }
+
+        notPassedArr.current = [e.passedPath[e.passedPath.length - 1], ...carLine.slice(currentIndex + 1)];
+      });
+
+      carLineMarkerInfo.current.moveAlong(carLine, 200);
+
+      map.current.setCenter(position);
+    }
+  }, [mapProps.drivingLineData]);
+
+  // 切换轨迹回放车的状态
+  useEffect(() => {
+    if (carLineMarkerInfo.current) {
+      if (isRunning) {
+        // 暂停显示当前车辆信息
+        carLineMarkerInfo.current.pauseMove();
+        const position = havePassedArr.current[havePassedArr.current.length - 1];
+        IMAP.showCarInfo(
+          carLineMarkerInfo.current,
+          map.current,
+          { position: [position.lng, position.lat] },
+          openInfoWin
+        );
+      } else {
+        if (infoWindowInfo.current) {
+          infoWindowInfo.current.close();
+        }
+        if (finishedRun.current) {
+          finishedRun.current = false;
+          // 重新跑现在的车辆
+          carLineMarkerInfo.current.moveAlong(currentAllPoints.current, 200);
+        } else {
+          carLineMarkerInfo.current.resumeMove();
+        }
+      }
+    }
+  }, [isRunning]);
+
+  // 车当前的运行速度
+  useEffect(() => {
+    if (currentAllPoints.current.length) {
+      notPassedArr.current = [...currentAllPoints.current.slice(currentPoint)];
+    }
+    if (carLineMarkerInfo.current) {
+      // 切换速度，看下现在的点跑到哪里了，然后截断现在的点的位置，继续跑
+      carLineMarkerInfo.current.moveAlong(notPassedArr.current, 200 * carSpeed);
+    }
+    // 移动车
+  }, [currentPoint, carSpeed]);
+  // 批量标记车辆 大批量车辆打点专用
   function renderMarker(data: any) {
     const markersInfo: any = [];
     data?.forEach((element: any) => {
@@ -162,6 +227,7 @@ export function useIMapStore(mapProps: TIMapProps) {
     );
   }
 
+  // 点击marker展示的窗口
   function openInfoWin(markerInfo: any, map: any, marker: any, infoWindow: any, isBindAction = true) {
     regeoCode([marker.position[0], marker.position[1]]).then(place => {
       infoWindow.setInfoTplData({
@@ -174,6 +240,8 @@ export function useIMapStore(mapProps: TIMapProps) {
       });
       isBindAction && bindAction(infoWindow, marker);
       infoWindow.open(map, markerInfo.getPosition());
+
+      infoWindowInfo.current = infoWindow;
     });
   }
 

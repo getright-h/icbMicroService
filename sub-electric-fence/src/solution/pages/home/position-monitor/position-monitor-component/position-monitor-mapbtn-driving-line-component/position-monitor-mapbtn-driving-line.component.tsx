@@ -4,7 +4,7 @@ import { usePositionMonitorMapbtnDrivingLineStore } from './position-monitor-map
 import { Drawer, Select, Button, Slider } from 'antd';
 import { IPositionMonitorMapbtnDrivingProps, SELECTDATECONST } from './position-monitor-mapbtn-driving-line.interface';
 import { IMapComponent, TimePickerComponent, ITableComponent } from '~/solution/components/component.module';
-import { BackwardOutlined, ForwardOutlined, PlayCircleOutlined } from '@ant-design/icons';
+import { BackwardOutlined, ForwardOutlined, PauseCircleOutlined, PlayCircleOutlined } from '@ant-design/icons';
 import { positionMonitorMapBtnDrivingColumns } from './position-monitor-mapbtn-driving-line.column';
 const { Option } = Select;
 export default React.memo((props: IPositionMonitorMapbtnDrivingProps) => {
@@ -14,10 +14,15 @@ export default React.memo((props: IPositionMonitorMapbtnDrivingProps) => {
     onShowTableClick,
     changeDateTimeRange,
     getDateTimeInfo,
-    confirmRun
+    confirmRun,
+    onSwitchOFFONClick,
+    onSpeedChangeClick,
+    setEndRunning,
+    runCurrentPoint,
+    changeSliderProgress
   } = usePositionMonitorMapbtnDrivingLineStore();
-  const { refreshTime, dateTimeRangeControllerValue, drivingLineData, stopMarkers } = state;
-  const { isLoading, searchForm, tableData, total, showTable, timeInfo } = state;
+  const { refreshTime, dateTimeRangeControllerValue, drivingLineData, stopMarkers, currentPoint } = state;
+  const { isLoading, searchForm, tableData, total, showTable, timeInfo, isRunning, carSpeedBase } = state;
   const { closeMapDrivingPage, mapbtnDrivingVisible } = props;
   function Title() {
     return (
@@ -74,12 +79,26 @@ export default React.memo((props: IPositionMonitorMapbtnDrivingProps) => {
         </div>
         <div className={style.controllerLine}>
           <div className={style.controllerLineContent}>
-            <Slider defaultValue={30} disabled tooltipVisible />
+            <Slider
+              value={currentPoint}
+              marks={{
+                0: drivingLineData[0] + '',
+                [drivingLineData.length - 1]: drivingLineData[drivingLineData.length - 1] + ''
+              }}
+              max={drivingLineData.length - 1}
+              min={0}
+              onChange={changeSliderProgress}
+              tipFormatter={value => drivingLineData[value]}
+              tooltipVisible
+            />
             <div className={style.controllerButton}>
-              <BackwardOutlined className={style.iconColor} />
-              <PlayCircleOutlined className={style.iconColor} />
-              {/* <PauseCircleOutlined className={style.iconColor} />{' '} */}
-              <ForwardOutlined className={style.iconColor} />
+              <BackwardOutlined className={style.iconColor} onClick={() => onSpeedChangeClick(false)} />
+              {isRunning ? (
+                <PlayCircleOutlined className={style.iconColor} onClick={() => onSwitchOFFONClick(false)} />
+              ) : (
+                <PauseCircleOutlined className={style.iconColor} onClick={() => onSwitchOFFONClick(true)} />
+              )}
+              <ForwardOutlined className={style.iconColor} onClick={() => onSpeedChangeClick(true)} />
             </div>
           </div>
           <div className={style.controllerLineButton} onClick={onShowTableClick}>
@@ -98,14 +117,22 @@ export default React.memo((props: IPositionMonitorMapbtnDrivingProps) => {
   }
 
   function DrawerContent() {
-    const props = {
-      id: 'drivingContainer',
-      needSearchAddress: false,
-      needISelectCarLoadingComponent: false,
-      height: '93vh',
-      drivingLineData,
-      stopMarkers
-    };
+    const props = React.useMemo(
+      () => ({
+        id: 'drivingContainer',
+        needSearchAddress: false,
+        needISelectCarLoadingComponent: false,
+        height: '93vh',
+        drivingLineData,
+        stopMarkers,
+        isRunning,
+        carSpeed: carSpeedBase,
+        setEndRunning,
+        runCurrentPoint,
+        currentPoint
+      }),
+      [carSpeedBase, isRunning, stopMarkers, drivingLineData, currentPoint]
+    );
     return (
       <div>
         {RenderSelect()}

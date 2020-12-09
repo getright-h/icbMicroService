@@ -3,11 +3,26 @@ import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import moment from 'moment';
 export function usePositionMonitorMapbtnDrivingLineStore() {
   const { state, setStateWrap } = useStateStore(new IPositionMonitorMapbtnDrivingLineState());
+  const { carSpeedBase, drivingLineData } = state;
   function changeTablePageIndex() {}
 
   function onShowTableClick() {
     setStateWrap({
       showTable: !state.showTable
+    });
+  }
+
+  function setEndRunning() {
+    setStateWrap({
+      isRunning: true,
+      carSpeedBase: 1,
+      currentPoint: drivingLineData.length - 1
+    });
+  }
+
+  function changeSliderProgress(value: number) {
+    setStateWrap({
+      currentPoint: value
     });
   }
 
@@ -63,6 +78,37 @@ export function usePositionMonitorMapbtnDrivingLineStore() {
     });
   }
 
+  function runCurrentPoint(index: number) {
+    setStateWrap({
+      currentPoint: index
+    });
+  }
+
+  function onSwitchOFFONClick(isON: boolean) {
+    setStateWrap({
+      isRunning: isON
+    });
+  }
+
+  function onSpeedChangeClick(isFast: boolean) {
+    const carSpeedInfo = isFast ? carSpeedBase * 2 : carSpeedBase / 2;
+    setStateWrap({
+      carSpeedBase: carSpeedInfo
+    });
+  }
+
   function confirmRun() {}
-  return { state, changeTablePageIndex, onShowTableClick, changeDateTimeRange, getDateTimeInfo, confirmRun };
+  return {
+    state,
+    changeTablePageIndex,
+    onShowTableClick,
+    changeDateTimeRange,
+    getDateTimeInfo,
+    onSwitchOFFONClick,
+    onSpeedChangeClick,
+    confirmRun,
+    setEndRunning,
+    runCurrentPoint,
+    changeSliderProgress
+  };
 }

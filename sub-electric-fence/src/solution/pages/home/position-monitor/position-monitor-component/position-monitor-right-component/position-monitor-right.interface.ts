@@ -4,5 +4,5 @@
  */
 export class IPositionMonitorRightState {
   mapbtnTrackrVisible = false;
-  mapbtnDrivingVisible = false;
+  mapbtnDrivingVisible = true;
 }

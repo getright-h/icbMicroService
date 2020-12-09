@@ -9,6 +9,9 @@ export class IPositionMonitorMapbtnDrivingLineState {
     index: 1,
     size: 10
   };
+  currentPoint = 0;
+  carSpeedBase = 1;
+  isRunning: boolean;
   tableData: Array<any> = [];
   total = 0;
   showTable = false;

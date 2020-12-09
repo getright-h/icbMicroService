@@ -11,7 +11,9 @@ export class IIMapState {
 export type TIMapProps = {
   locationCarMarkerList?: any[];
   currentSelectCar?: any;
+  isRunning?: boolean;
   id: string;
+  carSpeed?: number;
   needSearchAddress?: boolean;
   height?: string;
   needDrawRactangle?: boolean;
@@ -19,5 +21,9 @@ export type TIMapProps = {
   drawDrivingLine?: (id: string) => void;
   onMapTrack?: (id: string) => void;
   drivingLineData?: any[];
+  runCurrentPoint?: (index: number) => void;
   stopMarkers?: any[];
+  setEndRunning?: () => void;
+  // 当前车辆跑到哪里了
+  currentPoint?: number;
 };
