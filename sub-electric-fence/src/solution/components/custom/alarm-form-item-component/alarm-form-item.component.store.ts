@@ -22,9 +22,12 @@ export function useAlarmFormItemStore(props: IAlarmFormItemProp) {
 
   function initFormInfo() {
     const formInfo = [];
-    alarmTypeTemplates[initialInfo.code].forEach(item => {
-      formInfo.push({ ...item, alarmTemplateId: initialInfo.id });
-    });
+    console.log(initialInfo.code);
+
+    initialInfo.code &&
+      alarmTypeTemplates[initialInfo.code]?.forEach(item => {
+        formInfo.push({ ...item, alarmTemplateId: initialInfo.id });
+      });
     if (hasTempName) {
       formInfo.unshift({ ...nameTemplate, alarmTemplateId: initialInfo.id });
     }
@@ -37,20 +40,24 @@ export function useAlarmFormItemStore(props: IAlarmFormItemProp) {
   }
 
   function formatFormData(id: string, formInfo: AlarmTypeItem[]) {
-    alarmManageService.queryTemplatePackageDetail(id).subscribe(res => {
-      !hasTempName && res.shift();
-      formInfo.map((item, i) => {
-        Object.assign(item, res[i]);
-      });
+    const { tempalteValue = [] } = props;
+    // alarmManageService.queryTemplatePackageDetail(id).subscribe(res => {
+    console.log(tempalteValue, 'tempalteValue');
+    // });
 
-      // 行驶报警
-      let durationFields: DurationField[] = [];
-      if (initialInfo.code === AlarmTypeEnum.Running) {
-        durationFields = JSON.parse(res.find(item => item.alarmKey === 'Duration').alarmValue);
-      }
-      setStateWrap({ formInfo, durationFields });
-      props.getFormInfo(formInfo);
+    !hasTempName && tempalteValue.shift();
+    formInfo.map((item, i) => {
+      Object.assign(item, tempalteValue[i]);
     });
+
+    // 行驶报警
+    let durationFields: DurationField[] = [];
+    if (initialInfo.code === AlarmTypeEnum.Running) {
+      durationFields = JSON.parse(tempalteValue.find(item => item.alarmKey === 'Duration').alarmValue);
+    }
+    console.log(formInfo, 'yes');
+    setStateWrap({ formInfo, durationFields });
+    props.getFormInfo(formInfo);
   }
 
   function handleInputChange(value: any, formItem: AlarmTypeItem) {

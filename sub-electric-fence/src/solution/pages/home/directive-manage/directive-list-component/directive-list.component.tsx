@@ -72,7 +72,7 @@ export default function DirectiveListComponent() {
             </Form.Item>
           </Col> */}
           <Col span={5}>
-            <Form.Item name="method" label="指令类型">
+            <Form.Item name="cmdCode" label="指令类型">
               <ISelectLoadingComponent
                 reqUrl="getTypesList"
                 placeholder="请选择指令类型"
@@ -81,7 +81,7 @@ export default function DirectiveListComponent() {
             </Form.Item>
           </Col>
           <Col span={10}>
-            <Form.Item name="method" label="发送时间" wrapperCol={{ span: 24 }} style={{ float: 'left' }}>
+            <Form.Item name="time" label="发送时间" wrapperCol={{ span: 24 }} style={{ float: 'left' }}>
               <TimePickerComponent
                 getDateTimeInfo={(value: any, option: any) => getCurrentSelectInfo(value, option, 'dateRange')}
                 pickerType="dateRange"
@@ -95,10 +95,12 @@ export default function DirectiveListComponent() {
   function renderSearchButtons() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary" onClick={searchClick}>
+        <Button type="primary" onClick={searchClick} loading={isLoading}>
           查询
         </Button>
-        <Button onClick={initSearchForm}>清空</Button>
+        <Button onClick={initSearchForm} loading={isLoading}>
+          清空
+        </Button>
         <Button type="primary" onClick={() => callbackAction(ModalType.PATCH)}>
           下发指令
         </Button>
@@ -128,7 +130,7 @@ export default function DirectiveListComponent() {
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
       ></TablePageTelComponent>
-      <DirectivePatchModalComponent visible={patchModalVisible} close={handleModalCancel} />
+      {patchModalVisible && <DirectivePatchModalComponent visible={patchModalVisible} close={handleModalCancel} />}
     </React.Fragment>
   );
 }

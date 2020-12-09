@@ -4,18 +4,39 @@
  */
 
 import { IDirectiveReturn } from '~model/dto/drap-choose-loading.dto';
+import { AlarmPackageContent } from '~/solution/model/dto/alarm-manage.dto';
+
+export enum Type {
+  Deivce = 1,
+  MonitorGroup = 2
+}
+export enum ModalType {
+  CUSTOM,
+  FORM
+}
+
 export interface IDirectiveModalProps {
   visible: boolean;
   close: Function;
 }
 export class IDirectiveModalState {
   custom = false;
-  isDevice = true;
+  isDevice = Type.Deivce;
   isParams = true;
+  confirmLoading = false;
   currentIndex = -1;
   currentDirective: IDirectiveReturn = {};
+  currentDirectiveTempalet: any[] = [];
+  tempalteValue: AlarmPackageContent[] = [];
+  currentDirectiveTemObj: AlarmPackageContent = {};
 }
-export enum ModalType {
-  CUSTOM,
-  FORM
+
+export interface ISendCode {
+  type?: number; // 类型（1：设备号，2：监控组） ,
+  codes?: Array<any>; // 设备号 ,
+  vehicleGroupId?: string; // 监控组id ,
+  cmdCode?: string; // 指令码 ,
+  cmdName?: string; // 指令名称 ,
+  cmdValue?: string; // 指令内容 ,
+  switch?: boolean; //打开、关闭
 }

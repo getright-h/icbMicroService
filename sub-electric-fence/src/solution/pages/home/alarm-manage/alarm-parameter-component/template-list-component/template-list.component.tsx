@@ -16,7 +16,7 @@ export default function TemplateListComponent(props: ITemplateListProps) {
     getFormInfo,
     deleteAlarmTemplate
   } = useTemplateListStore(props);
-  const { confirmLoading, templateList, selectTempId } = state;
+  const { confirmLoading, templateList, selectTempId, tempalteValue } = state;
   const { visible, info } = props;
 
   function TemplateList() {
@@ -53,6 +53,7 @@ export default function TemplateListComponent(props: ITemplateListProps) {
               initialInfo={info}
               selectTempId={selectTempId}
               hasTempName
+              tempalteValue={tempalteValue}
               getFormInfo={info => getFormInfo(info)}
             />
           ) : (

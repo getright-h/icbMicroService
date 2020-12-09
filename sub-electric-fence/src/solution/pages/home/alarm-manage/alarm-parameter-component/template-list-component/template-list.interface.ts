@@ -9,6 +9,7 @@ export class ITemplateListState {
   confirmLoading = false;
   selectTempId: string;
   selectTempInfo: AlarmPackageContent[] = [];
+  tempalteValue: AlarmPackageContent[] = [];
 }
 export class ITemplateListProps {
   visible: boolean;

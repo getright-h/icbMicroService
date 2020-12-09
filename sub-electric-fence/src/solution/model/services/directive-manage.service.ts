@@ -13,6 +13,7 @@ const GET_CMD_LIST = 'gps/cmd/list';
 const DEL_CMD = 'gps/cmd/delete';
 const CMD_TYPES = 'gps/cmd/types';
 const CMD_SEND = 'gps/cmd/send';
+const QUERY_ALARM_TEMPLATE_PACKAGE = 'gps/manage/queryAlarmTemplatePackage';
 @DepUtil.Injectable()
 export class DirectiveService implements DirectiveManage {
   @DepUtil.Inject(RequestService)
@@ -28,5 +29,8 @@ export class DirectiveService implements DirectiveManage {
   }
   sendCmd(params: ICmdSendParam): Observable<boolean> {
     return this.requestService.post(CMD_SEND, params);
+  }
+  queryAlarmTemplatePackage(params: { code: string }): Observable<boolean> {
+    return this.requestService.get(QUERY_ALARM_TEMPLATE_PACKAGE, params);
   }
 }

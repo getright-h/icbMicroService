@@ -29,7 +29,10 @@ export function useTemplateListStore(props: ITemplateListProps) {
   }
 
   function selectTemplate(id: string) {
-    setStateWrap({ selectTempId: id });
+    // 直接在父级获取模板信息
+    alarmManageService.queryTemplatePackageDetail(id).subscribe((res: any) => {
+      setStateWrap({ selectTempId: id, tempalteValue: res || [] });
+    });
   }
 
   function submitTemplate() {

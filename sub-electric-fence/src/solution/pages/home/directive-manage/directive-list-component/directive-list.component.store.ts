@@ -3,26 +3,36 @@ import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form } from 'antd';
 import { DirectiveService } from '~/solution/model/services/directive-manage.service';
 import { useEffect } from 'react';
-
+import moment from 'moment';
+import { Subscription } from 'rxjs';
 export function useDirectiveListStore() {
   const { state, setStateWrap, getState } = useStateStore(new IDirectiveListState());
   const directiveService: DirectiveService = new DirectiveService();
   const [searchForm] = Form.useForm();
+  let getCmdListSubscription: Subscription;
 
+  const params = {
+    endTime: moment().valueOf(),
+    beginTime: moment()
+      .subtract(10, 'days')
+      .valueOf()
+  };
   useEffect(() => {
     initSearchForm();
+    return () => {
+      getCmdListSubscription && getCmdListSubscription.unsubscribe();
+    };
   }, []);
 
   function getTableData() {
     setStateWrap({ isLoading: true });
     const { pageIndex, pageSize } = getState();
-    directiveService
+    getCmdListSubscription = directiveService
       .getCmdList({
         ...searchForm.getFieldsValue(),
         index: pageIndex,
         size: pageSize,
-        beginTime: new Date('2020/12/01').getTime(),
-        endTime: new Date('2020/12/04').getTime()
+        ...params
       })
       .subscribe(
         res => {
@@ -74,13 +84,15 @@ export function useDirectiveListStore() {
   }
 
   function getCurrentSelectInfo(value: any, option: any, type: string) {
-    if (type == 'dateRange') {
-      console.log(value, option);
+    if (type == 'dateRange' && Array.isArray(value) && value.length) {
+      value[0] && (params.beginTime = new Date(value[0]).getTime());
+      value[1] && (params.endTime = new Date(value[1]).getTime());
       return;
     }
-
     const { info = {} } = option;
-    console.log(info);
+    if (type == 'directiveType') {
+      searchForm.setFieldsValue({ cmdCode: info?.cmdCode });
+    }
   }
   return {
     state,

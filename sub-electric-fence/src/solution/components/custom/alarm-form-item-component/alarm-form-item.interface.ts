@@ -1,5 +1,6 @@
 import { AlarmTypeEnum } from '~/solution/shared/constant/alarm.const';
 import { DurationField } from './duration-setting-component/duration-setting.interface';
+import { AlarmPackageContent } from '~/solution/model/dto/alarm-manage.dto';
 
 /**
  * @export state变量定义和初始化
@@ -14,7 +15,10 @@ export class IAlarmFormItemProp {
   initialInfo: Record<string, any>;
   hasTempName?: boolean;
   selectTempId?: string;
+  tempalteValue?: AlarmPackageContent[];
   getFormInfo: (formInfo: any) => void;
+  isShowTemplateName?: boolean;
+  isEnbaleEdit?: boolean;
 }
 
 export enum FormTypeEnum {
