@@ -44,21 +44,29 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
 
   function submitForm() {
     form.validateFields().then((values: any) => {
-      const { codes, type, vehicleGroupId, directiveCode, directiveType = {}, customValue } = values;
+      const { codes, type, vehicleGroupId, directiveCode, directiveType = {}, customValue, verifyCode } = values;
       const { currentDirective, isParams, custom, currentDirectiveTemObj } = state;
       const params: ISendCode = {};
       params.codes = codes && codes.split('\n');
       params.type = type;
       params.cmdCode = currentDirective.cmdCode;
       params.cmdName = currentDirective.cmdName;
+      // 指令密码
+      currentDirective.isVerify && (params.verifyCode = String(verifyCode));
       // 监控组
       vehicleGroupId && (params.vehicleGroupId = vehicleGroupId);
       params.switch = !currentDirective.hasSwitch ? null : isParams;
       // codes的长度不能大于 1000
       if (Array.isArray(params.codes) && params.codes.length > 1000) {
-        message.warn('设备号不能大于1000个');
+        message.warn('设备号不能大于1000个!');
         return;
       }
+      // 如果打开指令选择 就必须选择一个模板
+      if (isParams && !currentDirective.cmdCode) {
+        message.warn('请选择一个指令模板!');
+        return;
+      }
+
       const cmdValue: any[] = [];
 
       // 选择模板

@@ -39,4 +39,5 @@ export interface ISendCode {
   cmdName?: string; // 指令名称 ,
   cmdValue?: string; // 指令内容 ,
   switch?: boolean; //打开、关闭
+  verifyCode?: string;
 }

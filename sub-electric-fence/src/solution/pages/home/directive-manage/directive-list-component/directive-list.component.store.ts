@@ -3,7 +3,7 @@ import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form } from 'antd';
 import { DirectiveService } from '~/solution/model/services/directive-manage.service';
 import { useEffect } from 'react';
-import moment from 'moment';
+
 import { Subscription } from 'rxjs';
 export function useDirectiveListStore() {
   const { state, setStateWrap, getState } = useStateStore(new IDirectiveListState());
@@ -11,12 +11,12 @@ export function useDirectiveListStore() {
   const [searchForm] = Form.useForm();
   let getCmdListSubscription: Subscription;
 
-  const params = {
-    endTime: moment().valueOf(),
-    beginTime: moment()
-      .subtract(10, 'days')
-      .valueOf()
-  };
+  // const params = {
+  //   endTime: moment(moment().format('YYYY MM DD') + ' 23:59:59').valueOf(),
+  //   beginTime: moment()
+  //     .subtract(1, 'months')
+  //     .valueOf()
+  // };
   useEffect(() => {
     initSearchForm();
     return () => {
@@ -27,12 +27,13 @@ export function useDirectiveListStore() {
   function getTableData() {
     setStateWrap({ isLoading: true });
     const { pageIndex, pageSize } = getState();
+    const { searchTime } = state;
     getCmdListSubscription = directiveService
       .getCmdList({
         ...searchForm.getFieldsValue(),
         index: pageIndex,
         size: pageSize,
-        ...params
+        ...searchTime
       })
       .subscribe(
         res => {
@@ -85,8 +86,11 @@ export function useDirectiveListStore() {
 
   function getCurrentSelectInfo(value: any, option: any, type: string) {
     if (type == 'dateRange' && Array.isArray(value) && value.length) {
-      value[0] && (params.beginTime = new Date(value[0]).getTime());
-      value[1] && (params.endTime = new Date(value[1]).getTime());
+      const searchTime: any = {};
+
+      value[0] && (searchTime.beginTime = new Date(value[0]).getTime());
+      value[1] && (searchTime.endTime = new Date(value[1]).getTime());
+      setStateWrap({ searchTime });
       return;
     }
     const { info = {} } = option;

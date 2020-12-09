@@ -10,6 +10,7 @@ import { AlarmParameterColumn } from './directive-list.column';
 import { useDirectiveListStore } from './directive-list.component.store';
 import DirectivePatchModalComponent from '../wiget/directive-patch-model-component/directive-patch-moda.component';
 import { ModalType } from './directive-list.interface';
+import moment from 'moment';
 import { StorageUtil } from '~/framework/util/storage';
 export default function DirectiveListComponent() {
   const {
@@ -22,7 +23,7 @@ export default function DirectiveListComponent() {
     handleModalCancel,
     getCurrentSelectInfo
   } = useDirectiveListStore();
-  const { isLoading, tableData, total, pageIndex, pageSize, patchModalVisible } = state;
+  const { isLoading, tableData, total, pageIndex, pageSize, patchModalVisible, searchTime } = state;
 
   function renderSelectItems() {
     const layout = {
@@ -39,6 +40,7 @@ export default function DirectiveListComponent() {
                 placeholder="电话/车牌号/车架号/设备"
                 showSearch={true}
                 searchKeyName="strValue"
+                allowClear={false}
                 getCurrentSelectInfo={(value: any, option: any) => getCurrentSelectInfo(value, option, 'strValue')}
               />
             </Form.Item>
@@ -74,6 +76,7 @@ export default function DirectiveListComponent() {
           <Col span={5}>
             <Form.Item name="cmdCode" label="指令类型">
               <ISelectLoadingComponent
+                allowClear={false}
                 reqUrl="getTypesList"
                 placeholder="请选择指令类型"
                 getCurrentSelectInfo={(value: any, option: any) => getCurrentSelectInfo(value, option, 'directiveType')}
@@ -84,6 +87,10 @@ export default function DirectiveListComponent() {
             <Form.Item name="time" label="发送时间" wrapperCol={{ span: 24 }} style={{ float: 'left' }}>
               <TimePickerComponent
                 getDateTimeInfo={(value: any, option: any) => getCurrentSelectInfo(value, option, 'dateRange')}
+                timeInfo={[
+                  moment(searchTime.beginTime).format('YYYY MM DD'),
+                  moment(searchTime.endTime).format('YYYY MM DD')
+                ]}
                 pickerType="dateRange"
               />
             </Form.Item>
