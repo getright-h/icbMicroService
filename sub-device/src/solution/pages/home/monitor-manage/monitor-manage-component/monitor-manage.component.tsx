@@ -130,12 +130,12 @@ export default function MonitorManageComponent() {
           <div>
             {currentMonitorGroup.id && <Button onClick={() => callbackAction(ModalType.ADD_CAR)}>添加监控车辆</Button>}
             <Button
-              disabled={!!currentMonitorGroup.id}
+              disabled={!currentMonitorGroup.id}
               type={'primary'}
               style={{ marginLeft: 20 }}
               onClick={() => callbackAction(ModalType.ALARM)}
             >
-              报警设置
+              报警通知
             </Button>
             <Button
               disabled={transformDisable}
@@ -154,7 +154,6 @@ export default function MonitorManageComponent() {
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
       />
-
       {transformModalVisible && (
         <TransformMonitorComponent
           close={handleModalCancel}
