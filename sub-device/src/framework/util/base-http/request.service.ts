@@ -41,6 +41,8 @@ class RequestService {
       returnInfo = process.env.APPROVAL_MANAGE;
     } else if (!!~url.indexOf('vehicle/manage/') || !!~url.indexOf('dispatch/manage/')) {
       returnInfo = process.env.VEHICLE;
+    } else if (!!~url.indexOf('gps/manage/')) {
+      returnInfo = process.env.GPS;
     } else {
       returnInfo = process.env.MAIN;
     }
