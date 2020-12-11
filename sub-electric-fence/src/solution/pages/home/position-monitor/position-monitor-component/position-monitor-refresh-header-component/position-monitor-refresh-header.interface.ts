@@ -3,9 +3,11 @@
  * @class IPositionMonitorRefreshHeaderState
  */
 export class IPositionMonitorRefreshHeaderState {
-  refreshTime = 20;
+  refreshTime = 0;
 }
 
 export interface IPositionMonitorRefreshHeaderProps {
   refreshContentInfo: () => void;
+  sentTime?: number;
+  customStyle?: {};
 }

@@ -1,9 +1,24 @@
 import { IPositionMonitorMapbtnDrivingLineState, SELECTDATE } from './position-monitor-mapbtn-driving-line.interface';
-import { useStateStore } from '~/framework/aop/hooks/use-base-store';
+import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
 import moment from 'moment';
-export function usePositionMonitorMapbtnDrivingLineStore() {
+import { useEffect } from 'react';
+import { PositionMonitorService } from '~/solution/model/services/position-monitor.service';
+import { TPositionMonitor } from '../position-monitor-redux/position-monitor-reducer';
+import { formatToUnix } from '~/solution/shared/util/common.util';
+export function usePositionMonitorMapbtnDrivingLineStore(reduxState: TPositionMonitor) {
   const { state, setStateWrap } = useStateStore(new IPositionMonitorMapbtnDrivingLineState());
-  const { carSpeedBase, drivingLineData } = state;
+  const { carSpeedBase, drivingLineData, deviceCode, timeInfo } = state;
+  const { pointList } = drivingLineData;
+  const { currentDoActionCarInfo } = reduxState;
+  const positionMonitorService: PositionMonitorService = useService(PositionMonitorService);
+  useEffect(() => {
+    // 当前需要查看信息的车
+    if (currentDoActionCarInfo) {
+      setStateWrap({
+        deviceCode: currentDoActionCarInfo.deviceInfo.deviceCode
+      });
+    }
+  }, [currentDoActionCarInfo]);
   function changeTablePageIndex() {}
 
   function onShowTableClick() {
@@ -12,17 +27,29 @@ export function usePositionMonitorMapbtnDrivingLineStore() {
     });
   }
 
+  function getCurrentLine(code: string) {
+    positionMonitorService.realTimeTracking({ code }).subscribe(res => {
+      // setStateWrap({ carLine: res });
+    });
+  }
+
   function setEndRunning() {
     setStateWrap({
       isRunning: true,
       carSpeedBase: 1,
-      currentPoint: drivingLineData.length - 1
+      currentPoint: drivingLineData.pointList.length - 1
     });
   }
 
   function changeSliderProgress(value: number) {
     setStateWrap({
       currentPoint: value
+    });
+  }
+
+  function getDeviceCode(value: string) {
+    setStateWrap({
+      deviceCode: value
     });
   }
 
@@ -97,7 +124,23 @@ export function usePositionMonitorMapbtnDrivingLineStore() {
     });
   }
 
-  function confirmRun() {}
+  function confirmRun() {
+    const params = {
+      deviceCode,
+      beginTime: timeInfo && timeInfo[0] ? formatToUnix(timeInfo[0]) : -1,
+      endTime: timeInfo && timeInfo[1] ? formatToUnix(timeInfo[1]) : -1
+    };
+    positionMonitorService.queryVehicleHistoryTrajectory(params).subscribe(res => {
+      setStateWrap({
+        drivingLineData: res
+      });
+    });
+    positionMonitorService.queryVehicleTrajectoryArrayList(params).subscribe(res => {
+      setStateWrap({
+        tableData: res
+      });
+    });
+  }
   return {
     state,
     changeTablePageIndex,
@@ -109,6 +152,7 @@ export function usePositionMonitorMapbtnDrivingLineStore() {
     confirmRun,
     setEndRunning,
     runCurrentPoint,
+    getDeviceCode,
     changeSliderProgress
   };
 }

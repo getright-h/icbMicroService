@@ -8,7 +8,11 @@ import { useEffect, useRef } from 'react';
 export function usePositionMonitorRefreshHeaderStore(props: IPositionMonitorRefreshHeaderProps) {
   const { state, setStateWrap } = useStateStore(new IPositionMonitorRefreshHeaderState());
   const setIntervalInfo: any = useRef();
+  const { sentTime = 20 } = props;
   let { refreshTime } = state;
+  useEffect(() => {
+    setStateWrap({ refreshTime: sentTime });
+  }, []);
   useEffect(() => {
     setRefreshTime();
     return () => {
@@ -28,7 +32,7 @@ export function usePositionMonitorRefreshHeaderStore(props: IPositionMonitorRefr
   }
 
   function resetRefresh() {
-    setStateWrap({ refreshTime: 20 });
+    setStateWrap({ refreshTime: sentTime });
     props.refreshContentInfo();
   }
   return { state, resetRefresh };

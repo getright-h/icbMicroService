@@ -57,3 +57,37 @@ export interface IQueryVehicleInfoPagedListParams {
   vehicleGroupId: string;
   strValue: string;
 }
+
+export interface RealTimeTrackingReturn {
+  pointList: PointList[];
+  plateNo?: string;
+  ownerName?: string;
+  vinNo?: string;
+  deviceCode?: DeviceCode[];
+  isOnline?: boolean;
+  durationTime?: number;
+  coordinates?: number[];
+  lastLocationTime?: string;
+}
+
+interface DeviceCode {
+  deviceCode: string;
+  typeId: string;
+  typeName: string;
+}
+
+interface PointList {
+  coordinates: number[];
+  direction: number;
+  speed: number;
+  time: number;
+}
+
+export interface QueryVehicleTrajectoryArrayListReturn {
+  deviceCode: string;
+  state: string;
+  coordinates: number[];
+  direction: number;
+  speed: number;
+  time: string;
+}

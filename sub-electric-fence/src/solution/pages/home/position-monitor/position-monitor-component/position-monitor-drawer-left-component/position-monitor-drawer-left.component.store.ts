@@ -104,6 +104,12 @@ export function usePositionMonitorDrawerLeftStore() {
       changeRows.forEach(item => {
         changeRowsIds.push(item.id);
       });
+      // 保证能够实时的勾选上，但是如果后端有问题会出现界面操作异常
+      const selectedRowKeys: any[] = [];
+      [...changeRows, ...checkedCarData].forEach(item => {
+        selectedRowKeys.push(item.id);
+      });
+      setStateWrap({ selectedRowKeys });
 
       changeRowsIds.length && (newchangeRows = await getNewestCarInfo(changeRowsIds));
 

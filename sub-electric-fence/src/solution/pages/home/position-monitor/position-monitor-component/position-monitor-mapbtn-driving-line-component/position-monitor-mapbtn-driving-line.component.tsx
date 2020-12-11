@@ -6,8 +6,10 @@ import { IPositionMonitorMapbtnDrivingProps, SELECTDATECONST } from './position-
 import { IMapComponent, TimePickerComponent, ITableComponent } from '~/solution/components/component.module';
 import { BackwardOutlined, ForwardOutlined, PauseCircleOutlined, PlayCircleOutlined } from '@ant-design/icons';
 import { positionMonitorMapBtnDrivingColumns } from './position-monitor-mapbtn-driving-line.column';
+import { PositionMonitorContext } from '../position-monitor.component';
 const { Option } = Select;
 export default React.memo((props: IPositionMonitorMapbtnDrivingProps) => {
+  const { reduxState } = React.useContext(PositionMonitorContext);
   const {
     state,
     changeTablePageIndex,
@@ -19,10 +21,13 @@ export default React.memo((props: IPositionMonitorMapbtnDrivingProps) => {
     onSpeedChangeClick,
     setEndRunning,
     runCurrentPoint,
-    changeSliderProgress
-  } = usePositionMonitorMapbtnDrivingLineStore();
+    changeSliderProgress,
+    getDeviceCode
+  } = usePositionMonitorMapbtnDrivingLineStore(reduxState);
+  const { currentDoActionCarInfo } = reduxState;
   const { refreshTime, dateTimeRangeControllerValue, drivingLineData, stopMarkers, currentPoint } = state;
-  const { isLoading, searchForm, tableData, total, showTable, timeInfo, isRunning, carSpeedBase } = state;
+  const { isLoading, searchForm, tableData, total, showTable, timeInfo, isRunning, carSpeedBase, deviceCode } = state;
+  const { pointList } = drivingLineData;
   const { closeMapDrivingPage, mapbtnDrivingVisible } = props;
   function Title() {
     return (
@@ -40,6 +45,7 @@ export default React.memo((props: IPositionMonitorMapbtnDrivingProps) => {
       pageIndex: searchForm.index,
       pageSize: searchForm.size,
       data: tableData,
+      pagination: false,
       total: total,
       changeTablePageIndex: (index: number, pageSize: number) => changeTablePageIndex()
     }),
@@ -52,8 +58,14 @@ export default React.memo((props: IPositionMonitorMapbtnDrivingProps) => {
         <div className={style.controllerContent}>
           <div className={style.selectContent}>
             <span> 设备号: </span>
-            <Select placeholder="搜索设备">
-              <Option value="jack">Jack</Option>
+            <Select placeholder="搜索设备" value={deviceCode} onChange={getDeviceCode}>
+              {currentDoActionCarInfo?.markerInfo?.deviceList.map(device => {
+                return (
+                  <Option key={device.deviceCode} value={device.deviceCode}>
+                    {device.typeName}
+                  </Option>
+                );
+              })}
             </Select>
           </div>
           <div className={style.selectContent}>
@@ -81,15 +93,19 @@ export default React.memo((props: IPositionMonitorMapbtnDrivingProps) => {
           <div className={style.controllerLineContent}>
             <Slider
               value={currentPoint}
-              marks={{
-                0: drivingLineData[0] + '',
-                [drivingLineData.length - 1]: drivingLineData[drivingLineData.length - 1] + ''
-              }}
-              max={drivingLineData.length - 1}
+              marks={
+                pointList
+                  ? {
+                      0: pointList[0] || 0,
+                      [pointList.length - 1]: pointList[pointList.length - 1] || 0
+                    }
+                  : {}
+              }
+              max={pointList?.length - 1}
               min={0}
               onChange={changeSliderProgress}
-              tipFormatter={value => drivingLineData[value]}
-              tooltipVisible
+              tipFormatter={value => pointList[value]}
+              tooltipVisible={!!pointList[0]}
             />
             <div className={style.controllerButton}>
               <BackwardOutlined className={style.iconColor} onClick={() => onSpeedChangeClick(false)} />

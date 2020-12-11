@@ -1,5 +1,5 @@
 import { EventDataNode } from 'antd/lib/tree';
-import { VehicleInfoParamReture } from '~/solution/model/dto/position-monitor.dto';
+import { DeviceList, VehicleInfoParamReture } from '~/solution/model/dto/position-monitor.dto';
 import { IAction } from '~/solution/shared/interfaces/common.interface';
 import { TYPES } from './position-monitor-types';
 
@@ -23,7 +23,7 @@ export type TPositionMonitor = {
   leftDrawerVisible: boolean;
   checkedCarData: VehicleInfoParamReture[];
   currentSelectCar: VehicleInfoParamReture;
-  currentDoActionCarInfo: VehicleInfoParamReture;
+  currentDoActionCarInfo: { deviceInfo: DeviceList; markerInfo: VehicleInfoParamReture };
   selectedRowKeys: any;
   mapbtnTrackrVisible: boolean;
 };

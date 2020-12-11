@@ -7,8 +7,9 @@ import { IPositionMonitorRefreshHeaderProps } from './position-monitor-refresh-h
 export default React.memo((props: IPositionMonitorRefreshHeaderProps) => {
   const { state, resetRefresh } = usePositionMonitorRefreshHeaderStore(props);
   const { refreshTime } = state;
+  const { customStyle = {} } = props;
   return (
-    <div className={style.contentTitle}>
+    <div className={style.contentTitle} style={customStyle}>
       <h1>定位监控</h1>
       {refreshTime && (
         <div className={style.refreshContent}>

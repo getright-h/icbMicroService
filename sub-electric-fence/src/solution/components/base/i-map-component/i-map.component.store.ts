@@ -61,7 +61,7 @@ export function useIMapStore(mapProps: TIMapProps) {
     }
   }, [locationCarMarkerList, currentSelectCar]);
 
-  //实时追踪的car,car会在最后一个店停下来
+  //实时追踪的car,car会在最后一个点停下来
   // 这个地方会进行轨迹修复
   useEffect(() => {
     if (mapProps.carLine) {
@@ -71,10 +71,8 @@ export function useIMapStore(mapProps: TIMapProps) {
       if (polyline.current) {
         map.current.remove(polyline.current);
       }
-      const carLine = mapProps.carLine.map(item => {
-        item = IMAP.initLonlat(item[0], item[1]);
-        return item;
-      });
+      const { coordinates, plateNo, vinNo } = mapProps.carLine;
+      const carLine = coordinates;
       polyline.current = IMAP.drawLine(map.current, carLine);
       const position = carLine[carLine.length - 1];
 
@@ -82,7 +80,7 @@ export function useIMapStore(mapProps: TIMapProps) {
         map: map.current,
         position: position,
         label: {
-          content: '<div>川A888888</div>',
+          content: `<div>${plateNo}</div>`,
           offset: new AMap.Pixel(-20, 26)
         },
         icon: 'https://webapi.amap.com/images/car.png',
@@ -90,7 +88,7 @@ export function useIMapStore(mapProps: TIMapProps) {
         autoRotation: true
       });
       // 第三个参数是在窗口需要展示的当前车辆的信息
-      IMAP.showCarInfo(carLineMarkerInfo.current, map.current, { position: [position.lng, position.lat] }, openInfoWin);
+      IMAP.showCarInfo(mapProps.carLine, map.current, { position }, openInfoWinCar);
       map.current.setCenter(position);
     }
   }, [mapProps.carLine]);
@@ -103,9 +101,10 @@ export function useIMapStore(mapProps: TIMapProps) {
     //drivingLineData 轨迹回放的点
     // 发生变化重新绘制播放
     map.current.clearMap();
-    if (mapProps.drivingLineData && mapProps.drivingLineData.length) {
-      const carLine = mapProps.drivingLineData.map(item => {
-        item = IMAP.initLonlat(item[0], item[1]);
+    if (mapProps.drivingLineData?.pointList?.length) {
+      const { pointList } = mapProps.drivingLineData;
+      const carLine = pointList.map(item => {
+        item = IMAP.initLonlat(item.coordinates[0], item.coordinates[1]);
         return item;
       });
       polyline.current = IMAP.drawLine(map.current, carLine);
@@ -113,7 +112,7 @@ export function useIMapStore(mapProps: TIMapProps) {
       carLineMarkerInfo.current = new AMap.Marker({
         map: map.current,
         label: {
-          content: '<div>川A888888</div>',
+          content: `<div>${mapProps.drivingLineData.plateNo}</div>`,
           offset: new AMap.Pixel(-20, 26)
         },
         icon: 'https://webapi.amap.com/images/car.png',
@@ -127,7 +126,7 @@ export function useIMapStore(mapProps: TIMapProps) {
         let currentIndex = 0;
         carLine.forEach((item, index) => {
           // 这里计算剩下的点，便于后面去转换速度
-          if (item.lng == newPosition.lng && item.lat == newPosition.lat) {
+          if (item[0] == newPosition.lng && item[1] == newPosition.lat) {
             currentIndex = index;
           }
         });
@@ -159,10 +158,10 @@ export function useIMapStore(mapProps: TIMapProps) {
         carLineMarkerInfo.current.pauseMove();
         const position = havePassedArr.current[havePassedArr.current.length - 1];
         IMAP.showCarInfo(
-          carLineMarkerInfo.current,
+          mapProps.drivingLineData,
           map.current,
           { position: [position.lng, position.lat] },
-          openInfoWin
+          openInfoWinCar
         );
       } else {
         if (infoWindowInfo.current) {
@@ -231,11 +230,10 @@ export function useIMapStore(mapProps: TIMapProps) {
   // 设置常驻地点
   function setPermanentPlaceList(permanentPlaceList: []) {}
 
-  // 点击marker展示的窗口
+  // 点击marker展示的窗口点击车的信息
   function openInfoWin(markerInfo: any, map: any, marker: any, infoWindow: any, isBindAction = true) {
     const vehicleInfo = marker.markerInfo;
     const deviceInfo = marker.deviceInfo;
-    console.log(vehicleInfo, deviceInfo);
 
     regeoCode([marker.position[0], marker.position[1]]).then(place => {
       infoWindow.setInfoTplData({
@@ -251,6 +249,28 @@ export function useIMapStore(mapProps: TIMapProps) {
         positionTime: deviceInfo.positionTime
       });
       isBindAction && bindAction(infoWindow, marker);
+      infoWindow.open(map, markerInfo.getPosition());
+
+      infoWindowInfo.current = infoWindow;
+    });
+  }
+
+  function openInfoWinCar(markerInfo: any, map: any, marker: any, infoWindow: any) {
+    const { plateNo, vinNo, ownerName, deviceCode, isOnline, durationTime, lastLocationTime } = markerInfo;
+
+    regeoCode([marker.position[0], marker.position[1]]).then(place => {
+      infoWindow.setInfoTplData({
+        ownerName: ownerName || '无',
+        plateNo: plateNo || '无',
+        vinNo: vinNo || '无',
+        deviceCode: deviceCode.deviceCode || '无',
+        typeName: deviceCode.typeName || '无',
+        // vehicleState: isRunning ? '动态' : '静止' + ' ' + deviceInfo.speed + 'km/h',
+        deviceState: isOnline ? '在线' : `离线 ${durationTime}h`,
+        lalg: `${marker.position[0]}, ${marker.position[1]}`,
+        place,
+        positionTime: lastLocationTime
+      });
       infoWindow.open(map, markerInfo.getPosition());
 
       infoWindowInfo.current = infoWindow;

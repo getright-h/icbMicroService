@@ -4,9 +4,9 @@ import { usePositionMonitorMapbtnTrackStore } from './position-monitor-mapbtn-tr
 import { Drawer } from 'antd';
 import { IMapComponent } from '~/solution/components/component.module';
 import { IPositionMonitorMapbtnTrackProps } from './position-monitor-mapbtn-track.interface';
-
+import PositionMonitorRefreshHeaderComponent from '../position-monitor-refresh-header-component/position-monitor-refresh-header.component';
 export default React.memo((props: IPositionMonitorMapbtnTrackProps) => {
-  const { state } = usePositionMonitorMapbtnTrackStore();
+  const { state, refreshContentInfo } = usePositionMonitorMapbtnTrackStore();
   const { mapbtnTrackrVisible, closeMapbtnPage } = props;
   function DrawerContent() {
     const props = {
@@ -23,17 +23,23 @@ export default React.memo((props: IPositionMonitorMapbtnTrackProps) => {
     );
   }
 
-  function Title() {
-    return (
-      <div>
-        追踪
-        <span>{state.refreshTime}</span>
-      </div>
-    );
-  }
+  // function Title() {
+  //   return (
+  //     <div>
+  //       追踪
+  //       <span>{state.refreshTime}</span>
+  //     </div>
+  //   );
+  // }
   return (
     <Drawer
-      title={<Title />}
+      title={
+        <PositionMonitorRefreshHeaderComponent
+          refreshContentInfo={refreshContentInfo}
+          sentTime={5}
+          customStyle={{ padding: 0, marginRight: '40px', border: 0 }}
+        />
+      }
       placement="bottom"
       mask={false}
       closable

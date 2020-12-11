@@ -114,35 +114,39 @@ export const IMAP = {
     markerInfo: any,
     map: any,
     marker: any,
-    callback?: (markerInfo: any, map: any, marker: any, infoWindow: any, isBindAction: boolean) => void
+    callback?: (markerInfo: any, map: any, marker: any, infoWindow: any) => void
   ) {
     AMapUI.loadUI(['overlay/SimpleInfoWindow'], (SimpleInfoWindow: any) => {
       const infoWindow = new SimpleInfoWindow({
         infoTitle: '<strong>车辆状态</strong>',
         infoBody: `<div class="vehicle-basic-info">
-            <span class="title">基本信息</span>
-            <div class="basic">
-                <div class="item">车牌：<%- licenceNumber %></div>
-                <div class="item">车架号：<%- identificationNumber %></div>
-                <div class="item">经销商名：<%- unitName %></div>
-            </div>
-            </div>
-            <div class="vehicle-divide-line"></div>
-            <div class="vehicle-state-info">
-                <span class="title">状态</span>
-                <div class="basic">
-                    <span class="item">经纬度：<%- lalg %></span>
-                    <span class="item">状态：<%- status %></span>
-                    <span class="item">地址：<%- place %></span>
-                </div>
-            </div>
-            <div>
-            </div>`,
+        <span class="title">基本信息</span>
+        <div class="basic">
+        <div class="item">车主姓名：<%- ownerName %></div>
+         <div class="item">车牌号：<%- plateNo %></div>
+         <div class="item">车架号：<%- vinNo %></div>
+         <div class="item">设备号：<%- deviceCode %></div>
+     </div>
+     </div>
+     <div class="vehicle-divide-line"></div>
+     <div class="vehicle-state-info">
+         <span class="title">状态</span>
+         <div class="basic">
+             <div class="item">设备状态：<%- deviceState %></div>
+             <div class="item">经纬度：<%- lalg %></div>
+             <div class="item">地址：<%- place %></div>
+             <div class="item">定位时间：<%- positionTime %></div>
+         </div>
+     </div>`,
+
         infoTplData: {
-          identificationNumber: '',
-          licenceNumber: '',
-          unitName: '',
-          status: '',
+          ownerName: '',
+          plateNo: '',
+          vinNo: '',
+          deviceCode: '',
+          deviceState: '',
+          typeName: '',
+          positionTime: '',
           lalg: '',
           place: ''
         },
@@ -150,7 +154,7 @@ export const IMAP = {
         //基点指向marker的头部位置
         offset: new AMap.Pixel(0, -31)
       });
-      callback(markerInfo, map, marker, infoWindow, false);
+      callback(markerInfo, map, marker, infoWindow);
     });
   },
   drawRectangle: {

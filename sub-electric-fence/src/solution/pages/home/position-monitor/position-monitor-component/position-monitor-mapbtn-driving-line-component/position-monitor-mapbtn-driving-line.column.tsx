@@ -3,28 +3,24 @@ import * as React from 'react';
 export function positionMonitorMapBtnDrivingColumns(): ColumnsType<any> {
   return [
     {
-      title: '设备型号',
-      dataIndex: 'name'
-    },
-    {
       title: '设备号',
-      dataIndex: 'name'
+      dataIndex: 'deviceCode'
     },
     {
       title: '定位时间',
-      dataIndex: 'name'
+      dataIndex: 'time'
     },
     {
       title: '速度',
-      dataIndex: 'name'
+      dataIndex: 'speed'
     },
     {
       title: '状态',
-      dataIndex: 'name'
+      dataIndex: 'time'
     },
     {
       title: '地址',
-      dataIndex: 'name'
+      dataIndex: 'coordinates'
     }
   ];
 }

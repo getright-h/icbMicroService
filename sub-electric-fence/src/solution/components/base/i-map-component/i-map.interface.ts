@@ -1,4 +1,4 @@
-import { VehicleInfoParamReture } from '~/solution/model/dto/position-monitor.dto';
+import { RealTimeTrackingReturn, VehicleInfoParamReture } from '~/solution/model/dto/position-monitor.dto';
 
 /**
  * @export state变量定义和初始化
@@ -18,10 +18,10 @@ export type TIMapProps = {
   needSearchAddress?: boolean;
   height?: string;
   needDrawRactangle?: boolean;
-  carLine?: any[];
+  carLine?: RealTimeTrackingReturn;
   drawDrivingLine?: (currentDoActionCarInfo: VehicleInfoParamReture) => void;
   onMapTrack?: (currentDoActionCarInfo: VehicleInfoParamReture) => void;
-  drivingLineData?: any[];
+  drivingLineData?: RealTimeTrackingReturn;
   runCurrentPoint?: (index: number) => void;
   stopMarkers?: any[];
   setEndRunning?: () => void;

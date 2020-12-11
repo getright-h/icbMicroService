@@ -11,8 +11,6 @@ export const formatToUnix = (timeInfo?: any, format?: string) => {
 export function debounce(func: (value: any) => void, time: number) {
   let timeout: any = null;
   return function(value: any) {
-    console.log(1);
-
     clearTimeout(timeout);
     timeout = setTimeout(() => {
       func(value);
