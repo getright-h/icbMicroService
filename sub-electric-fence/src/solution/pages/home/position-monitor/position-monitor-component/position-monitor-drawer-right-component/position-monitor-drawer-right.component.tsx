@@ -46,7 +46,7 @@ export const PositionMonitorDrawerRightComponent = () => {
                             className={style.panelContent}
                             onClick={() => checkedDevice(item, itemChild)}
                             style={
-                              item.id == currentSelectCar?.id && itemChild.selected
+                              item.id == currentSelectCar?.id && itemChild.isDefault
                                 ? { background: 'rgb(245, 240, 255)' }
                                 : {}
                             }

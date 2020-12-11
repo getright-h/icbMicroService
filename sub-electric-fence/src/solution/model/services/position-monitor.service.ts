@@ -14,6 +14,7 @@ import { VehicleInfoParamReture } from '~/solution/model/dto/position-monitor.dt
 
 const QUERY_VEHICLE_GROUP_LIST = 'vehicle/manage/queryVehicleGroupList';
 const QUERY_VEHICLEINFO_PAGED_LIST = 'gps/monitoring/queryVehicleInfoPagedList';
+const QUERY_VEHICLE_INFOBYPARAM = 'gps/monitoring/queryVehicleInfoByParam';
 @DepUtil.Injectable()
 export class PositionMonitorService extends PositionMonitorDTO {
   @DepUtil.Inject(RequestService)
@@ -30,5 +31,9 @@ export class PositionMonitorService extends PositionMonitorDTO {
     params: IQueryVehicleInfoPagedListParams
   ): Observable<{ dataList: VehicleInfoParamReture[]; total: number }> {
     return this.requestService.post(QUERY_VEHICLEINFO_PAGED_LIST, params);
+  }
+
+  queryVehicleInfoByParam(params: { vehicleIdList: Array<string> }): Observable<VehicleInfoParamReture[]> {
+    return this.requestService.post(QUERY_VEHICLE_INFOBYPARAM, params);
   }
 }

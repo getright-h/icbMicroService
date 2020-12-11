@@ -4,7 +4,7 @@ import { PositionMonitorContext } from '../position-monitor.component';
 import { useContext, useEffect } from 'react';
 import { setDataAction } from '../position-monitor-redux/position-monitor-action';
 import { PositionMonitorService } from '../../../../../model/services/position-monitor.service';
-import { IQueryVehicleInfoPagedListParams } from '~/solution/model/dto/position-monitor.dto';
+import { IQueryVehicleInfoPagedListParams, VehicleInfoParamReture } from '~/solution/model/dto/position-monitor.dto';
 
 export function usePositionMonitorDrawerLeftStore() {
   const { state, setStateWrap, getState } = useStateStore(new IPositionMonitorDrawerLeftState());
@@ -77,7 +77,7 @@ export function usePositionMonitorDrawerLeftStore() {
    * @param {any[]} selectedRows // 选中的当前的列
    * @param {any[]} changeRows // 当前操作的数据
    */
-  function onCheckedUserSelectAllInfo(selected: boolean, selectedRows: any[], changeRows: any[]) {
+  async function onCheckedUserSelectAllInfo(selected: boolean, selectedRows: any[], changeRows: any[]) {
     //当前是全部选中，需要将变化的添加到选中的车辆中
     // 在每个选中的数据中加入最近更新的时间，然后比对整体更新的时间，这样就知道哪一个点更新了，那些点没有更新
     let filterCheckedCarData = [];
@@ -98,13 +98,26 @@ export function usePositionMonitorDrawerLeftStore() {
         return flag;
       });
     } else {
-      filterCheckedCarData = [...changeRows, ...checkedCarData];
+      // 获取当前勾选车辆的最新信息更新changeRows
+      const changeRowsIds: string[] = [];
+      let newchangeRows: VehicleInfoParamReture[] = [];
+      changeRows.forEach(item => {
+        changeRowsIds.push(item.id);
+      });
+
+      changeRowsIds.length && (newchangeRows = await getNewestCarInfo(changeRowsIds));
+
+      filterCheckedCarData = [...newchangeRows, ...checkedCarData];
     }
 
     setDataAction(
       { checkedCarData: filterCheckedCarData, currentSelectCar: needChangeSelectCat ? currentSelectCar : undefined },
       dispatch
     );
+  }
+  async function getNewestCarInfo(vehicleIdList: string[]) {
+    const newchangeRows = await positionMonitorService.queryVehicleInfoByParam({ vehicleIdList }).toPromise();
+    return newchangeRows;
   }
   return { state, onCurrentVehicleChange, onCheckedUserInfo, onCheckedUserSelectAllInfo, queryVehicleGroupList };
 }

@@ -8,7 +8,6 @@ export function positionMonitorDrawerLeftColumns(): ColumnsType<any> {
       title: '',
       dataIndex: 'name',
       render: (text, record, index) => {
-        console.log(text, record);
         const { ownerName, ownerMobile, plateNo } = record;
         return (
           <div className={style.cardContent}>

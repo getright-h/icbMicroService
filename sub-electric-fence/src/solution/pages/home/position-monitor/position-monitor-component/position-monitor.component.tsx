@@ -6,34 +6,19 @@ import { positionMonitorInitialState, PositionMonitorReducer } from './position-
 import { setDataAction } from './position-monitor-redux/position-monitor-action';
 import { AlertOutlined, CarOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { PositionMonitorDrawerLeftComponent } from './position-monitor-drawer-left-component/position-monitor-drawer-left.component';
-import { Badge, Button } from 'antd';
+import { Badge } from 'antd';
 import Avatar from 'antd/lib/avatar/avatar';
 import { PositionMonitorDrawerRightComponent } from './position-monitor-drawer-right-component/position-monitor-drawer-right.component';
 import { usePositionMonitorStore } from './position-monitor.component.store';
+import PositionMonitorRefreshHeaderComponent from './position-monitor-refresh-header-component/position-monitor-refresh-header.component';
 export const PositionMonitorContext = React.createContext({
   reduxState: positionMonitorInitialState,
   dispatch: undefined
 });
 export default function PositionMonitorComponent() {
   const [positionMonitorData, dispatch] = React.useReducer(PositionMonitorReducer, positionMonitorInitialState);
-  usePositionMonitorStore(dispatch);
-  const { leftContentVisible, leftDrawerVisible, checkedCarData, refreshTime } = positionMonitorData;
-  const RenderSubHeader = () => {
-    return React.useMemo(() => {
-      return (
-        <div className={style.contentTitle}>
-          <h1>定位监控</h1>
-          {refreshTime && (
-            <div className={style.refreshContent}>
-              <span className={style.refreshTime}>{refreshTime}</span>
-              <Button type="text">刷新</Button>
-            </div>
-          )}
-        </div>
-      );
-    }, [refreshTime]);
-  };
-
+  const { refreshContentInfo } = usePositionMonitorStore(dispatch, positionMonitorData);
+  const { leftContentVisible, leftDrawerVisible, checkedCarData } = positionMonitorData;
   const RenderMainContent = () => {
     return (
       <div className={style.positionMonitor}>
@@ -78,7 +63,7 @@ export default function PositionMonitorComponent() {
 
   return (
     <PositionMonitorContext.Provider value={{ reduxState: positionMonitorData, dispatch }}>
-      {RenderSubHeader()}
+      <PositionMonitorRefreshHeaderComponent refreshContentInfo={refreshContentInfo} />
       {RenderMainContent()}
     </PositionMonitorContext.Provider>
   );

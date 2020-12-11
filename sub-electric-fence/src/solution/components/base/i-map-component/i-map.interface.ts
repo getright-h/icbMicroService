@@ -6,6 +6,7 @@ import { VehicleInfoParamReture } from '~/solution/model/dto/position-monitor.dt
  */
 export class IIMapState {
   locationList: any[] = [];
+  currentChooseLocation: string = undefined;
 }
 
 export type TIMapProps = {
@@ -18,8 +19,8 @@ export type TIMapProps = {
   height?: string;
   needDrawRactangle?: boolean;
   carLine?: any[];
-  drawDrivingLine?: (id: string) => void;
-  onMapTrack?: (id: string) => void;
+  drawDrivingLine?: (currentDoActionCarInfo: VehicleInfoParamReture) => void;
+  onMapTrack?: (currentDoActionCarInfo: VehicleInfoParamReture) => void;
   drivingLineData?: any[];
   runCurrentPoint?: (index: number) => void;
   stopMarkers?: any[];

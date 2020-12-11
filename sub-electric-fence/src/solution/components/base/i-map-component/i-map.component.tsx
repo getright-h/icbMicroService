@@ -9,7 +9,7 @@ export const IMapComponent = React.memo((mapProps: TIMapProps) => {
     mapProps
   );
   const { needSearchAddress = true, needDrawRactangle, height = '80vh' } = mapProps;
-  const { locationList } = state;
+  const { locationList, currentChooseLocation } = state;
   function SearchAddress() {
     return (
       <Select
@@ -19,6 +19,7 @@ export const IMapComponent = React.memo((mapProps: TIMapProps) => {
         showArrow={false}
         filterOption={false}
         allowClear
+        value={currentChooseLocation}
         onSearch={handleChangeCircleFunction}
         onChange={handleCircleLocation}
         notFoundContent={null}

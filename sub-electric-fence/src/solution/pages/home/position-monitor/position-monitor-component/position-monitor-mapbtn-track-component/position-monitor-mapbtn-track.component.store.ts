@@ -2,9 +2,12 @@ import { IPositionMonitorMapbtnTrackState } from './position-monitor-mapbtn-trac
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect, useRef } from 'react';
 import moment from 'moment';
+import { PositionMonitorContext } from '../position-monitor.component';
 export function usePositionMonitorMapbtnTrackStore() {
   const { state, setStateWrap, getState } = useStateStore(new IPositionMonitorMapbtnTrackState());
+  const { reduxState, dispatch } = React.useContext(PositionMonitorContext);
   const setIntervalInfo: any = useRef();
+  const { currentDoActionCarInfo } = reduxState;
   const { carLine } = state;
   useEffect(() => {
     setRefreshTime();
@@ -12,6 +15,10 @@ export function usePositionMonitorMapbtnTrackStore() {
       clearInterval(setIntervalInfo.current);
     };
   }, []);
+
+  useEffect(() => {
+    console.log('currentDoActionCarInfo', currentDoActionCarInfo);
+  }, [currentDoActionCarInfo]);
 
   function setRefreshTime() {
     setIntervalInfo.current = setInterval(() => {

@@ -41,7 +41,7 @@ interface PermanentPlaceList {
 
 export interface DeviceList {
   vehicleId: string;
-  selected?: boolean;
+  isDefault?: boolean;
   deviceCode: string;
   typeId: string;
   typeName: string;

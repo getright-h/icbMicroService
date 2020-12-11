@@ -10,9 +10,10 @@ export const positionMonitorInitialState: TPositionMonitor = {
   leftDrawerVisible: false,
   checkedCarData: [],
   currentSelectCar: undefined,
-  refreshTime: '',
   selectedRowKeys: [],
-  mapbtnTrackrVisible: false
+  mapbtnTrackrVisible: false,
+  // 当前去看轨迹或者追踪用的车辆
+  currentDoActionCarInfo: undefined
 };
 
 export type TPositionMonitor = {
@@ -21,8 +22,8 @@ export type TPositionMonitor = {
   leftContentVisible: boolean;
   leftDrawerVisible: boolean;
   checkedCarData: VehicleInfoParamReture[];
-  refreshTime: string;
   currentSelectCar: VehicleInfoParamReture;
+  currentDoActionCarInfo: VehicleInfoParamReture;
   selectedRowKeys: any;
   mapbtnTrackrVisible: boolean;
 };

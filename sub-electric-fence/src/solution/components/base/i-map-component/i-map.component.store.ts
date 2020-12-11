@@ -13,6 +13,8 @@ const autoComplete = new AMap.Autocomplete(autoOptions);
 export function useIMapStore(mapProps: TIMapProps) {
   const { state, setStateWrap } = useStateStore(new IIMapState());
   const map: any = useRef();
+  // 寻找地址打的marker
+  const searchMarker = useRef();
   // 追踪的car的marker
   const carLineMarkerInfo: any = useRef();
   // 追踪的car的polyline
@@ -46,10 +48,12 @@ export function useIMapStore(mapProps: TIMapProps) {
     initMap();
   }, []);
 
+  // 单个车选中，需要获取常驻地点
   useEffect(() => {
-    // 单个车选中，需要获取常驻地点
     if (currentSelectCar) {
       renderMarker([currentSelectCar]);
+      currentSelectCar.permanentPlaceList && setPermanentPlaceList(currentSelectCar.permanentPlaceList);
+      // 需要添加常驻地点
       // 多个车不用获取常驻地点
     } else if (locationCarMarkerList) {
       // 比对
@@ -57,13 +61,9 @@ export function useIMapStore(mapProps: TIMapProps) {
     }
   }, [locationCarMarkerList, currentSelectCar]);
 
+  //实时追踪的car,car会在最后一个店停下来
+  // 这个地方会进行轨迹修复
   useEffect(() => {
-    //常驻地址
-  }, [stopMarkers]);
-
-  useEffect(() => {
-    //实时追踪的car,car会在最后一个店停下来
-    // 这个地方会进行轨迹修复
     if (mapProps.carLine) {
       if (carLineMarkerInfo.current) {
         map.current.remove(carLineMarkerInfo.current);
@@ -201,7 +201,7 @@ export function useIMapStore(mapProps: TIMapProps) {
         // 说明当前的点是被选中的， 所以可以筛选其中选中的设备
 
         for (const item of element.deviceList) {
-          if (item.selected) {
+          if (item.isDefault) {
             currentMarker = item;
             break;
           }
@@ -212,6 +212,7 @@ export function useIMapStore(mapProps: TIMapProps) {
           position: currentMarker.coordinates,
           icon: currentMarker.isOnline ? require('~assets/image/offline.png') : require('~assets/image/online.png'),
           markerInfo: element,
+          deviceInfo: currentMarker,
           status: currentMarker.isOnline
         });
       }
@@ -227,16 +228,27 @@ export function useIMapStore(mapProps: TIMapProps) {
     );
   }
 
+  // 设置常驻地点
+  function setPermanentPlaceList(permanentPlaceList: []) {}
+
   // 点击marker展示的窗口
   function openInfoWin(markerInfo: any, map: any, marker: any, infoWindow: any, isBindAction = true) {
+    const vehicleInfo = marker.markerInfo;
+    const deviceInfo = marker.deviceInfo;
+    console.log(vehicleInfo, deviceInfo);
+
     regeoCode([marker.position[0], marker.position[1]]).then(place => {
       infoWindow.setInfoTplData({
-        identificationNumber: marker?.markerInfo?.identificationNumber || '无',
-        licenceNumber: marker?.markerInfo?.licenceNumber || '无',
-        unitName: marker?.markerInfo?.unitName || '无',
-        status: marker?.status === 0 ? '离线' : '在线',
+        ownerName: vehicleInfo?.ownerName || '无',
+        plateNo: vehicleInfo?.plateNo || '无',
+        vinNo: vehicleInfo?.vinNo || '无',
+        deviceCode: deviceInfo?.deviceCode || '无',
+        typeName: deviceInfo?.typeName || '无',
+        vehicleState: vehicleInfo?.isRunning ? '动态' : '静止' + ' ' + deviceInfo.speed + 'km/h',
+        deviceState: deviceInfo?.isOnline ? '在线' : `离线 ${deviceInfo?.durationTime}h`,
         lalg: `${marker.position[0]}, ${marker.position[1]}`,
-        place
+        place,
+        positionTime: deviceInfo.positionTime
       });
       isBindAction && bindAction(infoWindow, marker);
       infoWindow.open(map, markerInfo.getPosition());
@@ -263,12 +275,12 @@ export function useIMapStore(mapProps: TIMapProps) {
   // 追踪
   function mapSearch(marker: any) {
     //
-    mapProps.onMapTrack(marker.id);
+    mapProps.onMapTrack(marker);
   }
 
   // 查看轨迹
   function followLine(marker: any) {
-    mapProps.drawDrivingLine(marker.id);
+    mapProps.drawDrivingLine(marker);
   }
 
   function regeoCode(lnglat: [number, number]) {
@@ -319,8 +331,25 @@ export function useIMapStore(mapProps: TIMapProps) {
   }
 
   function handleCircleLocation(value: any, options: any) {
+    if (searchMarker.current) {
+      map.current.remove(searchMarker.current);
+    }
+    setStateWrap({
+      currentChooseLocation: value
+    });
+    if (!value) {
+      map.current.setFitView();
+      return;
+    }
     const lnglat = JSON.parse(options.value);
-    map.current.setCenter([lnglat.lng, lnglat.lat]);
+
+    searchMarker.current = new AMap.Marker({
+      position: new AMap.LngLat(lnglat.lng, lnglat.lat)
+    });
+    map.current.add(searchMarker.current);
+    map.current.setFitView();
+    // 添加一个定位点到地图上
+    // map.current.setCenter([lnglat.lng, lnglat.lat]);
   }
 
   // // 实时路况

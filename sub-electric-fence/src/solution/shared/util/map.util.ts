@@ -122,9 +122,9 @@ export const IMAP = {
         infoBody: `<div class="vehicle-basic-info">
             <span class="title">基本信息</span>
             <div class="basic">
-                <span class="item">车牌：<%- licenceNumber %></span>
-                <span class="item">车架号：<%- identificationNumber %></span>
-                <span class="item">经销商名：<%- unitName %></span>
+                <div class="item">车牌：<%- licenceNumber %></div>
+                <div class="item">车架号：<%- identificationNumber %></div>
+                <div class="item">经销商名：<%- unitName %></div>
             </div>
             </div>
             <div class="vehicle-divide-line"></div>
@@ -226,7 +226,10 @@ export const IMAP = {
       let needClear = true;
       markers?.forEach((marker: any) => {
         // 如果在原来上面没有的点就添加
-        if (marker.id == oldMarker.id && marker.position == oldMarker.position) {
+        if (
+          marker.markerInfo.id == oldMarker.id &&
+          JSON.stringify(marker.position) == JSON.stringify(oldMarker.position)
+        ) {
           // 表示这个点原来就在上面不需要处理
           needClear = false;
         }
@@ -243,7 +246,10 @@ export const IMAP = {
         let needAdd = true;
         locationCarMarkerListFlag?.forEach((oldMarker: any) => {
           // 如果在原来上面没有的点就添加
-          if (marker.id == oldMarker.id && marker.position == oldMarker.position) {
+          if (
+            marker.markerInfo.id == oldMarker.id &&
+            JSON.stringify(marker.position) == JSON.stringify(oldMarker.position)
+          ) {
             // 表示这个点原来就在上面不需要处理
             needAdd = false;
           }
@@ -265,18 +271,18 @@ export const IMAP = {
               imageSize: new AMap.Size(46, 28)
             }),
             label: {
-              content: '<div>川A888888</div>',
+              content: `<div>${marker.markerInfo.plateNo}</div>`,
               offset: new AMap.Pixel(-20, 26)
             },
             zIndex: 9999999,
             position: marker.position,
             offset: new AMap.Pixel(-13, -30),
-            id: marker.id
+            id: marker.markerInfo.id
           });
 
           markerInfoData.push({
             position: marker.position,
-            id: marker.id,
+            id: marker.markerInfo.id,
             marker: markerInfo
           });
 
@@ -285,31 +291,39 @@ export const IMAP = {
             infoBody: `<div class="vehicle-basic-info">
             <span class="title">基本信息</span>
             <div class="basic">
-                <span class="item">车牌：<%- licenceNumber %></span>
-                <span class="item">车架号：<%- identificationNumber %></span>
-                <span class="item">经销商名：<%- unitName %></span>
-            </div>
-            </div>
-            <div class="vehicle-divide-line"></div>
-            <div class="vehicle-state-info">
-                <span class="title">状态</span>
-                <div class="basic">
-                    <span class="item">经纬度：<%- lalg %></span>
-                    <span class="item">状态：<%- status %></span>
-                    <span class="item">地址：<%- place %></span>
-                </div>
-            </div>
+            <div class="item">车主姓名：<%- ownerName %></div>
+             <div class="item">车牌号：<%- plateNo %></div>
+             <div class="item">车架号：<%- vinNo %></div>
+             <div class="item">设备号：<%- deviceCode %></div>
+         </div>
+         </div>
+         <div class="vehicle-divide-line"></div>
+         <div class="vehicle-state-info">
+             <span class="title">状态</span>
+             <div class="basic">
+                 <div class="item">车辆状态：<%- vehicleState %></div>
+                 <div class="item">设备状态：<%- deviceState %></div>
+                 <div class="item">经纬度：<%- lalg %></div>
+                 <div class="item">地址：<%- place %></div>
+                 <div class="item">定位时间：<%- positionTime %></div>
+             </div>
+         </div>
             <div>
             <button id="mybtnSearch" class="button_ pop_ pop_def" data-isopen="1">追踪</button>
             <button id="mybtnWatchLine" class="button_ pop_ pop_def" data-isopen="1">查看轨迹</button>
             <button id="mybtnDo" class="button_ pop_ pop_def" data-isopen="1">指令</button>
             <button id="mybtnAttention" class="button_ pop_ pop_def" data-isopen="1">报警</button>
             </div>`,
+
             infoTplData: {
-              identificationNumber: '',
-              licenceNumber: '',
-              unitName: '',
-              status: '',
+              ownerName: '',
+              plateNo: '',
+              vinNo: '',
+              deviceCode: '',
+              deviceState: '',
+              typeName: '',
+              vehicleState: '',
+              positionTime: '',
               lalg: '',
               place: ''
             },
@@ -325,6 +339,70 @@ export const IMAP = {
       map.setFitView();
     });
     return markerInfoData;
+  },
+
+  bindOffernStopPlace(
+    markers: any,
+    map: any,
+    callback?: (markerInfo: any, map: any, marker: any, infoWindow: any) => void
+  ) {
+    AMapUI.loadUI(['overlay/SimpleInfoWindow'], (SimpleInfoWindow: any) => {
+      markers?.forEach((marker: any) => {
+        const markerInfo = new AMap.Marker({
+          map,
+          icon: new AMap.Icon({
+            // 图标尺寸
+            size: new AMap.Size(46, 28),
+            // 图标的取图地址
+            image: marker.icon,
+            // 图标所用图片大小
+            imageSize: new AMap.Size(46, 28)
+          }),
+          label: {
+            content: '<div>川A888888</div>',
+            offset: new AMap.Pixel(-20, 26)
+          },
+          zIndex: 9999999,
+          position: marker.position,
+          offset: new AMap.Pixel(-13, -30),
+          id: marker.id
+        });
+
+        const infoWindow = new SimpleInfoWindow({
+          infoTitle: '<strong>车辆常驻点</strong>',
+          infoBody: `<div class="vehicle-basic-info">
+              <span class="title">基本信息</span>
+              <div class="basic">
+                  <span class="item">经纬度：<%- coordinates %></span>
+                  <span class="item">到访次数：<%- number %></span>
+                  <span class="item">平均停留时间：<%- stopTime %></span>
+              </div>
+              </div>
+              <div class="vehicle-divide-line"></div>
+              <div>
+              <button id="mybtnSearch" class="button_ pop_ pop_def" data-isopen="1">追踪</button>
+              <button id="mybtnWatchLine" class="button_ pop_ pop_def" data-isopen="1">查看轨迹</button>
+              <button id="mybtnDo" class="button_ pop_ pop_def" data-isopen="1">指令</button>
+              <button id="mybtnAttention" class="button_ pop_ pop_def" data-isopen="1">报警</button>
+              </div>`,
+          infoTplData: {
+            identificationNumber: '',
+            licenceNumber: '',
+            unitName: '',
+            status: '',
+            lalg: '',
+            place: ''
+          },
+
+          //基点指向marker的头部位置
+          offset: new AMap.Pixel(0, -31)
+        });
+        AMap.event.addListener(markerInfo, 'click', function() {
+          callback(markerInfo, map, marker, infoWindow);
+        });
+      });
+      map.setFitView();
+    });
   },
 
   bindMassMarkers(

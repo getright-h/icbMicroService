@@ -25,9 +25,9 @@ export function usePositionMonitorDrawerRightStore() {
   function checkedDevice(item: VehicleInfoParamReture, itemChild: any) {
     item.deviceList = item.deviceList.map((itemElement: DeviceList) => {
       if (itemElement.deviceCode == itemChild.deviceCode) {
-        itemElement.selected = true;
+        itemElement.isDefault = true;
       } else {
-        itemElement.selected = false;
+        itemElement.isDefault = false;
       }
       return itemElement;
     });
