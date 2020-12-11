@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { Divider } from 'antd';
 import { ModalType } from './directive-list.interface';
+import moment from 'moment';
+import 'moment/locale/zh-cn';
+import { render } from 'react-dom';
+
 export function AlarmParameterColumn(callbackAction: Function) {
   return [
     {
@@ -9,7 +13,7 @@ export function AlarmParameterColumn(callbackAction: Function) {
     },
     {
       title: '关联车主',
-      dataIndex: 'deviceCodeList'
+      dataIndex: 'ownerName'
     },
     {
       title: '关联车牌',
@@ -21,7 +25,8 @@ export function AlarmParameterColumn(callbackAction: Function) {
     },
     {
       title: '发送时间',
-      dataIndex: 'excuteTime'
+      dataIndex: 'time',
+      render: (text: any) => (text && typeof text == 'number' ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '-')
     },
     {
       title: '响应时间',

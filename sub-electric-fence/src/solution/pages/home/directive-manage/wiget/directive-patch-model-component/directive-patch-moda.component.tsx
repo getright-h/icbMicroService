@@ -1,13 +1,8 @@
-import { Form, Modal, Radio, Input, Select, Button } from 'antd';
+import { Form, Modal, Radio, Input, Button } from 'antd';
 import * as React from 'react';
 import style from './directive-patch-modal.component.less';
 import { useDirectiveModalStore } from './directive-patch-moda.component.store';
-import {
-  ITableComponent,
-  TablePageTelComponent,
-  ISelectLoadingComponent,
-  TimePickerComponent
-} from '~/solution/components/component.module';
+import { ISelectLoadingComponent } from '~/solution/components/component.module';
 import { AlarmFormItemComponent } from '~/solution/components/component.module';
 
 import { IDirectiveModalProps, ModalType, Type } from './directive-list.interface';
@@ -182,13 +177,11 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
         )}
 
         {currentDirective.isVerify && (
-          <Form.Item
-            label="指令密码"
-            name={'directivePasswd'}
-            className={style.marginBootom10}
-            rules={[{ required: true }]}
-          >
-            <Input onChange={(e: any) => handleFormDataChange(e.target.value, 'directivePasswd')} />
+          <Form.Item label="指令密码" name={'verifyCode'} className={style.marginBootom10} rules={[{ required: true }]}>
+            <Input
+              placeholder="请输入当前登录账户密码"
+              onChange={(e: any) => handleFormDataChange(e.target.value, 'directivePasswd')}
+            />
           </Form.Item>
         )}
       </Form>
