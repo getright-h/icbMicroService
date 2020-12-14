@@ -22,6 +22,7 @@ export class IAddOrganizationProps {
   id?: string;
 }
 interface OrganizationForm {
+  typeId?: string;
   systemCode: string;
   parentName?: string;
   parentCode?: string;

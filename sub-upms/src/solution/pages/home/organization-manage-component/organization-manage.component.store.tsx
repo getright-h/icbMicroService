@@ -24,7 +24,7 @@ export function useOrganizationManageStore() {
       .queryOrganizationList({ systemId: gState.myInfo.systemId, ...searchForm })
       .subscribe(
         (res: any) => {
-          setStateWrap({ tableData: res.dataList, isLoading: false });
+          setStateWrap({ tableData: res.dataList, isLoading: false, total: res.total });
         },
         (err: any) => {
           setStateWrap({ tableData: [], isLoading: false });
@@ -89,6 +89,8 @@ export function useOrganizationManageStore() {
       searchForm.parentId = '';
     }
     setStateWrap({ searchForm });
+    console.log(1);
+
     getTableData(true);
   }
 
@@ -104,7 +106,7 @@ export function useOrganizationManageStore() {
     getTableData();
   }
   useEffect(() => {
-    getTableData();
+    // getTableData();
     return () => {
       getTableDataSubscription && getTableDataSubscription.unsubscribe();
     };

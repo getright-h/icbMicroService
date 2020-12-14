@@ -5,7 +5,14 @@ import { IISelectLoadingProps } from './i-select-loading.interface';
 import { useISelectLoadingStore } from './i-select-loading.component.store';
 
 export default function ISelectLoadingComponent(props: IISelectLoadingProps) {
-  const { placeholder, disabled, getCurrentSelectInfo } = props;
+  const {
+    placeholder,
+    disabled,
+    showSearch = true,
+    allowClear = true,
+    getCurrentSelectInfo,
+    dropdownMatchSelectWidth
+  } = props;
   const { state, optionScroll, fetchOptions } = useISelectLoadingStore(props);
   const { optionList, fetching } = state;
   return (
@@ -20,13 +27,14 @@ export default function ISelectLoadingComponent(props: IISelectLoadingProps) {
       onPopupScroll={optionScroll}
       // onFocus={!optionList.length ? () => fetchOptions(false) : () => {}}
       onFocus={() => fetchOptions(false)}
-      showSearch={props.showSearch || true}
-      // onSearch={$event => fetchOptions(true, $event)}
-      allowClear={true}
+      showSearch={showSearch}
+      onSearch={$event => fetchOptions(true, $event)}
+      allowClear={allowClear}
+      dropdownMatchSelectWidth={dropdownMatchSelectWidth ? true : undefined}
     >
       {optionList &&
-        optionList.map((item: { id: string | number; name: string }, index: number) => (
-          <Select.Option value={item.id} key={`${item.id}${index}`} info={item}>
+        optionList.map((item: any) => (
+          <Select.Option value={item.id} key={item.id} info={item}>
             {item.name}
           </Select.Option>
         ))}

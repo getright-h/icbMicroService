@@ -34,6 +34,7 @@ export function useAddOrganizationStore(props: IAddOrganizationProps) {
         setStateWrap({
           formInfo: {
             systemCode: '',
+            typeId: res.typeId,
             parentName: res.extendAttributionModel.parentName,
             parentCode: res.extendAttributionModel.parentCode,
             id: res.id
@@ -105,6 +106,12 @@ export function useAddOrganizationStore(props: IAddOrganizationProps) {
     setStateWrap({ formInfo });
   }
 
+  function changeOrgType(value: any) {
+    const { formInfo } = state;
+    formInfo.typeId = value;
+    setStateWrap({ formInfo });
+  }
+
   /**
    * 获取省下拉列表
    */
@@ -165,6 +172,7 @@ export function useAddOrganizationStore(props: IAddOrganizationProps) {
     getProvinceList,
     getCityList,
     getAreaList,
-    getTypeList
+    getTypeList,
+    changeOrgType
   };
 }
