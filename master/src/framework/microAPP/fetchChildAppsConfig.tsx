@@ -1,15 +1,17 @@
 import { loader } from './loader';
 export function fetchChildAppsConfig() {
   const MODULE_PATH = '/#/home';
+  // 线上地址onLineURL
   return new Promise(resolve => {
     resolve([
       {
         name: 'sub-device',
         localURL: '//localhost:8081',
-        onLineURL: '//192.168.2.251:2155',
+        onLineURL: '',
+        onLineDevURL: '//192.168.2.251:2155',
         title: '设备管理模块',
         icon: 'anticon-mobile',
-        tokenKey: 'token',
+        tokenKey: '__icb_token',
         path: '/home/device',
         loader,
         children: [
@@ -300,10 +302,11 @@ export function fetchChildAppsConfig() {
       {
         name: 'sub-upms',
         localURL: '//localhost:8082',
-        onLineURL: '//192.168.2.251:2155',
-        title: '设备管理模块',
+        onLineDevURL: '//192.168.2.251:2100',
+        onLineURL: '',
+        title: 'UPMS模块',
         icon: 'team',
-        tokenKey: 'token',
+        tokenKey: '__icb_token',
         loader,
         path: '/home/upms',
         children: [

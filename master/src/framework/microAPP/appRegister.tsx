@@ -5,6 +5,7 @@ import { StorageUtil } from '~/framework/util/storage';
 // 注册子应用 运行主项目
 async function registerMainApp(callback: (menuInfo: any) => void) {
   const isDev = process.env.NODE_ENV === 'development';
+  const isDevBuild = process.env.DEV_BUILD === 'build';
   const currentId = '#subapp-viewport';
   const apps: Array<AppProps> = [];
   let defaultMountApp = '';
@@ -22,20 +23,19 @@ async function registerMainApp(callback: (menuInfo: any) => void) {
 
   callback(res.menuInfo);
   routerInfo.forEach((element: any) => {
-    const { localURL, onLineURL, path, name, children, loader, tokenKey } = element;
+    const { localURL, onLineDEvURL, path, name, onLineURL, children, loader, tokenKey } = element;
     // 根据children去获取子应用响应的路由节点赋值到当前的页面，作用用来生成路由
     apps.push({
       tokenKey,
       name: name,
       loader,
-      entry: isDev ? localURL : onLineURL,
+      entry: isDev ? (isDevBuild ? onLineDEvURL : localURL) : onLineURL,
       container: currentId,
       activeRule: `/#${path}`,
       props: { baseFuntion, name, routers: JSON.parse(JSON.stringify(children)), routerBase: `/#${path}` }
     });
     element.defaultMountApp && (defaultMountApp = element.activeRule);
   });
-  console.log(apps);
 
   // 注册当前的子应用，监听部分生命周期
   registerApps(apps);

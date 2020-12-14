@@ -62,24 +62,24 @@ export class LoginStore extends ReducerStore<IState> {
 
   // 执行登陆
   handleLogin = (params: LoginParam) => {
-    this.props.history.push('/home');
-    // return this.loginService.login(params).subscribe(
-    //   res => {
-    //     StorageUtil.setLocalStorage('TOKEN', res.token);
-    //     this.loginService.checkIdentity({ loginRole: 0 }).subscribe(
-    //       res => {
-    //         message.success('登录成功');
-    //         this.dispatch(setLoadingAction(false));
-    //         this.props.history.push('/home');
-    //       },
-    //       error => {
-    //         this.dispatch(setLoadingAction(false));
-    //       }
-    //     );
-    //   },
-    //   error => {
-    //     this.dispatch(setLoadingAction(false));
-    //   }
-    // );
+    // this.props.history.push('/home');
+    return this.loginService.login(params).subscribe(
+      res => {
+        StorageUtil.setLocalStorage('token', res.token);
+        this.loginService.checkIdentity({ loginRole: 0 }).subscribe(
+          res => {
+            message.success('登录成功');
+            this.dispatch(setLoadingAction(false));
+            this.props.history.push('/home');
+          },
+          error => {
+            this.dispatch(setLoadingAction(false));
+          }
+        );
+      },
+      error => {
+        this.dispatch(setLoadingAction(false));
+      }
+    );
   };
 }

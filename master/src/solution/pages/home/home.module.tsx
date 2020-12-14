@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Layout, Spin, Button } from 'antd';
+import { Layout, Spin } from 'antd';
 import style from './home.component.less';
 import { MenuComponent } from '~/solution/components/component.module';
 import { IHomeHeaderComponent } from '../../components/base/i-home-header-component/i-home-header.component';
@@ -7,11 +7,10 @@ import { useHomeStore } from './home.component.store';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 import { IGlobalState } from '~/solution/context/global/global.interface';
 import { useLocation } from 'react-router-dom';
-import { connect } from 'react-redux';
 import TagView from '../../components/base/tags-view-component/tags-view.component';
 
 function HomeModule(props: any) {
-  const { state, sendToChild } = useHomeStore();
+  const { state } = useHomeStore();
   const { gState }: IGlobalState = React.useContext(GlobalContext);
   const location = useLocation();
   function getCurrentExpandList(currentUrl: string): string[] {
@@ -73,4 +72,4 @@ function HomeModule(props: any) {
   );
 }
 
-export default connect(state => state)(HomeModule);
+export default HomeModule;
