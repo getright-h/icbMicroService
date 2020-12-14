@@ -1,26 +1,31 @@
 import { LoginDTO, LoginParam, LoginResult } from '../dto/login.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
-import { Observable, Subscriber } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { DepUtil } from '~/framework/aop/inject';
+import { VCodeInfo } from '~/solution/model/dto/login.dto';
 
 /**
  * 真实开发中，请将示例代码移除
  */
 
-const EXAMPLE_API_PATH = 'your-http-request-path';
+const LOGIN_PATH = 'GlobPermissionVerificationPlugin/Login';
+const VERIFICATION_CODE = 'GlobPermissionVerificationPlugin/VerifyCode';
 
+@DepUtil.Injectable()
 export class LoginService extends LoginDTO {
-  private readonly requestService: RequestService = new RequestService();
+  @DepUtil.Inject(RequestService)
+  private readonly requestService: RequestService;
   constructor() {
     super();
   }
 
   // 登录
   login(params: LoginParam): Observable<LoginResult> {
-    // return this.requestService.get(EXAMPLE_API_PATH, params);
-    return Observable.create((observer: Subscriber<LoginResult>) => {
-      observer.next({ token: 'loginSuccess', status: true });
-      observer.complete();
-    }).pipe(delay(500));
+    return this.requestService.post(LOGIN_PATH, params);
+  }
+
+  // 获取验证码
+  getVerificationCode(codeKey: string): Observable<VCodeInfo> {
+    return this.requestService.get(VERIFICATION_CODE, { codeKey });
   }
 }

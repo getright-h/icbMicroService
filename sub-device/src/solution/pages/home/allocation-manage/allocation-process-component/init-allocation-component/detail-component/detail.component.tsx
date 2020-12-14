@@ -3,13 +3,13 @@ import style from './detail.component.less';
 import { useDetailStore } from './detail.component.store';
 import { Form, Button, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import { ALLOW_FLOW_ENUM, ModalType } from '~shared/constant/common.const';
+import { ALLOW_FLOW_ENUM, ModalType, APPROVAL_FLOW_STATUS_ENUM } from '~shared/constant/common.const';
 import { IHeaderTitleComponent } from '~framework/components/component.module';
 import DeviceImportComponent from '../device-import-component/device-import.component';
 import RollbackApplyComponent from '../rollback-apply-component/rollback-apply.component';
 export default function DetailComponent() {
   const { state, callbackAction, handleModalCancel, getAlloactionDetail, allocationOperate } = useDetailStore();
-  const { deviceData, detail = {}, importVisible, currentData, rollbackVisible } = state;
+  const { detail = {}, importVisible, currentData, rollbackVisible } = state;
   const layout = {
     labelCol: { span: 8 },
     wrapperCol: { span: 12 }
@@ -19,7 +19,7 @@ export default function DetailComponent() {
    * @description 根据[  调拨状态 ] 渲染操作按钮
    */
   function renderOperateBtn(data: any) {
-    const { state } = data;
+    const { state, approvalState } = data;
 
     const back = (
       <Button
@@ -54,17 +54,18 @@ export default function DetailComponent() {
       // 撤销操作
       {
         condition: [ALLOW_FLOW_ENUM.Confirm],
-        btn: (
-          <Button
-            type={'primary'}
-            danger
-            className={style.button}
-            onClick={() => callbackAction(ModalType.REVOKE, data)}
-            key={2}
-          >
-            撤销
-          </Button>
-        )
+        btn:
+          APPROVAL_FLOW_STATUS_ENUM.Success === approvalState ? (
+            <Button
+              type={'primary'}
+              danger
+              className={style.button}
+              onClick={() => callbackAction(ModalType.REVOKE, data)}
+              key={2}
+            >
+              撤销
+            </Button>
+          ) : null
       },
 
       // 重新申请操作

@@ -1,10 +1,10 @@
-@page-min-width:1200px;
-@page-min-height:500px;
-@left-bg-color:#0135c9;
-@right-bg-color:#f0f0f0;
-@login-box-width:330px;
+@page-min-width: 1200px;
+@page-min-height: 500px;
+@left-bg-color: #0135c9;
+@right-bg-color: #f0f0f0;
+@login-box-width: 330px;
 
-.main{
+.main {
   min-width: @page-min-width;
   min-height: @page-min-height;
   height: 100vh;
@@ -12,7 +12,7 @@
   align-items: center;
 }
 
-.stage{
+.stage {
   background: url('../../../assets/image/login_page_bg.png') no-repeat center center;
   height: 100%;
   width: 100%;
@@ -25,14 +25,14 @@
   height: 100%;
   width: 60%;
   background-color: @left-bg-color;
-  background-image: radial-gradient( #009bee 10%, @left-bg-color 98%);
+  background-image: radial-gradient(#009bee 10%, @left-bg-color 98%);
   display: flex;
   align-items: center;
   justify-content: flex-end;
   position: relative;
 }
 
-.leftCover{
+.leftCover {
   position: absolute;
   right: 0;
   bottom: 0;
@@ -43,7 +43,7 @@
 }
 
 // 右侧
-.right{
+.right {
   height: 100%;
   width: 50%;
   background-color: @right-bg-color;
@@ -54,38 +54,41 @@
   box-sizing: border-box;
 }
 
-.welcome{
+.welcome {
   font-size: 36px;
   margin-bottom: 0;
 }
 
 // 站点标题
-.siteTitleBox{
+.siteTitleBox {
   display: flex;
   font-size: 24px;
   color: #acacac;
+
   strong {
     font-size: 24px;
-    color: @main-theme;
+    color: @primary-color;
   }
 }
 
 // 登录框
-.loginBox{
+.loginBox {
   max-width: @login-box-width;
 }
 
-.loginBtn{
+.loginBtn {
   width: 100%;
   height: 40px;
   border-radius: 0;
 }
 
-.formFlexItem{
+.formFlexItem {
   display: flex;
-  & > div{
+
+  &>div {
     width: 100%;
-    & > div > span {
+
+    &>div>span {
       width: 100%;
       display: flex;
       justify-content: space-between;
@@ -93,15 +96,22 @@
   }
 }
 
-.vcodeInput{
-  width: 0.6 * @login-box-width !important;
+.vcodeInput {
+  width: 0.6 * @login-box-width  !important;
 }
 
-.vcodeBox{
+.vcodeBox {
   width: 0.4 * @login-box-width;
   text-align: center;
-  margin-left: 5px;
-  border: 1px solid #d9d9d9;
+  // margin-left: 5px;
+  // border: 1px solid #d9d9d9;
   box-sizing: border-box;
   cursor: pointer;
+  display: inline-block;
+  height: 40px;
+  vertical-align: top;
+
+  >img {
+    width: 100%;
+  }
 }

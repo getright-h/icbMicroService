@@ -1,36 +1,81 @@
 import * as React from 'react';
-import style from './i-select-loading.component.less';
-import { Select, Spin } from 'antd';
+import { Select } from 'antd';
 import { IISelectLoadingProps } from './i-select-loading.interface';
 import { useISelectLoadingStore } from './i-select-loading.component.store';
-const { Option } = Select;
+
 export default function ISelectLoadingComponent(props: IISelectLoadingProps) {
-  const { placeholder, getCurrentSelectInfo, disabled } = props;
-  const { state, getOptionListDebouce } = useISelectLoadingStore(props);
+  const {
+    placeholder,
+    disabled,
+    getCurrentSelectInfo,
+    width = '100%',
+    reqUrl,
+    allowClear = true,
+    mode,
+    showSearch = true,
+    labelInValue
+  } = props;
+  const { state, optionScroll, fetchOptions } = useISelectLoadingStore(props);
   const { optionList, fetching } = state;
-
-  const options = optionList.map((item: { id?: string | number; name?: string; key: string; value: string }) => {
-    return (
-      <Option value={JSON.stringify(item)} key={item.id || item.key} info={item}>
-        {item.name || item.value}
-      </Option>
-    );
-  });
-
   return (
     <Select
-      showSearch
-      onSearch={getOptionListDebouce}
-      defaultActiveFirstOption={false}
-      filterOption={false}
+      style={{ width }}
+      labelInValue={labelInValue}
+      loading={fetching}
+      mode={mode}
       disabled={disabled || false}
       placeholder={placeholder}
-      // value={selectedValue}
+      filterOption={false}
+      value={state.value}
+      defaultValue={state.value}
       onChange={getCurrentSelectInfo}
-      allowClear={true}
-      notFoundContent={fetching ? <Spin size="small" /> : null}
+      onPopupScroll={optionScroll}
+      onFocus={() => fetchOptions(false)}
+      showSearch={showSearch}
+      onSearch={$event => fetchOptions(true, $event)}
+      allowClear={allowClear}
+      dropdownMatchSelectWidth={props.dropdownMatchSelectWidth ?? true}
     >
-      {options}
+      {optionList &&
+        optionList.map((item: any, index: number) => {
+          if (reqUrl === 'queryDeviceList') {
+            return (
+              <Select.Option value={item.code} key={`${item.code}${item.sim}`} info={item}>
+                {`${item.code}（${item.typeName}）`}
+              </Select.Option>
+            );
+          } else if (reqUrl === 'queryStoreList') {
+            return (
+              <Select.Option value={item.id} key={item.id} info={item}>
+                {`${item.name}（${item.organizationName}）`}
+              </Select.Option>
+            );
+          } else if (reqUrl === 'queryVehicleList') {
+            return (
+              <Select.Option value={item.vinNo} key={item.id} info={item}>
+                {item.vinNo}
+              </Select.Option>
+            );
+          } else if (reqUrl === 'getTypesList') {
+            return (
+              <Select.Option value={item.id} key={item.id} info={item}>
+                {item.cmdName}
+              </Select.Option>
+            );
+          } else if (reqUrl === 'queryVehicleInfoPagedList') {
+            return (
+              <Select.Option value={item.id} key={item.id + index} info={item}>
+                {`${item.ownerName}（${item.plateNo}）`}
+              </Select.Option>
+            );
+          } else {
+            return (
+              <Select.Option value={item.id} key={item.id} info={item}>
+                {item.telephone ? item.name + ' ' + item.telephone : item.name}
+              </Select.Option>
+            );
+          }
+        })}
     </Select>
   );
 }

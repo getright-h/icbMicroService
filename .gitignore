@@ -20,6 +20,7 @@ src/**/*.d.ts
 # 本地环境变量
 .env.local
 *.less.d.ts
+/*/dist
 
 .vscode
 .idea

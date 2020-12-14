@@ -18,7 +18,7 @@ export default function DetailComponent() {
    * @description 根据[  调拨状态 ] 渲染操作按钮
    */
   function renderOperateBtn(data: any) {
-    const { state } = data;
+    const { state, isMove } = data;
     const back = (
       <Button
         className={style.button}
@@ -29,6 +29,22 @@ export default function DetailComponent() {
       >
         返回
       </Button>
+    );
+    /**
+     * 1.仓库属于节点中，存在流转，出现流转按钮
+     * 2.仓库处于流程最末端，不会显示你流转按钮
+     * 根据后端字段显示
+     */
+    const moveAllot = (
+      <a
+        className={style.button}
+        onClick={() => {
+          callbackAction(ModalType.MOVE, data);
+        }}
+        key={'move'}
+      >
+        流转
+      </a>
     );
     if (!state) {
       return back;
@@ -88,6 +104,7 @@ export default function DetailComponent() {
     ];
     const btnArray = btnState.filter((item: any) => item.condition.includes(state)).map((btn: any) => btn.btn);
     btnArray.push(back);
+    isMove && btnArray.push(moveAllot);
     return <React.Fragment>{btnArray}</React.Fragment>;
   }
   function RenderTable() {
