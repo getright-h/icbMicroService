@@ -205,7 +205,7 @@ class LoaderFactory {
     this.loaders.push(
       TsLoader,
       ImgLoader,
-      FontLoader,
+      // FontLoader,
       SvgLoader,
       LessLoader,
       LessLoaderGlobal,

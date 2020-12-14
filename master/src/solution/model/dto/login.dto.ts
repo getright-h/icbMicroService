@@ -10,8 +10,8 @@ export interface LoginParam {
   account: string;
   password: string;
   verificationCodeInfo: VerificationCodeInfo;
-  systemCode: string;
-  systemId: string;
+  systemCode?: string;
+  systemId?: string;
 }
 
 export interface VerificationCodeInfo {

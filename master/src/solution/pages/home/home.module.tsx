@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { Layout, Spin, Button } from 'antd';
+import { Layout, Spin } from 'antd';
 import style from './home.component.less';
-import { MenuComponent } from '~/solution/components/component.module';
-import { IHomeHeaderComponent } from '../../components/base/i-home-header-component/i-home-header.component';
+import { IHomeHeaderComponent, MenuComponent } from '~/solution/components/component.module';
 import { useHomeStore } from './home.component.store';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 import { IGlobalState } from '~/solution/context/global/global.interface';
@@ -57,7 +56,7 @@ function HomeModule(props: any) {
     <Spin spinning={state.loading} wrapperClassName="custom-layout-spin">
       <Layout>
         <div className={style.homeMain}>
-          <IHomeHeaderComponent></IHomeHeaderComponent>
+          <IHomeHeaderComponent />
           <div className={style.bodyContainer}>
             {renderLayoutSider()}
             <div className={style.pageContainer}>

@@ -6,7 +6,7 @@ export const appRoutes: IRoute[] = [
   {
     path: '/home',
     component: HomeModule,
-    exact: false
+    lazyload: true
   },
   {
     path: '/login',

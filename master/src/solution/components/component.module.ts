@@ -12,5 +12,5 @@ export { default as BreadComponent } from '~/solution/components/base/bread-comp
 export { default as LazyloadLoadingComponent } from '~/solution/components/base/lazyload-loading-component/lazyload-loading.component';
 export { default as LazyloadComponent } from '~/solution/components/base/lazyload-component/lazyload.component';
 export { default as CubeComponent } from '~/solution/components/base/cube-component/cube.component';
-export { IHomeHeaderComponent } from '~/solution/components/base/i-home-header-component/i-home-header.component';
+export { default as IHomeHeaderComponent } from '~/solution/components/base/i-home-header-component/i-home-header.component';
 //  -- Package End --

@@ -19,6 +19,7 @@
     "lintcss": "stylelint 'src/**/*.less' --fix"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.3.0",
     "@sentry/browser": "^5.7.1",
     "@types/js-cookie": "^2.2.2",
     "@types/lodash": "^4.14.144",
@@ -26,7 +27,7 @@
     "@types/react-dom": "^16.9.0",
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.5",
-    "antd": "^3.25.2",
+    "antd": "^4.8.4",
     "axios": "^0.19.0",
     "dotenv-webpack": "^1.7.0",
     "js-cookie": "^2.2.1",
