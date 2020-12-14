@@ -12,7 +12,6 @@
   "scripts": {
     "start": "rimraf dist && cross-env NODE_ENV=development webpack-dev-server",
     "build": "rimraf dist && cross-env NODE_ENV=production webpack",
-    "build-dev": "rimraf dist && cross-env NODE_ENV=development DEV_BUILD=build webpack",
     "build-ana": "rimraf dist && cross-env NODE_ENV=production IS_ANA=analyse webpack",
     "dll:dev": "rimraf dll/development && cross-env NODE_ENV=development webpack --config bundle/webpack.config.dll.js",
     "dll:prod": "rimraf dll/production && cross-env NODE_ENV=production webpack --config bundle/webpack.config.dll.js",
@@ -25,6 +24,7 @@
     "@types/lodash": "^4.14.144",
     "@types/react": "^16.9.2",
     "@types/react-dom": "^16.9.0",
+    "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.5",
     "antd": "^3.25.2",
     "axios": "^0.19.0",
