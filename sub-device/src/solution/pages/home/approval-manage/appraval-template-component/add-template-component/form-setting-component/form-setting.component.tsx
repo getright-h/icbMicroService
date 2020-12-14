@@ -116,7 +116,7 @@ export default function FormSettingComponent() {
         <Select
           value={reduxState.templateType}
           onChange={value => onChangeTemplateName(value, 'templateType')}
-          placeholder="请选择关联机构"
+          placeholder="请选择模板类型"
         >
           <Option value={1} key={1}>
             调拨模板

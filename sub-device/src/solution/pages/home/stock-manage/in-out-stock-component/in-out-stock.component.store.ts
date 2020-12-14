@@ -12,7 +12,6 @@ export function useInOutStockStore() {
 
   useEffect(() => {
     initSearchform();
-    getTableData();
   }, []);
 
   function getTableData() {
@@ -30,7 +29,7 @@ export function useInOutStockStore() {
         res => {
           setStateWrap({
             tableData: res.pagedList?.dataList,
-            total: res.total,
+            total: res.pagedList?.total,
             isLoading: false,
             statistics: res.statistics
           });
@@ -79,7 +78,6 @@ export function useInOutStockStore() {
 
   function initSearchform() {
     searchForm.resetFields();
-    searchForm.setFieldsValue({ type: -1 });
     setStateWrap({ timeInfo: [], pageIndex: 1 });
     getTableData();
   }

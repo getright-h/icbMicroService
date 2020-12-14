@@ -39,6 +39,7 @@ function OrganizationControllerComponent(props: IOrganizationControllerProps, re
         )}
       </div>
       <Tree
+        loadedKeys={expandedKeys}
         loadData={onLoadData}
         onSelect={onSelect}
         expandedKeys={expandedKeys}

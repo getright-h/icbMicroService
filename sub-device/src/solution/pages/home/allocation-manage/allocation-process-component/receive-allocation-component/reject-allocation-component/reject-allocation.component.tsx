@@ -36,7 +36,7 @@ export default function RejectAllocationComponent(props: IRejectAllocationProp) 
             <span>(常用于操作失误)</span>
           </div>
         )}
-        <Form.Item label={currentCondition.label} rules={[{ required: true }]}>
+        <Form.Item label={currentCondition.label} rules={[{ required: true }]} name="reason">
           <Input.TextArea onChange={e => onchange(e.target.value, currentCondition.key)} />
         </Form.Item>
       </Form>

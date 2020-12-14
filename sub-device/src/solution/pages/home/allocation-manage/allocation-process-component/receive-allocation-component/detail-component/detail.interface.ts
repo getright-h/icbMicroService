@@ -8,6 +8,7 @@ export class IDetailState {
   flowList: any[] = [];
   currentData: any = {};
   rejectVisibleModal = false;
+  importVisible = false;
   currentActionType: any;
 }
 export interface IFlowNode {

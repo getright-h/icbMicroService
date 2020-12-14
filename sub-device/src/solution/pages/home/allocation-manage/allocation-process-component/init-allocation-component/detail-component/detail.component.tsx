@@ -90,7 +90,7 @@ export default function DetailComponent() {
           <Button
             type={'primary'}
             className={style.button}
-            onClick={() => callbackAction(ModalType.REAPPLY, data)}
+            onClick={() => callbackAction(ModalType.RETURN, data)}
             key={4}
           >
             收到退货
@@ -177,12 +177,15 @@ export default function DetailComponent() {
           </div>
         </div>
       </Form>
-      <DeviceImportComponent
-        visible={importVisible}
-        close={handleModalCancel}
-        data={currentData}
-        getAlloactionDetail={getAlloactionDetail}
-      />
+      {importVisible && (
+        <DeviceImportComponent
+          visible={importVisible}
+          close={handleModalCancel}
+          data={currentData}
+          getAlloactionDetail={getAlloactionDetail}
+        />
+      )}
+
       <RollbackApplyComponent
         allocationOperate={allocationOperate}
         getAlloactionDetail={getAlloactionDetail}

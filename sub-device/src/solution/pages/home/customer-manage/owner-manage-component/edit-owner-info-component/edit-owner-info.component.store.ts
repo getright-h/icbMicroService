@@ -48,7 +48,7 @@ export function useEditOwnerInfoStore(props: IEditOwnerInfoProps) {
         res => {
           ShowNotification.success('编辑车主成功！');
           setStateWrap({ confirmLoading: false });
-          selfClose();
+          selfClose(true);
         },
         err => {
           setStateWrap({ confirmLoading: false });

@@ -31,7 +31,7 @@ export default function AddMonitorCarComponent(props: IAddMonitorCarProps) {
       organizationChecked: true
     };
     return (
-      <div>
+      <div className={style.chooeseOrg}>
         <OrganizationControllerComponent {...prganizationControllerComponentProps} />
       </div>
     );
@@ -39,6 +39,7 @@ export default function AddMonitorCarComponent(props: IAddMonitorCarProps) {
   return (
     <Modal
       visible={addMonitorModal}
+      centered={true}
       width={700}
       confirmLoading={confirmLoading}
       onOk={() => {

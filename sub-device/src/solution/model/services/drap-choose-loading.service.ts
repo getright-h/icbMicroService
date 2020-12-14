@@ -82,7 +82,7 @@ export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
 
   // 查询角色列表
   queryRoleList(params: QueryPurchaseListParam): Observable<DrapChooseLoadingReturn> {
-    return this.requestService.get(QUERY_ROLE_LIST, params);
+    return this.requestService.post(QUERY_ROLE_LIST, params);
   }
 
   // 获取机构名称

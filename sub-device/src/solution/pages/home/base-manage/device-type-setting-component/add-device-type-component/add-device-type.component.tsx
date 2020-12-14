@@ -9,6 +9,7 @@ export default function AddDeviceTypeModalComponent(props: IAddDeviceType) {
   const { state, form, onSubmit } = useAddDeviceTypeStore(props);
   const { imageList = [], submitLoading } = state;
   const { visible, close, data } = props;
+
   const querySupplierList = ISelectLoadingComponent({
     width: '200px',
     reqUrl: 'querySupplierList',
@@ -22,13 +23,13 @@ export default function AddDeviceTypeModalComponent(props: IAddDeviceType) {
   return (
     <Modal
       title={data.id ? '修改设备型号' : '新增设备型号'}
+      centered={true}
       visible={visible}
       width={700}
       onOk={onSubmit}
       onCancel={() => close()}
       confirmLoading={submitLoading}
     >
-      {' '}
       <Form form={form}>
         <div className={style.rowList}>
           <Form.Item label="设备型号" name={'name'} rules={[{ required: true }]}>

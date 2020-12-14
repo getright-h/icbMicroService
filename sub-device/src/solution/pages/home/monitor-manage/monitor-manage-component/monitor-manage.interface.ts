@@ -7,6 +7,7 @@ export class IMonitorManageState {
   addGroupModalVisible = false;
   addCarModalVisible = false;
   transformModalVisible = false;
+  alarmModalVisible = false;
   currentData: any = {};
   searchForm: any = {
     groupId: ''

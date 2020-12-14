@@ -39,8 +39,12 @@ export function useInitAllocationStore() {
   function onChange(value: any, valueType: string) {
     const { searchForm } = state;
     if (valueType == 'time') {
-      searchForm.beginTime = Date.parse(value[0]);
-      searchForm.endTime = Date.parse(value[1]);
+      value[0] ? (searchForm.beginTime = Date.parse(value[0] + ' 00:00:00')) : (searchForm.beginTime = 0);
+      value[1] ? (searchForm.endTime = Date.parse(value[1] + ' 23:59:59')) : (searchForm.endTime = 0);
+      setStateWrap({
+        searchForm: { ...searchForm }
+      });
+      return;
     }
     setStateWrap({
       searchForm: {

@@ -4,11 +4,16 @@
  */
 export class IAddMonitorGroupState {
   submitLoading = false;
+  organization: {
+    organizationCode?: string;
+    organizationId?: string;
+    organizationName?: string;
+  } = {};
 }
 
 export interface AddMonitorGroupProp {
   close: Function;
   data: any;
-  getDetail: Function;
+  getDetail?: Function;
   visible: boolean;
 }

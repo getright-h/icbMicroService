@@ -65,6 +65,7 @@ export function usePurchaseOrderStore() {
         Modal.confirm({
           title: '是否确认删除该采购单？删除后无法恢复',
           icon: <ExclamationCircleOutlined />,
+          centered: true,
           onOk: () =>
             new Promise((resolve, reject) => {
               stockManageService.deletePurchase(data.id).subscribe(

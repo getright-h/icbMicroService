@@ -3,7 +3,7 @@ import { Cascader } from 'antd';
 import { useIAreaCascaderStore } from './i-area-cascader.component.store';
 import { IIAreaCascaderProps } from './i-area-cascader.interface';
 
-export default function IAreaCascaderComponent(props: IIAreaCascaderProps) {
+export const IAreaCascaderComponent = (props: IIAreaCascaderProps) => {
   const { state, loadAreaData, onChangeArea } = useIAreaCascaderStore(props);
 
   return (
@@ -14,7 +14,7 @@ export default function IAreaCascaderComponent(props: IIAreaCascaderProps) {
       options={state.areaOptions}
       loadData={loadAreaData}
       onChange={onChangeArea}
-      changeOnSelect
+      // changeOnSelect
     />
   );
-}
+};

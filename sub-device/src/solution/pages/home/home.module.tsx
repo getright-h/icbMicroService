@@ -9,7 +9,7 @@ import { IGlobalState } from '~/solution/context/global/global.interface';
 import { useLocation } from 'react-router-dom';
 import { RoutesService } from '~/framework/util/routes/routes.service';
 import { homeRoutes } from './home.routes';
-
+import TagView from '../../components/tags-view-component/tags-view.component';
 function HomeModule(props: any) {
   const { state } = useHomeStore();
   const { gState }: IGlobalState = React.useContext(GlobalContext);
@@ -54,9 +54,15 @@ function HomeModule(props: any) {
       <Layout>
         <div className={style.homeMain}>
           <IHomeHeaderComponent></IHomeHeaderComponent>
+
           <div className={style.bodyContainer}>
             {renderLayoutSider()}
-            <div className={style.pageContainer}>{RenderLayoutContainer()}</div>
+            <div className={style.pageContainer}>
+              <>
+                <TagView />
+                {RenderLayoutContainer()}
+              </>
+            </div>
           </div>
         </div>
       </Layout>

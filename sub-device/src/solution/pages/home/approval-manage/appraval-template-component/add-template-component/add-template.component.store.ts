@@ -63,8 +63,13 @@ export function useAddTemplateStore(addTemplateState: AddTemplateState, dispatch
     });
   }
   function next() {
-    if (!addTemplateState.templateName) {
-      message.warning('请输入模板名称');
+    const pos = /^[\u4e00-\u9fa5a-zA-Z0-9]+$/g;
+    if (!pos.test(addTemplateState.templateName)) {
+      message.warning('模板名称不能为空且只允许输入中文数字和字母');
+      return;
+    }
+    if (!addTemplateState.templateType) {
+      message.warning('请选择模板类型');
       return;
     }
     // 仓位名不能为空 流程节点不能为空

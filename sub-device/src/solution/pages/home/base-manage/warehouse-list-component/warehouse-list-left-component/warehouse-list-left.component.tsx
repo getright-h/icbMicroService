@@ -19,15 +19,17 @@ export default function WarehouseListLeftComponent() {
     queryChildInfo
   } = useWarehouseListLeftStore();
   const { treeSelectedKeys, addWarehouseVisible, editWarehouseId, expandedKeys, isEditWarehouseModal } = state;
-
-  // component --- 渲染添加仓库的modal
-  function RenderAddWarehouseModal() {
-    const addWarehouseComponentProps = {
+  const addWarehouseComponentProps = React.useMemo(
+    () => ({
       addWarehouseVisible,
       isEdit: isEditWarehouseModal,
       warehouseId: editWarehouseId,
       closeAddWarehouseModal
-    };
+    }),
+    [editWarehouseId, isEditWarehouseModal, addWarehouseVisible]
+  );
+  // component --- 渲染添加仓库的modal
+  function RenderAddWarehouseModal() {
     return <AddWarehouseComponent {...addWarehouseComponentProps}></AddWarehouseComponent>;
   }
 
@@ -46,7 +48,7 @@ export default function WarehouseListLeftComponent() {
         新增仓库 +{' '}
       </Button>
       <OrganizationControllerComponent {...prganizationControllerComponentProps} />
-      <RenderAddWarehouseModal />
+      {RenderAddWarehouseModal()}
     </div>
   );
 }

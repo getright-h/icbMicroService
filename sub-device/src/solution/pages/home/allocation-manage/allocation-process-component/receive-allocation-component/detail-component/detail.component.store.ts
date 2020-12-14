@@ -17,13 +17,13 @@ export function useDetailStore() {
   const allocationManageService: AllocationManageService = new AllocationManageService();
   let allocationManageServiceSubscription: Subscription;
   useEffect(() => {
-    getAlloactionDetail(id);
+    getAlloactionDetail();
     return () => {
       allocationManageServiceSubscription && allocationManageServiceSubscription.unsubscribe();
     };
   }, []);
   //获取调拨单详情
-  function getAlloactionDetail(id: string) {
+  function getAlloactionDetail() {
     if (!id) return;
     allocationManageServiceSubscription = allocationManageService.queryAllotRecipientDetail({ id }).subscribe(
       (res: any) => {
@@ -51,7 +51,9 @@ export function useDetailStore() {
         });
         break;
       case ModalType.MOVE:
-        renderMoveModal(data);
+        setStateWrap({
+          importVisible: true
+        });
         break;
       case ModalType.PASS:
         renderPassModal(data);
@@ -85,7 +87,7 @@ export function useDetailStore() {
         allocationOperate(data, params).then((res: any) => {
           const { isSuccess } = res;
           if (isSuccess) {
-            getAlloactionDetail(id);
+            getAlloactionDetail();
             ShowNotification.success(msg);
           }
         });
@@ -107,7 +109,7 @@ export function useDetailStore() {
         allocationOperate(data, params).then((res: any) => {
           const { isSuccess } = res;
           if (isSuccess) {
-            getAlloactionDetail(id);
+            getAlloactionDetail();
             ShowNotification.success(msg);
           }
         });
@@ -129,7 +131,7 @@ export function useDetailStore() {
         allocationOperate(data, params).then((res: any) => {
           const { isSuccess } = res;
           if (isSuccess) {
-            getAlloactionDetail(id);
+            getAlloactionDetail();
             ShowNotification.success(msg);
           }
         });
@@ -161,7 +163,7 @@ export function useDetailStore() {
     });
   }
   function handleModalCancel() {
-    setStateWrap({ rejectVisibleModal: false });
+    setStateWrap({ rejectVisibleModal: false, importVisible: false });
   }
   return { state, handleModalCancel, callbackAction, allocationOperate, getAlloactionDetail };
 }

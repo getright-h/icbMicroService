@@ -136,13 +136,13 @@ export interface QueryInOutRecordListParam {
 export interface QueryInOutRecordListResult {
   pagedList: {
     dataList: InOutRecord[];
+    total: number;
   };
   statistics: {
     inNumber: number;
     outNumber: number;
     totalNumber: number;
   };
-  total: number;
 }
 interface InOutRecord {
   id: string;

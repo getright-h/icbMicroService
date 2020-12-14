@@ -142,7 +142,9 @@ export default function StockManageComponent() {
         <Button type="primary" onClick={searchClick} disabled={!currentSelectNode}>
           查询
         </Button>
-        <Button onClick={initSearchform}>清空</Button>
+        <Button onClick={initSearchform} disabled={!currentSelectNode}>
+          清空
+        </Button>
       </div>
     );
   }
@@ -212,9 +214,9 @@ export default function StockManageComponent() {
         otherSearchBtns={renderOtherButtons()}
         table={renderTable()}
       ></TablePageTelComponent>
-      <DeviceStockInComponent visible={stockInVisible} close={modalCancel} />
-      <BulkImportComponent visible={bulkImportVisible} close={modalCancel} />
-      <DeviceEditComponent id={currentId} visible={deviceEditVisible} close={modalCancel} />
+      {stockInVisible && <DeviceStockInComponent visible={stockInVisible} close={modalCancel} />}
+      {bulkImportVisible && <BulkImportComponent visible={bulkImportVisible} close={modalCancel} />}
+      {deviceEditVisible && <DeviceEditComponent id={currentId} visible={deviceEditVisible} close={modalCancel} />}
     </StockListManageContext.Provider>
   );
 }
