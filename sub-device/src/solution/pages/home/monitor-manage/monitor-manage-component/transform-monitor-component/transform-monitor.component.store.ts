@@ -24,7 +24,7 @@ export function useTransformMonitorStore(props: ITransformMonitorProps) {
   }
 
   function onchange(e: any, type: string) {
-    if (type == 'copy') {
+    if (type == 'isCopy') {
       form.setFieldsValue({
         [type]: e.target.checked
       });
@@ -64,7 +64,7 @@ export function useTransformMonitorStore(props: ITransformMonitorProps) {
     monitorService.transferGroup({ ...param }).subscribe(
       (res: any) => {
         ShowNotification.success('转组成功');
-        props.close && props.close();
+        props.close && props.close(true);
       },
       (error: any) => {
         console.log(error);
