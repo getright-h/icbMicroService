@@ -70,7 +70,7 @@ export function initAllocationColumns(callbackAction: Function) {
       // 收到申请
       {
         condition: [
-          ALLOW_FLOW_ENUM.Returning,
+          // ALLOW_FLOW_ENUM.Returning,
           ALLOW_FLOW_ENUM.Inspection,
           ALLOW_FLOW_ENUM.Reject,
           ALLOW_FLOW_ENUM.Identification
