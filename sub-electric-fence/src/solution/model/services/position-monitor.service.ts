@@ -60,6 +60,6 @@ export class PositionMonitorService extends PositionMonitorDTO {
     beginTime: string;
     endTime: string;
   }): Observable<Array<QueryVehicleTrajectoryArrayListReturn>> {
-    return this.requestService.get(QUERY_VEHICLE_TRAJECTORY_ARRAYLIST, params);
+    return this.requestService.post(QUERY_VEHICLE_TRAJECTORY_ARRAYLIST, params);
   }
 }

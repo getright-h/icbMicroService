@@ -11,6 +11,7 @@ export default React.memo((props: IITableProps) => {
     size = 'large',
     isPagination = true,
     rowClick = () => {},
+    scroll = {},
     expandable = {
       childrenColumnName: 'cool'
     },
@@ -29,6 +30,7 @@ export default React.memo((props: IITableProps) => {
           } // 点击行
         };
       }}
+      scroll={scroll}
       showHeader={showHeader}
       size={size}
       dataSource={data}

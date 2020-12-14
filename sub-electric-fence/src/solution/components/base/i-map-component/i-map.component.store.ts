@@ -71,8 +71,12 @@ export function useIMapStore(mapProps: TIMapProps) {
       if (polyline.current) {
         map.current.remove(polyline.current);
       }
-      const { coordinates, plateNo, vinNo } = mapProps.carLine;
-      const carLine = coordinates;
+      const { plateNo, pointList } = mapProps.carLine;
+      const carLine: Array<number[]> = [];
+      pointList?.forEach(item => {
+        const coordinatesExchange = IMAP.initLonlat(item.coordinates[0], item.coordinates[1]);
+        carLine.push(coordinatesExchange);
+      });
       polyline.current = IMAP.drawLine(map.current, carLine);
       const position = carLine[carLine.length - 1];
 
@@ -119,14 +123,17 @@ export function useIMapStore(mapProps: TIMapProps) {
         offset: new AMap.Pixel(-26, -13),
         autoRotation: true
       });
+      console.log('carLine', carLine);
+
       // 第三个参数是在窗口需要展示的当前车辆的信息
       carLineMarkerInfo.current.on('moving', function(e: any) {
         havePassedArr.current = e.passedPath;
         const newPosition = e.passedPath[e.passedPath.length - 2];
         let currentIndex = 0;
+
         carLine.forEach((item, index) => {
           // 这里计算剩下的点，便于后面去转换速度
-          if (item[0] == newPosition.lng && item[1] == newPosition.lat) {
+          if (JSON.stringify(item) == JSON.stringify(newPosition)) {
             currentIndex = index;
           }
         });
@@ -157,12 +164,9 @@ export function useIMapStore(mapProps: TIMapProps) {
         // 暂停显示当前车辆信息
         carLineMarkerInfo.current.pauseMove();
         const position = havePassedArr.current[havePassedArr.current.length - 1];
-        IMAP.showCarInfo(
-          mapProps.drivingLineData,
-          map.current,
-          { position: [position.lng, position.lat] },
-          openInfoWinCar
-        );
+        console.log('position', position);
+
+        IMAP.showCarInfo(mapProps.drivingLineData, map.current, { position }, openInfoWinCar);
       } else {
         if (infoWindowInfo.current) {
           infoWindowInfo.current.close();
@@ -257,8 +261,9 @@ export function useIMapStore(mapProps: TIMapProps) {
 
   function openInfoWinCar(markerInfo: any, map: any, marker: any, infoWindow: any) {
     const { plateNo, vinNo, ownerName, deviceCode, isOnline, durationTime, lastLocationTime } = markerInfo;
+    console.log(markerInfo, marker);
 
-    regeoCode([marker.position[0], marker.position[1]]).then(place => {
+    regeoCode([marker.position.lng, marker.position.lat]).then(place => {
       infoWindow.setInfoTplData({
         ownerName: ownerName || '无',
         plateNo: plateNo || '无',
@@ -267,11 +272,12 @@ export function useIMapStore(mapProps: TIMapProps) {
         typeName: deviceCode.typeName || '无',
         // vehicleState: isRunning ? '动态' : '静止' + ' ' + deviceInfo.speed + 'km/h',
         deviceState: isOnline ? '在线' : `离线 ${durationTime}h`,
-        lalg: `${marker.position[0]}, ${marker.position[1]}`,
+        lalg: `${marker.position.lng}, ${marker.position.lat}`,
         place,
         positionTime: lastLocationTime
       });
-      infoWindow.open(map, markerInfo.getPosition());
+
+      infoWindow.open(map, marker.position);
 
       infoWindowInfo.current = infoWindow;
     });
