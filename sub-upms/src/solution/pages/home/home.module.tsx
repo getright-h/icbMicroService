@@ -43,9 +43,10 @@ function HomeModule(props: any) {
       </Layout.Sider>
     );
   }
+  const RouterInfo = React.useMemo(() => RoutesService.renderRoutes(homeRoutes), []);
 
   function renderLayoutContainer() {
-    return <Layout.Content>{RoutesService.renderRoutes(homeRoutes)}</Layout.Content>;
+    return <Layout.Content>{RouterInfo}</Layout.Content>;
   }
 
   return (

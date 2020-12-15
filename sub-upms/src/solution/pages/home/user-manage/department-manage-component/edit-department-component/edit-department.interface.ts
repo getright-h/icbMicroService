@@ -5,4 +5,5 @@
 export class IEditDepartmentState {
   confirmLoading = false;
   parentCode = '';
+  typeId: string;
 }

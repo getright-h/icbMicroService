@@ -81,7 +81,7 @@ export function useStationManageStore() {
                 (res: any) => {
                   ShowNotification.success('已删除！');
                   getTableData(true);
-                  resolve();
+                  resolve(true);
                 },
                 (err: any) => {
                   ShowNotification.error(err);

@@ -11,12 +11,14 @@ export default function ISelectLoadingComponent(props: IISelectLoadingProps) {
     showSearch = true,
     allowClear = true,
     getCurrentSelectInfo,
-    dropdownMatchSelectWidth
+    dropdownMatchSelectWidth,
+    width = '100%'
   } = props;
   const { state, optionScroll, fetchOptions } = useISelectLoadingStore(props);
   const { optionList, fetching } = state;
   return (
     <Select
+      style={{ width }}
       loading={fetching}
       disabled={disabled || false}
       placeholder={placeholder}

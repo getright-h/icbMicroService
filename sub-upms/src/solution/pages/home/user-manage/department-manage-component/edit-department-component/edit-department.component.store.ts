@@ -18,6 +18,7 @@ export function useEditDepartmentStore(props: any, form: FormInstance) {
         instruction: info.instruction,
         state: info.state
       });
+      setStateWrap({ typeId: info.typeId });
     } else {
       form.setFieldsValue({
         state: true
@@ -60,7 +61,7 @@ export function useEditDepartmentStore(props: any, form: FormInstance) {
   }
   function selectOrganization(value: string, option: Record<string, any>) {
     form.setFieldsValue({ parentOrganizationId: value, parentDepartmentId: '' });
-    setStateWrap({ parentCode: value ? option.info.code : '' });
+    setStateWrap({ parentCode: value ? option.info.code : '', typeId: value });
   }
   useEffect(() => {
     initForm();

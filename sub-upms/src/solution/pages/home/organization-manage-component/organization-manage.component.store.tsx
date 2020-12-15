@@ -89,8 +89,6 @@ export function useOrganizationManageStore() {
       searchForm.parentId = '';
     }
     setStateWrap({ searchForm });
-    console.log(1);
-
     getTableData(true);
   }
 

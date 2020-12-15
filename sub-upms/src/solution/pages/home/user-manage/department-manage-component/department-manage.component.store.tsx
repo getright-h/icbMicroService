@@ -59,7 +59,7 @@ export function useDepartmentManageStore() {
                 (res: any) => {
                   ShowNotification.success('已删除！');
                   getTableData(true);
-                  resolve();
+                  resolve(true);
                 },
                 (err: any) => {
                   ShowNotification.error(err);
@@ -91,7 +91,7 @@ export function useDepartmentManageStore() {
     getTableData(true);
   }
   useEffect(() => {
-    getTableData();
+    gState.myInfo.systemId && getTableData();
     return () => {
       getTableDataSubscription && getTableDataSubscription.unsubscribe();
     };

@@ -51,7 +51,7 @@ export default function OrganizationManageComponent(props: RouteComponentProps) 
   function renderSearchButtons() {
     return (
       <div className="push-search-button-item">
-        <Button type="primary" onClick={() => getTableData(true)} loading={isLoading}>
+        <Button type="primary" onClick={() => getTableData(true)} loading={isLoading} disabled={!searchForm.typeId}>
           查询
         </Button>
       </div>
