@@ -35,12 +35,17 @@ export function stockManageColumns(callbackAction: Function) {
       dataIndex: 'storePositionName'
     },
     {
+      title: '超时报警',
+      dataIndex: 'isAlarmText'
+    },
+    {
       title: '入库时间',
       dataIndex: 'createTime'
     },
     {
       title: '在库时长',
-      dataIndex: 'duration'
+      dataIndex: 'duration',
+      render: (text: any) => <span>{text} 天</span>
     },
     {
       title: '设备状态',
