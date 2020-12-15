@@ -71,12 +71,14 @@ export default function DeviceTypeSettingComponent() {
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
       />
-      <AddDeviceTypeModalComponent
-        data={currentData}
-        visible={addDeviceTypeVisible}
-        close={handleCloseVisible}
-        fetchData={getTableList}
-      />
+      {addDeviceTypeVisible && (
+        <AddDeviceTypeModalComponent
+          data={currentData}
+          visible={addDeviceTypeVisible}
+          close={handleCloseVisible}
+          fetchData={getTableList}
+        />
+      )}
     </div>
   );
 }

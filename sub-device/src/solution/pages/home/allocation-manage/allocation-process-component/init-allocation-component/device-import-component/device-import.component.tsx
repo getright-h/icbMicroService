@@ -2,7 +2,6 @@ import * as React from 'react';
 import style from './device-import.component.less';
 import { useDeviceImportStore } from './device-import.component.store';
 import { IDeviceImportProps } from './device-import.interface';
-import { RenderGridDesComponent } from '~framework/components/component.module';
 import { Modal, Form, Input, Radio, Button, Upload, Space, Table } from 'antd';
 import { UploadOutlined, PlusOutlined, MinusOutlined } from '@ant-design/icons';
 export default function DeviceImportComponent(props: IDeviceImportProps) {
@@ -145,7 +144,7 @@ export default function DeviceImportComponent(props: IDeviceImportProps) {
                         {index != 0 && (
                           <MinusOutlined
                             onClick={() => {
-                              removeDevice(field.key);
+                              removeDevice(device, field.key);
                               remove(field.name);
                             }}
                           />
