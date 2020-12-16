@@ -40,6 +40,7 @@ export function useIMapStore(mapProps: TIMapProps) {
     locationCarMarkerList,
     runCurrentPoint,
     stopMarkers,
+    showDirectiveModal,
     isRunning,
     carSpeed,
     currentPoint
@@ -295,6 +296,13 @@ export function useIMapStore(mapProps: TIMapProps) {
       //阻止冒泡
       event.stopPropagation();
       followLine(marker);
+    });
+
+    infoWindow.get$InfoBody().on('click', '#mybtnDo', marker, function(event: any) {
+      //阻止冒泡
+      event.stopPropagation();
+      // 展示指令弹窗 传入当前的设备号
+      showDirectiveModal()
     });
   }
 

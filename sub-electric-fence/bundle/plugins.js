@@ -101,7 +101,7 @@ class PluginFactory {
     this.getHtmlWebpackPlugin();
     this.getMiniCssExtractPlugin();
     this.getDotenv();
-    this.getFriendlyErrorsWebpackPlugin();
+    // this.getFriendlyErrorsWebpackPlugin();
     // DLL 的插件放在最后 PUSH
     this.getWebpackCdnPlugin();
     // this.getDllPlugins();
