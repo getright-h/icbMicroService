@@ -7,6 +7,7 @@ import { PositionMonitorContext } from '../position-monitor.component';
 import PositionMonitorMapbtnTrackComponent from '../position-monitor-mapbtn-track-component/position-monitor-mapbtn-track.component';
 import PositionMonitorMapbtnDrivingComponent from '../position-monitor-mapbtn-driving-line-component/position-monitor-mapbtn-driving-line.component';
 import { VehicleInfoParamReture } from '~/solution/model/dto/position-monitor.dto';
+import DirectivePatchModalComponent from '../../../directive-manage/wiget/directive-patch-model-component/directive-patch-moda.component';
 const { Option } = Select;
 export const PositionMonitorRightComponent = () => {
   const { reduxState, dispatch } = React.useContext(PositionMonitorContext);
@@ -17,10 +18,11 @@ export const PositionMonitorRightComponent = () => {
     closeMapbtnPage,
     setCurrentSelectCarInfo,
     drawDrivingLine,
+    controllerDirectiveModal,
     closeMapDrivingPage
   } = usePositionMonitorRightStore();
   const { checkedCarData, currentSelectCar } = reduxState;
-  const { mapbtnTrackrVisible, mapbtnDrivingVisible } = state;
+  const { mapbtnTrackrVisible, mapbtnDrivingVisible, modalDirectiveVisible, deviceId } = state;
   const mapProps = React.useMemo(
     () => ({
       id: 'mainContainer',
@@ -28,6 +30,7 @@ export const PositionMonitorRightComponent = () => {
       locationCarMarkerList: checkedCarData,
       currentSelectCar,
       drawDrivingLine,
+      controllerDirectiveModal,
       onMapTrack: searchCar
     }),
     [checkedCarData, currentSelectCar]
@@ -62,6 +65,13 @@ export const PositionMonitorRightComponent = () => {
         <IMapComponent {...mapProps} />
         <div className={`${style.info} ${style.searchCar}`}>{ISelectCarLoadingComponent}</div>
       </div>
+      {modalDirectiveVisible && (
+        <DirectivePatchModalComponent
+          visible={modalDirectiveVisible}
+          close={() => controllerDirectiveModal(false)}
+          deviceId={deviceId}
+        />
+      )}
       {mapbtnTrackrVisible && <PositionMonitorMapbtnTrackComponent {...positionMonitorMapbtnTrackProps} />}
       <PositionMonitorMapbtnDrivingComponent {...positionMonitorMapbtnDrivingProps} />
     </div>
