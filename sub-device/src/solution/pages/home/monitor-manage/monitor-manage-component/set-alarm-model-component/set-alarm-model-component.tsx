@@ -6,10 +6,7 @@ import { Form, Modal, Checkbox, Switch, Radio, Popover } from 'antd';
 import style from './set-alarm-model.component.less';
 import AlarmFormItemComponent from '~/solution/components/alarm-form-item-component/alarm-form-item.component';
 import { AlarmPackageContent } from '~/solution/model/dto/alarm-manage.dto';
-import {
-  alarmTypeTemplates,
-  FormTypeEnum
-} from '~/solution/components/alarm-form-item-component/alarm-form-item.interface';
+import { FormTypeEnum } from '~/solution/components/alarm-form-item-component/alarm-form-item.interface';
 
 export default function SetAlarmModalComponent(props: ISetAlarmProp) {
   const { state, form, setAlarm, close, switchTemplate, selectTemplate, handleFormChange } = useSetAlarmStore(props);
@@ -17,9 +14,9 @@ export default function SetAlarmModalComponent(props: ISetAlarmProp) {
   const { submitLoading, templateList } = state;
   const { visible } = props;
 
-  function PopContent(content: AlarmPackageContent[], alarmType: string) {
+  function PopContent(content: AlarmPackageContent[], template: EditAlarmTemplateItem) {
     const formatContent: { label: string; value: string }[] = [];
-    const formatArr = alarmTypeTemplates[alarmType];
+    const formatArr = template.childList;
     content.map((item, i) => {
       switch (formatArr[i].type) {
         case FormTypeEnum.DurationSetting:
@@ -45,7 +42,7 @@ export default function SetAlarmModalComponent(props: ISetAlarmProp) {
     return (
       <React.Fragment>
         {formatContent.map((item, i) => (
-          <div key={alarmType + 'Content' + i}>
+          <div key={template.code + 'Content' + i}>
             {item.label}：{item.value}
           </div>
         ))}
@@ -67,7 +64,7 @@ export default function SetAlarmModalComponent(props: ISetAlarmProp) {
                 {item.isPackageCustom ? (
                   '自定义设置'
                 ) : (
-                  <Popover content={() => PopContent(item.content, template.code)} trigger="hover">
+                  <Popover content={() => PopContent(item.content, template)} trigger="hover">
                     {item.alarmValue}
                   </Popover>
                 )}

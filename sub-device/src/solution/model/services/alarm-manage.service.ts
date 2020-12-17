@@ -1,4 +1,4 @@
-import { AlarmManageDTO, AlarmConfig, SetAlarmConfig } from '../dto/alarm-manage.dto';
+import { AlarmManageDTO, AlarmConfig, SetAlarmConfig, AlarmParamItem } from '../dto/alarm-manage.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
 import { DepUtil } from '~/framework/aop/inject';
@@ -9,6 +9,7 @@ import { DepUtil } from '~/framework/aop/inject';
 
 const QUERY_ALARM_CONFIG = 'gps/manage/queryAlarmConfig';
 const SET_ALARM_CONFIG = 'gps/manage/setAlarmConfig';
+const QUERY_ALARM_PARAM_LIST = 'gps/manage/queryAlarmParamXmlList';
 
 @DepUtil.Injectable()
 export class AlarmManageService extends AlarmManageDTO {
@@ -24,5 +25,9 @@ export class AlarmManageService extends AlarmManageDTO {
 
   setAlarmConfig(params: SetAlarmConfig): Observable<boolean> {
     return this.requestService.post(SET_ALARM_CONFIG, params);
+  }
+
+  queryAlarmParamList(): Observable<AlarmParamItem[]> {
+    return this.requestService.get(QUERY_ALARM_PARAM_LIST);
   }
 }

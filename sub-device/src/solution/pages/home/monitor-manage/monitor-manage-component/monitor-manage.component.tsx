@@ -174,7 +174,7 @@ export default function MonitorManageComponent() {
         />
       )}
       {alarmModalVisible && (
-        <SetAlarmModalComponent close={handleModalCancel} data={currentData} visible={alarmModalVisible} />
+        <SetAlarmModalComponent close={handleModalCancel} data={currentMonitorGroup} visible={alarmModalVisible} />
       )}
       {addGroupModalVisible && (
         <AddMonitorGroupComponent close={handleModalCancel} data={currentData} visible={addGroupModalVisible} />

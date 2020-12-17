@@ -28,6 +28,7 @@ export default function AlarmFormItemComponent(props: IAlarmFormItemProp) {
                 suffix={item.suffix || null}
               />
             </div>
+            {item.validateText && <span>填写范围：{item.validateText}</span>}
           </Form.Item>
         );
         break;
