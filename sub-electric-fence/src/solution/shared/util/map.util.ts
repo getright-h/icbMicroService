@@ -316,7 +316,6 @@ export const IMAP = {
             <button id="mybtnSearch" class="button_ pop_ pop_def" data-isopen="1">追踪</button>
             <button id="mybtnWatchLine" class="button_ pop_ pop_def" data-isopen="1">查看轨迹</button>
             <button id="mybtnDo" class="button_ pop_ pop_def" data-isopen="1">指令</button>
-            <button id="mybtnAttention" class="button_ pop_ pop_def" data-isopen="1">报警</button>
             </div>`,
 
             infoTplData: {

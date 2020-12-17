@@ -110,7 +110,7 @@ export const PositionMonitorDrawerRightComponent = () => {
   );
   return (
     <Drawer
-      title="车辆栏"
+      title={`已选中车辆  (${checkedCarData.length})`}
       placement="right"
       mask={false}
       closable

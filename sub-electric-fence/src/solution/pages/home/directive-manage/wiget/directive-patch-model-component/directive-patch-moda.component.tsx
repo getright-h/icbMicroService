@@ -9,7 +9,7 @@ import { IDirectiveModalProps, ModalType, Type } from './directive-list.interfac
 import { StorageUtil } from '~/framework/util/storage';
 
 export default function DirectivePatchModalComponent(props: IDirectiveModalProps) {
-  const { visible, close } = props;
+  const { visible, close, deviceId } = props;
   const {
     state,
     form,
@@ -49,27 +49,36 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
       visible={visible}
       confirmLoading={confirmLoading}
       onOk={submitForm}
-      onCancel={selfClose}
+      onCancel={() => selfClose()}
       width={'700px'}
     >
-      <Form {...formItemLayout} form={form} initialValues={{ type: Type.Deivce }}>
-        <Form.Item className={style.marginBootom10} label="关联设备" name="type" rules={[{ required: true }]}>
-          <Radio.Group defaultValue={isDevice} onChange={(e: any) => handleFormDataChange(e.target.value, 'type')}>
-            <Radio value={Type.Deivce}>设备号</Radio>
-            <Radio value={Type.MonitorGroup}>监控组</Radio>
-          </Radio.Group>
-        </Form.Item>
+      <Form {...formItemLayout} form={form} initialValues={{ type: Type.Deivce, codes: deviceId }}>
+        {
+          <Form.Item
+            className={style.marginBootom10}
+            style={deviceId ? { visibility: 'hidden', height: 0 } : {}}
+            label="关联设备"
+            name="type"
+            rules={[{ required: true }]}
+          >
+            <Radio.Group defaultValue={isDevice} onChange={(e: any) => handleFormDataChange(e.target.value, 'type')}>
+              <Radio value={Type.Deivce}>设备号</Radio>
+              <Radio value={Type.MonitorGroup}>监控组</Radio>
+            </Radio.Group>
+          </Form.Item>
+        }
         {isDevice == Type.Deivce ? (
           <Form.Item
             className={style.marginBootom10}
-            label={'  '}
-            prefixCls={' '}
+            label={deviceId ? '关联设备' : '  '}
+            prefixCls={deviceId ? '' : ' '}
             name={'codes'}
             rules={[{ required: true }]}
             style={{ marginBottom: 10 }}
           >
             <Input.TextArea
-              style={{ height: 200 }}
+              disabled={!!deviceId}
+              style={{ height: deviceId ? 10 : 200 }}
               placeholder={'请输入设备号, 多个设备换行输入 \n (录入上限为1000个设备号)'}
               onChange={(e: any) => handleFormDataChange(e.target.value, 'codes')}
             />

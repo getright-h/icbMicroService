@@ -40,6 +40,7 @@ export function useIMapStore(mapProps: TIMapProps) {
     locationCarMarkerList,
     runCurrentPoint,
     stopMarkers,
+    controllerDirectiveModal,
     isRunning,
     carSpeed,
     currentPoint
@@ -164,7 +165,6 @@ export function useIMapStore(mapProps: TIMapProps) {
         // 暂停显示当前车辆信息
         carLineMarkerInfo.current.pauseMove();
         const position = havePassedArr.current[havePassedArr.current.length - 1];
-        console.log('position', position);
 
         IMAP.showCarInfo(mapProps.drivingLineData, map.current, { position }, openInfoWinCar);
       } else {
@@ -296,11 +296,19 @@ export function useIMapStore(mapProps: TIMapProps) {
       event.stopPropagation();
       followLine(marker);
     });
+
+    infoWindow.get$InfoBody().on('click', '#mybtnDo', marker, function(event: any) {
+      //阻止冒泡
+      event.stopPropagation();
+      // 展示指令弹窗 传入当前的设备号
+      console.log(marker.deviceInfo.deviceCode);
+
+      controllerDirectiveModal(true, marker.deviceInfo.deviceCode);
+    });
   }
 
   // 追踪
   function mapSearch(marker: any) {
-    //
     mapProps.onMapTrack(marker);
   }
 

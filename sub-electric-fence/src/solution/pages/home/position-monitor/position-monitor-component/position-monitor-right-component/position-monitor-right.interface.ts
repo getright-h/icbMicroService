@@ -5,4 +5,6 @@
 export class IPositionMonitorRightState {
   mapbtnTrackrVisible = false;
   mapbtnDrivingVisible = false;
+  deviceId = '';
+  modalDirectiveVisible = false;
 }
