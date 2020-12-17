@@ -54,20 +54,20 @@ function HomeModule(props: any) {
 
   return (
     <Spin spinning={state.loading} wrapperClassName="custom-layout-spin">
-      <Layout>
-        <div className={style.homeMain}>
-          <IHomeHeaderComponent />
-          <div className={style.bodyContainer}>
-            {renderLayoutSider()}
-            <div className={style.pageContainer}>
-              <>
-                <TagView />
-                {renderLayoutContainer()}
-              </>
-            </div>
+      {/* <Layout> */}
+      <div className={style.homeMain}>
+        <IHomeHeaderComponent />
+        <div className={style.bodyContainer}>
+          {renderLayoutSider()}
+          <div className={style.pageContainer}>
+            <>
+              <TagView />
+              {renderLayoutContainer()}
+            </>
           </div>
         </div>
-      </Layout>
+      </div>
+      {/* </Layout> */}
     </Spin>
   );
 }

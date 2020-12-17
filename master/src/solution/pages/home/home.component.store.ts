@@ -12,11 +12,15 @@ export function useHomeStore() {
   const { state, setStateWrap } = useStateStore(new IHomeProps());
 
   useEffect(() => {
+    console.log(1122);
+
     // 注册并启动微前端
     registerMainApp(callback);
   }, []);
 
   function callback(result: any) {
+    console.log('result', result);
+
     setStateWrap({ menuList: result, loading: false });
   }
 

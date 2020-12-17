@@ -19,7 +19,6 @@ async function registerMainApp(callback: (menuInfo: any) => void) {
   const routerInfo: any = await fetchChildAppsConfig();
   const res = resolveRouterInfo(routerInfo);
   StorageUtil.setLocalStorage('MENU_LIST', JSON.stringify(res.micInfo));
-  console.log(res.micInfo);
 
   callback(res.menuInfo);
   routerInfo.forEach((element: any) => {
