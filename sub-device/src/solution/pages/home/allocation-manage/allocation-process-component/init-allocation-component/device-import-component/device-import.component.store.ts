@@ -105,15 +105,16 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
    * @param key 行号
    * 以ID作为关联
    */
-  function onChange(value: any, device: any, key: number) {
+  function onChange(value: any, device: any, index: number) {
     const currentDevice = {
-      key,
+      key: index + '-' + device.typeName,
       typeId: device.typeId,
       typeName: device.typeName,
       code: value
     };
-    // 如果存在Key则更新值, 不做增加处理
-    const exitIndex = deviceList.findIndex((dev: any) => dev.key == key);
+
+    // 如果存在Key + typeName 则更新值, 不做增加处理
+    const exitIndex = deviceList.findIndex((dev: any) => dev.key == index + '-' + device.typeName);
     if (exitIndex != -1) {
       deviceList[exitIndex].code = value;
     } else {
@@ -127,8 +128,8 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
    * @param device
    * @param key
    */
-  function removeDevice(key: number) {
-    const deleteIndex = deviceList.findIndex((dev: any) => dev.key == key);
+  function removeDevice(device: any, index: number) {
+    const deleteIndex = deviceList.findIndex((dev: any) => dev.key == index + '-' + device.typeName);
     if (deleteIndex != -1) {
       deviceList.splice(deleteIndex, 1);
     }

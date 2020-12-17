@@ -107,19 +107,23 @@ export default function InitAllocationComponent() {
         table={<RenderTable />}
       ></TablePageTelComponent>
       {/* <DeviceImportComponent visible={importVisible} close={handleModalCancel} /> */}
-      <DeviceImportComponent
-        visible={importVisible}
-        close={handleModalCancel}
-        data={currentData}
-        getTableData={getTableData}
-      />
-      <RollbackApplyComponent
-        allocationOperate={allocationOperate}
-        visible={rollbackVisible}
-        close={handleModalCancel}
-        data={currentData}
-        getTableData={getTableData}
-      />
+      {importVisible && (
+        <DeviceImportComponent
+          visible={importVisible}
+          close={handleModalCancel}
+          data={currentData}
+          getTableData={getTableData}
+        />
+      )}
+      {rollbackVisible && (
+        <RollbackApplyComponent
+          allocationOperate={allocationOperate}
+          visible={rollbackVisible}
+          close={handleModalCancel}
+          data={currentData}
+          getTableData={getTableData}
+        />
+      )}
     </React.Fragment>
   );
 }
