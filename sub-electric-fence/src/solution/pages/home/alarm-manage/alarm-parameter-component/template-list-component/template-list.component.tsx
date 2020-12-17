@@ -7,16 +7,10 @@ import { useTemplateListStore } from './template-list.component.store';
 import { ITemplateListProps } from './template-list.interface';
 
 export default function TemplateListComponent(props: ITemplateListProps) {
-  const {
-    state,
-    form,
-    selfClose,
-    selectTemplate,
-    submitTemplate,
-    getFormInfo,
-    deleteAlarmTemplate
-  } = useTemplateListStore(props);
-  const { confirmLoading, templateList, selectTempId, tempalteValue } = state;
+  const { state, selfClose, selectTemplate, submitTemplate, getFormInfo, deleteAlarmTemplate } = useTemplateListStore(
+    props
+  );
+  const { confirmLoading, templateList, selectTempId, tempalteValue, isCurTempDefault } = state;
   const { visible, info } = props;
 
   function TemplateList() {
@@ -30,7 +24,7 @@ export default function TemplateListComponent(props: ITemplateListProps) {
               onClick={() => selectTemplate(template.id)}
             >
               <span>{template.alarmValue}</span>
-              <CloseOutlined onClick={() => deleteAlarmTemplate(template)} />
+              {!template.isDefault && <CloseOutlined onClick={() => deleteAlarmTemplate(template)} />}
             </li>
           ))
         ) : (
@@ -94,7 +88,13 @@ export default function TemplateListComponent(props: ITemplateListProps) {
             <div className={style.template}>
               <EditField />
               {selectTempId && (
-                <Button className={style.submit} type="primary" loading={confirmLoading} onClick={submitTemplate}>
+                <Button
+                  className={style.submit}
+                  type="primary"
+                  loading={confirmLoading}
+                  onClick={submitTemplate}
+                  disabled={isCurTempDefault}
+                >
                   保存
                 </Button>
               )}

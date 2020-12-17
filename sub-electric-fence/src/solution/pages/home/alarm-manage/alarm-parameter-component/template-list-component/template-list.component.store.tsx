@@ -30,13 +30,13 @@ export function useTemplateListStore(props: ITemplateListProps) {
 
   function selectTemplate(id: string) {
     // 直接在父级获取模板信息
-    alarmManageService.queryTemplatePackageDetail(id).subscribe((res: any) => {
-      setStateWrap({ selectTempId: id, tempalteValue: res || [] });
+    alarmManageService.queryTemplatePackageDetail(id).subscribe(res => {
+      setStateWrap({ selectTempId: id, tempalteValue: res || [], isCurTempDefault: res[0].isDefault });
     });
   }
 
   function submitTemplate() {
-    console.log('submitTemplate', formInfoRef.current);
+    setStateWrap({ tempalteValue: formInfoRef.current });
     if (validateAlarmItems(formInfoRef.current)) {
       setStateWrap({ confirmLoading: true });
       alarmManageService.setAlarmTemplatePackage(formInfoRef.current).subscribe(
@@ -67,7 +67,7 @@ export function useTemplateListStore(props: ITemplateListProps) {
               message.success('删除模板成功！');
               setStateWrap({ selectTempId: null });
               initTemplateList(props.info.id);
-              resolve();
+              resolve(true);
             },
             err => {
               reject();

@@ -53,7 +53,7 @@ export default function DurationSettingComponent(props: IDurationSettingProps) {
               rules={[{ required: true, message: '请填写速度' }]}
             >
               <Input
-                placeholder="请填写速度"
+                placeholder="速度（整数）"
                 suffix="km/h"
                 value={field.Speed}
                 onChange={e => changeFieldValue(index, 'Speed', e.target.value)}

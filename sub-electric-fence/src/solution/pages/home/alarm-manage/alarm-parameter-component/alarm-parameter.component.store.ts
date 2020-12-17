@@ -2,15 +2,18 @@ import { IAlarmParameterState, ModalType } from './alarm-parameter.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form, message } from 'antd';
 import { AlarmManageService } from '~/solution/model/services/alarm-manage.service';
-import { useEffect } from 'react';
+import { MutableRefObject, useEffect, useRef } from 'react';
+import { AlarmParamItem, AlarmTemplateListItem } from '~/solution/model/dto/alarm-manage.dto';
 
 export function useAlarmParameterStore() {
   const { state, setStateWrap } = useStateStore(new IAlarmParameterState());
   const alarmManageService: AlarmManageService = new AlarmManageService();
   const [searchForm] = Form.useForm();
+  const paramTemplatesRef: MutableRefObject<AlarmParamItem[]> = useRef([]);
 
   useEffect(() => {
     initSearchForm();
+    getAlarmParamTemplates();
   }, []);
 
   function getTableData() {
@@ -25,13 +28,20 @@ export function useAlarmParameterStore() {
     );
   }
 
+  function getAlarmParamTemplates() {
+    alarmManageService.queryAlarmParamList().subscribe(res => {
+      paramTemplatesRef.current = res;
+    });
+  }
+
   function initSearchForm() {
     searchForm.resetFields();
     getTableData();
   }
 
-  function callbackAction<T>(actionType: number, data?: T) {
-    setStateWrap({ currentTemplate: data });
+  function callbackAction(actionType: number, data?: AlarmTemplateListItem) {
+    const template = paramTemplatesRef.current.find(item => item.type === data.code);
+    setStateWrap({ currentTemplate: { id: data.id, ...template } });
     switch (actionType) {
       case ModalType.TEMPADD:
         setStateWrap({ tempAddVisible: true });

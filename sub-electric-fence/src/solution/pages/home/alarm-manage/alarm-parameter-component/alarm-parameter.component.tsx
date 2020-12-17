@@ -83,7 +83,7 @@ export default function AlarmParameterComponent() {
   return (
     <React.Fragment>
       <TablePageTelComponent
-        pageName={'报警参数管理'}
+        pageName={'参数管理'}
         selectItems={renderSelectItems()}
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
