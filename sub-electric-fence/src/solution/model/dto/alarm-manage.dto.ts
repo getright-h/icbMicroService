@@ -84,7 +84,7 @@ export interface AlarmTypeItem {
   alarmText: string;
   alarmValue: string;
   type: number;
-  prifix: string;
+  prefix: string;
   suffix: string;
   validateText: string;
 }

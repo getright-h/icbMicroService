@@ -30,11 +30,11 @@ export function validateAlarmItems(formData: AlarmTypeItem[]): boolean {
         // }
       });
     }
-    if (item.validateFn && !item.validateFn(item.alarmValue)) {
-      isPass = false;
-      message.warning(`请正确填写${item.alarmText}`);
-      return;
-    }
+    // if (item.validateFn && !item.validateFn(item.alarmValue)) {
+    //   isPass = false;
+    //   message.warning(`请正确填写${item.alarmText}`);
+    //   return;
+    // }
   });
   return isPass;
 }
