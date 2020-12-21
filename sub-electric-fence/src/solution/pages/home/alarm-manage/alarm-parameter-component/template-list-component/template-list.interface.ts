@@ -10,6 +10,7 @@ export class ITemplateListState {
   selectTempId: string;
   selectTempInfo: AlarmPackageContent[] = [];
   tempalteValue: AlarmPackageContent[] = [];
+  isCurTempDefault: boolean;
 }
 export class ITemplateListProps {
   visible: boolean;

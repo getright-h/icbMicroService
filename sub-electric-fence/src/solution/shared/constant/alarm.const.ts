@@ -22,7 +22,11 @@ export enum AlarmTypeEnum {
   // [Description("上线")]
   Online = 'Online',
   // [Description("电瓶低电压")]
-  BatteryLevel = 'BatteryLevel'
+  BatteryLevel = 'BatteryLevel',
+  // [Description("标定里程")]
+  Calibration = 'Calibration',
+  // [Description("服务器设置")]
+  SetService = 'SetService'
 }
 
 export const AlarmType = [
@@ -37,5 +41,7 @@ export const AlarmType = [
   // { value: AlarmTypeEnum.RiskArea, name: '高危区域报警' },
   { value: AlarmTypeEnum.Focus, name: '位置聚集地报警' },
   { value: AlarmTypeEnum.Online, name: '上线报警' },
-  { value: AlarmTypeEnum.BatteryLevel, name: '电瓶低电压报警' }
+  { value: AlarmTypeEnum.BatteryLevel, name: '电瓶低电压报警' },
+  { value: AlarmTypeEnum.Calibration, name: '标定里程' },
+  { value: AlarmTypeEnum.SetService, name: '服务器设置' }
 ];

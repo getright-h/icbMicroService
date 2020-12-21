@@ -1,6 +1,7 @@
 import {
   AlarmManageDTO,
   AlarmPackageContent,
+  AlarmParamItem,
   EditAlarmPackageItem,
   QueryAlarmTemplateListParam,
   QueryAlarmTemplateListResponse
@@ -20,6 +21,7 @@ const SET_ALARM_TEMPLATE = 'gps/manage/setAlarmTemplatePackage';
 const QUERY_TEMPLATE_PACKAGE_LIST = 'gps/manage/queryTemplatePackageList';
 const QUERY_TEMPLATE_PACKAGE_DETAIL = 'gps/manage/queryTemplatePackageDetail';
 const DELETE_TEMPLATE_PACKAGE = 'gps/manage/deleteAlarmTemplatePackage';
+const QUERY_ALARM_PARAM_LIST = 'gps/manage/queryAlarmParamXmlList';
 
 @DepUtil.Injectable()
 export class AlarmManageService extends AlarmManageDTO {
@@ -55,5 +57,9 @@ export class AlarmManageService extends AlarmManageDTO {
 
   deleteTemplatePackage(groupId: string): Observable<boolean> {
     return this.requestService.delete(DELETE_TEMPLATE_PACKAGE, { groupId });
+  }
+
+  queryAlarmParamList(): Observable<AlarmParamItem[]> {
+    return this.requestService.get(QUERY_ALARM_PARAM_LIST);
   }
 }

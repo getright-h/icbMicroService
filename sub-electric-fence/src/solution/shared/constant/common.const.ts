@@ -32,7 +32,7 @@ export const PAGES_MENU = {
     },
     {
       path: 'home/alarm/parameter',
-      title: '报警参数管理',
+      title: '参数管理',
       icon: 'container'
     },
     {
