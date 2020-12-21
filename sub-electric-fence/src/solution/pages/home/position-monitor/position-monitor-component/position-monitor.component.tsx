@@ -11,14 +11,16 @@ import Avatar from 'antd/lib/avatar/avatar';
 import { PositionMonitorDrawerRightComponent } from './position-monitor-drawer-right-component/position-monitor-drawer-right.component';
 import { usePositionMonitorStore } from './position-monitor.component.store';
 import PositionMonitorRefreshHeaderComponent from './position-monitor-refresh-header-component/position-monitor-refresh-header.component';
+import AlarmAttentionModalComponent from './alarm-attention-modal-component/alarm-attention-modal.component';
 export const PositionMonitorContext = React.createContext({
   reduxState: positionMonitorInitialState,
   dispatch: undefined
 });
 export default function PositionMonitorComponent() {
   const [positionMonitorData, dispatch] = React.useReducer(PositionMonitorReducer, positionMonitorInitialState);
-  const { refreshContentInfo } = usePositionMonitorStore(dispatch, positionMonitorData);
-  const { leftContentVisible, leftDrawerVisible, checkedCarData } = positionMonitorData;
+  const { refreshContentInfo, state, handleCancel } = usePositionMonitorStore(dispatch, positionMonitorData);
+  const { leftContentVisible, leftDrawerVisible, checkedCarData, totalAlermManage } = positionMonitorData;
+  const { isModalVisible } = state;
   const RenderMainContent = () => {
     return (
       <div className={style.positionMonitor}>
@@ -31,6 +33,10 @@ export default function PositionMonitorComponent() {
         <div className={style.positionMonitorRight}>
           <PositionMonitorRightComponent />
           <PositionMonitorDrawerRightComponent />
+          {console.log('isModalVisible', isModalVisible)}
+          {isModalVisible && (
+            <AlarmAttentionModalComponent isModalVisible={isModalVisible} handleCancel={() => handleCancel(false)} />
+          )}
         </div>
         {!leftDrawerVisible && (
           <div
@@ -52,8 +58,8 @@ export default function PositionMonitorComponent() {
             <Avatar shape="circle" size={80} icon={<CarOutlined className={style.iconStyle} />} />
           </Badge>
         </div>
-        <div className={style.attention}>
-          <Badge count={1000} overflowCount={99} offset={[0, 12]}>
+        <div className={style.attention} onClick={() => handleCancel(true)}>
+          <Badge count={totalAlermManage} offset={[0, 12]}>
             <Avatar size={80} icon={<AlertOutlined className={style.iconStyleAlert} />} />
           </Badge>
         </div>
