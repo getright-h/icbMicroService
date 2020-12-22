@@ -73,6 +73,6 @@ export function useAddDeviceTypeStore(props: IAddDeviceType) {
       insetDeviceTypeSubscription && insetDeviceTypeSubscription.unsubscribe();
       updateDeviceTypeSubscription && updateDeviceTypeSubscription.unsubscribe();
     };
-  }, [JSON.stringify(props.data)]);
+  }, []);
   return { state, form, onSubmit, alertDeviceType };
 }

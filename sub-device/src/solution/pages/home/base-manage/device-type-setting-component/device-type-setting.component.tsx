@@ -8,7 +8,6 @@ import { Button, Input } from 'antd';
 import AddDeviceTypeModalComponent from './add-device-type-component/add-device-type.component';
 
 export default function DeviceTypeSettingComponent() {
-  const { state } = useDeviceTypeSettingStore();
   const {
     state,
     callbackAction,
