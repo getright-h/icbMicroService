@@ -131,13 +131,16 @@ export function useSetAlarmStore(props: ISetAlarmProp) {
     submitFormRef.current = { id: props.data.id, pushMode, type: 1, templateList: templateListRef.current };
 
     if (isPass && selectNum) {
-      alarmManageService.setAlarmConfig(submitFormRef.current).subscribe(res => {
-        ShowNotification.success('设置成功');
-        setStateWrap({ submitLoading: false });
-        close();
-      }, err => {
-        setStateWrap({ submitLoading: false });
-      });
+      alarmManageService.setAlarmConfig(submitFormRef.current).subscribe(
+        res => {
+          ShowNotification.success('设置成功');
+          setStateWrap({ submitLoading: false });
+          close();
+        },
+        err => {
+          setStateWrap({ submitLoading: false });
+        }
+      );
     } else {
       setStateWrap({ submitLoading: false });
     }
