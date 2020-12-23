@@ -69,7 +69,7 @@ export default function WarehouseListComponent() {
     return (
       <div className={style.totalShow}>
         库存总数: {!currentSelectNode ? '**' : totalNumber}
-        <span>({totalAlarm})</span>
+        {/* <span>({totalAlarm})</span> */}
       </div>
     );
   }

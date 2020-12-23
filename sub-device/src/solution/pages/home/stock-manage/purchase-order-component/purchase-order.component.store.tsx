@@ -23,8 +23,16 @@ export function usePurchaseOrderStore() {
     stockManageService
       .queryPurchaseList({
         ...searchForm.getFieldsValue(),
-        beginTime: timeInfo[0] ? moment(timeInfo[0]).valueOf() : 0,
-        endTime: timeInfo[1] ? moment(timeInfo[1]).valueOf() : 0,
+        beginTime: timeInfo[0]
+          ? moment(timeInfo[0])
+              .startOf('d')
+              .valueOf()
+          : 0,
+        endTime: timeInfo[1]
+          ? moment(timeInfo[1])
+              .endOf('d')
+              .valueOf()
+          : 0,
         index: pageIndex,
         size: pageSize
       })
