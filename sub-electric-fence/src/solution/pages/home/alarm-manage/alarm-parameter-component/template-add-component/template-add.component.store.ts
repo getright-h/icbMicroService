@@ -8,7 +8,7 @@ import { validateAlarmItems } from '~/solution/components/custom/alarm-form-item
 export function useTemplateAddStore(props: ITemplateAddProps) {
   const { state, setStateWrap } = useStateStore(new ITemplateAddState());
   const alarmManageService: AlarmManageService = new AlarmManageService();
-  const formInfoRef = useRef(null);
+  const formInfoRef = useRef([]);
 
   function getFormInfo(formInfo: any[]) {
     formInfoRef.current = formInfo;

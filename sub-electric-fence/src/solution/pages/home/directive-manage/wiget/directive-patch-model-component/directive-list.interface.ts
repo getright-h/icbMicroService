@@ -17,6 +17,7 @@ export enum ModalType {
 
 export interface IDirectiveModalProps {
   visible: boolean;
+  deviceId?: string;
   close: Function;
 }
 export class IDirectiveModalState {

@@ -14,6 +14,7 @@ export type TIMapProps = {
   currentSelectCar?: any;
   isRunning?: boolean;
   id: string;
+  controllerDirectiveModal?: (isClose: boolean, deviceCode: string) => void;
   carSpeed?: number;
   needSearchAddress?: boolean;
   height?: string;

@@ -22,15 +22,6 @@ export default React.memo((props: IPositionMonitorMapbtnTrackProps) => {
       </div>
     );
   }
-
-  // function Title() {
-  //   return (
-  //     <div>
-  //       追踪
-  //       <span>{state.refreshTime}</span>
-  //     </div>
-  //   );
-  // }
   return (
     <Drawer
       title={

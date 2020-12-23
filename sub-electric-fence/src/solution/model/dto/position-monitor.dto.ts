@@ -39,6 +39,33 @@ interface PermanentPlaceList {
   stopTime: number;
 }
 
+export interface QueryMonitorAlarmInfoPagedListParams {
+  strValue?: string;
+  alarmType?: number;
+  organizationId?: string;
+  isSettle?: boolean;
+  index: number;
+  size: number;
+  beginTime?: number;
+  endTime?: number;
+}
+
+export interface QueryMonitorAlarmInfoPagedListReturn {
+  ownerId: string;
+  ownerName: string;
+  plateNo: string;
+  deviceCode: string;
+  alarmType: number;
+  alarmTypeText: string;
+  alarmNumber: number;
+  beginAlarmTime: string;
+  endAlarmTime: string;
+  organizationId: string;
+  organizationName: string;
+  isSettle: boolean;
+  isSettleText: string;
+}
+
 export interface DeviceList {
   vehicleId: string;
   isDefault?: boolean;

@@ -1,19 +1,11 @@
-import {
-  AlarmTypeItem,
-  alarmTypeTemplates,
-  IAlarmFormItemProp,
-  IAlarmFormItemState,
-  nameTemplate
-} from './alarm-form-item.interface';
+import { AlarmTypeItem, IAlarmFormItemProp, IAlarmFormItemState, nameTemplate } from './alarm-form-item.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect } from 'react';
-import { AlarmManageService } from '~/solution/model/services/alarm-manage.service';
 import { AlarmTypeEnum } from '~/solution/shared/constant/alarm.const';
 import { DurationField } from './duration-setting-component/duration-setting.interface';
 
 export function useAlarmFormItemStore(props: IAlarmFormItemProp) {
   const { state, setStateWrap } = useStateStore(new IAlarmFormItemState());
-  const alarmManageService: AlarmManageService = new AlarmManageService();
   const { initialInfo, hasTempName = false, selectTempId = '' } = props;
 
   useEffect(() => {
@@ -22,10 +14,9 @@ export function useAlarmFormItemStore(props: IAlarmFormItemProp) {
 
   function initFormInfo() {
     const formInfo = [];
-    console.log(initialInfo.code);
 
-    initialInfo.code &&
-      alarmTypeTemplates[initialInfo.code]?.forEach(item => {
+    initialInfo.type &&
+      initialInfo.childList.forEach((item: any) => {
         formInfo.push({ ...item, alarmTemplateId: initialInfo.id });
       });
     if (hasTempName) {
@@ -33,17 +24,14 @@ export function useAlarmFormItemStore(props: IAlarmFormItemProp) {
     }
 
     if (selectTempId) {
-      formatFormData(selectTempId, formInfo);
+      formatFormData(formInfo);
     } else {
       setStateWrap({ formInfo });
     }
   }
 
-  function formatFormData(id: string, formInfo: AlarmTypeItem[]) {
+  function formatFormData(formInfo: AlarmTypeItem[]) {
     const { tempalteValue = [] } = props;
-    // alarmManageService.queryTemplatePackageDetail(id).subscribe(res => {
-    console.log(tempalteValue, 'tempalteValue');
-    // });
 
     !hasTempName && tempalteValue.shift();
     formInfo.map((item, i) => {
@@ -52,10 +40,9 @@ export function useAlarmFormItemStore(props: IAlarmFormItemProp) {
 
     // 行驶报警
     let durationFields: DurationField[] = [];
-    if (initialInfo.code === AlarmTypeEnum.Running) {
+    if (initialInfo.type === AlarmTypeEnum.Running) {
       durationFields = JSON.parse(tempalteValue.find(item => item.alarmKey === 'Duration').alarmValue);
     }
-    console.log(formInfo, 'yes');
     setStateWrap({ formInfo, durationFields });
     props.getFormInfo(formInfo);
   }

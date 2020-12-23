@@ -60,11 +60,29 @@ export function usePositionMonitorRightStore() {
     });
   }
 
+  // 控制指令
+  function controllerDirectiveModal(isClose = true, deviceCode = '') {
+    console.log('isClose', isClose);
+
+    setStateWrap({
+      modalDirectiveVisible: isClose,
+      deviceId: deviceCode
+    });
+  }
+
   function closeMapbtnPage() {
     setStateWrap({
       mapbtnTrackrVisible: false
     });
   }
 
-  return { state, searchCar, setCurrentSelectCarInfo, closeMapbtnPage, closeMapDrivingPage, drawDrivingLine };
+  return {
+    state,
+    searchCar,
+    controllerDirectiveModal,
+    setCurrentSelectCarInfo,
+    closeMapbtnPage,
+    closeMapDrivingPage,
+    drawDrivingLine
+  };
 }

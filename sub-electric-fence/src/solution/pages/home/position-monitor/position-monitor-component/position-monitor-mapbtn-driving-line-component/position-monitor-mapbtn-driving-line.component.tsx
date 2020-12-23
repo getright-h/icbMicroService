@@ -7,6 +7,7 @@ import { IMapComponent, TimePickerComponent, ITableComponent } from '~/solution/
 import { BackwardOutlined, ForwardOutlined, PauseCircleOutlined, PlayCircleOutlined } from '@ant-design/icons';
 import { positionMonitorMapBtnDrivingColumns } from './position-monitor-mapbtn-driving-line.column';
 import { PositionMonitorContext } from '../position-monitor.component';
+import moment from 'moment';
 const { Option } = Select;
 export default React.memo((props: IPositionMonitorMapbtnDrivingProps) => {
   const { reduxState } = React.useContext(PositionMonitorContext);
@@ -22,7 +23,8 @@ export default React.memo((props: IPositionMonitorMapbtnDrivingProps) => {
     setEndRunning,
     runCurrentPoint,
     changeSliderProgress,
-    getDeviceCode
+    getDeviceCode,
+    onExchangeCoordinates
   } = usePositionMonitorMapbtnDrivingLineStore(reduxState);
   const { currentDoActionCarInfo } = reduxState;
   const { refreshTime, dateTimeRangeControllerValue, drivingLineData, stopMarkers, currentPoint } = state;
@@ -40,16 +42,17 @@ export default React.memo((props: IPositionMonitorMapbtnDrivingProps) => {
 
   const tableParams = React.useMemo(
     () => ({
-      columns: positionMonitorMapBtnDrivingColumns(),
+      columns: positionMonitorMapBtnDrivingColumns(onExchangeCoordinates),
       isLoading,
       pageIndex: searchForm.index,
-      pageSize: searchForm.size,
+      // pageSize: searchForm.size,
       data: tableData,
-      pagination: false,
+      isPagination: false,
       total: total,
+      scroll: { y: 500 },
       changeTablePageIndex: (index: number, pageSize: number) => changeTablePageIndex()
     }),
-    [searchForm.index, searchForm.size, isLoading, tableData, total]
+    [searchForm.index, isLoading, tableData, total]
   );
 
   function RenderSelect() {
@@ -94,17 +97,17 @@ export default React.memo((props: IPositionMonitorMapbtnDrivingProps) => {
             <Slider
               value={currentPoint}
               marks={
-                pointList
+                pointList && pointList.length
                   ? {
-                      0: pointList[0] || 0,
-                      [pointList.length - 1]: pointList[pointList.length - 1] || 0
+                      0: pointList[0].time || 0,
+                      [pointList.length - 1]: pointList[pointList.length - 1].time || 0
                     }
                   : {}
               }
               max={pointList?.length - 1}
               min={0}
               onChange={changeSliderProgress}
-              tipFormatter={value => pointList[value]}
+              tipFormatter={value => pointList[value]?.time}
               tooltipVisible={!!pointList[0]}
             />
             <div className={style.controllerButton}>

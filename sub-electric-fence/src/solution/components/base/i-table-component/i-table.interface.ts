@@ -13,6 +13,7 @@ export class IITableState {
 
 export interface IITableProps {
   isLoading: boolean;
+  scroll?: object;
   rowClick?: (record: any, event: any) => void;
   data: any;
   total: number;

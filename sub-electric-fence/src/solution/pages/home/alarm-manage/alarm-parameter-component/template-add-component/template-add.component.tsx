@@ -23,7 +23,7 @@ export default function TemplateAddComponent(props: ITemplateAddProps) {
     );
   }
 
-  const RenderFormMemo = React.useCallback(() => RenderForm(), [info]);
+  const RenderFormMemo = React.useCallback(() => RenderForm(), [info.id]);
 
   return (
     <Modal

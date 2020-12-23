@@ -12,14 +12,18 @@ export const positionMonitorInitialState: TPositionMonitor = {
   currentSelectCar: undefined,
   selectedRowKeys: [],
   mapbtnTrackrVisible: false,
+  isOpenAlarmModal: false,
   // 当前去看轨迹或者追踪用的车辆
-  currentDoActionCarInfo: undefined
+  currentDoActionCarInfo: undefined,
+  totalAlermManage: 0
 };
 
 export type TPositionMonitor = {
   currentSelectNode: EventDataNode;
   rightDrawervisible: boolean;
+  totalAlermManage: number;
   leftContentVisible: boolean;
+  isOpenAlarmModal: boolean;
   leftDrawerVisible: boolean;
   checkedCarData: VehicleInfoParamReture[];
   currentSelectCar: VehicleInfoParamReture;

@@ -1,16 +1,15 @@
 import {
   PositionMonitorDTO,
   QueryVehicleGroupListReturn,
-  IQueryVehicleInfoPagedListParams
+  IQueryVehicleInfoPagedListParams,
+  QueryMonitorAlarmInfoPagedListParams,
+  QueryVehicleTrajectoryArrayListReturn,
+  QueryMonitorAlarmInfoPagedListReturn
 } from '../dto/position-monitor.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
 import { DepUtil } from '~/framework/aop/inject';
-import {
-  VehicleInfoParamReture,
-  RealTimeTrackingReturn,
-  QueryVehicleTrajectoryArrayListReturn
-} from '~/solution/model/dto/position-monitor.dto';
+import { VehicleInfoParamReture, RealTimeTrackingReturn } from '~/solution/model/dto/position-monitor.dto';
 
 /**
  * 真实开发中，请将示例代码移除
@@ -21,6 +20,7 @@ const QUERY_VEHICLEINFO_PAGED_LIST = 'gps/monitoring/queryVehicleInfoPagedList';
 const QUERY_VEHICLE_INFOBYPARAM = 'gps/monitoring/queryVehicleInfoByParam';
 const REAL_TIME_TRACKING = 'gps/monitoring/realTimeTracking';
 const QUERY_VEHICLE_TRAJECTORY_ARRAYLIST = 'gps/monitoring/queryVehicleTrajectoryArrayList';
+const QUERY_MONITOR_ALARMINFOPAGED_LIST = 'alarmCenter/manage/queryMonitorAlarmInfoPagedList';
 @DepUtil.Injectable()
 export class PositionMonitorService extends PositionMonitorDTO {
   @DepUtil.Inject(RequestService)
@@ -47,6 +47,15 @@ export class PositionMonitorService extends PositionMonitorDTO {
     return this.requestService.get(REAL_TIME_TRACKING, params);
   }
 
+  queryMonitorAlarmInfoPagedList(
+    params: QueryMonitorAlarmInfoPagedListParams
+  ): Observable<{
+    monitorAlarmList: { dataList: QueryMonitorAlarmInfoPagedListReturn[]; total: number };
+    count: number;
+  }> {
+    return this.requestService.post(QUERY_MONITOR_ALARMINFOPAGED_LIST, params);
+  }
+
   queryVehicleHistoryTrajectory(params: {
     deviceCode: string;
     beginTime: string;
@@ -60,6 +69,6 @@ export class PositionMonitorService extends PositionMonitorDTO {
     beginTime: string;
     endTime: string;
   }): Observable<Array<QueryVehicleTrajectoryArrayListReturn>> {
-    return this.requestService.get(QUERY_VEHICLE_TRAJECTORY_ARRAYLIST, params);
+    return this.requestService.post(QUERY_VEHICLE_TRAJECTORY_ARRAYLIST, params);
   }
 }

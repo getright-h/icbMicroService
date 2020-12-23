@@ -5,9 +5,11 @@ import { useEffect } from 'react';
 import { PositionMonitorService } from '~/solution/model/services/position-monitor.service';
 import { TPositionMonitor } from '../position-monitor-redux/position-monitor-reducer';
 import { formatToUnix } from '~/solution/shared/util/common.util';
+import { QueryVehicleTrajectoryArrayListReturn } from '~/solution/model/dto/position-monitor.dto';
+declare const AMap: any;
 export function usePositionMonitorMapbtnDrivingLineStore(reduxState: TPositionMonitor) {
   const { state, setStateWrap } = useStateStore(new IPositionMonitorMapbtnDrivingLineState());
-  const { carSpeedBase, drivingLineData, deviceCode, timeInfo } = state;
+  const { carSpeedBase, drivingLineData, deviceCode, timeInfo, tableData } = state;
   const { pointList } = drivingLineData;
   const { currentDoActionCarInfo } = reduxState;
   const positionMonitorService: PositionMonitorService = useService(PositionMonitorService);
@@ -42,6 +44,8 @@ export function usePositionMonitorMapbtnDrivingLineStore(reduxState: TPositionMo
   }
 
   function changeSliderProgress(value: number) {
+    console.log(value);
+
     setStateWrap({
       currentPoint: value
     });
@@ -124,6 +128,45 @@ export function usePositionMonitorMapbtnDrivingLineStore(reduxState: TPositionMo
     });
   }
 
+  async function onExchangeCoordinates(value: QueryVehicleTrajectoryArrayListReturn) {
+    let tanslateLngLat: {} = '';
+    const tableDataInfo: any = await Promise.all(
+      tableData.map(async item => {
+        if (item.coordinates == value.coordinates) {
+          if (!tanslateLngLat) {
+            tanslateLngLat = await regeoCode(value.coordinates);
+          }
+          console.log('tanslateLngLat', tanslateLngLat);
+
+          item.coordinates = tanslateLngLat as any;
+        }
+        return item;
+      })
+    );
+    setStateWrap({
+      tableData: tableDataInfo
+    });
+  }
+
+  function regeoCode(lnglat: Array<number>) {
+    let geocoder: any;
+    if (!geocoder) {
+      geocoder = new AMap.Geocoder({
+        city: '全国', //城市设为北京，默认：“全国”
+        radius: 1000 //范围，默认：500
+      });
+    }
+    return new Promise((resolve, reject) => {
+      geocoder.getAddress(lnglat, async function(status: any, result: any) {
+        if (status === 'complete' && result.regeocode) {
+          resolve(result.regeocode.formattedAddress);
+        } else {
+          reject(false);
+        }
+      });
+    });
+  }
+
   function confirmRun() {
     const params = {
       deviceCode,
@@ -131,6 +174,16 @@ export function usePositionMonitorMapbtnDrivingLineStore(reduxState: TPositionMo
       endTime: timeInfo && timeInfo[1] ? formatToUnix(timeInfo[1]) : -1
     };
     positionMonitorService.queryVehicleHistoryTrajectory(params).subscribe(res => {
+      console.log(res);
+      const newPointList = [];
+      for (let index = 1; index < res.pointList.length; index++) {
+        if (JSON.stringify(res.pointList[index - 1].coordinates) !== JSON.stringify(res.pointList[index].coordinates)) {
+          res.pointList[index].time = moment(res.pointList[index].time).format('MM/DD HH:mm') as any;
+          newPointList.push(res.pointList[index]);
+        }
+      }
+      res.pointList = newPointList;
+
       setStateWrap({
         drivingLineData: res
       });
@@ -146,6 +199,7 @@ export function usePositionMonitorMapbtnDrivingLineStore(reduxState: TPositionMo
     changeTablePageIndex,
     onShowTableClick,
     changeDateTimeRange,
+    onExchangeCoordinates,
     getDateTimeInfo,
     onSwitchOFFONClick,
     onSpeedChangeClick,

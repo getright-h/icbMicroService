@@ -8,6 +8,7 @@ export abstract class AlarmManageDTO {
   abstract queryTemplatePackageList(id: string): Observable<AlarmPackageContent[]>;
   abstract queryTemplatePackageDetail(id: string): Observable<AlarmPackageContent[]>;
   abstract deleteTemplatePackage(groupId: string): Observable<boolean>;
+  abstract queryAlarmParamList(): Observable<AlarmParamItem[]>;
 }
 
 export interface QueryAlarmTemplateListParam {
@@ -61,6 +62,7 @@ export interface AlarmPackageContent {
   groupId?: string;
   createTimeStamp?: number;
   packageList?: any[];
+  isDefault?: boolean;
 }
 
 export interface EditAlarmPackageItem {
@@ -69,4 +71,20 @@ export interface EditAlarmPackageItem {
   alarmKey: string;
   alarmText: string;
   alarmValue: string;
+}
+
+export interface AlarmParamItem {
+  type: string;
+  name: string;
+  childList: AlarmTypeItem[];
+}
+
+export interface AlarmTypeItem {
+  alarmKey: string;
+  alarmText: string;
+  alarmValue: string;
+  type: number;
+  prefix: string;
+  suffix: string;
+  validateText: string;
 }
