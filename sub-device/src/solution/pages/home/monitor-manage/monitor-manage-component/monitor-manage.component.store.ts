@@ -113,13 +113,14 @@ export function useMonitorManageStore() {
     getTableData();
   }
 
-  function handleModalCancel() {
+  function handleModalCancel(isSucess = false) {
     setStateWrap({
       addGroupModalVisible: false,
       addCarModalVisible: false,
       transformModalVisible: false,
       alarmModalVisible: false
     });
+    isSucess && getTableData();
   }
   function onExpand(expandedKeys: []) {
     setStateWrap({

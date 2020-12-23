@@ -1,4 +1,4 @@
-import { AlarmPackageItem, AlarmTemplateItem } from '~/solution/model/dto/alarm-manage.dto';
+import { AlarmPackageItem, AlarmTemplateItem, AlarmTypeItem } from '~/solution/model/dto/alarm-manage.dto';
 
 /**
  * @export state变量定义和初始化
@@ -17,4 +17,5 @@ export interface ISetAlarmProp {
 
 export interface EditAlarmTemplateItem extends AlarmTemplateItem {
   curSelectTemp?: AlarmPackageItem;
+  childList?: AlarmTypeItem[];
 }

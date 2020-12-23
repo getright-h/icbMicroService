@@ -1,10 +1,4 @@
-import {
-  AlarmTypeItem,
-  alarmTypeTemplates,
-  IAlarmFormItemProp,
-  IAlarmFormItemState,
-  nameTemplate
-} from './alarm-form-item.interface';
+import { AlarmTypeItem, IAlarmFormItemProp, IAlarmFormItemState, nameTemplate } from './alarm-form-item.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect } from 'react';
 import { AlarmTypeEnum } from '~/solution/shared/constant/alarm.const';
@@ -20,7 +14,7 @@ export function useAlarmFormItemStore(props: IAlarmFormItemProp) {
 
   function initFormInfo() {
     const formInfo = [];
-    alarmTypeTemplates[initialInfo.code].forEach(item => {
+    initialInfo.childList.forEach((item: any) => {
       formInfo.push({ ...item, alarmTemplateId: initialInfo.id });
     });
     if (hasTempName) {

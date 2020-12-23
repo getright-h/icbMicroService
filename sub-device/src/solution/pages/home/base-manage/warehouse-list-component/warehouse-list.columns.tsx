@@ -21,16 +21,16 @@ export function wareHouseListColumns(action: Function): ColumnsType<any> {
     },
     {
       title: '库存报警',
-      dataIndex: 'alarmDayText',
-      render: text => {
-        return <span style={text != '正常' ? { color: 'red' } : {}}>{text}</span>;
+      dataIndex: 'alarmText',
+      render: (text, row) => {
+        return <span style={row.alarm != 3 ? { color: 'red' } : {}}>{text}</span>;
       }
     },
     {
       title: '长时报警',
       dataIndex: 'alarmDayText',
-      render: text => {
-        return <span style={text == '已报警' ? { color: 'red' } : {}}>{text}</span>;
+      render: (text, row) => {
+        return <span style={row.isAlarmDay == 1 ? { color: 'red' } : {}}>{text}</span>;
       }
     },
     {

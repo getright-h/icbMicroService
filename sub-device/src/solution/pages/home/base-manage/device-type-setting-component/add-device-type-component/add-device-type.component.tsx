@@ -14,7 +14,7 @@ export default function AddDeviceTypeModalComponent(props: IAddDeviceType) {
     width: '200px',
     reqUrl: 'querySupplierList',
     placeholder: '请选择供应商',
-    searchKey: '',
+    searchKey: data.supplierName || '',
     getCurrentSelectInfo: (value: string, option: any) => {
       form.setFieldsValue({ supplierId: value });
     },
@@ -35,15 +35,34 @@ export default function AddDeviceTypeModalComponent(props: IAddDeviceType) {
           <Form.Item label="设备型号" name={'name'} rules={[{ required: true }]}>
             <Input placeholder={'请输入设备型号'}></Input>
           </Form.Item>
-          <Form.Item label="别名" name={'alias'} rules={[{ required: true }]}>
+          <Form.Item label="别名" name={'alias'}>
             <Input placeholder={'请输入'}></Input>
           </Form.Item>
         </div>
         <div className={style.rowList}>
-          <Form.Item label="供应商" name={'supplierId'} rules={[{ required: true }]}>
-            {querySupplierList}
+          <Form.Item name="cmdId" label="指令类型" rules={[{ required: true }]}>
+            <ISelectLoadingComponent
+              width={'200px'}
+              allowClear={false}
+              reqUrl="getTypesList"
+              placeholder="请选择指令类型"
+              getCurrentSelectInfo={(value: any, option: any) => {
+                const { info = {} } = option;
+                const { cmdCode = '' } = info;
+                form.setFieldsValue({ cmdId: cmdCode });
+              }}
+            />
           </Form.Item>
           <Form.Item label="定位方式" name={'locationStyle'}>
+            <Input placeholder={'请输入'}></Input>
+          </Form.Item>
+        </div>
+        <div className={style.rowList}>
+          <Form.Item label="供应商" name={'supplierId'}>
+            {querySupplierList}
+          </Form.Item>
+
+          <Form.Item label="工作电压/电流" name={'workVoltage'}>
             <Input placeholder={'请输入'}></Input>
           </Form.Item>
         </div>
@@ -54,7 +73,8 @@ export default function AddDeviceTypeModalComponent(props: IAddDeviceType) {
               <Radio value={false}>否</Radio>
             </Radio.Group>
           </Form.Item>
-          <Form.Item label="工作电压/电流" name={'workVoltage'}>
+
+          <Form.Item label="待机电流" name={'standbyCurrent'}>
             <Input placeholder={'请输入'}></Input>
           </Form.Item>
         </div>
@@ -62,15 +82,13 @@ export default function AddDeviceTypeModalComponent(props: IAddDeviceType) {
           <Form.Item label="LED" name={'led'}>
             <Input placeholder={'请输入'}></Input>
           </Form.Item>
-          <Form.Item label="待机电流" name={'standbyCurrent'}>
+
+          <Form.Item label="内置电池描述" name={'batteryDesc'}>
             <Input placeholder={'请输入'}></Input>
           </Form.Item>
         </div>
         <div className={style.rowList}>
           <Form.Item label="颜色" name={'color'}>
-            <Input placeholder={'请输入'}></Input>
-          </Form.Item>
-          <Form.Item label="内置电池描述" name={'batteryDesc'}>
             <Input placeholder={'请输入'}></Input>
           </Form.Item>
         </div>

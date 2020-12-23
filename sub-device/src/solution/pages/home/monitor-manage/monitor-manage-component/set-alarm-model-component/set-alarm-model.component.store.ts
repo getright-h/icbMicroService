@@ -3,7 +3,7 @@ import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store'
 import { MutableRefObject, useEffect, useRef } from 'react';
 import { Form, message } from 'antd';
 import { AlarmManageService } from '~/solution/model/services/alarm-manage.service';
-import { AlarmConfig } from '~/solution/model/dto/alarm-manage.dto';
+import { AlarmConfig, AlarmParamItem } from '~/solution/model/dto/alarm-manage.dto';
 import { validateAlarmItems } from '~/solution/components/alarm-form-item-component/alarm.util';
 import { ShowNotification } from '~/framework/util/common';
 import { AlarmPushModeEnum } from '~/solution/shared/constant/alarm.const';
@@ -17,10 +17,16 @@ export function useSetAlarmStore(props: ISetAlarmProp) {
   const submitFormRef: MutableRefObject<AlarmConfig> = useRef(null);
 
   useEffect(() => {
-    props.data && getAlarmConfigDetail();
+    props.data && getAlarmParamTemplates();
   }, []);
 
-  function getAlarmConfigDetail() {
+  function getAlarmParamTemplates() {
+    alarmManageService.queryAlarmParamList().subscribe(res => {
+      getAlarmConfigDetail(res);
+    });
+  }
+
+  function getAlarmConfigDetail(alarmParamList: AlarmParamItem[]) {
     alarmManageService.queryAlarmConfig(props.data.id).subscribe(res => {
       // 推送类型
       const pushTypes: string[] = [];
@@ -31,11 +37,15 @@ export function useSetAlarmStore(props: ISetAlarmProp) {
       // 报警参数
       templateListRef.current = res.templateList.map(template => {
         const curSelectTemp = template.packageList.length && template.packageList.find(item => item.isSelected);
+        const alarmParamTemp = alarmParamList.find(item => item.type === template.code);
         return {
           ...template,
-          curSelectTemp
+          curSelectTemp,
+          childList: alarmParamTemp ? alarmParamTemp.childList : null
         };
       });
+      console.log('templateList', templateListRef.current);
+
       setStateWrap({ templateList: templateListRef.current });
     });
   }
@@ -83,6 +93,8 @@ export function useSetAlarmStore(props: ISetAlarmProp) {
   }
 
   function setAlarm() {
+    console.log('prop', props.data);
+
     setStateWrap({ submitLoading: true });
     let isPass = true;
     let selectNum = 0;
@@ -119,11 +131,16 @@ export function useSetAlarmStore(props: ISetAlarmProp) {
     submitFormRef.current = { id: props.data.id, pushMode, type: 1, templateList: templateListRef.current };
 
     if (isPass && selectNum) {
-      alarmManageService.setAlarmConfig(submitFormRef.current).subscribe(res => {
-        ShowNotification.success('设置成功');
-        setStateWrap({ submitLoading: false });
-        close();
-      });
+      alarmManageService.setAlarmConfig(submitFormRef.current).subscribe(
+        res => {
+          ShowNotification.success('设置成功');
+          setStateWrap({ submitLoading: false });
+          close();
+        },
+        err => {
+          setStateWrap({ submitLoading: false });
+        }
+      );
     } else {
       setStateWrap({ submitLoading: false });
     }

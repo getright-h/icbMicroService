@@ -11,4 +11,5 @@ export class IDeviceTypeSettingState {
   tableData: any[] = [];
   currentData: any = {};
   total = 0;
+  isLoading = false;
 }

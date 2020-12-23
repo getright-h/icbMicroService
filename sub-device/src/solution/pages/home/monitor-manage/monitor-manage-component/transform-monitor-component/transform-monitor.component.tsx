@@ -43,8 +43,8 @@ export default function TransformMonitorComponent(props: ITransformMonitorProps)
         <Form.Item label={'转移目标组名'} name={'selectedGroupIdList'} rules={[{ required: true }]}>
           {RenderTree()}
         </Form.Item>
-        <Form.Item style={{ marginLeft: 70 }} name={'copy'}>
-          <Checkbox onChange={(e: any) => onchange(e, 'copy')}>复制并移动副本</Checkbox>
+        <Form.Item style={{ marginLeft: 70 }} name={'isCopy'}>
+          <Checkbox onChange={(e: any) => onchange(e, 'isCopy')}>复制并移动副本</Checkbox>
         </Form.Item>
       </Form>
     </Modal>

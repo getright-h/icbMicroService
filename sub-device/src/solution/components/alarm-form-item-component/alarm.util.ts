@@ -2,6 +2,10 @@ import { message } from 'antd';
 import { AlarmPackageContent } from '~/solution/model/dto/alarm-manage.dto';
 
 export function validateAlarmItems(formData: AlarmPackageContent[]): boolean {
+  if (!formData.length) {
+    message.warning('未填写');
+    return false;
+  }
   let isPass = true;
   formData.forEach(item => {
     if (!item.alarmValue) {

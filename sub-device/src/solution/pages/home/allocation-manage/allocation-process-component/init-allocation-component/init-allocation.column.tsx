@@ -60,7 +60,7 @@ export function initAllocationColumns(callbackAction: Function) {
       // 收到退货操作
       {
         condition: [ALLOW_FLOW_ENUM.Returning],
-        btn: (
+        btn: !isRecipientReCallAudit && (
           <a className={style.button} onClick={() => callbackAction(ModalType.RETURN, data)} key={4}>
             收到退货
           </a>

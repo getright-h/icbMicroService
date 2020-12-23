@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 export abstract class AlarmManageDTO {
   abstract queryAlarmConfig(id: string): Observable<AlarmConfig>;
   abstract setAlarmConfig(params: SetAlarmConfig): Observable<boolean>;
+  abstract queryAlarmParamList(): Observable<AlarmParamItem[]>;
 }
 
 export interface AlarmPackageContent {
@@ -62,4 +63,22 @@ export interface SetAlarmConfig {
   pushMode: number;
   type: number;
   templateList: AlarmTemplateItem[];
+}
+
+export interface AlarmParamItem {
+  type: string;
+  name: string;
+  childList: AlarmTypeItem[];
+}
+
+export interface AlarmTypeItem {
+  id?: string;
+  alarmKey: string;
+  alarmTemplateId: string;
+  alarmText: string;
+  alarmValue: string;
+  type: number;
+  prefix: string;
+  suffix: string;
+  validateText: string;
 }
