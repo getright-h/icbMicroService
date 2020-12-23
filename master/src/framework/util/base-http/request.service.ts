@@ -3,6 +3,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { DepUtil } from '~/framework/aop/inject';
 import * as Sentry from '@sentry/browser';
+import { StorageUtil } from '~/framework/util/storage';
 
 export interface HttpResponseModel {
   message: string;
@@ -23,7 +24,7 @@ class RequestService {
 
   private createAuthHeaders(): any {
     const headers = { token: '' };
-    const token = localStorage.getItem('token');
+    const token = StorageUtil.getLocalStorage('token');
     if (token) {
       headers.token = token;
     }
@@ -35,7 +36,7 @@ class RequestService {
     if (!!~url.indexOf('VerifyCode') || !!~url.indexOf('Login')) {
       returnInfo = process.env.LOGIN;
     } else {
-      returnInfo = process.env.MAIN;
+      returnInfo = process.env.USERINFO;
     }
     return returnInfo;
   }

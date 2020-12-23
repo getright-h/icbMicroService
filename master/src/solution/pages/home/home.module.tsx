@@ -9,8 +9,8 @@ import { useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
 import TagView from '../../components/base/tags-view-component/tags-view.component';
 
-function HomeModule(props: any) {
-  const { state, sendToChild } = useHomeStore();
+function HomeModule() {
+  const { state } = useHomeStore();
   const { gState }: IGlobalState = React.useContext(GlobalContext);
   const location = useLocation();
   function getCurrentExpandList(currentUrl: string): string[] {

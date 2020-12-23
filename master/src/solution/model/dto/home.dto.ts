@@ -10,3 +10,9 @@ export abstract class HomeDTO {
 export interface MenuAndAuthResult {
   data: IMenu[];
 }
+
+export interface MyInfo {
+  id: string;
+  systemId: string;
+  systemCode: string;
+}

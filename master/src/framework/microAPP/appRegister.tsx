@@ -2,13 +2,15 @@ import { registerMicroApps, runAfterFirstMounted, setDefaultMountApp, start, ini
 import { appStore } from './appStore';
 import { fetchChildAppsConfig, AppProps } from './fetchChildAppsConfig';
 import { StorageUtil } from '~/framework/util/storage';
+import { HomeService } from '~/solution/model/services/home.service';
+import { setState } from '~/framework/microAPP/appStore';
+import { ShowNotification } from '~/framework/util/common';
 // 注册子应用 运行主项目
 async function registerMainApp(callback: (menuInfo: any) => void) {
   const isDev = process.env.NODE_ENV === 'development';
   const isDevBuild = process.env.DEV_BUILD === 'build';
   const currentId = '#subapp-viewport';
   const apps: Array<AppProps> = [];
-  let defaultMountApp = '';
   const baseFuntion = {
     logout: () => {
       StorageUtil.removeLocalStorage('TOKEN');
@@ -17,7 +19,9 @@ async function registerMainApp(callback: (menuInfo: any) => void) {
   };
   //获取当前子项目的相关信息
   const routerInfo: any = await fetchChildAppsConfig();
+
   const res = resolveRouterInfo(routerInfo);
+  const useInfo = await getCurrentUserInfo();
   StorageUtil.setLocalStorage('MENU_LIST', JSON.stringify(res.micInfo));
 
   callback(res.menuInfo);
@@ -31,11 +35,12 @@ async function registerMainApp(callback: (menuInfo: any) => void) {
       entry: isDev ? (isDevBuild ? onLineDEvURL : localURL) : onLineURL,
       container: currentId,
       activeRule: `/#${path}`,
-      props: { baseFuntion, name, routers: JSON.parse(JSON.stringify(children)), routerBase: `/#${path}` }
+      props: { baseFuntion, name, routers: JSON.parse(JSON.stringify(children)), routerBase: `/#${path}`, useInfo }
     });
     element.defaultMountApp && (defaultMountApp = element.activeRule);
   });
-
+  // 启用微前端应用间通讯
+  appStore(initGlobalState);
   // 注册当前的子应用，监听部分生命周期
   registerApps(apps);
   // 设定个默认的app
@@ -45,8 +50,6 @@ async function registerMainApp(callback: (menuInfo: any) => void) {
   start({ prefetch: 'all' });
   // 监听第一个启动的微前端app
   listenFirstStartApp();
-  // 启用微前端应用间通讯
-  // appStore(initGlobalState);
 }
 
 // 设置默认进入放入子程序
@@ -64,7 +67,7 @@ function registerApps(apps: Array<any>) {
       }) as any
     ],
     beforeMount: [
-      ((app: AppProps) => {
+      (async (app: AppProps) => {
         console.log('[LifeCycle] before mount %c%s', 'color: green;', app.name);
       }) as any
     ],
@@ -118,6 +121,11 @@ function resolveChildProject(itemChild: any, childProject: any, micInfo: any[], 
     }
   });
   return itemChildFilterArray;
+}
+
+// 获取当前的用户的数据信息
+async function getCurrentUserInfo() {
+  return await new HomeService().getMyInfo().toPromise();
 }
 
 export default registerMainApp;
