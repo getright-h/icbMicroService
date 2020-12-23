@@ -116,13 +116,15 @@ export default function StationManageComponent() {
         otherSearchBtns={renderOtherButtons()}
         table={renderTable()}
       ></TablePageTelComponent>
-      <EditStationComponent
-        title={state.isEdit ? '编辑岗位' : '添加岗位'}
-        visible={state.editStationVisible}
-        close={popclose}
-        info={state.editStationInfo}
-        isEdit={state.isEdit}
-      ></EditStationComponent>
+      {state.editStationVisible && (
+        <EditStationComponent
+          title={state.isEdit ? '编辑岗位' : '添加岗位'}
+          visible={state.editStationVisible}
+          close={popclose}
+          info={state.editStationInfo}
+          isEdit={state.isEdit}
+        ></EditStationComponent>
+      )}
     </React.Fragment>
   );
 }

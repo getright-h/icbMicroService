@@ -6,7 +6,7 @@ import _ from 'lodash';
 import { Subscription } from 'rxjs';
 
 export function useISelectLoadingStore(props: IISelectLoadingProps) {
-  const { reqUrl } = props;
+  const { reqUrl, searchKeyName = 'name' } = props;
   const { state, setStateWrap } = useStateStore(new IISelectLoadingState());
   const drapChooseLoadingService = useService(DrapChooseLoadingService);
   let getOptionListSubscription: Subscription;
@@ -21,15 +21,22 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
     setStateWrap({ fetching: true });
     getOptionListSubscription = drapChooseLoadingService[reqUrl]({
       ...searchParams.current,
-      name: searchName.current,
+      [searchKeyName]: searchName.current,
       index: scrollPage.current,
-      size: 20
+      size: props.pageSize || 100
     }).subscribe(
       (res: any) => {
-        if (res.dataList) {
+        if (res) {
+          if (Array.isArray(res)) {
+            res.dataList = res;
+          }
+          if (!res.dataList) {
+            setStateWrap({ fetching: false });
+            return;
+          }
           const optionList = [...(isSearch ? [] : state.optionList), ...res.dataList];
           setStateWrap({ optionList, fetching: false });
-        } else if (scrollPage.current == 1 && !res.dataList) {
+        } else if (scrollPage.current == 1 && (!res || !res.dataList)) {
           setStateWrap({ optionList: [], fetching: false });
         } else {
           scrollPage.current--;

@@ -15,7 +15,7 @@ export function useUserManageStore() {
   const userManageService: UserManageService = useService(UserManageService);
   let getTableDataSubscription: Subscription;
 
-  const systemId = useRef(gState.myInfo.systemId);
+  const systemId = useRef('');
 
   function getSelectTreeNode(node: Record<string, any>) {
     const searchForm = {
@@ -106,7 +106,7 @@ export function useUserManageStore() {
                     content: `密码已重置为${res}`
                   });
                   getTableData(true);
-                  resolve();
+                  resolve(true);
                 },
                 (err: any) => {
                   ShowNotification.error(err);
@@ -126,7 +126,7 @@ export function useUserManageStore() {
                 (res: any) => {
                   ShowNotification.success('已删除！');
                   getTableData(true);
-                  resolve();
+                  resolve(true);
                 },
                 (err: any) => {
                   ShowNotification.error(err);
@@ -145,11 +145,14 @@ export function useUserManageStore() {
     }
   }
   useEffect(() => {
-    getTableData();
+    if (gState.myInfo.systemId) {
+      systemId.current = gState.myInfo.systemId;
+      getTableData();
+    }
     return () => {
       getTableDataSubscription && getTableDataSubscription.unsubscribe();
     };
-  }, []);
+  }, [gState.myInfo.systemId]);
   return {
     state,
     getTableData,

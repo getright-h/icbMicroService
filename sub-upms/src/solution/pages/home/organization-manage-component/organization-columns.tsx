@@ -15,7 +15,7 @@ export function organizationColumns(action: Function): ColumnsType<OrganizationT
     {
       title: '机构简称',
       dataIndex: 'shorterName',
-      render: (text, row) => <span>{row.extendAttributionModel.shorterName}</span>
+      render: (text, row) => <span>{row.extendAttributionModel.shorterName || '-'}</span>
     },
     {
       title: '上级机构',

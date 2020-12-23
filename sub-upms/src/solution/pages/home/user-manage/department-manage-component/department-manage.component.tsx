@@ -23,7 +23,7 @@ export default function DepartmentManageComponent() {
     addDepartment,
     popclose
   } = useDepartmentManageStore();
-  const { isLoading, searchForm, total, tableData } = state;
+  const { isLoading, searchForm, total, tableData, editDepartmentVisible } = state;
   function renderSelectItems() {
     return (
       <React.Fragment>
@@ -102,13 +102,15 @@ export default function DepartmentManageComponent() {
         otherSearchBtns={renderOtherButtons()}
         table={renderTable()}
       ></TablePageTelComponent>
-      <EditDepartmentComponent
-        title={state.isEdit ? '编辑部门' : '添加部门'}
-        visible={state.editDepartmentVisible}
-        close={popclose}
-        info={state.editDepartmentInfo}
-        isEdit={state.isEdit}
-      ></EditDepartmentComponent>
+      {editDepartmentVisible && (
+        <EditDepartmentComponent
+          title={state.isEdit ? '编辑部门' : '添加部门'}
+          visible={editDepartmentVisible}
+          close={popclose}
+          info={state.editDepartmentInfo}
+          isEdit={state.isEdit}
+        ></EditDepartmentComponent>
+      )}
     </React.Fragment>
   );
 }

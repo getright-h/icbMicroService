@@ -16,4 +16,9 @@ export interface IISelectLoadingProps {
   getCurrentSelectInfo: (value: string, option: any) => void;
   searchKey?: string;
   showSearch?: boolean;
+  allowClear?: boolean;
+  dropdownMatchSelectWidth?: boolean | number;
+  pageSize?: number;
+  searchKeyName?: string;
+  width?: number | string;
 }

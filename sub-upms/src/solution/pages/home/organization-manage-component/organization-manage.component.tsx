@@ -7,6 +7,8 @@ import { organizationColumns } from './organization-columns';
 import { RouteComponentProps } from 'react-router-dom';
 import OrganizationLeftComponent from './organization-left-component/organization-left.component';
 import AddOrganizationComponent from './add-organization-component/add-organization.component';
+import { IGlobalState } from '~/solution/context/global/global.interface';
+import { GlobalContext } from '~/solution/context/global/global.provider';
 
 export default function OrganizationManageComponent(props: RouteComponentProps) {
   const {
@@ -19,12 +21,15 @@ export default function OrganizationManageComponent(props: RouteComponentProps) 
     getTableData,
     popClose
   } = useOrganizationManageStore();
+  const { gState }: IGlobalState = React.useContext(GlobalContext);
   const { isLoading, searchForm, total, tableData, popVisible, isEdit, isDetail, rowId } = state;
   function renderPageLeft() {
     return (
       <>
         <h3>组织机构管理</h3>
-        <OrganizationLeftComponent getSelectTreeNode={getSelectTreeNode}></OrganizationLeftComponent>
+        {gState.myInfo.systemId && (
+          <OrganizationLeftComponent getSelectTreeNode={getSelectTreeNode}></OrganizationLeftComponent>
+        )}
       </>
     );
   }
@@ -46,7 +51,7 @@ export default function OrganizationManageComponent(props: RouteComponentProps) 
   function renderSearchButtons() {
     return (
       <div className="push-search-button-item">
-        <Button type="primary" onClick={() => getTableData(true)} loading={isLoading}>
+        <Button type="primary" onClick={() => getTableData(true)} loading={isLoading} disabled={!searchForm.typeId}>
           查询
         </Button>
       </div>
@@ -90,7 +95,15 @@ export default function OrganizationManageComponent(props: RouteComponentProps) 
         otherSearchBtns={renderOtherButtons()}
         table={renderTable()}
       ></TablePageTelComponent>
-      <AddOrganizationComponent visible={popVisible} close={popClose} isEdit={isEdit} isDetail={isDetail} id={rowId} />
+      {popVisible && (
+        <AddOrganizationComponent
+          visible={popVisible}
+          close={popClose}
+          isEdit={isEdit}
+          isDetail={isDetail}
+          id={rowId}
+        />
+      )}
     </React.Fragment>
   );
 }

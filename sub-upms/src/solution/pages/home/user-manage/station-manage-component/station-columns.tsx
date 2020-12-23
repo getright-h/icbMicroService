@@ -42,8 +42,8 @@ export function stationColumns(action: Function): ColumnsType<StationTableData> 
         return (
           <React.Fragment>
             <a onClick={() => action('编辑', row)}>编辑</a>
-            <Divider type="vertical" />
-            <a onClick={() => action('权限', row)}>权限</a>
+            {/* <Divider type="vertical" />
+            <a onClick={() => action('权限', row)}>权限</a> */}
             <Divider type="vertical" />
             <a onClick={() => action('删除', row)}>删除</a>
           </React.Fragment>
