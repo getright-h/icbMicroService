@@ -5,8 +5,9 @@ import { ISelectLoadingComponent } from '~/solution/components/component.module'
 import { useEditDepartmentStore } from './edit-department.component.store';
 import { IGlobalState } from '~/solution/context/global/global.interface';
 import { GlobalContext } from '~/solution/context/global/global.provider';
+import { IEditDepartmentProps } from './edit-department.interface';
 
-export default function EditDepartmentComponent(props: any) {
+export default function EditDepartmentComponent(props: IEditDepartmentProps) {
   const { gState }: IGlobalState = React.useContext(GlobalContext);
   const [departmentForm] = Form.useForm();
   const { title, visible, isEdit } = props;

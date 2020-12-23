@@ -53,7 +53,7 @@ export function useOrganizationManageStore() {
         break;
       case '删除':
         Modal.confirm({
-          title: '确定删除此部门吗？',
+          title: '确定删除此机构吗？',
           icon: <ExclamationCircleOutlined />,
           onOk: () =>
             new Promise((resolve, reject) => {
@@ -61,9 +61,11 @@ export function useOrganizationManageStore() {
                 (res: any) => {
                   ShowNotification.success('删除成功！');
                   getTableData();
+                  resolve(true);
                 },
                 (err: any) => {
                   ShowNotification.error(err);
+                  reject();
                 }
               );
             })

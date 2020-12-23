@@ -86,15 +86,15 @@ export function useDepartmentManageStore() {
   function addDepartment() {
     setStateWrap({ editDepartmentVisible: true, isEdit: false });
   }
-  function popclose() {
+  function popclose(isSuccess = false) {
     setStateWrap({ editDepartmentVisible: false });
-    getTableData(true);
+    isSuccess && getTableData(true);
   }
   useEffect(() => {
     gState.myInfo.systemId && getTableData();
     return () => {
       getTableDataSubscription && getTableDataSubscription.unsubscribe();
     };
-  }, []);
+  }, [gState.myInfo.systemId]);
   return { state, getTableData, changeTablePageIndex, tableAction, handleFormDataChange, addDepartment, popclose };
 }

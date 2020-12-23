@@ -18,7 +18,8 @@ export default function AddOrganizationComponent(props: IAddOrganizationProps) {
     getProvinceList,
     getCityList,
     getAreaList,
-    changeOrgType
+    changeOrgType,
+    handleAreaChange
   } = useAddOrganizationStore(props);
   const { typeList, provinceList, cityList, areaList, confirmLoading, formInfo } = state;
   const formItemLayout = {
@@ -90,7 +91,12 @@ export default function AddOrganizationComponent(props: IAddOrganizationProps) {
         </Form.Item>
 
         <Form.Item label="省" name="province" className="form-item" rules={[{ required: true }]}>
-          <Select onClick={getProvinceList} placeholder="请选择省">
+          <Select
+            onClick={getProvinceList}
+            placeholder="请选择省"
+            onChange={(value: any, option: any) => handleAreaChange('province', option)}
+            onClear={() => handleAreaChange('province')}
+          >
             {provinceList &&
               provinceList.map(item => (
                 <Select.Option value={item.cityCode} key={item.cityCode}>
@@ -100,7 +106,13 @@ export default function AddOrganizationComponent(props: IAddOrganizationProps) {
           </Select>
         </Form.Item>
         <Form.Item label="市" name="city" className="form-item" rules={[{ required: true }]}>
-          <Select onClick={getCityList} placeholder="请选择市" disabled={!organizationForm.getFieldValue('province')}>
+          <Select
+            onClick={getCityList}
+            placeholder="请选择市"
+            disabled={!organizationForm.getFieldValue('province')}
+            onChange={(value: any, option: any) => handleAreaChange('city', option)}
+            onClear={() => handleAreaChange('city')}
+          >
             {cityList &&
               cityList.map(item => (
                 <Select.Option value={item.cityCode} key={item.cityCode}>
@@ -110,7 +122,13 @@ export default function AddOrganizationComponent(props: IAddOrganizationProps) {
           </Select>
         </Form.Item>
         <Form.Item label="区" name="area" className="form-item" rules={[{ required: true }]}>
-          <Select onClick={getAreaList} placeholder="请选择区" disabled={!organizationForm.getFieldValue('city')}>
+          <Select
+            onClick={getAreaList}
+            placeholder="请选择区"
+            disabled={!organizationForm.getFieldValue('city')}
+            onChange={(value: any, option: any) => handleAreaChange('area', option)}
+            onClear={() => handleAreaChange('area')}
+          >
             {areaList &&
               areaList.map(item => (
                 <Select.Option value={item.cityCode} key={item.cityCode}>

@@ -1,6 +1,6 @@
 import { IAddOrganizationState, IAddOrganizationProps } from './add-organization.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
-import { useEffect, useContext } from 'react';
+import { useEffect, useContext, useRef } from 'react';
 import { Form } from 'antd';
 import { OrganizationManageService } from '~/solution/model/services/organization-manage.service';
 import { ShowNotification } from '~/framework/util/common';
@@ -13,6 +13,7 @@ export function useAddOrganizationStore(props: IAddOrganizationProps) {
   const { state, setStateWrap } = useStateStore(new IAddOrganizationState());
   const organizationManageService = useService(OrganizationManageService);
   const [organizationForm] = Form.useForm();
+  const areaInfoRef = useRef({});
 
   useEffect(() => {
     getTypeList();
@@ -30,19 +31,31 @@ export function useAddOrganizationStore(props: IAddOrganizationProps) {
   function getDetails(id: string) {
     organizationManageService.getOrganizationDetail(id).subscribe(
       (res: any) => {
-        organizationForm.setFieldsValue({ ...res, ...res.extendAttributionModel });
+        const extra = res.extendAttributionModel;
+        areaInfoRef.current = {
+          province: extra.province,
+          city: extra.city,
+          area: extra.area
+        };
+        organizationForm.setFieldsValue({
+          ...res,
+          ...res.extendAttributionModel,
+          province: extra.province ? extra.province.split(',')[0] : null,
+          city: extra.province ? extra.city.split(',')[0] : null,
+          area: extra.province ? extra.area.split(',')[0] : null
+        });
         setStateWrap({
           formInfo: {
             systemCode: '',
             typeId: res.typeId,
-            parentName: res.extendAttributionModel.parentName,
-            parentCode: res.extendAttributionModel.parentCode,
+            parentName: extra.parentName,
+            parentCode: extra.parentCode,
             id: res.id
           },
-          fileList: res.extendAttributionModel.logoUrl
+          fileList: extra.logoUrl
             ? [
                 {
-                  url: res.extendAttributionModel.logoUrl,
+                  url: extra.logoUrl,
                   uid: '0',
                   type: 'image/jpg',
                   status: 'done'
@@ -65,8 +78,15 @@ export function useAddOrganizationStore(props: IAddOrganizationProps) {
    */
   function onSubmit(values: Record<string, any>) {
     setStateWrap({ confirmLoading: true });
+    const submitForm = {
+      ...values,
+      ...state.formInfo,
+      ...areaInfoRef.current
+    };
+    console.log('submit', submitForm);
+
     if (props.isEdit) {
-      organizationManageService.setOrganization({ ...values, ...state.formInfo }).subscribe(
+      organizationManageService.setOrganization(submitForm).subscribe(
         (res: any) => {
           ShowNotification.success('编辑机构成功');
           setStateWrap({ confirmLoading: false });
@@ -78,7 +98,7 @@ export function useAddOrganizationStore(props: IAddOrganizationProps) {
         }
       );
     } else {
-      organizationManageService.insertOrganization({ ...values, ...state.formInfo }).subscribe(
+      organizationManageService.insertOrganization(submitForm).subscribe(
         (res: any) => {
           ShowNotification.success('添加机构成功！');
           setStateWrap({ confirmLoading: false });
@@ -164,6 +184,28 @@ export function useAddOrganizationStore(props: IAddOrganizationProps) {
       }
     );
   }
+
+  // 兼容权限网关省市区格式
+  function handleAreaChange(curType: string, option?: any) {
+    const arr = ['province', 'city', 'area'];
+    const values = organizationForm.getFieldsValue();
+
+    arr.forEach((type, index) => {
+      if (type === curType) {
+        areaInfoRef.current[curType] = option ? `${option.value},${option.children}` : null;
+        const newArr = arr.slice(index + 1);
+
+        newArr.forEach(clearType => {
+          areaInfoRef.current[clearType] = null;
+          values[clearType] && (values[clearType] = null);
+        });
+      }
+    });
+    console.log('handleAreaChange', areaInfoRef.current, values);
+
+    organizationForm.setFieldsValue({ ...values });
+  }
+
   return {
     state,
     organizationForm,
@@ -173,6 +215,7 @@ export function useAddOrganizationStore(props: IAddOrganizationProps) {
     getCityList,
     getAreaList,
     getTypeList,
-    changeOrgType
+    changeOrgType,
+    handleAreaChange
   };
 }
