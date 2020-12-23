@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { IProps, IMenu } from './menu.interface';
+import { IProps, IMenu, IconList } from './menu.interface';
 import { Menu } from 'antd';
 import { Link } from 'react-router-dom';
 // import style from './menu.component.less';
 import SubMenu from 'antd/lib/menu/SubMenu';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 import { IGlobalState } from '~/solution/context/global/global.interface';
+import { StepBackwardOutlined } from '@ant-design/icons';
 
 export default function MenuComponent(props: IProps) {
   const MenuItems = renderMenuItems(props.menuList);
@@ -13,13 +14,13 @@ export default function MenuComponent(props: IProps) {
   const { gState }: IGlobalState = React.useContext(GlobalContext);
   function renderMenuItems(menuList: IMenu[]) {
     return menuList.map(menu => {
-      const { title, path } = menu;
+      const { title, path, icon } = menu;
       return menu.children ? (
         <SubMenu
           key={path}
           title={
             <span>
-              {/* <Icon type={icon} /> */}
+              {IconList[icon]}
               <span>{title}</span>
             </span>
           }
@@ -29,7 +30,7 @@ export default function MenuComponent(props: IProps) {
       ) : (
         <Menu.Item key={path}>
           <Link to={path}>
-            {/* <Icon type={icon} /> */}
+            {IconList[icon]}
             <span>{title}</span>
           </Link>
         </Menu.Item>

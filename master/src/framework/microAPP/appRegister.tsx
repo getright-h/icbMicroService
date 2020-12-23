@@ -40,7 +40,7 @@ async function registerMainApp(callback: (menuInfo: any) => void) {
   registerApps(apps);
   // 设定个默认的app
 
-  setDefaultApp(defaultMountApp);
+  // setDefaultApp(defaultMountApp);
   // 启动微前端
   start({ prefetch: 'all' });
   // 监听第一个启动的微前端app

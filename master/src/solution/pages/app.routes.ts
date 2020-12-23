@@ -8,7 +8,7 @@ export const appRoutes: IRoute[] = [
     component: HomeModule
   },
   {
-    path: '/login',
+    path: '/',
     component: LoginModule
   }
 ];

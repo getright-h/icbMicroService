@@ -52,15 +52,13 @@ function HomeModule(props: any) {
 
   return (
     <Spin spinning={state.loading} wrapperClassName="custom-layout-spin">
-      <Layout>
-        <div className={style.homeMain}>
-          {!source && <IHomeHeaderComponent></IHomeHeaderComponent>}
-          <div className={style.bodyContainer} style={{ paddingTop: !source ? '6.75rem' : '1rem' }}>
-            {!source && renderLayoutSider()}
-            <div className={style.pageContainer}>{renderLayoutContainer()}</div>
-          </div>
+      <div className={style.homeMain}>
+        {!source && <IHomeHeaderComponent></IHomeHeaderComponent>}
+        <div className={style.bodyContainer} style={{ paddingTop: !source ? '6.75rem' : '1rem' }}>
+          {!source && renderLayoutSider()}
+          <div className={style.pageContainer}>{renderLayoutContainer()}</div>
         </div>
-      </Layout>
+      </div>
     </Spin>
   );
 }
