@@ -8,7 +8,14 @@ import { IHeaderTitleComponent } from '~framework/components/component.module';
 import DeviceImportComponent from '../device-import-component/device-import.component';
 import RollbackApplyComponent from '../rollback-apply-component/rollback-apply.component';
 export default function DetailComponent() {
-  const { state, callbackAction, handleModalCancel, getAlloactionDetail, allocationOperate } = useDetailStore();
+  const {
+    state,
+    callbackAction,
+    handleModalCancel,
+    getAlloactionDetail,
+    allocationOperate,
+    handleDownLoadAllot
+  } = useDetailStore();
   const { detail = {}, importVisible, currentData, rollbackVisible } = state;
   const layout = {
     labelCol: { span: 8 },
@@ -116,7 +123,21 @@ export default function DetailComponent() {
         render: text => <span>{text}个</span>
       }
     ];
-    return <Table size="small" columns={columns} dataSource={detail.deviceTypeList || []} pagination={false} />;
+    return (
+      <div className={style.tableWapper}>
+        <Table
+          bordered={true}
+          rowKey="typeName"
+          size="middle"
+          columns={columns}
+          dataSource={detail.deviceTypeList || []}
+          pagination={false}
+        />
+        <a className={style.exportExcel} onClick={handleDownLoadAllot}>
+          导出excel表
+        </a>
+      </div>
+    );
   }
 
   function renderFlowList() {
@@ -144,34 +165,24 @@ export default function DetailComponent() {
         <div className={style.formPart}>
           <div className={style.formItems}>
             <div className={style.formLeft}>
-              <Form.Item name="name" label="调拨单号">
-                {detail.allotCode}
-              </Form.Item>
-              <Form.Item name="name" label="调拨设备">
+              <Form.Item label="调拨单号">{detail.allotCode}</Form.Item>
+              <Form.Item label="调拨设备">
                 <RenderTable />
               </Form.Item>
-              <Form.Item name="name" label="调拨总数">
+              <Form.Item label="调拨总数">
                 {Array.isArray(detail.deviceTypeList) &&
                   detail.deviceTypeList
                     .map((item: any) => item.number)
                     .reduce((per: number, next: number) => per + next, 0)}
               </Form.Item>
-              <Form.Item name="name" label="操作时间">
-                {detail.createTime || '-'}
-              </Form.Item>
-              <Form.Item name="name" label="节点流程">
-                {renderFlowList()}
-              </Form.Item>
-              <Form.Item name="name" label="操作人">
-                {detail.creatorName || '-'}
-              </Form.Item>
-              <Form.Item name="name" label="状态">
-                {detail.stateText}
-              </Form.Item>
+              <Form.Item label="操作时间">{detail.createTime || '-'}</Form.Item>
+              <Form.Item label="节点流程">{renderFlowList()}</Form.Item>
+              <Form.Item label="操作人">{detail.creatorName || '-'}</Form.Item>
+              <Form.Item label="状态">{detail.stateText}</Form.Item>
+              {ALLOW_FLOW_ENUM.Reject == detail.state && (
+                <Form.Item label="驳回理由">{detail.rejectRemark || '-'}</Form.Item>
+              )}
 
-              <Form.Item name="remark" label="驳回理由">
-                {detail.rejectRemark || '-'}
-              </Form.Item>
               <Form.Item wrapperCol={{ span: 12, offset: 8 }}>{renderOperateBtn(detail)}</Form.Item>
             </div>
           </div>

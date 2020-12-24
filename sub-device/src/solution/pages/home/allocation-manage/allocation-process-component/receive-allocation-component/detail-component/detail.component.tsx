@@ -8,7 +8,14 @@ import { IHeaderTitleComponent } from '~framework/components/component.module';
 import RejectAllocationComponent from '../reject-allocation-component/reject-allocation.component';
 import DeviceImportComponent from '../../init-allocation-component/device-import-component/device-import.component';
 export default function DetailComponent() {
-  const { state, callbackAction, handleModalCancel, allocationOperate, getAlloactionDetail } = useDetailStore();
+  const {
+    state,
+    callbackAction,
+    handleModalCancel,
+    allocationOperate,
+    getAlloactionDetail,
+    handleDownLoadAllot
+  } = useDetailStore();
   const { currentData, currentActionType, detail = {}, rejectVisibleModal, importVisible } = state;
   const layout = {
     labelCol: { span: 8 },
@@ -123,7 +130,14 @@ export default function DetailComponent() {
         render: text => <span>{text}个</span>
       }
     ];
-    return <Table size="small" columns={columns} dataSource={detail.deviceTypeList || []} pagination={false} />;
+    return (
+      <div className={style.tableWapper}>
+        <Table size="middle" columns={columns} dataSource={detail.deviceTypeList || []} pagination={false} />
+        <a className={style.exportExcel} onClick={handleDownLoadAllot}>
+          导出excel表
+        </a>
+      </div>
+    );
   }
   function renderFlowList() {
     function renderArrow() {

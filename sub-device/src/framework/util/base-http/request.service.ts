@@ -168,6 +168,10 @@ class RequestService {
 
   dealWithError(data: any) {
     data = data as HttpResponseModel;
+    // 此段代码为了正常下载Excel
+    if (typeof data.status !== 'boolean') {
+      return data;
+    }
     if (data.status) {
       if (data.total || data.total == 0) {
         return { total: data.total, data: data.data };
