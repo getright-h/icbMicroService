@@ -50,7 +50,7 @@ export default function ReceiveAllocationComponent() {
             allowClear
             placeholder="请输入仓库名"
             onChange={e => {
-              onChange(e.target.value, 'keyword');
+              onChange(e.target.value, 'storeName');
             }}
           />
         </div>
