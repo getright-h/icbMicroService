@@ -50,7 +50,7 @@ export default function VoucherManageComponent() {
           查询
         </Button>
         <Button type="primary" onClick={() => callbackAction(ModalType.CREATE)}>
-          新建安装单
+          新增安装凭证
         </Button>
       </div>
     );
@@ -73,7 +73,7 @@ export default function VoucherManageComponent() {
   return (
     <React.Fragment>
       <TablePageTelComponent
-        pageName={'安装单管理'}
+        pageName={'安装凭证管理'}
         selectItems={renderSelectItems()}
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
