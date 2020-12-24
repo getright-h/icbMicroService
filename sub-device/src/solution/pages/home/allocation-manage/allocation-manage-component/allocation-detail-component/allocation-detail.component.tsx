@@ -35,7 +35,15 @@ export default function AllocationDetailComponent() {
         render: text => <span>{text}个</span>
       }
     ];
-    return <Table size="small" columns={columns} dataSource={detail.deviceList || []} pagination={false} />;
+    return (
+      <Table
+        rowKey={(row: any) => row.typeId}
+        size="small"
+        columns={columns}
+        dataSource={detail.deviceList || []}
+        pagination={false}
+      />
+    );
   }
   return (
     <div className={style.alloctionDetailWapper}>
@@ -44,13 +52,9 @@ export default function AllocationDetailComponent() {
         <div className={style.formPart}>
           <div className={style.formItems}>
             <div className={style.formLeft}>
-              <Form.Item name="name" label="调拨单名称">
-                {detail.name}
-              </Form.Item>
-              <Form.Item name="name" label="调拨模板">
-                {detail.allotTemplateName}
-              </Form.Item>
-              <Form.Item name="name" label="流程节点">
+              <Form.Item label="调拨单名称">{detail.name}</Form.Item>
+              <Form.Item label="调拨模板">{detail.allotTemplateName}</Form.Item>
+              <Form.Item label="流程节点">
                 {flowList.length > 0 &&
                   flowList.map((flows: any, index: number) => (
                     <div key={index}>
@@ -73,19 +77,12 @@ export default function AllocationDetailComponent() {
                     </div>
                   ))}
               </Form.Item>
-              <Form.Item name="name" label="调拨设备">
+              <Form.Item label="调拨设备">
                 <RenderTable />
               </Form.Item>
-              <Form.Item name="name" label="申请人">
-                {detail.creatorName}
-              </Form.Item>
-              <Form.Item name="name" label="申请时间">
-                {' '}
-                {detail.createTime}
-              </Form.Item>
-              <Form.Item name="name" label="创建机构">
-                {detail.organizationName}
-              </Form.Item>
+              <Form.Item label="申请人">{detail.creatorName}</Form.Item>
+              <Form.Item label="申请时间"> {detail.createTime}</Form.Item>
+              <Form.Item label="创建机构">{detail.organizationName}</Form.Item>
             </div>
           </div>
         </div>
