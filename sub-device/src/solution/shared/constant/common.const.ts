@@ -142,6 +142,10 @@ export const AllOT_STATE = [
   {
     label: '未调拨',
     value: 0
+  },
+  {
+    label: '已作废',
+    value: -200
   }
 ];
 
