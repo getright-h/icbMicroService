@@ -165,22 +165,22 @@ export default function DetailComponent() {
         <div className={style.formPart}>
           <div className={style.formItems}>
             <div className={style.formLeft}>
-              <Form.Item label="调拨单号">{detail.allotCode}</Form.Item>
-              <Form.Item label="调拨设备">
+              <Form.Item label={<strong>调拨单号</strong>}>{detail.allotCode}</Form.Item>
+              <Form.Item label={<strong>调拨设备</strong>}>
                 <RenderTable />
               </Form.Item>
-              <Form.Item label="调拨总数">
+              <Form.Item label={<strong>调拨总数</strong>}>
                 {Array.isArray(detail.deviceTypeList) &&
                   detail.deviceTypeList
                     .map((item: any) => item.number)
                     .reduce((per: number, next: number) => per + next, 0)}
               </Form.Item>
-              <Form.Item label="操作时间">{detail.createTime || '-'}</Form.Item>
-              <Form.Item label="节点流程">{renderFlowList()}</Form.Item>
-              <Form.Item label="操作人">{detail.creatorName || '-'}</Form.Item>
-              <Form.Item label="状态">{detail.stateText}</Form.Item>
+              <Form.Item label={<strong>操作时间</strong>}>{detail.createTime || '-'}</Form.Item>
+              <Form.Item label={<strong>节点流程</strong>}>{renderFlowList()}</Form.Item>
+              <Form.Item label={<strong>操作人</strong>}>{detail.creatorName || '-'}</Form.Item>
+              <Form.Item label={<strong>状态</strong>}>{detail.stateText}</Form.Item>
               {ALLOW_FLOW_ENUM.Reject == detail.state && (
-                <Form.Item label="驳回理由">{detail.rejectRemark || '-'}</Form.Item>
+                <Form.Item label={<strong>驳回理由</strong>}>{detail.rejectRemark || '-'}</Form.Item>
               )}
 
               <Form.Item wrapperCol={{ span: 12, offset: 8 }}>{renderOperateBtn(detail)}</Form.Item>

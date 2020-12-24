@@ -89,7 +89,7 @@ export function useAllocationManageStore() {
     setStateWrap({ currentId: data ? data.allotId : '' });
     switch (actionType) {
       case ModalType.ALLOCATE:
-        history.push('/home/allocation/process');
+        history.push(`/home/allocation/process?id=${data.inventoryCode}`);
         break;
       case ModalType.SEE:
         history.push(`/home/allocation/allocationDetail?id=${data.allotId}`);
@@ -115,7 +115,7 @@ export function useAllocationManageStore() {
     confirm({
       content: '确认删除此调拨',
       onOk() {
-        deleteAllotSubscribable = allocationManageService.deleteAllot({ allotId }).subscribe(
+        deleteAllotSubscribable = allocationManageService.deleteAllot({ id: allotId }).subscribe(
           (res: any) => {
             ShowNotification.success('删除成功');
             console.log(res);
