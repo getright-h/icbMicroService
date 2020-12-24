@@ -87,6 +87,7 @@ export default function InitAllocationComponent() {
   function RenderTable() {
     return (
       <ITableComponent
+        multRowkey={['allotId', 'id']}
         columns={initAllocationColumns(callbackAction)}
         isLoading={isLoading}
         pageIndex={searchForm.index}
