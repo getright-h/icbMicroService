@@ -45,7 +45,7 @@ export default function ReceiveAllocationComponent() {
           />
         </div>
         <div className="push-search-item">
-          <span className="label">目标仓库:</span>
+          <span className="label">发起仓库:</span>
           <Input
             allowClear
             placeholder="请输入仓库名"
