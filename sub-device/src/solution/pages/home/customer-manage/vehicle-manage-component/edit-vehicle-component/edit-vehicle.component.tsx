@@ -48,6 +48,7 @@ export default function EditVehicleComponent() {
       reqUrl: 'queryOwnerList',
       placeholder: '请选择车主',
       searchKey: ownerInfo?.ownerName || '',
+      searchKeyName: 'strValue',
       getCurrentSelectInfo: (value: string, option: any) => {
         getCurrentSelectOwner(value);
       },
