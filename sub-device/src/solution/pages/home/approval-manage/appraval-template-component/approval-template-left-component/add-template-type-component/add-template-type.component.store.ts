@@ -5,15 +5,17 @@ import { DataNode } from 'rc-tree/lib/interface';
 import _ from 'lodash';
 import { ApprovalManageService } from '../../../../../../model/services/approval-manage.service';
 import { message, Form } from 'antd';
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 
 export function useAddTemplateTypeStore(props: IAddTemplateTypeProps) {
-  console.log(props, '参数');
   const { state, setStateWrap, getState } = useStateStore(new IAddTemplateTypeState());
   const approvalManageService: ApprovalManageService = useService(ApprovalManageService);
   const { name, checkedKeys, type, parentOrganizationId } = state;
   const [form] = Form.useForm();
   useEffect(() => {
+    setStateWrap({
+      organazationList: props.organazationList || []
+    });
     props.groupId && getGroupDetail();
   }, [props.groupId]);
 

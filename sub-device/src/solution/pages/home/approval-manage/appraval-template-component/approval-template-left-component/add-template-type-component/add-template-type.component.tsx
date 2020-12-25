@@ -17,16 +17,24 @@ export default function AddTemplateTypeComponent(props: IAddTemplateTypeProps) {
     onChangeHaveChooseShop,
     changeTemplateName,
     onExpand,
-    onCheck
+    onCheck,
+    onSearchOrg
   } = useAddTemplateTypeStore(props);
-  const { isEdit, addApprovalTypeVisible, organazationList } = props;
-  const { confirmLoading, expandedKeys, checkedKeys, checkedObject, parentOrganizationId, name } = state;
+  const { isEdit, addApprovalTypeVisible } = props;
+  const {
+    organazationList,
+    confirmLoading,
+    expandedKeys,
+    checkedKeys,
+    checkedObject,
+    parentOrganizationId,
+    name
+  } = state;
   function RenderLinkOrganization() {
     const checkedObjectFlat = React.useCallback(() => flatAtree(checkedObject), [checkedObject]);
     return (
       <div className={style.linkOrganization}>
         <div>
-          <span>选择: </span>
           <div className={style.chooseOrganization}>{RenderTree()}</div>
         </div>
         <div>
@@ -83,7 +91,6 @@ export default function AddTemplateTypeComponent(props: IAddTemplateTypeProps) {
       organizationChecked: true,
       currentOrganazation: parentOrganizationId
     };
-    console.log(prganizationControllerComponentProps);
 
     return parentOrganizationId ? (
       <div className={style.approvalListLeft}>
@@ -112,20 +119,25 @@ export default function AddTemplateTypeComponent(props: IAddTemplateTypeProps) {
         </Form.Item>
         <Form.Item label="关联机构" name="parentOrganizationId" rules={[{ required: true }]}>
           <Select
+            showSearch
+            optionFilterProp={'children'}
+            // onSearch={($event: any) => onSearchOrg($event)}
             value={parentOrganizationId}
             onChange={value => changeTemplateName(value, 'parentOrganizationId')}
             placeholder="请选择关联机构"
           >
-            {organazationList.map(item => {
-              return (
-                <Option value={item.id} key={item.id}>
-                  {item.name}
-                </Option>
-              );
-            })}
+            {organazationList &&
+              organazationList.map((item: any, key: number) => {
+                console.log(organazationList, 'organazationListorganazationList');
+                return (
+                  <Option value={item.id} key={key}>
+                    {item.name}
+                  </Option>
+                );
+              })}
           </Select>
         </Form.Item>
-        <Form.Item name="organization" label="关联机构" rules={[{ required: true }]}>
+        <Form.Item name="organization" label="选择" rules={[{ required: true }]}>
           {RenderLinkOrganization()}
         </Form.Item>
       </Form>
