@@ -59,7 +59,7 @@ export function allocationManageColumns(callbackAction: Function) {
       dataIndex: 'inventoryCode'
     },
     {
-      title: '流程名称',
+      title: '模板名称',
       dataIndex: 'name'
     },
     {
