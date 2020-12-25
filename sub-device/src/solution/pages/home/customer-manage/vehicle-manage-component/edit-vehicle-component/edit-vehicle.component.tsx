@@ -235,7 +235,12 @@ export default function EditVehicleComponent() {
             </Col>
             <Col span={6} offset={1}>
               <Form.Item label="购买日期" name={['vehicle', 'buyTime']}>
-                <DatePicker style={{ width: '100%' }} format="YYYY-MM-DD" placeholder="请选择时间" />
+                <DatePicker
+                  style={{ width: '100%' }}
+                  showTime={{ format: 'YYYY-MM-DD HH:mm:ss' }}
+                  format="YYYY-MM-DD HH:mm:ss"
+                  placeholder="请选择时间"
+                />
               </Form.Item>
             </Col>
             <Col span={6}>
@@ -273,7 +278,12 @@ export default function EditVehicleComponent() {
           <Row gutter={32}>
             <Col span={6}>
               <Form.Item label="服务开始时间" name={['vehicle', 'serverBeginTime']}>
-                <DatePicker style={{ width: '100%' }} format="YYYY-MM-DD" placeholder="请选择时间" />
+                <DatePicker
+                  style={{ width: '100%' }}
+                  showTime={{ format: 'YYYY-MM-DD HH:mm:ss' }}
+                  format="YYYY-MM-DD HH:mm:ss"
+                  placeholder="请选择时间"
+                />
               </Form.Item>
             </Col>
             <Col span={6} offset={1}>
