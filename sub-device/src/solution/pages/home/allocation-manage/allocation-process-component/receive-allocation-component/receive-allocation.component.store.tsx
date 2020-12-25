@@ -7,6 +7,7 @@ import { ALLOW_FLOW_KEYCODE_ENUM, ModalType } from '~shared/constant/common.cons
 import { Modal } from 'antd';
 import { Subscription } from 'rxjs';
 import { useHistory } from 'react-router-dom';
+
 const { confirm } = Modal;
 export function useReceiveAllocationStore() {
   const { state, setStateWrap, getState } = useStateStore(new IReceiveAllocationState());
@@ -36,8 +37,12 @@ export function useReceiveAllocationStore() {
   function onChange(value: any, valueType: string) {
     const { searchForm } = state;
     if (valueType == 'time') {
-      searchForm.beginTime = Date.parse(value[0]);
-      searchForm.endTime = Date.parse(value[1]);
+      value[0] ? (searchForm.beginTime = Date.parse(value[0] + ' 00:00:00')) : (searchForm.beginTime = 0);
+      value[1] ? (searchForm.endTime = Date.parse(value[1] + ' 23:59:59')) : (searchForm.endTime = 0);
+      setStateWrap({
+        searchForm: { ...searchForm }
+      });
+      return;
     }
     setStateWrap({
       searchForm: {
@@ -68,7 +73,9 @@ export function useReceiveAllocationStore() {
         });
         break;
       case ModalType.MOVE:
-        renderMoveModal(data);
+        setStateWrap({
+          importVisible: true
+        });
         break;
       case ModalType.PASS:
         renderPassModal(data);

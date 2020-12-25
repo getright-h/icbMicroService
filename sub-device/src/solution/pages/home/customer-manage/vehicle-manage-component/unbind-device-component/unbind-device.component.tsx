@@ -30,7 +30,7 @@ export default function UnbindDeviceComponent(props: IUnbindDeviceProps) {
                   getCurrentSelectInfo={(value: string, option: any) => getSelectStore(value)}
                 />
               </Form.Item>
-              <Form.Item name={'positionId'} noStyle rules={[{ required: true, message: '请选择仓位' }]}>
+              <Form.Item name={'storePositionId'} noStyle rules={[{ required: true, message: '请选择仓位' }]}>
                 <ISelectLoadingComponent
                   width="50%"
                   reqUrl="queryStorePositionList"
@@ -39,7 +39,7 @@ export default function UnbindDeviceComponent(props: IUnbindDeviceProps) {
                   searchKey=""
                   disabled={!selectStoreId}
                   searchForm={{ storeId: selectStoreId }}
-                  getCurrentSelectInfo={(value: string, option: any) => form.setFieldsValue({ positionId: value })}
+                  getCurrentSelectInfo={(value: string, option: any) => form.setFieldsValue({ storePositionId: value })}
                 />
               </Form.Item>
             </Input.Group>

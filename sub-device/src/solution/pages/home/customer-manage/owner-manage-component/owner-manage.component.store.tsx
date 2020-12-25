@@ -64,6 +64,7 @@ export function useOwnerManageStore() {
       case ModalType.DELETE:
         Modal.confirm({
           title: '是否确认删除该车主？',
+          centered: true,
           icon: <ExclamationCircleOutlined />,
           onOk: () =>
             new Promise((resolve, reject) => {

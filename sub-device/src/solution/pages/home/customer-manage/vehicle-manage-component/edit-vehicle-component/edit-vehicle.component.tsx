@@ -48,8 +48,9 @@ export default function EditVehicleComponent() {
       reqUrl: 'queryOwnerList',
       placeholder: '请选择车主',
       searchKey: ownerInfo?.ownerName || '',
+      searchKeyName: 'strValue',
       getCurrentSelectInfo: (value: string, option: any) => {
-        getCurrentSelectOwner(value, option);
+        getCurrentSelectOwner(value);
       },
       searchForm: { sex: -1, follow: -1 }
     });
@@ -234,12 +235,7 @@ export default function EditVehicleComponent() {
             </Col>
             <Col span={6} offset={1}>
               <Form.Item label="购买日期" name={['vehicle', 'buyTime']}>
-                <DatePicker
-                  style={{ width: '100%' }}
-                  showTime={{ format: 'YYYY-MM-DD HH:mm:ss' }}
-                  format="YYYY-MM-DD HH:mm:ss"
-                  placeholder="请选择时间"
-                />
+                <DatePicker style={{ width: '100%' }} format="YYYY-MM-DD" placeholder="请选择时间" />
               </Form.Item>
             </Col>
             <Col span={6}>
@@ -277,12 +273,7 @@ export default function EditVehicleComponent() {
           <Row gutter={32}>
             <Col span={6}>
               <Form.Item label="服务开始时间" name={['vehicle', 'serverBeginTime']}>
-                <DatePicker
-                  style={{ width: '100%' }}
-                  showTime={{ format: 'YYYY-MM-DD HH:mm:ss' }}
-                  format="YYYY-MM-DD HH:mm:ss"
-                  placeholder="请选择时间"
-                />
+                <DatePicker style={{ width: '100%' }} format="YYYY-MM-DD" placeholder="请选择时间" />
               </Form.Item>
             </Col>
             <Col span={6} offset={1}>
@@ -358,14 +349,13 @@ export default function EditVehicleComponent() {
           <Row gutter={32}>
             <Col span={12}>
               <Form.Item label="绑定设备" labelCol={{ span: 4 }} style={{ marginBottom: 0, alignItems: 'baseline' }}>
-                {bindedDeviceList.length
-                  ? bindedDeviceList.map(device => (
-                      <div key={device} className={style.deviceItem}>
-                        <span>{device}</span>
-                        <a onClick={() => unbindDevice(device)}>解绑</a>
-                      </div>
-                    ))
-                  : '-'}
+                {bindedDeviceList.length &&
+                  bindedDeviceList.map(device => (
+                    <div key={device} className={style.deviceItem}>
+                      <span>{device}</span>
+                      <a onClick={() => unbindDevice(device)}>解绑</a>
+                    </div>
+                  ))}
               </Form.Item>
             </Col>
           </Row>
@@ -406,7 +396,7 @@ export default function EditVehicleComponent() {
       {renderSubHeader('车辆信息')}
       {renderVehicleForm()}
       {renderSubHeader('设备信息')}
-      {isEdit && deviceInfo()}
+      {isEdit && (bindedDeviceList.length ? deviceInfo() : null)}
       {renderDeviceForm()}
       {submitButtons()}
       <UnbindDeviceComponent visible={state.isUnbindDevice} close={modalCancel} info={state.unbindInfo} />

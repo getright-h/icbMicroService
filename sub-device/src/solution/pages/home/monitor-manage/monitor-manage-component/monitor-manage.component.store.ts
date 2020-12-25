@@ -84,6 +84,9 @@ export function useMonitorManageStore() {
       case ModalType.BATCH_TRANFROM:
         setStateWrap({ transformModalVisible: true });
         break;
+      case ModalType.ALARM:
+        setStateWrap({ alarmModalVisible: true });
+        break;
       case ModalType.DETAIL:
         history.push(`/home/customer/vehicleDetail/${data.vehicleId}`);
         break;
@@ -110,8 +113,14 @@ export function useMonitorManageStore() {
     getTableData();
   }
 
-  function handleModalCancel() {
-    setStateWrap({ addGroupModalVisible: false, addCarModalVisible: false, transformModalVisible: false });
+  function handleModalCancel(isSucess = false) {
+    setStateWrap({
+      addGroupModalVisible: false,
+      addCarModalVisible: false,
+      transformModalVisible: false,
+      alarmModalVisible: false
+    });
+    isSucess && getTableData();
   }
   function onExpand(expandedKeys: []) {
     setStateWrap({

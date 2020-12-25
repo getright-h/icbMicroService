@@ -26,6 +26,9 @@ const QUERY_ALLOT_RECIPIENT_DETAIL = 'allot/manage/queryAllotRecipientDetail';
 const UPLOAD_ALLOT_DEVICE_EXCEL = 'allot/manage/uploadAllotDeviceExcel';
 // 校验设备
 const CHECK_ALLOT_DEVICE_INFO = 'allot/manage/checkAllotDeviceInfo';
+// 下载调拨单Excel
+const DOWNLOAD_ALLOT = 'allot/manage/downLoadAllot';
+
 @DepUtil.Injectable()
 export class AllocationManageService {
   @DepUtil.Inject(RequestService)
@@ -65,5 +68,8 @@ export class AllocationManageService {
   }
   queryAllotRecipientDetail(params: any): Observable<any> {
     return this.requestService.get(QUERY_ALLOT_RECIPIENT_DETAIL, params);
+  }
+  downLoadAllot(params: any): Observable<any> {
+    return this.requestService.getDownload(DOWNLOAD_ALLOT, params);
   }
 }

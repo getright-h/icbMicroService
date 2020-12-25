@@ -8,7 +8,6 @@ import { Button, Input } from 'antd';
 import AddDeviceTypeModalComponent from './add-device-type-component/add-device-type.component';
 
 export default function DeviceTypeSettingComponent() {
-  const { state } = useDeviceTypeSettingStore();
   const {
     state,
     callbackAction,
@@ -71,12 +70,14 @@ export default function DeviceTypeSettingComponent() {
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
       />
-      <AddDeviceTypeModalComponent
-        data={currentData}
-        visible={addDeviceTypeVisible}
-        close={handleCloseVisible}
-        fetchData={getTableList}
-      />
+      {addDeviceTypeVisible && (
+        <AddDeviceTypeModalComponent
+          data={currentData}
+          visible={addDeviceTypeVisible}
+          close={handleCloseVisible}
+          fetchData={getTableList}
+        />
+      )}
     </div>
   );
 }

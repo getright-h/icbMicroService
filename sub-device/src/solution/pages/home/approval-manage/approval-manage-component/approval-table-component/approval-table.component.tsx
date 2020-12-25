@@ -138,8 +138,10 @@ export default function ApprovalTableComponent() {
 
   function renderOtherSearchRenderApplyForApprovalBtns() {
     return (
-      <div className="other-search-button-item" onClick={() => changeChooseModalVisible(true)}>
-        <Button type="primary">发起申请</Button>
+      <div className="other-search-button-item">
+        <Button type="primary" onClick={() => changeChooseModalVisible(true)}>
+          发起申请
+        </Button>
       </div>
     );
   }

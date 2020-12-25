@@ -1,4 +1,4 @@
-import { IDetailState, IFlowNode } from './detail.interface';
+import { IDetailState } from './detail.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
@@ -6,24 +6,25 @@ import { AllocationManageService } from '~/solution/model/services/allocation-ma
 import { useHistory } from 'react-router-dom';
 import { Subscription } from 'rxjs';
 import { ShowNotification } from '~/framework/util/common';
-
 import { ALLOW_FLOW_KEYCODE_ENUM, ModalType } from '~shared/constant/common.const';
 import { Modal } from 'antd';
+import { CommonUtil } from '~/solution/shared/util/baseFunction';
+import moment from 'moment';
 const { confirm } = Modal;
 export function useDetailStore() {
   const { state, setStateWrap } = useStateStore(new IDetailState());
-  const { id } = useParams();
+  const { id } = useParams() as any;
   const history = useHistory();
   const allocationManageService: AllocationManageService = new AllocationManageService();
   let allocationManageServiceSubscription: Subscription;
   useEffect(() => {
-    getAlloactionDetail(id);
+    getAlloactionDetail();
     return () => {
       allocationManageServiceSubscription && allocationManageServiceSubscription.unsubscribe();
     };
   }, []);
   //获取调拨单详情
-  function getAlloactionDetail(id: string) {
+  function getAlloactionDetail() {
     if (!id) return;
     allocationManageServiceSubscription = allocationManageService.queryAllotRecipientDetail({ id }).subscribe(
       (res: any) => {
@@ -51,7 +52,9 @@ export function useDetailStore() {
         });
         break;
       case ModalType.MOVE:
-        renderMoveModal(data);
+        setStateWrap({
+          importVisible: true
+        });
         break;
       case ModalType.PASS:
         renderPassModal(data);
@@ -85,7 +88,7 @@ export function useDetailStore() {
         allocationOperate(data, params).then((res: any) => {
           const { isSuccess } = res;
           if (isSuccess) {
-            getAlloactionDetail(id);
+            getAlloactionDetail();
             ShowNotification.success(msg);
           }
         });
@@ -107,7 +110,7 @@ export function useDetailStore() {
         allocationOperate(data, params).then((res: any) => {
           const { isSuccess } = res;
           if (isSuccess) {
-            getAlloactionDetail(id);
+            getAlloactionDetail();
             ShowNotification.success(msg);
           }
         });
@@ -129,7 +132,7 @@ export function useDetailStore() {
         allocationOperate(data, params).then((res: any) => {
           const { isSuccess } = res;
           if (isSuccess) {
-            getAlloactionDetail(id);
+            getAlloactionDetail();
             ShowNotification.success(msg);
           }
         });
@@ -160,8 +163,14 @@ export function useDetailStore() {
       );
     });
   }
-  function handleModalCancel() {
-    setStateWrap({ rejectVisibleModal: false });
+  // 下载调拨Excel
+  async function handleDownLoadAllot() {
+    // 接收方 role 1
+    const res = await allocationManageService.downLoadAllot({ id, role: 2 }).toPromise();
+    CommonUtil.downExcel(res, `接收方调拨单${moment(new Date()).format('YYYY-MM-DD')}.xlsx`);
   }
-  return { state, handleModalCancel, callbackAction, allocationOperate, getAlloactionDetail };
+  function handleModalCancel() {
+    setStateWrap({ rejectVisibleModal: false, importVisible: false });
+  }
+  return { state, handleModalCancel, callbackAction, allocationOperate, getAlloactionDetail, handleDownLoadAllot };
 }

@@ -21,7 +21,7 @@ export default function VoucherEditComponent(props: IVoucherEditProps) {
       reqUrl: 'queryVehicleList',
       placeholder: '请输入车架号',
       searchKeyName: 'strValue',
-      getCurrentSelectInfo: (option: any) => {
+      getCurrentSelectInfo: (value: string, option: any) => {
         getDeviceCodeList(option);
       }
     });
@@ -78,7 +78,7 @@ export default function VoucherEditComponent(props: IVoucherEditProps) {
   }
   return (
     <Modal
-      title={state.isEdit ? '编辑安装单' : '新增安装单'}
+      title={state.isEdit ? '编辑安装凭证' : '新增安装凭证'}
       visible={visible}
       width={700}
       onCancel={() => selfClose()}

@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { IDeviceLineProp } from './device-route-modal.interface';
 import { useDeviceRouteModalStore } from './device-route-modal.component.store';
-import { Modal, Form, Steps, Popover } from 'antd';
+import { Modal, Form, Steps, Timeline, Popover } from 'antd';
+import style from './device-route-modal.component.less';
 import { DEVICE_ROUTE_ENUM } from '~shared/constant/common.const';
 const { Step } = Steps;
 export default function DeviceRouteModalComponent(props: IDeviceLineProp) {
@@ -24,42 +25,45 @@ export default function DeviceRouteModalComponent(props: IDeviceLineProp) {
     //   return '调拨中 等待接口调试';
     // }
     // 在库
-    return `${flow.storeName}-${flow.storePositionName}`;
+    return `${flow.storeName}`;
   }
   return (
-    <Modal visible={visible} title={'查看节点详情'} onOk={onSubmit} onCancel={onSubmit} width={700}>
+    <Modal visible={visible} centered={true} title={'查看节点详情'} onOk={onSubmit} onCancel={onSubmit} width={700}>
       <Form style={{ width: '100%' }}>
-        <Form.Item label={'设备号'}>{data.typeName ? data.typeName : '-'}</Form.Item>
+        <Form.Item label={'设备号'}>{data.code ? data.code : '-'}</Form.Item>
         <Form.Item label={'节点详情'}>
-          <Steps progressDot direction="vertical">
+          <Timeline>
             {data.flowList &&
               Array.isArray(data.flowList) &&
-              data.flowList.map((flow: any) => (
-                <Step
-                  key={flow.id}
-                  description={
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <p>{flow.createTime}</p>
-                      <p style={{ marginLeft: 30, marginRight: 30, flex: 1 }}>{renderDeviceSort(flow)}</p>
-                      <p
-                        style={{
-                          overflow: 'hidden',
-                          height: 25,
-                          width: 250,
-                          whiteSpace: 'nowrap',
-                          textOverflow: 'ellipsis',
-                          flex: 1
-                        }}
-                      >
-                        <Popover placement="topRight" content={flow.remark || '-'} trigger="click">
-                          <span>备注:{flow.remark || '-'}</span>
-                        </Popover>
-                      </p>
-                    </div>
-                  }
-                />
+              data.flowList.map((flow: any, index: number) => (
+                <Timeline.Item key={flow.id} style={{ marginTop: 10 }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      color: index === data.flowList.length - 1 && '#000'
+                    }}
+                  >
+                    <p>{flow.createTime}</p>
+                    <p style={{ marginLeft: 30, marginRight: 30, flex: 1 }}>{renderDeviceSort(flow)}</p>
+                    <p
+                      style={{
+                        overflow: 'hidden',
+                        height: 25,
+                        width: 250,
+                        whiteSpace: 'nowrap',
+                        textOverflow: 'ellipsis',
+                        flex: 1
+                      }}
+                    >
+                      <Popover placement="topRight" content={flow.remark} trigger="click">
+                        <span>备注:{flow.remark}</span>
+                      </Popover>
+                    </p>
+                  </div>
+                </Timeline.Item>
               ))}
-          </Steps>
+          </Timeline>
         </Form.Item>
       </Form>
     </Modal>

@@ -9,7 +9,8 @@ export const initialState: IBaseGlobalState = {
     userId: '',
     typeId: 'c59c75eec2d3cc075cca08d84386bcb9',
     systemId: '938880216d89c68eb6ea08d69b143c52'
-  }
+  },
+  tagViews: ['home']
 };
 
 export function reducer(state = initialState, action: IAction<any>) {

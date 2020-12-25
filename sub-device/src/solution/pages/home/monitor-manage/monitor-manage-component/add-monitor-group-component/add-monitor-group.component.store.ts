@@ -11,12 +11,9 @@ export function useAddMonitorGroupStore(props: AddMonitorGroupProp) {
   const monitorService = useService(MonitorService);
   let insertVehicleGroupSubscription: Subscription;
   const [form] = Form.useForm();
-  const organization = {
-    organizationCode: props?.data.organizationCode,
-    organizationId: props?.data.organizationId,
-    organizationName: props?.data.organizationName
-  };
+
   function addMonitorGroup(value: any) {
+    const { organization = {} } = state;
     const params = {
       name: value.name,
       remark: value.remark,
@@ -56,9 +53,14 @@ export function useAddMonitorGroupStore(props: AddMonitorGroupProp) {
   }
   function onchange(value: any, type: string) {
     if (type == 'organizationId') {
-      organization.organizationCode = value.code;
-      organization.organizationId = value.organizationId;
-      organization.organizationName = value.name;
+      setStateWrap({
+        organization: {
+          organizationCode: value.code,
+          organizationId: value.organizationId,
+          organizationName: value.name
+        }
+      });
+      return;
     }
     form.setFieldsValue({
       [type]: value
@@ -67,8 +69,14 @@ export function useAddMonitorGroupStore(props: AddMonitorGroupProp) {
   useEffect(() => {
     form.resetFields();
     const { data = {} } = props;
+    setStateWrap({
+      organization: {
+        organizationCode: data.organizationCode,
+        organizationId: data.organizationId,
+        organizationName: data.organizationName
+      }
+    });
     form.setFieldsValue(data);
-    console.log(form);
     return () => {
       insertVehicleGroupSubscription && insertVehicleGroupSubscription.unsubscribe();
     };

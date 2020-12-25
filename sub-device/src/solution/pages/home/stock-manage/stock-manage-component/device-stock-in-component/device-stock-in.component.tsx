@@ -130,6 +130,7 @@ export default function DeviceStockInComponent(props: IDeviceStockInProps) {
       title="设备入库"
       visible={visible}
       width={640}
+      centered={true}
       onCancel={() => selfClose(false)}
       onOk={() => {
         form

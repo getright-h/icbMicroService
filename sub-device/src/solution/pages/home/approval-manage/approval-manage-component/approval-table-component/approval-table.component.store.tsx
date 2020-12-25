@@ -89,7 +89,7 @@ export function useApprovalTableStore() {
       title: '撤回',
       icon: <ExclamationCircleOutlined />,
       content: '是否撤回当前申请',
-      okText: '删除',
+      okText: '确认',
       onOk() {
         return new Promise(resolve => {
           confirmWithdrawApproval(resolve, element);

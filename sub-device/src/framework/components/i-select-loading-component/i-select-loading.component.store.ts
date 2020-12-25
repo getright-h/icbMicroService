@@ -30,7 +30,15 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
           if (Array.isArray(res)) {
             res.dataList = res;
           }
-          if (!res.dataList) return;
+          /** 兼容 data里是数组格式 */
+          if (res.data && Array.isArray(res.data)) {
+            res.dataList = res.data;
+          }
+
+          if (!res.dataList && !res.data) return;
+          /** 兼容 data里是数组格式 */
+
+          // if (!res.dataList) return;
           const optionList = [...(isSearch ? [] : state.optionList), ...res.dataList];
           setStateWrap({ optionList, fetching: false });
         } else if (scrollPage.current == 1 && (!res || !res.dataList)) {
@@ -70,6 +78,7 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
   }
   useEffect(() => {
     setStateWrap({ value: props.selectedValue });
+    // 解开用于解决 修改信息时候,下拉框由于没有列表数据,而只是暂时ID
     // getOptionList();
   }, [props.selectedValue]);
 

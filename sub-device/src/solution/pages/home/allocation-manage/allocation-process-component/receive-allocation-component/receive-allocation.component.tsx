@@ -40,17 +40,17 @@ export default function ReceiveAllocationComponent() {
             allowClear
             placeholder="请输入调拨单号"
             onChange={e => {
-              onChange(e.target.value, 'keyword');
+              onChange(e.target.value, 'allotCode');
             }}
           />
         </div>
         <div className="push-search-item">
-          <span className="label">目标仓库:</span>
+          <span className="label">发起仓库:</span>
           <Input
             allowClear
             placeholder="请输入仓库名"
             onChange={e => {
-              onChange(e.target.value, 'keyword');
+              onChange(e.target.value, 'storeName');
             }}
           />
         </div>

@@ -23,8 +23,16 @@ export function usePurchaseOrderStore() {
     stockManageService
       .queryPurchaseList({
         ...searchForm.getFieldsValue(),
-        beginTime: timeInfo[0] ? moment(timeInfo[0]).valueOf() : 0,
-        endTime: timeInfo[1] ? moment(timeInfo[1]).valueOf() : 0,
+        beginTime: timeInfo[0]
+          ? moment(timeInfo[0])
+              .startOf('d')
+              .valueOf()
+          : 0,
+        endTime: timeInfo[1]
+          ? moment(timeInfo[1])
+              .endOf('d')
+              .valueOf()
+          : 0,
         index: pageIndex,
         size: pageSize
       })
@@ -65,6 +73,7 @@ export function usePurchaseOrderStore() {
         Modal.confirm({
           title: '是否确认删除该采购单？删除后无法恢复',
           icon: <ExclamationCircleOutlined />,
+          centered: true,
           onOk: () =>
             new Promise((resolve, reject) => {
               stockManageService.deletePurchase(data.id).subscribe(

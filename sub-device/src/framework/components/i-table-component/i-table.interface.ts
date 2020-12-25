@@ -19,6 +19,7 @@ export interface IITableProps {
   changeTablePageIndex: (page: number, pageSize?: number) => void;
   rowSelection?: any;
   rowKey?: string;
+  multRowkey?: Array<string>;
   summary?: any;
   title?: string;
   expandable?: any;

@@ -137,13 +137,15 @@ export default function ApprovalManageDetailComponent() {
       )}
       <Modal
         title={isRefuse ? '审核驳回' : '审核通过'}
+        centered={true}
         visible={visible}
         okText={`确认${isRefuse ? '驳回' : '通过'}`}
         onOk={handleOk}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
       >
-        <span className={style.remark}>备注</span>
+        {/* <span className={style.remark}>备注</span> */}
+        <span>备注</span>
         <TextArea
           placeholder="请输入备注"
           rows={4}

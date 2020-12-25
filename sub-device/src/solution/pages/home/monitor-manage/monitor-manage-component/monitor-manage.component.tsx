@@ -9,7 +9,7 @@ import OrganizationControllerComponent from '~/solution/components/organization-
 import AddMonitorGroupComponent from './add-monitor-group-component/add-monitor-group.component';
 import AddMonitorCarComponent from './add-monitor-car-component/add-monitor-car.component';
 import TransformMonitorComponent from './transform-monitor-component/transform-monitor.component';
-
+import SetAlarmModalComponent from './set-alarm-model-component/set-alarm-model-component';
 export default function MonitorManageComponent() {
   const {
     state,
@@ -37,6 +37,7 @@ export default function MonitorManageComponent() {
     addGroupModalVisible = false,
     addCarModalVisible = false,
     transformModalVisible = false,
+    alarmModalVisible = false,
     expandedKeys,
     checkedKeys,
     transformDisable = true,
@@ -128,7 +129,14 @@ export default function MonitorManageComponent() {
           <Button onClick={() => callbackAction(ModalType.ADD_GROUP)}>添加监控组</Button>
           <div>
             {currentMonitorGroup.id && <Button onClick={() => callbackAction(ModalType.ADD_CAR)}>添加监控车辆</Button>}
-
+            <Button
+              disabled={!currentMonitorGroup.id}
+              type={'primary'}
+              style={{ marginLeft: 20 }}
+              onClick={() => callbackAction(ModalType.ALARM)}
+            >
+              报警通知
+            </Button>
             <Button
               disabled={transformDisable}
               type={!transformDisable ? 'primary' : 'default'}
@@ -146,22 +154,31 @@ export default function MonitorManageComponent() {
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
       />
-      <TransformMonitorComponent
-        close={handleModalCancel}
-        visible={transformModalVisible}
-        data={{
-          currentMonitorGroup: currentMonitorGroup,
-          selectedRowKeys: transformSelected,
-          ...currentData
-        }}
-      />
-      <AddMonitorCarComponent
-        addMonitorModal={addCarModalVisible}
-        colse={handleModalCancel}
-        groupId={currentMonitorGroup.id}
-        getMonitorGroupList={getTableData}
-      />
-      <AddMonitorGroupComponent close={handleModalCancel} data={currentData} visible={addGroupModalVisible} />
+      {transformModalVisible && (
+        <TransformMonitorComponent
+          close={handleModalCancel}
+          visible={transformModalVisible}
+          data={{
+            currentMonitorGroup: currentMonitorGroup,
+            selectedRowKeys: transformSelected,
+            ...currentData
+          }}
+        />
+      )}
+      {addCarModalVisible && (
+        <AddMonitorCarComponent
+          addMonitorModal={addCarModalVisible}
+          colse={handleModalCancel}
+          groupId={currentMonitorGroup.id}
+          getMonitorGroupList={getTableData}
+        />
+      )}
+      {alarmModalVisible && (
+        <SetAlarmModalComponent close={handleModalCancel} data={currentMonitorGroup} visible={alarmModalVisible} />
+      )}
+      {addGroupModalVisible && (
+        <AddMonitorGroupComponent close={handleModalCancel} data={currentData} visible={addGroupModalVisible} />
+      )}
     </div>
   );
 }

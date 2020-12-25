@@ -5,42 +5,67 @@ import { ShowNotification } from '~/framework/util/common';
 import { ALLOW_FLOW_KEYCODE_ENUM, ModalType } from '~shared/constant/common.const';
 import { AllocationManageService } from '~/solution/model/services/allocation-manage.service';
 import { useHistory } from 'react-router-dom';
-import { Modal } from 'antd';
+import { Modal, Form } from 'antd';
 import { Subscription } from 'rxjs';
+import { getQueryParams } from '~/framework/util/common';
 const { confirm } = Modal;
 export function useInitAllocationStore() {
   const { state, setStateWrap, getState } = useStateStore(new IInitAllocationState());
   const allocationManageService: AllocationManageService = new AllocationManageService();
   const history = useHistory();
+  const [form] = Form.useForm();
+  let allotCode = '';
   let setAllotFlowSubscription: Subscription;
   let queryAllotPromoterPagedListSubscription: Subscription;
   useEffect(() => {
-    getTableData();
+    getDefaultParams();
+    getTableData(allotCode);
     return () => {
       setAllotFlowSubscription && setAllotFlowSubscription.unsubscribe();
       queryAllotPromoterPagedListSubscription && queryAllotPromoterPagedListSubscription.unsubscribe();
     };
   }, []);
 
-  function getTableData() {
+  // 获取默认路由参数
+  function getDefaultParams() {
+    const { id = '' } = getQueryParams();
+    const { searchForm } = state;
+    allotCode = id;
+    form.setFieldsValue({ allotCode: allotCode });
+
+    setStateWrap({
+      searchForm: {
+        ...searchForm,
+        allotCode
+      }
+    });
+  }
+
+  function getTableData(allotCode?: string) {
     setStateWrap({ isLoading: true });
     const { searchForm } = getState();
-    queryAllotPromoterPagedListSubscription = allocationManageService.queryAllotPromoterPagedList(searchForm).subscribe(
-      res => {
-        setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
-      },
-      err => {
-        setStateWrap({ isLoading: false });
-        ShowNotification.error(err);
-      }
-    );
+    queryAllotPromoterPagedListSubscription = allocationManageService
+      .queryAllotPromoterPagedList(allotCode ? { allotCode: allotCode, ...searchForm } : searchForm)
+      .subscribe(
+        res => {
+          setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
+        },
+        err => {
+          setStateWrap({ isLoading: false });
+          ShowNotification.error(err);
+        }
+      );
   }
 
   function onChange(value: any, valueType: string) {
     const { searchForm } = state;
     if (valueType == 'time') {
-      searchForm.beginTime = Date.parse(value[0]);
-      searchForm.endTime = Date.parse(value[1]);
+      value[0] ? (searchForm.beginTime = Date.parse(value[0] + ' 00:00:00')) : (searchForm.beginTime = 0);
+      value[1] ? (searchForm.endTime = Date.parse(value[1] + ' 23:59:59')) : (searchForm.endTime = 0);
+      setStateWrap({
+        searchForm: { ...searchForm }
+      });
+      return;
     }
     setStateWrap({
       searchForm: {
@@ -179,6 +204,7 @@ export function useInitAllocationStore() {
   }
   return {
     state,
+    form,
     callbackAction,
     changeTablePageIndex,
     searchClick,

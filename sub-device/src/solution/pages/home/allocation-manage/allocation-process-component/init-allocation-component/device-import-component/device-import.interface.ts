@@ -4,7 +4,7 @@
  */
 export class IDeviceImportState {
   confirmLoading = false;
-  importType: number = null;
+  importType = 1;
   searchForm = {};
   deviceList: Array<any> = [];
   submitLoading = false;

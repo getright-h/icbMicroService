@@ -13,7 +13,11 @@ export function useStockManageStore(stockListState: { currentSelectNode: EventDa
   const [searchForm] = Form.useForm();
 
   useEffect(() => {
-    initSearchform();
+    searchForm.resetFields();
+    searchForm.setFieldsValue({
+      state: -1,
+      isAlarm: -1
+    });
   }, []);
 
   useEffect(() => {
@@ -80,6 +84,7 @@ export function useStockManageStore(stockListState: { currentSelectNode: EventDa
               是否确认设备已遗失？遗失设备可在<a>设备路线表</a>中查看
             </span>
           ),
+          centered: true,
           icon: <ExclamationCircleOutlined />,
           onOk: () =>
             new Promise((resolve, reject) => {
@@ -99,6 +104,7 @@ export function useStockManageStore(stockListState: { currentSelectNode: EventDa
       case ModalType.DELETE:
         Modal.confirm({
           title: '是否确认删除设备？删除后无法恢复',
+          centered: true,
           icon: <ExclamationCircleOutlined />,
           onOk: () =>
             new Promise((resolve, reject) => {
@@ -136,8 +142,7 @@ export function useStockManageStore(stockListState: { currentSelectNode: EventDa
       state: -1,
       isAlarm: -1
     });
-    setStateWrap({ pageIndex: 1 });
-    getTableData();
+    searchClick();
   }
 
   function modalCancel(isSuccess?: boolean) {

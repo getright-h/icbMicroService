@@ -43,6 +43,7 @@ export default function StockDeviceComponent(props: IStockDeviceProps) {
   return (
     <Modal
       title="出入库设备详情"
+      centered={true}
       visible={visible}
       width={600}
       onCancel={selfClose}
