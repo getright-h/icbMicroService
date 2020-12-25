@@ -135,6 +135,9 @@ export function useAddTemplateStore(addTemplateState: AddTemplateState, dispatch
     });
   }
 
+  function goback() {
+    history.push('../../../../home/approvalManage/approveTemplate');
+  }
   function createRandomId() {
     return (
       (Math.random() * 10000000).toString(16).substr(0, 4) +
@@ -146,5 +149,5 @@ export function useAddTemplateStore(addTemplateState: AddTemplateState, dispatch
         .substr(2, 5)
     );
   }
-  return { state, next, prev, commit };
+  return { state, next, prev, commit, goback };
 }
