@@ -72,8 +72,9 @@ export function useIMapStore(mapProps: TIMapProps) {
       if (polyline.current) {
         map.current.remove(polyline.current);
       }
-      const { plateNo, pointList } = mapProps.carLine;
+      const { plateNo, pointList, coordinates } = mapProps.carLine;
       const carLine: Array<number[]> = [];
+      pointList.push({ coordinates } as any);
       pointList?.forEach(item => {
         const coordinatesExchange = IMAP.initLonlat(item.coordinates[0], item.coordinates[1]);
         carLine.push(coordinatesExchange);

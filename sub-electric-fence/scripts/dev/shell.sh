@@ -2,10 +2,10 @@
 # 当前镜像版本号
 version="1.0.1";
 # 镜像名
-imageName="test_sub-electric-fence";
-containerName="test_sub-electric-fence";
+imageName="sub-electric-fence";
+containerName="sub-electric-fence";
 # jenkins服务器开放的的前端访问端口
-port="2100";
+port="2110";
 # 镜像中server暴露的端口号
 exposePort="9527";
 
