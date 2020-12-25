@@ -9,7 +9,7 @@ cd ../..
 # yarn build-dev
 
 echo "--> copy files···"
-cp -rf Dockerfile ecosystem.config.js server/* ./dist
+cp -rf Dockerfile server/* ./dist
 echo "--> install node dependencies···"
 echo "--> docker build"
 cd dist
