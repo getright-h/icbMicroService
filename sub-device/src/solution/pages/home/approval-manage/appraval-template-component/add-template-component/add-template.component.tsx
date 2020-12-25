@@ -17,7 +17,7 @@ export default function AddTemplateComponent() {
     JSON.parse(JSON.stringify(addTemplateInitialState))
   );
 
-  const { state, next, prev, commit } = useAddTemplateStore(addTemplateState, dispatch);
+  const { state, next, prev, commit, goback } = useAddTemplateStore(addTemplateState, dispatch);
 
   const { current } = state;
   const STEPS = [
@@ -44,9 +44,14 @@ export default function AddTemplateComponent() {
         <div className={style.stepsContent}>{STEPS[current].content}</div>
         <div className={style.stepsAction}>
           {current < STEPS.length - 1 && (
-            <Button type="primary" onClick={() => next()}>
-              下一步
-            </Button>
+            <>
+              <Button type="primary" onClick={() => next()}>
+                下一步
+              </Button>
+              <Button onClick={() => goback()} style={{ margin: '0 8px' }}>
+                返回
+              </Button>
+            </>
           )}
           {current === STEPS.length - 1 && (
             <Button type="primary" onClick={commit}>

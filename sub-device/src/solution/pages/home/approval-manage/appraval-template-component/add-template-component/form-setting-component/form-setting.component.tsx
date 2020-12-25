@@ -34,6 +34,7 @@ export default function FormSettingComponent() {
       <div>
         <Form.Item label="设为必填项" rules={[{ required: true }]}>
           <Switch
+            disabled={currentSelectItem.type === FormType.FlowNode}
             checked={currentSelectItem.isRequired}
             onChange={value => onChangeCustomInfo<boolean>(currentSelectItem, 'isRequired', value)}
           />
@@ -149,7 +150,7 @@ export default function FormSettingComponent() {
             </ReactSortable>
           </div>
           <div>
-            <h4>点击选择填写项</h4>
+            <h4>输入内容</h4>
             <div>
               <EditFieldMemo />
             </div>

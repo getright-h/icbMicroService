@@ -103,6 +103,7 @@ export function useApprovalTableStore() {
 
   function confirmWithdrawApproval(resolve: Function, element: any) {
     approvalManageService.flowRevoke({ id: element.id }).subscribe(() => {
+      getTableData();
       resolve();
     });
   }
