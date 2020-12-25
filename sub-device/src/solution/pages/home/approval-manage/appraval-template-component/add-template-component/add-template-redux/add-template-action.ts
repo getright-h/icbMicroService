@@ -24,9 +24,20 @@ export function initTemplateForm(dispatch: Dispatch<any>, payload: any) {
 }
 
 export function setApproverInputAction(dispatch: Dispatch<any>, approverInput: ApproverInput[]) {
+  // 在每一层不能重复添加 某一个人员或者角色
+  // 对已选角色去重操作
+  const _approverInput = approverInput.map((item: any) => {
+    const _cache = {};
+    item.attributeList = item?.attributeList.reduce((now: any, next: any) => {
+      _cache[next.personId] ? '' : (_cache[next.personId] = true && now.push(next));
+      return now;
+    }, []);
+    return item;
+  });
+
   return dispatch({
     type: TYPES.SET_APPROVER_INPUT,
-    payload: approverInput
+    payload: _approverInput
   });
 }
 
