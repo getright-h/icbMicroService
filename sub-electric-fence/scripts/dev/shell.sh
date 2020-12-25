@@ -1,6 +1,6 @@
 #/usr/bin
 # 当前镜像版本号
-version="1.0.0";
+version="1.0.1";
 # 镜像名
 imageName="test_sub-electric-fence";
 containerName="test_sub-electric-fence";
