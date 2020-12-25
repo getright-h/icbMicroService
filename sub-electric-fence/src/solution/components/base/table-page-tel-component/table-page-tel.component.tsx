@@ -41,7 +41,7 @@ export class TablePageTelComponent extends React.Component<IProps> {
           {/* 最开始的写法，传入的是一个执行之后的方法，没法传入redux的上下文 */}
           {pageLeft && (
             <div className={isFlex && style.customRight} style={{ flex: leftFlex }}>
-              {pageLeft()}
+              {pageLeft}
             </div>
           )}
           <div className={`${style.appManageAmPush} ${isFlex && style.customRight}`} style={{ flex: rightFlex }}>

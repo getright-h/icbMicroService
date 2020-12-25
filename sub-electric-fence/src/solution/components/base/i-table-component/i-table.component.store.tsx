@@ -16,7 +16,7 @@ export function useITableStore(props: IITableProps) {
       },
       showSizeChanger: false,
       pageSize,
-      size,
+      simple: size == 'small',
       total,
       onChange: changeTablePageIndex
     };
