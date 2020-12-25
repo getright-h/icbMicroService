@@ -26,6 +26,7 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     organizationManageService
       .queryGpsOrganization({ typeId: 'c59c75eec2d3cc075cca08d84386bcb9', id })
       .subscribe(res => {
+        if (!res) res = [];
         // 如果只要求显示一个currentOrganazation 才执行这行过滤数据的代码
         if (currentOrganazation) {
           res = res.filter(item => {
@@ -66,26 +67,25 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     const queryChildInfoSubscription = queryChildInfo
       ? queryChildInfo({ organizationId: parentId })
       : Promise.resolve();
-    forkJoin(
-      organizationManageService.queryStoreOrganizationListSub({ parentId }),
-      queryChildInfoSubscription
-    ).subscribe((res: any) => {
-      const queryChildInfoData: DataNode[] = queryChildInfo
-        ? dealWithTreeData(res[1], TREE_MAP, true, warehouseAction, allCanSelect)
-        : [];
+    forkJoin(organizationManageService.queryGpsOrganizationListSub({ parentId }), queryChildInfoSubscription).subscribe(
+      (res: any) => {
+        const queryChildInfoData: DataNode[] = queryChildInfo
+          ? dealWithTreeData(res[1], TREE_MAP, true, warehouseAction, allCanSelect)
+          : [];
 
-      treeNode.children = [
-        ...queryChildInfoData,
-        ...dealWithTreeData(res[0], TREE_MAP, false, undefined, allCanSelect, props.organizationChecked)
-      ];
-      const treeData = updateTreeData(state.treeData, treeNode.key, treeNode.children);
+        treeNode.children = [
+          ...queryChildInfoData,
+          ...dealWithTreeData(res[0], TREE_MAP, false, undefined, allCanSelect, props.organizationChecked)
+        ];
+        const treeData = updateTreeData(state.treeData, treeNode.key, treeNode.children);
 
-      props.checkable && props.getCheckedInfo(treeData);
-      setStateWrap({
-        treeData
-      });
-      resolve();
-    });
+        props.checkable && props.getCheckedInfo(treeData);
+        setStateWrap({
+          treeData
+        });
+        resolve();
+      }
+    );
   }
 
   // 搜索得到想要的key获取当前仓库

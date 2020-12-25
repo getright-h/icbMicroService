@@ -26,7 +26,7 @@ export default function AlarmAttentionModalComponent(props: IAlarmAttentionModal
   return (
     <Modal
       title="未处理报警消息"
-      width={1000}
+      width={1200}
       onOk={handleCancel}
       closable
       visible={isModalVisible}

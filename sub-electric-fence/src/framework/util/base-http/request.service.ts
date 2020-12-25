@@ -176,7 +176,7 @@ class RequestService {
       if (data.total || data.total == 0) {
         return { total: data.total, data: data.data };
       }
-      if (data.data == 0 || data.data) {
+      if (data.data == 0 || data.data || data.data == null) {
         return data.data;
       } else {
         return data;

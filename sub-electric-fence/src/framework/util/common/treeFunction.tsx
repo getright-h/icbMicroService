@@ -3,7 +3,7 @@ import { DatabaseOutlined, AppstoreOutlined } from '@ant-design/icons';
 import { Popover } from 'antd';
 // 是否需要
 export function dealWithTreeData<T>(
-  res: T[],
+  res: T[] = [],
   treeMap: Record<string, any>,
   isWarehouse?: boolean,
   content?: (element: any) => React.ReactNode,

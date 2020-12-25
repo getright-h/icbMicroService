@@ -232,7 +232,22 @@ export function useIMapStore(mapProps: TIMapProps) {
   }
 
   // 设置常驻地点
-  function setPermanentPlaceList(permanentPlaceList: []) {}
+  function setPermanentPlaceList(permanentPlaceList: []) {
+    // 为permanentPlaceList标记点
+    // 找到这些点里面的最大值
+    let max = 0;
+    const circleMarkers: any[] = [];
+    permanentPlaceList.forEach((item: any) => {
+      if (item.number > max) {
+        max = item.number;
+      }
+    });
+    permanentPlaceList.forEach((item: any) => {
+      const circleMarker = IMAP.bindStepColorMarker(item.coordinates, item.number, max);
+      circleMarkers.push(circleMarker);
+    });
+    map.current.add(circleMarkers);
+  }
 
   // 点击marker展示的窗口点击车的信息
   function openInfoWin(markerInfo: any, map: any, marker: any, infoWindow: any, isBindAction = true) {
@@ -261,7 +276,6 @@ export function useIMapStore(mapProps: TIMapProps) {
 
   function openInfoWinCar(markerInfo: any, map: any, marker: any, infoWindow: any) {
     const { plateNo, vinNo, ownerName, deviceCode, isOnline, durationTime, lastLocationTime } = markerInfo;
-    console.log(markerInfo, marker);
 
     regeoCode([marker.position.lng, marker.position.lat]).then(place => {
       infoWindow.setInfoTplData({
@@ -301,8 +315,6 @@ export function useIMapStore(mapProps: TIMapProps) {
       //阻止冒泡
       event.stopPropagation();
       // 展示指令弹窗 传入当前的设备号
-      console.log(marker.deviceInfo.deviceCode);
-
       controllerDirectiveModal(true, marker.deviceInfo.deviceCode);
     });
   }

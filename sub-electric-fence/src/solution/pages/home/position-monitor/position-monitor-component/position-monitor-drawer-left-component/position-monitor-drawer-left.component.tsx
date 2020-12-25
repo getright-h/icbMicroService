@@ -12,7 +12,7 @@ export const PositionMonitorDrawerLeftComponent = () => {
     state,
     onCheckedUserInfo,
     onCheckedUserSelectAllInfo,
-    queryVehicleGroupList,
+    changeTablePageIndex,
     onCurrentVehicleChange
   } = usePositionMonitorDrawerLeftStore();
   const { isLoading, searchForm, tableData, total, selectedRowKeys, vehicleGroupList } = state;
@@ -33,11 +33,10 @@ export const PositionMonitorDrawerLeftComponent = () => {
       },
       size: 'small' as SizeType,
       total: total,
-      changeTablePageIndex: (index: number, pageSize: number) => changeTablePageIndex()
+      changeTablePageIndex: (index: number, pageSize: number) => changeTablePageIndex(index, pageSize)
     }),
     [searchForm.index, searchForm.size, isLoading, tableData, selectedRowKeys, total]
   );
-  function changeTablePageIndex() {}
 
   function DrawerContent() {
     return (

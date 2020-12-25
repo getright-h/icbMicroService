@@ -21,15 +21,11 @@ export function usePositionMonitorDrawerLeftStore() {
   }, [checkedCarData]);
 
   useEffect(() => {
-    console.log(currentSelectNode);
     if (currentSelectNode?.key) {
       setStateWrap(
         {
           searchForm: {
-            ...state.searchForm,
-            index: 1,
-            size: 10,
-
+            ...searchForm,
             organizationId: currentSelectNode.key + ''
           }
         },
@@ -42,8 +38,6 @@ export function usePositionMonitorDrawerLeftStore() {
   }, [currentSelectNode]);
 
   function onCurrentVehicleChange(value: string) {
-    console.log(value);
-
     setStateWrap(
       { searchForm: { ...state.searchForm, vehicleGroupId: value, index: 1 } },
       (state: IPositionMonitorDrawerLeftState) => {
@@ -51,6 +45,13 @@ export function usePositionMonitorDrawerLeftStore() {
       }
     );
     // 去查询相应的列表信息
+  }
+
+  function changeTablePageIndex(index: number, pageSize: number) {
+    setStateWrap({
+      searchForm: { ...searchForm, index, size: pageSize }
+    });
+    queryVehicleInfoPagedList();
   }
 
   //根据监控组、车架号、车主电话、车牌号、设备号信息查询车辆信息
@@ -125,5 +126,12 @@ export function usePositionMonitorDrawerLeftStore() {
     const newchangeRows = await positionMonitorService.queryVehicleInfoByParam({ vehicleIdList }).toPromise();
     return newchangeRows;
   }
-  return { state, onCurrentVehicleChange, onCheckedUserInfo, onCheckedUserSelectAllInfo, queryVehicleGroupList };
+  return {
+    state,
+    onCurrentVehicleChange,
+    onCheckedUserInfo,
+    onCheckedUserSelectAllInfo,
+    changeTablePageIndex,
+    queryVehicleGroupList
+  };
 }

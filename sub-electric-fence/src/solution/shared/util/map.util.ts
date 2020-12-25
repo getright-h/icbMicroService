@@ -407,7 +407,23 @@ export const IMAP = {
       map.setFitView();
     });
   },
-
+  // 使用递增的颜色进行打点
+  bindStepColorMarker(coordinates: Array<string>, number: number, max: number) {
+    const circleMarker = new AMap.CircleMarker({
+      center: coordinates,
+      radius: 5, //3D视图下，CircleMarker半径不要超过64px
+      strokeColor: 'white',
+      strokeWeight: 2,
+      strokeOpacity: 0.5,
+      fillColor: this.getColorByNumber(number, max),
+      fillOpacity: 0.5,
+      zIndex: 10,
+      bubble: true,
+      cursor: 'pointer',
+      clickable: true
+    });
+    return circleMarker;
+  },
   bindMassMarkers(
     markers: any,
     map: any,
@@ -437,6 +453,46 @@ export const IMAP = {
     mass.setMap(map);
 
     mass.getMap().setFitView();
+  },
+  rgbaToHex(color: any) {
+    const values = color
+      .replace(/rgba?\(/, '')
+      .replace(/\)/, '')
+      .replace(/[\s+]/g, '')
+      .split(',');
+    const a = parseFloat(values[3] || 1),
+      r = Math.floor(a * parseInt(values[0]) + (1 - a) * 255),
+      g = Math.floor(a * parseInt(values[1]) + (1 - a) * 255),
+      b = Math.floor(a * parseInt(values[2]) + (1 - a) * 255);
+
+    return '#' + ('0' + r.toString(16)).slice(-2) + ('0' + g.toString(16)).slice(-2) + ('0' + b.toString(16)).slice(-2);
+  },
+  getColorByNumber(n: number, max: number) {
+    const halfMax = max / 2; //最大数值的二分之一
+    //var 百分之一 = (单色值范围) / halfMax;  单颜色的变化范围只在50%之内
+    const one = 255 / halfMax;
+    console.log('one= ' + one);
+    let r = 0;
+    let g = 0;
+    let b = 0;
+
+    if (n < halfMax) {
+      // 比例小于halfMax的时候红色是越来越多的,直到红色为255时(红+绿)变为黄色.
+      r = one * n;
+      g = 255;
+    }
+
+    if (n >= halfMax) {
+      // 比例大于halfMax的时候绿色是越来越少的,直到0 变为纯红
+      g = 255 - (n - halfMax) * one < 0 ? 0 : 255 - (n - halfMax) * one;
+      r = 255;
+    }
+    r = parseInt(r); // 取整
+    g = parseInt(g); // 取整
+    b = parseInt(b); // 取整
+
+    // console.log(r,g,b)
+    return this.rgbaToHex('rgb(' + r + ',' + g + ',' + b + ')');
   },
   GPS: {
     PI: 3.14159265358979324,
