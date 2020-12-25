@@ -95,36 +95,37 @@ export function useApprovalManageDetailStore() {
   }
 
   function handleOk() {
-    const messageInfo = DoError.checkIsError(CHECK_VALID_OBJECT, state);
+    // 审核通过 与 审核驳回备注都不是必填
+    // const messageInfo = DoError.checkIsError(CHECK_VALID_OBJECT, state);
 
-    if (messageInfo) {
-      message.warning(messageInfo);
-      return;
-    } else {
-      setStateWrap({
-        confirmLoading: true
-      });
-      approvalManageService
-        .flowProcess({
-          id,
-          remark,
-          passed: !isRefuse
-        })
-        .subscribe(
-          () => {
-            message.success('修改状态成功');
-            setStateWrap({
-              confirmLoading: false
-            });
-            history.back();
-          },
-          () => {
-            setStateWrap({
-              confirmLoading: false
-            });
-          }
-        );
-    }
+    // if (messageInfo) {
+    //   message.warning(messageInfo);
+    //   return;
+    // } else {
+    setStateWrap({
+      confirmLoading: true
+    });
+    approvalManageService
+      .flowProcess({
+        id,
+        remark,
+        passed: !isRefuse
+      })
+      .subscribe(
+        () => {
+          message.success('修改状态成功');
+          setStateWrap({
+            confirmLoading: false
+          });
+          history.back();
+        },
+        () => {
+          setStateWrap({
+            confirmLoading: false
+          });
+        }
+      );
+    // }
     setStateWrap({
       visible: true
     });
