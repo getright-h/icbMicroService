@@ -2,8 +2,10 @@
   .main {
     padding: 24px;
   }
+
   .custom-flex {
     display: flex;
+    min-height: 85vh;
 
     .custom-right {
       padding: 20px;
@@ -16,8 +18,10 @@
 }
 
 .app-manage-am-push {
-  padding: 26px;
-
+  // padding: 26px;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
   .select-tags {
     margin-bottom: 20px;
   }
@@ -47,6 +51,7 @@
 
       .ant-btn {
         margin-right: 10px;
+        margin-left: 10px;
       }
     }
   }
@@ -62,14 +67,12 @@
 }
 
 .content-title {
-  font-weight: 700;
   padding: 1.25rem;
   border-bottom: 1px solid @border-main;
 
   h1 {
     font-family: Exo;
     font-size: 1.125rem;
-    font-weight: 700;
-    margin-bottom: 0;
+    font-weight: 500;
   }
 }
