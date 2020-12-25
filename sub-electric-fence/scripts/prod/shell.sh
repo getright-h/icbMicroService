@@ -1,6 +1,6 @@
 #/usr/bin
 version="1.0.0";
-imageName="sub-electric-fence__release";
+imageName="sub-device__release";
 cd ../..
 # yarn
 # yarn build-dev
