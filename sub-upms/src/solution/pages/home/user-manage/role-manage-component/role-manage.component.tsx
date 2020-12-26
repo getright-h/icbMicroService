@@ -12,14 +12,15 @@ export default function RoleManageComponent() {
     return (
       <React.Fragment>
         <h4>角色组</h4>
-        <Table
-          className={style.roleTable}
-          columns={roleColumns(tableAction, roleId)}
-          dataSource={roleList}
-          loading={isLoading}
-          pagination={false}
-          rowKey={row => row.id}
-        />
+        <div className={style.roleTable}>
+          <Table
+            columns={roleColumns(tableAction, roleId)}
+            dataSource={roleList}
+            loading={isLoading}
+            pagination={false}
+            rowKey={row => row.id}
+          />
+        </div>
       </React.Fragment>
     );
   }

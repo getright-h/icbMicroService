@@ -29,8 +29,8 @@ export function useRoleManageStore() {
   }
 
   useEffect(() => {
-    getRoleTableData();
-  }, []);
+    gState.myInfo.userId && getRoleTableData();
+  }, [gState.myInfo.systemId, gState.myInfo.userId]);
 
   return { state, tableAction };
 }
