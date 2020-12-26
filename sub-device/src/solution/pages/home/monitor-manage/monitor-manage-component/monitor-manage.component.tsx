@@ -25,7 +25,8 @@ export default function MonitorManageComponent() {
     getTableData,
     deletemonitorGroup,
     editmonitorGroup,
-    onSelectChange
+    onSelectChange,
+    alertCurrentTreeData
   } = useMonitorManageStore();
   const {
     treeSelectedKeys,
@@ -177,7 +178,12 @@ export default function MonitorManageComponent() {
         <SetAlarmModalComponent close={handleModalCancel} data={currentMonitorGroup} visible={alarmModalVisible} />
       )}
       {addGroupModalVisible && (
-        <AddMonitorGroupComponent close={handleModalCancel} data={currentData} visible={addGroupModalVisible} />
+        <AddMonitorGroupComponent
+          close={handleModalCancel}
+          data={currentData}
+          visible={addGroupModalVisible}
+          alertCurrentTreeData={alertCurrentTreeData}
+        />
       )}
     </div>
   );

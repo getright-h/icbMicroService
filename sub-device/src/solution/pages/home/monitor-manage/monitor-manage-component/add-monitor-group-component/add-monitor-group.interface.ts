@@ -16,4 +16,5 @@ export interface AddMonitorGroupProp {
   data: any;
   getDetail?: Function;
   visible: boolean;
+  alertCurrentTreeData?: Function;
 }

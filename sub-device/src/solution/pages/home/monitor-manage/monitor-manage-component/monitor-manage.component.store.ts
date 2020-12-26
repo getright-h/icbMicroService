@@ -191,6 +191,12 @@ export function useMonitorManageStore() {
   function deleteCurrentTreeData(id: string) {
     organizationControllerRef.current.deleteCurrentTreeData(id);
   }
+
+  //在当前的tree上操作并显示相应的效果
+  function alertCurrentTreeData(id: string) {
+    organizationControllerRef.current.alertCurrentTreeData(id);
+  }
+
   return {
     state,
     organizationControllerRef,
@@ -206,6 +212,7 @@ export function useMonitorManageStore() {
     onSelect,
     deletemonitorGroup,
     editmonitorGroup,
-    onSelectChange
+    onSelectChange,
+    alertCurrentTreeData
   };
 }

@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { DatabaseOutlined, AppstoreOutlined } from '@ant-design/icons';
 import { Popover } from 'antd';
+import { findDOMNode } from 'react-dom';
+const __cache__ = {};
 // 是否需要
 export function dealWithTreeData<T>(
   res: T[],
@@ -42,14 +44,44 @@ export function dealWithTreeData<T>(
       treeDataChild['isLeaf'] = isWarehouse;
       treeDataChild.selectable = canSelectAll || isWarehouse;
       treeDataChild.checkable = isWarehouse || !!organizationChecked;
+      __cache__[treeDataChild['key']] = {
+        isWarehouse,
+        element,
+        content
+      };
       return treeDataChild;
     });
 
   return treeData ? treeData : [];
 }
+
+function renderTitle(isWarehouse: boolean, element: any, content: any, alterTitle?: any) {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        {isWarehouse && <DatabaseOutlined style={{ color: '#7958fa', paddingRight: '4px' }} />}
+        <span style={{ width: '80px' }} title={alterTitle ? alterTitle : element['name']}>
+          {alterTitle ? alterTitle : element['name']}
+        </span>
+      </div>
+      <div
+        style={{ width: '50px', background: 'white', marginRight: '-4px' }}
+        onClick={e => {
+          e.stopPropagation();
+        }}
+      >
+        {isWarehouse && content && (
+          <Popover content={content(element)} trigger="hover">
+            <AppstoreOutlined />
+          </Popover>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // 节点key匹配
 export function updateTreeData(list: any[], key: React.Key, children: any[] | any): any[] {
-  console.log('触发了更新', list, key, children);
   return (
     list &&
     list.map(node => {
@@ -87,6 +119,27 @@ export function deleteTreeDataByKey(list: any[], key: string) {
   return result;
 }
 
+export function alterTreeDataByKey(list: any[], key: string) {
+  const result: any = [];
+  list &&
+    list.forEach(node => {
+      if (node.key === key) {
+        console.log(renderTitle(__cache__[key].isWarehouse, __cache__[key].element, __cache__[key].content, '修改'));
+        result.push({
+          ...node,
+          title: renderTitle(__cache__[key].isWarehouse, __cache__[key].element, __cache__[key].content, '修改')
+        });
+      } else if (node.children) {
+        result.push({
+          ...node,
+          children: alterTreeDataByKey(node.children as any, key)
+        });
+      } else {
+        result.push(node);
+      }
+    });
+  return result;
+}
 export function getCheckedList(list: Array<any>, checkedKeys: string[], checkedObject: any[] = []) {
   list &&
     list.map(node => {

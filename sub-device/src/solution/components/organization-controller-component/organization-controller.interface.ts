@@ -34,6 +34,7 @@ export const TREE_MAP = {
 };
 
 export interface OrganizationExportFunction {
+  alertCurrentTreeData?: (id?: string) => void;
   deleteCurrentTreeData?: (id?: string) => void;
   queryOrganizationTypeListByTypeId?: (id?: string) => void;
   searchCurrentSelectInfo?: any;

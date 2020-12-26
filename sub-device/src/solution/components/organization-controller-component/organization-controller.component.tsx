@@ -43,6 +43,7 @@ function OrganizationControllerComponent(props: IOrganizationControllerProps, re
           />
         )}
       </div>
+      {console.log(treeData)}
       <Tree
         // loadedKeys={expandedKeys}
         loadData={onLoadData}

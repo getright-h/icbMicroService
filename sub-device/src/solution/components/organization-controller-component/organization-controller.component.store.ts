@@ -8,7 +8,12 @@ import { useEffect, useContext, useImperativeHandle } from 'react';
 import { WarehouseListService } from '~/solution/model/services/warehouse-list.service';
 import { IGlobalState } from '~/solution/context/global/global.interface';
 import { GlobalContext } from '~/solution/context/global/global.provider';
-import { dealWithTreeData, updateTreeData, deleteTreeDataByKey } from '~/framework/util/common/treeFunction';
+import {
+  dealWithTreeData,
+  updateTreeData,
+  deleteTreeDataByKey,
+  alterTreeDataByKey
+} from '~/framework/util/common/treeFunction';
 import { QueryStoreOrganizationReturn } from '~/solution/model/dto/warehouse-list.dto';
 import { EventDataNode, DataNode, Key } from 'rc-tree/lib/interface';
 import { EventBus } from '~framework/util/common';
@@ -174,8 +179,16 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     });
   }
 
+  // 修改tree
+  function alertCurrentTreeData(id: string) {
+    const treeData = alterTreeDataByKey(state.treeData, id);
+    setStateWrap({
+      treeData: treeData
+    });
+  }
   useImperativeHandle(ref, () => ({
     // changeVal 就是暴露给父组件的方法
+    alertCurrentTreeData,
     deleteCurrentTreeData,
     queryOrganizationTypeListByTypeId,
     searchCurrentSelectInfo
