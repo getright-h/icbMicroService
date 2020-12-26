@@ -34,12 +34,14 @@ export function useIMapStore(mapProps: TIMapProps) {
   const currentAllPoints = useRef([]);
   const infoWindowInfo: any = useRef();
   const finishedRun = useRef(false);
+
+  // 常驻点
+  const circleMarkers = useRef([]);
   const {
     currentSelectCar,
     setEndRunning,
     locationCarMarkerList,
     runCurrentPoint,
-    stopMarkers,
     controllerDirectiveModal,
     isRunning,
     carSpeed,
@@ -53,7 +55,9 @@ export function useIMapStore(mapProps: TIMapProps) {
   useEffect(() => {
     if (currentSelectCar) {
       renderMarker([currentSelectCar]);
-      currentSelectCar.permanentPlaceList && setPermanentPlaceList(currentSelectCar.permanentPlaceList);
+      // 清除当前常驻点
+      circleMarkers.current.length && map.current.remove(circleMarkers.current);
+      currentSelectCar.permanentPlaceList.length && setPermanentPlaceList(currentSelectCar.permanentPlaceList);
       // 需要添加常驻地点
       // 多个车不用获取常驻地点
     } else if (locationCarMarkerList) {
@@ -155,7 +159,7 @@ export function useIMapStore(mapProps: TIMapProps) {
 
       carLineMarkerInfo.current.moveAlong(carLine, 200);
 
-      map.current.setCenter(position);
+      map.current.setFitView();
     }
   }, [mapProps.drivingLineData]);
 
@@ -237,7 +241,6 @@ export function useIMapStore(mapProps: TIMapProps) {
     // 为permanentPlaceList标记点
     // 找到这些点里面的最大值
     let max = 0;
-    const circleMarkers: any[] = [];
     permanentPlaceList.forEach((item: any) => {
       if (item.number > max) {
         max = item.number;
@@ -245,9 +248,10 @@ export function useIMapStore(mapProps: TIMapProps) {
     });
     permanentPlaceList.forEach((item: any) => {
       const circleMarker = IMAP.bindStepColorMarker(item.coordinates, item.number, max);
-      circleMarkers.push(circleMarker);
+      circleMarkers.current.push(circleMarker);
     });
-    map.current.add(circleMarkers);
+
+    map.current.add(circleMarkers.current);
   }
 
   // 点击marker展示的窗口点击车的信息

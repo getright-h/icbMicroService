@@ -41,7 +41,7 @@ class RequestService {
     } else if (!!~url.indexOf('gps/')) {
       returnInfo = process.env.GPS;
     } else if (!!~url.indexOf('fence/')) {
-      returnInfo = process.env.FENCE;
+      returnInfo = StorageUtil.setLocalStorage('source') ? process.env.FENCE_V2 : process.env.FENCE;
     } else if (!!~url.indexOf('alarmCenter/')) {
       returnInfo = process.env.ALARM_CENTER;
     } else if (!!~url.indexOf('vehicle/manage/') || !!~url.indexOf('dispatch/manage/')) {

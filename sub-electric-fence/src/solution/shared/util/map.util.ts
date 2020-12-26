@@ -411,12 +411,12 @@ export const IMAP = {
   bindStepColorMarker(coordinates: Array<string>, number: number, max: number) {
     const circleMarker = new AMap.CircleMarker({
       center: coordinates,
-      radius: 5, //3D视图下，CircleMarker半径不要超过64px
+      radius: 10, //3D视图下，CircleMarker半径不要超过64px
       strokeColor: 'white',
       strokeWeight: 2,
       strokeOpacity: 0.5,
       fillColor: this.getColorByNumber(number, max),
-      fillOpacity: 0.5,
+      // fillOpacity: 0.5,
       zIndex: 10,
       bubble: true,
       cursor: 'pointer',

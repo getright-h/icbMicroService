@@ -19,6 +19,7 @@ function HomeModule(props: any) {
   const location = useLocation();
   React.useEffect(() => {
     getHashParameter('token') && StorageUtil.setLocalStorage('token', getHashParameter('token'));
+    getHashParameter('source') && StorageUtil.setLocalStorage('source', getHashParameter('source'));
   }, []);
   function getCurrentExpandList(currentUrl: string): string[] {
     let target = '';
