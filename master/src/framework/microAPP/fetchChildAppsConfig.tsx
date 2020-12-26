@@ -359,6 +359,160 @@ export function fetchChildAppsConfig() {
             ]
           }
         ]
+      },
+      {
+        name: 'sub-fence',
+        localURL: '//localhost:8083',
+        onLineDevURL: '//192.168.2.251:2110',
+        onLineURL: '',
+        title: '定位监控',
+        icon: 'team',
+        tokenKey: '__icb_token',
+        loader,
+        path: '/home/fence',
+        children: [
+          {
+            path: 'parameter', // 菜单路径
+            title: '参数管理', // 菜单名
+            icon: 'inbox', // 图标
+            defaultMountApp: false, // 是否默认启动当前第一个页面
+            lazyload: true,
+            exact: true,
+            componentUrl: 'alarmParameter' //对应子应用的组件名
+          },
+          {
+            path: 'positionMonitor', // 菜单路径
+            title: '定位监控', // 菜单名
+            icon: 'user', // 图标
+            defaultMountApp: false, // 是否默认启动当前第一个页面
+            lazyload: true,
+            exact: true,
+            componentUrl: 'positionMonitor' //对应子应用的组件名
+          },
+          {
+            path: 'fence', // 菜单路径
+            title: '电子围栏', // 菜单名
+            icon: 'user', // 图标
+            defaultMountApp: false, // 是否默认启动当前第一个页面
+            lazyload: true,
+            exact: true,
+            componentUrl: 'electricFenceManage', //对应子应用的组件名
+            children: [
+              {
+                path: 'mainfence',
+                title: '围栏管理',
+                lazyload: true,
+                exact: true,
+                componentUrl: 'MainFenceManageComponent' //对应子应用的组件名
+              },
+              {
+                path: 'monitoringObject',
+                title: '监控对象',
+                lazyload: true,
+                exact: true,
+                componentUrl: 'MonitoringObjectComponent' //对应子应用的组件名
+              }
+            ]
+          },
+          {
+            path: 'directive', // 菜单路径
+            title: '指令中心', // 菜单名
+            icon: 'user', // 图标
+            defaultMountApp: false, // 是否默认启动当前第一个页面
+            lazyload: true,
+            exact: true,
+            componentUrl: 'directiveModule', //对应子应用的组件名
+            children: [
+              {
+                path: 'directiveList',
+                title: '指令列表',
+                lazyload: true,
+                exact: true,
+                componentUrl: 'directiveListComponent' //对应子应用的组件名
+              }
+            ]
+          },
+          {
+            path: 'report', // 菜单路径
+            title: '报表', // 菜单名
+            icon: 'user', // 图标
+            defaultMountApp: false, // 是否默认启动当前第一个页面
+            lazyload: true,
+            exact: true,
+            componentUrl: 'reportManageModule', //对应子应用的组件名
+            children: [
+              {
+                path: 'statistical',
+                title: '报警统计表',
+                lazyload: true,
+                exact: true,
+                componentUrl: 'statisticalListComponent' //对应子应用的组件名
+              },
+              {
+                path: 'statistical/detail',
+                lazyload: true,
+                exact: true,
+                componentUrl: 'statisticalDetailComponent' //对应子应用的组件名
+              },
+              {
+                path: 'record',
+                title: '报警记录表',
+                lazyload: true,
+                exact: true,
+                componentUrl: 'recordListComponent' //对应子应用的组件名
+              },
+              {
+                path: 'follow',
+                title: '报警跟进表',
+                lazyload: true,
+                exact: true,
+                componentUrl: 'followComponent' //对应子应用的组件名
+              },
+              {
+                path: 'monitor',
+                title: '监控组报表',
+                lazyload: true,
+                exact: true,
+                componentUrl: 'monitorComponent' //对应子应用的组件名
+              },
+              {
+                path: 'odometer',
+                title: '行驶里程表',
+                lazyload: true,
+                exact: true,
+                componentUrl: 'odometerListComponent' //对应子应用的组件名
+              },
+              {
+                path: 'state',
+                title: '设备状态统计表',
+                lazyload: true,
+                exact: true,
+                componentUrl: 'stateListComponent' //对应子应用的组件名
+              },
+              {
+                path: 'offline',
+                title: '离线设备统计',
+                lazyload: true,
+                exact: true,
+                componentUrl: 'offlineListComponent' //对应子应用的组件名
+              },
+              {
+                path: 'dwell',
+                title: '设备停留点统计',
+                lazyload: true,
+                exact: true,
+                componentUrl: 'dwellListComponent' //对应子应用的组件名
+              },
+              {
+                path: 'permanent',
+                title: '常驻点统计',
+                lazyload: true,
+                exact: true,
+                componentUrl: 'permanentListComponent' //对应子应用的组件名
+              }
+            ]
+          }
+        ]
       }
     ]);
   });

@@ -13,7 +13,6 @@ import { IGlobalState } from '~/solution/context/global/global.interface';
 export function useHomeStore() {
   const homeService = useService(HomeService);
   const menuService = useService(MenuService);
-  let menuAndAuthSubscription: Subscription;
   let currentUserIndoSubscription: Subscription;
   const { dispatch }: IGlobalState = React.useContext(GlobalContext);
   const { state, setStateWrap } = useStateStore(new IHomeProps());

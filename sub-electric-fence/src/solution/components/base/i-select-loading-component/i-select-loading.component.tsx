@@ -68,7 +68,7 @@ export default function ISelectLoadingComponent(props: IISelectLoadingProps) {
                 {`${item.ownerName}（${item.plateNo}）`}
               </Select.Option>
             );
-          } else if (reqUrl === 'fenceDdlVehicleInfo' || reqUrl === 'fenceDdlBelong') {
+          } else if (reqUrl === 'fenceDdlVehicleInfo' || reqUrl === 'fenceDdlBelong' || reqUrl === 'fenceList') {
             return (
               <Select.Option value={JSON.stringify(item)} key={item.key} info={item}>
                 {`${item.value}`}
