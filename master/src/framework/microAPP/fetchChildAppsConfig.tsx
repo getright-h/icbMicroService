@@ -302,7 +302,7 @@ export function fetchChildAppsConfig() {
       {
         name: 'sub-upms',
         localURL: '//localhost:8082',
-        onLineDevURL: '//192.168.2.251:2100',
+        onLineDevURL: '//192.168.2.251:2099',
         onLineURL: '',
         title: 'UPMS模块',
         icon: 'team',
