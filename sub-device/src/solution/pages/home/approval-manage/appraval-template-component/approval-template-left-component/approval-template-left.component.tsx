@@ -63,7 +63,7 @@ export default function ApprovalTemplateLeftComponent() {
         />
       </div>
 
-      <RenderAddWarehouseModal />
+      {addApprovalTypeVisible && <RenderAddWarehouseModal />}
     </div>
   );
 }
