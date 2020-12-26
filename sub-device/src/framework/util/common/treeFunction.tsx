@@ -49,6 +49,7 @@ export function dealWithTreeData<T>(
 }
 // 节点key匹配
 export function updateTreeData(list: any[], key: React.Key, children: any[] | any): any[] {
+  console.log('触发了更新', list, key, children);
   return (
     list &&
     list.map(node => {

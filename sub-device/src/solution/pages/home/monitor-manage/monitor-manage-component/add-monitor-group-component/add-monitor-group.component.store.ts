@@ -5,13 +5,15 @@ import { useEffect } from 'react';
 import { Subscription } from 'rxjs';
 import { Form } from 'antd';
 import { ShowNotification } from '~/framework/util/common';
+import { EventBus } from '~framework/util/common';
+const event = EventBus.getEventBus('treeData');
 
 export function useAddMonitorGroupStore(props: AddMonitorGroupProp) {
   const { state, setStateWrap } = useStateStore(new IAddMonitorGroupState());
   const monitorService = useService(MonitorService);
   let insertVehicleGroupSubscription: Subscription;
   const [form] = Form.useForm();
-
+  console.log(event);
   function addMonitorGroup(value: any) {
     const { organization = {} } = state;
     const params = {
@@ -24,7 +26,10 @@ export function useAddMonitorGroupStore(props: AddMonitorGroupProp) {
     if (props?.data.id) {
       insertVehicleGroupSubscription = monitorService.setVehicleGroup({ ...params, id: props?.data.id }).subscribe(
         (res: any) => {
-          console.log(res);
+          new Promise((reslove: any) => {
+            event.publish(props?.data.organizationId, props?.data, reslove, 'queryStoreOrganizationListSub');
+          });
+
           ShowNotification.success('修改成功');
           setStateWrap({ submitLoading: false });
           close();

@@ -10,14 +10,18 @@ import { IGlobalState } from '~/solution/context/global/global.interface';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 import { dealWithTreeData, updateTreeData, deleteTreeDataByKey } from '~/framework/util/common/treeFunction';
 import { QueryStoreOrganizationReturn } from '~/solution/model/dto/warehouse-list.dto';
-import { EventDataNode, DataNode } from 'rc-tree/lib/interface';
+import { EventDataNode, DataNode, Key } from 'rc-tree/lib/interface';
+import { EventBus } from '~framework/util/common';
 import { forkJoin } from 'rxjs';
 
+const event = EventBus.getEventBus('treeData');
+let stateTreeDataBack: any[] = [];
 export function useOrganizationControllerStore(props: IOrganizationControllerProps, ref: any) {
   const { state, setStateWrap, getState } = useStateStore(new IOrganizationControllerState());
   const warehouseListService: WarehouseListService = new WarehouseListService();
   const { warehouseAction, onExpand, queryChildInfo, currentOrganazation, onlyLeafCanSelect } = props;
   const { gState }: IGlobalState = useContext(GlobalContext);
+
   useEffect(() => {
     queryOrganizationTypeListByTypeId();
   }, [currentOrganazation]);
@@ -47,6 +51,7 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
 
   // 点击展开加载数据
   function onLoadData(treeNode: EventDataNode | any): Promise<void> {
+    console.log(treeNode);
     return new Promise(resolve => {
       queryStoreOrganizationListSub(treeNode.id, treeNode, resolve);
     });
@@ -55,37 +60,62 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
   function onCheck(checkedKeys: any) {
     props.getCheckedInfo(state.treeData, checkedKeys);
   }
-
+  function queryOrg(id: string, data: any[]) {
+    let target = {};
+    data.forEach((tree: any) => {
+      if (tree.parentId ? tree.parentId == id : tree.organizationId == id) {
+        target = tree;
+      } else if (tree.children && Array.isArray(tree.children)) {
+        target = queryOrg(id, tree.children);
+      }
+    });
+    return target;
+  }
   /**
    *
    * 根据父级Id查询子级机构
    * @param {string} id 父级id
    */
   function queryStoreOrganizationListSub(parentId: string, treeNode: EventDataNode | any, resolve: Function) {
-    const queryChildInfoSubscription = queryChildInfo
-      ? queryChildInfo({ organizationId: parentId })
-      : Promise.resolve();
+    // 根据parentId
+
+    const parentTreeNode = queryOrg(parentId, stateTreeDataBack) as any;
+
+    console.log(parentTreeNode.id, 'state');
+
+    const queryChildInfoSubscription =
+      queryChildInfo || Object.keys(parentTreeNode).length
+        ? queryChildInfo({ organizationId: parentId })
+        : Promise.resolve();
     forkJoin(warehouseListService.queryStoreOrganizationListSub({ parentId }), queryChildInfoSubscription).subscribe(
       (res: any) => {
         const queryChildInfoData: DataNode[] = queryChildInfo
           ? dealWithTreeData(res[1], TREE_MAP, true, warehouseAction)
           : [];
 
-        treeNode.children = [
-          ...queryChildInfoData,
-          ...dealWithTreeData(res[0], TREE_MAP, false, undefined, undefined, props.organizationChecked)
-        ];
-        const treeData = updateTreeData(state.treeData, treeNode.key, treeNode.children);
+        treeNode &&
+          (treeNode.children = [
+            ...queryChildInfoData,
+            ...dealWithTreeData(res[0], TREE_MAP, false, undefined, undefined, props.organizationChecked)
+          ]);
+
+        console.log(treeNode, 111);
+        const treeData = updateTreeData(
+          state.treeData.length ? state.treeData : stateTreeDataBack,
+          treeNode ? treeNode.organizationId : parentTreeNode.id,
+          treeNode.children
+        );
 
         props.checkable && props.getCheckedInfo(treeData);
         setStateWrap({
           treeData
         });
+        stateTreeDataBack = treeData;
         resolve();
       }
     );
   }
-
+  event.subscribe(queryStoreOrganizationListSub, 'queryStoreOrganizationListSub');
   // 搜索得到想要的key获取当前仓库
   function getCurrentSelectInfo<T>(value: T, key: string) {
     setStateWrap({
@@ -111,8 +141,29 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
         expandedKeys.push(item.id);
       });
 
-      onExpand(expandedKeys);
+      // onExpand(expandedKeys);
+      treeExpand([], {}, expandedKeys);
     });
+  }
+  // expand
+
+  function treeExpand(
+    expandedKeys?: string[],
+    info?: {
+      node?: EventDataNode;
+      expanded?: boolean;
+      nativeEvent?: MouseEvent;
+    },
+    setKey?: string[]
+  ) {
+    const { node = {} } = info || ({} as any);
+    console.log(info);
+    new Promise((reslove: any) => {
+      queryStoreOrganizationListSub(node.id, node, reslove);
+    });
+
+    expandedKeys && onExpand(expandedKeys);
+    setKey && onExpand(setKey);
   }
 
   // 在当前的tree上操作并显示相应的效果
@@ -130,5 +181,5 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     searchCurrentSelectInfo
   }));
 
-  return { state, onLoadData, getCurrentSelectInfo, onCheck, getCurrentGroup };
+  return { state, onLoadData, getCurrentSelectInfo, onCheck, getCurrentGroup, treeExpand };
 }

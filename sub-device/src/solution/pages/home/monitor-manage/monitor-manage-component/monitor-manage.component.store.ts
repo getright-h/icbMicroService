@@ -12,7 +12,8 @@ import { useHistory } from 'react-router-dom';
 import { DataNode } from 'rc-tree/lib/interface';
 import { getCheckedList } from '~/framework/util/common/treeFunction';
 import { OrganizationExportFunction } from '~/solution/components/organization-controller-component/organization-controller.interface';
-
+import { EventBus } from '~framework/util/common';
+const event = EventBus.getEventBus('treeData');
 const { confirm } = Modal;
 export function useMonitorManageStore() {
   const { state, setStateWrap } = useStateStore(new IMonitorManageState());
@@ -174,6 +175,7 @@ export function useMonitorManageStore() {
     });
   }
   function editmonitorGroup(element: any) {
+    console.log(element, 'element');
     callbackAction(ModalType.ADD_GROUP, element);
   }
 

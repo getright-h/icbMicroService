@@ -17,8 +17,7 @@ export default function AddTemplateTypeComponent(props: IAddTemplateTypeProps) {
     onChangeHaveChooseShop,
     changeTemplateName,
     onExpand,
-    onCheck,
-    onSearchOrg
+    onCheck
   } = useAddTemplateTypeStore(props);
   const { isEdit, addApprovalTypeVisible } = props;
   const {
