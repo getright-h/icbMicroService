@@ -37,7 +37,7 @@ async function registerMainApp(callback: (menuInfo: any) => void) {
       activeRule: `/#${path}`,
       props: { baseFuntion, name, routers: JSON.parse(JSON.stringify(children)), routerBase: `/#${path}`, useInfo }
     });
-    element.defaultMountApp && (defaultMountApp = element.activeRule);
+    // element.defaultMountApp && (defaultMountApp = element.activeRule);
   });
   // 启用微前端应用间通讯
   appStore(initGlobalState);
