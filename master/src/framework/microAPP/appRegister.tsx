@@ -8,6 +8,8 @@ import { ShowNotification } from '~/framework/util/common';
 // 注册子应用 运行主项目
 async function registerMainApp(callback: (menuInfo: any) => void) {
   const isDev = process.env.NODE_ENV === 'development';
+  console.log('process.env.DEV_BUILD' + process.env.NODE_ENV, process.env.DEV_BUILD);
+
   const isDevBuild = process.env.DEV_BUILD === 'build';
   const currentId = '#subapp-viewport';
   const apps: Array<AppProps> = [];
@@ -26,13 +28,13 @@ async function registerMainApp(callback: (menuInfo: any) => void) {
 
   callback(res.menuInfo);
   routerInfo.forEach((element: any) => {
-    const { localURL, onLineDEvURL, path, name, onLineURL, children, loader, tokenKey } = element;
+    const { localURL, onLineDevURL, path, name, onLineURL, children, loader, tokenKey } = element;
     // 根据children去获取子应用响应的路由节点赋值到当前的页面，作用用来生成路由
     apps.push({
       tokenKey,
       name: name,
       loader,
-      entry: isDev ? (isDevBuild ? onLineDEvURL : localURL) : onLineURL,
+      entry: isDev ? (isDevBuild ? onLineDevURL : localURL) : onLineURL,
       container: currentId,
       activeRule: `/#${path}`,
       props: { baseFuntion, name, routers: JSON.parse(JSON.stringify(children)), routerBase: `/#${path}`, useInfo }
