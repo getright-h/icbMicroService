@@ -1,4 +1,4 @@
-import { IDetailState, IFlowNode } from './detail.interface';
+import { IDetailState } from './detail.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
@@ -6,13 +6,14 @@ import { AllocationManageService } from '~/solution/model/services/allocation-ma
 import { useHistory } from 'react-router-dom';
 import { Subscription } from 'rxjs';
 import { ShowNotification } from '~/framework/util/common';
-
 import { ALLOW_FLOW_KEYCODE_ENUM, ModalType } from '~shared/constant/common.const';
 import { Modal } from 'antd';
+import { CommonUtil } from '~/solution/shared/util/baseFunction';
+import moment from 'moment';
 const { confirm } = Modal;
 export function useDetailStore() {
   const { state, setStateWrap } = useStateStore(new IDetailState());
-  const { id } = useParams();
+  const { id } = useParams() as any;
   const history = useHistory();
   const allocationManageService: AllocationManageService = new AllocationManageService();
   let allocationManageServiceSubscription: Subscription;
@@ -162,8 +163,14 @@ export function useDetailStore() {
       );
     });
   }
+  // 下载调拨Excel
+  async function handleDownLoadAllot() {
+    // 接收方 role 1
+    const res = await allocationManageService.downLoadAllot({ id, role: 2 }).toPromise();
+    CommonUtil.downExcel(res, `接收方调拨单${moment(new Date()).format('YYYY-MM-DD')}.xlsx`);
+  }
   function handleModalCancel() {
     setStateWrap({ rejectVisibleModal: false, importVisible: false });
   }
-  return { state, handleModalCancel, callbackAction, allocationOperate, getAlloactionDetail };
+  return { state, handleModalCancel, callbackAction, allocationOperate, getAlloactionDetail, handleDownLoadAllot };
 }

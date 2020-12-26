@@ -10,6 +10,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import { RoutesService } from '~/framework/util/routes/routes.service';
 import { homeRoutes } from './home.routes';
 import { getHashParameter } from '~/solution/shared/util/common.util';
+import { StorageUtil } from '~/framework/util/storage';
 
 function HomeModule(props: any) {
   const { state } = useHomeStore();
@@ -17,9 +18,8 @@ function HomeModule(props: any) {
   const { gState }: IGlobalState = React.useContext(GlobalContext);
   const location = useLocation();
   React.useEffect(() => {
-    console.log('token', getHashParameter('token'));
-
-    localStorage.setItem('TOKENINFO', getHashParameter('token'));
+    getHashParameter('token') && StorageUtil.setLocalStorage('token', getHashParameter('token'));
+    getHashParameter('source') && StorageUtil.setLocalStorage('source', getHashParameter('source'));
   }, []);
   function getCurrentExpandList(currentUrl: string): string[] {
     let target = '';

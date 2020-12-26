@@ -1,13 +1,13 @@
 import * as React from 'react';
 import style from './approval-line.component.less';
 import { useApprovalLineStore } from './approval-line.component.store';
-import { Card, Button, Divider, Switch } from 'antd';
+import { Card, Button, Divider, Switch, Popover } from 'antd';
 import { CloseOutlined, UserOutlined } from '@ant-design/icons';
 import Avatar from 'antd/lib/avatar/avatar';
 import { AddTemplateManageContext } from '../add-template.component';
 import { ApproverInput, AttributeList } from '../add-template-redux/add-template-reducer';
 import AddApprovalLineComponent from './add-approval-line-component/add-approval-line.component';
-
+import { QuestionCircleOutlined } from '@ant-design/icons';
 export default function ApprovalLineComponent() {
   const {
     state,
@@ -76,9 +76,18 @@ export default function ApprovalLineComponent() {
                 <div className={style.allPass}>
                   <span>是否全部通过</span>
                   <Switch
+                    style={{ marginLeft: 8 }}
                     checked={approverInputItem.isAllPass}
                     onChange={value => changeAllPassChoose(approverInputItem, value)}
                   ></Switch>
+                  <Popover
+                    placement="bottomRight"
+                    content={'关闭后仅需要其中一个审批人同意,则跳转下一审批节点'}
+                    title={null}
+                    trigger="hover"
+                  >
+                    <QuestionCircleOutlined style={{ marginLeft: 20 }} />
+                  </Popover>
                 </div>
               )}
             </Card>

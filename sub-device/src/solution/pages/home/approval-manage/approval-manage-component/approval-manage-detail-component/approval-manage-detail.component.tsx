@@ -144,7 +144,8 @@ export default function ApprovalManageDetailComponent() {
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
       >
-        <span className={style.remark}>备注</span>
+        {/* <span className={style.remark}>备注</span> */}
+        <span>备注</span>
         <TextArea
           placeholder="请输入备注"
           rows={4}

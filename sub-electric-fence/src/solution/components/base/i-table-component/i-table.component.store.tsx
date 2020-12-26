@@ -6,7 +6,7 @@ import * as React from 'react';
 export function useITableStore(props: IITableProps) {
   const { state, setStateWrap } = useStateStore(new IITableState());
   useEffect(() => {
-    const { pageIndex = 1, pageSize = 10, total = 0, changeTablePageIndex } = props;
+    const { pageIndex = 1, pageSize = 10, total = 0, changeTablePageIndex, size = 'default' } = props;
     const pagination = {
       current: pageIndex,
       showQuickJumper: true,
@@ -16,6 +16,7 @@ export function useITableStore(props: IITableProps) {
       },
       showSizeChanger: false,
       pageSize,
+      simple: size == 'small',
       total,
       onChange: changeTablePageIndex
     };

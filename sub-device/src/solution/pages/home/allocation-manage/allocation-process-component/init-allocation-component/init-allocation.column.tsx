@@ -8,14 +8,13 @@ export function initAllocationColumns(callbackAction: Function) {
    */
   function renderOperateBtn(data: any) {
     const { state, isRecipientReCallAudit = false, approvalState } = data;
-    // const state = 70;
     const lookAllot = (
       <a
         className={style.button}
         onClick={() => {
           callbackAction(ModalType.DETAIL, data);
         }}
-        key={0}
+        key={'look'}
       >
         查看
       </a>
@@ -29,7 +28,7 @@ export function initAllocationColumns(callbackAction: Function) {
         condition: [ALLOW_FLOW_ENUM.Apply],
         btn:
           APPROVAL_FLOW_STATUS_ENUM.Success === approvalState ? (
-            <a className={style.button} onClick={() => callbackAction(ModalType.CREATE, data)} key={1}>
+            <a className={style.button} onClick={() => callbackAction(ModalType.CREATE, data)} key={'repally'}>
               发起申请
             </a>
           ) : null
@@ -40,7 +39,7 @@ export function initAllocationColumns(callbackAction: Function) {
         condition: [ALLOW_FLOW_ENUM.Confirm],
         btn: (
           <>
-            <a className={style.button} onClick={() => callbackAction(ModalType.REVOKE, data)} key={2}>
+            <a className={style.button} onClick={() => callbackAction(ModalType.REVOKE, data)} key={'reject'}>
               撤销
             </a>
           </>
@@ -51,7 +50,7 @@ export function initAllocationColumns(callbackAction: Function) {
       {
         condition: [ALLOW_FLOW_ENUM.Recall, ALLOW_FLOW_ENUM.Reject, ALLOW_FLOW_ENUM.Return],
         btn: (
-          <a className={style.button} onClick={() => callbackAction(ModalType.REAPPLY, data)} key={3}>
+          <a className={style.button} onClick={() => callbackAction(ModalType.REAPPLY, data)} key={'reRepaly'}>
             重新申请
           </a>
         )
@@ -61,7 +60,7 @@ export function initAllocationColumns(callbackAction: Function) {
       {
         condition: [ALLOW_FLOW_ENUM.Returning],
         btn: !isRecipientReCallAudit && (
-          <a className={style.button} onClick={() => callbackAction(ModalType.RETURN, data)} key={4}>
+          <a className={style.button} onClick={() => callbackAction(ModalType.RETURN, data)} key={'return'}>
             收到退货
           </a>
         )
@@ -79,7 +78,7 @@ export function initAllocationColumns(callbackAction: Function) {
           <a
             className={`${style.button} ${style.getApproval}`}
             onClick={() => callbackAction(ModalType.ROLLBACK, data)}
-            key={5}
+            key={'getRepaly'}
           >
             收到申请
           </a>
@@ -109,7 +108,9 @@ export function initAllocationColumns(callbackAction: Function) {
       dataIndex: 'deviceTypeList',
       render: (text: any) => {
         if (Array.isArray(text) && text.length) {
-          return text.map((item: any) => <div key={item.typeId}>{`${item.typeName}, ${item.number}个`}</div>);
+          return text.map((item: any, index: number) => (
+            <div key={item.typeId + index}>{`${item.typeName}, ${item.number}个`}</div>
+          ));
         } else {
           return '-';
         }

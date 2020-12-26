@@ -41,6 +41,7 @@ export default function EditOwnerInfoComponent(props: IEditOwnerInfoProps) {
               <Select.Option value={3}>行驶证</Select.Option>
               <Select.Option value={4}>军官证</Select.Option>
               <Select.Option value={5}>统一社会信用代码</Select.Option>
+              <Select.Option value={-100}>暂无</Select.Option>
             </Select>
           </Form.Item>
           <Form.Item name="certificateNo" label="证件号">
@@ -86,8 +87,8 @@ export default function EditOwnerInfoComponent(props: IEditOwnerInfoProps) {
           </Form.Item>
           <Form.Item name="follow" label="客服跟进方式">
             <Select placeholder="请选择跟进方式">
+              <Select.Option value={100}>所有方式跟进</Select.Option>
               <Select.Option value={1}>仅短信方式</Select.Option>
-              <Select.Option value={-200}>暂无</Select.Option>
             </Select>
           </Form.Item>
           <Form.Item name="remark" label="备注">

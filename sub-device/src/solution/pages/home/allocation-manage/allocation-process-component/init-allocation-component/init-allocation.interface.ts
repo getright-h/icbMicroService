@@ -9,7 +9,8 @@ export class IInitAllocationState {
     size: 10,
     state: -1,
     beginTime: 0,
-    endTime: 0
+    endTime: 0,
+    allotCode: ''
   };
   tableData: any = [];
   total = 0;

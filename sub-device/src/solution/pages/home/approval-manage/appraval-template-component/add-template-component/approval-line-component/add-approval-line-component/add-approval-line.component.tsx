@@ -16,6 +16,7 @@ export default function AddApprovalLineComponent(props: AddApprovalLineComponent
     placeholder: '请输入姓名/电话',
     showSearch: true,
     mode: 'multiple',
+    searchKeyName: 'mobile',
     allowClear: false,
     searchForm: {
       systemId: gState.myInfo.systemId,

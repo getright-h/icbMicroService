@@ -60,8 +60,8 @@ export default function OwnerManageComponent() {
             <Form.Item name="follow" label="车主跟进等级">
               <Select placeholder="请选择跟进等级">
                 <Select.Option value={-1}>全部</Select.Option>
+                <Select.Option value={100}>所有方式跟进</Select.Option>
                 <Select.Option value={1}>仅短信方式</Select.Option>
-                <Select.Option value={-200}>暂无</Select.Option>
               </Select>
             </Form.Item>
           </Col>

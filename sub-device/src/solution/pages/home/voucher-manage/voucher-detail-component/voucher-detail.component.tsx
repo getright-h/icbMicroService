@@ -38,7 +38,7 @@ export default function VoucherDetailComponent(props: IVoucherDetailProps) {
   }
   return (
     <Modal
-      title="安装单详情"
+      title="安装凭证详情"
       visible={visible}
       width={600}
       onCancel={selfClose}

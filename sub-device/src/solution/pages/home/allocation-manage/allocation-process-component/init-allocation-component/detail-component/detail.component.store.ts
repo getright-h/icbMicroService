@@ -8,11 +8,12 @@ import { Subscription } from 'rxjs';
 import { ModalType, ALLOW_FLOW_KEYCODE_ENUM } from '~shared/constant/common.const';
 import { Modal } from 'antd';
 import { ShowNotification } from '~/framework/util/common';
-
+import { CommonUtil } from '~/solution/shared/util/baseFunction';
+import moment from 'moment';
 const { confirm } = Modal;
 export function useDetailStore() {
   const { state, setStateWrap } = useStateStore(new IDetailState());
-  const { id } = useParams();
+  const { id } = useParams() as any;
   const history = useHistory();
   const allocationManageService: AllocationManageService = new AllocationManageService();
   let allocationManageServiceSubscription: Subscription;
@@ -141,8 +142,16 @@ export function useDetailStore() {
       );
     });
   }
+
+  // 下载调拨Excel
+  async function handleDownLoadAllot() {
+    // 发起方 role 1
+    const res = await allocationManageService.downLoadAllot({ id, role: 1 }).toPromise();
+    CommonUtil.downExcel(res, `发起方调拨单${moment(new Date()).format('YYYY-MM-DD')}.xlsx`);
+  }
+
   function handleModalCancel() {
     setStateWrap({ currentData: {}, importVisible: false, rollbackVisible: false });
   }
-  return { state, callbackAction, handleModalCancel, getAlloactionDetail, allocationOperate };
+  return { state, callbackAction, handleModalCancel, getAlloactionDetail, allocationOperate, handleDownLoadAllot };
 }
