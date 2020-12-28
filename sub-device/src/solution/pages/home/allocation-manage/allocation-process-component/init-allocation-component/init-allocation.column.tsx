@@ -26,24 +26,24 @@ export function initAllocationColumns(callbackAction: Function) {
       // 发起申请操作
       {
         condition: [ALLOW_FLOW_ENUM.Apply],
-        btn:
-          APPROVAL_FLOW_STATUS_ENUM.Success === approvalState ? (
-            <a className={style.button} onClick={() => callbackAction(ModalType.CREATE, data)} key={'repally'}>
-              发起申请
-            </a>
-          ) : null
+        btn: (
+          <a className={style.button} onClick={() => callbackAction(ModalType.CREATE, data)} key={'repally'}>
+            发起申请
+          </a>
+        )
       },
 
       // 撤销操作
       {
         condition: [ALLOW_FLOW_ENUM.Confirm],
-        btn: (
-          <>
-            <a className={style.button} onClick={() => callbackAction(ModalType.REVOKE, data)} key={'reject'}>
-              撤销
-            </a>
-          </>
-        )
+        btn:
+          APPROVAL_FLOW_STATUS_ENUM.Success === approvalState ? (
+            <>
+              <a className={style.button} onClick={() => callbackAction(ModalType.REVOKE, data)} key={'reject'}>
+                撤销
+              </a>
+            </>
+          ) : null
       },
 
       // 重新申请操作
