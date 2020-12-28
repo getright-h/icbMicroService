@@ -407,7 +407,25 @@ export const IMAP = {
       map.setFitView();
     });
   },
-
+  /**
+   * @description 获取当前经纬度对应的实际地址
+   * @param path 经纬度
+   */
+  async covertPointToAddress(path: Array<any>) {
+    const geocoder = new AMap.Geocoder();
+    let curAdd = '解析地址失败';
+    return new Promise((res, rej) => {
+      geocoder.getAddress(path, function(status: any, result: any) {
+        if (status === 'complete' && result.regeocode) {
+          curAdd = result.regeocode.formattedAddress;
+          res(curAdd);
+        } else {
+          rej('根据经纬度查询地址失败');
+          console.error('根据经纬度查询地址失败');
+        }
+      });
+    });
+  },
   bindMassMarkers(
     markers: any,
     map: any,

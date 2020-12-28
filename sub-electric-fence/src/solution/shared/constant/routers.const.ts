@@ -22,7 +22,7 @@ export const ROUTERS = {
   reportManageModule: () => import('~/solution/pages/home/report-manage/report-manage.module'),
   PositionMonitorModule: () => import('~/solution/pages/home/position-monitor/position-monitor.module'),
   statisticalListComponent: () =>
-    import('~/solution/pages/home/report-manage/state-list-component/state-list.component'),
+    import('~/solution/pages/home/report-manage/statistical-list-component/statistical-list.component'),
   statisticalDetailComponent: () =>
     import(
       '~/solution/pages/home/report-manage/statistical-list-component/statistical-detail-component/statistical-detail.component'

@@ -38,7 +38,7 @@ export default React.memo((props: IITableProps) => {
       expandable={expandable}
       columns={columns}
       pagination={isPagination && state.pagination}
-      rowKey={row => row.id}
+      rowKey={(row, index) => row.id || index}
     />
   );
 });

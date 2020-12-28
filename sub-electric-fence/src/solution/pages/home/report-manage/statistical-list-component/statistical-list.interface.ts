@@ -12,5 +12,6 @@ export class IDirectiveListState {
 }
 export enum ModalType {
   CREATE,
-  EDIT
+  EDIT,
+  LOOK
 }

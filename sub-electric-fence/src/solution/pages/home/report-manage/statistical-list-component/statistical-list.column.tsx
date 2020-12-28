@@ -5,43 +5,35 @@ export function AlarmParameterColumn(callbackAction: Function) {
   return [
     {
       title: '车主姓名',
-      dataIndex: 'vinNo'
+      dataIndex: 'ownerName'
     },
     {
       title: '车牌号',
-      dataIndex: 'deviceCodeList'
+      dataIndex: 'plateNo'
     },
     {
       title: '设备号',
-      dataIndex: 'time'
+      dataIndex: 'deviceCode'
     },
     {
       title: '报警类型',
-      dataIndex: 'name'
+      dataIndex: 'alarmTypeText'
     },
     {
-      title: '所属机构',
-      dataIndex: 'name'
-    },
-    {
-      title: '报警时间',
-      dataIndex: 'name'
-    },
-    {
-      title: '报警地址',
-      dataIndex: 'deviceCodeList'
-    },
-    {
-      title: '处理状态',
+      title: '最后报警时间',
       dataIndex: 'time'
     },
     {
-      title: '所属监控组',
-      dataIndex: 'name'
+      title: '报警次数',
+      dataIndex: 'alarmNumber'
+    },
+    {
+      title: '最后报警地址',
+      dataIndex: 'address'
     },
     {
       title: '所属机构',
-      dataIndex: 'name'
+      dataIndex: 'organizationName'
     },
     {
       title: '操作',
@@ -50,11 +42,11 @@ export function AlarmParameterColumn(callbackAction: Function) {
       render: (render: any, data: any, index: number) => {
         return (
           <React.Fragment>
-            <a onClick={() => callbackAction(ModalType.CREATE, data)}>查看</a>
-            <Divider type="vertical" />
+            <a onClick={() => callbackAction(ModalType.LOOK, data)}>查看</a>
+            {/* <Divider type="vertical" />
             <a onClick={() => callbackAction(ModalType.EDIT, data)}>处理</a>
             <Divider type="vertical" />
-            <a onClick={() => callbackAction(ModalType.EDIT, data)}>记录</a>
+            <a onClick={() => callbackAction(ModalType.EDIT, data)}>记录</a> */}
           </React.Fragment>
         );
       }

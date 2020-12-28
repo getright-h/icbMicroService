@@ -10,7 +10,7 @@ export const reportManageRoutes: IRoute[] = [
     exact: true
   },
   {
-    path: `${MODULE_PATH}/statistical/detail`,
+    path: `${MODULE_PATH}/statistical/detail/:deviceCode/:alarmType`,
     component: ROUTERS.statisticalDetailComponent,
     lazyload: true,
     exact: true
@@ -27,36 +27,36 @@ export const reportManageRoutes: IRoute[] = [
     lazyload: true,
     exact: true
   },
-  {
-    path: `${MODULE_PATH}/monitor`,
-    component: ROUTERS.monitorComponent,
-    lazyload: true,
-    exact: true
-  },
-  {
-    path: `${MODULE_PATH}/odometer`,
-    component: ROUTERS.odometerListComponent,
-    lazyload: true,
-    exact: true
-  },
-  {
-    path: `${MODULE_PATH}/state`,
-    component: ROUTERS.stateListComponent,
-    lazyload: true,
-    exact: true
-  },
-  {
-    path: `${MODULE_PATH}/offline`,
-    component: ROUTERS.offlineListComponent,
-    lazyload: true,
-    exact: true
-  },
-  {
-    path: `${MODULE_PATH}/dwell`,
-    component: ROUTERS.dwellListComponent,
-    lazyload: true,
-    exact: true
-  },
+  // {
+  //   path: `${MODULE_PATH}/monitor`,
+  //   component: ROUTERS.monitorComponent,
+  //   lazyload: true,
+  //   exact: true
+  // },
+  // {
+  //   path: `${MODULE_PATH}/odometer`,
+  //   component: ROUTERS.odometerListComponent,
+  //   lazyload: true,
+  //   exact: true
+  // },
+  // {
+  //   path: `${MODULE_PATH}/state`,
+  //   component: ROUTERS.stateListComponent,
+  //   lazyload: true,
+  //   exact: true
+  // },
+  // {
+  //   path: `${MODULE_PATH}/offline`,
+  //   component: ROUTERS.offlineListComponent,
+  //   lazyload: true,
+  //   exact: true
+  // },
+  // {
+  //   path: `${MODULE_PATH}/dwell`,
+  //   component: ROUTERS.dwellListComponent,
+  //   lazyload: true,
+  //   exact: true
+  // },
   {
     path: `${MODULE_PATH}/permanent`,
     component: ROUTERS.permanentListComponent,

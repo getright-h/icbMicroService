@@ -30,6 +30,7 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
     currentDirectiveTempalet,
     currentDirectiveTemObj,
     tempalteValue = [],
+    currentTempalte,
     confirmLoading
   } = state;
   const formItemLayout = {
@@ -151,7 +152,7 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
 
         {isParams && currentDirectiveTempalet.length > 0 && currentDirectiveTempalet[currentIndex]?.packageList && (
           <AlarmFormItemComponent
-            initialInfo={{ code: currentDirective.cmdCode }}
+            initialInfo={currentTempalte}
             selectTempId={currentDirectiveTemObj.id}
             hasTempName={false}
             isEnbaleEdit={false}
@@ -163,7 +164,7 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
         {custom && (
           <Form.Item name="customValue" rules={[{ required: true }]}>
             <AlarmFormItemComponent
-              initialInfo={{ code: currentDirective.cmdCode }}
+              initialInfo={currentTempalte}
               selectTempId={currentDirectiveTemObj.id}
               hasTempName={false}
               isEnbaleEdit={true}
