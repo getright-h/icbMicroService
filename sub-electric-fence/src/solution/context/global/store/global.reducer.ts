@@ -4,7 +4,12 @@ import { TYPES } from './global.type';
 
 export const initialState: IBaseGlobalState = {
   layoutLoading: false,
-  collapsed: false
+  collapsed: false,
+  myInfo: {
+    userId: '',
+    typeId: 'c59c75eec2d3cc075cca08d84386bcb9',
+    systemId: '938880216d89c68eb6ea08d69b143c52'
+  }
 };
 
 export function reducer(state = initialState, action: IAction<any>) {

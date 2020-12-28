@@ -2,16 +2,21 @@ import { IDirectiveModalState, ModalType, IDirectiveModalProps, ISendCode } from
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form, message } from 'antd';
 import { DirectiveService } from '~/solution/model/services/directive-manage.service';
-import { useEffect } from 'react';
+import { AlarmManageService } from '~/solution/model/services/alarm-manage.service';
+import { useEffect, MutableRefObject, useRef } from 'react';
 import { Subscription } from 'rxjs';
+import { AlarmParamItem, AlarmTemplateListItem, AlarmPackageContent } from '~/solution/model/dto/alarm-manage.dto';
 
 export function useDirectiveModalStore(props: IDirectiveModalProps) {
-  const { state, setStateWrap, getState } = useStateStore(new IDirectiveModalState());
+  const { state, setStateWrap } = useStateStore(new IDirectiveModalState());
   const directiveService: DirectiveService = new DirectiveService();
+  const alarmManageService: AlarmManageService = new AlarmManageService();
+  const paramTemplatesRef: MutableRefObject<AlarmParamItem[]> = useRef([]);
   const [form] = Form.useForm();
   let getTemplateSubscription: Subscription;
   let sendCmdSubscription: Subscription;
   useEffect(() => {
+    getAlarmParamTemplates();
     return () => {
       getTemplateSubscription && getTemplateSubscription.unsubscribe();
       sendCmdSubscription && sendCmdSubscription.unsubscribe();
@@ -33,8 +38,13 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
     }
 
     if (type == 'directiveType') {
+      // 指令参数
+      const currentTempalte = paramTemplatesRef.current.find((template: any) => template.type === info.cmdCode);
+      // 选择指令类型以后,需要重置指令模板以及移除选择指令参数状态
       setStateWrap({
-        currentDirective: info
+        currentDirective: info,
+        currentTempalte: { ...currentTempalte, id: info.id },
+        currentIndex: -1
       });
       form.setFieldsValue({ directiveType: info });
       const { cmdCode } = info;
@@ -44,7 +54,7 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
 
   function submitForm() {
     form.validateFields().then((values: any) => {
-      const { codes, type, vehicleGroupId, directiveCode, directiveType = {}, customValue, verifyCode } = values;
+      const { codes, type, vehicleGroupId, directiveCode, customValue, verifyCode } = values;
       const { currentDirective, isParams, custom, currentDirectiveTemObj } = state;
       const params: ISendCode = {};
       params.codes = codes && codes.split('\n');
@@ -190,6 +200,14 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
       custom: false
     });
   }
+
+  //获取参数管理各个指令的模板参数,之前前端写死,现在从后台获取
+  function getAlarmParamTemplates() {
+    alarmManageService.queryAlarmParamList().subscribe(res => {
+      paramTemplatesRef.current = res;
+    });
+  }
+
   function selfClose(isSuccess = false) {
     form.resetFields();
     props.close && props.close(isSuccess);
