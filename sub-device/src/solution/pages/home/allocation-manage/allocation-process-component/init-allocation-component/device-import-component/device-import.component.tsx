@@ -82,7 +82,7 @@ export default function DeviceImportComponent(props: IDeviceImportProps) {
                     title={() => <p style={{ textAlign: 'center' }}>失败设备一览表</p>}
                     bordered
                     columns={columns}
-                    rowKey={record => record.dataIndex}
+                    rowKey={(record: any, index: number) => record.code + index}
                     dataSource={tableData}
                   />
                 </Form.Item>

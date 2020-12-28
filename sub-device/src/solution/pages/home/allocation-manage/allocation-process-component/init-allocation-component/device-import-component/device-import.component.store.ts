@@ -23,7 +23,9 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
     const { allotId, id } = data;
     const { checkResult } = state;
     const { errorTotal = 0, message = '', successList = [] } = checkResult;
-    if ((message && errorTotal) || !Object.keys(checkResult).length) {
+    // 如果 有错误提示 message 不成功
+    // 如果 errorTotal  不成功
+    if (message || errorTotal) {
       ShowNotification.warning('设备号有误!');
       return;
     }
@@ -74,12 +76,32 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
 
   function checkAllotDeviceInfo(e: any) {
     const { importType } = state;
-    const { allotId } = props.data;
+    const { allotId, deviceTypeList } = props.data;
+    const device_map: any = {};
+    deviceTypeList.forEach((device: any) => {
+      const _curdeviceList = form.getFieldValue(`device_${device.typeId}`);
+      device_map[device.typeId] = [..._curdeviceList.map((item: any) => item.number)];
+    });
+
+    // 根据 device_map 构造出需要检查的数据
+    const paramsDevicelist: any[] = [];
+    deviceTypeList.forEach((device: any) => {
+      if (device_map[device.typeId] && device_map[device.typeId].length) {
+        device_map[device.typeId].forEach((code: any) => {
+          paramsDevicelist.push({
+            typeId: device.typeId,
+            typeName: device.typeName,
+            code: code
+          });
+        });
+      }
+    });
+
     const params: any = { allotId, list: [] };
     if (importType == 1) {
       params.list = returnFileListInfo.current;
     } else {
-      params.list = deviceList;
+      params.list = paramsDevicelist;
     }
     if (!params.list.length) {
       ShowNotification.warning('请录入设备号!');
