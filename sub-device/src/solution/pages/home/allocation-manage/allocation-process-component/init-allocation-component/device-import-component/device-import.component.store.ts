@@ -156,6 +156,10 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
       deviceList.splice(deleteIndex, 1);
     }
   }
+
+  function changeTablePageIndex(index: any, size: any) {
+    setStateWrap({ currentIndex: index });
+  }
   useEffect(() => {
     console.log(111);
     return () => {
@@ -171,6 +175,7 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
     onChange,
     removeDevice,
     checkAllotDeviceInfo,
-    customRequest
+    customRequest,
+    changeTablePageIndex
   };
 }

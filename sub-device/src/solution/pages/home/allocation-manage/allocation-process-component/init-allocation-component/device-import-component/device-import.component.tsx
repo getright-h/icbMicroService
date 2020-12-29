@@ -1,5 +1,6 @@
 import * as React from 'react';
 import style from './device-import.component.less';
+import { ITableComponent } from '~/framework/components/component.module';
 import { useDeviceImportStore } from './device-import.component.store';
 import { IDeviceImportProps } from './device-import.interface';
 import { Modal, Form, Input, Radio, Button, Upload, Space, Table } from 'antd';
@@ -14,25 +15,35 @@ export default function DeviceImportComponent(props: IDeviceImportProps) {
     onChange,
     removeDevice,
     checkAllotDeviceInfo,
-    customRequest
+    customRequest,
+    changeTablePageIndex
   } = useDeviceImportStore(props);
   const { visible, data = {} } = props;
   const { deviceTypeList = [] } = data;
-  const { importType, submitLoading, checkResult = {} } = state;
+  const { importType, submitLoading, checkResult = {}, currentIndex } = state;
   const { errorTotal = 0, list = [], successTotal = 0, message = '' } = checkResult;
-  const tableData = list.map((item: any) => item.model);
+
   const columns = [
     {
       title: '设备号',
-      dataIndex: 'code'
+      dataIndex: 'model',
+      render: (model: any, record: any) => {
+        return model.code;
+      }
     },
     {
       title: '表内行数',
-      dataIndex: 'rowNumber'
+      dataIndex: 'model',
+      render: (model: any, record: any) => {
+        return model.rowNumber || '-';
+      }
     },
     {
       title: '失败原因',
-      dataIndex: 'remark'
+      dataIndex: 'model',
+      render: (model: any, record: any) => {
+        return model.remark;
+      }
     }
   ];
   const layout = {
@@ -75,16 +86,20 @@ export default function DeviceImportComponent(props: IDeviceImportProps) {
                 </Form.Item>
               )}
               {errorTotal !== 0 && (
-                <Form.Item>
-                  <Table
-                    showHeader
-                    pagination={false}
-                    title={() => <p style={{ textAlign: 'center' }}>失败设备一览表</p>}
-                    bordered
+                <Form.Item style={{ display: 'flex', justifyContent: 'center' }}>
+                  <ITableComponent
                     columns={columns}
-                    rowKey={(record: any, index: number) => record.code + index}
-                    dataSource={tableData}
-                  />
+                    pageIndex={currentIndex}
+                    pageSize={5}
+                    size={'small'}
+                    rowKey={'rowNumber'}
+                    data={checkResult.list}
+                    total={checkResult.errorTotal}
+                    isPagination={true}
+                    changeTablePageIndex={(pageIndex: number, pageSize: number) =>
+                      changeTablePageIndex(pageIndex, pageSize)
+                    }
+                  ></ITableComponent>
                 </Form.Item>
               )}
             </>

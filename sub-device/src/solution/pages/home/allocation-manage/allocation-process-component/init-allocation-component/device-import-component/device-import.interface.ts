@@ -5,6 +5,7 @@
 export class IDeviceImportState {
   confirmLoading = false;
   importType = 1;
+  currentIndex = 1;
   searchForm = {};
   deviceList: Array<any> = [];
   submitLoading = false;

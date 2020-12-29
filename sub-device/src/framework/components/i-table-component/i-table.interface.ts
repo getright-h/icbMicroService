@@ -1,4 +1,5 @@
 import { ColumnsType, TablePaginationConfig } from 'antd/lib/table';
+import { SizeType } from 'antd/lib/config-provider/SizeContext';
 
 /**
  * @export state变量定义和初始化
@@ -9,7 +10,7 @@ export class IITableState {
 }
 
 export interface IITableProps {
-  isLoading: boolean;
+  isLoading?: boolean;
   data: any;
   total: number;
   pageSize?: number;
@@ -23,4 +24,5 @@ export interface IITableProps {
   summary?: any;
   title?: string;
   expandable?: any;
+  size?: SizeType;
 }

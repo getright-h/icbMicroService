@@ -19,8 +19,6 @@ export function useHomeStore() {
   }, []);
 
   function getMenuAndAuth() {
-    console.log(menuService.updateMenuByRoutes(PAGES_MENU.MENU));
-
     setStateWrap({ menuList: menuService.updateMenuByRoutes(PAGES_MENU.MENU), loading: false });
     // menuAndAuthSubscription = homeService.getMenuAndAuthKeys().subscribe((menuList: { data: IMenu[] }) => {
     //   setStateWrap({ menuList: menuService.updateMenuByRoutes(menuList.data), loading: false });
