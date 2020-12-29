@@ -407,22 +407,24 @@ export const IMAP = {
       map.setFitView();
     });
   },
-  // 使用递增的颜色进行打点
-  bindStepColorMarker(coordinates: Array<string>, number: number, max: number) {
-    const circleMarker = new AMap.CircleMarker({
-      center: coordinates,
-      radius: 10, //3D视图下，CircleMarker半径不要超过64px
-      strokeColor: 'white',
-      strokeWeight: 2,
-      strokeOpacity: 0.5,
-      fillColor: this.getColorByNumber(number, max),
-      // fillOpacity: 0.5,
-      zIndex: 10,
-      bubble: true,
-      cursor: 'pointer',
-      clickable: true
+  /**
+   * @description 获取当前经纬度对应的实际地址
+   * @param path 经纬度
+   */
+  async covertPointToAddress(path: Array<any>) {
+    const geocoder = new AMap.Geocoder();
+    let curAdd = '解析地址失败';
+    return new Promise((res, rej) => {
+      geocoder.getAddress(path, function(status: any, result: any) {
+        if (status === 'complete' && result.regeocode) {
+          curAdd = result.regeocode.formattedAddress;
+          res(curAdd);
+        } else {
+          rej('根据经纬度查询地址失败');
+          console.error('根据经纬度查询地址失败');
+        }
+      });
     });
-    return circleMarker;
   },
   bindMassMarkers(
     markers: any,

@@ -1,35 +1,49 @@
 import { IDirectiveListState, ModalType } from './statistical-detail.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form } from 'antd';
-import { AlarmManageService } from '~/solution/model/services/alarm-manage.service';
+import { OrderReportService } from '~/solution/model/services/report-order.service';
 import { useEffect } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
+import { IMAP } from '~shared/util/map.util';
 
 export function useDirectiveListStore() {
   const { state, setStateWrap, getState } = useStateStore(new IDirectiveListState());
-  const alarmManageService: AlarmManageService = new AlarmManageService();
+  const orderReportService: OrderReportService = new OrderReportService();
   const [searchForm] = Form.useForm();
+  const { deviceCode, alarmType }: any = useParams();
+  const history = useHistory();
 
   useEffect(() => {
     initSearchForm();
   }, []);
 
-  function getTableData() {
-    // setStateWrap({ isLoading: true });
-    // const { pageIndex, pageSize } = getState();
-    // alarmManageService
-    //   .queryOwnerPagedList({
-    //     ...searchForm.getFieldsValue(),
-    //     index: pageIndex,
-    //     size: pageSize
-    //   })
-    //   .subscribe(
-    //     res => {
-    //       setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
-    //     },
-    //     err => {
-    //       setStateWrap({ isLoading: false });
-    //     }
-    //   );
+  function getTableData(pageIndex?: number) {
+    setStateWrap({ isLoading: true });
+    const { pageSize } = state;
+    orderReportService
+      .queryReportAlarmStatisticsDetail({ deviceCode, alarmType, index: pageIndex, size: pageSize })
+      .subscribe(
+        async (res: any) => {
+          const tableData = res?.pagedList?.dataList;
+          if (Array.isArray(tableData)) {
+            for (let i = 0; i < tableData.length; i++) {
+              const { latitude, longitude } = tableData[i];
+              if (latitude && longitude) {
+                tableData[i].address = await IMAP.covertPointToAddress([longitude, latitude]);
+              }
+            }
+          }
+          setStateWrap({
+            tableData,
+            total: res?.pagedList?.total,
+            detail: res
+          });
+          setStateWrap({ isLoading: false });
+        },
+        err => {
+          setStateWrap({ isLoading: false });
+        }
+      );
   }
 
   function searchClick() {
@@ -46,7 +60,7 @@ export function useDirectiveListStore() {
     setStateWrap({ currentId: data ? data.id : '' });
     switch (actionType) {
       case ModalType.CREATE:
-        setStateWrap({});
+        history;
         break;
       case ModalType.EDIT:
         setStateWrap({});
@@ -58,7 +72,7 @@ export function useDirectiveListStore() {
 
   function changeTablePageIndex(pageIndex: number, pageSize: number) {
     setStateWrap({ pageIndex, pageSize });
-    getTableData();
+    getTableData(pageIndex);
   }
 
   function handleModalCancel(isSuccess = false) {

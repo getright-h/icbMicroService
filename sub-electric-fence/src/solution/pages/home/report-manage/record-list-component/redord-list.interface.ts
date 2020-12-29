@@ -9,6 +9,7 @@ export class IDwellListState {
   tableData: any = [];
   total = 0;
   currentId = '';
+  searchForm = {};
 }
 export enum ModalType {
   CREATE,

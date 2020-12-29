@@ -64,30 +64,30 @@ export const PAGES_MENU = {
           path: 'record',
           title: '报警记录表'
         },
-        {
-          path: 'follow',
-          title: '报警跟进表'
-        },
-        {
-          path: 'monitor',
-          title: '监控组报表'
-        },
-        {
-          path: 'odometer',
-          title: '行驶里程表'
-        },
-        {
-          path: 'state',
-          title: '设备状态统计表'
-        },
-        {
-          path: 'offline',
-          title: '离线设备统计'
-        },
-        {
-          path: 'dwell',
-          title: '设备停留点统计'
-        },
+        // {
+        //   path: 'follow',
+        //   title: '报警跟进表'
+        // },
+        // {
+        //   path: 'monitor',
+        //   title: '监控组报表'
+        // },
+        // {
+        //   path: 'odometer',
+        //   title: '行驶里程表'
+        // },
+        // {
+        //   path: 'state',
+        //   title: '设备状态统计表'
+        // },
+        // {
+        //   path: 'offline',
+        //   title: '离线设备统计'
+        // },
+        // {
+        //   path: 'dwell',
+        //   title: '设备停留点统计'
+        // },
         {
           path: 'permanent',
           title: '常驻点统计'
