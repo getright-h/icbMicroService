@@ -70,7 +70,7 @@ export default function DirectiveListComponent() {
             <Form.Item label="时间范围" name="time">
               <TimePickerComponent
                 pickerType="dateTimeRange"
-                getDateTimeInfo={(time: any, other: any) => onChange(time, 'time')}
+                getDateTimeInfo={(time: any, other: any) => getCurrentSelectInfo(time, 'time')}
               />
             </Form.Item>
           </Col>

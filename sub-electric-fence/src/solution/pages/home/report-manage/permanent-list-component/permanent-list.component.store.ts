@@ -35,8 +35,6 @@ export function useDirectiveListStore() {
               newData.push(res.dataList[i]);
             }
           }
-
-          console.log(newData);
           setStateWrap({ tableData: newData, total: res.total, isLoading: false });
         },
         err => {
