@@ -90,7 +90,7 @@ export default function AllocationManageComponent() {
     return (
       <ITableComponent
         columns={allocationManageColumns(callbackAction)}
-        rowKey="allotId"
+        rowKey="inventoryCode"
         isLoading={isLoading}
         pageIndex={searchForm.index}
         pageSize={searchForm.size}

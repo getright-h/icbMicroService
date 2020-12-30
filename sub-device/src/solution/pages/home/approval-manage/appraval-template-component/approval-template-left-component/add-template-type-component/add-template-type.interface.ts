@@ -21,4 +21,5 @@ export class IAddTemplateTypeState {
   checkedKeys: string[] = [];
   confirmLoading = false;
   checkedObject: DataNode[] = [];
+  organazationList: any[] = [];
 }

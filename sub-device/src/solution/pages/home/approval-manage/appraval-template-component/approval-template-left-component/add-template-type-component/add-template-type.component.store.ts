@@ -4,15 +4,18 @@ import { getCheckedList } from '~/framework/util/common/treeFunction';
 import { DataNode } from 'rc-tree/lib/interface';
 import _ from 'lodash';
 import { ApprovalManageService } from '../../../../../../model/services/approval-manage.service';
-import { message } from 'antd';
-import { useEffect } from 'react';
+import { message, Form } from 'antd';
+import { useEffect, useCallback } from 'react';
 
 export function useAddTemplateTypeStore(props: IAddTemplateTypeProps) {
   const { state, setStateWrap, getState } = useStateStore(new IAddTemplateTypeState());
   const approvalManageService: ApprovalManageService = useService(ApprovalManageService);
   const { name, checkedKeys, type, parentOrganizationId } = state;
-
+  const [form] = Form.useForm();
   useEffect(() => {
+    setStateWrap({
+      organazationList: props.organazationList || []
+    });
     props.groupId && getGroupDetail();
   }, [props.groupId]);
 
@@ -42,6 +45,8 @@ export function useAddTemplateTypeStore(props: IAddTemplateTypeProps) {
         checkedKeys: checkedKeys,
         checkedObject: checkedObject
       });
+      form.setFieldsValue({ name: res.name });
+      form.setFieldsValue({ parentOrganizationId: res.parentOrganizationId });
       onExpand(expandedKeys);
     });
   }
@@ -73,8 +78,6 @@ export function useAddTemplateTypeStore(props: IAddTemplateTypeProps) {
 
   function addTemplateType() {
     const url = props.groupId ? 'setApprovalGroup' : 'insertApprovalGroup';
-    console.log(url);
-
     approvalManageService[url]({
       name,
       organizationList: checkedKeys,
@@ -120,8 +123,6 @@ export function useAddTemplateTypeStore(props: IAddTemplateTypeProps) {
   }
 
   function onExpand(expandedKeys: string[]) {
-    console.log('onExpand');
-
     setStateWrap({
       expandedKeys
     });
@@ -142,6 +143,7 @@ export function useAddTemplateTypeStore(props: IAddTemplateTypeProps) {
 
   return {
     state,
+    form,
     handleOk,
     onChangeHaveChooseShop,
     handleCancel,

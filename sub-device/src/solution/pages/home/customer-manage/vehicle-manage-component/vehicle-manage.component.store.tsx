@@ -25,8 +25,8 @@ export function useVehicleManageStore() {
     customerManageService
       .queryVehiclePagedList({
         ...searchForm.getFieldsValue(),
-        serverBeginTime: timeInfo[0] ? moment(timeInfo[0]).valueOf() : 0,
-        serverEndTime: timeInfo[1] ? moment(timeInfo[1]).valueOf() : 0,
+        serverBeginTime: timeInfo[0] ? moment(timeInfo[0] + ' 00:00:00').valueOf() : 0,
+        serverEndTime: timeInfo[1] ? moment(timeInfo[1] + ' 23:59:59').valueOf() : 0,
         index: pageIndex,
         size: pageSize
       })
