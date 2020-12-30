@@ -8,7 +8,7 @@ async function registerMainApp(callback: (menuInfo: any) => void) {
   const isDev = process.env.NODE_ENV === 'development';
   console.log('process.env.DEV_BUILD' + process.env.NODE_ENV, process.env.DEV_BUILD);
 
-  const isDevBuild = process.argv[2] == '--build';
+  const isDevBuild = process.env.IS_BUILD == 'build';
   const currentId = '#subapp-viewport';
   const apps: Array<AppProps> = [];
   const baseFuntion = {

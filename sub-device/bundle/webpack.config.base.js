@@ -4,6 +4,7 @@ const PluginFactory = require('./plugins');
 const externals = require("./externals");
 const getAlias = require('./alias');
 const name = "sub-device";
+const { IS_BUILD, PUBLICK_PATH } = process.env;
 module.exports = {
   entry:path.resolve(__dirname,'../src/index.tsx'),
   output: {
@@ -14,7 +15,7 @@ module.exports = {
     libraryTarget: "umd",
     jsonpFunction: `webpackJsonp_${name}`
   },
-  externals : process.argv[2] == "--build" ? externals : {},
+  externals : IS_BUILD == "build" ? externals : {},
   module: {
     rules:[
       ...new LoaderFactory().getLoaders()
