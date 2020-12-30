@@ -15,8 +15,11 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
   const [form] = Form.useForm();
   let setAllotFlowSubscription: Subscription;
 
-  // 不参与页面更新
+  // 不参与页面更新, 用户获取当前输入的设备号
+  // 后期优化 使用from 获取，干净又卫生
+  //  onChange removeDevice 可以移除
   const deviceList: any = [];
+
   function selfSubmit() {
     // isMove 流转操作
     const { isMove, data = {} } = props;
@@ -59,6 +62,7 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
     );
   }
 
+  // TODO 上传excel文件
   function customRequest(item: any) {
     const data = new FormData();
     data.append('file', item.file);
@@ -77,6 +81,8 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
   function checkAllotDeviceInfo(e: any) {
     const { importType } = state;
     const { allotId, deviceTypeList } = props.data;
+
+    // TODO 获取Form.List 内部值
     const device_map: any = {};
     deviceTypeList.forEach((device: any) => {
       const _curdeviceList = form.getFieldValue(`device_${device.typeId}`);
@@ -126,6 +132,7 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
    * @param typeId 设备ID
    * @param key 行号
    * 以ID作为关联
+   *
    */
   function onChange(value: any, device: any, index: number) {
     const currentDevice = {
@@ -161,7 +168,6 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
     setStateWrap({ currentIndex: index });
   }
   useEffect(() => {
-    console.log(111);
     return () => {
       setAllotFlowSubscription && setAllotFlowSubscription.unsubscribe();
     };

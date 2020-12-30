@@ -27,21 +27,21 @@ export default function DeviceImportComponent(props: IDeviceImportProps) {
     {
       title: '设备号',
       dataIndex: 'model',
-      render: (model: any, record: any) => {
+      render: (model: any) => {
         return model.code;
       }
     },
     {
       title: '表内行数',
       dataIndex: 'model',
-      render: (model: any, record: any) => {
+      render: (model: any) => {
         return model.rowNumber || '-';
       }
     },
     {
       title: '失败原因',
       dataIndex: 'model',
-      render: (model: any, record: any) => {
+      render: (model: any) => {
         return model.remark;
       }
     }
@@ -113,7 +113,7 @@ export default function DeviceImportComponent(props: IDeviceImportProps) {
       <Form.Item label="选择文件" style={{ position: 'relative' }}>
         <Upload
           showUploadList={true}
-          action="http://192.168.0.252:5301/api/allot/manage/uploadAllotDeviceExcel"
+          action={`${process.env.MAIN}allot/manage/uploadAllotDeviceExcel`}
           customRequest={customRequest}
         >
           <Button>
