@@ -133,13 +133,6 @@ export function fetchChildAppsConfig() {
             activeRule: `${MODULE_PATH}/data`, // 对应的子应用的路径
             componentUrl: 'dataManagModule', //对应子应用的组件名
             children: [
-              // {
-              //    path: 'deviceMonitor',
-              //    title: '设备监控',
-              //    lazyload: true,
-              //    exact: true,
-              //    componentUrl: "deviceMonitor",
-              // },
               {
                 path: 'deviceLine',
                 title: '设备路线表',

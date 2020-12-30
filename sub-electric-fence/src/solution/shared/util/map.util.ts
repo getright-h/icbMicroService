@@ -400,12 +400,29 @@ export const IMAP = {
           //基点指向marker的头部位置
           offset: new AMap.Pixel(0, -31)
         });
-        AMap.event.addListener(markerInfo, 'click', function() {
+        AMap.event.addListener(markerInfo, 'click', function(e: any) {
           callback(markerInfo, map, marker, infoWindow);
         });
       });
       map.setFitView();
     });
+  },
+  // 使用递增的颜色进行打点
+  bindStepColorMarker(coordinates: Array<string>, number: number, max: number) {
+    const circleMarker = new AMap.CircleMarker({
+      center: coordinates,
+      radius: 10, //3D视图下，CircleMarker半径不要超过64px
+      strokeColor: 'white',
+      strokeWeight: 2,
+      strokeOpacity: 0.5,
+      fillColor: this.getColorByNumber(number, max),
+      // fillOpacity: 0.5,
+      zIndex: 1,
+      bubble: true,
+      cursor: 'pointer',
+      clickable: true
+    });
+    return circleMarker;
   },
   /**
    * @description 获取当前经纬度对应的实际地址
