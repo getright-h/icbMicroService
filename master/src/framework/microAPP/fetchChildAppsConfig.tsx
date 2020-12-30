@@ -8,7 +8,7 @@ export function fetchChildAppsConfig() {
         name: 'sub-device',
         localURL: '//localhost:8081',
         onLineURL: '',
-        onLineDevURL: '//192.168.0.251:2155',
+        onLineDevURL: '//192.168.2.251:2155',
         title: '设备管理模块',
         icon: 'anticon-mobile',
         tokenKey: '__icb_token',
@@ -295,7 +295,7 @@ export function fetchChildAppsConfig() {
       {
         name: 'sub-upms',
         localURL: '//localhost:8082',
-        onLineDevURL: '//192.168.0.251:2099',
+        onLineDevURL: '//192.168.2.251:2099',
         onLineURL: '',
         title: 'UPMS模块',
         icon: 'team',
@@ -356,7 +356,7 @@ export function fetchChildAppsConfig() {
       {
         name: 'sub-fence',
         localURL: '//localhost:8083',
-        onLineDevURL: '//192.168.0.251:2110',
+        onLineDevURL: '//192.168.2.251:2110',
         onLineURL: '',
         title: '定位监控',
         icon: 'team',

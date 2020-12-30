@@ -3,12 +3,13 @@ import { appStore } from './appStore';
 import { fetchChildAppsConfig, AppProps } from './fetchChildAppsConfig';
 import { StorageUtil } from '~/framework/util/storage';
 import { HomeService } from '~/solution/model/services/home.service';
+
 // 注册子应用 运行主项目
 async function registerMainApp(callback: (menuInfo: any) => void) {
   const isDev = process.env.NODE_ENV === 'development';
   console.log('process.env.DEV_BUILD' + process.env.NODE_ENV, process.env.DEV_BUILD);
 
-  const isDevBuild = process.env.IS_BUILD == 'build';
+  const isDevBuild = process.env.DEV_BUILD === 'build';
   const currentId = '#subapp-viewport';
   const apps: Array<AppProps> = [];
   const baseFuntion = {
