@@ -461,41 +461,41 @@ export function fetchChildAppsConfig() {
                 exact: true,
                 componentUrl: 'followComponent' //对应子应用的组件名
               },
-              {
-                path: 'monitor',
-                title: '监控组报表',
-                lazyload: true,
-                exact: true,
-                componentUrl: 'monitorComponent' //对应子应用的组件名
-              },
-              {
-                path: 'odometer',
-                title: '行驶里程表',
-                lazyload: true,
-                exact: true,
-                componentUrl: 'odometerListComponent' //对应子应用的组件名
-              },
-              {
-                path: 'state',
-                title: '设备状态统计表',
-                lazyload: true,
-                exact: true,
-                componentUrl: 'stateListComponent' //对应子应用的组件名
-              },
-              {
-                path: 'offline',
-                title: '离线设备统计',
-                lazyload: true,
-                exact: true,
-                componentUrl: 'offlineListComponent' //对应子应用的组件名
-              },
-              {
-                path: 'dwell',
-                title: '设备停留点统计',
-                lazyload: true,
-                exact: true,
-                componentUrl: 'dwellListComponent' //对应子应用的组件名
-              },
+              // {
+              //   path: 'monitor',
+              //   title: '监控组报表',
+              //   lazyload: true,
+              //   exact: true,
+              //   componentUrl: 'monitorComponent' //对应子应用的组件名
+              // },
+              // {
+              //   path: 'odometer',
+              //   title: '行驶里程表',
+              //   lazyload: true,
+              //   exact: true,
+              //   componentUrl: 'odometerListComponent' //对应子应用的组件名
+              // },
+              // {
+              //   path: 'state',
+              //   title: '设备状态统计表',
+              //   lazyload: true,
+              //   exact: true,
+              //   componentUrl: 'stateListComponent' //对应子应用的组件名
+              // },
+              // {
+              //   path: 'offline',
+              //   title: '离线设备统计',
+              //   lazyload: true,
+              //   exact: true,
+              //   componentUrl: 'offlineListComponent' //对应子应用的组件名
+              // },
+              // {
+              //   path: 'dwell',
+              //   title: '设备停留点统计',
+              //   lazyload: true,
+              //   exact: true,
+              //   componentUrl: 'dwellListComponent' //对应子应用的组件名
+              // },
               {
                 path: 'permanent',
                 title: '常驻点统计',
