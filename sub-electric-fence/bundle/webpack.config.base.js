@@ -20,6 +20,7 @@ module.exports = {
     libraryTarget: "umd",
     jsonpFunction: `webpackJsonp_${name}`
   },
+  externals : process.argv[2] == "--build" ? externals : {},
   module:{
     rules:[
       ...new LoaderFactory().getLoaders()

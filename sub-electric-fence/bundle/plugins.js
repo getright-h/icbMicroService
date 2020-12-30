@@ -66,7 +66,7 @@ class PluginFactory {
   getHtmlWebpackPlugin() {
     this.plugins.push(
       new HtmlWebpackPlugin({
-        template: path.resolve(__dirname, '../public/index.html'),
+        template: process.argv[2] == "--build" ? path.resolve(__dirname, '../public/index.html') : path.resolve(__dirname, '../public/indexMap.html'),
         title: process.env.SITE_TITLE
       })
     )
@@ -103,7 +103,7 @@ class PluginFactory {
     this.getDotenv();
     // this.getFriendlyErrorsWebpackPlugin();
     // DLL 的插件放在最后 PUSH
-    this.getWebpackCdnPlugin();
+    // this.getWebpackCdnPlugin();
     // this.getDllPlugins();
     return this.plugins;
   }

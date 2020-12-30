@@ -14,6 +14,12 @@ module.exports = {
       ...new LoaderFactory().getLoaders()
     ],
   },
+  externals : {
+    'react': 'React', // Case matters here 
+    'react-dom' : 'ReactDOM',
+    'react-router': 'ReactRouter',
+    'axios': 'axios' // Case matters here ,
+  },
   resolve: {
     extensions: [ '.tsx', '.ts', '.js' ],
     alias: {

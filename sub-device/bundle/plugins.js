@@ -9,11 +9,12 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const Dotenv = require('dotenv-webpack');
 const WebpackCdnPlugin = require('webpack-cdn-plugin');
 const { NODE_ENV } = process.env;
-
+const argv = process.argv;
 class PluginFactory {
   constructor() {
     this.isProd = NODE_ENV === 'production';
     this.plugins = [];
+    this.isBuild = argv[2] == "--build" 
   }
 
   // 配置 dll
@@ -112,7 +113,7 @@ class PluginFactory {
     this.getIgnorePlugin();
     this.getFriendlyErrorsWebpackPlugin();
     // DLL 的插件放在最后 PUSH
-    this.getWebpackCdnPlugin();
+    // this.getWebpackCdnPlugin();
     // this.getDllPlugins();
     return this.plugins;
   }

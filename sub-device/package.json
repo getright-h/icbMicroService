@@ -11,8 +11,8 @@
   ],
   "scripts": {
     "start": "rimraf dist && cross-env NODE_ENV=development webpack-dev-server",
-    "build": "rimraf dist && cross-env NODE_ENV=production webpack",
-    "build:dev": "rimraf dist && cross-env NODE_ENV=development webpack",
+    "build": "rimraf dist && cross-env NODE_ENV=production webpack --build",
+    "build:dev": "rimraf dist && cross-env NODE_ENV=development webpack --build",
     "build-ana": "rimraf dist && cross-env NODE_ENV=production IS_ANA=analyse webpack",
     "dll:dev": "rimraf dll/development && cross-env NODE_ENV=development webpack --config bundle/webpack.config.dll.js",
     "dll:prod": "rimraf dll/production && cross-env NODE_ENV=production webpack --config bundle/webpack.config.dll.js",
