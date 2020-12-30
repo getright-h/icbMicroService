@@ -3,6 +3,8 @@ import { MenuState } from '~/solution/context/redux/reducer/reducer.interface';
 const GlobalStore: any = {};
 const NAME = '1';
 function appStore(props: any) {
+  // 存储初始化信息
+
   const { onGlobalStateChange, setGlobalState } = props;
   // 在当前应用监听全局状态，有变更触发 callback，fireImmediately = true 立即触发 callback
   onGlobalStateChange((state: MenuState, prev: MenuState) => {

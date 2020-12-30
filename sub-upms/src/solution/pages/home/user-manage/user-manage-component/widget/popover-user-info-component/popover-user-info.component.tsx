@@ -26,7 +26,9 @@ function PopoverUserInfoComponent(props: IPopoverUserInfoProps) {
   ];
   return (
     <Popover
-      content={<Table columns={columns} dataSource={data} pagination={false} rowKey={row => row.organizationId} />}
+      content={
+        <Table size="small" columns={columns} dataSource={data} pagination={false} rowKey={row => row.organizationId} />
+      }
       title={null}
       trigger="click"
       placement="topLeft"

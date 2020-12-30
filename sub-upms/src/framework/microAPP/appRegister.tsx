@@ -4,10 +4,7 @@ import React from 'react';
 import App from '~pages/app.component';
 import { AppConfig, ChildrenObject } from './microAppModal';
 import { appRoutes } from '~/solution/pages/app.routes';
-const components = {
-  login: () => import('~pages/login/login-component/login.component'),
-  home: () => import('~pages/home/home.module')
-};
+import { ROUTERS } from '~/solution/shared/constant/routers.const';
 
 function childProjectLifeCycle() {
   return {
@@ -27,7 +24,7 @@ function childProjectLifeCycle() {
       console.log('react app bootstraped');
     },
     async unmount(props: any) {
-      console.log(1222);
+      console.log('---------------------------', props);
 
       unmountComponentAtNode(
         props && props.container ? props.container.querySelector('#root') : document.getElementById('root')
@@ -41,29 +38,36 @@ function childProjectLifeCycle() {
 
 // 渲染当前子应用
 export function renderApp(props?: AppConfig) {
+  console.log('props =>>>>>>>', props);
+
   // 传递过来的路径和该应用下的子路由需要用那些
   // 拼接当前的router, 来自主应用的路由
   // // TODO: 后期需要区分是否作为子应用启动 通过window.__POWERED_BY_QIANKUN__
   // // 返回当前根据routeMatch拼接后的路由
 
-  const routers: any = !!window.__POWERED_BY_QIANKUN__ ? routerMatch(props.routers) : appRoutes;
-
-  const routerBase = !!window.__POWERED_BY_QIANKUN__ ? props.routerBase.replace('/#', '') : '';
+  const routers: any = !!window.__POWERED_BY_QIANKUN__
+    ? routerMatch(JSON.parse(JSON.stringify(props.routers)))
+    : appRoutes;
 
   render(
-    <App routers={routers} routerBase={routerBase} />,
+    <App routers={routers} userInfo={props && props.useInfo} />,
     props && props.container ? props.container.querySelector('#root') : document.getElementById('root')
   );
 }
 
-function routerMatch(routers: Array<ChildrenObject>) {
-  const dealRouters = routers.map(router => {
-    router.component = components[router.componentUrl];
-    return router;
+function routerMatch(routers: Array<ChildrenObject>, resultRouter: Array<any> = []) {
+  routers.forEach(router => {
+    router.component = ROUTERS[router.componentUrl];
+    router.path = router.path.slice(1);
+    resultRouter.push(router);
+    if (router.children) {
+      routerMatch(router.children, resultRouter);
+    }
+    router.children = [];
   });
-  console.log('dealRouters', dealRouters);
+  console.log('resultRouter', resultRouter);
 
-  return dealRouters;
+  return resultRouter;
 }
 
 export default childProjectLifeCycle;

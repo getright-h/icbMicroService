@@ -1,10 +1,11 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/*/node_modules
+/**/node_modules
 #/dist
 # testing
 /coverage
+/**/dist
 
 # production
 # /build
@@ -18,10 +19,8 @@ yarn-error.log*
 src/**/*.d.ts
 # 本地环境变量
 .env.local
-yarn.lock
-yarn.lock
-*.lock
 *.less.d.ts
+/*/dist
 
 .vscode
 .idea

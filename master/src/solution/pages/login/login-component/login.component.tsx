@@ -2,16 +2,19 @@ import React, { useCallback, useEffect } from 'react';
 import { LoginStore } from './login.component.store';
 import { IProps, IState } from './login.interface';
 import style from './login.component.less';
-import { Form, Input, Checkbox, Button, Icon } from 'antd';
+import { Form, Input, Button } from 'antd';
 import { CubeComponent } from '~/solution/components/component.module';
 import { useStore } from '~/framework/aop/hooks/use-base-store';
 import { reducer, initialState } from './store/reducer';
+import { FormInstance } from 'antd/lib/form';
+import { UserOutlined, LockOutlined, SafetyCertificateOutlined } from '@ant-design/icons';
 
-function LoginComponentOrigin(props: IProps) {
+export default function LoginComponent(props: IProps) {
   // 初始化 store
   const store: LoginStore = useStore(LoginStore, props);
   const { state } = store.useReducer<IState>(reducer, initialState);
   const { leftRef, leftCoverRef } = store.useRefs();
+  const loginForm = React.createRef<FormInstance>();
 
   // 设置页面宽高
   const setLeftCoverHeight = useCallback(() => {
@@ -30,7 +33,6 @@ function LoginComponentOrigin(props: IProps) {
     };
   }, []);
 
-  const { getFieldDecorator } = props.form;
   return (
     <div className={style.main}>
       <section className={style.left} ref={leftRef}>
@@ -48,37 +50,32 @@ function LoginComponentOrigin(props: IProps) {
           </p>
         </div>
         <div className={style.loginBox}>
-          <Form className="login-form" onSubmit={store.handleSubmit}>
-            <Form.Item>
-              {getFieldDecorator('username', {
-                rules: [{ required: true, message: '请输入用户名' }]
-              })(<Input prefix={<Icon type="user" />} placeholder="请输入用户名" />)}
+          <Form className="login-form" ref={loginForm} onFinish={store.handleSubmit} initialValues={{ checked: true }}>
+            <Form.Item name="account" rules={[{ required: true, message: '请输入用户名' }]}>
+              <Input prefix={<UserOutlined />} placeholder="请输入用户名" />
             </Form.Item>
-            <Form.Item>
-              {getFieldDecorator('password', {
-                rules: [{ required: true, message: '请输入登录密码' }]
-              })(<Input prefix={<Icon type="lock" />} type="password" placeholder="请输入登录密码" />)}
+            <Form.Item name="password" rules={[{ required: true, message: '请输入登录密码' }]}>
+              <Input prefix={<LockOutlined />} type="password" placeholder="请输入登录密码" />
             </Form.Item>
-            <Form.Item className={style.formFlexItem}>
-              {getFieldDecorator('vcode', {
-                rules: [{ required: true, message: '请输入验证码' }]
-              })(
-                <Input
-                  prefix={<Icon type="safety-certificate" />}
-                  className={style.vcodeInput}
-                  placeholder="请输入验证码"
-                />
-              )}
-              <div className={style.vcodeBox} onClick={store.getVcode}>
+            <Form.Item
+              name="vcode"
+              className={style.formFlexItem}
+              rules={[{ required: true, message: '请输入验证码' }]}
+            >
+              <Input
+                prefix={<SafetyCertificateOutlined />}
+                className={style.vcodeInput}
+                placeholder="请输入验证码"
+                onChange={e => {
+                  loginForm.current.setFieldsValue({ vcode: e.target.value });
+                }}
+              />
+              <span className={style.vcodeBox} onClick={store.getVcode}>
                 <img alt="验证码" title="点击更换验证码" src={state.vCodeImage} />
-              </div>
+              </span>
             </Form.Item>
-            {/* <Form.Item className={style.formFlexItem}>
-              {getFieldDecorator('remember', {
-                valuePropName: 'checked',
-                initialValue: true
-              })(<Checkbox>七天内免登录</Checkbox>)}
-              <a>忘记密码</a>
+            {/* <Form.Item className={style.formFlexItem} rules={[{ required: true, message: '请输入用户名' }]}>
+              <Checkbox>七天内免登录</Checkbox>)<a>忘记密码</a>
             </Form.Item> */}
             <Form.Item>
               <Button type="primary" htmlType="submit" loading={state.loginLoading} className={style.loginBtn}>
@@ -92,6 +89,3 @@ function LoginComponentOrigin(props: IProps) {
     </div>
   );
 }
-
-const LoginComponent = Form.create({ name: 'login_form' })(LoginComponentOrigin);
-export default LoginComponent;

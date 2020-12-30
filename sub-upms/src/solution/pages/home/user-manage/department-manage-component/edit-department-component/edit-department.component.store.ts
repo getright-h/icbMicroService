@@ -1,4 +1,4 @@
-import { IEditDepartmentState } from './edit-department.interface';
+import { IEditDepartmentProps, IEditDepartmentState } from './edit-department.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
 import { FormInstance } from 'antd/lib/form';
 import { DepartmentManageService } from '~/solution/model/services/department-manage.service';
@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { useEffect } from 'react';
 import { ShowNotification } from '~/framework/util/common';
 
-export function useEditDepartmentStore(props: any, form: FormInstance) {
+export function useEditDepartmentStore(props: IEditDepartmentProps, form: FormInstance) {
   const { state, setStateWrap } = useStateStore(new IEditDepartmentState());
   const departmentManageService = useService(DepartmentManageService);
 
@@ -18,14 +18,15 @@ export function useEditDepartmentStore(props: any, form: FormInstance) {
         instruction: info.instruction,
         state: info.state
       });
+      setStateWrap({ typeId: info.typeId });
     } else {
       form.setFieldsValue({
         state: true
       });
     }
   }
-  function selfClose() {
-    props.close && props.close();
+  function selfClose(isSuccess = false) {
+    props.close && props.close(isSuccess);
   }
   function selfSubmit(values: Record<string, any>) {
     console.log(values);
@@ -36,7 +37,7 @@ export function useEditDepartmentStore(props: any, form: FormInstance) {
           setStateWrap({ confirmLoading: false });
           ShowNotification.success('编辑成功！');
           form.resetFields();
-          selfClose();
+          selfClose(true);
         },
         (err: any) => {
           setStateWrap({ confirmLoading: false });
@@ -49,7 +50,7 @@ export function useEditDepartmentStore(props: any, form: FormInstance) {
           setStateWrap({ confirmLoading: false });
           ShowNotification.success('添加成功！');
           form.resetFields();
-          selfClose();
+          selfClose(true);
         },
         (err: any) => {
           setStateWrap({ confirmLoading: false });
@@ -60,7 +61,7 @@ export function useEditDepartmentStore(props: any, form: FormInstance) {
   }
   function selectOrganization(value: string, option: Record<string, any>) {
     form.setFieldsValue({ parentOrganizationId: value, parentDepartmentId: '' });
-    setStateWrap({ parentCode: value ? option.info.code : '' });
+    setStateWrap({ parentCode: value ? option.info.code : '', typeId: value });
   }
   useEffect(() => {
     initForm();

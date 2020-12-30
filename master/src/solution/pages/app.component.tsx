@@ -12,14 +12,13 @@ import MainReducer from '../context/redux/reducer/index';
 import { RoutesService } from '~/framework/util/routes/routes.service';
 import { appRoutes } from './app.routes';
 moment.locale('zh-cn');
-
 const App = () => {
   // 项目内部用的hooks provicer
   const { GlobalProvider } = useGlobalContext();
   // 主项目用的store 主要用来接收子应用传来的信息
   const store = createStore(MainReducer);
   return (
-    <ConfigProvider locale={zhCN}>
+    <ConfigProvider locale={zhCN} prefixCls={'micMaster'}>
       <Provider store={store}>
         <GlobalProvider>
           <HashRouter>{RoutesService.renderRoutes(appRoutes, false)}</HashRouter>

@@ -14,3 +14,11 @@ export class IEditStationState {
     systemId: string;
   }>;
 }
+
+export class IEditStationProps {
+  title: string;
+  visible: boolean;
+  isEdit: boolean;
+  close: (isSuccess?: boolean) => void;
+  info: Record<string, any>;
+}

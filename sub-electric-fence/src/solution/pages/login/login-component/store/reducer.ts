@@ -14,6 +14,11 @@ export function reducer(state = initialState, action: IAction<any>) {
         ...state,
         loginLoading: payload
       };
+    case TYPES.SET_V_CODE:
+      return {
+        ...state,
+        vCodeImage: payload
+      };
     default:
       return state;
   }

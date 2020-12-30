@@ -19,7 +19,7 @@ function RolePrivilegeTabsComponent(props: IRolePrivilegeTabsProps) {
     return (
       <React.Fragment>
         <h4>权限列表</h4>
-        <Button type="primary" onClick={() => submitMenuRelation()} loading={isLoading}>
+        <Button type="primary" onClick={() => submitMenuRelation()} loading={isLoading} disabled={!props.roleId}>
           保存
         </Button>
       </React.Fragment>

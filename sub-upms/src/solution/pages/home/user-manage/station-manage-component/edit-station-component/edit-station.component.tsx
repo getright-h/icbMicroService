@@ -5,20 +5,13 @@ import { Modal, Form, Select, Input, Radio } from 'antd';
 import { ISelectLoadingComponent } from '~/solution/components/component.module';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 import { IGlobalState } from '~/solution/context/global/global.interface';
+import { IEditStationProps } from './edit-station.interface';
 
-export default function EditStationComponent(props: any) {
+export default function EditStationComponent(props: IEditStationProps) {
   const { gState }: IGlobalState = React.useContext(GlobalContext);
   const [stationForm] = Form.useForm();
-  const { title, visible, close, isEdit, info } = props;
-  const { state, selfClose, selfSubmit, getRoleList, selectOrganization } = useEditStationStore(
-    {
-      close,
-      visible,
-      isEdit,
-      info
-    },
-    stationForm
-  );
+  const { title, visible, isEdit } = props;
+  const { state, selfClose, selfSubmit, getRoleList, selectOrganization } = useEditStationStore(props, stationForm);
   const { confirmLoading, roleList } = state;
   const layout = {
     labelCol: { span: 6 },
@@ -74,7 +67,14 @@ export default function EditStationComponent(props: any) {
           <Input placeholder="请输入岗位名称" />
         </Form.Item>
         <Form.Item name="roles" label="关联角色">
-          <Select mode="multiple" style={{ width: '100%' }} placeholder="请选择角色" onClick={getRoleList}>
+          <Select
+            mode="multiple"
+            style={{ width: '100%' }}
+            placeholder="请选择角色"
+            onClick={() => {
+              !roleList && getRoleList;
+            }}
+          >
             {roleList &&
               roleList.map(item => (
                 <Select.Option value={item.id} key={item.id}>

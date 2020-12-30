@@ -4,6 +4,7 @@ import { catchError, map } from 'rxjs/operators';
 import { DepUtil } from '~/framework/aop/inject';
 import * as Sentry from '@sentry/browser';
 import { message } from 'antd';
+import { StorageUtil } from '~/framework/util/storage';
 
 export interface HttpResponseModel {
   message: string;
@@ -25,9 +26,8 @@ class RequestService {
   private createAuthHeaders(): any {
     const headers = { token: '' };
 
-    const token = localStorage.getItem('TOKENINFO');
-    // const token =
-    //   'a8ef08d599c91222de8864bc28fa6416:ab5d2ad7e037bad368554a6a0dd1621158735f146e30deaf997190ae64005fd527de4ce731546d88dc715b2c3a27936710addad7bd0eedaceb04e1b246185afc6b2b7d8c342d5dcb673e5731a56f8fe7f73b51999c54fbd00c73f0a3145c07625c5961a1a9c826c7f33110826842c97f559b412593e0a1e93b4c2a82b39c50a10cbaefcdb8a4c7cd60efedad4c5362d49ba4d71f87cd8dfe6d2df88279a65de0';
+    const token = StorageUtil.getLocalStorage('token');
+
     if (token) {
       headers.token = token;
     }
@@ -36,8 +36,16 @@ class RequestService {
 
   private getRootUrl(url: string) {
     let returnInfo = process.env.MAIN;
-    if (!!~url.indexOf('VerifyCode')) {
+    if (!!~url.indexOf('VerifyCode') || !!~url.indexOf('Login')) {
       returnInfo = process.env.LOGIN;
+    } else if (!!~url.indexOf('gps/')) {
+      returnInfo = process.env.GPS;
+    } else if (!!~url.indexOf('fence/')) {
+      returnInfo = StorageUtil.getLocalStorage('source') ? process.env.FENCE_V2 : process.env.FENCE;
+    } else if (!!~url.indexOf('alarmCenter/')) {
+      returnInfo = process.env.ALARM_CENTER;
+    } else if (!!~url.indexOf('vehicle/manage/') || !!~url.indexOf('dispatch/manage/')) {
+      returnInfo = process.env.VEHICLE;
     } else {
       returnInfo = process.env.MAIN;
     }
@@ -169,7 +177,7 @@ class RequestService {
       if (data.total || data.total == 0) {
         return { total: data.total, data: data.data };
       }
-      if (data.data == 0 || data.data) {
+      if (data.data == 0 || data.data || data.data == null) {
         return data.data;
       } else {
         return data;

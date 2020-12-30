@@ -24,8 +24,16 @@ export function useVoucherManageStore() {
     voucherManageService
       .getDispatchPagedList({
         ...searchForm,
-        beginTime: searchForm.beginTime ? moment(searchForm.beginTime).valueOf() : 0,
-        endTime: searchForm.endTime ? moment(searchForm.endTime).valueOf() : 0
+        beginTime: searchForm.beginTime
+          ? moment(searchForm.beginTime)
+              .startOf('d')
+              .valueOf()
+          : 0,
+        endTime: searchForm.endTime
+          ? moment(searchForm.endTime)
+              .endOf('d')
+              .valueOf()
+          : 0
       })
       .subscribe(
         res => {

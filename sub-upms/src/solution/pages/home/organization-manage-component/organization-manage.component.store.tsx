@@ -24,7 +24,7 @@ export function useOrganizationManageStore() {
       .queryOrganizationList({ systemId: gState.myInfo.systemId, ...searchForm })
       .subscribe(
         (res: any) => {
-          setStateWrap({ tableData: res.dataList, isLoading: false });
+          setStateWrap({ tableData: res.dataList, isLoading: false, total: res.total });
         },
         (err: any) => {
           setStateWrap({ tableData: [], isLoading: false });
@@ -53,7 +53,7 @@ export function useOrganizationManageStore() {
         break;
       case '删除':
         Modal.confirm({
-          title: '确定删除此部门吗？',
+          title: '确定删除此机构吗？',
           icon: <ExclamationCircleOutlined />,
           onOk: () =>
             new Promise((resolve, reject) => {
@@ -61,9 +61,11 @@ export function useOrganizationManageStore() {
                 (res: any) => {
                   ShowNotification.success('删除成功！');
                   getTableData();
+                  resolve(true);
                 },
                 (err: any) => {
                   ShowNotification.error(err);
+                  reject();
                 }
               );
             })
@@ -104,7 +106,7 @@ export function useOrganizationManageStore() {
     getTableData();
   }
   useEffect(() => {
-    getTableData();
+    // getTableData();
     return () => {
       getTableDataSubscription && getTableDataSubscription.unsubscribe();
     };

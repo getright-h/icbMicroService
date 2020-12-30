@@ -10,6 +10,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import { RoutesService } from '~/framework/util/routes/routes.service';
 import { homeRoutes } from './home.routes';
 import { getHashParameter } from '~/solution/shared/util/common.util';
+import { StorageUtil } from '~/framework/util/storage';
 
 function HomeModule(props: any) {
   const { state } = useHomeStore();
@@ -17,9 +18,8 @@ function HomeModule(props: any) {
   const { gState }: IGlobalState = React.useContext(GlobalContext);
   const location = useLocation();
   React.useEffect(() => {
-    console.log('token', getHashParameter('token'));
-
-    localStorage.setItem('TOKENINFO', getHashParameter('token'));
+    getHashParameter('token') && StorageUtil.setLocalStorage('token', getHashParameter('token'));
+    getHashParameter('source') && StorageUtil.setLocalStorage('source', getHashParameter('source'));
   }, []);
   function getCurrentExpandList(currentUrl: string): string[] {
     let target = '';
@@ -52,15 +52,13 @@ function HomeModule(props: any) {
 
   return (
     <Spin spinning={state.loading} wrapperClassName="custom-layout-spin">
-      <Layout>
-        <div className={style.homeMain}>
-          {!source && <IHomeHeaderComponent></IHomeHeaderComponent>}
-          <div className={style.bodyContainer} style={{ paddingTop: !source ? '6.75rem' : '1rem' }}>
-            {!source && renderLayoutSider()}
-            <div className={style.pageContainer}>{renderLayoutContainer()}</div>
-          </div>
+      <div className={style.homeMain}>
+        {!source && <IHomeHeaderComponent></IHomeHeaderComponent>}
+        <div className={style.bodyContainer} style={{ paddingTop: !source ? '6.75rem' : '1rem' }}>
+          {!source && renderLayoutSider()}
+          <div className={style.pageContainer}>{renderLayoutContainer()}</div>
         </div>
-      </Layout>
+      </div>
     </Spin>
   );
 }

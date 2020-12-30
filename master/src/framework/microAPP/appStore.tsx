@@ -7,6 +7,7 @@ const GlobalStore: any = {};
 const NAME = 'name';
 function appStore(initGlobalState: (initState: MenuState) => MicroAppStateActions) {
   const { onGlobalStateChange, setGlobalState } = initGlobalState(initialState);
+  console.log('1---------');
 
   // 在当前应用监听全局状态，有变更触发 callback，fireImmediately = true 立即触发 callback
   onGlobalStateChange((state, prev) => {
@@ -21,8 +22,9 @@ function appStore(initGlobalState: (initState: MenuState) => MicroAppStateAction
 }
 
 const setState = (data: any) => {
+  console.log(data);
+
   GlobalStore.setGlobalState({
-    ignore: NAME,
     ...data
   });
 };

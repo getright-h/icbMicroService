@@ -1,6 +1,4 @@
 import TYPES from '../types';
-import { TagViews } from './reducer.interface';
-import { IMenu } from '~/framework/components/menu-component/menu.interface';
 import { PAGES_MENU } from '../../../shared/constant/common.const';
 import _ from 'lodash';
 

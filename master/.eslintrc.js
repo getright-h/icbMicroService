@@ -17,13 +17,16 @@ module.exports = {
   "rules": {
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "off",
+    "@typescript-eslint/camelcase": "off",
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-unused-vars": "off",
     "@typescript-eslint/no-use-before-define": "off",
     "react/prop-types": "off",
+    "react/display-name": "off",
     "no-extra-semi": 0, // 禁止不必要的分号
     "quotes": [
       "error",

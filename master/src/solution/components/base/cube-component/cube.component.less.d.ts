@@ -1,7 +1,13 @@
-export interface ICubeComponentLess {
-  cube: string;
-  stage: string;
+declare namespace CubeComponentLessNamespace {
+  export interface ICubeComponentLess {
+    cube: string;
+    stage: string;
+  }
 }
 
-export const locals: ICubeComponentLess;
-export default locals;
+declare const CubeComponentLessModule: CubeComponentLessNamespace.ICubeComponentLess & {
+  /** WARNING: Only available when `css-loader` is used without `style-loader` or `mini-css-extract-plugin` */
+  locals: CubeComponentLessNamespace.ICubeComponentLess;
+};
+
+export = CubeComponentLessModule;

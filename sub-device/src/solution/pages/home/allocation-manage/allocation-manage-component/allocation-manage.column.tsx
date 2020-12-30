@@ -68,7 +68,7 @@ export function allocationManageColumns(callbackAction: Function) {
       render: (text: any) => {
         if (Array.isArray(text) && text.length) {
           return text.map((item: any, index: number) => (
-            <div key={item.typeId}>{`${item.typeName}, ${item.number}个`}</div>
+            <div key={item.typeId + index}>{`${item.typeName}, ${item.number}个`}</div>
           ));
         } else {
           return '-';

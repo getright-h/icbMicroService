@@ -114,9 +114,9 @@ export function useEditVehicleStore() {
         ...values.vehicle,
         ...state.extraFormData,
         serverTime: values.vehicle.serverTime ? Number(values.vehicle.serverTime) : 0,
-        buyTime: values.vehicle.buyTime ? moment(values.vehicle.buyTime).format('YYYY-MM-DD') : null,
+        buyTime: values.vehicle.buyTime ? moment(values.vehicle.buyTime).format('YYYY-MM-DD HH:mm:ss') : null,
         serverBeginTime: values.vehicle.serverBeginTime
-          ? moment(values.vehicle.serverBeginTime).format('YYYY-MM-DD')
+          ? moment(values.vehicle.serverBeginTime).format('YYYY-MM-DD HH:mm:ss')
           : null
       }
     };

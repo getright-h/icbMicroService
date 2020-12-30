@@ -81,7 +81,7 @@ export function useStationManageStore() {
                 (res: any) => {
                   ShowNotification.success('已删除！');
                   getTableData(true);
-                  resolve();
+                  resolve(true);
                 },
                 (err: any) => {
                   ShowNotification.error(err);
@@ -93,15 +93,15 @@ export function useStationManageStore() {
         break;
     }
   }
-  function popclose() {
+  function popclose(isSuccess = false) {
     setStateWrap({ editStationVisible: false });
-    getTableData(true);
+    isSuccess && getTableData(true);
   }
   useEffect(() => {
-    getTableData();
+    gState.myInfo.systemId && getTableData();
     return () => {
       getTableDataSubscription && getTableDataSubscription.unsubscribe();
     };
-  }, []);
+  }, [gState.myInfo.systemId]);
   return { state, changeTablePageIndex, tableAction, popclose, addStation, getTableData, handleFormDataChange };
 }

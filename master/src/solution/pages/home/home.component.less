@@ -2,10 +2,13 @@
     padding-top: 6.75rem;
     min-height: 100vh;
     display: flex;
+    width: 100%;
 }
 
 .home-main {
     background: @back-ground;
+    display: flex;
+    width: 100%;
 }
 
 :global {
@@ -26,8 +29,11 @@
 .page-container {
     margin: 0 2rem 2rem 2rem;
     border-radius: 0.5rem;
-    min-height: 100vh;
+    // min-height: 100vh;
+    height: 80vh;
     background-color: @main-theme;
     color: @main-font-color;
     box-shadow: 0 8px 20px 0 @border-main;
+    flex: 1;
+    overflow-y: auto;
 }

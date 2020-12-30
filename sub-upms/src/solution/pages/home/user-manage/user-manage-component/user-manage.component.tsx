@@ -6,6 +6,8 @@ import { ITableComponent, TablePageTelComponent, IEditPasswordComponent } from '
 import { userColumns } from './user-colomns';
 import UserLeftComponent from './user-left-component/user-left.component';
 import AddUserComponent from './add-user-component/add-user.component';
+import { IGlobalState } from '~/solution/context/global/global.interface';
+import { GlobalContext } from '~/solution/context/global/global.provider';
 
 export default function UserManageComponent() {
   const {
@@ -19,8 +21,10 @@ export default function UserManageComponent() {
     popClose
   } = useUserManageStore();
   const { isLoading, searchForm, total, tableData, popVisible, isEdit, isDetail, userId, passwordVisible } = state;
+  const { gState }: IGlobalState = React.useContext(GlobalContext);
+
   function renderPageLeft() {
-    return <UserLeftComponent getSelectTreeNode={getSelectTreeNode}></UserLeftComponent>;
+    return gState.myInfo.systemId && <UserLeftComponent getSelectTreeNode={getSelectTreeNode}></UserLeftComponent>;
   }
   function renderSelectItems() {
     return (
@@ -90,8 +94,10 @@ export default function UserManageComponent() {
         otherSearchBtns={renderOtherButtons()}
         table={renderTable()}
       ></TablePageTelComponent>
-      <AddUserComponent visible={popVisible} isEdit={isEdit} isDetail={isDetail} userId={userId} close={popClose} />
-      <IEditPasswordComponent visible={passwordVisible} userId={userId} close={popClose} />
+      {popVisible && (
+        <AddUserComponent visible={popVisible} isEdit={isEdit} isDetail={isDetail} userId={userId} close={popClose} />
+      )}
+      {passwordVisible && <IEditPasswordComponent visible={passwordVisible} userId={userId} close={popClose} />}
     </React.Fragment>
   );
 }
