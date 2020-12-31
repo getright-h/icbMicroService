@@ -1,6 +1,6 @@
 import { IMonitorManageState } from './monitor-manage.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Key, useContext, useRef } from 'react';
 import { EventDataNode } from 'antd/lib/tree';
 import { ShowNotification } from '~/framework/util/common';
@@ -12,8 +12,7 @@ import { useHistory } from 'react-router-dom';
 import { DataNode } from 'rc-tree/lib/interface';
 import { getCheckedList } from '~/framework/util/common/treeFunction';
 import { OrganizationExportFunction } from '~/solution/components/organization-controller-component/organization-controller.interface';
-import { EventBus } from '~framework/util/common';
-const event = EventBus.getEventBus('treeData');
+
 const { confirm } = Modal;
 export function useMonitorManageStore() {
   const { state, setStateWrap } = useStateStore(new IMonitorManageState());
@@ -193,8 +192,27 @@ export function useMonitorManageStore() {
   }
 
   //在当前的tree上操作并显示相应的效果
-  function alertCurrentTreeData(id: string) {
-    organizationControllerRef.current.alertCurrentTreeData(id);
+  function alertCurrentTreeData(id: string, title: string) {
+    organizationControllerRef.current.alertCurrentTreeData(id, title);
+  }
+
+  function monitorGroupAction(element: any) {
+    return (
+      <div className="actions">
+        <a onClick={() => deletemonitorGroup(element)} className="a-link">
+          删除
+        </a>
+        <p></p>
+        <a onClick={() => editmonitorGroup(element)} className="a-link">
+          修改
+        </a>
+      </div>
+    );
+  }
+
+  //在当前的tree上操作并显示相应的效果
+  function appendNewNodeToCurrentTreeData(data: object) {
+    organizationControllerRef.current.appendNewNodeToCurrentTreeData(data);
   }
 
   return {
@@ -213,6 +231,8 @@ export function useMonitorManageStore() {
     deletemonitorGroup,
     editmonitorGroup,
     onSelectChange,
-    alertCurrentTreeData
+    alertCurrentTreeData,
+    monitorGroupAction,
+    appendNewNodeToCurrentTreeData
   };
 }

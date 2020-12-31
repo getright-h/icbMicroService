@@ -71,7 +71,9 @@ export function useAddWarehouseStore(props: IAddWarehouseProps) {
         // 关闭的时候销毁当前的modal
         ShowNotification.success(`${props.isEdit ? '编辑' : '创建'}仓库成功`);
         // 通知父应用刷新树列表
-        props.closeAddWarehouseModal(true, formInfo.organizationId);
+        let data: any = formInfo;
+        !props.isEdit && (data = { ...formInfo, materialTotalNumber: 0, storePositionTotalNumber: 0, id: res });
+        props.closeAddWarehouseModal(true, { ...data }, props.isEdit);
       },
       error => {
         setStateWrap({

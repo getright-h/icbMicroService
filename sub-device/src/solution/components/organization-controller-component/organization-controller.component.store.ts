@@ -4,29 +4,29 @@ import {
   IOrganizationControllerProps
 } from './organization-controller.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
-import { useEffect, useContext, useImperativeHandle } from 'react';
+import React, { useEffect, useContext, useImperativeHandle } from 'react';
 import { WarehouseListService } from '~/solution/model/services/warehouse-list.service';
 import { IGlobalState } from '~/solution/context/global/global.interface';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 import {
+  __initContent__,
   dealWithTreeData,
   updateTreeData,
   deleteTreeDataByKey,
-  alterTreeDataByKey
+  alterTreeDataByKey,
+  addTreeDataByOrgId
 } from '~/framework/util/common/treeFunction';
 import { QueryStoreOrganizationReturn } from '~/solution/model/dto/warehouse-list.dto';
 import { EventDataNode, DataNode, Key } from 'rc-tree/lib/interface';
-import { EventBus } from '~framework/util/common';
 import { forkJoin } from 'rxjs';
 
-const event = EventBus.getEventBus('treeData');
 let stateTreeDataBack: any[] = [];
 export function useOrganizationControllerStore(props: IOrganizationControllerProps, ref: any) {
   const { state, setStateWrap, getState } = useStateStore(new IOrganizationControllerState());
   const warehouseListService: WarehouseListService = new WarehouseListService();
   const { warehouseAction, onExpand, queryChildInfo, currentOrganazation, onlyLeafCanSelect } = props;
   const { gState }: IGlobalState = useContext(GlobalContext);
-
+  __initContent__(warehouseAction);
   useEffect(() => {
     queryOrganizationTypeListByTypeId();
   }, [currentOrganazation]);
@@ -120,7 +120,7 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
       }
     );
   }
-  event.subscribe(queryStoreOrganizationListSub, 'queryStoreOrganizationListSub');
+
   // 搜索得到想要的key获取当前仓库
   function getCurrentSelectInfo<T>(value: T, key: string) {
     setStateWrap({
@@ -145,30 +145,8 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
       res.forEach(item => {
         expandedKeys.push(item.id);
       });
-
-      // onExpand(expandedKeys);
-      treeExpand([], {}, expandedKeys);
+      onExpand(expandedKeys);
     });
-  }
-  // expand
-
-  function treeExpand(
-    expandedKeys?: string[],
-    info?: {
-      node?: EventDataNode;
-      expanded?: boolean;
-      nativeEvent?: MouseEvent;
-    },
-    setKey?: string[]
-  ) {
-    const { node = {} } = info || ({} as any);
-    console.log(info);
-    new Promise((reslove: any) => {
-      queryStoreOrganizationListSub(node.id, node, reslove);
-    });
-
-    expandedKeys && onExpand(expandedKeys);
-    setKey && onExpand(setKey);
   }
 
   // 在当前的tree上操作并显示相应的效果
@@ -180,8 +158,16 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
   }
 
   // 修改tree
-  function alertCurrentTreeData(id: string) {
-    const treeData = alterTreeDataByKey(state.treeData, id);
+  function alertCurrentTreeData(id: string, title: string) {
+    const treeData = alterTreeDataByKey(state.treeData, id, title);
+    setStateWrap({
+      treeData: treeData
+    });
+  }
+
+  // 增加节点
+  function appendNewNodeToCurrentTreeData(data: object) {
+    const treeData = addTreeDataByOrgId(state.treeData, data);
     setStateWrap({
       treeData: treeData
     });
@@ -191,8 +177,9 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     alertCurrentTreeData,
     deleteCurrentTreeData,
     queryOrganizationTypeListByTypeId,
-    searchCurrentSelectInfo
+    searchCurrentSelectInfo,
+    appendNewNodeToCurrentTreeData
   }));
 
-  return { state, onLoadData, getCurrentSelectInfo, onCheck, getCurrentGroup, treeExpand };
+  return { state, onLoadData, getCurrentSelectInfo, onCheck, getCurrentGroup };
 }

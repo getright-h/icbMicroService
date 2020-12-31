@@ -89,15 +89,18 @@ export function useWarehouseListLeftStore() {
     setTreeSelectNode(e.node, dispatch);
   }
 
-  function closeAddWarehouseModal(isRefresh: boolean, id: string) {
+  function closeAddWarehouseModal(isRefresh: boolean, data: any, isEdit: boolean) {
     if (isRefresh) {
       setStateWrap({
         isEditWarehouseModal: false,
         addWarehouseVisible: false,
-        editWarehouseId: '',
-        expandedKeys: []
+        editWarehouseId: ''
+        // expandedKeys: []
       });
-      organizationControllerRef.current.queryOrganizationTypeListByTypeId();
+      // organizationControllerRef.current.queryOrganizationTypeListByTypeId();
+      isEdit
+        ? organizationControllerRef.current.alertCurrentTreeData(data.id, data.name)
+        : organizationControllerRef.current.appendNewNodeToCurrentTreeData(data);
     } else {
       setStateWrap({
         isEditWarehouseModal: false,

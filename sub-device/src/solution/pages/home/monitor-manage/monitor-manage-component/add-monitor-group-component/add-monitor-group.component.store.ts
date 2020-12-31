@@ -1,21 +1,18 @@
 import { IAddMonitorGroupState, AddMonitorGroupProp } from './add-monitor-group.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
 import { MonitorService } from '~/solution/model/services/monitor.service';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { Subscription } from 'rxjs';
 import { Form } from 'antd';
 import { ShowNotification } from '~/framework/util/common';
-import { EventBus } from '~framework/util/common';
-const event = EventBus.getEventBus('treeData');
-import { OrganizationExportFunction } from '~/solution/components/organization-controller-component/organization-controller.interface';
 
 export function useAddMonitorGroupStore(props: AddMonitorGroupProp) {
   const { state, setStateWrap } = useStateStore(new IAddMonitorGroupState());
   const monitorService = useService(MonitorService);
-  const organizationControllerRef: { current: OrganizationExportFunction } = useRef();
+
   let insertVehicleGroupSubscription: Subscription;
   const [form] = Form.useForm();
-  console.log(event);
+
   function addMonitorGroup(value: any) {
     const { organization = {} } = state;
     const params = {
@@ -28,10 +25,7 @@ export function useAddMonitorGroupStore(props: AddMonitorGroupProp) {
     if (props?.data.id) {
       insertVehicleGroupSubscription = monitorService.setVehicleGroup({ ...params, id: props?.data.id }).subscribe(
         (res: any) => {
-          // new Promise((reslove: any) => {
-          //   event.publish(props?.data.organizationId, props?.data, reslove, 'queryStoreOrganizationListSub');
-          // });
-          props.alertCurrentTreeData(props?.data.id);
+          props.alertCurrentTreeData(props?.data.id, params.name);
           ShowNotification.success('修改成功');
           setStateWrap({ submitLoading: false });
           close();
@@ -44,6 +38,7 @@ export function useAddMonitorGroupStore(props: AddMonitorGroupProp) {
       insertVehicleGroupSubscription = monitorService.insertVehicleGroup({ ...params }).subscribe(
         (res: any) => {
           console.log(res);
+          props.appendNewNodeToCurrentTreeData({ ...params, id: res });
           ShowNotification.success('添加成功');
           setStateWrap({ submitLoading: false });
           close();

@@ -7,14 +7,10 @@ import { Tree } from 'antd';
 import { IOrganizationControllerProps } from './organization-controller.interface';
 
 function OrganizationControllerComponent(props: IOrganizationControllerProps, ref: any) {
-  const {
-    state,
-    treeExpand,
-    onLoadData,
-    getCurrentSelectInfo,
-    onCheck,
-    getCurrentGroup
-  } = useOrganizationControllerStore(props, ref);
+  const { state, onLoadData, getCurrentSelectInfo, onCheck, getCurrentGroup } = useOrganizationControllerStore(
+    props,
+    ref
+  );
   const { onSelect, expandedKeys, treeSelectedKeys, onExpand, checkedKeys, checkable, isGroup = false } = props;
   const { gState } = React.useContext(GlobalContext);
   const { treeData } = state;
@@ -43,14 +39,13 @@ function OrganizationControllerComponent(props: IOrganizationControllerProps, re
           />
         )}
       </div>
-      {console.log(treeData)}
       <Tree
         // loadedKeys={expandedKeys}
         loadData={onLoadData}
         onSelect={onSelect}
         expandedKeys={expandedKeys}
         selectedKeys={treeSelectedKeys}
-        onExpand={treeExpand}
+        onExpand={onExpand}
         checkedKeys={checkedKeys}
         onCheck={onCheck}
         blockNode
