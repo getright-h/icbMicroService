@@ -28,7 +28,7 @@ export function dealWithTreeData<T>(
       });
       treeDataChild.title = renderTitle(isWarehouse, element, content);
       // 缓存当前列表Content
-      __content__ = content;
+      __initContent__(content);
       treeDataChild['isLeaf'] = isWarehouse;
       treeDataChild.selectable = canSelectAll || isWarehouse;
       treeDataChild.checkable = isWarehouse || !!organizationChecked;

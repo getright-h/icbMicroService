@@ -10,7 +10,7 @@ export class IAddTemplateTypeProps {
   isEdit = false;
   groupId = '';
   organazationList: QueryStoreOrganizationReturn[] = [];
-  closeAddTemplateTypeModal: (isRefresh?: boolean, id?: string) => void;
+  closeAddTemplateTypeModal: (isRefresh?: boolean, data?: any, isEdit?: boolean) => void;
 }
 
 export class IAddTemplateTypeState {
