@@ -201,7 +201,7 @@ export function fetchChildAppsConfig() {
                 title: '审批管理',
                 lazyload: true,
                 exact: true,
-                componentUrl: 'warehouseList' //对应子应用的组件名
+                componentUrl: 'approvalManage' //对应子应用的组件名
               },
               {
                 path: 'approvalTemplate',
