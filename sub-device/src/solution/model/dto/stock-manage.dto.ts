@@ -248,3 +248,9 @@ export interface UpdatePurchaseParam {
   image: string[];
   remark: string;
 }
+
+export interface RenewMaterialParam {
+  deviceCode: string;
+  storeId: string;
+  storePositionId: string;
+}
