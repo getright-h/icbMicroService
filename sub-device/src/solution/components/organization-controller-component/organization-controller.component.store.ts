@@ -4,7 +4,7 @@ import {
   IOrganizationControllerProps
 } from './organization-controller.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
-import React, { useEffect, useContext, useImperativeHandle } from 'react';
+import { useEffect, useContext, useImperativeHandle } from 'react';
 import { WarehouseListService } from '~/solution/model/services/warehouse-list.service';
 import { IGlobalState } from '~/solution/context/global/global.interface';
 import { GlobalContext } from '~/solution/context/global/global.provider';
@@ -17,10 +17,9 @@ import {
   addTreeDataByOrgId
 } from '~/framework/util/common/treeFunction';
 import { QueryStoreOrganizationReturn } from '~/solution/model/dto/warehouse-list.dto';
-import { EventDataNode, DataNode, Key } from 'rc-tree/lib/interface';
+import { EventDataNode, DataNode } from 'rc-tree/lib/interface';
 import { forkJoin } from 'rxjs';
 
-let stateTreeDataBack: any[] = [];
 export function useOrganizationControllerStore(props: IOrganizationControllerProps, ref: any) {
   const { state, setStateWrap, getState } = useStateStore(new IOrganizationControllerState());
   const warehouseListService: WarehouseListService = new WarehouseListService();
@@ -65,57 +64,31 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
   function onCheck(checkedKeys: any) {
     props.getCheckedInfo(state.treeData, checkedKeys);
   }
-  function queryOrg(id: string, data: any[]) {
-    let target = {};
-    data.forEach((tree: any) => {
-      if (tree.parentId ? tree.parentId == id : tree.organizationId == id) {
-        target = tree;
-      } else if (tree.children && Array.isArray(tree.children)) {
-        target = queryOrg(id, tree.children);
-      }
-    });
-    return target;
-  }
   /**
    *
    * 根据父级Id查询子级机构
    * @param {string} id 父级id
    */
   function queryStoreOrganizationListSub(parentId: string, treeNode: EventDataNode | any, resolve: Function) {
-    // 根据parentId
-
-    const parentTreeNode = queryOrg(parentId, stateTreeDataBack) as any;
-
-    console.log(parentTreeNode.id, 'state');
-
-    const queryChildInfoSubscription =
-      queryChildInfo || Object.keys(parentTreeNode).length
-        ? queryChildInfo({ organizationId: parentId })
-        : Promise.resolve();
+    const queryChildInfoSubscription = queryChildInfo
+      ? queryChildInfo({ organizationId: parentId })
+      : Promise.resolve();
     forkJoin(warehouseListService.queryStoreOrganizationListSub({ parentId }), queryChildInfoSubscription).subscribe(
       (res: any) => {
         const queryChildInfoData: DataNode[] = queryChildInfo
           ? dealWithTreeData(res[1], TREE_MAP, true, warehouseAction)
           : [];
 
-        treeNode &&
-          (treeNode.children = [
-            ...queryChildInfoData,
-            ...dealWithTreeData(res[0], TREE_MAP, false, undefined, undefined, props.organizationChecked)
-          ]);
-
-        console.log(treeNode, 111);
-        const treeData = updateTreeData(
-          state.treeData.length ? state.treeData : stateTreeDataBack,
-          treeNode ? treeNode.organizationId : parentTreeNode.id,
-          treeNode.children
-        );
+        treeNode.children = [
+          ...queryChildInfoData,
+          ...dealWithTreeData(res[0], TREE_MAP, false, undefined, undefined, props.organizationChecked)
+        ];
+        const treeData = updateTreeData(state.treeData, treeNode.key, treeNode.children);
 
         props.checkable && props.getCheckedInfo(treeData);
         setStateWrap({
           treeData
         });
-        stateTreeDataBack = treeData;
         resolve();
       }
     );
