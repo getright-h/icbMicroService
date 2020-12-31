@@ -14,6 +14,7 @@ function OrganizationControllerComponent(props: IOrganizationControllerProps, re
   const { onSelect, expandedKeys, treeSelectedKeys, onExpand, checkedKeys, checkable, isGroup = false } = props;
   const { gState } = React.useContext(GlobalContext);
   const { treeData } = state;
+  treeData.length && console.log(treeData);
   return (
     <>
       <div className={style.searchWarehouse}>
@@ -39,7 +40,7 @@ function OrganizationControllerComponent(props: IOrganizationControllerProps, re
         )}
       </div>
       <Tree
-        loadedKeys={expandedKeys}
+        // loadedKeys={expandedKeys}
         loadData={onLoadData}
         onSelect={onSelect}
         expandedKeys={expandedKeys}

@@ -8,7 +8,14 @@ import { useEffect, useContext, useImperativeHandle } from 'react';
 import { WarehouseListService } from '~/solution/model/services/warehouse-list.service';
 import { IGlobalState } from '~/solution/context/global/global.interface';
 import { GlobalContext } from '~/solution/context/global/global.provider';
-import { dealWithTreeData, updateTreeData, deleteTreeDataByKey } from '~/framework/util/common/treeFunction';
+import {
+  __initContent__,
+  dealWithTreeData,
+  updateTreeData,
+  deleteTreeDataByKey,
+  alterTreeDataByKey,
+  addTreeDataByOrgId
+} from '~/framework/util/common/treeFunction';
 import { QueryStoreOrganizationReturn } from '~/solution/model/dto/warehouse-list.dto';
 import { EventDataNode, DataNode } from 'rc-tree/lib/interface';
 import { forkJoin } from 'rxjs';
@@ -18,6 +25,7 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
   const warehouseListService: WarehouseListService = new WarehouseListService();
   const { warehouseAction, onExpand, queryChildInfo, currentOrganazation, onlyLeafCanSelect } = props;
   const { gState }: IGlobalState = useContext(GlobalContext);
+  __initContent__(warehouseAction);
   useEffect(() => {
     queryOrganizationTypeListByTypeId();
   }, [currentOrganazation]);
@@ -47,6 +55,7 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
 
   // 点击展开加载数据
   function onLoadData(treeNode: EventDataNode | any): Promise<void> {
+    console.log(treeNode);
     return new Promise(resolve => {
       queryStoreOrganizationListSub(treeNode.id, treeNode, resolve);
     });
@@ -55,7 +64,6 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
   function onCheck(checkedKeys: any) {
     props.getCheckedInfo(state.treeData, checkedKeys);
   }
-
   /**
    *
    * 根据父级Id查询子级机构
@@ -110,7 +118,6 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
       res.forEach(item => {
         expandedKeys.push(item.id);
       });
-
       onExpand(expandedKeys);
     });
   }
@@ -123,11 +130,28 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     });
   }
 
+  // 修改tree
+  function alertCurrentTreeData(id: string, title: string) {
+    const treeData = alterTreeDataByKey(state.treeData, id, title);
+    setStateWrap({
+      treeData: treeData
+    });
+  }
+
+  // 增加节点
+  function appendNewNodeToCurrentTreeData(data: object) {
+    const treeData = addTreeDataByOrgId(state.treeData, data);
+    setStateWrap({
+      treeData: treeData
+    });
+  }
   useImperativeHandle(ref, () => ({
     // changeVal 就是暴露给父组件的方法
+    alertCurrentTreeData,
     deleteCurrentTreeData,
     queryOrganizationTypeListByTypeId,
-    searchCurrentSelectInfo
+    searchCurrentSelectInfo,
+    appendNewNodeToCurrentTreeData
   }));
 
   return { state, onLoadData, getCurrentSelectInfo, onCheck, getCurrentGroup };

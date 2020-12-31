@@ -47,7 +47,8 @@ export default function ApprovalApplyComponent(props: IApprovalApplyProps) {
                 placeholder: '请输入模板名称',
                 onChange: setTemplateId,
                 searchForm: {
-                  groupId: curGroupId
+                  groupId: curGroupId,
+                  isEnable: true
                 },
                 options: {
                   disabled: !state.curGroupId

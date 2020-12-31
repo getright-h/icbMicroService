@@ -9,6 +9,7 @@ import { ShowNotification } from '~/framework/util/common';
 export function useAddMonitorGroupStore(props: AddMonitorGroupProp) {
   const { state, setStateWrap } = useStateStore(new IAddMonitorGroupState());
   const monitorService = useService(MonitorService);
+
   let insertVehicleGroupSubscription: Subscription;
   const [form] = Form.useForm();
 
@@ -24,7 +25,7 @@ export function useAddMonitorGroupStore(props: AddMonitorGroupProp) {
     if (props?.data.id) {
       insertVehicleGroupSubscription = monitorService.setVehicleGroup({ ...params, id: props?.data.id }).subscribe(
         (res: any) => {
-          console.log(res);
+          props.alertCurrentTreeData(props?.data.id, params.name);
           ShowNotification.success('修改成功');
           setStateWrap({ submitLoading: false });
           close();
@@ -37,6 +38,7 @@ export function useAddMonitorGroupStore(props: AddMonitorGroupProp) {
       insertVehicleGroupSubscription = monitorService.insertVehicleGroup({ ...params }).subscribe(
         (res: any) => {
           console.log(res);
+          props.appendNewNodeToCurrentTreeData({ ...params, id: res });
           ShowNotification.success('添加成功');
           setStateWrap({ submitLoading: false });
           close();

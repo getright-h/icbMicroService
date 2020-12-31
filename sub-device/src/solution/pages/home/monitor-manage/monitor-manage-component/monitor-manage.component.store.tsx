@@ -1,6 +1,6 @@
 import { IMonitorManageState } from './monitor-manage.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Key, useContext, useRef } from 'react';
 import { EventDataNode } from 'antd/lib/tree';
 import { ShowNotification } from '~/framework/util/common';
@@ -174,6 +174,7 @@ export function useMonitorManageStore() {
     });
   }
   function editmonitorGroup(element: any) {
+    console.log(element, 'element');
     callbackAction(ModalType.ADD_GROUP, element);
   }
 
@@ -189,6 +190,31 @@ export function useMonitorManageStore() {
   function deleteCurrentTreeData(id: string) {
     organizationControllerRef.current.deleteCurrentTreeData(id);
   }
+
+  //在当前的tree上操作并显示相应的效果
+  function alertCurrentTreeData(id: string, title: string) {
+    organizationControllerRef.current.alertCurrentTreeData(id, title);
+  }
+
+  function monitorGroupAction(element: any) {
+    return (
+      <div className="actions">
+        <a onClick={() => deletemonitorGroup(element)} className="a-link">
+          删除
+        </a>
+        <p></p>
+        <a onClick={() => editmonitorGroup(element)} className="a-link">
+          修改
+        </a>
+      </div>
+    );
+  }
+
+  //在当前的tree上操作并显示相应的效果
+  function appendNewNodeToCurrentTreeData(data: object) {
+    organizationControllerRef.current.appendNewNodeToCurrentTreeData(data);
+  }
+
   return {
     state,
     organizationControllerRef,
@@ -204,6 +230,9 @@ export function useMonitorManageStore() {
     onSelect,
     deletemonitorGroup,
     editmonitorGroup,
-    onSelectChange
+    onSelectChange,
+    alertCurrentTreeData,
+    monitorGroupAction,
+    appendNewNodeToCurrentTreeData
   };
 }
