@@ -9,6 +9,8 @@ export class IDeviceStockInState {
     purchaseCode: '',
     storePositionName: ''
   };
+  errorList: any[] = [];
+  isErrorListVisible = false;
 }
 /**
  * @export props变量定义和初始化
