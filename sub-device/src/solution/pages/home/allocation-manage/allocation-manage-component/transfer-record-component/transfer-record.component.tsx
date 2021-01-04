@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './transfer-record.component.less';
 import { useTransferRecordStore } from './transfer-record.component.store';
 import { ITransferRecordProps } from './transfer-record.interface';

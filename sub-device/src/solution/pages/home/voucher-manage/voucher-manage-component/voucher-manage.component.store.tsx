@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { IVoucherManageState, ModalType } from './voucher-manage.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect } from 'react';

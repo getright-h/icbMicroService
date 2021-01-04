@@ -1,5 +1,5 @@
 import { Form, Modal, Radio, Input, Button } from 'antd';
-import * as React from 'react';
+import React from 'react';
 import style from './directive-patch-modal.component.less';
 import { useDirectiveModalStore } from './directive-patch-moda.component.store';
 import { ISelectLoadingComponent } from '~/solution/components/component.module';

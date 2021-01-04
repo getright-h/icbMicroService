@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { inject, observer } from 'mobx-react';
+import React from 'react';
 import { TablePageTelStore } from './table-page-tel.component.store';
 import { IProps } from './table-page-tel.interface';
 import style from './table-page-tel.component.less';

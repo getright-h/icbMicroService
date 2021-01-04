@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './fence-modal-view.component.less';
 import { useFenceModalViewStore } from './fence-modal-view.component.store';
 import { Button } from 'antd';

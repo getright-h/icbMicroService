@@ -5,6 +5,7 @@ const getAlias = require('./alias');
 const externals = require("./externals");
 const name = "sub-upms"
 const { IS_BUILD, PUBLICK_PATH } = process.env;
+console.log("IS_BUILD", IS_BUILD);
 module.exports = {
   entry:path.resolve(__dirname,'../src/index.tsx'),
   output: {

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { useAddSupplierStore } from './add-supplier.component.store';
 import { IAreaCascaderComponent } from '~framework/components/component.module';
 import { Modal, Form, Input, Radio } from 'antd';

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './position-monitor-mapbtn-track.component.less';
 import { usePositionMonitorMapbtnTrackStore } from './position-monitor-mapbtn-track.component.store';
 import { Drawer } from 'antd';

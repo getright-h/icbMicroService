@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './unbind-device.component.less';
 import { useUnbindDeviceStore } from './unbind-device.component.store';
 import { IUnbindDeviceProps } from './unbind-device.interface';

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './owner-manage.component.less';
 import { TablePageTelComponent } from '~/framework/components/component.module';
 import { ITableComponent } from '~/framework/components/component.module';

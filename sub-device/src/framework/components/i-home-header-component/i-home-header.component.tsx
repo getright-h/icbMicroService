@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { useHomeHeaderStore } from './i-home-header.component.store';
 import { HomeOutlined, MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import { Popover } from 'antd';

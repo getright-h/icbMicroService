@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './in-out-stock.component.less';
 import { useInOutStockStore } from './in-out-stock.component.store';
 import { Input, Button, Select, Row, Form, Col } from 'antd';

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './allocation-detail.component.less';
 import { useAllocationDetailStore } from './allocation-detail.component.store';
 import { IHeaderTitleComponent } from '~/framework/components/component.module';

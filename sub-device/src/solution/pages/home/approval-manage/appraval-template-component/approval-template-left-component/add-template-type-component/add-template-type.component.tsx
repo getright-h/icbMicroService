@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './add-template-type.component.less';
 import { useAddTemplateTypeStore } from './add-template-type.component.store';
 import { IAddTemplateTypeProps } from './add-template-type.interface';

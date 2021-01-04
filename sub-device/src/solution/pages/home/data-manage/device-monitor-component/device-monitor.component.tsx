@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './device-monitor.component.less';
 import { useDeviceMonitorStore } from './device-monitor.component.store';
 

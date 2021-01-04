@@ -1,5 +1,5 @@
 import { Button, Steps, message, PageHeader } from 'antd';
-import * as React from 'react';
+import React from 'react';
 import { AddTemplateReducer, addTemplateInitialState } from './add-template-redux/add-template-reducer';
 const { Step } = Steps;
 import style from './add-template.component.less';

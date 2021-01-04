@@ -1,5 +1,5 @@
 import { Select } from 'antd';
-import * as React from 'react';
+import React from 'react';
 import style from './i-map.component.less';
 import { useIMapStore } from './i-map.component.store';
 import { TIMapProps } from './i-map.interface';

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { useSetAlarmStore } from './set-alarm-model.component.store';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 import { EditAlarmTemplateItem, ISetAlarmProp } from './set-alarm-model.interface';

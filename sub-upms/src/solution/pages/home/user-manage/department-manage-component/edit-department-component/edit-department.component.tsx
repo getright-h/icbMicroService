@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './edit-department.component.less';
 import { Form, Modal, Input, Radio, Select } from 'antd';
 import { ISelectLoadingComponent } from '~/solution/components/component.module';

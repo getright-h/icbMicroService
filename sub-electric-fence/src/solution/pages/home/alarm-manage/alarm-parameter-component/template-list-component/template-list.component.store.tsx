@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { ITemplateListProps, ITemplateListState } from './template-list.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form, message, Modal } from 'antd';

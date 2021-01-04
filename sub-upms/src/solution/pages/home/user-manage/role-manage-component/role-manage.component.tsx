@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './role-manage.component.less';
 import RolePrivilegeTabsComponent from './role-privilege-tabs-component/role-privilege-tabs.component';
 import { roleColumns } from './role-columns';

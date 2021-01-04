@@ -1,5 +1,5 @@
 import { Button, Col, Form, Input, Row, Select } from 'antd';
-import * as React from 'react';
+import React from 'react';
 import { ITableComponent, TablePageTelComponent } from '../statistical-list-component/statistical-list-component copy/node_modules/~/solution/components/component.module';
 import { AlarmParameterColumn } from './directive-list.column';
 

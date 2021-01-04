@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Layout, Spin } from 'antd';
 import style from './home.component.less';
 import { IHomeHeaderComponent, MenuComponent } from '~/solution/components/component.module';

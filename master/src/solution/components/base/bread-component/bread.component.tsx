@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { useBreadStore } from './bread.component.store';
 import { IBread } from './bread.interface';
 import { Link } from 'react-router-dom';

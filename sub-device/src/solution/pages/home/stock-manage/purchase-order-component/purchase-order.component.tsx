@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './purchase-order.component.less';
 import {
   ISelectLoadingComponent,

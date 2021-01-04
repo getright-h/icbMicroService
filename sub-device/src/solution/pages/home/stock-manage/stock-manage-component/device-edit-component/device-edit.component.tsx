@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './device-edit.component.less';
 import { useDeviceEditStore } from './device-edit.component.store';
 import { IDeviceEditProps } from './device-edit.interface';

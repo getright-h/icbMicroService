@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './role-menu.component.less';
 import { Tree, Empty } from 'antd';
 import { useRoleMenuStore } from './role-menu.component.store';

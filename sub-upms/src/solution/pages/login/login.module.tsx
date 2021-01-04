@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { RoutesService } from '~/framework/util/routes/routes.service';
 import { loginRoutes } from './login.routes';
 import { Redirect } from 'react-router-dom';

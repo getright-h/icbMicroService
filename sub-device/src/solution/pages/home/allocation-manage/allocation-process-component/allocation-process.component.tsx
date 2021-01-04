@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { useAllocationProcessStore } from './allocation-process.component.store';
 import { Tabs } from 'antd';
 import { IHeaderTitleComponent } from '~framework/components/component.module';

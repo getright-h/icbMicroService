@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { IApprovalDealWithState, ModalType } from './approval-deal-with.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect } from 'react';

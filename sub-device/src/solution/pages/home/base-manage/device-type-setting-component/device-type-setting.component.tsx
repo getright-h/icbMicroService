@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './device-type-setting.component.less';
 import { ModalType } from '../base-manage.const';
 import { useDeviceTypeSettingStore } from './device-type-setting.component.store';

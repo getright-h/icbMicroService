@@ -1,5 +1,5 @@
 import { Button, Col, Form, Input, Row, Select, Modal, Timeline } from 'antd';
-import * as React from 'react';
+import React from 'react';
 import { ITableComponent, TablePageTelComponent } from '~/solution/components/component.module';
 import { AlarmParameterColumn } from './follow-list.column';
 import { useDirectiveListStore } from './follow-list.component.store';

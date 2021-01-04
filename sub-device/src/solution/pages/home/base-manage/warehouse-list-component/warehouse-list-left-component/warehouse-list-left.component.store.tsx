@@ -1,7 +1,7 @@
 import { IWarehouseListLeftState } from './warehouse-list-left.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Key, useContext, useRef } from 'react';
-import * as React from 'react';
+import React from 'react';
 import { WarehouseListService } from '~/solution/model/services/warehouse-list.service';
 import { deleteTreeDataByKey } from '~/framework/util/common/treeFunction';
 import { EventDataNode } from 'antd/lib/tree';

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './approvaler-list.component.less';
 import { useApprovalerListStore } from './approvaler-list.component.store';
 import { IApprovalerListProps } from './approvaler-list.interface';

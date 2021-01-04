@@ -1,5 +1,5 @@
 import { ColumnsType } from 'antd/lib/table';
-import * as React from 'react';
+import React from 'react';
 import { Button } from 'antd';
 import { FormOutlined } from '@ant-design/icons';
 import { RoleInfo } from '~/solution/model/dto/role-manage.dto';

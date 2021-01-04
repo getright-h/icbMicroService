@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './warehouse-list.component.less';
 import { WarehouseListReducer, warehouseListInitialState } from './warehouse-list-redux/warehouse-list-reducer';
 import { TablePageTelComponent, ITableComponent } from '~/framework/components/component.module';

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { IProps } from './lazyload-loading.interface';
 import style from './lazyload-loading.component.less';
 

@@ -2,7 +2,7 @@ import { IApprovalManageDetailState, CHECK_VALID_OBJECT, FormTemplateInfo } from
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
 import { DoError } from '~/framework/util/common/doError';
 import { message } from 'antd';
-import * as React from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import { ApprovalManageService } from '~/solution/model/services/approval-manage.service';
 import { useEffect } from 'react';

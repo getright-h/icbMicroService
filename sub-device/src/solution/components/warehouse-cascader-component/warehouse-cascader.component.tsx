@@ -1,5 +1,5 @@
 import { Cascader } from 'antd';
-import * as React from 'react';
+import React from 'react';
 import { useWarehouseCascaderStore } from './warehouse-cascader.component.store';
 import { IWarehouseCascaderProps } from './warehouse-cascader.interface';
 

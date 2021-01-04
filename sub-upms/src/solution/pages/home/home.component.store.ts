@@ -4,6 +4,7 @@ import { MenuService } from '~/framework/util/menu/menu.service';
 import { useService, useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { IHomeProps } from './home.interface';
 import { useEffect } from 'react';
+import React from 'react';
 import { Subscription } from 'rxjs';
 import { PAGES_MENU } from '~/solution/shared/constant/common.const';
 import { ShowNotification } from '~/framework/util/common';

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './create-bind-car.component.less';
 import { Input, Form, Spin, DatePicker, Select } from 'antd';
 import { useCreateBindCarStore } from './create-bind-car.component.store';

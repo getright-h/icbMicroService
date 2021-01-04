@@ -1,5 +1,5 @@
 import { ColumnsType } from 'antd/lib/table';
-import * as React from 'react';
+import React from 'react';
 import { Divider } from 'antd';
 import { StationTableData } from './station-manage.interface';
 export function stationColumns(action: Function): ColumnsType<StationTableData> {

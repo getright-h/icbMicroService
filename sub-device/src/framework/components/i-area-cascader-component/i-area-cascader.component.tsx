@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Cascader } from 'antd';
 import { useIAreaCascaderStore } from './i-area-cascader.component.store';
 import { IIAreaCascaderProps } from './i-area-cascader.interface';

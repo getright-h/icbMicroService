@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './receive-allocation.component.less';
 import { ALLOW_FLOW_ENUM, ModalType } from '~shared/constant/common.const';
 export function receiveAllocationColumns(callbackAction: Function) {

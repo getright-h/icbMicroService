@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './position-monitor.component.less';
 import { PositionMonitorLeftComponent } from './position-monitor-left-component/position-monitor-left.component';
 import { PositionMonitorRightComponent } from './position-monitor-right-component/position-monitor-right.component';

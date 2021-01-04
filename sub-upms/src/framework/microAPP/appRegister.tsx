@@ -24,8 +24,6 @@ function childProjectLifeCycle() {
       console.log('react app bootstraped');
     },
     async unmount(props: any) {
-      console.log('---------------------------', props);
-
       unmountComponentAtNode(
         props && props.container ? props.container.querySelector('#root') : document.getElementById('root')
       );

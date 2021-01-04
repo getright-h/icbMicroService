@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { PositionMonitorContext } from '../position-monitor.component';
 import style from './position-monitor-drawer-right.component.less';
 import { usePositionMonitorDrawerRightStore } from './position-monitor-drawer-right.component.store';

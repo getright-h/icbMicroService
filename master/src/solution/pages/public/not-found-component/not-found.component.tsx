@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { IProps } from './not-found.interface';
 import style from './not-found.component.less';
 

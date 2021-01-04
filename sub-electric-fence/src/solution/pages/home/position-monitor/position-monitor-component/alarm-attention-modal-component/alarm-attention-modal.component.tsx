@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { useAlarmAttentionModalStore } from './alarm-attention-modal.component.store';
 import { Modal } from 'antd';
 import { IAlarmAttentionModalProps } from './alarm-attention-modal.interface';

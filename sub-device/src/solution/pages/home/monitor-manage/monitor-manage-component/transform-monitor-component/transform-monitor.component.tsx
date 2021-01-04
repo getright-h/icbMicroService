@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { useTransformMonitorStore } from './transform-monitor.component.store';
 import { ITransformMonitorProps } from './transform-monitor.interface';
 import { Modal, Form, Checkbox, Input, Switch } from 'antd';

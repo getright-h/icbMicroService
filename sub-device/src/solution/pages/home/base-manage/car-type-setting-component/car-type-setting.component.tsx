@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './car-type-setting.component.less';
 import { useCarTypeSettingStore } from './car-type-setting.component.store';
 import { IHeaderTitleComponent, ITableComponent, TablePageTelComponent } from '~framework/components/component.module';

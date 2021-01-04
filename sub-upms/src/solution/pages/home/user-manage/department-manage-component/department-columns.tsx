@@ -1,5 +1,5 @@
 import { ColumnsType } from 'antd/lib/table';
-import * as React from 'react';
+import React from 'react';
 import { Divider } from 'antd';
 export function departmentColumns(action: Function): ColumnsType<any> {
   return [

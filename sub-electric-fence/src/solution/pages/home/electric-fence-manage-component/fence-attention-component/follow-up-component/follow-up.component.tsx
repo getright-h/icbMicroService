@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './follow-up.component.less';
 import { Button, Input, Modal, Form, Select, DatePicker } from 'antd';
 import { useFollowUpStore } from './follow-up.component.store';

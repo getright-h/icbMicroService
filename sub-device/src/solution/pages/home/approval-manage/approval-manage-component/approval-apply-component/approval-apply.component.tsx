@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './approval-apply.component.less';
 import { useApprovalApplyStore } from './approval-apply.component.store';
 import { Col, Row, Modal, Form } from 'antd';

@@ -10,7 +10,7 @@ import {
   TeamOutlined,
   UserOutlined
 } from '@ant-design/icons';
-import * as React from 'react';
+import React from 'react';
 export interface IMenu {
   icon?: string;
   title: string;

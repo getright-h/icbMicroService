@@ -1,7 +1,7 @@
 import { IMonitoringObjectState, ModalType } from './monitoring-object.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import CreateBindCarComponent from './create-bind-car-component/create-bind-car.component';
-import * as React from 'react';
+import React from 'react';
 import { useEffect, useRef } from 'react';
 import FenceModalViewComponent from './fence-modal-view-component/fence-modal-view.component';
 import { ACTION_TYPE } from '~/solution/shared/constant/action.const';

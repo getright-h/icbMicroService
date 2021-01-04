@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { ModalType } from '../base-manage.const';
 import { Space } from 'antd';
 export function devicetypeColumns(callbackAction: Function) {

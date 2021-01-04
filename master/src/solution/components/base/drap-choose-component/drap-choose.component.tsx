@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Select } from 'antd';
 import { IDrapChooseProps } from './drap-choose.interface';
 import { useDrapChooseStore } from './drap-choose.component.store';

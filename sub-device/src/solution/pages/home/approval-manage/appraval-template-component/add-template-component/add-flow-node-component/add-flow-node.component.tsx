@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './add-flow-node.component.less';
 import { useAddFlowNodeStore } from './add-flow-node.component.store';
 import { Form, Button, Switch } from 'antd';

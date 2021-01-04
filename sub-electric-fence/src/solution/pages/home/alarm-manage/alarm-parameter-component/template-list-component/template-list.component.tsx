@@ -1,6 +1,6 @@
 import { CloseOutlined } from '@ant-design/icons';
 import { Button, Form, Modal } from 'antd';
-import * as React from 'react';
+import React from 'react';
 import { AlarmFormItemComponent } from '~/solution/components/component.module';
 import style from './template-list.component.less';
 import { useTemplateListStore } from './template-list.component.store';

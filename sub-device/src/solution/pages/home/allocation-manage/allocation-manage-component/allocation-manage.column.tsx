@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Space } from 'antd';
 import { APPROVAL_FLOW_STATUS_ENUM, AllOT_STATE_ENUM, ModalType } from '~shared/constant/common.const';
 export function allocationManageColumns(callbackAction: Function) {

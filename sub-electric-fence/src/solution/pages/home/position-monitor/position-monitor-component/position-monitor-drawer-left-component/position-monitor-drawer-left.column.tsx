@@ -1,5 +1,5 @@
 import { ColumnsType } from 'antd/lib/table';
-import * as React from 'react';
+import React from 'react';
 
 import style from './position-monitor-drawer-left.component.less';
 export function positionMonitorDrawerLeftColumns(): ColumnsType<any> {

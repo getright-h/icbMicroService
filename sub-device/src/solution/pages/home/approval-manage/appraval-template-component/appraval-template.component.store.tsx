@@ -1,7 +1,7 @@
 import { useService, useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { IAppravalTemplateState } from './appraval-template.interface';
 import { EventDataNode } from 'antd/lib/tree';
-import * as React from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { ApprovalManageService } from '~/solution/model/services/approval-manage.service';
 import { useEffect } from 'react';

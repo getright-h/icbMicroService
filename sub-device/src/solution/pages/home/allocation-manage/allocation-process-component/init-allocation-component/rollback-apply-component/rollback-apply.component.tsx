@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { useRollbackApplyStore } from './rollback-apply.component.store';
 import { IRollbackApplyProps, STATE } from './rollback-apply.interface';
 import { Modal, Form, Input, Radio } from 'antd';

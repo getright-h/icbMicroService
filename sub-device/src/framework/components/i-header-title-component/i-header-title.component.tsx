@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './i-header-title.component.less';
 import { IIHeaderTitleState } from './i-header-title.interface';
 export default function IHeaderTitleComponent(props: IIHeaderTitleState) {

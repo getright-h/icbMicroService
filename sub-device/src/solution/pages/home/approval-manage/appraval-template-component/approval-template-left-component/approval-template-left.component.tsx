@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './approval-template-left.component.less';
 import { useApprovalTemplateLeftStore } from './approval-template-left.component.store';
 

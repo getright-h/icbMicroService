@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './init-allocation.component.less';
 import { ALLOW_FLOW_ENUM, ModalType, APPROVAL_FLOW_STATUS_ENUM } from '~shared/constant/common.const';
 

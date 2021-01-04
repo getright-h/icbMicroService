@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Divider } from 'antd';
 import { ModalType } from './redord-list.interface';
 export function DwellColumn(callbackAction: Function) {

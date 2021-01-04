@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { RoutesService } from '~/framework/util/routes/routes.service';
 import { allocationManageRoutes } from './allocation-manage.routes';
 

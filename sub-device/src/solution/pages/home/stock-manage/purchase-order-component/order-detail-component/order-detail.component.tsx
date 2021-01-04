@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './order-detail.component.less';
 import { useOrderDetailStore } from './order-detail.component.store';
 import { IOrderDetailProps } from './order-detail.interface';

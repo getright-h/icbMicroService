@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Route, Switch, Redirect, RouteComponentProps } from 'react-router-dom';
 import { IRoute } from '~framework/interfaces/IRoute';
 import NotFoundComponent from '~/solution/pages/public/not-found-component/not-found.component';

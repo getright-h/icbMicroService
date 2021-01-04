@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './form-setting.component.less';
 import { useFormSettingStore } from './form-setting.component.store';
 import { Form, Input, Switch, Button, PageHeader, Select } from 'antd';

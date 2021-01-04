@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Divider, message, Switch } from 'antd';
 import { ModalType } from './alarm-parameter.interface';
 import { AlarmManageService } from '~/solution/model/services/alarm-manage.service';

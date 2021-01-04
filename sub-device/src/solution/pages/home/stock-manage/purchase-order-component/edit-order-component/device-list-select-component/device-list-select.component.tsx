@@ -1,6 +1,6 @@
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import { Space, Input, Form } from 'antd';
-import * as React from 'react';
+import React from 'react';
 import { ISelectLoadingComponent } from '~/framework/components/component.module';
 import style from './device-list-select.component.less';
 import { useDeviceListSelectStore } from './device-list-select.component.store';

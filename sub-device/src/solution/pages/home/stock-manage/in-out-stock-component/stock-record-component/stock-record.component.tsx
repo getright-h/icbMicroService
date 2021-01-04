@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './stock-record.component.less';
 import { Modal, Descriptions, Form } from 'antd';
 import { useStockRecordStore } from './stock-record.component.store';

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './position-monitor-right.component.less';
 import { usePositionMonitorRightStore } from './position-monitor-right.component.store';
 import { IMapComponent, ISelectLoadingComponent } from '~/solution/components/component.module';

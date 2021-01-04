@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { useAddShippingSpaceStore } from './add-shipping-space.component.store';
 import { Modal, Form, Input, Switch } from 'antd';
 import { IAddShippingSpaceProps } from './add-shipping-space.interface';

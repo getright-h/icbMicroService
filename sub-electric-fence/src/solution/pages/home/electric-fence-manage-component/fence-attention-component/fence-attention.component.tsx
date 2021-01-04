@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import style from './fence-attention.component.less';
 import { Button, Input, Modal, Select } from 'antd';
 import { TablePageTelComponent } from '~/solution/components/base/table-page-tel-component/table-page-tel.component';
