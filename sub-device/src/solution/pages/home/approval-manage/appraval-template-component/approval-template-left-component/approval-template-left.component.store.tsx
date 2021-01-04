@@ -10,7 +10,13 @@ import confirm from 'antd/lib/modal/confirm';
 import { setTreeSelectNode } from '../appraval-template-redux/appraval-template-action';
 import { AppravalTemplateManageContext } from '../appraval-template.component';
 import { OrganizationExportFunction } from '~/solution/components/organization-controller-component/organization-controller.interface';
-import { dealWithTreeData, updateTreeData, deleteTreeDataByKey } from '~/framework/util/common/treeFunction';
+import {
+  dealWithTreeData,
+  updateTreeData,
+  deleteTreeDataByKey,
+  alterTreeDataByKey,
+  addTreeDataByOrgId
+} from '~/framework/util/common/treeFunction';
 import { QueryStoreOrganizationReturn } from '~/solution/model/dto/warehouse-list.dto';
 import { IGlobalState } from '~/solution/context/global/global.interface';
 import { GlobalContext } from '~/solution/context/global/global.provider';
@@ -19,9 +25,10 @@ import { ApprovalManageService } from '~/solution/model/services/approval-manage
 import { DataNode } from 'rc-tree/lib/interface';
 
 export function useApprovalTemplateLeftStore() {
-  const { dispatch, reduxState } = useContext(AppravalTemplateManageContext);
+  const { dispatch } = useContext(AppravalTemplateManageContext);
   const { state, setStateWrap, getState } = useStateStore(new IApprovalTemplateLeftState());
   const organizationControllerRef: { current: OrganizationExportFunction } = useRef();
+  console.log(organizationControllerRef, 'organizationControllerRef');
   const warehouseListService: WarehouseListService = new WarehouseListService();
   const approvalManageService: ApprovalManageService = useService(ApprovalManageService);
   const { gState }: IGlobalState = useContext(GlobalContext);
@@ -150,14 +157,24 @@ export function useApprovalTemplateLeftStore() {
     });
   }
 
-  function closeAddTemplateTypeModal(isRefresh: boolean, id: string) {
+  function closeAddTemplateTypeModal(isRefresh: boolean, data: any, isEdit?: boolean) {
+    const { treeData } = state;
+
+    let newTreeData: DataNode[] = treeData;
+    if (isRefresh) {
+      console.log(organizationControllerRef.current);
+      // queryOrganizationTypeListByTypeId();
+      isEdit
+        ? (newTreeData = alterTreeDataByKey(treeData, data.id, data.name))
+        : (newTreeData = addTreeDataByOrgId(treeData, data));
+    }
     setStateWrap({
       isEditApprovalModal: false,
       addApprovalTypeVisible: false,
       groupId: '',
-      expandedKeys: []
+      treeData: newTreeData
+      // expandedKeys: []
     });
-    isRefresh && queryOrganizationTypeListByTypeId();
   }
 
   function onExpand(expandedKeys: []) {

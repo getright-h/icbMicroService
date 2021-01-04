@@ -13,7 +13,8 @@ import {
   QueryPurchaseListParam,
   QueryPurchaseListResult,
   QueryPurchaseDetailResult,
-  UpdatePurchaseParam
+  UpdatePurchaseParam,
+  RenewMaterialParam
 } from '../dto/stock-manage.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
@@ -30,6 +31,7 @@ const SET_MATERIAL = 'material/manage/setMaterial';
 const DELETE_MATERIAL = 'material/manage/material';
 const LOSS_MATERIAL = 'material/manage/lossMaterial';
 const QUERY_DEVICE_SELECTED = 'material/manage/queryDeviceSelected';
+const RENEW_MATERIAL = 'material/manage/renewMaterial';
 
 const QUERY_IN_OUT_RECORD_LIST = 'allot/manage/queryInOutRecordPagedList';
 const QUERY_IN_OUT_RECORD_DETAIL = 'allot/manage/queryInOutRecordDetail';
@@ -75,6 +77,10 @@ export class StockManageService extends StockManageDTO {
   // 设备下拉框
   queryDeviceSelected(params: QueryDeviceSelectedParam): Observable<QueryDeviceSelectedResult> {
     return this.requestService.post(QUERY_DEVICE_SELECTED, params);
+  }
+  // 恢复设备
+  renewMaterial(params: RenewMaterialParam): Observable<boolean> {
+    return this.requestService.get(RENEW_MATERIAL, params);
   }
 
   // 出入库记录

@@ -85,12 +85,26 @@ export function useAddTemplateTypeStore(props: IAddTemplateTypeProps) {
       parentOrganizationId,
       id: props.groupId
     }).subscribe(
-      () => {
+      res => {
         setStateWrap({
           confirmLoading: false
         });
         // 是否刷新左边栏
-        props.closeAddTemplateTypeModal(true);
+        const data: any = {
+          name,
+          organizationList: checkedKeys,
+          type,
+          parentOrganizationId,
+          id: props.groupId,
+          organizationId: parentOrganizationId
+        };
+        if (!props.groupId) {
+          // 新增
+          data.id = res;
+        } else {
+          // 修改
+        }
+        props.closeAddTemplateTypeModal(true, data, !!props.groupId);
       },
       () => {
         setStateWrap({

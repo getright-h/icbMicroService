@@ -9,6 +9,7 @@ import { AppravalTemplateManageContext } from '../appraval-template.component';
 export default function ApprovalTemplateLeftComponent() {
   const {
     state,
+    organizationControllerRef,
     onLoadData,
     onSelect,
     addTemplateType,
@@ -33,7 +34,8 @@ export default function ApprovalTemplateLeftComponent() {
       isEdit: isEditApprovalModal,
       closeAddTemplateTypeModal,
       organazationList,
-      groupId
+      groupId,
+      ref: organizationControllerRef
     };
     return <AddTemplateTypeComponent {...addWarehouseComponentProps}></AddTemplateTypeComponent>;
   }

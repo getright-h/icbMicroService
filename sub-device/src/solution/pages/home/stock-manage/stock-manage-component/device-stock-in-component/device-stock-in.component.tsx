@@ -2,16 +2,24 @@ import React from 'react';
 import style from './device-stock-in.component.less';
 import { useDeviceStockInStore } from './device-stock-in.component.store';
 import { IDeviceStockInProps } from './device-stock-in.interface';
-import { Modal, Form, Input, Select, Space, Tooltip } from 'antd';
+import { Modal, Form, Input, Select, Space, Tooltip, Table } from 'antd';
 import { ISelectLoadingComponent } from '~/framework/components/component.module';
 import { Link } from 'react-router-dom';
 import { PlusOutlined, MinusOutlined, InfoCircleOutlined } from '@ant-design/icons';
 
 export default function DeviceStockInComponent(props: IDeviceStockInProps) {
-  const { state, form, reduxState, selfSubmit, selfClose, getCurrentSelectInfo } = useDeviceStockInStore(props);
+  const {
+    state,
+    form,
+    reduxState,
+    selfSubmit,
+    selfClose,
+    getCurrentSelectInfo,
+    callbackAction
+  } = useDeviceStockInStore(props);
   const { visible } = props;
   const { currentSelectNode } = reduxState;
-  const { confirmLoading } = state;
+  const { confirmLoading, errorList, isErrorListVisible } = state;
   const layout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 16 }
@@ -88,13 +96,12 @@ export default function DeviceStockInComponent(props: IDeviceStockInProps) {
                             add();
                           }}
                         />
-                        {index != 0 && (
-                          <MinusOutlined
-                            onClick={() => {
-                              remove(field.name);
-                            }}
-                          />
-                        )}
+                        <MinusOutlined
+                          onClick={() => {
+                            remove(field.name);
+                            index == 0 && add();
+                          }}
+                        />
                       </div>
                     </Space>
                   ))}
@@ -125,26 +132,83 @@ export default function DeviceStockInComponent(props: IDeviceStockInProps) {
       </React.Fragment>
     );
   }
+
+  function ErrorList() {
+    const columns = [
+      {
+        title: '设备号',
+        dataIndex: 'code'
+      },
+      {
+        title: 'sim卡号',
+        dataIndex: 'sim'
+      },
+      {
+        title: '失败原因',
+        dataIndex: 'message'
+      },
+      {
+        title: '操作',
+        dataIndex: 'action',
+        render: (render: any, data: any) => {
+          return (
+            <React.Fragment>
+              {data.isRenew ? (
+                <a
+                  onClick={() => {
+                    callbackAction(data);
+                  }}
+                >
+                  恢复
+                </a>
+              ) : data.isRenewed ? (
+                '已恢复'
+              ) : (
+                '-'
+              )}
+            </React.Fragment>
+          );
+        }
+      }
+    ];
+    return (
+      <Modal
+        width={600}
+        title="失败设备一览表"
+        visible={isErrorListVisible}
+        footer={null}
+        onCancel={() => selfClose(true)}
+        maskClosable={false}
+        destroyOnClose={true}
+      >
+        <Table dataSource={errorList} columns={columns} rowKey={row => row.code} pagination={false}></Table>
+      </Modal>
+    );
+  }
+
   return (
-    <Modal
-      title="设备入库"
-      visible={visible}
-      width={640}
-      centered={true}
-      onCancel={() => selfClose(false)}
-      onOk={() => {
-        form
-          .validateFields()
-          .then(values => selfSubmit(values))
-          .catch(info => {
-            console.log('Validate Failed:', info);
-          });
-      }}
-      maskClosable={false}
-      destroyOnClose={true}
-      confirmLoading={confirmLoading}
-    >
-      {renderForm()}
-    </Modal>
+    <React.Fragment>
+      <Modal
+        title="设备入库"
+        visible={visible}
+        width={640}
+        centered={true}
+        onCancel={() => selfClose(false)}
+        onOk={() => {
+          form
+            .validateFields()
+            .then(values => selfSubmit(values))
+            .catch(info => {
+              console.log('Validate Failed:', info);
+            });
+        }}
+        maskClosable={false}
+        destroyOnClose={true}
+        confirmLoading={confirmLoading}
+      >
+        {renderForm()}
+      </Modal>
+      <ErrorList />
+    </React.Fragment>
   );
 }

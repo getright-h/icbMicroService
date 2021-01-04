@@ -17,8 +17,7 @@ export default function AddTemplateTypeComponent(props: IAddTemplateTypeProps) {
     onChangeHaveChooseShop,
     changeTemplateName,
     onExpand,
-    onCheck,
-    onSearchOrg
+    onCheck
   } = useAddTemplateTypeStore(props);
   const { isEdit, addApprovalTypeVisible } = props;
   const {
@@ -128,7 +127,6 @@ export default function AddTemplateTypeComponent(props: IAddTemplateTypeProps) {
           >
             {organazationList &&
               organazationList.map((item: any, key: number) => {
-                console.log(organazationList, 'organazationListorganazationList');
                 return (
                   <Option value={item.id} key={key}>
                     {item.name}

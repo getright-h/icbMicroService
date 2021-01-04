@@ -1,6 +1,6 @@
 import React from 'react';
 import style from './monitor-manage.component.less';
-import { useMonitorManageStore } from './monitor-manage.component.store';
+import { useMonitorManageStore } from './monitor-manage.component.store.tsx';
 import { IHeaderTitleComponent, ITableComponent, TablePageTelComponent } from '~framework/components/component.module';
 import { monitorColumns } from './monitor-manage-column';
 import { Button, Input } from 'antd';
@@ -25,7 +25,10 @@ export default function MonitorManageComponent() {
     getTableData,
     deletemonitorGroup,
     editmonitorGroup,
-    onSelectChange
+    onSelectChange,
+    alertCurrentTreeData,
+    monitorGroupAction,
+    appendNewNodeToCurrentTreeData
   } = useMonitorManageStore();
   const {
     treeSelectedKeys,
@@ -90,19 +93,6 @@ export default function MonitorManageComponent() {
     );
   }
 
-  function monitorGroupAction(element: any) {
-    return (
-      <div className="actions">
-        <a onClick={() => deletemonitorGroup(element)} className="a-link">
-          删除
-        </a>
-        <p></p>
-        <a onClick={() => editmonitorGroup(element)} className="a-link">
-          修改
-        </a>
-      </div>
-    );
-  }
   function RenderTree() {
     const prganizationControllerComponentProps = {
       warehouseAction: monitorGroupAction,
@@ -177,7 +167,13 @@ export default function MonitorManageComponent() {
         <SetAlarmModalComponent close={handleModalCancel} data={currentMonitorGroup} visible={alarmModalVisible} />
       )}
       {addGroupModalVisible && (
-        <AddMonitorGroupComponent close={handleModalCancel} data={currentData} visible={addGroupModalVisible} />
+        <AddMonitorGroupComponent
+          close={handleModalCancel}
+          data={currentData}
+          visible={addGroupModalVisible}
+          alertCurrentTreeData={alertCurrentTreeData}
+          appendNewNodeToCurrentTreeData={appendNewNodeToCurrentTreeData}
+        />
       )}
     </div>
   );

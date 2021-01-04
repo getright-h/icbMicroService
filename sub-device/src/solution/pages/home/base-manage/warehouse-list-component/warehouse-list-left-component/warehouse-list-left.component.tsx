@@ -24,7 +24,8 @@ export default function WarehouseListLeftComponent() {
       addWarehouseVisible,
       isEdit: isEditWarehouseModal,
       warehouseId: editWarehouseId,
-      closeAddWarehouseModal
+      closeAddWarehouseModal,
+      organizationControllerRef
     }),
     [editWarehouseId, isEditWarehouseModal, addWarehouseVisible]
   );
