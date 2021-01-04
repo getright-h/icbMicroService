@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { useState, useEffect } from 'react';
 import style from './create-electric-fence.component.less';
 import { Input, Form, Switch, Radio, Button, Select } from 'antd';

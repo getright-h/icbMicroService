@@ -1,5 +1,5 @@
 import { hot } from 'react-hot-loader';
-import React from 'react';
+import * as React from 'react';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';

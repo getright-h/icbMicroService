@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './bulk-import.component.less';
 import { useBulkImportStore } from './bulk-import.component.store';
 import { IBulkImportProps } from './bulk-import.interface';

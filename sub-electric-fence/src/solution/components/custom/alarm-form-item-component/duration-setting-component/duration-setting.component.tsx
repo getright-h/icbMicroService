@@ -1,7 +1,7 @@
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Form, Input, TimePicker } from 'antd';
 import moment from 'moment';
-import React from 'react';
+import * as React from 'react';
 import style from './duration-setting.component.less';
 import { useDurationSettingStore } from './duration-setting.component.store';
 import { IDurationSettingProps } from './duration-setting.interface';

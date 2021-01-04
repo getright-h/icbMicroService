@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './edit-owner-info.component.less';
 import { useEditOwnerInfoStore } from './edit-owner-info.component.store';
 import { IEditOwnerInfoProps } from './edit-owner-info.interface';

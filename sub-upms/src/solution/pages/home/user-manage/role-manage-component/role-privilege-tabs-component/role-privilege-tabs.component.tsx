@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './role-privilege-tabs.component.less';
 import { Tabs, Checkbox, Collapse, Tooltip, Button, Empty } from 'antd';
 import { IRolePrivilegeTabsProps } from './role-privilege-tabs.interface';

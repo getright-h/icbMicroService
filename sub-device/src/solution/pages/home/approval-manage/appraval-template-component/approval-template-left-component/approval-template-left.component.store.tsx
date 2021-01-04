@@ -1,7 +1,7 @@
 import { IApprovalTemplateLeftState } from './approval-template-left.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
 import { useContext, Key, useRef, useEffect } from 'react';
-import React from 'react';
+import * as React from 'react';
 import { WarehouseListService } from '~/solution/model/services/warehouse-list.service';
 import { EventDataNode } from 'antd/lib/tree';
 import { ExclamationCircleOutlined } from '@ant-design/icons';

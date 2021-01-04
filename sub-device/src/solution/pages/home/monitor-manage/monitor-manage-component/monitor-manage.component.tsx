@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './monitor-manage.component.less';
 import { useMonitorManageStore } from './monitor-manage.component.store.tsx';
 import { IHeaderTitleComponent, ITableComponent, TablePageTelComponent } from '~framework/components/component.module';

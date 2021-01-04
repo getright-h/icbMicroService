@@ -1,5 +1,5 @@
 import { Form, Select, Checkbox } from 'antd';
-import React from 'react';
+import * as React from 'react';
 import style from './view-flow-node.component.less';
 import { useViewFlowNodeStore } from './view-flow-node.component.store';
 import { ViewFlowNodeComponentProps } from './view-flow-node.interface';

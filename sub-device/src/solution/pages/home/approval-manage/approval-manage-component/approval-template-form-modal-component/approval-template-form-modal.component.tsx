@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './approval-template-form-modal.component.less';
 import { useApprovalTemplateFormModalStore } from './approval-template-form-modal.component.store';
 import { PageHeader, Input, Button, Spin } from 'antd';

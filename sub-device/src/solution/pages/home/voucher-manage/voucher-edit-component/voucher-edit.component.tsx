@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './voucher-edit.component.less';
 import { useVoucherEditStore } from './voucher-edit.component.store';
 import { IVoucherEditProps } from './voucher-edit.interface';

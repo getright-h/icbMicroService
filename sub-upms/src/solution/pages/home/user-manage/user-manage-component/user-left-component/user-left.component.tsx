@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './user-left.component.less';
 import { IUserLeftProps } from './user-left.interface';
 import { Tree } from 'antd';

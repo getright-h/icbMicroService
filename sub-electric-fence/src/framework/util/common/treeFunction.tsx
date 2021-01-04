@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { DatabaseOutlined, AppstoreOutlined } from '@ant-design/icons';
 import { Popover } from 'antd';
 // 是否需要

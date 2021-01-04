@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './template-edit.component.less';
 import { useTemplateEditStore } from './template-edit.component.store';
 import { Form, Input, Checkbox, Tooltip, PageHeader, Button } from 'antd';

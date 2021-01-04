@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './add-user.component.less';
 import { Form, Modal, Input, Radio, Checkbox, Typography } from 'antd';
 import { useAddUserStore } from './add-user.component.store';

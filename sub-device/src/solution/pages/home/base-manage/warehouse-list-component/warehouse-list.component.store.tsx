@@ -1,7 +1,7 @@
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { IWarehouseListState } from './warehouse-list.interface';
 import { useEffect, useRef } from 'react';
-import React from 'react';
+import * as React from 'react';
 import { WarehouseListService } from '~/solution/model/services/warehouse-list.service';
 import { QueryStorePositionReturn, StorePositionPagedDataList } from '~/solution/model/dto/warehouse-list.dto';
 import { EventDataNode } from 'antd/lib/tree';

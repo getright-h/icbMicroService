@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Divider, Popover } from 'antd';
 import { ModalType } from './stock-manage.interface';
 

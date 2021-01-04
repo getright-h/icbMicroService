@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './edit-order.component.less';
 import { useEditOrderStore } from './edit-order.component.store';
 import { IEditOrderProps } from './edit-order.interface';

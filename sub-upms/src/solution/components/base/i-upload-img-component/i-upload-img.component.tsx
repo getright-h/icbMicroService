@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './i-upload-img.component.less';
 import { Upload, Modal } from 'antd';
 import { useIUploadImgStore } from './i-upload-img.component.store';

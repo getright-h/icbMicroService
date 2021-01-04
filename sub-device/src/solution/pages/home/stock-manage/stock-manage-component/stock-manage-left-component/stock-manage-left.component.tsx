@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './stock-manage-left.component.less';
 import { useStockManageLeftStore } from './stock-manage-left.component.store';
 import OrganizationControllerComponent from '~/solution/components/organization-controller-component/organization-controller.component';

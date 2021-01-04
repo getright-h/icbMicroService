@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './select-address.component.less';
 import { Select } from 'antd';
 import { useSelectAddressStore } from './select-address.component.store';

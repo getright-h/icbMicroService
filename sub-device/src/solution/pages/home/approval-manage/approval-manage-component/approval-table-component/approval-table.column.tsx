@@ -1,5 +1,5 @@
 import { ColumnsType } from 'antd/lib/table';
-import React from 'react';
+import * as React from 'react';
 import { Divider } from 'antd';
 import { ModalType } from './approval-table.interface';
 import { APPROVAL_APPLY_STATUS_ENUM } from '~/solution/shared/constant/common.const';

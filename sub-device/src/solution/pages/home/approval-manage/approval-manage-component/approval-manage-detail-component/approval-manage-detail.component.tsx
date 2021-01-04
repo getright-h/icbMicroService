@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './approval-manage-detail.component.less';
 import { useApprovalManageDetailStore } from './approval-manage-detail.component.store';
 import { PageHeader, Button, Modal, Input, Spin, Table } from 'antd';

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { IDeviceLineProp } from './device-route-modal.interface';
 import { useDeviceRouteModalStore } from './device-route-modal.component.store';
 import { Modal, Form, Steps, Timeline, Popover } from 'antd';

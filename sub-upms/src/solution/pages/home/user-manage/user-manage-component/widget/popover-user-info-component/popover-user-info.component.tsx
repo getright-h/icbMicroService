@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './popover-user-info.component.less';
 import { Popover, Button, Table } from 'antd';
 import { IPopoverUserInfoProps } from './popover-user-info.interface';

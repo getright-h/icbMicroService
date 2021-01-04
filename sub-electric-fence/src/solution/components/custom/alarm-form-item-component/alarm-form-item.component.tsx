@@ -1,5 +1,5 @@
 import { Form, Input } from 'antd';
-import React from 'react';
+import * as React from 'react';
 import style from './alarm-form-item.component.less';
 import { useAlarmFormItemStore } from './alarm-form-item.component.store';
 import { AlarmTypeItem, FormTypeEnum, IAlarmFormItemProp } from './alarm-form-item.interface';

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './assign-device.component.less';
 import { useAssignDeviceStore } from './assign-device.component.store';
 import { Input, Select } from 'antd';

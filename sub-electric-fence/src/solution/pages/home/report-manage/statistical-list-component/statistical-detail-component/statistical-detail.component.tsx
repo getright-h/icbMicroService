@@ -1,5 +1,5 @@
 import { Form, Table } from 'antd';
-import React from 'react';
+import * as React from 'react';
 import { IHeaderTitleComponent, ITableComponent } from '~components/component.module';
 import style from './statistical-detail.component.less';
 

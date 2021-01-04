@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './organization-manage.component.less';
 import { TablePageTelComponent, ITableComponent } from '~/solution/components/component.module';
 import { useOrganizationManageStore } from './organization-manage.component.store';

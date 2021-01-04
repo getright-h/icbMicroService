@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import OrganizationControllerComponent from '~/solution/components/base/organization-controller-component/organization-controller.component';
 import style from './position-monitor-left.component.less';
 import { usePositionMonitorLeftStore } from './position-monitor-left.component.store';

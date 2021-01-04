@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { ALLOW_FLOW_ENUM } from '~shared/constant/common.const';
 import { ModalType } from '../monitor-manage.const';
 import { Space } from 'antd';

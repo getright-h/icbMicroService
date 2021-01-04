@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import MainFenceLeftComponent from './main-fence-left-component/main-fence-left.component';
 import MainFenceRightComponent from './main-fence-right-component/main-fence-right.component';
 import { Input, Button } from 'antd';

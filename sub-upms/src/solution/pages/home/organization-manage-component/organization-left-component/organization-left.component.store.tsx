@@ -1,7 +1,7 @@
 import { IOrganizationLeftState, IOrganizationLeftProps } from './organization-left.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect } from 'react';
-import React from 'react';
+import * as React from 'react';
 import { EventDataNode } from 'rc-tree/lib/interface';
 import { OrganizationManageService } from '../../../../model/services/organization-manage.service';
 import { dealWithTreeData, updateTreeData } from '~/framework/util/common/treeFunction';

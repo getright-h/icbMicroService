@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './add-approval-line.component.less';
 import { useAddApprovalLineStore } from './add-approval-line.component.store';
 import { Form, Modal, Radio } from 'antd';

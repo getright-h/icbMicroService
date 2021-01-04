@@ -1,5 +1,5 @@
 import { ColumnsType } from 'antd/lib/table';
-import React from 'react';
+import * as React from 'react';
 import { Divider, Switch } from 'antd';
 import { ModalType } from '~/solution/shared/constant/common.const';
 export function approvalTemplateColumns(action: Function): ColumnsType<any> {

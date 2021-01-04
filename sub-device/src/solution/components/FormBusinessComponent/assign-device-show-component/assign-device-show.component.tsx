@@ -1,5 +1,5 @@
 import { Table } from 'antd';
-import React from 'react';
+import * as React from 'react';
 import style from './assign-device-show.component.less';
 import { useAssignDeviceShowStore } from './assign-device-show.component.store';
 import { IAssignDeviceShowProps } from './assign-device-show.interface';

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { IFenceAttentionState } from './fence-attention.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect, useRef } from 'react';

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './flow-node.component.less';
 import { useFlowNodeStore } from './flow-node.component.store';
 import { FlowList } from '~/solution/model/dto/allocation-template.dto';

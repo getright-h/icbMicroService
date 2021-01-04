@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { useAddWarehouseStore } from './add-warehouse.component.store';
 import { Modal, Form, Input, Switch } from 'antd';
 import { IAreaCascaderComponent, ISelectLoadingComponent } from '~/framework/components/component.module';

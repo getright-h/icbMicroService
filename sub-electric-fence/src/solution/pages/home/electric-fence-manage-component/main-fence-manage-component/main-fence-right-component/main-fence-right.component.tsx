@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './main-fence-right.component.less';
 import { useMainFenceRightStore } from './main-fence-right.component.store';
 import { IMainFenceRightProps } from './main-fence-right.interface';

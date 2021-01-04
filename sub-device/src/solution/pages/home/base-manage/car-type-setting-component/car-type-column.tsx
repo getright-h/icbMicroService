@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { ModalType } from '../base-manage.const';
 export function carTypeColumns(callbackAction: Function) {
   /**

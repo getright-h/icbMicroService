@@ -1,5 +1,5 @@
 import { Button, Tree } from 'antd';
-import React from 'react';
+import * as React from 'react';
 import { ISelectLoadingComponent } from '~/framework/components/component.module';
 import AddWarehouseComponent from '../add-warehouse-component/add-warehouse.component';
 import style from './warehouse-list-left.component.less';

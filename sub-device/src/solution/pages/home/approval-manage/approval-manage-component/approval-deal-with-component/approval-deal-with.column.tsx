@@ -1,6 +1,6 @@
 import { Divider } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import React from 'react';
+import * as React from 'react';
 import { ModalType } from './approval-deal-with.interface';
 import { APPROVAL_APPLY_STATUS_ENUM } from '~/solution/shared/constant/common.const';
 export function approvalDealWithColumns(action: Function): ColumnsType<any> {

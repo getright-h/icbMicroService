@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { TimePickerStore } from './time-picker.component.store';
 import { IProps } from './time-picker.interface';

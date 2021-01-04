@@ -1,6 +1,6 @@
 import { NewDataNode } from '~/solution/pages/home/organization-manage-component/organization-left-component/organization-left.interface';
 import { BankOutlined, GroupOutlined, ApartmentOutlined } from '@ant-design/icons';
-import React from 'react';
+import * as React from 'react';
 import { OrganizationTypeResponse, Datum } from '~/solution/model/dto/organization-manage.dto';
 export function dealWithTreeData(res: OrganizationTypeResponse[] | Datum[] | any) {
   const treeData: NewDataNode[] = res.map((organizationType: any) => {

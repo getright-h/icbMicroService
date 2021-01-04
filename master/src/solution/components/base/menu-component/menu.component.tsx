@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { IProps, IMenu, IconList } from './menu.interface';
 import { Menu } from 'antd';
 import { Link } from 'react-router-dom';

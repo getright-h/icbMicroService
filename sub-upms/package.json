@@ -10,7 +10,7 @@
     "reflect-metadata"
   ],
   "scripts": {
-    "start": "rimraf dist && cross-env NODE_ENV=development webpack-dev-server",
+    "start": "rimraf dist && cross-env NODE_ENV=development IS_BUILD=build webpack-dev-server",
     "build": "rimraf dist && cross-env NODE_ENV=production IS_BUILD=build webpack",
     "build-dev": "rimraf dist && cross-env NODE_ENV=development IS_BUILD=build webpack",
     "build-ana": "rimraf dist && cross-env NODE_ENV=production IS_ANA=analyse webpack",

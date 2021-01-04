@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Divider } from 'antd';
 import { ModalType } from './monitor-list.interface';
 export function AlarmParameterColumn(callbackAction: Function) {

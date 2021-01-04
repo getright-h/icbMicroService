@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { CubeStore } from './cube.component.store';
 import style from './cube.component.less';
 import { IProps } from './cube.interface';

@@ -1,5 +1,5 @@
 import { Form, Modal, Radio, Input, Select, Button, Switch } from 'antd';
-import React from 'react';
+import * as React from 'react';
 import style from './slove-modal.component.less';
 import { useDirectiveModalStore } from './slove-modal.component.store';
 import { IDirectiveModalProps, ModalType } from './slove-modal.interface';

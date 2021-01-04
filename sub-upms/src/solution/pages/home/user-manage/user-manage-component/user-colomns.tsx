@@ -1,5 +1,5 @@
 import { ColumnsType } from 'antd/lib/table';
-import React from 'react';
+import * as React from 'react';
 import { Divider } from 'antd';
 import { UserTableData } from './user-manage.interface';
 import PopoverUserInfoComponent from './widget/popover-user-info-component/popover-user-info.component';

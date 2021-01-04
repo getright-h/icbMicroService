@@ -1,5 +1,5 @@
 import { ColumnsType } from 'antd/lib/table';
-import React from 'react';
+import * as React from 'react';
 export function positionMonitorMapBtnDrivingColumns(onExchangeCoordinates: (value: any) => void): ColumnsType<any> {
   return [
     {

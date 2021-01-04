@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './allocation-template.component.less';
 import { useAllocationTemplateStore } from './allocation-template.component.store';
 import { Button, Input } from 'antd';

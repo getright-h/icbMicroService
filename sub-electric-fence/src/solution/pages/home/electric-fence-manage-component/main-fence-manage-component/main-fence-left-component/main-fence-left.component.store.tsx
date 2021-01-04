@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { IMainFenceLeftState, IMainFenceLeftProps } from './main-fence-left.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect } from 'react';

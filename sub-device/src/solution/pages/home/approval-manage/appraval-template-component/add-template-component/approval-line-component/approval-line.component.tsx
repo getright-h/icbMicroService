@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './approval-line.component.less';
 import { useApprovalLineStore } from './approval-line.component.store';
 import { Card, Button, Divider, Switch, Popover } from 'antd';

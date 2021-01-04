@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { RoutesService } from '~/framework/util/routes/routes.service';
 import { reportManageRoutes } from './report-manage.routes';
 

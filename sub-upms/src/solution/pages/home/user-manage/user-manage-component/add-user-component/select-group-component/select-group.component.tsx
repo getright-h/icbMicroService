@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './select-group.component.less';
 import { Form, Space, Popover, Button } from 'antd';
 import { ISelectLoadingComponent } from '~/solution/components/component.module';

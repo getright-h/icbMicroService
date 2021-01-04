@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './move-template.component.less';
 import { useMoveTemplateStore } from './move-template.component.store';
 import { Modal, Checkbox, Col, Tree } from 'antd';

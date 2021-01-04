@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './detail.component.less';
 import { useDetailStore } from './detail.component.store';
 import { Form, Button, Table } from 'antd';

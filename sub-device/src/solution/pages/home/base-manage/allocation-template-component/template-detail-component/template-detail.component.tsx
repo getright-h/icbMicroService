@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './template-detail.component.less';
 import { useTemplateDetailStore } from './template-detail.component.store';
 

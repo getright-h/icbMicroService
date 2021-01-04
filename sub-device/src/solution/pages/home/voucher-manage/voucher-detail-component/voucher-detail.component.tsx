@@ -1,5 +1,5 @@
 import { Button, Descriptions, Modal } from 'antd';
-import React from 'react';
+import * as React from 'react';
 import { ImageDisplayComponent } from '~/framework/components/component.module';
 import style from './voucher-detail.component.less';
 import { useVoucherDetailStore } from './voucher-detail.component.store';

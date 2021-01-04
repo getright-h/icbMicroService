@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { TablePageTelComponent, TimePickerComponent } from '~/framework/components/component.module';
 import { ITableComponent } from '~/framework/components/component.module';
 import { receiveAllocationColumns } from './receive-allocation.column';

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Route, Switch, Redirect, RouteComponentProps } from 'react-router-dom';
 import { IRoute } from '~framework/interfaces/IRoute';
 import { LazyloadLoadingComponent } from '~/framework/components/component.module';

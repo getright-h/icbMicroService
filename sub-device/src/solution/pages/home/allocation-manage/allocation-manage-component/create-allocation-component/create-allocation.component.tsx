@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './create-allocation.component.less';
 import { useCreateAllocationStore } from './create-allocation.component.store';
 import { Form, Input, Checkbox, Select, Space, Button, InputNumber } from 'antd';

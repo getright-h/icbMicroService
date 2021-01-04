@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { ISelectLoadingComponent } from '~/framework/components/component.module';
 import style from './assign-device.component.less';
 import { useAssignDeviceStore } from './assign-device.component.store';

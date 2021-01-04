@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { IOwnerManageState, ModalType } from './owner-manage.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect } from 'react';

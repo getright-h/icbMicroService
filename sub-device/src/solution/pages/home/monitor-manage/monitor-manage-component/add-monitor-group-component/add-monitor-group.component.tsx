@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { useAddMonitorGroupStore } from './add-monitor-group.component.store';
 import { ISelectLoadingComponent } from '~framework/components/component.module';
 import { AddMonitorGroupProp } from './add-monitor-group.interface';

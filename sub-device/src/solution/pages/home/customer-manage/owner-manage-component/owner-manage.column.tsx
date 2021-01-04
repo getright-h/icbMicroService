@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Divider, Table } from 'antd';
 import { ModalType } from './owner-manage.interface';
 export function ownerManageColumns(callbackAction: Function) {

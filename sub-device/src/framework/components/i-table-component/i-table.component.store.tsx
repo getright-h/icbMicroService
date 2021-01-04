@@ -1,7 +1,7 @@
 import { IITableState, IITableProps } from './i-table.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect } from 'react';
-import React from 'react';
+import * as React from 'react';
 
 export function useITableStore(props: IITableProps) {
   const { state, setStateWrap } = useStateStore(new IITableState());

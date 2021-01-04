@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './add-monitor-car.component.less';
 import { useAddMonitorCarStore } from './add-monitor-car.component.store';
 import { IAddMonitorCarProps } from './add-monitor-car.interface';

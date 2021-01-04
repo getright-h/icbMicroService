@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './user-manage.component.less';
 import { useUserManageStore } from './user-manage.component.store';
 import { Input, Button } from 'antd';

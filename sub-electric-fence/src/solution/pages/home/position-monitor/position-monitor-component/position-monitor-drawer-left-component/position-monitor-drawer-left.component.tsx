@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { usePositionMonitorDrawerLeftStore } from './position-monitor-drawer-left.component.store';
 import { Drawer, Select } from 'antd';
 import { setDataAction } from '../position-monitor-redux/position-monitor-action';

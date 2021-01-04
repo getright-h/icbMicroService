@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { IProps, IMenu } from './menu.interface';
 // import { createFromIconfontCN } from '@ant-design/icons';
 import { Menu } from 'antd';

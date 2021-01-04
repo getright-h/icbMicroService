@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './image-display.component.less';
 import { IImageDisplayProps } from './image-display.interface';
 import { useImageDisplayStore } from './image-display.component.store';

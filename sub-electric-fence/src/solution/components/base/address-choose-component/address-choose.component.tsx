@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { useAddressChooseFunction } from './address-choose.component.store';
 import { Cascader } from 'antd';
 import { IProps } from './address-choose.interface';

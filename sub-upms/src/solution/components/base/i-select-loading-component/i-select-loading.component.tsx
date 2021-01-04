@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './i-select-loading.component.less';
 import { Select } from 'antd';
 import { IISelectLoadingProps } from './i-select-loading.interface';

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './main-fence-left.component.less';
 import { ITableComponent } from '~/solution/components/component.module';
 import { useMainFenceLeftStore } from './main-fence-left.component.store';

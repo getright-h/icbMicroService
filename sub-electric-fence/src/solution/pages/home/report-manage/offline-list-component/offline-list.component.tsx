@@ -1,5 +1,5 @@
 import { Button, Col, Form, Input, Row, Select } from 'antd';
-import React from 'react';
+import * as React from 'react';
 import { ITableComponent, TablePageTelComponent } from '~/solution/components/component.module';
 import { AlarmParameterColumn } from './offline-list.column';
 

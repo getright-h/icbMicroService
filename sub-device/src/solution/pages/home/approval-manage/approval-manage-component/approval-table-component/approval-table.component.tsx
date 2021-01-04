@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './approval-table.component.less';
 import { ISelectLoadingComponent, TablePageTelComponent } from '~/framework/components/component.module';
 import { ITableComponent } from '~/framework/components/component.module';

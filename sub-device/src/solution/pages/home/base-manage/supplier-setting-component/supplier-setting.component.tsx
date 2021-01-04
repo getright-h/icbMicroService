@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './supplier-setting.component.less';
 import { useSupplierSettingStore } from './supplier-setting.component.store';
 import { sppplierColumns } from './supplier-setting-column';

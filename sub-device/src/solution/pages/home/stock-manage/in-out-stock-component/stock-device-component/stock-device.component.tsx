@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './stock-device.component.less';
 import { IStockDeviceProps } from './stock-device.interface';
 import { useStockDeviceStore } from './stock-device.component.store';

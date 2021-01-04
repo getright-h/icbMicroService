@@ -1,5 +1,5 @@
 import { ColumnsType } from 'antd/lib/table';
-import React from 'react';
+import * as React from 'react';
 import { Divider } from 'antd';
 import { OrganizationTableData } from './organization-manage.interface';
 export function organizationColumns(action: Function): ColumnsType<OrganizationTableData> {

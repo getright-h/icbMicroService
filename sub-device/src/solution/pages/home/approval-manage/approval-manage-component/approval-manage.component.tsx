@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './approval-manage.component.less';
 import { Tabs } from 'antd';
 import ApprovalTableComponent from './approval-table-component/approval-table.component';

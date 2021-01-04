@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { IDeviceStockInState, IDeviceStockInProps } from './device-stock-in.interface';
 import { useService, useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form, Modal } from 'antd';

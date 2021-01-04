@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './device-import.component.less';
 import { ITableComponent } from '~/framework/components/component.module';
 import { useDeviceImportStore } from './device-import.component.store';

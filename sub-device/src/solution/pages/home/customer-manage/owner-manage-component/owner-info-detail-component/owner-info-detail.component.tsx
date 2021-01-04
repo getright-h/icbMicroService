@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './owner-info-detail.component.less';
 import { useOwnerInfoDetailStore } from './owner-info-detail.component.store';
 import { IOwnerInfoDetailProps, WorkEnum } from './owner-info-detail.interface';

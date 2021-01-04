@@ -1,5 +1,5 @@
 import { Button, Descriptions } from 'antd';
-import React from 'react';
+import * as React from 'react';
 import { ImageDisplayComponent } from '~/framework/components/component.module';
 import UnbindDeviceComponent from '../unbind-device-component/unbind-device.component';
 import style from './vehicle-detail.component.less';

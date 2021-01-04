@@ -1,6 +1,6 @@
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Col, DatePicker, Descriptions, Form, Input, Radio, Row, Select, Space } from 'antd';
-import React from 'react';
+import * as React from 'react';
 import { ISelectLoadingComponent, IUploadImgComponent } from '~/framework/components/component.module';
 import UnbindDeviceComponent from '../unbind-device-component/unbind-device.component';
 import style from './edit-vehicle.component.less';

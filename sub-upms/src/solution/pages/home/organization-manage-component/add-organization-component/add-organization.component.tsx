@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './add-organization.component.less';
 import { useAddOrganizationStore } from './add-organization.component.store';
 import { Form, Input, Radio, Select, Modal } from 'antd';

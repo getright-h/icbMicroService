@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './device-line.component.less';
 import { useDeviceLineStore } from './device-line.component.store';
 import { TablePageTelComponent } from '~/framework/components/component.module';

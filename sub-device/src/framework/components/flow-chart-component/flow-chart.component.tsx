@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './flow-chart.component.less';
 import { useFlowChartStore } from './flow-chart.component.store';
 import { Divider } from 'antd';

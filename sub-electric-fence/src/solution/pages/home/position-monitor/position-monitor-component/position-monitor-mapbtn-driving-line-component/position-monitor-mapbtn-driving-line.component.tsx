@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './position-monitor-mapbtn-driving-line.component.less';
 import { usePositionMonitorMapbtnDrivingLineStore } from './position-monitor-mapbtn-driving-line.component.store';
 import { Drawer, Select, Button, Slider } from 'antd';

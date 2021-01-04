@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Divider } from 'antd';
 import { ModalType } from './permanent-list.interface';
 import { IMAP } from '~shared/util/map.util';

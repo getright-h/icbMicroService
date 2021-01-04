@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './organization-controller.component.less';
 import { useOrganizationControllerStore } from './organization-controller.component.store';
 import { ISelectLoadingComponent } from '~/framework/components/component.module';

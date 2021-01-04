@@ -1,5 +1,5 @@
 import { Form, Modal } from 'antd';
-import React from 'react';
+import * as React from 'react';
 import { AlarmFormItemComponent } from '~/solution/components/component.module';
 import style from './template-add.component.less';
 import { useTemplateAddStore } from './template-add.component.store';

@@ -1,5 +1,5 @@
 import { Button } from 'antd';
-import React from 'react';
+import * as React from 'react';
 import style from './position-monitor-refresh-header.component.less';
 import { usePositionMonitorRefreshHeaderStore } from './position-monitor-refresh-header.component.store';
 import { IPositionMonitorRefreshHeaderProps } from './position-monitor-refresh-header.interface';

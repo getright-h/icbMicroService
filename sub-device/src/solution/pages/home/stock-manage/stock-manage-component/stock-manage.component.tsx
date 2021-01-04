@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { useStockManageStore } from './stock-manage.component.store';
 import {
   TablePageTelComponent,

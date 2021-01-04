@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './edit-station.component.less';
 import { useEditStationStore } from './edit-station.component.store';
 import { Modal, Form, Select, Input, Radio } from 'antd';

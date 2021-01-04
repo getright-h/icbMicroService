@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { IITableProps } from './i-table.interface';
 import { useITableStore } from './i-table.component.store';
 import { Table } from 'antd';

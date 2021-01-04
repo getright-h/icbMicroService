@@ -1,4 +1,5 @@
-import React from 'react';
+import * as React from 'react';
+import { inject, observer } from 'mobx-react';
 import { TimePickerStore } from './time-picker.component.store';
 import { IProps } from './time-picker.interface';
 import { DatePicker, TimePicker } from 'antd';
@@ -7,6 +8,8 @@ import style from './time-picker.component.less';
 
 const { RangePicker } = DatePicker;
 
+@inject('timePickerStore')
+@observer
 export default class TimePickerComponent extends React.Component<IProps> {
   private readonly store: TimePickerStore = this.props.timePickerStore;
   private startDate: string;

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { useHomeHeaderStore } from './i-home-header.component.store';
 import { Popover, Modal, Form, Input } from 'antd';
 import style from './i-home-header.component.less';

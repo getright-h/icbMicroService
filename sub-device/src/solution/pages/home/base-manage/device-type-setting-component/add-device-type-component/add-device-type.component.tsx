@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './add-device-type.component.less';
 import { useAddDeviceTypeStore } from './add-device-type.component.store';
 import { Modal, Form, Input, Radio } from 'antd';

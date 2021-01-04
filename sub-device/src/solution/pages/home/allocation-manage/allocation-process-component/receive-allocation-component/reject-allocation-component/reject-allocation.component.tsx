@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './reject-allocation.component.less';
 import { useRejectAllocationStore } from './reject-allocation.component.store';
 import { IRejectAllocationProp, STATE } from './reject-allocation.interface';

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './station-manage.component.less';
 import { useStationManageStore } from './station-manage.component.store';
 import { Input, Button, Select } from 'antd';

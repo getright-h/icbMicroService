@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './department-manage.component.less';
 import { useDepartmentManageStore } from './department-manage.component.store';
 import { Input, Select, Button } from 'antd';

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import style from './vehicle-manage.component.less';
 import { Divider, Table } from 'antd';
 import { ModalType } from './vehicle-manage.interface';
