@@ -6,7 +6,7 @@ import { IHomeHeaderComponent } from '../../components/base/i-home-header-compon
 import { useHomeStore } from './home.component.store';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 import { IGlobalState } from '~/solution/context/global/global.interface';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { RoutesService } from '~/framework/util/routes/routes.service';
 import { homeRoutes } from './home.routes';
 import { getHashParameter } from '~/solution/shared/util/common.util';

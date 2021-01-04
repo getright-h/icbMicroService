@@ -8,7 +8,7 @@ const AddAssetHtmlWebpackPlugin = require('add-asset-html-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const Dotenv = require('dotenv-webpack');
 const WebpackCdnPlugin = require('webpack-cdn-plugin');
-const { NODE_ENV } = process.env;
+const { NODE_ENV, IS_BUILD } = process.env;
 
 class PluginFactory {
   constructor() {
@@ -103,7 +103,7 @@ class PluginFactory {
     this.getDotenv();
     // this.getFriendlyErrorsWebpackPlugin();
     // DLL 的插件放在最后 PUSH
-    // this.getWebpackCdnPlugin();
+    !IS_BUILD && this.getWebpackCdnPlugin();
     // this.getDllPlugins();
     return this.plugins;
   }
