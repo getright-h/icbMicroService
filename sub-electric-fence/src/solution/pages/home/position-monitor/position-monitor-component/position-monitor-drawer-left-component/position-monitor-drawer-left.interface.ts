@@ -9,7 +9,6 @@ import {
  * @class IPositionMonitorDrawerLeftState
  */
 export class IPositionMonitorDrawerLeftState {
-  isLoading = false;
   searchForm: IQueryVehicleInfoPagedListParams = {
     index: 1,
     size: 10,
@@ -17,6 +16,7 @@ export class IPositionMonitorDrawerLeftState {
     vehicleGroupId: undefined,
     strValue: ''
   };
+  tableLoading = false;
   vehicleGroupList: QueryVehicleGroupListReturn[] = [];
   selectedRowKeys: any[] = [];
   tableData: VehicleInfoParamReture[] = [];

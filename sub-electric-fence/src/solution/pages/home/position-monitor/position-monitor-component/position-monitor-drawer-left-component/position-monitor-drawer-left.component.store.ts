@@ -56,9 +56,15 @@ export function usePositionMonitorDrawerLeftStore() {
 
   //根据监控组、车架号、车主电话、车牌号、设备号信息查询车辆信息
   function queryVehicleInfoPagedList(state?: IQueryVehicleInfoPagedListParams) {
-    positionMonitorService.queryVehicleInfoPagedList(state || getState().searchForm).subscribe(res => {
-      setStateWrap({ tableData: res.dataList, total: res.total });
-    });
+    setStateWrap({ tableLoading: true });
+    positionMonitorService.queryVehicleInfoPagedList(state || getState().searchForm).subscribe(
+      res => {
+        setStateWrap({ tableData: res.dataList, total: res.total, tableLoading: false });
+      },
+      () => {
+        setStateWrap({ tableLoading: false });
+      }
+    );
   }
 
   function onCheckedUserInfo(record: any, selected: any) {
@@ -122,10 +128,14 @@ export function usePositionMonitorDrawerLeftStore() {
       dispatch
     );
   }
+
   async function getNewestCarInfo(vehicleIdList: string[]) {
+    setDataAction({ addCarLoading: true }, dispatch);
     const newchangeRows = await positionMonitorService.queryVehicleInfoByParam({ vehicleIdList }).toPromise();
+    setDataAction({ addCarLoading: false }, dispatch);
     return newchangeRows;
   }
+
   return {
     state,
     onCurrentVehicleChange,

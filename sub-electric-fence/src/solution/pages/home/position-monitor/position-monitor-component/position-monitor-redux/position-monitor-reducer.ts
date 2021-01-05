@@ -15,7 +15,8 @@ export const positionMonitorInitialState: TPositionMonitor = {
   isOpenAlarmModal: false,
   // 当前去看轨迹或者追踪用的车辆
   currentDoActionCarInfo: undefined,
-  totalAlermManage: 0
+  totalAlermManage: 0,
+  addCarLoading: false
 };
 
 export type TPositionMonitor = {
@@ -25,6 +26,7 @@ export type TPositionMonitor = {
   leftContentVisible: boolean;
   isOpenAlarmModal: boolean;
   leftDrawerVisible: boolean;
+  addCarLoading: boolean;
   checkedCarData: VehicleInfoParamReture[];
   currentSelectCar: VehicleInfoParamReture;
   currentDoActionCarInfo: { deviceInfo: DeviceList; markerInfo: VehicleInfoParamReture };

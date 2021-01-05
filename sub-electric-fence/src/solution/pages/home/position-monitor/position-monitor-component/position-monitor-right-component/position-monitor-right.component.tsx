@@ -59,7 +59,6 @@ export const PositionMonitorRightComponent = () => {
   });
   return (
     <div className={style.positionMonitorRight}>
-      {/* <Spin tip="Loading..."> */}
       <div>
         <IMapComponent {...mapProps} />
         <div className={`${style.info} ${style.searchCar}`}>{ISelectCarLoadingComponent}</div>
@@ -73,7 +72,6 @@ export const PositionMonitorRightComponent = () => {
       )}
       {mapbtnTrackrVisible && <PositionMonitorMapbtnTrackComponent {...positionMonitorMapbtnTrackProps} />}
       <PositionMonitorMapbtnDrivingComponent {...positionMonitorMapbtnDrivingProps} />
-      {/* </Spin> */}
     </div>
   );
 };

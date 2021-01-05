@@ -15,14 +15,13 @@ export const PositionMonitorDrawerLeftComponent = () => {
     changeTablePageIndex,
     onCurrentVehicleChange
   } = usePositionMonitorDrawerLeftStore();
-  const { isLoading, searchForm, tableData, total, selectedRowKeys, vehicleGroupList } = state;
+  const { searchForm, tableData, total, selectedRowKeys, vehicleGroupList, tableLoading } = state;
 
   const { reduxState, dispatch } = React.useContext(PositionMonitorContext);
   const { leftDrawerVisible, currentSelectNode }: any = reduxState;
   const tableParams = React.useMemo(
     () => ({
       columns: positionMonitorDrawerLeftColumns(),
-      isLoading,
       pageIndex: searchForm.index,
       pageSize: searchForm.size,
       data: tableData,
@@ -33,9 +32,10 @@ export const PositionMonitorDrawerLeftComponent = () => {
       },
       size: 'small' as SizeType,
       total: total,
+      isLoading: tableLoading,
       changeTablePageIndex: (index: number, pageSize: number) => changeTablePageIndex(index, pageSize)
     }),
-    [searchForm.index, searchForm.size, isLoading, tableData, selectedRowKeys, total]
+    [searchForm.index, searchForm.size, tableData, selectedRowKeys, total, tableLoading]
   );
 
   function DrawerContent() {
