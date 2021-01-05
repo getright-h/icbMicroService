@@ -7,7 +7,7 @@ import { PositionMonitorService } from '~/solution/model/services/position-monit
 import { TPositionMonitor } from '../position-monitor-component/position-monitor-redux/position-monitor-reducer';
 export function usePositionMonitorStore(dispatch: Dispatch<any>, positionMonitorData: TPositionMonitor) {
   const { state, setStateWrap } = useStateStore(new IPositionMonitorState());
-  const { checkedCarData, isOpenAlarmModal } = positionMonitorData;
+  const { checkedCarData } = positionMonitorData;
   let { currentSelectCar } = positionMonitorData;
   const positionMonitorService: PositionMonitorService = useService(PositionMonitorService);
 

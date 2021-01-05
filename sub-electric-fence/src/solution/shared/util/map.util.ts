@@ -339,7 +339,14 @@ export const IMAP = {
           });
         }
       });
-      map.setFitView();
+      console.log(locationCarMarkerListFlag, markers);
+
+      // 当出现点的增加和减少的时候才需要重新规划地图
+      (locationCarMarkerListFlag?.length !== markers?.length ||
+        (locationCarMarkerListFlag?.length == 1 &&
+          markers?.length == 1 &&
+          locationCarMarkerListFlag[0]?.id !== markers[0]?.markerInfo?.id)) &&
+        map.setFitView();
     });
     return markerInfoData;
   },

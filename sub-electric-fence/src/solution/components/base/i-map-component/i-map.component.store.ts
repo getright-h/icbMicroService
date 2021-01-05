@@ -53,6 +53,8 @@ export function useIMapStore(mapProps: TIMapProps) {
 
   // 单个车选中，需要获取常驻地点
   useEffect(() => {
+    console.log(locationCarMarkerList, currentSelectCar);
+
     if (currentSelectCar) {
       renderMarker([currentSelectCar]);
       // 清除当前常驻点

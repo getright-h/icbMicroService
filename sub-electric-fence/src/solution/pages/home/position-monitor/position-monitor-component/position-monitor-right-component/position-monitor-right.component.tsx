@@ -6,6 +6,7 @@ import { PositionMonitorContext } from '../position-monitor.component';
 import PositionMonitorMapbtnTrackComponent from '../position-monitor-mapbtn-track-component/position-monitor-mapbtn-track.component';
 import PositionMonitorMapbtnDrivingComponent from '../position-monitor-mapbtn-driving-line-component/position-monitor-mapbtn-driving-line.component';
 import DirectivePatchModalComponent from '../../../directive-manage/wiget/directive-patch-model-component/directive-patch-moda.component';
+import { Spin } from 'antd';
 export const PositionMonitorRightComponent = () => {
   const { reduxState } = React.useContext(PositionMonitorContext);
 
@@ -58,6 +59,7 @@ export const PositionMonitorRightComponent = () => {
   });
   return (
     <div className={style.positionMonitorRight}>
+      {/* <Spin tip="Loading..."> */}
       <div>
         <IMapComponent {...mapProps} />
         <div className={`${style.info} ${style.searchCar}`}>{ISelectCarLoadingComponent}</div>
@@ -71,6 +73,7 @@ export const PositionMonitorRightComponent = () => {
       )}
       {mapbtnTrackrVisible && <PositionMonitorMapbtnTrackComponent {...positionMonitorMapbtnTrackProps} />}
       <PositionMonitorMapbtnDrivingComponent {...positionMonitorMapbtnDrivingProps} />
+      {/* </Spin> */}
     </div>
   );
 };
