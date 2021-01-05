@@ -1,84 +1,102 @@
 import * as React from 'react';
 import style from './role-privilege-tabs.component.less';
-import { Tabs, Checkbox, Collapse, Tooltip, Button, Empty } from 'antd';
+import { Checkbox, Tooltip, Button, Empty, Tree, Card } from 'antd';
 import { IRolePrivilegeTabsProps } from './role-privilege-tabs.interface';
 import { useRolePrivilegeTabsStore } from './role-privilege-tabs.component.store';
-import RoleMenuComponent from '../role-menu-component/role-menu.component';
+import { useMemo } from 'react';
 
 function RolePrivilegeTabsComponent(props: IRolePrivilegeTabsProps) {
-  const {
-    state,
-    changeCheckPrivileges,
-    tabChange,
-    submitMenuRelation,
-    getCheckedMenuNodes
-  } = useRolePrivilegeTabsStore(props);
-  const { privilegeModelList, activeCollapses, customMenuList, checkedValues, checkedMenuKeys, isLoading } = state;
+  const { state, onCheckMenu, checkGroupAllPrivileges, checkPrivilege, submitMenuRelation } = useRolePrivilegeTabsStore(
+    props
+  );
+  const { treeData, expandedKeys, checkedKeys, checkedNodes, isLoading } = state;
 
-  function renderHeader() {
-    return (
-      <React.Fragment>
-        <h4>权限列表</h4>
-        <Button type="primary" onClick={() => submitMenuRelation()} loading={isLoading} disabled={!props.roleId}>
-          保存
-        </Button>
-      </React.Fragment>
+  function RenderHeader() {
+    return useMemo(() => {
+      return (
+        <React.Fragment>
+          <h4>权限列表</h4>
+          <Button type="primary" onClick={() => submitMenuRelation()} loading={isLoading} disabled={!props.roleId}>
+            保存
+          </Button>
+        </React.Fragment>
+      );
+    }, [isLoading, props.roleId]);
+  }
+
+  function RenderMenu() {
+    return treeData.length ? (
+      <Tree
+        checkable
+        showLine={{ showLeafIcon: false }}
+        selectable={false}
+        onCheck={onCheckMenu}
+        treeData={treeData}
+        defaultCheckedKeys={checkedKeys}
+        defaultExpandedKeys={expandedKeys}
+      />
+    ) : (
+      <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={<span>请选择角色</span>} />
     );
   }
 
-  function renderTabs() {
-    return customMenuList != undefined ? (
-      <Tabs onChange={tabChange}>
-        {customMenuList &&
-          customMenuList.map(menu => {
-            return (
-              <Tabs.TabPane tab={menu.menuName} key={menu.menuId}>
-                <Checkbox.Group
-                  className={style.checkGroup}
-                  onChange={checkedValue => changeCheckPrivileges(checkedValue, menu)}
-                  defaultValue={checkedValues && checkedValues.map(o => JSON.stringify(o))}
+  function RenderPrivileges() {
+    return checkedNodes.length ? (
+      <React.Fragment>
+        {checkedNodes.map(node => (
+          <div key={node.key} className={style.privilegeNode}>
+            <h3>{node.title}</h3>
+            {node.privilegeGroupList.length ? (
+              node.privilegeGroupList.map(group => (
+                <Card
+                  size="small"
+                  title={group.groupName}
+                  key={group.groupId}
+                  extra={
+                    <Checkbox
+                      defaultChecked={group.selectAll}
+                      onChange={(e: any) => checkGroupAllPrivileges(e, group, node)}
+                    >
+                      全选
+                    </Checkbox>
+                  }
                 >
-                  <Collapse defaultActiveKey={activeCollapses}>
-                    {activeCollapses &&
-                      privilegeModelList &&
-                      privilegeModelList.map(privilegeModel => {
-                        return (
-                          <Collapse.Panel header={privilegeModel.name} key={privilegeModel.id}>
-                            {privilegeModel.privileges &&
-                              privilegeModel.privileges.map(privilege => (
-                                <Tooltip placement="top" title={privilege.code} key={privilege.id}>
-                                  <Checkbox
-                                    value={JSON.stringify({ privilegeId: privilege.id, privilegeCode: privilege.code })}
-                                  >
-                                    {privilege.name}
-                                  </Checkbox>
-                                </Tooltip>
-                              ))}
-                          </Collapse.Panel>
-                        );
-                      })}
-                  </Collapse>
-                </Checkbox.Group>
-              </Tabs.TabPane>
-            );
-          })}
-      </Tabs>
+                  {group.privilegeList.map(p => (
+                    <Tooltip placement="top" title={p.privilegeCode} key={p.privilegeId}>
+                      <Checkbox
+                        style={{ marginLeft: 0, marginRight: '8px' }}
+                        defaultChecked={p.isSelected}
+                        onChange={(e: any) => checkPrivilege(e, group, node, p.privilegeId)}
+                      >
+                        {p.privilegeName}
+                      </Checkbox>
+                    </Tooltip>
+                  ))}
+                </Card>
+              ))
+            ) : (
+              <p style={{ fontSize: '0.8rem', color: '#999', margin: 0 }}>未绑定权限组</p>
+            )}
+          </div>
+        ))}
+      </React.Fragment>
     ) : (
       <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={<span>请选择菜单项</span>} />
     );
   }
+
   return (
     <React.Fragment>
-      <div className={style.header}>{renderHeader()}</div>
+      <div className={style.header}>
+        <RenderHeader />
+      </div>
       <div className={style.main}>
         <div className={style.left}>
-          <RoleMenuComponent
-            systemId={props.systemId}
-            checkedKeys={checkedMenuKeys}
-            getCheckedNodes={getCheckedMenuNodes}
-          ></RoleMenuComponent>
+          <RenderMenu />
         </div>
-        <div className={style.right}>{renderTabs()}</div>
+        <div className={style.right}>
+          <RenderPrivileges />
+        </div>
       </div>
     </React.Fragment>
   );
