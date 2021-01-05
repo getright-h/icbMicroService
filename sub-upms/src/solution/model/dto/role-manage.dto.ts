@@ -8,11 +8,8 @@ import { DataNode } from 'rc-tree/lib/interface';
 export abstract class RoleManageDTO {
   // 你的抽象方法，具体在 Service 中实现
   abstract queryRoleList(params: QueryRoleListParam): Observable<Array<RoleInfo>>;
-  abstract getMenuPrivilegeList(menuId: string): Observable<Array<PrivilegeInfo>>;
-  abstract getMenuTree(systemId: string): Observable<Array<MenuTreeNode>>;
-  abstract getRoleMenuPrivilegeDetail(roleId: string): Observable<RoleMenuPrivilegeDetail>;
-  abstract submitMenuRelation(params: RoleMenuPrivilegeDetail): Observable<boolean>;
-  abstract getSystemPrivileges(systemId: string): Observable<Array<MenuPrivilegeModel>>;
+  abstract getMenuTree(params: { systemId: string; roleId: string }): Observable<Array<MenuTreeNode>>;
+  abstract submitMenuRelation(params: MenuRelationParam): Observable<boolean>;
 }
 
 // 示例 Dto
@@ -35,38 +32,34 @@ export interface MenuTreeNode extends DataNode {
   key: string;
   name: string;
   title: string;
+  isMenuSelected: boolean;
   children?: MenuTreeNode[];
+  privilegeGroupList?: PrivilegeGroup[];
 }
-export interface RoleMenuPrivilegeDetail {
+
+export interface PrivilegeGroup {
+  menuId: string;
+  groupId: string;
+  groupName: string;
+  selectAll?: boolean;
+  privilegeList: PrivilegeItem[];
+}
+
+export interface PrivilegeItem {
+  privilegeId: string;
+  privilegeCode: string;
+  privilegeName: string;
+  isSelected: boolean;
+}
+
+export interface MenuRelationParam {
   roleId: string;
-  menuList: MenuList[];
+  menuList: MenuRelationItem[];
   systemId: string;
 }
 
-interface MenuList {
+export interface MenuRelationItem {
   menuId: string;
-  privilegeList: PrivilegeInfo[];
-}
-
-export interface PrivilegeInfo {
-  privilegeId: string;
-  privilegeCode: string;
-}
-
-export interface MenuPrivilegeModel {
-  privileges: PrivilegeModel[];
-  id: string;
-  name: string;
-}
-
-interface PrivilegeModel {
-  id: string;
-  code: string;
-  originalCode: string;
-  name: string;
-  groupId: string;
-  instruction: string;
-  createTime: string;
-  updateTime: string;
-  privileges: PrivilegeModel[];
+  menuName: string;
+  privilegeList: PrivilegeItem[];
 }
