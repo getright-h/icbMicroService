@@ -58,12 +58,6 @@ export function useDirectiveListStore() {
   function callbackAction<T>(actionType: number, data?: any) {
     setStateWrap({ currentId: data ? data.id : '' });
     switch (actionType) {
-      case ModalType.CREATE:
-        setStateWrap({});
-        break;
-      case ModalType.EDIT:
-        setStateWrap({});
-        break;
       case ModalType.PATCH:
         setStateWrap({ patchModalVisible: true });
         break;

@@ -24,7 +24,7 @@ export function useVehicleDetailStore() {
   }
 
   function linkToEdit() {
-    history.push(`/home/customer/editVehicle/${state.id}`);
+    history.push(`edit/${state.id}`);
   }
   return { state, linkToEdit };
 }

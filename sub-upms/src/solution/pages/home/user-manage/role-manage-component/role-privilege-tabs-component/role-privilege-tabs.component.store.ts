@@ -1,108 +1,146 @@
-import {
-  IRolePrivilegeTabsState,
-  IRolePrivilegeTabsProps,
-  CheckNodeEvent,
-  PrivilegeMenuItem
-} from './role-privilege-tabs.interface';
+import { IRolePrivilegeTabsState, IRolePrivilegeTabsProps } from './role-privilege-tabs.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
-import { useEffect } from 'react';
+import { MutableRefObject, useEffect, useRef } from 'react';
 import { ShowNotification } from '~/framework/util/common';
 import { RoleManageService } from '~/solution/model/services/role-manage.service';
 import _ from 'lodash';
-import { PrivilegeInfo } from '~/solution/model/dto/role-manage.dto';
+import { MenuRelationItem, MenuTreeNode, PrivilegeGroup, PrivilegeItem } from '~/solution/model/dto/role-manage.dto';
 
 export function useRolePrivilegeTabsStore(props: IRolePrivilegeTabsProps) {
   const { state, setStateWrap } = useStateStore(new IRolePrivilegeTabsState());
   const roleManageService: RoleManageService = useService(RoleManageService);
+  const checkedNodesRef: MutableRefObject<MenuTreeNode[]> = useRef([]);
 
-  function getRoleDetail(roleId: string) {
-    roleManageService.getRoleMenuPrivilegeDetail(roleId).subscribe(
-      (res: any) => {
-        setStateWrap({ customMenuList: res.menuList });
-      },
-      (err: any) => {
-        ShowNotification.error(err);
-      }
-    );
-  }
-
+  // 所选角色变化时若系统id变化，获取新的权限组
   useEffect(() => {
-    if (state.customMenuList) {
-      state.customMenuList[0] && setCheckedPrivileges(state.customMenuList[0].menuId);
-    }
-    setCheckedMenuNodes(state.customMenuList);
-  }, [state.customMenuList]);
-
-  function getCheckedMenuNodes(checkedMenuKeys: string[], e: any) {
-    const checkNodeEvent = {
-      checked: e.checked,
-      menuId: e.node.key,
-      menuName: e.node.title
-    };
-    setStateWrap({ checkedMenuKeys });
-    formatCustomMenuList(checkNodeEvent);
-  }
-
-  function setCheckedMenuNodes(menuList: PrivilegeMenuItem[]) {
-    const list = menuList ? menuList.map((item: PrivilegeMenuItem) => item.menuId) : [];
-    setStateWrap({ checkedMenuKeys: list });
-  }
-
-  // 获得该系统下权限组
-  function getPrivilegeModelList(systemId: string) {
-    roleManageService.getSystemPrivileges(systemId).subscribe(
-      (res: any) => {
-        const activeCollapses = res.map((item: any) => item.id);
-        setStateWrap({ privilegeModelList: res, activeCollapses });
-      },
-      (err: any) => {
-        ShowNotification.error(err);
-      }
-    );
-  }
-
-  // 多选框选择
-  function changeCheckPrivileges(checkedValues: any[], menu: PrivilegeMenuItem) {
-    const privilegeList: any[] = [];
-    checkedValues.forEach(value => privilegeList.push(JSON.parse(value)));
-    menu.privilegeList = privilegeList;
-  }
-
-  // 菜单多选框变化时处理 角色、菜单、权限关系对象
-  function formatCustomMenuList(checkNodeEvent: CheckNodeEvent) {
-    let { customMenuList } = state;
-    !customMenuList && (customMenuList = []);
-    if (checkNodeEvent.checked) {
-      customMenuList.push({
-        menuId: checkNodeEvent.menuId,
-        menuName: checkNodeEvent.menuName,
-        privilegeList: []
+    if (props.roleId && props.systemId) {
+      checkedNodesRef.current = [];
+      setStateWrap({
+        treeData: [],
+        expandedKeys: [],
+        checkedKeys: [],
+        checkedNodes: []
       });
-    } else {
-      _.remove(customMenuList, { menuId: checkNodeEvent.menuId });
-      customMenuList[0] && setCheckedPrivileges(customMenuList[0].menuId);
+      getTreeData();
     }
-    setStateWrap({ customMenuList });
+  }, [props.systemId, props.roleId]);
+
+  // 获取菜单数据
+  function getTreeData() {
+    roleManageService
+      .getMenuTree({
+        systemId: props.systemId,
+        roleId: props.roleId
+      })
+      .subscribe(
+        (res: any) => {
+          formatTreeData(res);
+        },
+        (err: any) => {
+          ShowNotification.error(err);
+        }
+      );
   }
 
-  // 所选标签页改变
-  function tabChange(activeKey: string) {
-    setCheckedPrivileges(activeKey);
+  // 处理菜单数据
+  function formatTreeData(treeData: MenuTreeNode[]) {
+    const expandedKeys: string[] = [];
+    const checkedKeys: string[] = [];
+    let checkedNodes: MenuTreeNode[] = [];
+    function expandMethod(arr: MenuTreeNode[]) {
+      arr.forEach((node: MenuTreeNode) => {
+        expandedKeys.push(node.key);
+        if (node.children.length) {
+          expandMethod(node.children);
+        } else {
+          node.isLeaf = true;
+          if (node.isMenuSelected) {
+            checkedKeys.push(node.key);
+            checkedNodes.push(node);
+          }
+        }
+      });
+    }
+    expandMethod(treeData);
+    checkedNodesRef.current = checkedNodes = formatSelectAll(checkedNodes);
+    setStateWrap({ treeData, expandedKeys, checkedKeys, checkedNodes });
   }
 
-  // 所选标签页改变时，获取当前菜单已选权限
-  function setCheckedPrivileges(activeKey: string) {
-    let checkedValues: PrivilegeInfo[] = [];
-    if (activeKey) {
-      checkedValues = _.find(state.customMenuList, { menuId: activeKey }).privilegeList;
+  // 回显是否全选
+  function formatSelectAll(checkedNodes: MenuTreeNode[]): MenuTreeNode[] {
+    checkedNodes.map(node => {
+      node.privilegeGroupList.map(group => {
+        let i = 0;
+        group.privilegeList.forEach(item => {
+          item.isSelected && i++;
+        });
+        i === group.privilegeList.length && (group.selectAll = true);
+      });
+    });
+    return checkedNodes;
+  }
+
+  // 选中菜单项
+  function onCheckMenu(checkedKeys: string[], info: any) {
+    const checkedNodes: MenuTreeNode[] = [];
+    if (info.checkedNodes.length) {
+      info.checkedNodes.map((ele: MenuTreeNode) => {
+        if (ele.isLeaf) {
+          const oldNode = checkedNodesRef.current.find(old => old.key === ele.key);
+          checkedNodes.push(oldNode || ele);
+        }
+      });
     }
-    setStateWrap({ checkedValues });
+    checkedNodesRef.current = checkedNodes;
+
+    setStateWrap({ checkedKeys, checkedNodes });
+  }
+
+  // 权限组全选处理
+  function checkGroupAllPrivileges(e: any, curGroup: PrivilegeGroup, curNode: MenuTreeNode) {
+    checkedNodesRef.current.map(node => {
+      node.key === curNode.key &&
+        node.privilegeGroupList.map(group => {
+          if (group.groupId === curGroup.groupId) {
+            group.selectAll = e.target.checked;
+            group.privilegeList.map(p => (p.isSelected = e.target.checked));
+          }
+        });
+    });
+    setStateWrap({ checkedNodes: checkedNodesRef.current });
+  }
+
+  // 单个权限选择处理
+  function checkPrivilege(e: any, curGroup: PrivilegeGroup, curNode: MenuTreeNode, curId: string) {
+    checkedNodesRef.current.map(node => {
+      node.key === curNode.key &&
+        node.privilegeGroupList.map(group => {
+          if (group.groupId === curGroup.groupId) {
+            group.privilegeList.map(p => p.privilegeId === curId && (p.isSelected = e.target.checked));
+          }
+        });
+    });
+    setStateWrap({ checkedNodes: checkedNodesRef.current });
   }
 
   function submitMenuRelation() {
     setStateWrap({ isLoading: true });
     const { roleId, systemId } = props;
-    roleManageService.submitMenuRelation({ roleId, systemId, menuList: state.customMenuList }).subscribe(
+    const { checkedNodes } = state;
+    const submitNodes: MenuRelationItem[] = [];
+    checkedNodes.forEach(node => {
+      const privilegeList: PrivilegeItem[] = [];
+      node.privilegeGroupList.map(group => {
+        group.privilegeList.map(p => p.isSelected && privilegeList.push(p));
+      });
+      const newNode = {
+        menuId: node.key,
+        menuName: node.title,
+        privilegeList
+      };
+      submitNodes.push(newNode);
+    });
+    roleManageService.submitMenuRelation({ roleId, systemId, menuList: submitNodes }).subscribe(
       (res: any) => {
         ShowNotification.success('编辑权限成功！');
         setStateWrap({ isLoading: false });
@@ -114,19 +152,5 @@ export function useRolePrivilegeTabsStore(props: IRolePrivilegeTabsProps) {
     );
   }
 
-  // 所选角色变化时若系统id变化，获取新的权限组
-  useEffect(() => {
-    if (props.roleId && props.systemId) {
-      setStateWrap({
-        customMenuList: [],
-        checkedValues: [],
-        activeCollapses: [],
-        checkedMenuKeys: []
-      });
-      getPrivilegeModelList(props.systemId);
-      getRoleDetail(props.roleId);
-    }
-  }, [props.systemId, props.roleId]);
-
-  return { state, changeCheckPrivileges, tabChange, submitMenuRelation, getCheckedMenuNodes };
+  return { state, onCheckMenu, checkGroupAllPrivileges, checkPrivilege, submitMenuRelation };
 }

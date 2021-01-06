@@ -55,10 +55,10 @@ export function useVehicleManageStore() {
     setStateWrap({ currentId: data ? data.id : '' });
     switch (actionType) {
       case ModalType.CREATE:
-        history.push('/home/customer/addVehicle');
+        history.push('./addVehicle');
         break;
       case ModalType.DETAIL:
-        history.push(`/home/customer/vehicleDetail/${data.id}`);
+        history.push(`./vehicleDetail/${data.id}`);
         break;
       case ModalType.DELETE:
         Modal.confirm({

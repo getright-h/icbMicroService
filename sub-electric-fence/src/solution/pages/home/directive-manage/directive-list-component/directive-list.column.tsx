@@ -1,9 +1,6 @@
 import * as React from 'react';
-import { Divider } from 'antd';
-import { ModalType } from './directive-list.interface';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
-import { render } from 'react-dom';
 
 export function AlarmParameterColumn(callbackAction: Function) {
   return [
@@ -47,18 +44,6 @@ export function AlarmParameterColumn(callbackAction: Function) {
     {
       title: '创建机构',
       dataIndex: 'organizationName'
-    },
-    {
-      title: '操作',
-      fixed: 'right' as 'right',
-      dataIndex: 'action',
-      render: (render: any, data: any, index: number) => {
-        return (
-          <React.Fragment>
-            <a onClick={() => callbackAction(ModalType.CREATE, data)}>查看</a>
-          </React.Fragment>
-        );
-      }
     }
   ];
 }

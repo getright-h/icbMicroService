@@ -14,7 +14,8 @@ import {
   updateTreeData,
   deleteTreeDataByKey,
   alterTreeDataByKey,
-  addTreeDataByOrgId
+  addTreeDataByOrgId,
+  setSingleCheck
 } from '~/framework/util/common/treeFunction';
 import { QueryStoreOrganizationReturn } from '~/solution/model/dto/warehouse-list.dto';
 import { EventDataNode, DataNode } from 'rc-tree/lib/interface';
@@ -23,7 +24,7 @@ import { forkJoin } from 'rxjs';
 export function useOrganizationControllerStore(props: IOrganizationControllerProps, ref: any) {
   const { state, setStateWrap, getState } = useStateStore(new IOrganizationControllerState());
   const warehouseListService: WarehouseListService = new WarehouseListService();
-  const { warehouseAction, onExpand, queryChildInfo, currentOrganazation, onlyLeafCanSelect } = props;
+  const { warehouseAction, onExpand, queryChildInfo, currentOrganazation } = props;
   const { gState }: IGlobalState = useContext(GlobalContext);
   __initContent__(warehouseAction);
   useEffect(() => {
@@ -45,7 +46,8 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
         false,
         undefined,
         undefined,
-        props.organizationChecked
+        props.organizationChecked,
+        props.monitorTranform
       );
       setStateWrap({
         treeData
@@ -76,12 +78,20 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     forkJoin(warehouseListService.queryStoreOrganizationListSub({ parentId }), queryChildInfoSubscription).subscribe(
       (res: any) => {
         const queryChildInfoData: DataNode[] = queryChildInfo
-          ? dealWithTreeData(res[1], TREE_MAP, true, warehouseAction)
+          ? dealWithTreeData(res[1], TREE_MAP, true, warehouseAction, undefined, undefined, props.monitorTranform)
           : [];
 
         treeNode.children = [
           ...queryChildInfoData,
-          ...dealWithTreeData(res[0], TREE_MAP, false, undefined, undefined, props.organizationChecked)
+          ...dealWithTreeData(
+            res[0],
+            TREE_MAP,
+            false,
+            undefined,
+            undefined,
+            props.organizationChecked,
+            props.monitorTranform
+          )
         ];
         const treeData = updateTreeData(state.treeData, treeNode.key, treeNode.children);
 
@@ -145,13 +155,22 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
       treeData: treeData
     });
   }
+  // 设置单选
+  function setSingleCheckTreeData(id: string) {
+    const treeData = setSingleCheck(state.treeData, id);
+    setStateWrap({
+      treeData: treeData
+    });
+  }
+
   useImperativeHandle(ref, () => ({
     // changeVal 就是暴露给父组件的方法
     alertCurrentTreeData,
     deleteCurrentTreeData,
     queryOrganizationTypeListByTypeId,
     searchCurrentSelectInfo,
-    appendNewNodeToCurrentTreeData
+    appendNewNodeToCurrentTreeData,
+    setSingleCheckTreeData
   }));
 
   return { state, onLoadData, getCurrentSelectInfo, onCheck, getCurrentGroup };

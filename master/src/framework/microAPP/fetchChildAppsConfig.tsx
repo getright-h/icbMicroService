@@ -267,7 +267,7 @@ export function fetchChildAppsConfig() {
                 componentUrl: 'editVehicle' //对应子应用的组件名
               },
               {
-                path: 'editVehicle/:id',
+                path: 'vehicleDetail/edit/:id',
                 lazyload: true,
                 exact: true,
                 componentUrl: 'editVehicle' //对应子应用的组件名
@@ -442,7 +442,7 @@ export function fetchChildAppsConfig() {
                 componentUrl: 'statisticalListComponent' //对应子应用的组件名
               },
               {
-                path: 'statistical/detail',
+                path: 'statistical/detail/:deviceCode/:alarmType',
                 lazyload: true,
                 exact: true,
                 componentUrl: 'statisticalDetailComponent' //对应子应用的组件名

@@ -62,7 +62,7 @@ export function useApprovalTemplateStore(appravalTemplateState: {
   function callbackAction<T>(data: any, actionType: number, value: boolean) {
     switch (actionType) {
       case ModalType.EDIT:
-        history.push(`/home/approvalManage/addTemplate/${data.id}/1`);
+        history.push(`./addTemplate/${data.id}/1`);
         break;
       case ModalType.MOVE:
         // 启用禁用
@@ -118,7 +118,7 @@ export function useApprovalTemplateStore(appravalTemplateState: {
   }
 
   function addTemplate() {
-    history.push(`/home/approvalManage/addTemplate/${currentSelectNode.node.key}/0`);
+    history.push(`./addTemplate/${currentSelectNode.node.key}/0`);
   }
 
   function moveTemplate() {

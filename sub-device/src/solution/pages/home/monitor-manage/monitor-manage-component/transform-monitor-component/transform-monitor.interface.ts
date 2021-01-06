@@ -14,4 +14,5 @@ export interface ITransformMonitorProps {
   close: Function;
   visible: boolean;
   data: any;
+  setSingleCheckTreeData: Function;
 }

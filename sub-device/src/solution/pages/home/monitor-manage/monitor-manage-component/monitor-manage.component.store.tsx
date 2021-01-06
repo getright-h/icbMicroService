@@ -196,6 +196,10 @@ export function useMonitorManageStore() {
     organizationControllerRef.current.alertCurrentTreeData(id, title);
   }
 
+  //在当前的tree上操作并显示相应的效果
+  function setSingleCheckTreeData(id: string) {
+    organizationControllerRef.current.setSingleCheckTreeData(id);
+  }
   function monitorGroupAction(element: any) {
     return (
       <div className="actions">
@@ -232,6 +236,7 @@ export function useMonitorManageStore() {
     editmonitorGroup,
     onSelectChange,
     alertCurrentTreeData,
+    setSingleCheckTreeData,
     monitorGroupAction,
     appendNewNodeToCurrentTreeData
   };
