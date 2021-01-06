@@ -21,7 +21,7 @@ export default function DirectiveListComponent() {
     initSearchForm,
     getCurrentSelectInfo
   } = useDirectiveListStore();
-  const { isLoading, tableData, total, pageIndex, pageSize } = state;
+  const { isLoading, tableData, total, pageIndex, pageSize, timeInfo } = state;
   const { gState } = React.useContext(GlobalContext);
   const queryOrgList = ISelectLoadingComponent({
     width: '200px',
@@ -75,6 +75,7 @@ export default function DirectiveListComponent() {
             <Form.Item label="时间范围" name="time">
               <TimePickerComponent
                 pickerType="dateTimeRange"
+                timeInfo={timeInfo}
                 getDateTimeInfo={(time: any, other: any) => getCurrentSelectInfo(time, 'time')}
               />
             </Form.Item>
