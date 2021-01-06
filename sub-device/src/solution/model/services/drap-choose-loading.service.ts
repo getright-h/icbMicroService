@@ -35,7 +35,7 @@ const QUERY_DEVICE_LIST = 'material/manage/queryNormalStateDevicePagedList';
 const QUERY_STORE_LIST = 'store/manage/queryStorePagedListSelected';
 const QUERY_VEHICLE_LIST = 'vehicle/manage/queryVehiclePagedList';
 
-const QUERY_VEHICLE_PAGED_LIST = 'vehicle/manage/queryVehiclePagedList';
+const QUERY_VEHICLE_BY_DISTRIBUTOR_LIST = 'vehicle/manage/queryVehicleByDistributorList';
 const QUERY_ROLE_LIST = 'vehicle/manage/queryRoleList';
 const QUERY_GROUP_SEARCH_LIST = 'vehicle/manage/queryGroupSearchList';
 const QUERYSTOREPOSITIONPAGEDLISTBYSTOREID = 'store/manage/queryStorePositionPagedListByStoreId';
@@ -119,9 +119,9 @@ export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
   queryVehicleList(params: QueryVehicleListParam): Observable<DrapChooseLoadingReturn> {
     return this.requestService.post(QUERY_VEHICLE_LIST, params);
   }
-  // 获取车辆列表
-  queryVehiclePagedList(params: QueryVehiclePagedListParam): Observable<DrapChooseLoadingReturn> {
-    return this.requestService.post(QUERY_VEHICLE_PAGED_LIST, params);
+  // 根据选中机构获取车辆列表
+  queryVehicleByDistributorList(params: { distributorIdList: string[] }): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.post(QUERY_VEHICLE_BY_DISTRIBUTOR_LIST, params);
   }
 
   // 监控组
