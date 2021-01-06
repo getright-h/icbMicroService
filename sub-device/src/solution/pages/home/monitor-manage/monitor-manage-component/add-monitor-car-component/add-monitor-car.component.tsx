@@ -5,15 +5,17 @@ import { IAddMonitorCarProps } from './add-monitor-car.interface';
 import { Modal, Form, Select, Input, Switch } from 'antd';
 import { PlusCircleTwoTone, MinusCircleTwoTone } from '@ant-design/icons';
 import OrganizationControllerComponent from '~/solution/components/organization-controller-component/organization-controller.component';
+import { ISelectLoadingComponent } from '~/framework/components/component.module';
 
 export default function AddMonitorCarComponent(props: IAddMonitorCarProps) {
-  const { state, onExpand, onCheck, onSelectCar, getCartDeviceList, insertVehicleGroup } = useAddMonitorCarStore(props);
+  const { state, onExpand, onCheck, onSelectCar, getDelCartDeviceList, insertVehicleGroup } = useAddMonitorCarStore(
+    props
+  );
   const {
     confirmLoading,
     expandedKeys,
     checkedKeys,
     checkedObject,
-    addCarDeviceList = [],
     delCarDeviceList = [],
     addChoseList = [],
     delChoseList = [],
@@ -36,11 +38,20 @@ export default function AddMonitorCarComponent(props: IAddMonitorCarProps) {
       </div>
     );
   }
+  const queryVehicleList = ISelectLoadingComponent({
+    reqUrl: 'queryVehicleList',
+    placeholder: '请输入车架号',
+    searchKeyName: 'strValue',
+    mode: 'multiple',
+    getCurrentSelectInfo: (value: string, option: any) => {
+      onSelectCar(value, 'add');
+    }
+  });
   return (
     <Modal
       visible={addMonitorModal}
       centered={true}
-      width={700}
+      width={800}
       confirmLoading={confirmLoading}
       onOk={() => {
         insertVehicleGroup();
@@ -53,42 +64,30 @@ export default function AddMonitorCarComponent(props: IAddMonitorCarProps) {
         <div className={style.modalLeft}>
           <h2>选择</h2>
           <div className={style.modalLeftWapper}>
-            <div>
-              <div style={{ height: 200, margin: 0 }}>
-                <span>选择机构</span> {RenderTree()}
-              </div>
-              <div style={{ height: 170, margin: 0 }}>
-                <Form.Item label="选择车辆" name="vinNo">
-                  <Select
-                    placeholder={'请输入车架号'}
-                    onFocus={() => getCartDeviceList('add')}
-                    mode="multiple"
-                    onChange={(value: any) => onSelectCar(value, 'add')}
-                  >
-                    {addCarDeviceList.map((device: any) => (
-                      <Select.Option key={device.id + 'add'} value={device.vinNo}>
-                        {device.vinNo}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </div>
-              <div style={{ height: 160, margin: 0 }}>
-                <Form.Item label="去除车辆" name={'vinRemoveNo'}>
-                  <Select
-                    placeholder={'请输入车架号'}
-                    onFocus={() => getCartDeviceList('del')}
-                    mode="multiple"
-                    onChange={(value: any) => onSelectCar(value, 'del')}
-                  >
-                    {delCarDeviceList.map((device: any) => (
-                      <Select.Option key={device.id + 'del'} value={device.vinNo}>
-                        {device.vinNo}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </div>
+            <div style={{ height: 290, margin: 0, overflowY: 'auto' }}>
+              <span>选择机构</span> {RenderTree()}
+            </div>
+            <div style={{ height: 120, margin: 0, paddingTop: '10px' }}>
+              <span>选择车辆</span>
+              <Form.Item name="vinNo">{queryVehicleList}</Form.Item>
+            </div>
+            <div style={{ height: 120, margin: 0, paddingTop: '10px' }}>
+              <span>去除车辆</span>
+              <Form.Item name={'vinRemoveNo'}>
+                <Select
+                  placeholder={'请输入车架号'}
+                  onFocus={getDelCartDeviceList}
+                  mode="multiple"
+                  maxTagCount={3}
+                  onChange={(value: any) => onSelectCar(value, 'del')}
+                >
+                  {delCarDeviceList.map((device: any) => (
+                    <Select.Option key={device.id + 'del'} value={device.vinNo}>
+                      {device.vinNo}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
             </div>
           </div>
         </div>
