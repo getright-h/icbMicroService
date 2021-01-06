@@ -49,7 +49,7 @@ function add(origintagViews: any[], payload: string) {
   });
   if (flag) return tagViews;
   const item = flatArr.find((item: any) => {
-    return item.path === payload;
+    return item.path === payload && !!item.title;
   });
   if (item) {
     const obj = {
