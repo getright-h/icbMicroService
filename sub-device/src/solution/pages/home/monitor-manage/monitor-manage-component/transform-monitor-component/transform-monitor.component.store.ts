@@ -5,11 +5,15 @@ import { Form } from 'antd';
 import { MonitorService } from '~/solution/model/services/monitor.service';
 import { DataNode } from 'rc-tree/lib/interface';
 import { getCheckedList } from '~/framework/util/common/treeFunction';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { ShowNotification } from '~/framework/util/common';
+import { OrganizationExportFunction } from '~/solution/components/organization-controller-component/organization-controller.interface';
+
 export function useTransformMonitorStore(props: ITransformMonitorProps) {
   const { state, setStateWrap } = useStateStore(new ITransformMonitorState());
   const [form] = Form.useForm();
+  const organizationControllerRef: { current: OrganizationExportFunction } = useRef();
+
   const monitorService = useService(MonitorService);
   function close() {
     form.resetFields();
@@ -38,7 +42,8 @@ export function useTransformMonitorStore(props: ITransformMonitorProps) {
   }
   function onCheck(treeData: DataNode[], checkedKeys: any = state.checkedKeys) {
     const checkedObject = getCheckedList(treeData, checkedKeys);
-    console.log(checkedKeys, checkedObject);
+    // 选择的时候，是更新现在已经展开的树， 未展开的树还是可以点击
+    organizationControllerRef.current.setSingleCheckTreeData(checkedKeys[0]);
     form.setFieldsValue({
       selectedGroupIdList: checkedKeys
     });
@@ -50,6 +55,7 @@ export function useTransformMonitorStore(props: ITransformMonitorProps) {
 
   const queryChildInfo = (item: any) => {
     if (!item) return null;
+
     return monitorService.queryVehicleGroupList(item);
   };
 
@@ -74,5 +80,5 @@ export function useTransformMonitorStore(props: ITransformMonitorProps) {
   useEffect(() => {
     return () => {};
   }, [JSON.stringify(props?.data)]);
-  return { state, form, close, onSubmit, onchange, onExpand, onCheck, queryChildInfo };
+  return { state, form, organizationControllerRef, close, onSubmit, onchange, onExpand, onCheck, queryChildInfo };
 }

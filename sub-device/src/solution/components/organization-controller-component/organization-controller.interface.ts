@@ -24,8 +24,11 @@ export class IOrganizationControllerProps {
   onExpand?: (expandedKeys: string[]) => void;
   queryChildInfo?: any;
   getCheckedInfo?: (treeData: DataNode[], checkedKeys?: []) => void;
-  onlyLeafCanSelect?: boolean = false;
   isGroup?: boolean;
+  monitorTranform?: {
+    currentMonitorId: string; // 当前监控组ID
+    currentCheckedId: string;
+  };
 }
 
 export const TREE_MAP = {
@@ -34,9 +37,11 @@ export const TREE_MAP = {
 };
 
 export interface OrganizationExportFunction {
+  setSingleCheckTreeData?: (id: string) => void;
   appendNewNodeToCurrentTreeData?: (data: object) => void;
   alertCurrentTreeData?: (id: string, title: string) => void;
   deleteCurrentTreeData?: (id?: string) => void;
+  setSingleCheck?: (id?: string) => void;
   queryOrganizationTypeListByTypeId?: (id?: string) => void;
   searchCurrentSelectInfo?: any;
 }
