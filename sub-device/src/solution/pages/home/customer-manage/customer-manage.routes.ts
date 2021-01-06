@@ -22,7 +22,7 @@ export const customerManageRoutes: IRoute[] = [
     exact: true
   },
   {
-    path: `${MODULE_PATH}/editVehicle/:id`,
+    path: `${MODULE_PATH}/vehicleDetail/edit/:id`,
     component: ROUTERS.editVehicle,
     lazyload: true,
     exact: true
