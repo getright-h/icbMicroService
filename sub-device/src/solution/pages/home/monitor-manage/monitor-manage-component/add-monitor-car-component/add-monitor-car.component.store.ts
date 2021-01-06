@@ -14,22 +14,23 @@ export function useAddMonitorCarStore(porps: IAddMonitorCarProps) {
   const drapChooseLoadingService = useService(DrapChooseLoadingService);
   const monitorService = useService(MonitorService);
   const [form] = Form.useForm();
-  let getCartDeviceListSubscription: Subscription;
   let insertVehicleGroupSubscription: Subscription;
+  let getDelCartDeviceListSubscription: Subscription;
   let calculationMonitorVehicleNumberSubscription: Subscription;
   useEffect(() => {
     console.log(11);
     return () => {
-      getCartDeviceListSubscription && getCartDeviceListSubscription.unsubscribe();
+      insertVehicleGroupSubscription && insertVehicleGroupSubscription.unsubscribe();
+      getDelCartDeviceListSubscription && getDelCartDeviceListSubscription.unsubscribe();
       calculationMonitorVehicleNumberSubscription && calculationMonitorVehicleNumberSubscription.unsubscribe();
     };
   }, [porps.addMonitorModal]);
-  function getCartDeviceList(type: string) {
-    getCartDeviceListSubscription = drapChooseLoadingService
-      .queryVehiclePagedList({ index: 1, size: 100 })
+  function getDelCartDeviceList() {
+    getDelCartDeviceListSubscription = drapChooseLoadingService
+      .queryVehicleByDistributorList({ distributorIdList: state.checkedKeys })
       .subscribe((res: any) => {
         setStateWrap({
-          [`${type}CarDeviceList`]: [...res.dataList] || []
+          delCarDeviceList: [...res] || []
         });
       });
   }
@@ -128,5 +129,5 @@ export function useAddMonitorCarStore(porps: IAddMonitorCarProps) {
     );
   }
 
-  return { state, form, getCartDeviceList, onSelectCar, onExpand, onCheck, insertVehicleGroup };
+  return { state, form, getDelCartDeviceList, onSelectCar, onExpand, onCheck, insertVehicleGroup };
 }
