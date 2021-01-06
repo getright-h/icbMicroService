@@ -219,7 +219,7 @@ export const IMAP = {
   },
   // 添加车辆marker 在地图上
   //callback 异步查询车辆信息
-  bindMarkerClick(
+  async bindMarkerClick(
     markers: any,
     map: any,
     callback?: (markerInfo: any, map: any, marker: any, infoWindow: any) => void,
@@ -293,30 +293,30 @@ export const IMAP = {
           const infoWindow = new SimpleInfoWindow({
             infoTitle: '<strong>车辆状态</strong>',
             infoBody: `<div class="vehicle-basic-info">
-            <span class="title">基本信息</span>
-            <div class="basic">
-            <div class="item">车主姓名：<%- ownerName %></div>
-             <div class="item">车牌号：<%- plateNo %></div>
-             <div class="item">车架号：<%- vinNo %></div>
-             <div class="item">设备号：<%- deviceCode %></div>
-         </div>
-         </div>
-         <div class="vehicle-divide-line"></div>
-         <div class="vehicle-state-info">
-             <span class="title">状态</span>
-             <div class="basic">
-                 <div class="item">车辆状态：<%- vehicleState %></div>
-                 <div class="item">设备状态：<%- deviceState %></div>
-                 <div class="item">经纬度：<%- lalg %></div>
-                 <div class="item">地址：<%- place %></div>
-                 <div class="item">定位时间：<%- positionTime %></div>
-             </div>
-         </div>
-            <div>
-            <button id="mybtnSearch" class="button_ pop_ pop_def" data-isopen="1">追踪</button>
-            <button id="mybtnWatchLine" class="button_ pop_ pop_def" data-isopen="1">查看轨迹</button>
-            <button id="mybtnDo" class="button_ pop_ pop_def" data-isopen="1">指令</button>
-            </div>`,
+              <span class="title">基本信息</span>
+              <div class="basic">
+              <div class="item">车主姓名：<%- ownerName %></div>
+               <div class="item">车牌号：<%- plateNo %></div>
+               <div class="item">车架号：<%- vinNo %></div>
+               <div class="item">设备号：<%- deviceCode %></div>
+           </div>
+           </div>
+           <div class="vehicle-divide-line"></div>
+           <div class="vehicle-state-info">
+               <span class="title">状态</span>
+               <div class="basic">
+                   <div class="item">车辆状态：<%- vehicleState %></div>
+                   <div class="item">设备状态：<%- deviceState %></div>
+                   <div class="item">经纬度：<%- lalg %></div>
+                   <div class="item">地址：<%- place %></div>
+                   <div class="item">定位时间：<%- positionTime %></div>
+               </div>
+           </div>
+              <div>
+              <button id="mybtnSearch" class="button_ pop_ pop_def" data-isopen="1">追踪</button>
+              <button id="mybtnWatchLine" class="button_ pop_ pop_def" data-isopen="1">查看轨迹</button>
+              <button id="mybtnDo" class="button_ pop_ pop_def" data-isopen="1">指令</button>
+              </div>`,
 
             infoTplData: {
               ownerName: '',
@@ -338,98 +338,71 @@ export const IMAP = {
             callback(markerInfo, map, marker, infoWindow);
           });
         }
-      });
-      console.log(locationCarMarkerListFlag, markers);
 
-      // 当出现点的增加和减少的时候才需要重新规划地图
-      (locationCarMarkerListFlag?.length !== markers?.length ||
-        (locationCarMarkerListFlag?.length == 1 &&
-          markers?.length == 1 &&
-          locationCarMarkerListFlag[0]?.id !== markers[0]?.markerInfo?.id)) &&
-        map.setFitView();
+        // 当出现点的增加和减少的时候才需要重新规划地图
+        (locationCarMarkerListFlag?.length !== markers?.length ||
+          (locationCarMarkerListFlag?.length == 1 &&
+            markers?.length == 1 &&
+            locationCarMarkerListFlag[0]?.id !== markers[0]?.markerInfo?.id)) &&
+          map.setFitView();
+      });
     });
+    // 异步的在里面做点的逻辑会有bug
+
     return markerInfoData;
   },
 
-  bindOffernStopPlace(
-    markers: any,
-    map: any,
-    callback?: (markerInfo: any, map: any, marker: any, infoWindow: any) => void
-  ) {
-    AMapUI.loadUI(['overlay/SimpleInfoWindow'], (SimpleInfoWindow: any) => {
-      markers?.forEach((marker: any) => {
-        const markerInfo = new AMap.Marker({
-          map,
-          icon: new AMap.Icon({
-            // 图标尺寸
-            size: new AMap.Size(46, 28),
-            // 图标的取图地址
-            image: marker.icon,
-            // 图标所用图片大小
-            imageSize: new AMap.Size(46, 28)
-          }),
-          label: {
-            content: '<div>川A888888</div>',
-            offset: new AMap.Pixel(-20, 26)
-          },
-          zIndex: 9999999,
-          position: marker.position,
-          offset: new AMap.Pixel(-13, -30),
-          id: marker.id
-        });
-
-        const infoWindow = new SimpleInfoWindow({
-          infoTitle: '<strong>车辆常驻点</strong>',
-          infoBody: `<div class="vehicle-basic-info">
-              <span class="title">基本信息</span>
-              <div class="basic">
-                  <span class="item">经纬度：<%- coordinates %></span>
-                  <span class="item">到访次数：<%- number %></span>
-                  <span class="item">平均停留时间：<%- stopTime %></span>
-              </div>
-              </div>
-              <div class="vehicle-divide-line"></div>
-              <div>
-              <button id="mybtnSearch" class="button_ pop_ pop_def" data-isopen="1">追踪</button>
-              <button id="mybtnWatchLine" class="button_ pop_ pop_def" data-isopen="1">查看轨迹</button>
-              <button id="mybtnDo" class="button_ pop_ pop_def" data-isopen="1">指令</button>
-              <button id="mybtnAttention" class="button_ pop_ pop_def" data-isopen="1">报警</button>
-              </div>`,
-          infoTplData: {
-            identificationNumber: '',
-            licenceNumber: '',
-            unitName: '',
-            status: '',
-            lalg: '',
-            place: ''
-          },
-
-          //基点指向marker的头部位置
-          offset: new AMap.Pixel(0, -31)
-        });
-        AMap.event.addListener(markerInfo, 'click', function(e: any) {
-          callback(markerInfo, map, marker, infoWindow);
-        });
-      });
-      map.setFitView();
-    });
-  },
   // 使用递增的颜色进行打点
-  bindStepColorMarker(coordinates: Array<string>, number: number, max: number) {
-    const circleMarker = new AMap.CircleMarker({
-      center: coordinates,
-      radius: 10, //3D视图下，CircleMarker半径不要超过64px
-      strokeColor: 'white',
-      strokeWeight: 2,
-      strokeOpacity: 0.5,
-      fillColor: this.getColorByNumber(number, max),
-      // fillOpacity: 0.5,
-      zIndex: 1,
-      bubble: true,
-      cursor: 'pointer',
-      clickable: true
-    });
-    return circleMarker;
+  async bindStepColorMarkers(permanentPlaceList: Array<any>, max: number, map: any, callback: Function) {
+    const circleMarkers: any[] = [];
+    if (max == 0) max = 1;
+    await new Promise(resolve =>
+      AMapUI.loadUI(['overlay/SimpleInfoWindow'], (SimpleInfoWindow: any) => {
+        permanentPlaceList.forEach(item => {
+          const circleMarker = new AMap.CircleMarker({
+            map,
+            center: item.coordinates,
+            radius: 10, //3D视图下，CircleMarker半径不要超过64px
+            strokeWeight: 6,
+            strokeColor: `rgba(252, 157, 154, ${item.number / max})`,
+            fillColor: `rgba(254, 67, 101, ${item.number / max})`,
+            zIndex: 1,
+            bubble: true,
+            cursor: 'pointer',
+            clickable: true
+          });
+
+          circleMarkers.push(circleMarker);
+          const infoWindow = new SimpleInfoWindow({
+            infoTitle: '<strong>车辆常驻点</strong>',
+            infoBody: `<div class="vehicle-basic-info">
+              <span class="title">基本信息</span>
+                <div class="basic">
+                    <div class="item">地址：<%- address %></div>
+                    <div class="item">经纬度：<%- coordinates %></div>
+                    <div class="item">到访次数：<%- number %></div>
+                    <div class="item">平均停留时间：<%- stopTime %></div>
+                </div>
+              </div>
+              `,
+            infoTplData: {
+              address: '',
+              coordinates: '',
+              number: '',
+              stopTime: ''
+            },
+
+            //基点指向marker的头部位置
+            offset: new AMap.Pixel(0, -31)
+          });
+          AMap.event.addListener(circleMarker, 'click', function(e: any) {
+            callback(circleMarker, map, item, infoWindow);
+          });
+        });
+        resolve(circleMarkers);
+      })
+    );
+    return circleMarkers;
   },
   /**
    * @description 获取当前经纬度对应的实际地址
@@ -479,46 +452,6 @@ export const IMAP = {
     mass.setMap(map);
 
     mass.getMap().setFitView();
-  },
-  rgbaToHex(color: any) {
-    const values = color
-      .replace(/rgba?\(/, '')
-      .replace(/\)/, '')
-      .replace(/[\s+]/g, '')
-      .split(',');
-    const a = parseFloat(values[3] || 1),
-      r = Math.floor(a * parseInt(values[0]) + (1 - a) * 255),
-      g = Math.floor(a * parseInt(values[1]) + (1 - a) * 255),
-      b = Math.floor(a * parseInt(values[2]) + (1 - a) * 255);
-
-    return '#' + ('0' + r.toString(16)).slice(-2) + ('0' + g.toString(16)).slice(-2) + ('0' + b.toString(16)).slice(-2);
-  },
-  getColorByNumber(n: number, max: number) {
-    const halfMax = max / 2; //最大数值的二分之一
-    //var 百分之一 = (单色值范围) / halfMax;  单颜色的变化范围只在50%之内
-    const one = 255 / halfMax;
-    console.log('one= ' + one);
-    let r = 0;
-    let g = 0;
-    let b = 0;
-
-    if (n < halfMax) {
-      // 比例小于halfMax的时候红色是越来越多的,直到红色为255时(红+绿)变为黄色.
-      r = one * n;
-      g = 255;
-    }
-
-    if (n >= halfMax) {
-      // 比例大于halfMax的时候绿色是越来越少的,直到0 变为纯红
-      g = 255 - (n - halfMax) * one < 0 ? 0 : 255 - (n - halfMax) * one;
-      r = 255;
-    }
-    r = parseInt(r); // 取整
-    g = parseInt(g); // 取整
-    b = parseInt(b); // 取整
-
-    // console.log(r,g,b)
-    return this.rgbaToHex('rgb(' + r + ',' + g + ',' + b + ')');
   },
   GPS: {
     PI: 3.14159265358979324,

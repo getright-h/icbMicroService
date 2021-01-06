@@ -53,12 +53,10 @@ export function useIMapStore(mapProps: TIMapProps) {
 
   // 单个车选中，需要获取常驻地点
   useEffect(() => {
-    console.log(locationCarMarkerList, currentSelectCar);
-
+    // 清除当前常驻点
+    circleMarkers.current.length && map.current.remove(circleMarkers.current);
     if (currentSelectCar) {
       renderMarker([currentSelectCar]);
-      // 清除当前常驻点
-      circleMarkers.current.length && map.current.remove(circleMarkers.current);
       currentSelectCar.permanentPlaceList.length && setPermanentPlaceList(currentSelectCar.permanentPlaceList);
       // 需要添加常驻地点
       // 多个车不用获取常驻地点
@@ -201,7 +199,7 @@ export function useIMapStore(mapProps: TIMapProps) {
     // 移动车
   }, [currentPoint, carSpeed]);
   // 批量标记车辆 大批量车辆打点专用
-  function renderMarker(data: any) {
+  async function renderMarker(data: any) {
     const markersInfo: any = [];
     data?.forEach((element: any) => {
       //  描定位点，在传入钱转化成格式
@@ -230,16 +228,17 @@ export function useIMapStore(mapProps: TIMapProps) {
 
     console.log('重绘界面啦', markersInfo);
     //开始画车走起
-    locationCarMarkerListFlag.current = IMAP.bindMarkerClick(
+    locationCarMarkerListFlag.current = await IMAP.bindMarkerClick(
       markersInfo,
       map.current,
       openInfoWin,
       locationCarMarkerListFlag.current
     );
+    console.log('locationCarMarkerListFlag.current', locationCarMarkerListFlag.current);
   }
 
   // 设置常驻地点
-  function setPermanentPlaceList(permanentPlaceList: []) {
+  async function setPermanentPlaceList(permanentPlaceList: []) {
     // 为permanentPlaceList标记点
     // 找到这些点里面的最大值
     let max = 0;
@@ -248,12 +247,9 @@ export function useIMapStore(mapProps: TIMapProps) {
         max = item.number;
       }
     });
-    permanentPlaceList.forEach((item: any) => {
-      const circleMarker = IMAP.bindStepColorMarker(item.coordinates, item.number, max);
-      circleMarkers.current.push(circleMarker);
-    });
 
-    map.current.add(circleMarkers.current);
+    circleMarkers.current = await IMAP.bindStepColorMarkers(permanentPlaceList, max, map.current, offernStopMarkersWin);
+    // map.current.add(circleMarkers.current);
   }
 
   // 点击marker展示的窗口点击车的信息
@@ -281,6 +277,7 @@ export function useIMapStore(mapProps: TIMapProps) {
     });
   }
 
+  // 车辆信息窗体
   function openInfoWinCar(markerInfo: any, map: any, marker: any, infoWindow: any) {
     const { plateNo, vinNo, ownerName, deviceCode, isOnline, durationTime, lastLocationTime } = markerInfo;
 
@@ -299,6 +296,24 @@ export function useIMapStore(mapProps: TIMapProps) {
       });
 
       infoWindow.open(map, marker.position);
+
+      infoWindowInfo.current = infoWindow;
+    });
+  }
+
+  function offernStopMarkersWin(markerInfo: any, map: any, marker: any, infoWindow: any) {
+    const { coordinates, number, stopTime } = marker;
+    console.log('infoWindow', infoWindow);
+
+    regeoCode([coordinates[0], coordinates[1]]).then(place => {
+      infoWindow.setInfoTplData({
+        address: place || '无',
+        coordinates: coordinates || '无',
+        number: number,
+        stopTime: Number.parseInt(stopTime / 60 + '') + 'min'
+      });
+
+      infoWindow.open(map, coordinates);
 
       infoWindowInfo.current = infoWindow;
     });

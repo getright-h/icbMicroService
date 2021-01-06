@@ -5,6 +5,7 @@
 export class IPositionMonitorState {
   refreshTime = '';
   isModalVisible = false;
+  stopTime = false;
 }
 
 export const data = [

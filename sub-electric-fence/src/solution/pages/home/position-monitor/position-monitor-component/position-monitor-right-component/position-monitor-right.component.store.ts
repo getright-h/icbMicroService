@@ -1,4 +1,4 @@
-import { IPositionMonitorRightState } from './position-monitor-right.interface';
+import { IPositionMonitorRightState, IPositionMonitorRightProps } from './position-monitor-right.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
 import * as _ from 'lodash';
 import { VehicleInfoParamReture } from '~/solution/model/dto/position-monitor.dto';
@@ -6,11 +6,13 @@ import { setDataAction } from '../position-monitor-redux/position-monitor-action
 import { message } from 'antd';
 import { PositionMonitorContext } from '../position-monitor.component';
 import { PositionMonitorService } from '~/solution/model/services/position-monitor.service';
+import { useEffect } from 'react';
 
-export function usePositionMonitorRightStore() {
+export function usePositionMonitorRightStore(props: IPositionMonitorRightProps) {
   const { state, setStateWrap } = useStateStore(new IPositionMonitorRightState());
   const { reduxState, dispatch } = React.useContext(PositionMonitorContext);
   const { checkedCarData } = reduxState;
+  const { mapbtnTrackrVisible, mapbtnDrivingVisible } = state;
   const positionMonitorService: PositionMonitorService = useService(PositionMonitorService);
   console.log('checkedCarData', checkedCarData);
 
@@ -22,6 +24,15 @@ export function usePositionMonitorRightStore() {
       mapbtnTrackrVisible: true
     });
   }
+
+  // 当打开追踪和轨迹的时候不需要再计数
+  useEffect(() => {
+    if (mapbtnTrackrVisible || mapbtnDrivingVisible) {
+      props.stopRefresh(true);
+    } else {
+      props.stopRefresh(false);
+    }
+  }, [mapbtnTrackrVisible, mapbtnDrivingVisible]);
 
   //轨迹
   function drawDrivingLine(marker: VehicleInfoParamReture) {

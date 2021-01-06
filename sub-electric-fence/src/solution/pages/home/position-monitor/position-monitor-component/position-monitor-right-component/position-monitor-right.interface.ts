@@ -8,3 +8,7 @@ export class IPositionMonitorRightState {
   deviceId = '';
   modalDirectiveVisible = false;
 }
+
+export class IPositionMonitorRightProps {
+  stopRefresh: (stopTime: boolean) => void;
+}

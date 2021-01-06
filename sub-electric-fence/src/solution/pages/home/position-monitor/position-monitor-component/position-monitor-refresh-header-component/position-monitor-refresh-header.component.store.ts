@@ -8,13 +8,18 @@ import { useEffect, useRef } from 'react';
 export function usePositionMonitorRefreshHeaderStore(props: IPositionMonitorRefreshHeaderProps) {
   const { state, setStateWrap } = useStateStore(new IPositionMonitorRefreshHeaderState());
   const setIntervalInfo: any = useRef();
-  const { sentTime = 20 } = props;
+  const { sentTime = 20, stopTime } = props;
   let { refreshTime } = state;
   useEffect(() => {
     setStateWrap({ refreshTime: sentTime });
   }, []);
+
   useEffect(() => {
-    setRefreshTime();
+    // 用来暂停时间
+    if (!stopTime) {
+      setRefreshTime();
+    }
+
     return () => {
       clearInterval(setIntervalInfo.current);
     };

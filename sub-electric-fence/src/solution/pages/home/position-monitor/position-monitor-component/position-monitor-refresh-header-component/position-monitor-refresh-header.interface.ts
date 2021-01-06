@@ -9,5 +9,6 @@ export class IPositionMonitorRefreshHeaderState {
 export interface IPositionMonitorRefreshHeaderProps {
   refreshContentInfo: () => void;
   sentTime?: number;
+  stopTime?: boolean;
   customStyle?: {};
 }

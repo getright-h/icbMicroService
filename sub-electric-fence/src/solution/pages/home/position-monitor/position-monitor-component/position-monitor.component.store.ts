@@ -41,11 +41,16 @@ export function usePositionMonitorStore(dispatch: Dispatch<any>, positionMonitor
     queryMonitorAlarmInfoPagedList();
   }
 
+  // 暂停计时
+  function stopRefresh(stopTime: boolean) {
+    setStateWrap({ stopTime });
+  }
+
   function queryMonitorAlarmInfoPagedList() {
     // 刷新当前的报警信息条数
     positionMonitorService.queryMonitorAlarmInfoPagedList({ index: 1, size: 10, isSettle: false }).subscribe(res => {
       setDataAction({ totalAlermManage: res.count }, dispatch);
     });
   }
-  return { state, refreshContentInfo, handleCancel };
+  return { state, refreshContentInfo, handleCancel, stopRefresh };
 }

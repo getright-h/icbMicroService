@@ -6,8 +6,8 @@ import { PositionMonitorContext } from '../position-monitor.component';
 import PositionMonitorMapbtnTrackComponent from '../position-monitor-mapbtn-track-component/position-monitor-mapbtn-track.component';
 import PositionMonitorMapbtnDrivingComponent from '../position-monitor-mapbtn-driving-line-component/position-monitor-mapbtn-driving-line.component';
 import DirectivePatchModalComponent from '../../../directive-manage/wiget/directive-patch-model-component/directive-patch-moda.component';
-import { Spin } from 'antd';
-export const PositionMonitorRightComponent = () => {
+import { IPositionMonitorRightProps } from './position-monitor-right.interface';
+export const PositionMonitorRightComponent = (props: IPositionMonitorRightProps) => {
   const { reduxState } = React.useContext(PositionMonitorContext);
 
   const {
@@ -18,7 +18,7 @@ export const PositionMonitorRightComponent = () => {
     drawDrivingLine,
     controllerDirectiveModal,
     closeMapDrivingPage
-  } = usePositionMonitorRightStore();
+  } = usePositionMonitorRightStore(props);
   const { checkedCarData, currentSelectCar } = reduxState;
   const { mapbtnTrackrVisible, mapbtnDrivingVisible, modalDirectiveVisible, deviceId } = state;
   const mapProps = React.useMemo(
@@ -71,7 +71,7 @@ export const PositionMonitorRightComponent = () => {
         />
       )}
       {mapbtnTrackrVisible && <PositionMonitorMapbtnTrackComponent {...positionMonitorMapbtnTrackProps} />}
-      <PositionMonitorMapbtnDrivingComponent {...positionMonitorMapbtnDrivingProps} />
+      {mapbtnDrivingVisible && <PositionMonitorMapbtnDrivingComponent {...positionMonitorMapbtnDrivingProps} />}
     </div>
   );
 };
