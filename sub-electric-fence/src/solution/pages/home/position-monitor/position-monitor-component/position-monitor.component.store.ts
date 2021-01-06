@@ -33,12 +33,7 @@ export function usePositionMonitorStore(dispatch: Dispatch<any>, positionMonitor
       });
     if (vehicleIdList.length) {
       positionMonitorService.queryVehicleInfoByParam({ vehicleIdList }).subscribe(res => {
-        console.log('=>>>>>>>>>');
-
-        console.log(checkedCarDataLength.current, res);
-
-        console.log('=>>>>>>>>>');
-
+        // 为了防止刷新的时候用户在操作，避免刷新带来的数据不一致
         if (checkedCarDataLength.current == res?.length) {
           if (currentSelectCar) {
             for (const iterator of res) {

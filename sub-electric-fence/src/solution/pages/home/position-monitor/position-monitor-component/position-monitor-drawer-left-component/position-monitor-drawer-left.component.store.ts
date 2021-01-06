@@ -51,7 +51,7 @@ export function usePositionMonitorDrawerLeftStore() {
     setStateWrap({
       searchForm: { ...searchForm, index, size: pageSize }
     });
-    queryVehicleInfoPagedList();
+    queryVehicleInfoPagedList({ ...searchForm, index, size: pageSize });
   }
 
   //根据监控组、车架号、车主电话、车牌号、设备号信息查询车辆信息

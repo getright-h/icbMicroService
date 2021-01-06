@@ -223,7 +223,8 @@ export const IMAP = {
     markers: any,
     map: any,
     callback?: (markerInfo: any, map: any, marker: any, infoWindow: any) => void,
-    locationCarMarkerListFlag: any[] = []
+    locationCarMarkerListFlag: any[] = [],
+    winInfo?: any
   ) {
     const markerInfoData: any[] = [];
     locationCarMarkerListFlag?.forEach(oldMarker => {
@@ -340,11 +341,16 @@ export const IMAP = {
         }
 
         // 当出现点的增加和减少的时候才需要重新规划地图
-        (locationCarMarkerListFlag?.length !== markers?.length ||
+        if (
+          locationCarMarkerListFlag?.length !== markers?.length ||
           (locationCarMarkerListFlag?.length == 1 &&
             markers?.length == 1 &&
-            locationCarMarkerListFlag[0]?.id !== markers[0]?.markerInfo?.id)) &&
+            locationCarMarkerListFlag[0]?.id !== markers[0]?.markerInfo?.id)
+        ) {
           map.setFitView();
+          // 清除界面上的winUI信息，在合理情况下清除弹窗信息
+          winInfo && winInfo.close();
+        }
       });
     });
     // 异步的在里面做点的逻辑会有bug

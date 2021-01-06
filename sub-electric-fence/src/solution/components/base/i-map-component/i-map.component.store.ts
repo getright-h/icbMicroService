@@ -101,7 +101,7 @@ export function useIMapStore(mapProps: TIMapProps) {
       IMAP.showCarInfo(mapProps.carLine, map.current, { position }, openInfoWinCar);
       map.current.setCenter(position);
     }
-  }, [mapProps.carLine]);
+  }, [mapProps.carLine?.pointList?.length]);
 
   /**
    * // 轨迹回放
@@ -129,7 +129,6 @@ export function useIMapStore(mapProps: TIMapProps) {
         offset: new AMap.Pixel(-26, -13),
         autoRotation: true
       });
-      console.log('carLine', carLine);
 
       // 第三个参数是在窗口需要展示的当前车辆的信息
       carLineMarkerInfo.current.on('moving', function(e: any) {
@@ -198,6 +197,7 @@ export function useIMapStore(mapProps: TIMapProps) {
     }
     // 移动车
   }, [currentPoint, carSpeed]);
+
   // 批量标记车辆 大批量车辆打点专用
   async function renderMarker(data: any) {
     const markersInfo: any = [];
@@ -232,7 +232,8 @@ export function useIMapStore(mapProps: TIMapProps) {
       markersInfo,
       map.current,
       openInfoWin,
-      locationCarMarkerListFlag.current
+      locationCarMarkerListFlag.current,
+      infoWindowInfo.current
     );
     console.log('locationCarMarkerListFlag.current', locationCarMarkerListFlag.current);
   }
@@ -301,6 +302,7 @@ export function useIMapStore(mapProps: TIMapProps) {
     });
   }
 
+  // 长驻点的信息展示
   function offernStopMarkersWin(markerInfo: any, map: any, marker: any, infoWindow: any) {
     const { coordinates, number, stopTime } = marker;
     console.log('infoWindow', infoWindow);
