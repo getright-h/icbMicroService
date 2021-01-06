@@ -117,9 +117,9 @@ function resolveChildProject(itemChild: any, childProject: any, micInfo: any[], 
         children: undefined
       });
     }
-    if (item.title) {
-      itemChildFilterArray.push(item);
-    }
+    // if (item.title) {
+    itemChildFilterArray.push(item);
+    // }
   });
   return itemChildFilterArray;
 }
