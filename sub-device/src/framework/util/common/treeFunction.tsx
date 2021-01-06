@@ -17,7 +17,11 @@ export function dealWithTreeData<T>(
   isWarehouse?: boolean,
   content?: (element: any) => React.ReactNode,
   canSelectAll?: boolean,
-  organizationChecked?: boolean
+  organizationChecked?: boolean,
+  monitorTranform?: {
+    currentMonitorId: string; // 当前监控组ID
+    currentCheckedId: string; //已选择的ID
+  }
 ) {
   const treeData: any[] =
     !!res &&
@@ -32,9 +36,58 @@ export function dealWithTreeData<T>(
       treeDataChild['isLeaf'] = isWarehouse;
       treeDataChild.selectable = canSelectAll || isWarehouse;
       treeDataChild.checkable = isWarehouse || !!organizationChecked;
+      // 子节点禁掉 checkbox， 为应对监控组转组，不可选择自身，并且单选
+      // 首先将自身ID传递过来，对相对应的节点禁用选择（自身不可选） 初始化阶段可以进行设置
+      // 如果选择了一个监控组，则禁用其他按钮，取消选择，其他（除自身）可以选择（需要更新整颗树，使用外部方法，）
+      if (monitorTranform) {
+        treeDataChild.key === monitorTranform.currentMonitorId && (treeDataChild.disableCheckbox = true);
+        _initSingleCheckNode(treeDataChild, monitorTranform.currentCheckedId, monitorTranform.currentMonitorId);
+      }
+
       return treeDataChild;
     });
+
   return treeData ? treeData : [];
+}
+
+// 初始化当前节点是否可选
+function _initSingleCheckNode(node: any, key: string, disableId: string) {
+  if (node.key == key) {
+    node.disableCheckbox = false;
+  } else if (node.children) {
+    node.children.forEach((item: any) => {
+      _initSingleCheckNode(item, key, disableId);
+    });
+  } else if (!key) {
+    node.disableCheckbox = false;
+  } else {
+    node.disableCheckbox = true;
+  }
+}
+
+//  如果选择了一个监控组，则禁用其他按钮，取消选择，其他（除自身）可以选择（需要更新整颗树，使用外部方法，）
+//  控制单选
+export function setSingleCheck(list: any[], key: string) {
+  const result: any = [];
+  list &&
+    list.forEach(node => {
+      if (node.key == key) {
+        result.push({
+          ...node,
+          disableCheckbox: false
+        });
+      } else if (node.children) {
+        result.push({
+          ...node,
+          children: setSingleCheck(node.children as any, key)
+        });
+      } else if (!key) {
+        result.push({ ...node, disableCheckbox: false });
+      } else {
+        result.push({ ...node, disableCheckbox: true });
+      }
+    });
+  return result;
 }
 
 function renderTitle(isWarehouse: boolean, element: any, content: any, alterTitle?: any) {

@@ -24,7 +24,7 @@ export default function MonitorManageComponent() {
     onSelect,
     getTableData,
     deletemonitorGroup,
-    editmonitorGroup,
+    setSingleCheckTreeData,
     onSelectChange,
     alertCurrentTreeData,
     monitorGroupAction,
@@ -148,6 +148,7 @@ export default function MonitorManageComponent() {
         <TransformMonitorComponent
           close={handleModalCancel}
           visible={transformModalVisible}
+          setSingleCheckTreeData={setSingleCheckTreeData}
           data={{
             currentMonitorGroup: currentMonitorGroup,
             selectedRowKeys: transformSelected,

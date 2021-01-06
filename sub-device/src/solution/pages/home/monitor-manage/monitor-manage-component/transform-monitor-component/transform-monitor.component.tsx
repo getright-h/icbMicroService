@@ -5,13 +5,25 @@ import { Modal, Form, Checkbox, Input, Switch } from 'antd';
 import OrganizationControllerComponent from '~/solution/components/organization-controller-component/organization-controller.component';
 
 export default function TransformMonitorComponent(props: ITransformMonitorProps) {
-  const { state, form, close, onSubmit, onchange, onCheck, onExpand, queryChildInfo } = useTransformMonitorStore(props);
+  const {
+    state,
+    form,
+    organizationControllerRef,
+    close,
+    onSubmit,
+    onchange,
+    onCheck,
+    onExpand,
+    queryChildInfo
+  } = useTransformMonitorStore(props);
   const { visible = false, data = {} } = props;
   const { submitLoading = false, checkedKeys, expandedKeys } = state;
   const layout = {
     labelCol: { span: 8 },
     wrapperCol: { span: 16 }
   };
+  // 监控组，转组规则： 不能选择自身， 只能单选
+
   function RenderTree() {
     const prganizationControllerComponentProps = {
       expandedKeys,
@@ -20,7 +32,11 @@ export default function TransformMonitorComponent(props: ITransformMonitorProps)
       checkedKeys,
       isGroup: true,
       queryChildInfo,
-      onlyLeafCanSelect: true
+      monitorTranform: {
+        currentMonitorId: data?.currentMonitorGroup?.id,
+        currentCheckedId: checkedKeys[0]
+      },
+      ref: organizationControllerRef
     };
     return (
       <div>
