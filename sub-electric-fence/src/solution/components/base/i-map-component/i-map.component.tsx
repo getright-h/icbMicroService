@@ -1,4 +1,4 @@
-import { Select } from 'antd';
+import { Select, Button } from 'antd';
 import * as React from 'react';
 import style from './i-map.component.less';
 import { useIMapStore } from './i-map.component.store';
@@ -41,8 +41,10 @@ export const IMapComponent = React.memo((mapProps: TIMapProps) => {
   return (
     <div id={mapProps.id} style={{ height }}>
       <div className={`${style.info} ${style.floatRight}`}>
-        <button onClick={startRule}>测距</button>
-        {needDrawRactangle && <button onClick={startDrawRactangle}>区域查车</button>}
+        <Button type="primary" size="small" onClick={startRule}>
+          测距
+        </Button>
+        {/* {needDrawRactangle && <button onClick={startDrawRactangle}>区域查车</button>} */}
       </div>
       {needSearchAddress && <div className={`${style.info} ${style.searchAddress}`}>{SearchAddress()}</div>}
     </div>

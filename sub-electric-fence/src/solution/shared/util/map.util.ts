@@ -294,30 +294,31 @@ export const IMAP = {
           const infoWindow = new SimpleInfoWindow({
             infoTitle: '<strong>车辆状态</strong>',
             infoBody: `<div class="vehicle-basic-info">
-              <span class="title">基本信息</span>
-              <div class="basic">
-              <div class="item">车主姓名：<%- ownerName %></div>
-               <div class="item">车牌号：<%- plateNo %></div>
-               <div class="item">车架号：<%- vinNo %></div>
-               <div class="item">设备号：<%- deviceCode %></div>
-           </div>
-           </div>
-           <div class="vehicle-divide-line"></div>
-           <div class="vehicle-state-info">
-               <span class="title">状态</span>
-               <div class="basic">
-                   <div class="item">车辆状态：<%- vehicleState %></div>
-                   <div class="item">设备状态：<%- deviceState %></div>
-                   <div class="item">经纬度：<%- lalg %></div>
-                   <div class="item">地址：<%- place %></div>
-                   <div class="item">定位时间：<%- positionTime %></div>
-               </div>
-           </div>
-              <div>
-              <button id="mybtnSearch" class="button_ pop_ pop_def" data-isopen="1">追踪</button>
-              <button id="mybtnWatchLine" class="button_ pop_ pop_def" data-isopen="1">查看轨迹</button>
-              <button id="mybtnDo" class="button_ pop_ pop_def" data-isopen="1">指令</button>
-              </div>`,
+            <span class="title">基本信息</span>
+            <div class="basic">
+            <div class="item">车主姓名：<%- ownerName %></div>
+             <div class="item">车牌号：<%- plateNo %></div>
+             <div class="item">车架号：<%- vinNo %></div>
+             <div class="item">设备号：<%- deviceCode %></div>
+         </div>
+         </div>
+         <div class="vehicle-divide-line"></div>
+         <div class="vehicle-state-info">
+             <span class="title">状态</span>
+             <div class="basic">
+                 <div class="item">车辆状态：<%- vehicleState %></div>
+                 <div class="item">设备状态：<%- deviceState %></div>
+                 <div class="item">经纬度：<%- lalg %></div>
+                 <div class="item">地址：<%- place %></div>
+                 <div class="item">定位时间：<%- positionTime %></div>
+             </div>
+         </div>
+         <div class="vehicle-divide-line"></div>
+            <div class="vehicle-action-buttons">
+            <button id="mybtnSearch" class="button_ pop_ pop_def" data-isopen="1">追踪</button>
+            <button id="mybtnWatchLine" class="button_ pop_ pop_def" data-isopen="1">查看轨迹</button>
+            <button id="mybtnDo" class="button_ pop_ pop_def" data-isopen="1">指令</button>
+            </div>`,
 
             infoTplData: {
               ownerName: '',
