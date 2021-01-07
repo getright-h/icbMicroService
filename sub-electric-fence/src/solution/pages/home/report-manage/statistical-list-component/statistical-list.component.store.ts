@@ -52,6 +52,7 @@ export function useDirectiveListStore() {
 
   function initSearchForm() {
     searchForm.resetFields();
+    setStateWrap({ timeInfo: null });
     searchClick();
   }
 
@@ -92,8 +93,8 @@ export function useDirectiveListStore() {
       let beginTime, endTime;
       data[0] ? (beginTime = Date.parse(data[0])) : (beginTime = 0);
       data[1] ? (endTime = Date.parse(data[1])) : (endTime = 0);
-      searchForm.setFieldsValue({ beginTime: beginTime });
-      searchForm.setFieldsValue({ endTime: endTime });
+      searchForm.setFieldsValue({ beginTime, endTime });
+      setStateWrap({ timeInfo: data });
     }
 
     if (type == 'organizationId') {

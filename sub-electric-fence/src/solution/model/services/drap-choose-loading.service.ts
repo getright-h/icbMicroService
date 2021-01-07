@@ -49,6 +49,7 @@ const QUERY_USER_PAGED_LIST = 'approval/manage/queryUserPagedList';
 const QUERY_APPROVAL_PAGED_LIST = 'approval/manage/queryApprovalGroupPagedList';
 const QUERY_APPROVAL_FORM_TEMPLATE_PAGED_LIST = 'approval/manage/queryApprovalFormTemplatePagedList';
 // 报警指令类型
+const QUERY_VEHICLE_GROUP_BY_ROLEID = 'vehicle/manage/QueryVehicleGroupByRoleId';
 
 const CMD_TYPES = 'gps/cmd/types';
 // 设备/车辆联合搜索
@@ -108,7 +109,7 @@ export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
 
   // 查询角色列表
   queryRoleList(params: QueryPurchaseListParam): Observable<DrapChooseLoadingReturn> {
-    return this.requestService.get(QUERY_ROLE_LIST, params);
+    return this.requestService.post(QUERY_ROLE_LIST, params);
   }
 
   // 获取机构名称
@@ -167,5 +168,9 @@ export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
   // 联合搜索
   queryVehicleInfoPagedList(params: QueryVehiclePagedListParam): Observable<DrapChooseLoadingReturn> {
     return this.requestService.post(QUERY_VEHICLE_INFO_PAGED_LIST, params);
+  }
+  // 监控组
+  queryVehicleGroupByRoleId(params: QueryVehiclePagedListParam): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.post(QUERY_VEHICLE_GROUP_BY_ROLEID, params);
   }
 }

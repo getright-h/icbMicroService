@@ -1,20 +1,39 @@
 import { Button, Col, Form, Input, Row, Select, Modal, Timeline } from 'antd';
 import * as React from 'react';
-import { ITableComponent, TablePageTelComponent } from '~/solution/components/component.module';
+import {
+  ITableComponent,
+  TablePageTelComponent,
+  TimePickerComponent,
+  ISelectLoadingComponent
+} from '~/solution/components/component.module';
 import { AlarmParameterColumn } from './follow-list.column';
 import { useDirectiveListStore } from './follow-list.component.store';
+import { AlarmType_FOR_REPORT } from '~shared/constant/alarm.const';
+import { GlobalContext } from '~/solution/context/global/global.provider';
 import SloveModalComponent from './slove-modal-component/slove-modal.component';
+
 export default function DirectiveListComponent() {
   const {
     state,
-    searchForm,
+    searchForm: aliaNameSearchForm,
     callbackAction,
     changeTablePageIndex,
     searchClick,
     initSearchForm,
-    handleModalCancel
+    handleModalCancel,
+    getCurrentSelectInfo
   } = useDirectiveListStore();
-  const { isLoading, tableData, total, pageIndex, pageSize, recordModalVisible, sloveModalVisible } = state;
+  const {
+    isLoading,
+    tableData,
+    currentRoleId,
+    total,
+    pageIndex,
+    pageSize,
+    recordModalVisible,
+    sloveModalVisible
+  } = state;
+  const { gState } = React.useContext(GlobalContext);
 
   function showRecordModal() {
     Modal.success({
@@ -32,25 +51,101 @@ export default function DirectiveListComponent() {
     });
   }
   function renderSelectItems() {
-    const layout = {
-      labelCol: { span: 8 },
-      wrapperCol: { span: 16 }
-    };
+    const queryOrgList = ISelectLoadingComponent({
+      width: '300px',
+      reqUrl: 'queryStoreOrganization',
+      placeholder: '请选择机构',
+      // searchKey: organization.organizationName || '',
+      getCurrentSelectInfo: (value: string, option: any) => {
+        getCurrentSelectInfo(option?.info || {}, 'organizationId');
+      },
+      searchForm: {
+        systemId: gState?.myInfo?.systemId
+      }
+    });
+    const queryMonitorList = ISelectLoadingComponent({
+      width: '300px',
+      reqUrl: 'queryVehicleGroupByRoleId',
+      placeholder: '请选择监控组',
+      // searchKey: organization.organizationName || '',
+      getCurrentSelectInfo: (value: string, option: any) => {
+        getCurrentSelectInfo(option?.info || {}, 'monitor');
+      },
+      searchForm: {
+        systemId: gState?.myInfo?.systemId,
+        roleId: currentRoleId
+      }
+    });
+    const queryRoleList = ISelectLoadingComponent({
+      width: '300px',
+      reqUrl: 'queryRoleList',
+      placeholder: '请选择监控角色',
+      allowClear: true,
+      // searchKey: organization.organizationName || '',
+      getCurrentSelectInfo: (value: string, option: any) => {
+        getCurrentSelectInfo(option?.info || {}, 'roleId');
+      },
+      searchForm: {
+        systemId: gState?.myInfo?.systemId
+      }
+    });
+
     return (
-      <Form {...layout} form={searchForm} style={{ width: '90%' }}>
-        <Row gutter={24}>
-          <Col span={6}>
-            <Form.Item name="type" label="报警类型">
-              <Input placeholder="请输入报警类型" />
-            </Form.Item>
-          </Col>
-          <Col span={6}>
-            <Form.Item name="method" label="下发方式">
-              <Select placeholder="请选择下发方式"></Select>
-            </Form.Item>
-          </Col>
-        </Row>
-      </Form>
+      <div>
+        <div style={{ marginBottom: 10 }}>
+          <strong style={{ fontSize: 20, marginRight: 10 }}> 监控角色:</strong>
+          {queryRoleList}
+        </div>
+        <Form
+          form={aliaNameSearchForm}
+          layout={'inline'}
+          initialValues={{
+            alarmType: -1
+          }}
+        >
+          <Row gutter={[8, 8]}>
+            <Col span={8}>
+              <Form.Item name="strValue" label="查询车辆/设备">
+                <Input placeholder="电话/车牌号/车架号/设备" allowClear={true} />
+              </Form.Item>
+            </Col>
+            <Col span={5}>
+              <Form.Item label="报警类型" name="alarmType">
+                <Select>
+                  {AlarmType_FOR_REPORT.map((alarm: any) => (
+                    <Select.Option key={alarm.value} value={alarm.value}>
+                      {alarm.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={11}>
+              <Form.Item label="时间范围" name="time">
+                <TimePickerComponent
+                  pickerType="dateTimeRange"
+                  getDateTimeInfo={(time: any, other: any) => getCurrentSelectInfo(time, 'time')}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={[24, 8]}>
+            <Col span={12}>
+              <Form.Item label="所属机构" name="organizationId">
+                {queryOrgList}
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item label="监控组" name="groupId">
+                {queryMonitorList}
+              </Form.Item>
+            </Col>
+            <Form.Item name="beginTime"></Form.Item>
+            <Form.Item name="endTime"></Form.Item>
+            <Form.Item name="roleId"></Form.Item>
+          </Row>
+        </Form>
+      </div>
     );
   }
   function renderSearchButtons() {
@@ -70,7 +165,7 @@ export default function DirectiveListComponent() {
         isLoading={isLoading}
         pageIndex={pageIndex}
         pageSize={pageSize}
-        data={[{ name: 1 }]}
+        data={tableData}
         total={total}
         isPagination={true}
         changeTablePageIndex={(pageIndex: number, pageSize: number) => changeTablePageIndex(pageIndex, pageSize)}

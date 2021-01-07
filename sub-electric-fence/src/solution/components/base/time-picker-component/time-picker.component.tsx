@@ -93,9 +93,9 @@ export default class TimePickerComponent extends React.Component<IProps> {
             defaultValue={
               timeInfo && timeInfo.length > 1 && [moment(timeInfo[0], dateFormat), moment(timeInfo[1], dateFormat)]
             }
-            value={
-              timeInfo && timeInfo.length > 1 && [moment(timeInfo[0], dateFormat), moment(timeInfo[1], dateFormat)]
-            }
+            // value={
+            //   timeInfo && timeInfo.length > 1 && [moment(timeInfo[0], dateFormat), moment(timeInfo[1], dateFormat)]
+            // }
             showTime={{ format: timeFormat }}
             format={dateFormat}
             placeholder={['开始时间', '结束时间']}
