@@ -10,6 +10,8 @@ import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
 import { DepUtil } from '~/framework/aop/inject';
 import { VehicleInfoParamReture, RealTimeTrackingReturn } from '~/solution/model/dto/position-monitor.dto';
+import { map } from 'rxjs/operators';
+import { IMAP } from '~/solution/shared/util/map.util';
 
 /**
  * 真实开发中，请将示例代码移除
@@ -40,7 +42,25 @@ export class PositionMonitorService extends PositionMonitorDTO {
   }
 
   queryVehicleInfoByParam(params: { vehicleIdList: Array<string> }): Observable<VehicleInfoParamReture[]> {
-    return this.requestService.post(QUERY_VEHICLE_INFOBYPARAM, params);
+    function dealWithCoordinates(data: VehicleInfoParamReture[]) {
+      data = data.map(item => {
+        item.deviceList = item.deviceList.map(device => {
+          device.coordinates = IMAP.initLonlat(device.coordinates[0], device.coordinates[1]);
+          return device;
+        });
+        item.permanentPlaceList = item.permanentPlaceList.map(permanentPlace => {
+          permanentPlace.coordinates = IMAP.initLonlat(permanentPlace.coordinates[0], permanentPlace.coordinates[1]);
+          return permanentPlace;
+        });
+        return item;
+      });
+      return data;
+    }
+    return this.requestService.post(QUERY_VEHICLE_INFOBYPARAM, params).pipe(
+      map(data => {
+        return dealWithCoordinates(data);
+      })
+    );
   }
 
   realTimeTracking(params: { code: string }): Observable<RealTimeTrackingReturn> {

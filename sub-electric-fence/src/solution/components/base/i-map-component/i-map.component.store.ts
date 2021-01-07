@@ -113,12 +113,19 @@ export function useIMapStore(mapProps: TIMapProps) {
     map.current.clearMap();
     if (mapProps.drivingLineData?.pointList?.length) {
       const { pointList } = mapProps.drivingLineData;
+      let startTime = new Date().getTime();
       const carLine = pointList.map(item => {
         item = IMAP.initLonlat(item.coordinates[0], item.coordinates[1]);
         return item;
       });
+      console.log('纠偏的时间差', new Date().getTime() - startTime);
+      startTime = new Date().getTime();
+      map.current.on('complete', () => {
+        console.log(1);
+
+        console.log('渲染的时间差', new Date().getTime() - startTime);
+      });
       polyline.current = IMAP.drawLine(map.current, carLine);
-      const position = carLine[carLine.length - 1];
       carLineMarkerInfo.current = new AMap.Marker({
         map: map.current,
         label: {

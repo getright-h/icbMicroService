@@ -6,6 +6,7 @@ import { PositionMonitorService } from '~/solution/model/services/position-monit
 import { TPositionMonitor } from '../position-monitor-redux/position-monitor-reducer';
 import { formatToUnix } from '~/solution/shared/util/common.util';
 import { QueryVehicleTrajectoryArrayListReturn } from '~/solution/model/dto/position-monitor.dto';
+import { ShowNotification } from '~/framework/util/common';
 declare const AMap: any;
 export function usePositionMonitorMapbtnDrivingLineStore(reduxState: TPositionMonitor) {
   const { state, setStateWrap } = useStateStore(new IPositionMonitorMapbtnDrivingLineState());
@@ -29,12 +30,6 @@ export function usePositionMonitorMapbtnDrivingLineStore(reduxState: TPositionMo
     });
   }
 
-  function getCurrentLine(code: string) {
-    positionMonitorService.realTimeTracking({ code }).subscribe(res => {
-      // setStateWrap({ carLine: res });
-    });
-  }
-
   function setEndRunning() {
     setStateWrap({
       isRunning: true,
@@ -44,8 +39,6 @@ export function usePositionMonitorMapbtnDrivingLineStore(reduxState: TPositionMo
   }
 
   function changeSliderProgress(value: number) {
-    console.log(value);
-
     setStateWrap({
       currentPoint: value
     });
@@ -117,12 +110,18 @@ export function usePositionMonitorMapbtnDrivingLineStore(reduxState: TPositionMo
 
   function onSwitchOFFONClick(isON: boolean) {
     setStateWrap({
-      isRunning: isON
+      isRunning: isON,
+      carSpeedBase: 1
     });
   }
 
   function onSpeedChangeClick(isFast: boolean) {
-    const carSpeedInfo = isFast ? carSpeedBase * 2 : carSpeedBase / 2;
+    let carSpeedInfo = 0;
+    if (isFast) {
+      carSpeedInfo = carSpeedBase >= 1 ? carSpeedBase * 2 : 2;
+    } else {
+      carSpeedInfo = carSpeedBase >= 1 ? 0.5 : carSpeedBase / 2;
+    }
     setStateWrap({
       carSpeedBase: carSpeedInfo
     });
@@ -173,21 +172,37 @@ export function usePositionMonitorMapbtnDrivingLineStore(reduxState: TPositionMo
       beginTime: timeInfo && timeInfo[0] ? formatToUnix(timeInfo[0]) : -1,
       endTime: timeInfo && timeInfo[1] ? formatToUnix(timeInfo[1]) : -1
     };
-    positionMonitorService.queryVehicleHistoryTrajectory(params).subscribe(res => {
-      console.log(res);
-      const newPointList = [];
-      for (let index = 1; index < res.pointList.length; index++) {
-        if (JSON.stringify(res.pointList[index - 1].coordinates) !== JSON.stringify(res.pointList[index].coordinates)) {
-          res.pointList[index].time = moment(res.pointList[index].time).format('MM/DD HH:mm') as any;
-          newPointList.push(res.pointList[index]);
+    setStateWrap({ playbackLoading: true });
+    const startTime = new Date().getTime();
+    positionMonitorService.queryVehicleHistoryTrajectory(params).subscribe(
+      res => {
+        console.log('查询轨迹的时间差', new Date().getTime() - startTime);
+        const newPointList = [];
+        if (res.pointList.length) {
+          for (let index = 1; index < res.pointList.length; index++) {
+            if (
+              JSON.stringify(res.pointList[index - 1].coordinates) !== JSON.stringify(res.pointList[index].coordinates)
+            ) {
+              res.pointList[index].time = moment(res.pointList[index].time).format('MM/DD HH:mm') as any;
+              newPointList.push(res.pointList[index]);
+            }
+          }
+          res.pointList = newPointList;
+        } else {
+          ShowNotification.info('当前车辆没有行车轨迹');
         }
+        setStateWrap({
+          drivingLineData: res,
+          playbackLoading: false,
+          carSpeedBase: 1
+        });
+      },
+      () => {
+        setStateWrap({
+          playbackLoading: false
+        });
       }
-      res.pointList = newPointList;
-
-      setStateWrap({
-        drivingLineData: res
-      });
-    });
+    );
     positionMonitorService.queryVehicleTrajectoryArrayList(params).subscribe(res => {
       setStateWrap({
         tableData: res

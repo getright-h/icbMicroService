@@ -16,6 +16,7 @@ export class IPositionMonitorMapbtnDrivingLineState {
   };
   deviceCode: string;
   currentPoint = 0;
+  playbackLoading = false;
   carSpeedBase = 1;
   isRunning: boolean;
   tableData: Array<QueryVehicleTrajectoryArrayListReturn> = [];

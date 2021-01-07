@@ -27,7 +27,14 @@ export default React.memo((props: IPositionMonitorMapbtnDrivingProps) => {
     onExchangeCoordinates
   } = usePositionMonitorMapbtnDrivingLineStore(reduxState);
   const { currentDoActionCarInfo } = reduxState;
-  const { refreshTime, dateTimeRangeControllerValue, drivingLineData, stopMarkers, currentPoint } = state;
+  const {
+    refreshTime,
+    dateTimeRangeControllerValue,
+    playbackLoading,
+    drivingLineData,
+    stopMarkers,
+    currentPoint
+  } = state;
   const { isLoading, searchForm, tableData, total, showTable, timeInfo, isRunning, carSpeedBase, deviceCode } = state;
   const { pointList } = drivingLineData;
   const { closeMapDrivingPage, mapbtnDrivingVisible } = props;
@@ -90,40 +97,67 @@ export default React.memo((props: IPositionMonitorMapbtnDrivingProps) => {
               })}
             </Select>
           </div>
-          <Button onClick={confirmRun}>确认回放</Button>
+          <Button onClick={confirmRun} loading={playbackLoading}>
+            确认回放
+          </Button>
         </div>
-        <div className={style.controllerLine}>
-          <div className={style.controllerLineContent}>
-            <Slider
-              value={currentPoint}
-              marks={
-                pointList && pointList.length
-                  ? {
-                      0: pointList[0].time || 0,
-                      [pointList.length - 1]: pointList[pointList.length - 1].time || 0
-                    }
-                  : {}
-              }
-              max={pointList?.length - 1}
-              min={0}
-              onChange={changeSliderProgress}
-              tipFormatter={value => pointList[value]?.time}
-              tooltipVisible={!!pointList[0]}
-            />
-            <div className={style.controllerButton}>
-              <BackwardOutlined className={style.iconColor} onClick={() => onSpeedChangeClick(false)} />
-              {isRunning ? (
-                <PlayCircleOutlined className={style.iconColor} onClick={() => onSwitchOFFONClick(false)} />
-              ) : (
-                <PauseCircleOutlined className={style.iconColor} onClick={() => onSwitchOFFONClick(true)} />
-              )}
-              <ForwardOutlined className={style.iconColor} onClick={() => onSpeedChangeClick(true)} />
+        {drivingLineData?.pointList?.length ? (
+          <div className={style.controllerLine}>
+            <div className={style.controllerLineContent}>
+              <Slider
+                value={currentPoint}
+                marks={
+                  pointList && pointList.length
+                    ? {
+                        0: pointList[0].time || 0,
+                        [pointList.length - 1]: pointList[pointList.length - 1].time || 0
+                      }
+                    : {}
+                }
+                max={pointList?.length - 1}
+                min={0}
+                onChange={changeSliderProgress}
+                tipFormatter={value => pointList[value]?.time}
+                tooltipVisible={!!pointList[0]}
+              />
+              <div className={style.controllerButtons}>
+                <div>
+                  <div>
+                    <BackwardOutlined className={style.iconColor} onClick={() => onSpeedChangeClick(false)} />
+                  </div>
+                  <span> 减速</span>
+                </div>
+                {isRunning ? (
+                  <div>
+                    <div>
+                      <PlayCircleOutlined className={style.iconColor} onClick={() => onSwitchOFFONClick(false)} />
+                    </div>
+                    <span> 播放</span>
+                  </div>
+                ) : (
+                  <div>
+                    <div>
+                      <PauseCircleOutlined className={style.iconColor} onClick={() => onSwitchOFFONClick(true)} />
+                    </div>
+                    <span> 暂停</span>
+                  </div>
+                )}
+                <div>
+                  <div>
+                    <ForwardOutlined className={style.iconColor} onClick={() => onSpeedChangeClick(true)} />
+                  </div>
+                  <span> 加速</span>
+                </div>
+              </div>
+            </div>
+            <div className={style.controllerLineButton} onClick={onShowTableClick}>
+              <span>{carSpeedBase !== 1 ? `${carSpeedBase}速播放` : '正常速度播放'}</span>
+            </div>
+            <div className={style.controllerLineButton} onClick={onShowTableClick}>
+              <Button>{showTable ? '关闭' : '展开'}轨迹列表</Button>
             </div>
           </div>
-          <div className={style.controllerLineButton} onClick={onShowTableClick}>
-            <Button>{showTable ? '关闭' : '展开'}轨迹列表</Button>
-          </div>
-        </div>
+        ) : null}
         <div className={style.tableContent} style={!showTable ? { visibility: 'hidden' } : {}}>
           {RenderTable()}
         </div>
