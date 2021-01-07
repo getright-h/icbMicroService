@@ -312,7 +312,8 @@ export const IMAP = {
                  <div class="item">定位时间：<%- positionTime %></div>
              </div>
          </div>
-            <div>
+         <div class="vehicle-divide-line"></div>
+            <div class="vehicle-action-buttons">
             <button id="mybtnSearch" class="button_ pop_ pop_def" data-isopen="1">追踪</button>
             <button id="mybtnWatchLine" class="button_ pop_ pop_def" data-isopen="1">查看轨迹</button>
             <button id="mybtnDo" class="button_ pop_ pop_def" data-isopen="1">指令</button>
