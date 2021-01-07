@@ -44,7 +44,9 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
       setStateWrap({
         currentDirective: info,
         currentTempalte: { ...currentTempalte, id: info.id },
-        currentIndex: -1
+        currentIndex: -1,
+        custom: false,
+        isParams: true
       });
       form.setFieldsValue({ directiveType: info });
       const { cmdCode } = info;
@@ -152,8 +154,11 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
 
   function handleFormDataChange($event: any, type: string) {
     if (type === 'params') {
+      let { custom } = state;
+      !$event && (custom = $event);
       setStateWrap({
-        isParams: $event
+        isParams: $event,
+        custom: custom
       });
     }
 
@@ -162,7 +167,8 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
       setStateWrap({
         isDevice: $event,
         currentDirectiveTempalet: [],
-        currentDirective: {}
+        currentDirective: {},
+        custom: false
       });
       form.resetFields();
       form.setFieldsValue({ type: $event });

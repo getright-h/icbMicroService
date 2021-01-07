@@ -71,7 +71,7 @@ export default function DirectiveListComponent() {
               </Select>
             </Form.Item>
           </Col>
-          <Col span={8}>
+          <Col span={11}>
             <Form.Item label="时间范围" name="time">
               <TimePickerComponent
                 pickerType="dateTimeRange"

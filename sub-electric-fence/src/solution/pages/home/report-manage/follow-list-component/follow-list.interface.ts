@@ -9,6 +9,7 @@ export class IDirectiveListState {
   tableData: any = [];
   total = 0;
   currentId = '';
+  currentRoleId = '';
   sloveModalVisible = false;
   recordModalVisible = false;
 }

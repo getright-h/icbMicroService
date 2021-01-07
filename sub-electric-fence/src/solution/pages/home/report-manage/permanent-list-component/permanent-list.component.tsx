@@ -66,11 +66,11 @@ export default function DirectiveListComponent() {
               </Select>
             </Form.Item>
           </Col>
-          <Col span={8}>
+          <Col span={11}>
             <Form.Item label="时间范围" name="time">
               <TimePickerComponent
                 pickerType="dateTimeRange"
-                getDateTimeInfo={(time: any, other: any) => onChange(time, 'time')}
+                getDateTimeInfo={(time: any, other: any) => getCurrentSelectInfo(time, 'time')}
               />
             </Form.Item>
           </Col>

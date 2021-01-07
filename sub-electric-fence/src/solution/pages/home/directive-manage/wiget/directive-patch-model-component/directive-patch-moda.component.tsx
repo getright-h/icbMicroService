@@ -103,7 +103,6 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
             />
           </Form.Item>
         )}
-
         <Form.Item
           label="指令类型"
           name={'directiveType'}
@@ -124,8 +123,13 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
             </Radio.Group>
           </Form.Item>
         )}
-
-        {isParams && currentDirective.hasSwitch && (
+        {/* 
+          如果 currentDirective.hasSwitch === true , 打开 关闭 两个按钮用于控制 [模板] 以及 [自定义] 的显示 
+          如果 currentDirective.hasSwitch === false 但是 currentDirective.hasArgs === true [模板] 以及 [自定义] 的显示 脱离于
+          如果  currentDirective.hasSwitch === true 并且 currentDirective.hasArgs === true 以 开关 为主导配置
+        currentDirective.hasSwitch的开关
+         */}
+        {((isParams && currentDirective.hasSwitch) || (isParams && currentDirective.hasArgs)) && (
           <Form.Item label={' '} prefixCls={' '} className={style.templateWapper}>
             <div className={style.template} style={{ height: !currentDirectiveTempalet.length && 50 }}>
               {currentDirectiveTempalet.length > 0 ? (
@@ -149,18 +153,18 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
             </div>
           </Form.Item>
         )}
-
-        {isParams && currentDirectiveTempalet.length > 0 && currentDirectiveTempalet[currentIndex]?.packageList && (
-          <AlarmFormItemComponent
-            initialInfo={currentTempalte}
-            selectTempId={currentDirectiveTemObj.id}
-            hasTempName={false}
-            isEnbaleEdit={false}
-            tempalteValue={tempalteValue}
-            getFormInfo={(info: any) => {}}
-          />
-        )}
-
+        {(isParams || currentDirective.hasArgs) &&
+          currentDirectiveTempalet.length > 0 &&
+          currentDirectiveTempalet[currentIndex]?.packageList && (
+            <AlarmFormItemComponent
+              initialInfo={currentTempalte}
+              selectTempId={currentDirectiveTemObj.id}
+              hasTempName={false}
+              isEnbaleEdit={false}
+              tempalteValue={tempalteValue}
+              getFormInfo={(info: any) => {}}
+            />
+          )}
         {custom && (
           <Form.Item name="customValue" rules={[{ required: true }]}>
             <AlarmFormItemComponent
@@ -185,7 +189,6 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
             <Input onChange={(e: any) => handleFormDataChange(e.target.value, 'directiveCode')} />
           </Form.Item>
         )}
-
         {currentDirective.isVerify && (
           <Form.Item label="指令密码" name={'verifyCode'} className={style.marginBootom10} rules={[{ required: true }]}>
             <Input

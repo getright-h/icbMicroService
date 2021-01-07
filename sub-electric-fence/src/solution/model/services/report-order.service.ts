@@ -8,6 +8,7 @@ const QUERY_MONITOR_ALARM_INFO_PAGEDLIST = 'alarmCenter/manage/queryMonitorAlarm
 const QUERY_REPORT_ALARM_STATISTICS = 'alarmCenter/manage/queryReportAlarmStatistics';
 const QUERY_REPORT_ALARM_STATISTICS_DETAIL = 'alarmCenter/manage/queryReportAlarmStatisticsDetail';
 const QUERY_ALARM_ORIGINAL_PAGEDLIST = 'alarmCenter/manage/queryAlarmOriginalPagedList';
+const QUERY_REPORT_MONITOR_ROLE_PAGEDLIST = 'alarmCenter/manage/queryReportMonitorRolePagedList';
 @DepUtil.Injectable()
 export class OrderReportService implements OrderReportManage {
   @DepUtil.Inject(RequestService)
@@ -26,5 +27,8 @@ export class OrderReportService implements OrderReportManage {
   }
   queryAlarmOriginalPagedList(params: ReportAlarmStatisticsInput): Observable<boolean> {
     return this.requestService.post(QUERY_ALARM_ORIGINAL_PAGEDLIST, params);
+  }
+  queryReportMonitorRolePagedList(params: ReportAlarmStatisticsInput): Observable<boolean> {
+    return this.requestService.post(QUERY_REPORT_MONITOR_ROLE_PAGEDLIST, params);
   }
 }
