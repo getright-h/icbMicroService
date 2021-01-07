@@ -166,7 +166,7 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
             />
           )}
         {custom && (
-          <Form.Item name="customValue" label={' '} prefixCls={' '} rules={[{ required: true }]}>
+          <Form.Item prefixCls={' '} name="customValue" rules={[{ required: true }]} style={{ marginLeft: '3%' }}>
             <AlarmFormItemComponent
               initialInfo={currentTempalte}
               selectTempId={currentDirectiveTemObj.id}
