@@ -129,4 +129,5 @@ export interface IDirectiveReturn {
   sort?: number; //显示顺序 ,
   isVerify?: boolean; // 需要密码验证 ,
   hasSwitch?: boolean; // 包含打开关闭按钮
+  hasArgs?: boolean; // 是否自定义模板参数
 }
