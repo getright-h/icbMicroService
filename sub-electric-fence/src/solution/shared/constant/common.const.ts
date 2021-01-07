@@ -64,10 +64,10 @@ export const PAGES_MENU = {
           path: 'record',
           title: '报警记录表'
         },
-        // {
-        //   path: 'follow',
-        //   title: '报警跟进表'
-        // },
+        {
+          path: 'follow',
+          title: '报警跟进表'
+        },
         // {
         //   path: 'monitor',
         //   title: '监控组报表'
