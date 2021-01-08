@@ -127,7 +127,7 @@ export function useEditVehicleStore() {
         res => {
           setStateWrap({ confirmLoading: false });
           ShowNotification.success('编辑成功！');
-          history.push(`/home/customer/vehicleDetail/${state.id}`);
+          history.push(`../${state.id}`);
         },
         err => {
           setStateWrap({ confirmLoading: false });
@@ -138,7 +138,7 @@ export function useEditVehicleStore() {
         res => {
           setStateWrap({ confirmLoading: false });
           ShowNotification.success('新增成功！');
-          history.push('/home/customer/vehicle');
+          history.push('./vehicle');
         },
         err => {
           setStateWrap({ confirmLoading: false });
@@ -149,7 +149,7 @@ export function useEditVehicleStore() {
   }
 
   function cancelSubmit() {
-    history.push('/home/customer/vehicle');
+    history.push('../../vehicle');
   }
 
   function vehicleLayoutChange(curType: string, option?: any) {
