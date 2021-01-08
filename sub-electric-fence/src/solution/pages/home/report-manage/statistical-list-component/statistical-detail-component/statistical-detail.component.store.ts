@@ -25,20 +25,31 @@ export function useDirectiveListStore() {
       .subscribe(
         async (res: any) => {
           const tableData = res?.pagedList?.dataList;
+          const fetchArrary: any[] = [];
           if (Array.isArray(tableData)) {
             for (let i = 0; i < tableData.length; i++) {
               const { latitude, longitude } = tableData[i];
               if (latitude && longitude) {
-                tableData[i].address = await IMAP.covertPointToAddress([longitude, latitude]);
+                fetchArrary.push(IMAP.covertPointToAddress([longitude, latitude]));
               }
             }
           }
-          setStateWrap({
-            tableData,
-            total: res?.pagedList?.total,
-            detail: res
+          Promise.all(fetchArrary).then((address: any) => {
+            try {
+              for (let i = 0; i < address.length; i++) {
+                tableData[i].address = address[i];
+              }
+            } catch (error) {
+              console.log(error);
+            }
+            setStateWrap({ tableData, total: res?.pagedList?.total, detail: res, isLoading: false });
           });
-          setStateWrap({ isLoading: false });
+          // setStateWrap({
+          //   tableData,
+          //   total: res?.pagedList?.total,
+          //   detail: res
+          // });
+          // setStateWrap({ isLoading: false });
         },
         err => {
           setStateWrap({ isLoading: false });

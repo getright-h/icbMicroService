@@ -129,30 +129,31 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
           如果  currentDirective.hasSwitch === true 并且 currentDirective.hasArgs === true 以 开关 为主导配置
         currentDirective.hasSwitch的开关
          */}
-        {((isParams && currentDirective.hasSwitch) || (isParams && currentDirective.hasArgs)) && (
-          <Form.Item label={' '} prefixCls={' '} className={style.templateWapper}>
-            <div className={style.template} style={{ height: !currentDirectiveTempalet.length && 50 }}>
-              {currentDirectiveTempalet.length > 0 ? (
-                currentDirectiveTempalet.map((template: any, index) => (
-                  <p
-                    key={index}
-                    className={index == currentIndex ? style.checked : ''}
-                    onClick={() => selectTemplate(index, template)}
-                  >
-                    {template.alarmValue}
-                  </p>
-                ))
-              ) : (
-                <p className={style.noTemplate}>暂无指令模板</p>
-              )}
-              {
-                <Button className={style.customBtn} onClick={() => callbackAction(ModalType.CUSTOM)}>
-                  {!custom ? '自定义' : '取消'}
-                </Button>
-              }
-            </div>
-          </Form.Item>
-        )}
+        {((isParams && currentDirective.hasSwitch) || (isParams && currentDirective.hasArgs)) &&
+          currentDirective.hasArgs && (
+            <Form.Item label={' '} prefixCls={' '} className={style.templateWapper}>
+              <div className={style.template} style={{ height: !currentDirectiveTempalet.length && 50 }}>
+                {currentDirectiveTempalet.length > 0 ? (
+                  currentDirectiveTempalet.map((template: any, index) => (
+                    <p
+                      key={index}
+                      className={index == currentIndex ? style.checked : ''}
+                      onClick={() => selectTemplate(index, template)}
+                    >
+                      {template.alarmValue}
+                    </p>
+                  ))
+                ) : (
+                  <p className={style.noTemplate}>暂无指令模板</p>
+                )}
+                {
+                  <Button className={style.customBtn} onClick={() => callbackAction(ModalType.CUSTOM)}>
+                    {!custom ? '自定义' : '取消'}
+                  </Button>
+                }
+              </div>
+            </Form.Item>
+          )}
         {(isParams || currentDirective.hasArgs) &&
           currentDirectiveTempalet.length > 0 &&
           currentDirectiveTempalet[currentIndex]?.packageList && (
@@ -166,7 +167,7 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
             />
           )}
         {custom && (
-          <Form.Item name="customValue" rules={[{ required: true }]}>
+          <Form.Item prefixCls={' '} name="customValue" rules={[{ required: true }]} style={{ marginLeft: '3%' }}>
             <AlarmFormItemComponent
               initialInfo={currentTempalte}
               selectTempId={currentDirectiveTemObj.id}

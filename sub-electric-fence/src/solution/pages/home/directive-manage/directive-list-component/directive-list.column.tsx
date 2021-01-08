@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ModalType } from './directive-list.interface';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 
@@ -44,6 +45,22 @@ export function AlarmParameterColumn(callbackAction: Function) {
     {
       title: '创建机构',
       dataIndex: 'organizationName'
+    },
+    {
+      title: '操作',
+      fixed: 'right' as 'right',
+      dataIndex: 'action',
+      render: (render: any, data: any, index: number) => {
+        return (
+          <React.Fragment>
+            <a onClick={() => callbackAction(ModalType.DEL, data)}>删除</a>
+            {/* <Divider type="vertical" />
+            <a onClick={() => callbackAction(ModalType.EDIT, data)}>处理</a>
+            <Divider type="vertical" />
+            <a onClick={() => callbackAction(ModalType.EDIT, data)}>记录</a> */}
+          </React.Fragment>
+        );
+      }
     }
   ];
 }
