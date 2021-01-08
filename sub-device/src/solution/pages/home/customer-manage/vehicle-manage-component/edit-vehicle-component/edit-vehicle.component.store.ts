@@ -149,7 +149,7 @@ export function useEditVehicleStore() {
   }
 
   function cancelSubmit() {
-    history.push('../../vehicle');
+    history.push('./vehicle');
   }
 
   function vehicleLayoutChange(curType: string, option?: any) {
