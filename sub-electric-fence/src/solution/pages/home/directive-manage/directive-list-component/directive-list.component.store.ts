@@ -1,6 +1,6 @@
 import { IDirectiveListState, ModalType } from './directive-list.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
-import { Form } from 'antd';
+import { Form, Modal, message } from 'antd';
 import { DirectiveService } from '~/solution/model/services/directive-manage.service';
 import { useEffect } from 'react';
 
@@ -10,17 +10,13 @@ export function useDirectiveListStore() {
   const directiveService: DirectiveService = new DirectiveService();
   const [searchForm] = Form.useForm();
   let getCmdListSubscription: Subscription;
+  let delCmdSubscription: Subscription;
 
-  // const params = {
-  //   endTime: moment(moment().format('YYYY MM DD') + ' 23:59:59').valueOf(),
-  //   beginTime: moment()
-  //     .subtract(1, 'months')
-  //     .valueOf()
-  // };
   useEffect(() => {
     initSearchForm();
     return () => {
       getCmdListSubscription && getCmdListSubscription.unsubscribe();
+      delCmdSubscription && delCmdSubscription.unsubscribe();
     };
   }, []);
 
@@ -61,9 +57,29 @@ export function useDirectiveListStore() {
       case ModalType.PATCH:
         setStateWrap({ patchModalVisible: true });
         break;
+      case ModalType.DEL:
+        delDirective(data);
+        break;
       default:
         break;
     }
+  }
+
+  function delDirective(data: any) {
+    Modal.confirm({
+      title: '删除指令',
+      onOk: () => {
+        console.log(data);
+        delCmdSubscription = directiveService.deleteCmd({ id: data?.id }).subscribe(
+          (res: any) => {
+            message.success('删除成功');
+            getTableData();
+          },
+          error => {}
+        );
+        console.log(data);
+      }
+    });
   }
 
   function changeTablePageIndex(pageIndex: number, pageSize: number) {

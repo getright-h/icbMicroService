@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Divider } from 'antd';
 import { ModalType } from './statistical-list.interface';
 export function AlarmParameterColumn(callbackAction: Function) {
   return [

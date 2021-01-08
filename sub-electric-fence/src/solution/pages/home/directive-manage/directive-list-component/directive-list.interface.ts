@@ -11,6 +11,7 @@ export class IDirectiveListState {
   total = 0;
   currentId = '';
   patchModalVisible = false;
+  delModalVisible = false;
   searchTime = {
     endTime: moment(moment().format('YYYY MM DD') + ' 23:59:59').valueOf(),
     beginTime: moment()
@@ -21,5 +22,6 @@ export class IDirectiveListState {
 export enum ModalType {
   CREATE,
   EDIT,
-  PATCH
+  PATCH,
+  DEL
 }
