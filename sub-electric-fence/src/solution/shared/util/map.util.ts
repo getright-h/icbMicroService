@@ -280,6 +280,7 @@ export const IMAP = {
               offset: new AMap.Pixel(-20, 26)
             },
             zIndex: 9999999,
+            autoRotation: true,
             position: marker.position,
             offset: new AMap.Pixel(-13, -30),
             id: marker.markerInfo.id

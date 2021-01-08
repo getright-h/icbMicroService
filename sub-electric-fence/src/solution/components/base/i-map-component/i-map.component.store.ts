@@ -121,8 +121,6 @@ export function useIMapStore(mapProps: TIMapProps) {
       console.log('纠偏的时间差', new Date().getTime() - startTime);
       startTime = new Date().getTime();
       map.current.on('complete', () => {
-        console.log(1);
-
         console.log('渲染的时间差', new Date().getTime() - startTime);
       });
       polyline.current = IMAP.drawLine(map.current, carLine);
@@ -140,6 +138,7 @@ export function useIMapStore(mapProps: TIMapProps) {
       // 第三个参数是在窗口需要展示的当前车辆的信息
       carLineMarkerInfo.current.on('moving', function(e: any) {
         havePassedArr.current = e.passedPath;
+
         const newPosition = e.passedPath[e.passedPath.length - 2];
         let currentIndex = 0;
 
@@ -159,13 +158,11 @@ export function useIMapStore(mapProps: TIMapProps) {
           setEndRunning();
           finishedRun.current = true;
         }
-
+        map.current.setFitView();
         notPassedArr.current = [e.passedPath[e.passedPath.length - 1], ...carLine.slice(currentIndex + 1)];
       });
 
       carLineMarkerInfo.current.moveAlong(carLine, 200);
-
-      map.current.setFitView();
     }
   }, [mapProps.drivingLineData]);
 
@@ -264,68 +261,75 @@ export function useIMapStore(mapProps: TIMapProps) {
   function openInfoWin(markerInfo: any, map: any, marker: any, infoWindow: any, isBindAction = true) {
     const vehicleInfo = marker.markerInfo;
     const deviceInfo = marker.deviceInfo;
-
+    const data = {
+      ownerName: vehicleInfo?.ownerName || '无',
+      plateNo: vehicleInfo?.plateNo || '无',
+      vinNo: vehicleInfo?.vinNo || '无',
+      deviceCode: deviceInfo?.deviceCode || '无',
+      typeName: deviceInfo?.typeName || '无',
+      vehicleState: vehicleInfo?.isRunning ? '动态' : '静止' + ' ' + deviceInfo.speed + 'km/h',
+      deviceState: deviceInfo?.isOnline ? '在线' : `离线 ${deviceInfo?.durationTime}h`,
+      lalg: `${marker.position[0]}, ${marker.position[1]}`,
+      place: '转换地址中...',
+      positionTime: deviceInfo.positionTime
+    };
+    infoWindow.setInfoTplData(data);
+    isBindAction && bindAction(infoWindow, marker);
+    infoWindow.open(map, markerInfo.getPosition());
     regeoCode([marker.position[0], marker.position[1]]).then(place => {
       infoWindow.setInfoTplData({
-        ownerName: vehicleInfo?.ownerName || '无',
-        plateNo: vehicleInfo?.plateNo || '无',
-        vinNo: vehicleInfo?.vinNo || '无',
-        deviceCode: deviceInfo?.deviceCode || '无',
-        typeName: deviceInfo?.typeName || '无',
-        vehicleState: vehicleInfo?.isRunning ? '动态' : '静止' + ' ' + deviceInfo.speed + 'km/h',
-        deviceState: deviceInfo?.isOnline ? '在线' : `离线 ${deviceInfo?.durationTime}h`,
-        lalg: `${marker.position[0]}, ${marker.position[1]}`,
-        place,
-        positionTime: deviceInfo.positionTime
+        ...data,
+        place
       });
-      isBindAction && bindAction(infoWindow, marker);
-      infoWindow.open(map, markerInfo.getPosition());
-
-      infoWindowInfo.current = infoWindow;
     });
+    infoWindowInfo.current = infoWindow;
   }
 
   // 车辆信息窗体
   function openInfoWinCar(markerInfo: any, map: any, marker: any, infoWindow: any) {
     const { plateNo, vinNo, ownerName, deviceCode, isOnline, durationTime, lastLocationTime } = markerInfo;
+    const data = {
+      ownerName: ownerName || '无',
+      plateNo: plateNo || '无',
+      vinNo: vinNo || '无',
+      deviceCode: deviceCode.deviceCode || '无',
+      typeName: deviceCode.typeName || '无',
+      // vehicleState: isRunning ? '动态' : '静止' + ' ' + deviceInfo.speed + 'km/h',
+      deviceState: isOnline ? '在线' : `离线 ${durationTime}h`,
+      lalg: `${marker.position.lng}, ${marker.position.lat}`,
+      positionTime: lastLocationTime,
+      place: '转换地址中...'
+    };
+    infoWindow.setInfoTplData(data);
+    infoWindow.open(map, marker.position);
 
     regeoCode([marker.position.lng, marker.position.lat]).then(place => {
       infoWindow.setInfoTplData({
-        ownerName: ownerName || '无',
-        plateNo: plateNo || '无',
-        vinNo: vinNo || '无',
-        deviceCode: deviceCode.deviceCode || '无',
-        typeName: deviceCode.typeName || '无',
-        // vehicleState: isRunning ? '动态' : '静止' + ' ' + deviceInfo.speed + 'km/h',
-        deviceState: isOnline ? '在线' : `离线 ${durationTime}h`,
-        lalg: `${marker.position.lng}, ${marker.position.lat}`,
-        place,
-        positionTime: lastLocationTime
+        ...data,
+        place
       });
-
-      infoWindow.open(map, marker.position);
-
-      infoWindowInfo.current = infoWindow;
     });
+    infoWindowInfo.current = infoWindow;
   }
 
   // 长驻点的信息展示
   function offernStopMarkersWin(markerInfo: any, map: any, marker: any, infoWindow: any) {
     const { coordinates, number, stopTime } = marker;
-    console.log('infoWindow', infoWindow);
-
+    const data = {
+      address: '转换地址中...',
+      coordinates: coordinates || '无',
+      number: number,
+      stopTime: Number.parseInt(stopTime / 60 + '') + 'min'
+    };
+    infoWindow.setInfoTplData(data);
+    infoWindow.open(map, coordinates);
     regeoCode([coordinates[0], coordinates[1]]).then(place => {
       infoWindow.setInfoTplData({
-        address: place || '无',
-        coordinates: coordinates || '无',
-        number: number,
-        stopTime: Number.parseInt(stopTime / 60 + '') + 'min'
+        ...data,
+        address: place || '无'
       });
-
-      infoWindow.open(map, coordinates);
-
-      infoWindowInfo.current = infoWindow;
     });
+    infoWindowInfo.current = infoWindow;
   }
 
   function bindAction(infoWindow: any, marker: any) {

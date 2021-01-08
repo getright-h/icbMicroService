@@ -7,7 +7,6 @@ import { IMapComponent, TimePickerComponent, ITableComponent } from '~/solution/
 import { BackwardOutlined, ForwardOutlined, PauseCircleOutlined, PlayCircleOutlined } from '@ant-design/icons';
 import { positionMonitorMapBtnDrivingColumns } from './position-monitor-mapbtn-driving-line.column';
 import { PositionMonitorContext } from '../position-monitor.component';
-import moment from 'moment';
 const { Option } = Select;
 export default React.memo((props: IPositionMonitorMapbtnDrivingProps) => {
   const { reduxState } = React.useContext(PositionMonitorContext);
