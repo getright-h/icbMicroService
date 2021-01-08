@@ -88,7 +88,7 @@ export function useMonitorManageStore() {
         setStateWrap({ alarmModalVisible: true });
         break;
       case ModalType.DETAIL:
-        history.push(`/home/customer/vehicleDetail/${data.vehicleId}`);
+        history.push(`../customer/vehicleDetail/${data.vehicleId}`);
         break;
     }
   }

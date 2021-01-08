@@ -70,7 +70,7 @@ export function useDetailStore() {
         renderRecReturnModal(data);
         break;
       case ModalType.GO_BACK:
-        history.push('/home/allocation/process?active=one');
+        history.push('../process?active=one');
         break;
     }
   }

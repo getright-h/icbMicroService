@@ -41,7 +41,7 @@ export function useDetailStore() {
     setStateWrap({ currentData: { ...data, id, actionType }, currentActionType: actionType });
     switch (actionType) {
       case ModalType.GO_BACK:
-        history.push('/home/allocation/process?active=two');
+        history.push('../process?active=two');
         break;
       case ModalType.RECIVE:
         renderReciveModal(data);

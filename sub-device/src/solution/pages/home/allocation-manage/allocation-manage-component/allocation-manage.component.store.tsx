@@ -89,16 +89,16 @@ export function useAllocationManageStore() {
     setStateWrap({ currentId: data ? data.allotId : '' });
     switch (actionType) {
       case ModalType.ALLOCATE:
-        history.push(`/home/allocation/process?id=${data.inventoryCode}`);
+        history.push(`./process?id=${data.inventoryCode}`);
         break;
       case ModalType.SEE:
-        history.push(`/home/allocation/allocationDetail?id=${data.allotId}`);
+        history.push(`./allocationDetail?id=${data.allotId}`);
         break;
       case ModalType.CREATE:
-        history.push('/home/allocation/createAllocation');
+        history.push('./createAllocation');
         break;
       case ModalType.EDIT:
-        history.push(`/home/allocation/editAllocation?id=${data.allotId}`);
+        history.push(`./editAllocation?id=${data.allotId}`);
         break;
       case ModalType.DELETE:
         deleteAlloaction(data.allotId);

@@ -98,7 +98,7 @@ export function useInitAllocationStore() {
         renderRecReturnModal(data);
         break;
       case ModalType.DETAIL:
-        history.push(`/home/allocation/initDetail/${data.id}`);
+        history.push(`./initDetail/${data.id}`);
       default:
         break;
     }

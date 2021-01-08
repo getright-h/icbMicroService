@@ -62,7 +62,7 @@ export function useReceiveAllocationStore() {
     setStateWrap({ currentId: data.id, currentData: { ...data, actionType }, currentActionType: actionType });
     switch (actionType) {
       case ModalType.LOOK:
-        history.push(`/home/allocation/receiveDetail/${data.id}`);
+        history.push(`./receiveDetail/${data.id}`);
         break;
       case ModalType.RECIVE:
         renderReciveModal(data);
