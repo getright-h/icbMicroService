@@ -66,7 +66,7 @@ export default function DirectiveListComponent() {
   return (
     <React.Fragment>
       <TablePageTelComponent
-        pageName={'报警参数管理'}
+        pageName={'设备状态统计'}
         selectItems={renderSelectItems()}
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
