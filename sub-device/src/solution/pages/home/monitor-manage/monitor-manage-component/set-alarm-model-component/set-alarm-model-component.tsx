@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useSetAlarmStore } from './set-alarm-model.component.store';
 import { GlobalContext } from '~/solution/context/global/global.provider';
-import { EditAlarmTemplateItem, ISetAlarmProp } from './set-alarm-model.interface';
+import { EditAlarmTemplateItem, ISetAlarmProp, PushModeEnum } from './set-alarm-model.interface';
 import { Form, Modal, Checkbox, Switch, Radio, Popover } from 'antd';
 import style from './set-alarm-model.component.less';
 import AlarmFormItemComponent from '~/solution/components/alarm-form-item-component/alarm-form-item.component';
@@ -100,6 +100,7 @@ export default function SetAlarmModalComponent(props: ISetAlarmProp) {
               </div>
               {template.isTemplateSelected &&
                 template.isParam &&
+                template.downMode === PushModeEnum.PLATFORM &&
                 (template.packageList.length > 0 ? (
                   TemplateItem(template)
                 ) : (
