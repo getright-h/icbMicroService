@@ -6,6 +6,7 @@ export function useApprovalApplyStore(props: IApprovalApplyProps) {
   const { state, setStateWrap } = useStateStore(new IApprovalApplyState());
   const { handlePropsOk, changeVisible } = props;
   function setGroupId(value: { label: string; key: string }) {
+    if (!value) return;
     setStateWrap({ curGroupId: value.key || '', curGroupName: value.label });
   }
 
