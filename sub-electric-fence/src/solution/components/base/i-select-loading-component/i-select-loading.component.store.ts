@@ -14,32 +14,46 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
   const scrollPage = useRef(1);
   const searchName = useRef('');
   const searchParams = useRef({});
+  const resultTotal = useRef(0);
+  const resultList = useRef([]);
   searchParams.current = props.searchForm || {};
   searchName.current = props.searchKey || '';
 
   function getOptionList(isSearch = false) {
+    const { optionList } = state;
+
     setStateWrap({ fetching: true });
     getOptionListSubscription = drapChooseLoadingService[reqUrl]({
       ...searchParams.current,
-      key: searchName.current,
       [searchKeyName]: searchName.current,
       index: scrollPage.current,
       size: props.pageSize || 100
     }).subscribe(
       (res: any) => {
         if (res) {
+          /** 兼容 res */
           if (Array.isArray(res)) {
-            res.dataList = res;
+            resultList.current = res;
           }
-
+          /** 兼容 data里是数据列表 */
           if (res.data && Array.isArray(res.data)) {
-            res.dataList = res.data;
+            resultList.current = res.data;
+            resultTotal.current = res.total;
+          }
+          /** 兼容 dataList里是数据列表 */
+          if (res.dataList && Array.isArray(res.dataList)) {
+            resultList.current = res.dataList;
+            resultTotal.current = res.total;
           }
 
-          if (!res.dataList && !res.data) return;
+          /** 如果当前返回的数据为 [] */
+          if (!resultList.current.length) {
+            scrollPage.current = 1;
+            setStateWrap({ fetching: false });
+          }
 
-          const optionList = [...(isSearch ? [] : state.optionList), ...res.dataList];
-          setStateWrap({ optionList, fetching: false });
+          const newOptionList = [...(isSearch ? [] : optionList), ...resultList.current];
+          setStateWrap({ optionList: newOptionList, fetching: false });
         } else if (scrollPage.current == 1 && (!res || !res.dataList)) {
           setStateWrap({ optionList: [], fetching: false });
         } else {
@@ -56,8 +70,6 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
 
   const fetchOptions = useCallback(
     _.throttle((isSearch?: boolean, value?: string) => {
-      console.log('fetchOptions', value);
-      console.log('isSearch', isSearch);
       if (isSearch) {
         scrollPage.current = 1;
         searchName.current = value || '';
@@ -69,6 +81,12 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
 
   function optionScroll(e: any) {
     e.persist();
+    const { optionList } = state;
+    // 如果已经获取了全部数据则不发起请求
+
+    if (optionList.length && optionList.length == resultTotal.current) {
+      return;
+    }
     const { target } = e;
     if (target.scrollTop + target.offsetHeight === target.scrollHeight) {
       scrollPage.current++;
@@ -77,6 +95,7 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
   }
   useEffect(() => {
     setStateWrap({ value: props.selectedValue });
+    // 解开用于解决 修改信息时候,下拉框由于没有列表数据,而只是暂时ID
     // getOptionList();
   }, [props.selectedValue]);
 
