@@ -52,7 +52,7 @@ export default function DirectiveListComponent() {
   }
   function renderSelectItems() {
     const queryOrgList = ISelectLoadingComponent({
-      width: '300px',
+      width: '240px',
       reqUrl: 'queryStoreOrganization',
       placeholder: '请选择机构',
       // searchKey: organization.organizationName || '',
@@ -64,7 +64,7 @@ export default function DirectiveListComponent() {
       }
     });
     const queryMonitorList = ISelectLoadingComponent({
-      width: '300px',
+      width: '240px',
       reqUrl: 'queryVehicleGroupByRoleId',
       placeholder: '请选择监控组',
       // searchKey: organization.organizationName || '',
@@ -109,17 +109,6 @@ export default function DirectiveListComponent() {
                 <Input placeholder="电话/车牌号/车架号/设备" allowClear={true} />
               </Form.Item>
             </Col>
-            <Col span={5}>
-              <Form.Item label="报警类型" name="alarmType">
-                <Select>
-                  {AlarmType_FOR_REPORT.map((alarm: any) => (
-                    <Select.Option key={alarm.value} value={alarm.value}>
-                      {alarm.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Item>
-            </Col>
             <Col span={11}>
               <Form.Item label="时间范围" name="time">
                 <TimePickerComponent
@@ -128,21 +117,40 @@ export default function DirectiveListComponent() {
                 />
               </Form.Item>
             </Col>
+            <Col span={5}>
+              <Form.Item label="报警类型" name="alarmType">
+                <Select style={{ width: '150px' }}>
+                  {AlarmType_FOR_REPORT.map((alarm: any) => (
+                    <Select.Option key={alarm.value} value={alarm.value}>
+                      {alarm.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
           </Row>
-          <Row gutter={[24, 8]}>
-            <Col span={12}>
+          <Row gutter={[8, 8]}>
+            <Col span={9}>
               <Form.Item label="所属机构" name="organizationId">
                 {queryOrgList}
               </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col span={9}>
               <Form.Item label="监控组" name="groupId">
                 {queryMonitorList}
               </Form.Item>
             </Col>
-            <Form.Item name="beginTime"></Form.Item>
-            <Form.Item name="endTime"></Form.Item>
-            <Form.Item name="roleId"></Form.Item>
+            <Col span={6}>
+              <Form.Item label="处理状态" name="isSettle">
+                <Select style={{ width: '150px' }} placeholder="请选择状态" allowClear>
+                  <Select.Option value={1}>已处理</Select.Option>
+                  <Select.Option value={0}>未处理</Select.Option>
+                </Select>
+              </Form.Item>
+            </Col>
+            <Form.Item name="beginTime" noStyle></Form.Item>
+            <Form.Item name="endTime" noStyle></Form.Item>
+            <Form.Item name="roleId" noStyle></Form.Item>
           </Row>
         </Form>
       </div>

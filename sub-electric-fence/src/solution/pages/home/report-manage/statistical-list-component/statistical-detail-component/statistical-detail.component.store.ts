@@ -57,47 +57,47 @@ export function useDirectiveListStore() {
       );
   }
 
-  function searchClick() {
-    setStateWrap({ pageIndex: 1 });
-    getTableData();
-  }
+  // function searchClick() {
+  //   setStateWrap({ pageIndex: 1 });
+  //   getTableData();
+  // }
 
   function initSearchForm() {
     searchForm.resetFields();
-    searchClick();
+    getTableData(1);
   }
 
-  function callbackAction<T>(actionType: number, data?: T) {
-    setStateWrap({ currentId: data ? data.id : '' });
-    switch (actionType) {
-      case ModalType.CREATE:
-        history;
-        break;
-      case ModalType.EDIT:
-        setStateWrap({});
-        break;
-      default:
-        break;
-    }
-  }
+  // function callbackAction<T>(actionType: number, data?: T) {
+  //   setStateWrap({ currentId: data ? data.id : '' });
+  //   switch (actionType) {
+  //     case ModalType.CREATE:
+  //       history;
+  //       break;
+  //     case ModalType.EDIT:
+  //       setStateWrap({});
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // }
 
   function changeTablePageIndex(pageIndex: number, pageSize: number) {
     setStateWrap({ pageIndex, pageSize });
     getTableData(pageIndex);
   }
 
-  function handleModalCancel(isSuccess = false) {
-    setStateWrap({});
-    isSuccess && searchClick();
-  }
+  // function handleModalCancel(isSuccess = false) {
+  //   setStateWrap({});
+  //   isSuccess && searchClick();
+  // }
 
   return {
     state,
     searchForm,
     initSearchForm,
-    callbackAction,
-    changeTablePageIndex,
-    searchClick,
-    handleModalCancel
+    // callbackAction,
+    changeTablePageIndex
+    // searchClick,
+    // handleModalCancel
   };
 }
