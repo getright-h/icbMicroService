@@ -9,7 +9,7 @@ export default function AddMonitorGroupComponent(props: AddMonitorGroupProp) {
   const { state, form, onchange, addMonitorGroup, close } = useAddMonitorGroupStore(props);
 
   const { gState } = React.useContext(GlobalContext);
-  const { submitLoading, organization = {} } = state;
+  const { submitLoading, organization = {}, searchRoleName } = state;
   const { visible, data = {} } = props;
   const layout = {
     labelCol: { span: 6 },
@@ -19,7 +19,7 @@ export default function AddMonitorGroupComponent(props: AddMonitorGroupProp) {
     width: '200px',
     reqUrl: 'queryRoleList',
     placeholder: '请选择监管角色',
-    searchKey: data.roleName || '',
+    searchKey: searchRoleName || '',
     getCurrentSelectInfo: (value: string, option: any) => {
       onchange(value, 'roleId');
     },
@@ -33,7 +33,7 @@ export default function AddMonitorGroupComponent(props: AddMonitorGroupProp) {
     placeholder: '请选择机构',
     searchKey: organization.organizationName || '',
     getCurrentSelectInfo: (value: string, option: any) => {
-      onchange(option.info || {}, 'organizationId');
+      onchange(option?.info || {}, 'organizationId');
     },
     searchForm: {
       systemId: gState.myInfo.systemId
