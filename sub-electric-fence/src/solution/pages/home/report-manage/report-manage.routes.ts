@@ -39,12 +39,12 @@ export const reportManageRoutes: IRoute[] = [
   //   lazyload: true,
   //   exact: true
   // },
-  // {
-  //   path: `${MODULE_PATH}/state`,
-  //   component: ROUTERS.stateListComponent,
-  //   lazyload: true,
-  //   exact: true
-  // },
+  {
+    path: `${MODULE_PATH}/state`,
+    component: ROUTERS.stateListComponent,
+    lazyload: true,
+    exact: true
+  },
   // {
   //   path: `${MODULE_PATH}/offline`,
   //   component: ROUTERS.offlineListComponent,

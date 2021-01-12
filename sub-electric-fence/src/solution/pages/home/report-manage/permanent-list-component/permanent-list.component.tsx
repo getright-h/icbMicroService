@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Row, Select } from 'antd';
+import { Button, Col, Form, Input, Row } from 'antd';
 import * as React from 'react';
 import {
   ITableComponent,
@@ -7,7 +7,6 @@ import {
   ISelectLoadingComponent
 } from '~/solution/components/component.module';
 import { AlarmParameterColumn } from './permanent-list.column';
-import { AlarmType_FOR_REPORT } from '~shared/constant/alarm.const';
 import { useDirectiveListStore } from './permanent-list.component.store';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 
@@ -42,28 +41,11 @@ export default function DirectiveListComponent() {
       }
     });
     return (
-      <Form
-        form={searchForm}
-        layout={'inline'}
-        initialValues={{
-          alarmType: -1
-        }}
-      >
+      <Form form={searchForm} layout={'inline'}>
         <Row gutter={[8, 8]}>
           <Col span={8}>
             <Form.Item name="strValue" label="查询车辆/设备">
               <Input placeholder="电话/车牌号/车架号/设备" allowClear={true} />
-            </Form.Item>
-          </Col>
-          <Col span={5}>
-            <Form.Item label="报警类型" name="alarmType">
-              <Select>
-                {AlarmType_FOR_REPORT.map((alarm: any) => (
-                  <Select.Option key={alarm.value} value={alarm.value}>
-                    {alarm.name}
-                  </Select.Option>
-                ))}
-              </Select>
             </Form.Item>
           </Col>
           <Col span={11}>
@@ -79,8 +61,8 @@ export default function DirectiveListComponent() {
               {queryOrgList}
             </Form.Item>
           </Col>
-          <Form.Item name="beginTime"></Form.Item>
-          <Form.Item name="endTime"></Form.Item>
+          <Form.Item name="beginTime" noStyle></Form.Item>
+          <Form.Item name="endTime" noStyle></Form.Item>
         </Row>
       </Form>
     );
@@ -97,7 +79,6 @@ export default function DirectiveListComponent() {
   }
 
   function RenderTable() {
-    console.log(tableData, 555);
     return (
       <ITableComponent
         columns={AlarmParameterColumn(callbackAction)}

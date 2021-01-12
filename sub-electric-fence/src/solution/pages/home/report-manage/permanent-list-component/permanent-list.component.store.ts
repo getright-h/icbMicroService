@@ -81,17 +81,16 @@ export function useDirectiveListStore() {
     getTableData();
   }
 
-  function handleModalCancel(isSuccess = false) {
-    setStateWrap({});
-    isSuccess && searchClick();
-  }
+  // function handleModalCancel(isSuccess = false) {
+  //   setStateWrap({});
+  //   isSuccess && searchClick();
+  // }
 
   function getCurrentSelectInfo(data: any, type: string) {
-    console.log(data, type);
-    if (type == 'strValue') {
-      const { deviceCode = '' } = Array.isArray(data?.info?.deviceList) && data?.info?.deviceList[0];
-      searchForm.setFieldsValue({ deviceCode: deviceCode });
-    }
+    // if (type == 'strValue') {
+    //   const { deviceCode = '' } = Array.isArray(data?.info?.deviceList) && data?.info?.deviceList[0];
+    //   searchForm.setFieldsValue({ deviceCode: deviceCode });
+    // }
     if (type == 'time') {
       let beginTime, endTime;
       data[0] ? (beginTime = Date.parse(data[0])) : (beginTime = 0);
@@ -112,7 +111,6 @@ export function useDirectiveListStore() {
     callbackAction,
     changeTablePageIndex,
     searchClick,
-    handleModalCancel,
     getCurrentSelectInfo
   };
 }
