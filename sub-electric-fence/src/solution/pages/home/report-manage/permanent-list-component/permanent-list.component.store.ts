@@ -25,7 +25,7 @@ export function useDirectiveListStore() {
       })
       .subscribe(
         (res: any) => {
-          const { dataList = [] } = res;
+          const { dataList = [], total = 0 } = res;
           const fetchArrary: any[] = [];
           if (Array.isArray(dataList)) {
             for (let i = 0; i < dataList.length; i++) {
@@ -43,7 +43,7 @@ export function useDirectiveListStore() {
             } catch (error) {
               console.log(error);
             }
-            setStateWrap({ tableData: dataList, total: res.total, isLoading: false });
+            setStateWrap({ tableData: dataList, total, isLoading: false });
           });
         },
         err => {

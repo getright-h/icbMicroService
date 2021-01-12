@@ -35,7 +35,8 @@ export function AlarmParameterColumn(callbackAction: Function) {
     },
     {
       title: '停留总时常',
-      dataIndex: 'stayDuration'
+      dataIndex: 'stayDuration',
+      sorter: (a: any, b: any) => a.stayDuration - b.stayDuration
     },
     // {
     //   title: '停留次数',

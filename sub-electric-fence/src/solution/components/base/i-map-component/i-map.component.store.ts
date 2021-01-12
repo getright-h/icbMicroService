@@ -281,14 +281,25 @@ export function useIMapStore(mapProps: TIMapProps) {
 
   function openInfoWinCar(markerInfo: any, map: any, marker: any, infoWindow: any) {
     const { plateNo, vinNo, ownerName, deviceCode, isOnline, durationTime, lastLocationTime } = markerInfo;
+    let bindDeviceCode = '',
+      bindTypeName = '';
+    if (Array.isArray(deviceCode)) {
+      // 追踪里面其实是一个数组,取第一位
+      bindDeviceCode = deviceCode[0].deviceCode;
+      bindTypeName = deviceCode[0].typeName;
+    } else {
+      // 兼容以前逻辑
+      bindDeviceCode = deviceCode.deviceCode;
+      bindTypeName = deviceCode.typeName;
+    }
 
     regeoCode([marker.position.lng, marker.position.lat]).then(place => {
       infoWindow.setInfoTplData({
         ownerName: ownerName || '无',
         plateNo: plateNo || '无',
         vinNo: vinNo || '无',
-        deviceCode: deviceCode.deviceCode || '无',
-        typeName: deviceCode.typeName || '无',
+        deviceCode: bindDeviceCode || '无',
+        typeName: bindTypeName || '无',
         // vehicleState: isRunning ? '动态' : '静止' + ' ' + deviceInfo.speed + 'km/h',
         deviceState: isOnline ? '在线' : `离线 ${durationTime}h`,
         lalg: `${marker.position.lng}, ${marker.position.lat}`,
