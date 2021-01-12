@@ -16,3 +16,8 @@ export interface MyInfo {
   systemId: string;
   systemCode: string;
 }
+
+export interface MenuRequestParam {
+  systemId: string;
+  roleId: string;
+}

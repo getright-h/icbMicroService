@@ -18,6 +18,7 @@ export function useHomeStore() {
   const history = useHistory();
   console.log('history =>>>', history);
   let currentUserIndoSubscription: Subscription;
+  let getMenuListSubscription: Subscription;
   useEffect(() => {
     // 注册并启动微前端
     registerMainApp(callback);
@@ -25,15 +26,15 @@ export function useHomeStore() {
 
   function callback(result: any) {
     // 如果当前的URL是Home那么就跳转到第一个页面
-    setStateWrap({ menuList: result, loading: false });
+    // setStateWrap({ menuList: result, loading: false });
     getCurrentUserInfo();
-    if (history.location.pathname == '/home') {
-      if (result[0]?.children?.length) {
-        history.replace(result[0].children[0].path);
-      } else {
-        history.replace(result[0].path);
-      }
-    }
+    // if (history.location.pathname == '/home') {
+    //   if (result[0]?.children?.length) {
+    //     history.replace(result[0].children[0].path);
+    //   } else {
+    //     history.replace(result[0].path);
+    //   }
+    // }
   }
 
   // 获取登录用户信息
@@ -42,11 +43,42 @@ export function useHomeStore() {
       (res: any) => {
         // 获取用户数据作为补充信息, 向子应用传输数据
         setState({ userInfo: res });
+        const roleId = res.rolesCodeList[0] ? res.rolesCodeList[0].key : null;
+        if (roleId) {
+          getMenuList(res.systemId, roleId);
+        } else {
+          ShowNotification.error('当前账号未绑定角色，无法访问！');
+          history.replace('/login');
+        }
       },
       (err: any) => {
         ShowNotification.error(err);
       }
     );
+  }
+
+  //获取菜单
+  function getMenuList(systemId: string, roleId: string) {
+    getMenuListSubscription = homeService
+      .getMenuList({
+        systemId,
+        roleId
+      })
+      .subscribe(
+        (res: any) => {
+          setStateWrap({ menuList: res, loading: false });
+          if (history.location.pathname == '/home') {
+            if (res[0]?.children?.length) {
+              history.replace(res[0].children[0].path);
+            } else {
+              history.replace(res[0].path);
+            }
+          }
+        },
+        (err: any) => {
+          ShowNotification.error(err);
+        }
+      );
   }
 
   return { state };

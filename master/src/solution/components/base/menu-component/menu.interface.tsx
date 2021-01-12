@@ -1,12 +1,14 @@
 import {
+  AimOutlined,
   AreaChartOutlined,
   BgColorsOutlined,
   BoxPlotOutlined,
   CodepenOutlined,
   PartitionOutlined,
-  PieChartOutlined,
+  AlertOutlined,
   ProfileOutlined,
   RadarChartOutlined,
+  TableOutlined,
   TeamOutlined,
   UserOutlined
 } from '@ant-design/icons';
@@ -31,12 +33,14 @@ export interface IProps {
 export const IconList = {
   switcher: <RadarChartOutlined />,
   reconciliation: <BgColorsOutlined />,
-  alert: <PieChartOutlined />,
+  alert: <AlertOutlined />,
   project: <AreaChartOutlined />,
   tool: <BoxPlotOutlined />,
   block: <CodepenOutlined />,
   team: <TeamOutlined />,
   key: <ProfileOutlined />,
   inbox: <PartitionOutlined />,
-  user: <UserOutlined />
+  user: <UserOutlined />,
+  table: <TableOutlined />,
+  aim: <AimOutlined />
 };

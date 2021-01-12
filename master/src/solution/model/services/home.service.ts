@@ -1,4 +1,4 @@
-import { HomeDTO, MenuAndAuthResult } from '../dto/home.dto';
+import { HomeDTO, MenuAndAuthResult, MenuRequestParam } from '../dto/home.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable, Subscriber } from 'rxjs';
 import { DepUtil } from '~/framework/aop/inject';
@@ -10,6 +10,7 @@ import { MyInfo } from '~/solution/model/dto/home.dto';
  * 真实开发中，请将示例代码移除
  */
 const GET_MY_INFO = 'prvilege/GetMyInfo';
+const GET_MENU = 'prvilege/common/menuTree';
 
 @DepUtil.Injectable()
 export class HomeService extends HomeDTO {
@@ -33,5 +34,10 @@ export class HomeService extends HomeDTO {
   // 获取登录用户信息
   getMyInfo(): Observable<MyInfo> {
     return this.requestService.get(GET_MY_INFO);
+  }
+
+  // 获取菜单
+  getMenuList(params: MenuRequestParam): Observable<MenuAndAuthResult> {
+    return this.requestService.get(GET_MENU, params);
   }
 }

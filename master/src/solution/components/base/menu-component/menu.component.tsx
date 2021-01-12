@@ -16,7 +16,7 @@ export default function MenuComponent(props: IProps) {
     return menuList.map(menu => {
       const { title, path, icon } = menu;
       if (!title) return null;
-      return menu.children ? (
+      return menu.children.length ? (
         <SubMenu
           key={path}
           title={

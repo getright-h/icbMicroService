@@ -376,7 +376,7 @@ export function fetchChildAppsConfig() {
           {
             path: 'positionMonitor', // 菜单路径
             title: '定位监控', // 菜单名
-            icon: 'user', // 图标
+            icon: 'aim', // 图标
             defaultMountApp: false, // 是否默认启动当前第一个页面
             lazyload: true,
             exact: true,
@@ -428,7 +428,7 @@ export function fetchChildAppsConfig() {
           {
             path: 'report', // 菜单路径
             title: '报表', // 菜单名
-            icon: 'user', // 图标
+            icon: 'table', // 图标
             defaultMountApp: false, // 是否默认启动当前第一个页面
             lazyload: true,
             exact: true,
