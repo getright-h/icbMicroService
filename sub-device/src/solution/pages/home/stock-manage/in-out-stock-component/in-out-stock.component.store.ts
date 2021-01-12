@@ -20,8 +20,8 @@ export function useInOutStockStore() {
     stockManageService
       .queryInOutRecordList({
         ...searchForm.getFieldsValue(),
-        beginTime: timeInfo[0] ? moment(timeInfo[0]).valueOf() : 0,
-        endTime: timeInfo[1] ? moment(timeInfo[1]).valueOf() : 0,
+        beginTime: timeInfo[0] ? moment(timeInfo[0] + ' 00:00:00').valueOf() : 0,
+        endTime: timeInfo[1] ? moment(timeInfo[1] + ' 23:59:59').valueOf() : 0,
         index: pageIndex,
         size: pageSize
       })
@@ -41,6 +41,8 @@ export function useInOutStockStore() {
   }
 
   function getDateTimeInfo(timeInfo: any) {
+    console.log('time', timeInfo);
+
     setStateWrap({ timeInfo });
   }
 
