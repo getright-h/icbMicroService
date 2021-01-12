@@ -1,8 +1,5 @@
 import * as React from 'react';
-import { Divider } from 'antd';
-import { ModalType } from './permanent-list.interface';
-import { IMAP } from '~shared/util/map.util';
-import { render } from 'react-dom';
+import { formatStayTime } from './permanent-list.util';
 
 export function AlarmParameterColumn(callbackAction: Function) {
   return [
@@ -27,15 +24,19 @@ export function AlarmParameterColumn(callbackAction: Function) {
     },
     {
       title: '到访次数',
-      dataIndex: 'stayCount'
+      dataIndex: 'stayCount',
+      sorter: (a: any, b: any) => a.stayCount - b.stayCount
     },
     {
       title: '平均停留时间',
-      dataIndex: 'stayAvg'
+      dataIndex: 'stayAvg',
+      render: (text: number) => formatStayTime(text),
+      sorter: (a: any, b: any) => a.stayAvg - b.stayAvg
     },
     {
-      title: '停留总时常',
+      title: '停留总时长',
       dataIndex: 'stayDuration',
+      render: (text: number) => formatStayTime(text),
       sorter: (a: any, b: any) => a.stayDuration - b.stayDuration
     },
     // {

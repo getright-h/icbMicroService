@@ -20,6 +20,7 @@ export function useDirectiveListStore() {
     let searchData: any = {};
     if (isSearch) {
       searchData = searchForm.getFieldsValue();
+      searchData.isSettle = typeof searchData.isSettle === 'number' ? !!searchData.isSettle : undefined;
       console.log(searchData);
     }
     orderReportService

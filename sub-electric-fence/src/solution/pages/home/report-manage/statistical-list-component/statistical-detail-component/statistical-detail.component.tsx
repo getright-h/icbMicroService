@@ -6,14 +6,7 @@ import style from './statistical-detail.component.less';
 import { useDirectiveListStore } from './statistical-detail.component.store';
 
 export default function DirectiveListComponent() {
-  const {
-    state,
-    searchForm,
-    callbackAction,
-    changeTablePageIndex,
-    searchClick,
-    initSearchForm
-  } = useDirectiveListStore();
+  const { state, changeTablePageIndex } = useDirectiveListStore();
   const { detail, pageIndex, pageSize } = state;
   const layout = {
     labelCol: { span: 8 },
