@@ -25,6 +25,7 @@ export function useAddMonitorGroupStore(props: AddMonitorGroupProp) {
     if (props?.data.id) {
       insertVehicleGroupSubscription = monitorService.setVehicleGroup({ ...params, id: props?.data.id }).subscribe(
         (res: any) => {
+          /** 当前这个修改只是针对修改监控组名称,并不能做到修改监控组所在机构,并且将监控组移动到目标机构 */
           props.alertCurrentTreeData(props?.data.id, params.name);
           ShowNotification.success('修改成功');
           setStateWrap({ submitLoading: false });
