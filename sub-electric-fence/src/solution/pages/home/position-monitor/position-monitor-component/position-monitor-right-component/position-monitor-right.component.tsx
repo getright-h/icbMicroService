@@ -7,6 +7,8 @@ import PositionMonitorMapbtnTrackComponent from '../position-monitor-mapbtn-trac
 import PositionMonitorMapbtnDrivingComponent from '../position-monitor-mapbtn-driving-line-component/position-monitor-mapbtn-driving-line.component';
 import DirectivePatchModalComponent from '../../../directive-manage/wiget/directive-patch-model-component/directive-patch-moda.component';
 import { IPositionMonitorRightProps } from './position-monitor-right.interface';
+import { Button } from 'antd';
+import PositionMonitorAreaSearchCarComponent from '../position-monitor-area-search-car-component/position-monitor-area-search-car.component';
 export const PositionMonitorRightComponent = (props: IPositionMonitorRightProps) => {
   const { reduxState } = React.useContext(PositionMonitorContext);
 
@@ -17,10 +19,12 @@ export const PositionMonitorRightComponent = (props: IPositionMonitorRightProps)
     setCurrentSelectCarInfo,
     drawDrivingLine,
     controllerDirectiveModal,
-    closeMapDrivingPage
+    closeMapDrivingPage,
+    closeMapSearchCarbtnPage,
+    controllerAreaCarSearchModal
   } = usePositionMonitorRightStore(props);
   const { checkedCarData, currentSelectCar } = reduxState;
-  const { mapbtnTrackrVisible, mapbtnDrivingVisible, modalDirectiveVisible, deviceId } = state;
+  const { mapbtnTrackrVisible, mapbtnDrivingVisible, modalDirectiveVisible, deviceId, mapbtnSearchCarVisible } = state;
   const mapProps = React.useMemo(
     () => ({
       id: 'mainContainer',
@@ -49,6 +53,14 @@ export const PositionMonitorRightComponent = (props: IPositionMonitorRightProps)
     [mapbtnDrivingVisible]
   );
 
+  const areaSearchCarProps = React.useMemo(
+    () => ({
+      mapbtnSearchCarVisible,
+      closeMapSearchCarbtnPage
+    }),
+    [mapbtnDrivingVisible]
+  );
+
   const ISelectCarLoadingComponent = ISelectLoadingComponent({
     placeholder: '车主姓名/手机/车牌号',
     showSearch: true,
@@ -70,7 +82,13 @@ export const PositionMonitorRightComponent = (props: IPositionMonitorRightProps)
           deviceId={deviceId}
         />
       )}
+      <div className={style.areaCarSearch} onClick={controllerAreaCarSearchModal}>
+        <Button type="primary" size="small">
+          区域查车
+        </Button>
+      </div>
       {mapbtnTrackrVisible && <PositionMonitorMapbtnTrackComponent {...positionMonitorMapbtnTrackProps} />}
+      {mapbtnSearchCarVisible && <PositionMonitorAreaSearchCarComponent {...areaSearchCarProps} />}
       {mapbtnDrivingVisible && <PositionMonitorMapbtnDrivingComponent {...positionMonitorMapbtnDrivingProps} />}
     </div>
   );

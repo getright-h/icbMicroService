@@ -5,10 +5,8 @@ import { useIMapStore } from './i-map.component.store';
 import { TIMapProps } from './i-map.interface';
 const { Option } = Select;
 export const IMapComponent = React.memo((mapProps: TIMapProps) => {
-  const { state, startRule, startDrawRactangle, handleChangeCircleFunction, handleCircleLocation } = useIMapStore(
-    mapProps
-  );
-  const { needSearchAddress = true, needDrawRactangle, height = '80vh' } = mapProps;
+  const { state, startRule, handleChangeCircleFunction, handleCircleLocation } = useIMapStore(mapProps);
+  const { needSearchAddress = true, height = '80vh' } = mapProps;
   const { locationList, currentChooseLocation } = state;
   function SearchAddress() {
     return (
@@ -44,7 +42,6 @@ export const IMapComponent = React.memo((mapProps: TIMapProps) => {
         <Button type="primary" size="small" onClick={startRule}>
           测距
         </Button>
-        {/* {needDrawRactangle && <button onClick={startDrawRactangle}>区域查车</button>} */}
       </div>
       {needSearchAddress && <div className={`${style.info} ${style.searchAddress}`}>{SearchAddress()}</div>}
     </div>

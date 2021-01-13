@@ -18,7 +18,7 @@ export type TIMapProps = {
   carSpeed?: number;
   needSearchAddress?: boolean;
   height?: string;
-  needDrawRactangle?: boolean;
+  openDrawRactangle?: boolean;
   carLine?: RealTimeTrackingReturn;
   drawDrivingLine?: (currentDoActionCarInfo: VehicleInfoParamReture) => void;
   onMapTrack?: (currentDoActionCarInfo: VehicleInfoParamReture) => void;

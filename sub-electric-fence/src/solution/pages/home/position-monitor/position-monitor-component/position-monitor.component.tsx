@@ -12,6 +12,7 @@ import { PositionMonitorDrawerRightComponent } from './position-monitor-drawer-r
 import { usePositionMonitorStore } from './position-monitor.component.store';
 import PositionMonitorRefreshHeaderComponent from './position-monitor-refresh-header-component/position-monitor-refresh-header.component';
 import AlarmAttentionModalComponent from './alarm-attention-modal-component/alarm-attention-modal.component';
+// import PositionMonitorAreaSearchCarComponent from './position-monitor-area-search-car-component/position-monitor-area-search-car.component';
 export const PositionMonitorContext = React.createContext({
   reduxState: positionMonitorInitialState,
   dispatch: undefined
@@ -42,7 +43,6 @@ export default function PositionMonitorComponent() {
         <div className={style.positionMonitorRight}>
           <PositionMonitorRightComponent stopRefresh={stopRefresh} />
           <PositionMonitorDrawerRightComponent />
-          {console.log('isModalVisible', isModalVisible)}
           {isModalVisible && (
             <AlarmAttentionModalComponent isModalVisible={isModalVisible} handleCancel={() => handleCancel(false)} />
           )}

@@ -13,8 +13,7 @@ export default React.memo((props: IPositionMonitorMapbtnTrackProps) => {
       id: 'trackContainer',
       needSearchAddress: false,
       needISelectCarLoadingComponent: false,
-      height: '93vh',
-      carLine: state.carLine
+      height: '93vh'
     };
     return (
       <div className={style.mapContent}>

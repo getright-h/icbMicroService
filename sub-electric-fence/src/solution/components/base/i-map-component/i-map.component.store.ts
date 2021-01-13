@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import * as _ from 'lodash';
 import { IMAP } from '~/solution/shared/util/map.util';
 import { message } from 'antd';
+import { PointList } from '../../../model/dto/position-monitor.dto';
 declare const AMap: any;
 
 const autoOptions = {
@@ -113,17 +114,21 @@ export function useIMapStore(mapProps: TIMapProps) {
     map.current.clearMap();
     if (mapProps.drivingLineData?.pointList?.length) {
       const { pointList } = mapProps.drivingLineData;
-      let startTime = new Date().getTime();
+
+      const stopPoints: PointList[] = [];
       const carLine = pointList.map(item => {
-        item = IMAP.initLonlat(item.coordinates[0], item.coordinates[1]);
-        return item;
-      });
-      console.log('纠偏的时间差', new Date().getTime() - startTime);
-      startTime = new Date().getTime();
-      map.current.on('complete', () => {
-        console.log('渲染的时间差', new Date().getTime() - startTime);
+        const itemCoordinates = IMAP.initLonlat(item.coordinates[0], item.coordinates[1]);
+        item.coordinates = itemCoordinates;
+        if (item.stop) {
+          stopPoints.push(item);
+        }
+
+        return itemCoordinates;
       });
       polyline.current = IMAP.drawLine(map.current, carLine);
+      console.log('stopPoints', stopPoints);
+
+      IMAP.bindCommonMarkers(stopPoints, map.current);
       carLineMarkerInfo.current = new AMap.Marker({
         map: map.current,
         label: {
@@ -158,11 +163,11 @@ export function useIMapStore(mapProps: TIMapProps) {
           setEndRunning();
           finishedRun.current = true;
         }
-        map.current.setFitView();
         notPassedArr.current = [e.passedPath[e.passedPath.length - 1], ...carLine.slice(currentIndex + 1)];
       });
 
       carLineMarkerInfo.current.moveAlong(carLine, 200);
+      map.current.setCenter(carLine[0]);
     }
   }, [mapProps.drivingLineData]);
 
@@ -199,7 +204,11 @@ export function useIMapStore(mapProps: TIMapProps) {
       // 切换速度，看下现在的点跑到哪里了，然后截断现在的点的位置，继续跑
       carLineMarkerInfo.current.moveAlong(notPassedArr.current, 200 * carSpeed);
     }
-    // 移动车
+    if (isRunning) {
+      carLineMarkerInfo?.current?.pauseMove();
+      const position = notPassedArr.current[0];
+      IMAP.showCarInfo(mapProps.drivingLineData, map.current, { position }, openInfoWinCar);
+    }
   }, [currentPoint, carSpeed]);
 
   // 批量标记车辆 大批量车辆打点专用
@@ -261,6 +270,9 @@ export function useIMapStore(mapProps: TIMapProps) {
   function openInfoWin(markerInfo: any, map: any, marker: any, infoWindow: any, isBindAction = true) {
     const vehicleInfo = marker.markerInfo;
     const deviceInfo = marker.deviceInfo;
+    console.log(marker);
+
+    // const satellitesNum = marker.satellitesNum;
     const data = {
       ownerName: vehicleInfo?.ownerName || '无',
       plateNo: vehicleInfo?.plateNo || '无',
@@ -271,6 +283,7 @@ export function useIMapStore(mapProps: TIMapProps) {
       deviceState: deviceInfo?.isOnline ? '在线' : `离线 ${deviceInfo?.durationTime}h`,
       lalg: `${marker.position[0]}, ${marker.position[1]}`,
       place: '转换地址中...',
+      // satellitesNum,
       positionTime: deviceInfo.positionTime
     };
     infoWindow.setInfoTplData(data);
@@ -487,16 +500,7 @@ export function useIMapStore(mapProps: TIMapProps) {
   }
 
   function startDrawRactangle() {
-    if (!isVisibleLocationCar.current) {
-      message.info('开启区域查车');
-      isMouseToolVisible.current = false;
-      mouseTool.current.close(true);
-      IMAP.drawRectangle.gotoDrawRectangle(mouseTool.current);
-    } else {
-      message.info('关闭区域查车');
-      mouseTool.current.close(true);
-    }
-    isVisibleLocationCar.current = !isVisibleLocationCar.current;
+    IMAP.drawRectangle.gotoDrawRectangle(mouseTool.current);
   }
 
   function startRule() {

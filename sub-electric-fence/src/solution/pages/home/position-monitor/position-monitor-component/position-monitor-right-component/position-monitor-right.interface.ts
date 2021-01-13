@@ -7,6 +7,7 @@ export class IPositionMonitorRightState {
   mapbtnDrivingVisible = false;
   deviceId = '';
   modalDirectiveVisible = false;
+  mapbtnSearchCarVisible = false;
 }
 
 export class IPositionMonitorRightProps {

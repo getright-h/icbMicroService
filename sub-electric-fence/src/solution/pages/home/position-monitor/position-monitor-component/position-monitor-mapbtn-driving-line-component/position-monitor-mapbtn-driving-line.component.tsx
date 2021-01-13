@@ -71,7 +71,7 @@ export default React.memo((props: IPositionMonitorMapbtnDrivingProps) => {
               {currentDoActionCarInfo?.markerInfo?.deviceList.map(device => {
                 return (
                   <Option key={device.deviceCode} value={device.deviceCode}>
-                    {device.typeName}
+                    {device.typeName + ' ' + device.deviceCode}
                   </Option>
                 );
               })}
@@ -79,7 +79,7 @@ export default React.memo((props: IPositionMonitorMapbtnDrivingProps) => {
           </div>
           <div className={style.selectContent}>
             <span> 选择时间: </span>
-            <TimePickerComponent timeInfo={timeInfo} getDateTimeInfo={getDateTimeInfo} pickerType="dateRange" />
+            <TimePickerComponent timeInfo={timeInfo} getDateTimeInfo={getDateTimeInfo} pickerType="dateTimeRange" />
             <Select
               placeholder="搜索快捷日期"
               value={dateTimeRangeControllerValue}

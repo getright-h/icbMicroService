@@ -1,4 +1,5 @@
 //添加缩放和图层切换控件
+import { ShowNotification } from '../../../framework/util/common/showNotification';
 declare const AMapUI: any;
 declare const AMap: any;
 export const IMAP = {
@@ -118,7 +119,7 @@ export const IMAP = {
   ) {
     AMapUI.loadUI(['overlay/SimpleInfoWindow'], (SimpleInfoWindow: any) => {
       const infoWindow = new SimpleInfoWindow({
-        infoTitle: '<strong>车辆状态</strong>',
+        infoTitle: '<strong>车辆状态 </strong><span class="title">信号: <%- satellitesNum %></span> ',
         infoBody: `<div class="vehicle-basic-info">
         <span class="title">基本信息</span>
         <div class="basic">
@@ -144,6 +145,7 @@ export const IMAP = {
           plateNo: '',
           vinNo: '',
           deviceCode: '',
+          satellitesNum: '',
           deviceState: '',
           typeName: '',
           positionTime: '',
@@ -431,35 +433,17 @@ export const IMAP = {
       });
     });
   },
-  bindMassMarkers(
-    markers: any,
-    map: any,
-    callback?: (markerInfo: any, map: any, marker: any, infoWindow: any) => void
-  ) {
-    const style = [
-      {
-        url: 'https://a.amap.com/jsapi_demos/static/images/mass1.png',
-        anchor: new AMap.Pixel(6, 6),
-        size: new AMap.Size(11, 11)
-      },
-      {
-        url: 'https://a.amap.com/jsapi_demos/static/images/mass1.png',
-        anchor: new AMap.Pixel(4, 4),
-        size: new AMap.Size(7, 7),
-        icon: require('~assets/image/online.png')
-      }
-    ];
-    const mass = new AMap.MassMarks(markers, {
-      zIndex: 99999,
-      cursor: 'pointer',
-      style: style
-    });
-    mass.on('click', function(e: any) {
-      console.log(e);
-    });
-    mass.setMap(map);
 
-    mass.getMap().setFitView();
+  bindCommonMarkers(markers: any[], map: any) {
+    const mapMarkers = [];
+    markers.forEach(item => {
+      const circleMarker = new AMap.Marker({
+        map,
+
+        position: item.coordinates
+      });
+      mapMarkers.push(circleMarker);
+    });
   },
   GPS: {
     PI: 3.14159265358979324,
@@ -619,7 +603,11 @@ export const IMAP = {
     //   lat: '0,0',
     //   lonAndLat: '0,0'
     // };
-    if (!lon || !lat) return result;
+
+    if (!lon || !lat) {
+      ShowNotification.info('有空的经纬度');
+      return [0, 0];
+    }
     len = len || 6;
     const reg = /(\d+).(\d+)/;
     const points = this.GPS.gcj_encrypt(lat, lon);

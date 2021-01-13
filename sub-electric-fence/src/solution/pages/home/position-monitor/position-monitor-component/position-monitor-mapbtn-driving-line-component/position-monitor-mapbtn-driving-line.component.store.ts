@@ -11,7 +11,6 @@ declare const AMap: any;
 export function usePositionMonitorMapbtnDrivingLineStore(reduxState: TPositionMonitor) {
   const { state, setStateWrap } = useStateStore(new IPositionMonitorMapbtnDrivingLineState());
   const { carSpeedBase, drivingLineData, deviceCode, timeInfo, tableData } = state;
-  const { pointList } = drivingLineData;
   const { currentDoActionCarInfo } = reduxState;
   const positionMonitorService: PositionMonitorService = useService(PositionMonitorService);
   useEffect(() => {
@@ -39,6 +38,8 @@ export function usePositionMonitorMapbtnDrivingLineStore(reduxState: TPositionMo
   }
 
   function changeSliderProgress(value: number) {
+    console.log(value);
+
     setStateWrap({
       currentPoint: value
     });
@@ -54,6 +55,7 @@ export function usePositionMonitorMapbtnDrivingLineStore(reduxState: TPositionMo
     let timeInfo: string[] = [];
 
     const time = moment().format('YYYY-MM-DD');
+
     switch (value) {
       case SELECTDATE.TODAY:
         timeInfo = [time + ' 00:00:00', time + ' 23:59:59'];
@@ -96,6 +98,8 @@ export function usePositionMonitorMapbtnDrivingLineStore(reduxState: TPositionMo
     if (!value[0] && !value[1]) {
       value = undefined;
     }
+    console.log(value);
+
     setStateWrap({
       timeInfo: value,
       dateTimeRangeControllerValue: undefined

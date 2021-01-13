@@ -1,6 +1,6 @@
 import { IISelectLoadingState, IISelectLoadingProps } from './i-select-loading.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef } from 'react';
 import { DrapChooseLoadingService } from '~/solution/model/services/drap-choose-loading.service';
 import _ from 'lodash';
 import { Subscription } from 'rxjs';
@@ -17,12 +17,13 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
   searchParams.current = props.searchForm || {};
   searchName.current = props.searchKey || '';
 
-  function getOptionList(isSearch = false) {
+  function getOptionList(isSearch = false, searchNameInfo = searchName.current) {
     setStateWrap({ fetching: true });
+    searchName.current = searchNameInfo;
     getOptionListSubscription = drapChooseLoadingService[reqUrl]({
       ...searchParams.current,
-      key: searchName.current,
-      [searchKeyName]: searchName.current,
+      key: searchNameInfo,
+      [searchKeyName]: searchNameInfo,
       index: scrollPage.current,
       size: props.pageSize || 100
     }).subscribe(
@@ -54,18 +55,15 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
     );
   }
 
-  const fetchOptions = useCallback(
-    _.throttle((isSearch?: boolean, value?: string) => {
-      console.log('fetchOptions', value);
-      console.log('isSearch', isSearch);
-      if (isSearch) {
-        scrollPage.current = 1;
-        searchName.current = value || '';
-      }
-      getOptionList(true);
-    }, 300),
-    []
-  );
+  const fetchOptions = _.debounce((isSearch?: boolean, value?: string) => {
+    if (isSearch) {
+      scrollPage.current = 1;
+      searchName.current = value || '';
+    }
+    console.log(searchName.current);
+
+    getOptionList(true, searchName.current);
+  }, 300);
 
   function optionScroll(e: any) {
     e.persist();
@@ -81,7 +79,8 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
   }, [props.selectedValue]);
 
   useEffect(() => {
-    // fetchOptions(true, props.searchKey);
+    console.log('props.searchKey', props.searchKey);
+
     props.searchKey && fetchOptions(true, props.searchKey);
   }, [props.searchKey]);
 

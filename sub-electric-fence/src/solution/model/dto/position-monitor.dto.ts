@@ -103,9 +103,11 @@ interface DeviceCode {
   typeName: string;
 }
 
-interface PointList {
+export interface PointList {
   coordinates: number[];
   direction: number;
+  stop: boolean;
+  satellitesNum: number;
   speed: number;
   time: number;
 }

@@ -71,6 +71,12 @@ export function usePositionMonitorRightStore(props: IPositionMonitorRightProps) 
     });
   }
 
+  function controllerAreaCarSearchModal() {
+    setStateWrap({
+      mapbtnSearchCarVisible: true
+    });
+  }
+
   // 控制指令
   function controllerDirectiveModal(isClose = true, deviceCode = '') {
     console.log('isClose', isClose);
@@ -87,6 +93,12 @@ export function usePositionMonitorRightStore(props: IPositionMonitorRightProps) 
     });
   }
 
+  function closeMapSearchCarbtnPage() {
+    setStateWrap({
+      mapbtnSearchCarVisible: false
+    });
+  }
+
   return {
     state,
     searchCar,
@@ -94,6 +106,8 @@ export function usePositionMonitorRightStore(props: IPositionMonitorRightProps) 
     setCurrentSelectCarInfo,
     closeMapbtnPage,
     closeMapDrivingPage,
-    drawDrivingLine
+    drawDrivingLine,
+    controllerAreaCarSearchModal,
+    closeMapSearchCarbtnPage
   };
 }
