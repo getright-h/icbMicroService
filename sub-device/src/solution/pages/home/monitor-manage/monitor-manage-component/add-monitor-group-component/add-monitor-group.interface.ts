@@ -4,11 +4,8 @@
  */
 export class IAddMonitorGroupState {
   submitLoading = false;
-  organization: {
-    organizationCode?: string;
-    organizationId?: string;
-    organizationName?: string;
-  } = {};
+  organization: IOrg = {};
+  searchRoleName = '';
 }
 
 export interface AddMonitorGroupProp {
@@ -18,4 +15,10 @@ export interface AddMonitorGroupProp {
   visible: boolean;
   alertCurrentTreeData?: Function;
   appendNewNodeToCurrentTreeData?: Function;
+}
+
+export interface IOrg {
+  organizationCode?: string;
+  organizationId?: string;
+  organizationName?: string;
 }

@@ -19,3 +19,8 @@ export interface EditAlarmTemplateItem extends AlarmTemplateItem {
   curSelectTemp?: AlarmPackageItem;
   childList?: AlarmTypeItem[];
 }
+
+export enum PushModeEnum {
+  DEVICE = 1,
+  PLATFORM = 2
+}

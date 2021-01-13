@@ -27,7 +27,7 @@ export function fetchChildAppsConfig() {
             children: [
               {
                 path: 'all',
-                title: '全部设备管理',
+                title: '设备管理',
                 lazyload: true,
                 exact: true,
                 componentUrl: 'stockAll' //对应子应用的组件名
@@ -41,7 +41,7 @@ export function fetchChildAppsConfig() {
               },
               {
                 path: 'in-out',
-                title: '出入库管理',
+                title: '出入库记录',
                 lazyload: true,
                 exact: true,
                 componentUrl: 'stockInOut' //对应子应用的组件名
@@ -375,8 +375,8 @@ export function fetchChildAppsConfig() {
           },
           {
             path: 'positionMonitor', // 菜单路径
-            title: '定位监控', // 菜单名
-            icon: 'user', // 图标
+            title: '车辆定位', // 菜单名
+            icon: 'aim', // 图标
             defaultMountApp: false, // 是否默认启动当前第一个页面
             lazyload: true,
             exact: true,
@@ -418,7 +418,7 @@ export function fetchChildAppsConfig() {
             children: [
               {
                 path: 'directiveList',
-                title: '指令列表',
+                title: '指令中心',
                 lazyload: true,
                 exact: true,
                 componentUrl: 'directiveListComponent' //对应子应用的组件名
@@ -428,7 +428,7 @@ export function fetchChildAppsConfig() {
           {
             path: 'report', // 菜单路径
             title: '报表', // 菜单名
-            icon: 'user', // 图标
+            icon: 'table', // 图标
             defaultMountApp: false, // 是否默认启动当前第一个页面
             lazyload: true,
             exact: true,

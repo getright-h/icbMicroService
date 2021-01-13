@@ -26,7 +26,7 @@ export default function DirectiveListComponent() {
 
   function renderSelectItems() {
     const queryOrgList = ISelectLoadingComponent({
-      width: '200px',
+      width: '240px',
       reqUrl: 'queryStoreOrganization',
       placeholder: '请选择机构',
       // searchKey: organization.organizationName || '',
@@ -46,7 +46,7 @@ export default function DirectiveListComponent() {
         }}
       >
         <Row gutter={[8, 8]}>
-          <Col span={8}>
+          <Col span={7}>
             <Form.Item name="strValue" label="查询车辆/设备">
               <Input placeholder="电话/车牌号/车架号/设备" allowClear={true} />
             </Form.Item>
@@ -70,13 +70,13 @@ export default function DirectiveListComponent() {
               />
             </Form.Item>
           </Col>
-          <Col span={5}>
+          <Col span={8}>
             <Form.Item label="所属机构" name="organizationId">
               {queryOrgList}
             </Form.Item>
           </Col>
-          <Form.Item name="beginTime"></Form.Item>
-          <Form.Item name="endTime"></Form.Item>
+          <Form.Item name="beginTime" noStyle></Form.Item>
+          <Form.Item name="endTime" noStyle></Form.Item>
         </Row>
       </Form>
     );

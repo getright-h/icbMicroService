@@ -30,7 +30,7 @@ export function purchaseOrderColumns(callbackAction: Function) {
     },
     {
       title: '采购时间',
-      dataIndex: 'createTime'
+      dataIndex: 'purchaseTime'
     },
     {
       title: '创建人',

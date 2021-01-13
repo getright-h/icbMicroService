@@ -10,7 +10,7 @@ export const approvalManageRoutes: IRoute[] = [
     exact: true
   },
   {
-    path: `${MODULE_PATH}/approveTemplate`,
+    path: `${MODULE_PATH}/approvalTemplate`,
     component: ROUTERS.approvalTemplate,
     lazyload: true,
     exact: true

@@ -22,7 +22,12 @@ export class OrderReportService implements OrderReportManage {
   queryReportAlarmStatistics(params: ReportAlarmStatisticsInput): Observable<{ data: any[]; total: number }> {
     return this.requestService.post(QUERY_REPORT_ALARM_STATISTICS, params);
   }
-  queryReportAlarmStatisticsDetail(params: { deviceCode: string; alarmType: string }): Observable<boolean> {
+  queryReportAlarmStatisticsDetail(params: {
+    deviceCode: string;
+    alarmType: string;
+    index: number;
+    size: number;
+  }): Observable<boolean> {
     return this.requestService.post(QUERY_REPORT_ALARM_STATISTICS_DETAIL, params);
   }
   queryAlarmOriginalPagedList(params: ReportAlarmStatisticsInput): Observable<boolean> {

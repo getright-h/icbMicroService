@@ -20,6 +20,7 @@ export function useDirectiveListStore() {
     let searchData: any = {};
     if (isSearch) {
       searchData = searchForm.getFieldsValue();
+      searchData.isSettle = typeof searchData.isSettle === 'number' ? !!searchData.isSettle : undefined;
       console.log(searchData);
     }
     orderReportService
@@ -29,18 +30,27 @@ export function useDirectiveListStore() {
         size: pageSize
       })
       .subscribe(
-        async (res: any) => {
-          const newData: any[] = [];
-          if (Array.isArray(res.dataList)) {
-            for (let i = 0; i < res.dataList.length; i++) {
-              const { latitude, longitude } = res.dataList[i];
+        (res: any) => {
+          const { dataList = [], total = 0 } = res;
+          const fetchArrary: any[] = [];
+          if (Array.isArray(dataList)) {
+            for (let i = 0; i < dataList.length; i++) {
+              const { latitude, longitude } = dataList[i];
               if (latitude && longitude) {
-                res.dataList[i].address = await IMAP.covertPointToAddress([longitude, latitude]);
+                fetchArrary.push(IMAP.covertPointToAddress([longitude, latitude]));
               }
-              newData.push(res.dataList[i]);
             }
           }
-          setStateWrap({ tableData: newData, total: res.total, isLoading: false });
+          Promise.all(fetchArrary).then((res: any) => {
+            try {
+              for (let i = 0; i < res.length; i++) {
+                dataList[i].address = res[i];
+              }
+            } catch (error) {
+              console.log(error);
+            }
+            setStateWrap({ tableData: dataList, total, isLoading: false });
+          });
         },
         err => {
           setStateWrap({ isLoading: false });

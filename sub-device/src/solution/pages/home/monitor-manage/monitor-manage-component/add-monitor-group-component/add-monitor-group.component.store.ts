@@ -14,7 +14,7 @@ export function useAddMonitorGroupStore(props: AddMonitorGroupProp) {
   const [form] = Form.useForm();
 
   function addMonitorGroup(value: any) {
-    const { organization = {} } = state;
+    const { organization } = state;
     const params = {
       name: value.name,
       remark: value.remark,
@@ -25,6 +25,7 @@ export function useAddMonitorGroupStore(props: AddMonitorGroupProp) {
     if (props?.data.id) {
       insertVehicleGroupSubscription = monitorService.setVehicleGroup({ ...params, id: props?.data.id }).subscribe(
         (res: any) => {
+          /** 当前这个修改只是针对修改监控组名称,并不能做到修改监控组所在机构,并且将监控组移动到目标机构 */
           props.alertCurrentTreeData(props?.data.id, params.name);
           ShowNotification.success('修改成功');
           setStateWrap({ submitLoading: false });
@@ -58,15 +59,18 @@ export function useAddMonitorGroupStore(props: AddMonitorGroupProp) {
       setStateWrap({
         organization: {
           organizationCode: value.code,
-          organizationId: value.organizationId,
+          organizationId: value ? value.organizationId : '',
           organizationName: value.name
         }
       });
       return;
     }
-    form.setFieldsValue({
-      [type]: value
-    });
+    if (type == 'roleId') {
+      setStateWrap({ searchRoleName: value });
+      form.setFieldsValue({
+        roleId: value
+      });
+    }
   }
   useEffect(() => {
     form.resetFields();
@@ -76,7 +80,8 @@ export function useAddMonitorGroupStore(props: AddMonitorGroupProp) {
         organizationCode: data.organizationCode,
         organizationId: data.organizationId,
         organizationName: data.organizationName
-      }
+      },
+      searchRoleName: data.roleName
     });
     form.setFieldsValue(data);
     return () => {

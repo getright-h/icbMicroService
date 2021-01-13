@@ -131,12 +131,12 @@ export function useAddTemplateStore(addTemplateState: AddTemplateState, dispatch
     const url = !!Number(isEdit) ? 'setApprovalFormTemplate' : 'insertApprovalFormTemplate';
     approvalManageService[url](commitInfo).subscribe(() => {
       ShowNotification.success('添加成功');
-      history.push('../../approveTemplate');
+      history.push('../../approvalTemplate');
     });
   }
 
   function goback() {
-    history.push('../../approveTemplate');
+    history.push('../../approvalTemplate');
   }
   function createRandomId() {
     return (

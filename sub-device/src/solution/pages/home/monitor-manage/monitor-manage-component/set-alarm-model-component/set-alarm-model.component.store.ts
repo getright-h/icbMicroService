@@ -1,4 +1,4 @@
-import { EditAlarmTemplateItem, IAddMonitorGroupState, ISetAlarmProp } from './set-alarm-model.interface';
+import { EditAlarmTemplateItem, IAddMonitorGroupState, ISetAlarmProp, PushModeEnum } from './set-alarm-model.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
 import { MutableRefObject, useEffect, useRef } from 'react';
 import { Form, message } from 'antd';
@@ -55,6 +55,10 @@ export function useSetAlarmStore(props: ISetAlarmProp) {
       if (template.id === curTemplate.id) {
         template.isTemplateSelected = checked;
         !checked && (template.curSelectTemp = null);
+        // 选中的报警类型为【发送设备】，选中后默认选上初始值模板
+        if (checked && template.packageList.length && template.downMode === PushModeEnum.DEVICE) {
+          selectTemplate(template.packageList[0].id, template);
+        }
       }
     });
     setStateWrap({ templateList: templateListRef.current });
@@ -93,8 +97,6 @@ export function useSetAlarmStore(props: ISetAlarmProp) {
   }
 
   function setAlarm() {
-    console.log('prop', props.data);
-
     setStateWrap({ submitLoading: true });
     let isPass = true;
     let selectNum = 0;
