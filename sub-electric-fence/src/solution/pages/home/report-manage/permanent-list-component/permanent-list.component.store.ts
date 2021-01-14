@@ -24,32 +24,41 @@ export function useDirectiveListStore() {
         size: pageSize
       })
       .subscribe(
-        (res: any) => {
-          const { dataList = [], total = 0 } = res;
-          const fetchArrary: any[] = [];
-          if (Array.isArray(dataList)) {
-            for (let i = 0; i < dataList.length; i++) {
-              const { latitude, longitude } = dataList[i];
-              if (latitude && longitude) {
-                fetchArrary.push(IMAP.covertPointToAddress([longitude, latitude]));
-              }
-            }
-          }
-          Promise.all(fetchArrary).then((res: any) => {
-            try {
-              for (let i = 0; i < res.length; i++) {
-                dataList[i].address = res[i];
-              }
-            } catch (error) {
-              console.log(error);
-            }
-            setStateWrap({ tableData: dataList, total, isLoading: false });
-          });
+        res => {
+          console.log('subscribe', [...res.dataList]);
+          setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
         },
         err => {
           setStateWrap({ isLoading: false });
         }
       );
+    // .subscribe(
+    //   (res: any) => {
+    //     const { dataList = [], total = 0 } = res;
+    //     const fetchArrary: any[] = [];
+    //     if (Array.isArray(dataList)) {
+    //       for (let i = 0; i < dataList.length; i++) {
+    //         const { latitude, longitude } = dataList[i];
+    //         if (latitude && longitude) {
+    //           fetchArrary.push(IMAP.covertPointToAddress(IMAP.initLonlat(longitude, latitude)));
+    //         }
+    //       }
+    //     }
+    //     Promise.all(fetchArrary).then((res: any) => {
+    //       try {
+    //         for (let i = 0; i < res.length; i++) {
+    //           dataList[i].address = res[i];
+    //         }
+    //       } catch (error) {
+    //         console.log(error);
+    //       }
+    //       setStateWrap({ tableData: dataList, total, isLoading: false });
+    //     });
+    //   },
+    //   err => {
+    //     setStateWrap({ isLoading: false });
+    //   }
+    // );
   }
 
   function searchClick() {
