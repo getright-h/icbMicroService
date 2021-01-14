@@ -43,6 +43,7 @@ export interface QueryMonitorAlarmInfoPagedListParams {
   strValue?: string;
   alarmType?: number;
   organizationId?: string;
+  isOnlyCount?: boolean;
   isSettle?: boolean;
   index: number;
   size: number;

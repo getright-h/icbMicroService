@@ -63,7 +63,7 @@ export default function PositionMonitorComponent() {
         )}
 
         <div className={style.checkedCarInfo} onClick={() => setDataAction({ rightDrawervisible: true }, dispatch)}>
-          <Badge count={checkedCarData.length} overflowCount={99} offset={[0, 12]}>
+          <Badge count={checkedCarData.length} overflowCount={9999} offset={[0, 12]}>
             <Avatar shape="circle" size={80} icon={<CarOutlined className={style.iconStyle} />} />
           </Badge>
         </div>

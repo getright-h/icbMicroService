@@ -57,9 +57,11 @@ export function usePositionMonitorStore(dispatch: Dispatch<any>, positionMonitor
 
   function queryMonitorAlarmInfoPagedList() {
     // 刷新当前的报警信息条数
-    positionMonitorService.queryMonitorAlarmInfoPagedList({ index: 1, size: 10, isSettle: false }).subscribe(res => {
-      setDataAction({ totalAlermManage: res.count }, dispatch);
-    });
+    positionMonitorService
+      .queryMonitorAlarmInfoPagedList({ index: 1, size: 10, isSettle: false, isOnlyCount: true })
+      .subscribe(res => {
+        setDataAction({ totalAlermManage: res.count }, dispatch);
+      });
   }
   return { state, refreshContentInfo, handleCancel, stopRefresh };
 }
