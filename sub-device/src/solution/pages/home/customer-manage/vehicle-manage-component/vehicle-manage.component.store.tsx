@@ -20,11 +20,13 @@ export function useVehicleManageStore() {
   }, []);
 
   function getTableData() {
+    const values = searchForm.getFieldsValue();
     setStateWrap({ isLoading: true });
     const { pageIndex, pageSize, timeInfo } = getState();
     customerManageService
       .queryVehiclePagedList({
-        ...searchForm.getFieldsValue(),
+        ...values,
+        deviceNumber: !!values.deviceNumber ? +values.deviceNumber : undefined,
         serverBeginTime: timeInfo[0] ? moment(timeInfo[0] + ' 00:00:00').valueOf() : 0,
         serverEndTime: timeInfo[1] ? moment(timeInfo[1] + ' 23:59:59').valueOf() : 0,
         index: pageIndex,
