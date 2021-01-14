@@ -29,14 +29,12 @@ export function AlarmParameterColumn(callbackAction: Function) {
     },
     {
       title: '平均停留时间',
-      dataIndex: 'stayAvg',
-      render: (text: number) => formatStayTime(text),
+      dataIndex: 'stayAvgText',
       sorter: (a: any, b: any) => a.stayAvg - b.stayAvg
     },
     {
       title: '停留总时长',
-      dataIndex: 'stayDuration',
-      render: (text: number) => formatStayTime(text),
+      dataIndex: 'stayDurationText',
       sorter: (a: any, b: any) => a.stayDuration - b.stayDuration
     },
     // {
