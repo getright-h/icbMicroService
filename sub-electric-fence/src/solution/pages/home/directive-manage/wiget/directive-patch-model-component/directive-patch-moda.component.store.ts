@@ -49,6 +49,7 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
         isParams: true
       });
       form.setFieldsValue({ directiveType: info });
+      form.setFieldsValue({ params: true });
       const { cmdCode } = info;
       getTemplateListData(cmdCode);
     }

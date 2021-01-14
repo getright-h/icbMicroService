@@ -24,7 +24,6 @@ export default function DirectiveListComponent() {
   const { isLoading, tableData, total, pageIndex, pageSize, timeInfo } = state;
   const { gState } = React.useContext(GlobalContext);
   const queryOrgList = ISelectLoadingComponent({
-    width: '240px',
     reqUrl: 'queryStoreOrganization',
     placeholder: '请选择机构',
     // searchKey: organization.organizationName || '',
@@ -36,26 +35,21 @@ export default function DirectiveListComponent() {
     }
   });
   function renderSelectItems() {
-    // const formItemLayout = {
-    //   labelCol: {
-    //     xs: { span: 24 },
-    //     sm: { span: 10   }
-    //   },
-    //   wrapperCol: {
-    //     xs: { span: 48 },
-    //     sm: { span: 20 }
-    //   }
-    // };
+    const layout = {
+      labelCol: { span: 7 },
+      wrapperCol: { span: 16 }
+    };
     return (
       <Form
+        {...layout}
+        style={{ width: '90%' }}
         form={searchForm}
-        layout={'inline'}
         initialValues={{
           alarmType: -1
         }}
       >
-        <Row gutter={[8, 8]}>
-          <Col span={7}>
+        <Row gutter={24}>
+          <Col span={8}>
             <Form.Item name="strValue" label="查询车辆/设备">
               <Input placeholder="电话/车牌号/车架号/设备" allowClear={true} />
             </Form.Item>
