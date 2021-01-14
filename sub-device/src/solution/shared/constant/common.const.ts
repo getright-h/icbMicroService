@@ -99,7 +99,7 @@ export const PAGES_MENU = {
           title: '审批管理'
         },
         {
-          path: 'approveTemplate',
+          path: 'approvalTemplate',
           title: '审批模板'
         }
       ]
