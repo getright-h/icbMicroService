@@ -4,6 +4,7 @@ import { Form } from 'antd';
 import { OrderReportService } from '~/solution/model/services/report-order.service';
 import { useEffect } from 'react';
 import { IMAP } from '~shared/util/map.util';
+import moment from 'moment';
 
 export function useDwellListStore() {
   const { state, setStateWrap, getState } = useStateStore(new IDwellListState());
@@ -16,10 +17,12 @@ export function useDwellListStore() {
 
   function getTableData() {
     setStateWrap({ isLoading: true });
-    const { pageIndex, pageSize } = getState();
+    const { pageIndex, pageSize, timeInfo } = getState();
     orderReportService
       .queryAlarmOriginalPagedList({
         ...searchForm.getFieldsValue(),
+        beginTime: timeInfo[0] ? moment(timeInfo[0]).valueOf() : 0,
+        endTime: timeInfo[1] ? moment(timeInfo[1]).valueOf() : 0,
         index: pageIndex,
         size: pageSize
       })
@@ -40,21 +43,22 @@ export function useDwellListStore() {
 
   function initSearchForm() {
     searchForm.resetFields();
+    setStateWrap({ timeInfo: [] });
     searchClick();
   }
 
   function getCurrentSelectInfo(data: any, type: string) {
-    console.log(data, type);
     if (type == 'strValue') {
       const { deviceCode = '' } = Array.isArray(data?.info?.deviceList) && data?.info?.deviceList[0];
       searchForm.setFieldsValue({ deviceCode: deviceCode });
     }
     if (type == 'time') {
-      let beginTime, endTime;
-      data[0] ? (beginTime = Date.parse(data[0])) : (beginTime = 0);
-      data[1] ? (endTime = Date.parse(data[1])) : (endTime = 0);
-      searchForm.setFieldsValue({ beginTime: beginTime });
-      searchForm.setFieldsValue({ endTime: endTime });
+      setStateWrap({ timeInfo: data });
+      //   let beginTime, endTime;
+      //   data[0] ? (beginTime = Date.parse(data[0])) : (beginTime = 0);
+      //   data[1] ? (endTime = Date.parse(data[1])) : (endTime = 0);
+      //   searchForm.setFieldsValue({ beginTime: beginTime });
+      //   searchForm.setFieldsValue({ endTime: endTime });
     }
 
     if (type == 'organizationId') {

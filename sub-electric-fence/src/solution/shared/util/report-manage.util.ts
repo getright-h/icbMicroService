@@ -36,7 +36,6 @@ export const REPORT_UTIL = {
     }
     try {
       const res = await Promise.all(fetchArrary);
-      console.log('promise', res);
       for (let i = 0; i < res.length; i++) {
         dataList[i].address = res[i];
       }

@@ -4,6 +4,7 @@ import { Form } from 'antd';
 import { OrderReportService } from '~/solution/model/services/report-order.service';
 import { useEffect } from 'react';
 import { IMAP } from '~shared/util/map.util';
+import moment from 'moment';
 
 export function useDirectiveListStore() {
   const { state, setStateWrap, getState } = useStateStore(new IDirectiveListState());
@@ -16,49 +17,23 @@ export function useDirectiveListStore() {
 
   function getTableData() {
     setStateWrap({ isLoading: true });
-    const { pageIndex, pageSize } = getState();
+    const { pageIndex, pageSize, timeInfo } = getState();
     orderReportService
       .queryResidentPagedList({
         ...searchForm.getFieldsValue(),
+        beginTime: timeInfo[0] ? moment(timeInfo[0]).valueOf() : 0,
+        endTime: timeInfo[1] ? moment(timeInfo[1]).valueOf() : 0,
         index: pageIndex,
         size: pageSize
       })
       .subscribe(
         res => {
-          console.log('subscribe', [...res.dataList]);
           setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
         },
         err => {
           setStateWrap({ isLoading: false });
         }
       );
-    // .subscribe(
-    //   (res: any) => {
-    //     const { dataList = [], total = 0 } = res;
-    //     const fetchArrary: any[] = [];
-    //     if (Array.isArray(dataList)) {
-    //       for (let i = 0; i < dataList.length; i++) {
-    //         const { latitude, longitude } = dataList[i];
-    //         if (latitude && longitude) {
-    //           fetchArrary.push(IMAP.covertPointToAddress(IMAP.initLonlat(longitude, latitude)));
-    //         }
-    //       }
-    //     }
-    //     Promise.all(fetchArrary).then((res: any) => {
-    //       try {
-    //         for (let i = 0; i < res.length; i++) {
-    //           dataList[i].address = res[i];
-    //         }
-    //       } catch (error) {
-    //         console.log(error);
-    //       }
-    //       setStateWrap({ tableData: dataList, total, isLoading: false });
-    //     });
-    //   },
-    //   err => {
-    //     setStateWrap({ isLoading: false });
-    //   }
-    // );
   }
 
   function searchClick() {
@@ -68,6 +43,7 @@ export function useDirectiveListStore() {
 
   function initSearchForm() {
     searchForm.resetFields();
+    setStateWrap({ timeInfo: [] });
     searchClick();
   }
 
@@ -101,11 +77,12 @@ export function useDirectiveListStore() {
     //   searchForm.setFieldsValue({ deviceCode: deviceCode });
     // }
     if (type == 'time') {
-      let beginTime, endTime;
-      data[0] ? (beginTime = Date.parse(data[0])) : (beginTime = 0);
-      data[1] ? (endTime = Date.parse(data[1])) : (endTime = 0);
-      searchForm.setFieldsValue({ beginTime: beginTime });
-      searchForm.setFieldsValue({ endTime: endTime });
+      // let beginTime, endTime;
+      // data[0] ? (beginTime = Date.parse(data[0])) : (beginTime = 0);
+      // data[1] ? (endTime = Date.parse(data[1])) : (endTime = 0);
+      // searchForm.setFieldsValue({ beginTime: beginTime });
+      // searchForm.setFieldsValue({ endTime: endTime });
+      setStateWrap({ timeInfo: data });
     }
 
     if (type == 'organizationId') {

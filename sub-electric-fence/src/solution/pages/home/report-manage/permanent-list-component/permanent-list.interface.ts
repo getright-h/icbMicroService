@@ -8,6 +8,7 @@ export class IDirectiveListState {
   pageSize = 10;
   tableData: any = [];
   total = 0;
+  timeInfo: string[] = [];
   currentId = '';
 }
 export enum ModalType {

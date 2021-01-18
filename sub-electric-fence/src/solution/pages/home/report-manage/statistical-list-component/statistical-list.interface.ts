@@ -9,7 +9,7 @@ export class IDirectiveListState {
   tableData: any = [];
   total = 0;
   currentId = '';
-  timeInfo: any;
+  timeInfo: string[] = [];
 }
 export enum ModalType {
   CREATE,

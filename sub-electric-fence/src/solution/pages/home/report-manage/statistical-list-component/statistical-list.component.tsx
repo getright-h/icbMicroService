@@ -69,7 +69,6 @@ export default function DirectiveListComponent() {
             <Form.Item label="时间范围" name="time">
               <TimePickerComponent
                 pickerType="dateTimeRange"
-                timeInfo={timeInfo}
                 getDateTimeInfo={(time: any, other: any) => getCurrentSelectInfo(time, 'time')}
               />
             </Form.Item>
@@ -79,8 +78,8 @@ export default function DirectiveListComponent() {
               {queryOrgList}
             </Form.Item>
           </Col>
-          <Form.Item name="beginTime" noStyle></Form.Item>
-          <Form.Item name="endTime" noStyle></Form.Item>
+          {/* <Form.Item name="beginTime" noStyle></Form.Item>
+          <Form.Item name="endTime" noStyle></Form.Item> */}
         </Row>
       </Form>
     );

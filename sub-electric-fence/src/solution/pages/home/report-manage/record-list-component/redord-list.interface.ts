@@ -10,6 +10,7 @@ export class IDwellListState {
   total = 0;
   currentId = '';
   searchForm = {};
+  timeInfo: string[] = [];
 }
 export enum ModalType {
   CREATE,
