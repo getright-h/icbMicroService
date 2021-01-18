@@ -64,7 +64,7 @@ export default function VehicleManageComponent() {
                 getCurrentSelectInfo={(value: string, option: any) =>
                   searchForm.setFieldsValue({ distributorId: value })
                 }
-                searchForm={{ systemId: process.env.SYSTEM_ID, typeId: 'ad947c18cbdcc646982808d86eb6828f' }}
+                searchForm={{ systemId: process.env.SYSTEM_ID, typeId: 'c59c75eec2d3cc075cca08d84386bcb9' }}
               />
             </Form.Item>
           </Col>
