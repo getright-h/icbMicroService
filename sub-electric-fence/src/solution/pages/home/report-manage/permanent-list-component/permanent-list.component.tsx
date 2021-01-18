@@ -67,8 +67,8 @@ export default function DirectiveListComponent() {
               {queryOrgList}
             </Form.Item>
           </Col>
-          <Form.Item name="beginTime" noStyle></Form.Item>
-          <Form.Item name="endTime" noStyle></Form.Item>
+          {/* <Form.Item name="beginTime" noStyle></Form.Item>
+          <Form.Item name="endTime" noStyle></Form.Item> */}
         </Row>
       </Form>
     );
