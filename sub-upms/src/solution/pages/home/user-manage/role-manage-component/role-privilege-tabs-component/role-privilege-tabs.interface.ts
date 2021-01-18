@@ -9,6 +9,8 @@ export class IRolePrivilegeTabsState {
   checkedKeys: string[] = [];
   checkedNodes: MenuTreeNode[] = [];
   isLoading = false;
+  checkAllMenu = false; //控制菜单全选
+  checkAll = false; // 控制权限全选
 }
 export class IRolePrivilegeTabsProps {
   roleId: string;
