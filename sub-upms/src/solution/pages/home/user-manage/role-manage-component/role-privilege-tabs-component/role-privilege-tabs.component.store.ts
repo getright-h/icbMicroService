@@ -10,6 +10,7 @@ export function useRolePrivilegeTabsStore(props: IRolePrivilegeTabsProps) {
   const { state, setStateWrap } = useStateStore(new IRolePrivilegeTabsState());
   const roleManageService: RoleManageService = useService(RoleManageService);
   const checkedNodesRef: MutableRefObject<MenuTreeNode[]> = useRef([]);
+  const treeDataRef: MutableRefObject<MenuTreeNode[]> = useRef([]);
 
   // 所选角色变化时若系统id变化，获取新的权限组
   useEffect(() => {
@@ -34,6 +35,7 @@ export function useRolePrivilegeTabsStore(props: IRolePrivilegeTabsProps) {
       })
       .subscribe(
         (res: any) => {
+          treeDataRef.current = res;
           formatTreeData(res);
         },
         (err: any) => {
@@ -47,36 +49,71 @@ export function useRolePrivilegeTabsStore(props: IRolePrivilegeTabsProps) {
     const expandedKeys: string[] = [];
     const checkedKeys: string[] = [];
     let checkedNodes: MenuTreeNode[] = [];
+    let menuLength = 0;
     function expandMethod(arr: MenuTreeNode[]) {
       arr.forEach((node: MenuTreeNode) => {
+        menuLength++;
         expandedKeys.push(node.key);
+        if (node.isMenuSelected) {
+          checkedKeys.push(node.key);
+          checkedNodes.push(node);
+        }
         if (node.children.length) {
           expandMethod(node.children);
         } else {
           node.isLeaf = true;
-          if (node.isMenuSelected) {
-            checkedKeys.push(node.key);
-            checkedNodes.push(node);
-          }
         }
       });
     }
     expandMethod(treeData);
     checkedNodesRef.current = checkedNodes = formatSelectAll(checkedNodes);
-    setStateWrap({ treeData, expandedKeys, checkedKeys, checkedNodes });
+    setStateWrap({
+      treeData,
+      expandedKeys,
+      checkedKeys,
+      checkedNodes,
+      checkAllMenu: checkedKeys.length === menuLength
+    });
+  }
+
+  // 全选菜单
+  function checkAllMenus(e: any) {
+    function expandMethod(arr: MenuTreeNode[], checkedKeys: string[], checkedNodes: MenuTreeNode[]) {
+      arr.forEach((node: MenuTreeNode) => {
+        checkedKeys.push(node.key);
+        checkedNodes.push(node);
+        if (node.children.length) {
+          expandMethod(node.children, checkedKeys, checkedNodes);
+        }
+      });
+      return { checkedKeys, checkedNodes };
+    }
+    if (e.target.checked) {
+      const { checkedKeys, checkedNodes } = expandMethod(treeDataRef.current, [], []);
+      setStateWrap({ checkedKeys, checkedNodes, checkAllMenu: e.target.checked });
+    } else {
+      setStateWrap({ checkedKeys: [], checkedNodes: [], checkAllMenu: e.target.checked });
+    }
   }
 
   // 回显是否全选
   function formatSelectAll(checkedNodes: MenuTreeNode[]): MenuTreeNode[] {
+    let l = 0;
+    let length = 0;
     checkedNodes.map(node => {
+      node.privilegeGroupList.length && length++;
       node.privilegeGroupList.map(group => {
         let i = 0;
         group.privilegeList.forEach(item => {
           item.isSelected && i++;
         });
-        i === group.privilegeList.length && (group.selectAll = true);
+        if (i === group.privilegeList.length) {
+          group.selectAll = true;
+          l++;
+        }
       });
     });
+    l === length && setStateWrap({ checkAll: true });
     return checkedNodes;
   }
 
@@ -85,18 +122,17 @@ export function useRolePrivilegeTabsStore(props: IRolePrivilegeTabsProps) {
     const checkedNodes: MenuTreeNode[] = [];
     if (info.checkedNodes.length) {
       info.checkedNodes.map((ele: MenuTreeNode) => {
-        if (ele.isLeaf) {
-          const oldNode = checkedNodesRef.current.find(old => old.key === ele.key);
-          checkedNodes.push(oldNode || ele);
-        }
+        // if (ele.isLeaf) {
+        const oldNode = checkedNodesRef.current.find(old => old.key === ele.key);
+        checkedNodes.push(oldNode || ele);
+        // }
       });
     }
     checkedNodesRef.current = checkedNodes;
-
-    setStateWrap({ checkedKeys, checkedNodes });
+    setStateWrap({ checkedKeys, checkedNodes, checkAllMenu: false });
   }
 
-  // 权限组全选处理
+  // 各权限组全选处理
   function checkGroupAllPrivileges(e: any, curGroup: PrivilegeGroup, curNode: MenuTreeNode) {
     checkedNodesRef.current.map(node => {
       node.key === curNode.key &&
@@ -107,7 +143,18 @@ export function useRolePrivilegeTabsStore(props: IRolePrivilegeTabsProps) {
           }
         });
     });
-    setStateWrap({ checkedNodes: checkedNodesRef.current });
+    setStateWrap({ checkedNodes: checkedNodesRef.current, checkAll: !e.target.checked ? false : state.checkAll });
+  }
+
+  // 全选处理
+  function checkAllPrivileges(e: any) {
+    checkedNodesRef.current.map(node => {
+      node.privilegeGroupList.map(group => {
+        group.selectAll = e.target.checked;
+        group.privilegeList.map(p => (p.isSelected = e.target.checked));
+      });
+    });
+    setStateWrap({ checkAll: e.target.checked, checkedNodes: checkedNodesRef.current });
   }
 
   // 单个权限选择处理
@@ -116,11 +163,12 @@ export function useRolePrivilegeTabsStore(props: IRolePrivilegeTabsProps) {
       node.key === curNode.key &&
         node.privilegeGroupList.map(group => {
           if (group.groupId === curGroup.groupId) {
+            !e.target.checked && (group.selectAll = false);
             group.privilegeList.map(p => p.privilegeId === curId && (p.isSelected = e.target.checked));
           }
         });
     });
-    setStateWrap({ checkedNodes: checkedNodesRef.current });
+    setStateWrap({ checkedNodes: checkedNodesRef.current, checkAll: !e.target.checked ? false : state.checkAll });
   }
 
   function submitMenuRelation() {
@@ -152,5 +200,13 @@ export function useRolePrivilegeTabsStore(props: IRolePrivilegeTabsProps) {
     );
   }
 
-  return { state, onCheckMenu, checkGroupAllPrivileges, checkPrivilege, submitMenuRelation };
+  return {
+    state,
+    onCheckMenu,
+    checkGroupAllPrivileges,
+    checkPrivilege,
+    submitMenuRelation,
+    checkAllPrivileges,
+    checkAllMenus
+  };
 }
