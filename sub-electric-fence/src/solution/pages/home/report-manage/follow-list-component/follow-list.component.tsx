@@ -112,7 +112,7 @@ export default function DirectiveListComponent() {
                     监控角色
                   </strong>
                 }
-                name="groupId"
+                name="roleId"
               >
                 {queryRoleList}
               </Form.Item>
@@ -166,7 +166,6 @@ export default function DirectiveListComponent() {
             </Col>
             {/* <Form.Item name="beginTime"></Form.Item>
             <Form.Item name="endTime"></Form.Item> */}
-            <Form.Item name="roleId"></Form.Item>
           </Row>
         </Form>
       </div>
