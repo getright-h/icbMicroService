@@ -1,0 +1,229 @@
+.widthAndHeight() {
+    width: 46rem;
+    background: #FFFFFF;
+    border-radius: 1rem;
+}
+
+.userActionReportComponentCommon() {
+    display: grid;
+    justify-items: center;
+    grid-row-gap: 20px;
+    width: 100%
+}
+
+.carInfo {
+    .widthAndHeight();
+    height: 20rem;
+    background-image: url("../../assets//image/carmodal.png");
+    background-size: contain;
+    .plateNumberContent {
+        justify-content: space-between;
+        display: flex;
+        font-size: 1.6rem;
+        font-weight: 600;
+        height: 3.73rem;
+        line-height: 3.73rem;
+        padding-left: 2rem;
+        align-items: center;
+    }
+    span {
+        color: #303133;
+    }
+    .plateNumber {
+        text-align: center;
+        font-size: 1.6rem;
+        color: #FFFFFF; 
+        width: 10.67rem;
+        background: linear-gradient(90deg, #4B77FE, #5A42EC);
+        border-radius: 0rem 1rem 0rem 1rem;
+    }
+
+}
+
+.userInfo {
+    .widthAndHeight();
+    padding: 2.27rem;
+    padding-top: 0;
+    display: flex;
+    flex-wrap: wrap;
+    .userInfoContent {
+        width: 50%;
+    }
+
+    .userInfoKey {
+        font-size: 1.87rem;
+        padding-top: 2.27rem;
+        font-weight: 400;
+        color: #909399;
+    }
+    .userInfoValue {
+        padding-top: 0.5rem;
+        font-size: 2.13rem;
+        font-family: PingFang SC;
+        font-weight: 500;
+        color: #303133;
+        line-height: 3.4rem;
+    }
+}
+
+.commonCard() {
+    width: 14.67rem;
+    padding-top: 2.33rem;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.commonBack() {
+    width: 3.47rem;
+    background-size: contain;
+    height: 3.73rem;
+}
+
+.commonSpan {
+    span:first-of-type {
+        font-size: 2rem;
+        font-family: PingFang SC;
+        font-weight: 600;
+        color: #FFFFFF;
+        line-height: 3.4rem;
+        padding-top: 1.5rem;
+    }
+    span:last-of-type {
+        font-size: 1.6rem;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #FFFFFF;
+        line-height: 3.4rem;
+        opacity: 0.7;
+        padding-bottom: 1rem;
+        padding-top: 1rem
+    }
+}
+
+.carStates {
+    .widthAndHeight();
+    background: #F7F5FA;
+    justify-content: space-between;
+    display: flex;
+    .carState {
+        .commonCard();
+
+        background: linear-gradient(60deg, #FF9B19, #FF6A2F);
+        div {
+            background-image: url("../../assets/image/carState.png");
+            .commonBack();
+        }
+        .commonSpan()
+        
+    }
+    .carStateSignal {
+        .commonCard();
+        div {
+            background-image: url("../../assets/image/carState.png");
+            .commonBack();
+        }
+        background: linear-gradient(60deg, #B947FF, #7A27FF);
+        .commonSpan()
+    }
+    .carStateMs {
+        .commonCard();
+        div {
+            background-image: url("../../assets/image/carState.png");
+            .commonBack();
+        }
+        .commonSpan();
+        background: linear-gradient(60deg, #00AEFF, #5058FF);
+    }
+}
+
+.carLocation {
+    .widthAndHeight();
+}
+
+.carDriveLine {
+    .widthAndHeight();
+}
+.alwaysStopMarkers {
+    .widthAndHeight();
+}
+.alarmStatistics {
+    .widthAndHeight();
+}
+
+@media only screen and (min-width: 510px) {
+    .content-title {
+        padding: 1.25rem;
+        border-bottom: 1px solid @border-main;
+      
+        h1 {
+          font-size: 1.125rem;
+          font-weight: 700;
+          margin-bottom: 0;
+        }
+      }
+    .userActionReportComponent {
+        .userActionReportComponentCommon();
+        padding: 20px;
+        background: #F7F5FA;
+        grid-auto-flow: row;
+        grid-template-columns: 36% 64%;
+        grid-template-areas: 'carInfo userInfo'
+                     'carStates userInfo'
+                     "carLocation carLocation"
+    }
+    .carInfo {
+        grid-area: carInfo;
+        width: 100%;
+    }
+    .userInfo {
+        grid-area: userInfo;
+        width: 97%;
+        justify-self:end;
+    }
+    .carStates {
+        grid-area: carStates;
+        width: 100%;
+        margin: 0;
+    }
+    .carLocation {
+        width: 100%;
+        grid-area: carLocation;
+    }
+    .carContent {
+        display: flex;
+    }
+}
+
+.headerBorder {
+    width: 0.4rem;
+    height: 2rem;
+    background: #3872FF;
+    border-radius: 0rem;
+}
+
+
+@media only screen and (max-width: 500px) {
+    .content-title {
+        height: 0;
+        visibility: hidden;
+    }
+    .userActionReportComponent {
+        .userActionReportComponentCommon();
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 99999;
+        overflow-x: auto;
+        padding-top: 20px;
+        height: 100%;
+        max-width: 100vw;
+        background: #F7F5FA;
+    }
+
+    .carStates {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+}

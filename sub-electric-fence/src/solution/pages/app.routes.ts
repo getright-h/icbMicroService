@@ -6,6 +6,12 @@ export const appRoutes: IRoute[] = [
     component: ROUTERS.home,
     lazyload: true
   },
+
+  {
+    path: 'userActionReport',
+    component: ROUTERS.userActionReport,
+    lazyload: true
+  },
   {
     path: '',
     component: ROUTERS.login,
