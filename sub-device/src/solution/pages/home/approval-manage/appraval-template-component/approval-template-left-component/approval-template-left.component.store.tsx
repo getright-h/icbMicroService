@@ -29,7 +29,6 @@ export function useApprovalTemplateLeftStore() {
   const { dispatch } = useContext(AppravalTemplateManageContext);
   const { state, setStateWrap, getState } = useStateStore(new IApprovalTemplateLeftState());
   const organizationControllerRef: { current: OrganizationExportFunction } = useRef();
-  console.log(organizationControllerRef, 'organizationControllerRef');
   const warehouseListService: WarehouseListService = new WarehouseListService();
   const approvalManageService: ApprovalManageService = useService(ApprovalManageService);
   const { gState }: IGlobalState = useContext(GlobalContext);

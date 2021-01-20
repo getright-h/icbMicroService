@@ -25,9 +25,9 @@ export class IOrganizationControllerProps {
   queryChildInfo?: any;
   getCheckedInfo?: (treeData: DataNode[], checkedKeys?: []) => void;
   isGroup?: boolean;
-  monitorTranform?: {
-    currentMonitorId: string; // 当前监控组ID
-    currentCheckedId: string;
+  disableNodeObj?: {
+    currentDisableId?: string; // 当前监控组ID
+    currentCheckedId?: string;
   };
 }
 

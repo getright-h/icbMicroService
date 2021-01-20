@@ -32,8 +32,8 @@ export default function TransformMonitorComponent(props: ITransformMonitorProps)
       checkedKeys,
       isGroup: true,
       queryChildInfo,
-      monitorTranform: {
-        currentMonitorId: data?.currentMonitorGroup?.id,
+      disableNodeObj: {
+        currentDisableId: data?.currentMonitorGroup?.id,
         currentCheckedId: checkedKeys[0]
       },
       ref: organizationControllerRef
