@@ -60,7 +60,13 @@ export function useMoveTemplateStore(props: IMoveTemplateProps) {
           title: 'name',
           key: 'id'
         },
-        true
+        true,
+        undefined,
+        undefined,
+        undefined,
+        {
+          currentDisableId: String(props?.node?.node?.key)
+        }
       );
 
       treeNode.children = queryChildInfoData;

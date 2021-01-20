@@ -80,13 +80,13 @@ export default function AppravalTemplateComponent() {
   }
 
   function renderOtherSearchBtns() {
-    return (
+    return !currentSelectNode.isAll ? (
       <div className="other-search-button-item">
         <Button type="primary" onClick={() => moveTemplate()}>
           移动模板
         </Button>
       </div>
-    );
+    ) : null;
   }
 
   function RenderMovingTemplateModal() {

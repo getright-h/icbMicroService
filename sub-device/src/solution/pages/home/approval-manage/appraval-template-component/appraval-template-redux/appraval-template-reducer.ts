@@ -1,9 +1,12 @@
 import { IAction } from '~/solution/shared/interfaces/common.interface';
 import { TYPES } from './appraval-template-types';
 import { EventDataNode } from 'antd/lib/tree';
-
+export interface IcurrentSelectNode {
+  isAll: boolean;
+  node: EventDataNode;
+}
 export const appravalTemplateInitialState: {
-  currentSelectNode: { isAll: boolean; node: EventDataNode };
+  currentSelectNode: IcurrentSelectNode;
 } = {
   currentSelectNode: { isAll: true, node: undefined }
 };
