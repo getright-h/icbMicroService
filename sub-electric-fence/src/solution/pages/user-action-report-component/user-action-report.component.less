@@ -24,7 +24,7 @@
 .carInfo {
     .widthAndHeight();
     height: 20rem;
-    background-image: url("../../assets//image/carmodal.png");
+    background-image: url("../../assets/image/carmodal.png");
     background-size: contain;
     .plateNumberContent {
         justify-content: space-between;
@@ -406,6 +406,10 @@
           margin-bottom: 0;
         }
       }
+      .itemHeader {
+        padding: 2rem;
+        margin-bottom: 0
+      }
     .userActionReportComponent {
         .userActionReportComponentCommon();
         padding: 20px;
@@ -415,6 +419,13 @@
         grid-template-areas: 'carInfo userInfo'
                      'carStates userInfo'
                      "carLocation carLocation"
+                     "carDriveLine carDriveLine"
+                     "alwaysStopMarkers alwaysStopMarkers"
+                     "alarmStatistics alarmStatistics"
+    }
+    .mapContainer {
+      width: 100%;
+      height: 35rem;
     }
     .carInfo {
         grid-area: carInfo;
@@ -433,6 +444,32 @@
     .carLocation {
         width: 100%;
         grid-area: carLocation;
+    }
+    .carDriveLine {
+      width: 100%;
+      grid-area: carDriveLine;
+      .driveLineDetail {
+        width: 50%;
+        display: inline-block;
+      }
+      .driveLineAll {
+        width: 100%;
+      }
+    }
+    .alwaysStopMarkers {
+      grid-area: alwaysStopMarkers;
+      width: 100%;
+    }
+    .alarmStatistics {
+      grid-area: alarmStatistics;
+      width: 100%;
+
+      .alarmStatisticsChart {
+        display: inline-block;
+      }
+      .alarmStatisticsDetail {
+        display: inline-block;
+      }
     }
     .carContent {
         display: flex;

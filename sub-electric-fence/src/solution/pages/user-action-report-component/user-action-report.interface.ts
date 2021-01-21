@@ -57,6 +57,20 @@ export const driveLineConst = [
       time: '01-05 14:30',
       address: '四川省成都市武侯区都会路宜家家居'
     }
+  },
+  {
+    id: 'line-2',
+    isAll: false,
+    duration: '30分钟',
+    mileage: '15.4公里',
+    startInfo: {
+      time: '01-05 14:30',
+      address: '四川省成都市高新区成汉南路南苑B区'
+    },
+    endInfo: {
+      time: '01-05 14:30',
+      address: '四川省成都市武侯区都会路宜家家居'
+    }
   }
 ];
 

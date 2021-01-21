@@ -23,3 +23,65 @@ export interface ReportAlarmStatisticsInput {
     beginTime : number; //,
     endTime : number; //
 }
+
+
+export interface QueryReportTrafficReturn {
+    versionName: string;
+    plateNo: string;
+    picture: string;
+    ownerName: string;
+    ownerMobile: string;
+    vinNo: string;
+    deviceCode: string;
+    typeName: string;
+    status: string;
+    statusTime: string;
+    signal: number;
+    signalText: string;
+    mileage: number;
+    longitude: number;
+    latitude: number;
+    pointList: PointList[];
+    pointPassList: PointPassList[];
+    residentList: ResidentList[];
+    alarmTypeList: AlarmTypeList[];
+  }
+  
+  interface AlarmTypeList {
+    alarmTypeCount: number;
+    alarmType: number;
+    alarmTypeText: string;
+    alarmList: AlarmList[];
+  }
+  
+  interface AlarmList {
+    time: string;
+    longitude: number;
+    latitude: number;
+  }
+  
+  interface ResidentList {
+    longitude: number;
+    latitude: number;
+    number: number;
+    time: number;
+  }
+  
+  interface PointPassList {
+    startTime: number;
+    startLon: number;
+    startLat: number;
+    endTime: number;
+    endLon: number;
+    endLat: number;
+    mileage: number;
+  }
+  
+  interface PointList {
+    coordinates: number[];
+    direction: number;
+    speed: number;
+    time: number;
+    stop: boolean;
+    satellitesNum: number;
+  }
