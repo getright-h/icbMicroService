@@ -18,38 +18,35 @@ export function useDirectiveListStore() {
     setStateWrap({ isLoading: true });
     const { pageIndex, pageSize } = getState();
     orderReportService
-      .queryResidentPagedList({
+      .queryMonitorAlarmGroupPagedList({
         ...searchForm.getFieldsValue(),
         index: pageIndex,
         size: pageSize
       })
       .subscribe(
         (res: any) => {
-          const { dataList = [], total = 0 } = res;
-          const fetchArrary: any[] = [];
-          if (Array.isArray(dataList)) {
-            for (let i = 0; i < dataList.length; i++) {
-              const { latitude, longitude } = dataList[i];
-              if (latitude && longitude) {
-                fetchArrary.push(IMAP.covertPointToAddress([longitude, latitude]));
-              }
-            }
-          }
-          Promise.all(fetchArrary).then((res: any) => {
-            try {
-              for (let i = 0; i < res.length; i++) {
-                dataList[i].address = res[i];
-              }
-            } catch (error) {
-              console.log(error);
-            }
-            setStateWrap({ tableData: dataList, total, isLoading: false });
-          });
+          setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
         },
-        err => {
+        (err: any) => {
           setStateWrap({ isLoading: false });
         }
       );
+  }
+
+  function getCurrentSelectInfo(data: any, type: string) {
+    // console.log(data, type);
+    if (type == 'strValue') {
+      const { deviceCode = '' } = Array.isArray(data?.info?.deviceList) && data?.info?.deviceList[0];
+      searchForm.setFieldsValue({ deviceCode: deviceCode });
+    }
+    if (type == 'organizationId') {
+      const { organizationId } = data;
+      searchForm.setFieldsValue({ organizationId: organizationId });
+    }
+    if (type == 'groupId') {
+      const { id } = data;
+      searchForm.setFieldsValue({ groupId: id });
+    }
   }
 
   function searchClick() {
@@ -93,6 +90,7 @@ export function useDirectiveListStore() {
     callbackAction,
     changeTablePageIndex,
     searchClick,
-    handleModalCancel
+    handleModalCancel,
+    getCurrentSelectInfo
   };
 }
