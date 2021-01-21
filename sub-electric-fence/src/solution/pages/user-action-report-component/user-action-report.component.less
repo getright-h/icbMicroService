@@ -11,6 +11,16 @@
     width: 100%
 }
 
+.gradient-orange(){
+  background: linear-gradient(60deg, #FF6A2F, #FF9B19);
+}
+.gradient-purple(){
+  background: linear-gradient(60deg, #7A27FF, #B947FF);
+}
+.gradient-blue(){
+  background: linear-gradient(60deg, #5058FF, #00AEFF);
+}
+
 .carInfo {
     .widthAndHeight();
     height: 20rem;
@@ -59,7 +69,6 @@
     .userInfoValue {
         padding-top: 0.5rem;
         font-size: 2.13rem;
-        font-family: PingFang SC;
         font-weight: 500;
         color: #303133;
         line-height: 3.4rem;
@@ -84,7 +93,6 @@
 .commonSpan {
     span:first-of-type {
         font-size: 2rem;
-        font-family: PingFang SC;
         font-weight: 600;
         color: #FFFFFF;
         line-height: 3.4rem;
@@ -92,7 +100,6 @@
     }
     span:last-of-type {
         font-size: 1.6rem;
-        font-family: PingFang SC;
         font-weight: 400;
         color: #FFFFFF;
         line-height: 3.4rem;
@@ -109,8 +116,7 @@
     display: flex;
     .carState {
         .commonCard();
-
-        background: linear-gradient(60deg, #FF9B19, #FF6A2F);
+        .gradient-orange();
         div {
             background-image: url("../../assets/image/carState.png");
             .commonBack();
@@ -120,36 +126,273 @@
     }
     .carStateSignal {
         .commonCard();
+        .gradient-purple();
         div {
             background-image: url("../../assets/image/carState.png");
             .commonBack();
         }
-        background: linear-gradient(60deg, #B947FF, #7A27FF);
+        
         .commonSpan()
     }
     .carStateMs {
         .commonCard();
+        .gradient-blue();
         div {
             background-image: url("../../assets/image/carState.png");
             .commonBack();
         }
         .commonSpan();
-        background: linear-gradient(60deg, #00AEFF, #5058FF);
+        
     }
+}
+
+.itemHeader{
+  padding: 0;
+  line-height: 3.4rem;
+  margin-bottom: 1.93rem;
+
+  .headerBorder {
+      width: 0.4rem;
+      height: 2rem;
+      background: #3872FF;
+      border-radius: 0rem;
+      display: inline-block;
+      margin-right: 0.9rem;
+  }
+
+  >span{
+    font-size: 2.27rem;
+    font-weight: 600;
+    color: #303133;
+  }
+}
+
+.mapContainer{
+  height: 20rem;
+  width: 46rem;
+  margin-bottom: 1.33rem;
+}
+
+.detailContainer{
+  width: 46rem;
+  background: #FFFFFF;
+  border-radius: 1rem;
+}
+
+.detailTextMain(){
+  font-size: 2rem;
+  font-weight: 400;
+  color: #606266;
+  line-height: 3.4rem;
+}
+
+.detailTextSub{
+  font-size: 2rem;
+  font-weight: 400;
+  color: #909399;
+  line-height: 3.4rem;
 }
 
 .carLocation {
     .widthAndHeight();
+    .locationDetail{
+      .detailContainer();
+      padding: 1.4rem 2rem;
+      display: flex;
+      div{
+        flex: none;
+        display: inline-block;
+        width: 1.4rem;
+        height: 2rem;
+        margin-right: 1.3rem;
+        margin-top: 0.8rem;
+        background-image: url("../../assets/image/location.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+      }
+      span{
+        .detailTextMain();
+      }
+    }
 }
 
 .carDriveLine {
     .widthAndHeight();
+    .driveLineDetail{
+      .detailContainer();
+      position: relative;
+      padding: 2rem;
+      overflow: hidden;
+      &:not(:last-child){
+        margin-bottom: 1.33rem;
+      }
+      .corner{
+        .gradient-blue();
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 4.53rem;
+        height: 3.73rem;
+        line-height: 3.73rem;
+        font-weight: 600;
+        font-size: 1.6rem;
+        text-align: center;
+        color: #FFFFFF;
+        border-bottom-left-radius: 1rem;
+      }
+      .driveInfo{
+        .detailTextMain();
+        div{
+          width: 2rem;
+          height: 2rem;
+          background-size: contain;
+          background-repeat: no-repeat;
+          display: inline-block;
+          vertical-align: middle;
+          background-image: url("../../assets/image/time.png");
+        }
+        strong{
+          margin: 0 1.73rem 0 0.93rem;
+          color: #303133;
+        }
+      }
+      .driveInfo+.driveInfo div{
+        background-image: url("../../assets/image/oilmeter.png");
+      }
+      .locationInfo{
+        display: flex;
+        margin-top: 1rem;
+        div:first-of-type{
+          flex: none;
+          width: 2.67rem;
+          height: 2.67rem;
+          background-size: contain;
+          background-repeat: no-repeat;
+          display: inline-block;
+          margin: 0.3rem 1.67rem 0 0;
+          background-image: url("../../assets/image/起.png");
+        }
+        div:last-of-type{
+          span{
+            display: block;
+          }
+          span:first-of-type{
+            .detailTextMain();
+          }
+          span:last-of-type{
+            .detailTextSub();
+          }
+        }
+      }
+      .locationInfo+.locationInfo div:first-of-type{
+        background-image: url("../../assets/image/终.png");
+      }
+    }
+    .driveLineAll{
+      .corner{
+        .gradient-orange();
+      }
+    }
+    
 }
 .alwaysStopMarkers {
     .widthAndHeight();
+    .stopMarkersDetail{
+      .detailContainer();
+      padding: 2rem;
+      .stopMarkerInfo{
+        display: flex;
+        &:not(:last-child){
+          margin-bottom: 1rem;
+        }
+        div:first-of-type{
+          flex: none;
+          width: 2.4rem;
+          height: 2.4rem;
+          border-radius: 50%;
+          background: #F56C6C;
+          line-height: 2.4rem;
+          text-align: center;
+          color: #FFFFFF;
+          font-size: 1.33rem;
+          font-weight: 600;
+          margin: 0.5rem 1.5rem 0 0;
+        }
+        div:last-of-type{
+          span{
+            display: block;
+          }
+          span:first-of-type{
+            .detailTextSub();
+          }
+          span:last-of-type{
+            .detailTextMain();
+            &::before{
+              content: '';
+              display: inline-block;
+              width: 1.4rem;
+              height: 2rem;
+              background-image: url("../../assets/image/location.png");
+              background-size: contain;
+              margin-right: 1rem;
+              vertical-align: middle;
+            }
+          }
+        }
+      }
+    }
 }
 .alarmStatistics {
     .widthAndHeight();
+    .alarmStatisticsChart{
+      .detailContainer();
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      height: 26rem;
+    }
+    .alarmStatisticsDetail{
+      .detailContainer();
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      padding: 2.3rem;
+      .alarmStatisticsInfo{
+        display: flex;
+        &:not(:last-child){
+          margin-bottom: 2rem;
+        }
+        div:first-of-type{
+          flex: none;
+          width: 1.6rem;
+          height: 1.6rem;
+          border-radius: 50%;
+          margin: 0.8rem 1.3rem 0 0;
+        }
+        div:last-of-type{
+          p{
+            margin-bottom: 0;
+          }
+          p:nth-child(1){
+            .detailTextMain();
+            color: #303133;
+          }
+          p:nth-child(2){
+            .detailTextMain();
+          }
+          p:nth-child(3){
+            .detailTextSub();
+          }
+        }
+      }
+      div:nth-child(1) div:first-of-type{
+        .gradient-purple();
+      }
+      div:nth-child(2) div:first-of-type{
+        .gradient-orange();
+      }
+      div:nth-child(3) div:first-of-type{
+        .gradient-blue();
+      }
+    }
 }
 
 @media only screen and (min-width: 510px) {
@@ -196,14 +439,6 @@
     }
 }
 
-.headerBorder {
-    width: 0.4rem;
-    height: 2rem;
-    background: #3872FF;
-    border-radius: 0rem;
-}
-
-
 @media only screen and (max-width: 500px) {
     .content-title {
         height: 0;
@@ -211,6 +446,7 @@
     }
     .userActionReportComponent {
         .userActionReportComponentCommon();
+        font-family: PingFang SC;
         position: fixed;
         top: 0;
         left: 0;
@@ -225,5 +461,12 @@
     .carStates {
         margin-top: 0;
         margin-bottom: 0;
+    }
+
+    .carLocation,
+    .carDriveLine,
+    .alwaysStopMarkers,
+    .alarmStatistics{
+      background: transparent;
     }
 }

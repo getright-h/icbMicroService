@@ -1,10 +1,10 @@
 import * as React from 'react';
 import style from './user-action-report.component.less';
 import { useUserActionReportStore } from './user-action-report.component.store';
-import { userInfoConst } from './user-action-report.interface';
+import { alarmStatisticsConst, driveLineConst, stopMarkersConst, userInfoConst } from './user-action-report.interface';
 
 export default function UserActionReportComponent() {
-  const { state } = useUserActionReportStore();
+  const { state, chartRef } = useUserActionReportStore();
   const { fontSize } = state;
 
   // 车辆基本信息
@@ -62,15 +62,19 @@ export default function UserActionReportComponent() {
   function carLocation() {
     return (
       <div className={style.carLocation}>
-        {itemHeader('车辆轨迹')}
-        <div>地图</div>
+        {itemHeader('车辆定位')}
+        <div id="locationMap" className={style.mapContainer}></div>
+        <div className={style.locationDetail}>
+          <div></div>
+          <span>四川省成都市高新区成汉南路南苑B区</span>
+        </div>
       </div>
     );
   }
 
   function itemHeader(title: string) {
     return (
-      <div>
+      <div className={style.itemHeader}>
         <div className={style.headerBorder}></div>
         <span>{title}</span>
       </div>
@@ -79,18 +83,86 @@ export default function UserActionReportComponent() {
 
   // 车辆轨迹
   function carDriveLine() {
-    return <div className={style.carDriveLine}>车辆轨迹</div>;
+    return (
+      <div className={style.carDriveLine}>
+        {itemHeader('车辆轨迹')}
+        <div id="driveLineMap" className={style.mapContainer}></div>
+        {driveLineConst.map(item => (
+          <div className={`${style.driveLineDetail} ${item.isAll ? style.driveLineAll : null}`} key={item.id}>
+            <div className={style.driveInfo}>
+              <div></div>
+              <strong>行驶时间</strong>
+              {item.duration}
+            </div>
+            <div className={style.driveInfo}>
+              <div></div>
+              <strong>行驶里程</strong>
+              {item.mileage}
+            </div>
+            <div className={style.locationInfo}>
+              <div></div>
+              <div>
+                <span>{item.startInfo.address}</span>
+                <span>{item.startInfo.time}</span>
+              </div>
+            </div>
+            <div className={style.locationInfo}>
+              <div></div>
+              <div>
+                <span>{item.endInfo.address}</span>
+                <span>{item.endInfo.time}</span>
+              </div>
+            </div>
+            <div className={style.corner}>{item.isAll ? '全' : '分'}</div>
+          </div>
+        ))}
+      </div>
+    );
   }
 
   // 车辆常驻点
   function alwaysStopMarkers() {
-    return <div className={style.alwaysStopMarkers}>车辆常驻点</div>;
+    return (
+      <div className={style.alwaysStopMarkers}>
+        {itemHeader('常驻地点')}
+        <div id="stopMarkersMap" className={style.mapContainer}></div>
+        <div className={style.stopMarkersDetail}>
+          {stopMarkersConst.map((item, index) => (
+            <div className={style.stopMarkerInfo} key={item.id}>
+              <div>{index + 1}</div>
+              <div>
+                <span>总时长：{item.duration}</span>
+                <span>{item.address}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
   }
 
   // 车辆24h报警统计
   function alarmStatistics() {
-    return <div className={style.alarmStatistics}>车辆24h报警统计</div>;
+    return (
+      <div className={style.alarmStatistics}>
+        {itemHeader('24h报警统计')}
+        <div className={style.alarmStatisticsChart} ref={chartRef}></div>
+        <div className={style.alarmStatisticsDetail}>
+          {alarmStatisticsConst.map(item => (
+            <div className={style.alarmStatisticsInfo} key={item.id}>
+              <div></div>
+              <div>
+                <p>{item.type}</p>
+                <p>{item.address}</p>
+                <p>{item.time}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
   }
+
   function renderSubHeader() {
     return (
       <div className={style.contentTitle}>
