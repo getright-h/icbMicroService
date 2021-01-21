@@ -27,24 +27,24 @@ export const reportManageRoutes: IRoute[] = [
     lazyload: true,
     exact: true
   },
-  // {
-  //   path: `${MODULE_PATH}/monitor`,
-  //   component: ROUTERS.monitorComponent,
-  //   lazyload: true,
-  //   exact: true
-  // },
+  {
+    path: `${MODULE_PATH}/monitor`,
+    component: ROUTERS.monitorComponent,
+    lazyload: true,
+    exact: true
+  },
   // {
   //   path: `${MODULE_PATH}/odometer`,
   //   component: ROUTERS.odometerListComponent,
   //   lazyload: true,
   //   exact: true
   // },
-  {
-    path: `${MODULE_PATH}/state`,
-    component: ROUTERS.stateListComponent,
-    lazyload: true,
-    exact: true
-  },
+  // {
+  //   path: `${MODULE_PATH}/state`,
+  //   component: ROUTERS.stateListComponent,
+  //   lazyload: true,
+  //   exact: true
+  // },
   // {
   //   path: `${MODULE_PATH}/offline`,
   //   component: ROUTERS.offlineListComponent,

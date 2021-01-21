@@ -30,10 +30,8 @@ export default function DirectiveListComponent() {
       wrapperCol: { span: 16 }
     };
     const queryOrgList = ISelectLoadingComponent({
-      width: '200px',
       reqUrl: 'queryStoreOrganization',
       placeholder: '请选择机构',
-      // searchKey: organization.organizationName || '',
       getCurrentSelectInfo: (value: string, option: any) => {
         getCurrentSelectInfo(option.info || {}, 'organizationId');
       },
@@ -41,46 +39,47 @@ export default function DirectiveListComponent() {
         systemId: gState?.myInfo?.systemId
       }
     });
+    const queryMonitorGroup = ISelectLoadingComponent({
+      reqUrl: 'queryGroupSearchList',
+      placeholder: '请选择监控组',
+      getCurrentSelectInfo: (value: string, option: any) => {
+        getCurrentSelectInfo(option.info || {}, 'groupId');
+      },
+      searchForm: {
+        systemId: gState?.myInfo?.systemId
+      }
+    });
     return (
-      <Form
-        form={searchForm}
-        layout={'inline'}
-        initialValues={{
-          alarmType: -1
-        }}
-      >
+      <Form form={searchForm} {...layout} style={{ width: '90%' }}>
+        <Row gutter={24}>
+          <Col span={8}>
+            <Form.Item
+              label={
+                <strong
+                  style={{
+                    fontSize: 20
+                  }}
+                >
+                  监控组
+                </strong>
+              }
+              name="groupId"
+            >
+              {queryMonitorGroup}
+            </Form.Item>
+          </Col>
+        </Row>
         <Row gutter={[8, 8]}>
           <Col span={8}>
             <Form.Item name="strValue" label="查询车辆/设备">
               <Input placeholder="电话/车牌号/车架号/设备" allowClear={true} />
             </Form.Item>
           </Col>
-          <Col span={5}>
-            <Form.Item label="报警类型" name="alarmType">
-              <Select>
-                {AlarmType_FOR_REPORT.map((alarm: any) => (
-                  <Select.Option key={alarm.value} value={alarm.value}>
-                    {alarm.name}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Item>
-          </Col>
-          <Col span={11}>
-            <Form.Item label="时间范围" name="time">
-              <TimePickerComponent
-                pickerType="dateTimeRange"
-                getDateTimeInfo={(time: any, other: any) => getCurrentSelectInfo(time, 'time')}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={5}>
+          <Col span={8}>
             <Form.Item label="所属机构" name="organizationId">
               {queryOrgList}
             </Form.Item>
           </Col>
-          <Form.Item name="beginTime"></Form.Item>
-          <Form.Item name="endTime"></Form.Item>
         </Row>
       </Form>
     );
@@ -113,7 +112,7 @@ export default function DirectiveListComponent() {
   return (
     <React.Fragment>
       <TablePageTelComponent
-        pageName={'报警参数管理'}
+        pageName={'监控组报表'}
         selectItems={renderSelectItems()}
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
