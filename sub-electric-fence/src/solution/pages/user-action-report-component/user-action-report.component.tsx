@@ -25,6 +25,64 @@ export default function UserActionReportComponent() {
     currentAddressDetail
   } = actionData;
 
+  function tabHeaders() {
+    return (
+      <div className={style.tabHeaders} style={{ fontSize: `${fontSize}px` }}>
+        <ul>
+          <li className={style.active}>
+            <a href="#baseInfo">车辆信息</a>
+          </li>
+          <li>
+            <a href="#carLocation">车辆定位</a>
+          </li>
+          <li>
+            <a href="#carDriveLine">车辆轨迹</a>
+          </li>
+          <li>
+            <a href="#alwaysStopMarkers">常驻地点</a>
+          </li>
+          <li>
+            <a href="#alarmStatistics">24h报警统计</a>
+          </li>
+        </ul>
+      </div>
+    );
+  }
+
+  function functionalDomain() {
+    return (
+      <div className={style.functionalDomain}>
+        <div className={style.searchFeature}>
+          <input placeholder="请输入车牌号/车架号" />
+          <button>
+            <span></span>搜索
+          </button>
+        </div>
+        <div className={style.otherFeature}>
+          <button>
+            <span></span>分享
+          </button>
+          <button>
+            <span></span>打印
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  function baseInfo() {
+    return (
+      <div className={style.baseInfo}>
+        {itemHeader('车辆信息')}
+        <div className={style.baseDetail}>
+          {carInfo()}
+          {userInfo()}
+          {carStates()}
+        </div>
+      </div>
+    );
+  }
+
   // 车辆基本信息
   function carInfo() {
     return (
@@ -222,10 +280,13 @@ export default function UserActionReportComponent() {
   return (
     <>
       {renderSubHeader()}
+      {tabHeaders()}
       <div className={style.userActionReportComponent} style={{ fontSize: `${fontSize}px` }}>
-        {carInfo()}
+        {functionalDomain()}
+        {baseInfo()}
+        {/* {carInfo()}
         {userInfo()}
-        {carStates()}
+        {carStates()} */}
         {carLocation()}
         {carDriveLine()}
         {alwaysStopMarkers()}

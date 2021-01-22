@@ -86,8 +86,9 @@
 
 .commonBack() {
     width: 3.47rem;
-    background-size: contain;
     height: 3.73rem;
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 .commonSpan {
@@ -128,7 +129,7 @@
         .commonCard();
         .gradient-purple();
         div {
-            background-image: url("../../assets/image/carState.png");
+            background-image: url("../../assets/image/Ms.png");
             .commonBack();
         }
         
@@ -138,7 +139,7 @@
         .commonCard();
         .gradient-blue();
         div {
-            background-image: url("../../assets/image/carState.png");
+            background-image: url("../../assets/image/signal.png");
             .commonBack();
         }
         .commonSpan();
@@ -148,16 +149,17 @@
 
 .itemHeader{
   padding: 0;
-  line-height: 3.4rem;
+  height: 2.4rem;
   margin-bottom: 1.93rem;
 
   .headerBorder {
       width: 0.4rem;
-      height: 2rem;
+      height: 100%;
       background: #3872FF;
       border-radius: 0rem;
       display: inline-block;
       margin-right: 0.9rem;
+      vertical-align: sub;
   }
 
   >span{
@@ -395,6 +397,90 @@
     }
 }
 
+.tabHeaders{
+  width: 100%;
+  height: 4rem;
+  border-bottom: 1px solid @border-main;
+  font-family: PingFang SC;
+  ul{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+  li{
+    list-style: none;
+    margin: 0 2.73rem;
+    >a{
+      // font-size: 1.2rem;
+      color: #999999;
+    }
+  }
+  li.active{
+    >a{
+      color: #3B77E3;
+    }
+  }
+}
+
+.mainButton(){
+  button{
+    width: 7.33rem;
+    height: 2.6rem;
+    background: #3B77E3;
+    border-radius: 1.3rem;
+    margin-left: 1.27rem;
+    font-size: 1.2rem;
+    color: #FFFFFF;
+    border: none;
+    cursor: pointer;
+    outline: none;
+  }
+}
+
+.functionalDomain{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.6rem;
+  button>span{
+    display: inline-block;
+    width: 1.2rem;
+    height: 1.2rem;
+    background-size: contain;
+    margin-right: 0.6rem;
+    vertical-align: middle;
+  }
+  .searchFeature{
+    input{
+      width: 20.07rem;
+      height: 2.6rem;
+      background: #F7F5FA;
+      border: 1px solid #BFC3CC;
+      border-radius: 1.3rem;
+      padding: 0 1rem;
+      outline: none;
+      &::placeholder {
+        color: #BFC3CC;
+        font-size: 1.2rem;
+      }
+    }
+    .mainButton();
+    button>span{
+      background-image: url("../../assets/image/search.png");
+    }
+  }
+  .otherFeature{
+    .mainButton();
+    button:nth-child(1)>span{
+      background-image: url("../../assets/image/export.png");
+    }
+    button:nth-child(2)>span{
+      background-image: url("../../assets/image/print.png");
+    }
+  }
+}
+
 @media only screen and (min-width: 510px) {
     .content-title {
         padding: 1.25rem;
@@ -405,42 +491,97 @@
           font-weight: 700;
           margin-bottom: 0;
         }
+    }
+    .itemHeader {
+      // height: 1.5rem;
+      margin-bottom: 2rem;
+      // >span{
+      //   font-size: 1.33rem;
+      // }
+    }
+    .userActionReportComponent{
+      font-family: PingFang SC;
+      padding: 0 2.73rem;
+      >div{
+        margin-bottom: 2rem;
       }
-      .itemHeader {
-        padding: 2rem;
-        margin-bottom: 0
-      }
-    .userActionReportComponent {
+    }
+    .baseInfo{
+      width: 100%;
+      .baseDetail{
         .userActionReportComponentCommon();
-        padding: 20px;
+        padding: 1.4rem;
+        border-radius: 1rem;
         background: #F7F5FA;
         grid-auto-flow: row;
         grid-template-columns: 36% 64%;
-        grid-template-areas: 'carInfo userInfo'
-                     'carStates userInfo'
-                     "carLocation carLocation"
-                     "carDriveLine carDriveLine"
-                     "alwaysStopMarkers alwaysStopMarkers"
-                     "alarmStatistics alarmStatistics"
+        grid-template-areas: 
+          'carInfo userInfo'
+          'carStates userInfo';
+      }
     }
     .mapContainer {
       width: 100%;
-      height: 35rem;
+      height: 30rem;
+      border-radius: 1rem;
     }
     .carInfo {
-        grid-area: carInfo;
-        width: 100%;
-    }
+      grid-area: carInfo;
+      width: 100%;
+      position: relative;
+      span {
+        position: absolute;
+        right: 1rem;
+        bottom: 0;
+      }
+      .plateNumber {
+        position: absolute;
+        right: 0;
+      }
+  
+  }
     .userInfo {
         grid-area: userInfo;
         width: 97%;
         justify-self:end;
     }
-    .carStates {
-        grid-area: carStates;
-        width: 100%;
-        margin: 0;
+    .commonSpan {
+      span:first-of-type {
+          color: #333333;
+      }
+      span:last-of-type {
+          color: #666666;
+      }
     }
+    .carStates {
+      grid-area: carStates;
+      width: 100%;
+      margin: 0;
+      .carState {
+          .commonCard();
+          background: #FFFFFF;
+          div {
+              background-image: url("../../assets/image/web-state.png");
+          }
+          .commonSpan()
+      }
+      .carStateSignal {
+          .commonCard();
+          background: #FFFFFF;
+          div {
+              background-image: url("../../assets/image/web-signal.png");
+          }
+          .commonSpan()
+      }
+      .carStateMs {
+          .commonCard();
+          background: #FFFFFF;
+          div {
+              background-image: url("../../assets/image/web-mileage.png");
+          }
+          .commonSpan();
+      }
+  }
     .carLocation {
         width: 100%;
         grid-area: carLocation;
@@ -450,7 +591,6 @@
     }
     .carDriveLine {
       width: 100%;
-      grid-area: carDriveLine;
       .driveLineDetail {
         width: 50%;
         display: inline-block;
@@ -460,13 +600,10 @@
       }
     }
     .alwaysStopMarkers {
-      grid-area: alwaysStopMarkers;
       width: 100%;
     }
     .alarmStatistics {
-      grid-area: alarmStatistics;
       width: 100%;
-
       .alarmStatisticsChart {
         display: inline-block;
       }
@@ -496,6 +633,17 @@
         height: 100%;
         max-width: 100vw;
         background: #F7F5FA;
+    }
+
+    .baseDetail>div:not(:last-child){
+      margin-bottom: 2rem;
+    }
+
+    .tabHeaders,
+    .functionalDomain,
+    .baseInfo>.itemHeader
+    {
+      display: none;
     }
 
     .carStates {

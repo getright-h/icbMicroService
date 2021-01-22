@@ -131,7 +131,6 @@ export function useUserActionReportStore() {
       ],
       series: [
         {
-          name: '访问来源',
           type: 'pie',
           radius: ['50%', '70%'],
           startAngle: 75,
