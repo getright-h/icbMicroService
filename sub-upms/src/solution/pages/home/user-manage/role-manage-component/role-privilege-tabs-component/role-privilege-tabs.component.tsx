@@ -91,7 +91,7 @@ function RolePrivilegeTabsComponent(props: IRolePrivilegeTabsProps) {
                     {group.privilegeList.map(p => (
                       <Tooltip placement="top" title={p.privilegeCode} key={p.privilegeId}>
                         <Checkbox
-                          style={{ marginLeft: 0, marginRight: '8px' }}
+                          style={{ marginLeft: 0, marginRight: '8px', lineHeight: '32px' }}
                           defaultChecked={p.isSelected}
                           onChange={(e: any) => checkPrivilege(e, group, node, p.privilegeId)}
                         >
