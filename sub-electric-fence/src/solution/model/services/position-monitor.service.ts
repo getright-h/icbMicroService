@@ -11,7 +11,9 @@ import { Observable } from 'rxjs';
 import { DepUtil } from '~/framework/aop/inject';
 import { VehicleInfoParamReture, RealTimeTrackingReturn } from '~/solution/model/dto/position-monitor.dto';
 import { map } from 'rxjs/operators';
+import moment from 'moment';
 import { IMAP } from '~/solution/shared/util/map.util';
+import { ShowNotification } from '~/framework/util/common';
 
 /**
  * 真实开发中，请将示例代码移除
@@ -81,7 +83,34 @@ export class PositionMonitorService extends PositionMonitorDTO {
     beginTime: string;
     endTime: string;
   }): Observable<RealTimeTrackingReturn> {
-    return this.requestService.post(QUERY_VEHICLE_HISTORY_TRAJECTORY, params);
+    return this.requestService.post(QUERY_VEHICLE_HISTORY_TRAJECTORY, params).pipe(
+      map(res => {
+        const newPointList = [];
+        const stopPoints = [];
+        if (res.pointList.length) {
+          for (let index = 1; index < res.pointList.length; index++) {
+            if (
+              JSON.stringify(res.pointList[index - 1].coordinates) !== JSON.stringify(res.pointList[index].coordinates)
+            ) {
+              const item = res.pointList[index];
+              const coordinates = item?.coordinates;
+              const itemCoordinates = IMAP.initLonlat(coordinates[0], coordinates[1]);
+              item.coordinates = itemCoordinates;
+              if (item.stop) {
+                stopPoints.push(item);
+              }
+              res.pointList[index].time = moment(res.pointList[index].time).format('MM/DD HH:mm') as any;
+              newPointList.push(res.pointList[index]);
+            }
+          }
+          res.pointList = newPointList;
+          res.stopPoints = stopPoints;
+        } else {
+          ShowNotification.info('当前车辆没有行车轨迹');
+        }
+        return res;
+      })
+    );
   }
 
   queryVehicleTrajectoryArrayList(params: {

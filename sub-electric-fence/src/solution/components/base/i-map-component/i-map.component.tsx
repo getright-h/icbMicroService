@@ -5,8 +5,9 @@ import { useIMapStore } from './i-map.component.store';
 import { TIMapProps } from './i-map.interface';
 const { Option } = Select;
 export const IMapComponent = React.memo((mapProps: TIMapProps) => {
+  const { needSearchAddress = true, height = '80vh', needRule = true, needRunDrivingLine = true } = mapProps;
   const { state, startRule, handleChangeCircleFunction, handleCircleLocation } = useIMapStore(mapProps);
-  const { needSearchAddress = true, height = '80vh' } = mapProps;
+
   const { locationList, currentChooseLocation } = state;
   function SearchAddress() {
     return (
@@ -38,11 +39,13 @@ export const IMapComponent = React.memo((mapProps: TIMapProps) => {
 
   return (
     <div id={mapProps.id} style={{ height }}>
-      <div className={`${style.info} ${style.floatRight}`}>
-        <Button type="primary" size="small" onClick={startRule}>
-          测距
-        </Button>
-      </div>
+      {needRule && (
+        <div className={`${style.info} ${style.floatRight}`}>
+          <Button type="primary" size="small" onClick={startRule}>
+            测距
+          </Button>
+        </div>
+      )}
       {needSearchAddress && <div className={`${style.info} ${style.searchAddress}`}>{SearchAddress()}</div>}
     </div>
   );

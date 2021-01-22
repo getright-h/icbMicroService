@@ -1,31 +1,34 @@
+import { QueryReportTrafficReturn } from '~/solution/model/dto/report-order.dto';
+
 /**
  * @export state变量定义和初始化
  * @class IUserActionReportState
  */
 export class IUserActionReportState {
   fontSize = 15;
+  actionData: QueryReportTrafficReturn = new QueryReportTrafficReturn();
 }
 
 export const userInfoConst = [
   {
     key: '车主姓名',
-    value: '张三'
+    value: 'ownerName'
   },
   {
     key: '车主号码',
-    value: '18485784885'
-  },
-  {
-    key: '车架号',
-    value: 'SDFWREFFFFSFF'
+    value: 'ownerMobile'
   },
   {
     key: '设备号',
-    value: '000000001'
+    value: 'deviceCode'
   },
   {
     key: '设备型号',
-    value: 'TEST01'
+    value: 'typeName'
+  },
+  {
+    key: '车架号',
+    value: 'vinNo'
   }
 ];
 

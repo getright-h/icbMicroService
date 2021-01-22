@@ -1,24 +1,68 @@
 import { alarmStatisticsConst, IUserActionReportState } from './user-action-report.interface';
-import { useStateStore } from '~/framework/aop/hooks/use-base-store';
+import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
 import { useEffect, useRef } from 'react';
 import { IMAP } from '~/solution/shared/util/map.util';
 import useECharts from '~/framework/aop/hooks/use-echarts';
-
+import { OrderReportService } from '~/solution/model/services/report-order.service';
+declare const AMap: any;
 export function useUserActionReportStore() {
   const { state, setStateWrap } = useStateStore(new IUserActionReportState());
   const map: any = useRef();
   const chartRef: any = useRef();
-
+  const orderReportService: OrderReportService = useService(OrderReportService);
   useEffect(() => {
     if (window.innerWidth <= 750) {
       document.getElementsByTagName('html')[0].style['font-size'] = `${(window.innerWidth / 750) * 15}px`;
     } else {
       document.getElementsByTagName('html')[0].style['font-size'] = `${(window.innerWidth / 2500) * 15}px`;
     }
+
+    getCurrentPageData();
     initMap('locationMap');
-    initMap('driveLineMap');
-    initMap('stopMarkersMap');
   }, []);
+
+  function getCurrentPageData() {
+    orderReportService.queryReportTraffic({ strValue: 'LSGUL83L3HA117031' }).subscribe(async res => {
+      if (res.longitude) {
+        new AMap.Marker({
+          map: map.current,
+          position: [res.longitude, res.latitude]
+        });
+        map.current.setCenter([res.longitude, res.latitude]);
+      }
+
+      setStateWrap({
+        actionData: res
+      });
+
+      // 这个时候异步去进行地址转换
+
+      res.pointPassList =
+        res.pointPassList?.length > 1 &&
+        (await Promise.all(
+          res.pointPassList?.map(async item => {
+            item.startAddress = (await IMAP.covertPointToAddress([item.startLon, item.startLat])) as any;
+            item.endAddress = (await IMAP.covertPointToAddress([item.endLon, item.endLat])) as any;
+            return item;
+          })
+        ));
+
+      setStateWrap({
+        actionData: res
+      });
+
+      res.residentList = await Promise.all(
+        res.residentList?.map(async item => {
+          item.address = (await IMAP.covertPointToAddress([item.longitude, item.latitude])) as any;
+          return item;
+        })
+      );
+
+      setStateWrap({
+        actionData: res
+      });
+    });
+  }
 
   useECharts(chartRef, getAlarmStatisticOption());
 
@@ -26,7 +70,7 @@ export function useUserActionReportStore() {
     map.current = IMAP.createMap(mapId);
   }
 
-  function getAlarmStatisticOption() {
+  function getAlarmStatisticOption(): {} {
     const values: Array<{ value: number; name: string }> = [];
     alarmStatisticsConst.map(item => {
       values.push({ value: item.count, name: item.type });

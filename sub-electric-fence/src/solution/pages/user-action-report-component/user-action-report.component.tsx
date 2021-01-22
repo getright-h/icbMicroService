@@ -1,19 +1,37 @@
 import * as React from 'react';
 import style from './user-action-report.component.less';
 import { useUserActionReportStore } from './user-action-report.component.store';
-import { alarmStatisticsConst, driveLineConst, stopMarkersConst, userInfoConst } from './user-action-report.interface';
+import { alarmStatisticsConst, stopMarkersConst, userInfoConst } from './user-action-report.interface';
+import { IMapComponent } from '~/solution/components/component.module';
+import { REPORT_UTIL } from '~/solution/shared/util/report-manage.util';
 
 export default function UserActionReportComponent() {
   const { state, chartRef } = useUserActionReportStore();
-  const { fontSize } = state;
+  const { fontSize, actionData } = state;
+  const {
+    versionName,
+    plateNo,
+    status,
+    statusTime,
+    signal,
+    signalText,
+    mileage,
+    longitude,
+    latitude,
+    pointList,
+    pointPassList,
+    residentList,
+    alarmTypeList,
+    currentAddressDetail
+  } = actionData;
 
   // 车辆基本信息
   function carInfo() {
     return (
       <div className={style.carInfo}>
         <div className={style.plateNumberContent}>
-          <span>别克 英朗XT</span>
-          <div className={style.plateNumber}>川A245L7</div>
+          <span>{versionName}</span>
+          <div className={style.plateNumber}>{plateNo}</div>
         </div>
       </div>
     );
@@ -27,7 +45,7 @@ export default function UserActionReportComponent() {
           return (
             <div key={item.key} className={style.userInfoContent}>
               <div className={style.userInfoKey}>{item.key}</div>
-              <div className={style.userInfoValue}>{item.value}</div>
+              <div className={style.userInfoValue}>{actionData[item.value]}</div>
             </div>
           );
         })}
@@ -42,17 +60,21 @@ export default function UserActionReportComponent() {
         <div className={style.carState}>
           <div></div>
           <span>车辆状态</span>
-          <span>在线 5h</span>
+          <span>
+            {status} {Number(statusTime)}h
+          </span>
         </div>
         <div className={style.carStateSignal}>
           <div></div>
           <span>信号强度</span>
-          <span>弱 20</span>
+          <span>
+            {signal} {signalText}
+          </span>
         </div>
         <div className={style.carStateMs}>
           <div></div>
           <span>今日里程</span>
-          <span>240km</span>
+          <span>{mileage}km</span>
         </div>
       </div>
     );
@@ -66,7 +88,7 @@ export default function UserActionReportComponent() {
         <div id="locationMap" className={style.mapContainer}></div>
         <div className={style.locationDetail}>
           <div></div>
-          <span>四川省成都市高新区成汉南路南苑B区</span>
+          <span>{currentAddressDetail}</span>
         </div>
       </div>
     );
@@ -81,57 +103,83 @@ export default function UserActionReportComponent() {
     );
   }
 
+  const driveLineProps = {
+    id: 'mainContainer',
+    needRule: false,
+    needBaseController: false,
+    needRunDrivingLine: false,
+    drivingLineData: {
+      pointList: pointList
+    },
+    needSearchAddress: false,
+    height: '30rem'
+  };
+
   // 车辆轨迹
   function carDriveLine() {
     return (
       <div className={style.carDriveLine}>
         {itemHeader('车辆轨迹')}
-        <div id="driveLineMap" className={style.mapContainer}></div>
-        {driveLineConst.map(item => (
-          <div className={`${style.driveLineDetail} ${item.isAll ? style.driveLineAll : null}`} key={item.id}>
-            <div className={style.driveInfo}>
-              <div></div>
-              <strong>行驶时间</strong>
-              {item.duration}
-            </div>
-            <div className={style.driveInfo}>
-              <div></div>
-              <strong>行驶里程</strong>
-              {item.mileage}
-            </div>
-            <div className={style.locationInfo}>
-              <div></div>
-              <div>
-                <span>{item.startInfo.address}</span>
-                <span>{item.startInfo.time}</span>
+        <IMapComponent {...driveLineProps} />
+        {pointPassList?.length > 1 ? (
+          pointPassList?.map((item, index) => (
+            <div className={`${style.driveLineDetail} ${!index ? style.driveLineAll : null}`} key={index}>
+              <div className={style.driveInfo}>
+                <div></div>
+                <strong>行驶时间</strong>
+                {REPORT_UTIL.formatStayTime(item.endTime - item.startTime)}
               </div>
-            </div>
-            <div className={style.locationInfo}>
-              <div></div>
-              <div>
-                <span>{item.endInfo.address}</span>
-                <span>{item.endInfo.time}</span>
+              <div className={style.driveInfo}>
+                <div></div>
+                <strong>行驶里程</strong>
+                {item.mileage}
               </div>
+              <div className={style.locationInfo}>
+                <div></div>
+                <div>
+                  <span>{item.startAddress}</span>
+                  <span>{item.startTime}</span>
+                </div>
+              </div>
+              <div className={style.locationInfo}>
+                <div></div>
+                <div>
+                  <span>{item.endAddress}</span>
+                  <span>{item.endTime}</span>
+                </div>
+              </div>
+              <div className={style.corner}>{!index ? '全' : '分'}</div>
             </div>
-            <div className={style.corner}>{item.isAll ? '全' : '分'}</div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <div className={style.driveLineDetail}>暂无轨迹</div>
+        )}
       </div>
     );
   }
+
+  const alwaysStopProps = {
+    id: 'alwaysStopContainer',
+    needRule: false,
+    needBaseController: false,
+    needRunDrivingLine: false,
+    permanentPlaceList: residentList,
+    needSearchAddress: false,
+    height: '30rem'
+  };
 
   // 车辆常驻点
   function alwaysStopMarkers() {
     return (
       <div className={style.alwaysStopMarkers}>
         {itemHeader('常驻地点')}
-        <div id="stopMarkersMap" className={style.mapContainer}></div>
+        <IMapComponent {...alwaysStopProps} />
         <div className={style.stopMarkersDetail}>
-          {stopMarkersConst.map((item, index) => (
-            <div className={style.stopMarkerInfo} key={item.id}>
+          {residentList?.map((item, index) => (
+            <div className={style.stopMarkerInfo} key={index}>
               <div>{index + 1}</div>
               <div>
-                <span>总时长：{item.duration}</span>
+                <span>总时长：{REPORT_UTIL.formatStayTime(item.time)}</span>
                 <span>{item.address}</span>
               </div>
             </div>

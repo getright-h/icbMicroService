@@ -46,10 +46,12 @@ export function useIMapStore(mapProps: TIMapProps) {
     controllerDirectiveModal,
     isRunning,
     carSpeed,
-    currentPoint
+    currentPoint,
+    needRunDrivingLine = true,
+    permanentPlaceList
   } = mapProps;
   useEffect(() => {
-    initMap();
+    initMap(mapProps.needBaseController);
   }, []);
 
   // 单个车选中，需要获取常驻地点
@@ -66,6 +68,11 @@ export function useIMapStore(mapProps: TIMapProps) {
       renderMarker(locationCarMarkerList);
     }
   }, [locationCarMarkerList, currentSelectCar]);
+
+  // 专门用来设置常驻点
+  useEffect(() => {
+    permanentPlaceList && setPermanentPlaceList(permanentPlaceList);
+  }, [permanentPlaceList]);
 
   //实时追踪的car,car会在最后一个点停下来
   // 这个地方会进行轨迹修复
@@ -113,63 +120,60 @@ export function useIMapStore(mapProps: TIMapProps) {
     // 发生变化重新绘制播放
     map.current.clearMap();
     if (mapProps.drivingLineData?.pointList?.length) {
-      const { pointList } = mapProps.drivingLineData;
+      const { pointList, stopPoints } = mapProps.drivingLineData;
 
-      const stopPoints: PointList[] = [];
       const carLine = pointList.map(item => {
-        const itemCoordinates = IMAP.initLonlat(item.coordinates[0], item.coordinates[1]);
-        item.coordinates = itemCoordinates;
-        if (item.stop) {
-          stopPoints.push(item);
-        }
-
-        return itemCoordinates;
+        return item.coordinates;
       });
       polyline.current = IMAP.drawLine(map.current, carLine);
-      console.log('stopPoints', stopPoints);
 
       IMAP.bindCommonMarkers(stopPoints, map.current);
-      carLineMarkerInfo.current = new AMap.Marker({
-        map: map.current,
-        label: {
-          content: `<div>${mapProps.drivingLineData.plateNo}</div>`,
-          offset: new AMap.Pixel(-20, 26)
-        },
-        icon: 'https://webapi.amap.com/images/car.png',
-        offset: new AMap.Pixel(-26, -13),
-        autoRotation: true
-      });
-
-      // 第三个参数是在窗口需要展示的当前车辆的信息
-      carLineMarkerInfo.current.on('moving', function(e: any) {
-        havePassedArr.current = e.passedPath;
-
-        const newPosition = e.passedPath[e.passedPath.length - 2];
-        let currentIndex = 0;
-
-        carLine.forEach((item, index) => {
-          // 这里计算剩下的点，便于后面去转换速度
-          if (JSON.stringify(item) == JSON.stringify(newPosition)) {
-            currentIndex = index;
-          }
-        });
-
-        runCurrentPoint(currentIndex);
-
-        currentAllPoints.current = carLine;
-        if (carLine[carLine.length - 1] == e.passedPath[e.passedPath.length - 1]) {
-          currentIndex = carLine.length - 1;
-          // 通知父组件这边跑完了
-          setEndRunning();
-          finishedRun.current = true;
-        }
-        notPassedArr.current = [e.passedPath[e.passedPath.length - 1], ...carLine.slice(currentIndex + 1)];
-      });
-
-      carLineMarkerInfo.current.moveAlong(carLine, 200);
-      map.current.setCenter(carLine[0]);
+      map.current.setFitView();
+      needRunDrivingLine && runCarUtil(carLine);
     }
   }, [mapProps.drivingLineData]);
+
+  function runCarUtil(carLine: any[]) {
+    carLineMarkerInfo.current = new AMap.Marker({
+      map: map.current,
+      label: {
+        content: `<div>${mapProps.drivingLineData.plateNo}</div>`,
+        offset: new AMap.Pixel(-20, 26)
+      },
+      icon: 'https://webapi.amap.com/images/car.png',
+      offset: new AMap.Pixel(-26, -13),
+      autoRotation: true
+    });
+
+    // 第三个参数是在窗口需要展示的当前车辆的信息
+    carLineMarkerInfo.current.on('moving', function(e: any) {
+      havePassedArr.current = e.passedPath;
+
+      const newPosition = e.passedPath[e.passedPath.length - 2];
+      let currentIndex = 0;
+
+      carLine.forEach((item, index) => {
+        // 这里计算剩下的点，便于后面去转换速度
+        if (JSON.stringify(item) == JSON.stringify(newPosition)) {
+          currentIndex = index;
+        }
+      });
+
+      runCurrentPoint(currentIndex);
+
+      currentAllPoints.current = carLine;
+      if (carLine[carLine.length - 1] == e.passedPath[e.passedPath.length - 1]) {
+        currentIndex = carLine.length - 1;
+        // 通知父组件这边跑完了
+        setEndRunning();
+        finishedRun.current = true;
+      }
+      notPassedArr.current = [e.passedPath[e.passedPath.length - 1], ...carLine.slice(currentIndex + 1)];
+    });
+
+    carLineMarkerInfo.current.moveAlong(carLine, 200);
+    map.current.setCenter(carLine[0]);
+  }
 
   // 切换轨迹回放车的状态
   useEffect(() => {
@@ -263,6 +267,7 @@ export function useIMapStore(mapProps: TIMapProps) {
     });
 
     circleMarkers.current = await IMAP.bindStepColorMarkers(permanentPlaceList, max, map.current, offernStopMarkersWin);
+    permanentPlaceList && map.current.setFitView();
     // map.current.add(circleMarkers.current);
   }
 
@@ -401,10 +406,10 @@ export function useIMapStore(mapProps: TIMapProps) {
     });
   }
 
-  function initMap() {
+  function initMap(needBaseController = true) {
     // 获取当前用户定位
     map.current = IMAP.createMap(mapProps.id);
-    IMAP.addBaseController(map.current);
+    needBaseController && IMAP.addBaseController(map.current);
     // 测距
     mouseTool.current = IMAP.Rule.init(map.current);
     // 区域查车
