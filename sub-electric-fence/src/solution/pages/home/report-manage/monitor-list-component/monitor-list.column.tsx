@@ -21,6 +21,14 @@ export function AlarmParameterColumn(callbackAction: Function) {
       dataIndex: 'statusText'
     },
     {
+      title: '定位时间',
+      dataIndex: 'locateTime'
+    },
+    {
+      title: '在线时间',
+      dataIndex: 'statusTime'
+    },
+    {
       title: '车辆里程',
       dataIndex: 'mileage',
       render: (text: string) => text + 'km'
