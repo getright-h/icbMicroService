@@ -16,15 +16,21 @@ export function useRolePrivilegeTabsStore(props: IRolePrivilegeTabsProps) {
   useEffect(() => {
     if (props.roleId && props.systemId) {
       checkedNodesRef.current = [];
-      setStateWrap({
-        treeData: [],
-        expandedKeys: [],
-        checkedKeys: [],
-        checkedNodes: []
-      });
+      initForm();
       getTreeData();
     }
   }, [props.systemId, props.roleId]);
+
+  function initForm() {
+    setStateWrap({
+      treeData: [],
+      expandedKeys: [],
+      checkedKeys: [],
+      checkedNodes: [],
+      checkAllMenu: false,
+      checkAll: false
+    });
+  }
 
   // 获取菜单数据
   function getTreeData() {
