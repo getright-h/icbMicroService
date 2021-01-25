@@ -66,8 +66,8 @@ export default function UserActionReportComponent() {
             <span></span>搜索
           </button>
         </div>
-        <div className={style.otherFeature} onClick={onShareClick}>
-          <button>
+        <div className={style.otherFeature}>
+          <button onClick={onShareClick}>
             <span></span>分享
           </button>
           <button onClick={printDOM}>
