@@ -40,39 +40,47 @@ export function useUserActionReportStore() {
   }
 
   async function printDOM() {
-    // 获取body的全部内容并保存到一个变量中
-
-    const bodyHtml = window.document.body.innerHTML;
     const canvas = await Html2canvas(document.getElementById('print'), {
       height: document.getElementById('print').scrollHeight, //
       width: document.getElementById('print').scrollWidth //为了使横向滚动条的内容全部展示，这里必须指定
     });
-    // canvas为转换后的Canvas对象
-    const oImg = new Image();
-    oImg.src = canvas.toDataURL(); // 导出图片
-    document.body.appendChild(oImg); // 将生成的图片添加到body
-    const doc = new jsPDF();
-    doc.addImage(canvas.toDataURL(), 'png', 15, 15, 180, 300);
-    doc.addPage();
-    doc.save('page.pdf');
-
-    // // 通过截取字符串的方法获取所需要打印的内容
-    // const printStart = '<!--startpart-->';
-    // const printEnd = '<!--endpart-->';
-
-    // const printHtmlStart = bodyHtml.slice(bodyHtml.indexOf(printStart));
-    // const printHtml = printHtmlStart.slice(0, printHtmlStart.indexOf(printEnd));
-
-    // 将截取后打印内容 替换掉 body里的内容
-    // window.document.body.innerHTML = bodyHtml;
-
-    // 打印操作
-    // window.print();
-
-    // 打印完成之后再恢复body的原始内容
-    // window.document.body.innerHTML = bodyHtml;
+    // 上下边距
+    const OFFSET_X = 20;
+    // 上下左右边距
+    const OFFSET_Y = 20;
+    //a4 尺寸
+    const A4 = { width: 595.28, height: 841.89 };
+    // 生成页面尺寸
+    const contentWidth = canvas.width;
+    const contentHeight = canvas.height;
+    //一页pdf显示html页面生成的canvas高度; 根据宽的比例
+    const pageHeight = (contentWidth / A4.width) * A4.height;
+    //未生成pdf的html页面高度
+    let leftHeight = contentHeight;
+    let position = 0;
+    //a4纸的尺寸[595.28,841.89]，html页面生成的canvas在pdf中图片的宽高
+    const imgWidth = 555.28;
+    const imgHeight = (555.28 / contentWidth) * contentHeight;
+    // 图片
+    const imageData = canvas.toDataURL('image/jpeg', 1.0);
+    const doc = new jsPDF('p', 'pt', 'a4');
+    //有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面高度(841.89)
+    //当内容未超过pdf一页显示的范围，无需分页
+    if (leftHeight < pageHeight) {
+      doc.addImage(imageData, 'JPEG', OFFSET_X, OFFSET_Y, imgWidth, imgHeight);
+    } else {
+      while (leftHeight > 0) {
+        doc.addImage(imageData, 'JPEG', OFFSET_X, position + OFFSET_Y, imgWidth, imgHeight);
+        leftHeight -= pageHeight;
+        position -= A4.height;
+        //避免添加空白页
+        if (leftHeight > 0) {
+          doc.addPage();
+        }
+      }
+      doc.save('page.pdf');
+    }
   }
-
   function getCurrentPageData() {
     setStateWrap({
       loading: true
