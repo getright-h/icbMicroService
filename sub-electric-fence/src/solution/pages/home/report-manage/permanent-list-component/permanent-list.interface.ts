@@ -10,7 +10,7 @@ export class IDirectiveListState {
   total = 0;
   timeInfo: string[] = [];
   currentId = '';
-  sort = 0;
+  sort = -1;
   sortInfo: { key: string; type: string };
 }
 export enum ModalType {

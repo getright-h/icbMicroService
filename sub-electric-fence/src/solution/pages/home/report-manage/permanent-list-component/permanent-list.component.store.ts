@@ -24,7 +24,8 @@ export function useDirectiveListStore() {
         endTime: timeInfo[1] ? moment(timeInfo[1]).valueOf() : 0,
         index: pageIndex,
         size: pageSize,
-        sort: state.sort
+        sort: state.sort,
+        orderBy: 1
       })
       .subscribe(
         res => {
@@ -99,7 +100,7 @@ export function useDirectiveListStore() {
     // 如果当前的sort配置与当前点击的排序一样则取消排序
     if (sortInfo?.key === field) {
       setStateWrap({
-        sort: 0,
+        sort: -1,
         sortInfo: {
           key: '',
           type: ''
