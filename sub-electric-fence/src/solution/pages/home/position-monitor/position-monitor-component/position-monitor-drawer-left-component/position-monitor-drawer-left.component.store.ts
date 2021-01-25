@@ -57,7 +57,12 @@ export function usePositionMonitorDrawerLeftStore() {
   //根据监控组、车架号、车主电话、车牌号、设备号信息查询车辆信息
   function queryVehicleInfoPagedList(state?: IQueryVehicleInfoPagedListParams) {
     setStateWrap({ tableLoading: true });
-    positionMonitorService.queryVehicleInfoPagedList(state || getState().searchForm).subscribe(
+    const formInfo = JSON.parse(JSON.stringify(state || getState().searchForm));
+    if(formInfo.vehicleGroupId) {
+      formInfo.VehicleGroupOrganizationId =JSON.parse(JSON.stringify(formInfo.organizationId));
+      formInfo.organizationId = "";
+    }
+    positionMonitorService.queryVehicleInfoPagedList(formInfo).subscribe(
       res => {
         setStateWrap({ tableData: res.dataList, total: res.total, tableLoading: false });
       },
