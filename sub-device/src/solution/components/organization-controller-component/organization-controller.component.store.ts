@@ -47,7 +47,7 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
         undefined,
         undefined,
         props.organizationChecked,
-        props.monitorTranform
+        props.disableNodeObj
       );
       setStateWrap({
         treeData
@@ -78,7 +78,7 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     forkJoin(warehouseListService.queryStoreOrganizationListSub({ parentId }), queryChildInfoSubscription).subscribe(
       (res: any) => {
         const queryChildInfoData: DataNode[] = queryChildInfo
-          ? dealWithTreeData(res[1], TREE_MAP, true, warehouseAction, undefined, undefined, props.monitorTranform)
+          ? dealWithTreeData(res[1], TREE_MAP, true, warehouseAction, undefined, undefined, props.disableNodeObj)
           : [];
 
         treeNode.children = [
@@ -90,7 +90,7 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
             undefined,
             undefined,
             props.organizationChecked,
-            props.monitorTranform
+            props.disableNodeObj
           )
         ];
         const treeData = updateTreeData(state.treeData, treeNode.key, treeNode.children);

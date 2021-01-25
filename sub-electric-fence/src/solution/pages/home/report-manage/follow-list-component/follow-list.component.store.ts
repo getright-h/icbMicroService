@@ -96,11 +96,6 @@ export function useDirectiveListStore() {
       searchForm.setFieldsValue({ organizationId: organizationId });
     }
 
-    if (type == 'organizationId') {
-      const { organizationId } = data;
-      searchForm.setFieldsValue({ organizationId: organizationId });
-    }
-
     if (type == 'roleId') {
       const { id } = data;
       setStateWrap({ currentRoleId: id });

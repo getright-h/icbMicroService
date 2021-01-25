@@ -24,3 +24,5 @@ export enum PushModeEnum {
   DEVICE = 1,
   PLATFORM = 2
 }
+
+export const tempHiddenTypes = ['Mileage'];

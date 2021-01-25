@@ -468,13 +468,13 @@ export function fetchChildAppsConfig() {
                 exact: true,
                 componentUrl: 'followComponent' //对应子应用的组件名
               },
-              // {
-              //   path: 'monitor',
-              //   title: '监控组报表',
-              //   lazyload: true,
-              //   exact: true,
-              //   componentUrl: 'monitorComponent' //对应子应用的组件名
-              // },
+              {
+                path: 'monitor',
+                title: '监控组报表',
+                lazyload: true,
+                exact: true,
+                componentUrl: 'monitorComponent' //对应子应用的组件名
+              },
               // {
               //   path: 'odometer',
               //   title: '行驶里程表',

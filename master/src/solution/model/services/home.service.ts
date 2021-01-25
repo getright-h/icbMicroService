@@ -10,7 +10,7 @@ import { MyInfo } from '~/solution/model/dto/home.dto';
  * 真实开发中，请将示例代码移除
  */
 const GET_MY_INFO = 'prvilege/GetMyInfo';
-const GET_MENU = 'prvilege/common/menuTree';
+const GET_MENU = 'prvilege/common/menuTreeLogin';
 
 @DepUtil.Injectable()
 export class HomeService extends HomeDTO {

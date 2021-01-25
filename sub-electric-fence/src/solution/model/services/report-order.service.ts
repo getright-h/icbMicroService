@@ -8,6 +8,7 @@ import {
   AlarmTypeList
 } from '../dto/report-order.dto';
 import moment from 'moment';
+import { OrderReportManage, ReportAlarmStatisticsInput, ReportMonitorAlarmGroupInput } from '../dto/report-order.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
 import { DepUtil } from '~/framework/aop/inject';
@@ -23,6 +24,7 @@ const QUERY_REPORT_ALARM_STATISTICS_DETAIL = 'alarmCenter/manage/queryReportAlar
 const QUERY_ALARM_ORIGINAL_PAGEDLIST = 'alarmCenter/manage/queryAlarmOriginalPagedList';
 const QUERY_REPORT_MONITOR_ROLE_PAGEDLIST = 'alarmCenter/manage/queryReportMonitorRolePagedList';
 const QUERY_REPORT_TRAFFIC = 'alarmCenter/manage/queryReportTraffic';
+const QUERY_MONITOR_ALARM_GROUP_PAGEDLIST = 'alarmCenter/manage/queryMonitorAlarmGroupPagedList';
 @DepUtil.Injectable()
 export class OrderReportService implements OrderReportManage {
   @DepUtil.Inject(RequestService)
@@ -152,6 +154,18 @@ export class OrderReportService implements OrderReportManage {
           return item;
         });
         return data;
+      })
+    );
+  }
+  
+  queryMonitorAlarmGroupPagedList(params: ReportMonitorAlarmGroupInput): Observable<boolean> {
+    return this.requestService.post(QUERY_MONITOR_ALARM_GROUP_PAGEDLIST, params).pipe(
+      switchMap(async data => {
+        const dataList = await REPORT_UTIL.formatAddress(data.dataList);
+        dataList.map((item, index) => {
+          item.id = item.id.slice(0, -1) + index;
+        });
+        return { ...data, dataList };
       })
     );
   }

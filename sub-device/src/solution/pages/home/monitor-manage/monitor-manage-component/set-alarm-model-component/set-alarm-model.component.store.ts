@@ -1,4 +1,10 @@
-import { EditAlarmTemplateItem, IAddMonitorGroupState, ISetAlarmProp, PushModeEnum } from './set-alarm-model.interface';
+import {
+  EditAlarmTemplateItem,
+  IAddMonitorGroupState,
+  ISetAlarmProp,
+  PushModeEnum,
+  tempHiddenTypes
+} from './set-alarm-model.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
 import { MutableRefObject, useEffect, useRef } from 'react';
 import { Form, message } from 'antd';
@@ -113,6 +119,9 @@ export function useSetAlarmStore(props: ISetAlarmProp) {
       if (!validateSelectTemplate(template)) {
         isPass = false;
         return;
+      }
+      if (tempHiddenTypes.indexOf(template.code) > -1) {
+        template.isTemplateSelected = false;
       }
       template.packageList.map(packageItem => {
         if (template.curSelectTemp && packageItem.id === template.curSelectTemp.id) {
