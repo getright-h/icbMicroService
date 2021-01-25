@@ -436,7 +436,7 @@ export const IMAP = {
 
   bindCommonMarkers(markers: any[], map: any) {
     const mapMarkers = [];
-    markers.forEach(item => {
+    markers?.forEach(item => {
       const circleMarker = new AMap.Marker({
         map,
         position: item.coordinates

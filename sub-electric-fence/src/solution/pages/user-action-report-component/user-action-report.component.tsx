@@ -1,13 +1,23 @@
 import * as React from 'react';
 import style from './user-action-report.component.less';
 import { useUserActionReportStore } from './user-action-report.component.store';
-import { alarmStatisticsConst, stopMarkersConst, userInfoConst } from './user-action-report.interface';
+import { POINT_NUMBER, userInfoConst } from './user-action-report.interface';
 import { IMapComponent } from '~/solution/components/component.module';
 import { REPORT_UTIL } from '~/solution/shared/util/report-manage.util';
+import ShareLinkModalComponent from './share-link-modal-component/share-link-modal.component';
 
 export default function UserActionReportComponent() {
-  const { state, chartRef } = useUserActionReportStore();
-  const { fontSize, actionData } = state;
+  const {
+    state,
+    chartRef,
+    setCurrentPoint,
+    printDOM,
+    onShareClick,
+    handleCancel,
+    onStateChange,
+    onValueSearch
+  } = useUserActionReportStore();
+  const { fontSize, actionData, loading, deviceCode, isModalVisible } = state;
   const {
     versionName,
     plateNo,
@@ -16,8 +26,6 @@ export default function UserActionReportComponent() {
     signal,
     signalText,
     mileage,
-    longitude,
-    latitude,
     pointList,
     pointPassList,
     residentList,
@@ -29,7 +37,7 @@ export default function UserActionReportComponent() {
     return (
       <div className={style.tabHeaders} style={{ fontSize: `${fontSize}px` }}>
         <ul>
-          <li className={style.active}>
+          <li className={style.active} onClick={() => setCurrentPoint(POINT_NUMBER.baseInfo)}>
             <a href="#baseInfo">车辆信息</a>
           </li>
           <li>
@@ -53,16 +61,16 @@ export default function UserActionReportComponent() {
     return (
       <div className={style.functionalDomain}>
         <div className={style.searchFeature}>
-          <input placeholder="请输入车牌号/车架号" />
-          <button>
+          <input placeholder="请输入车牌号/车架号" value={deviceCode} onChange={onStateChange} />
+          <button onClick={onValueSearch}>
             <span></span>搜索
           </button>
         </div>
-        <div className={style.otherFeature}>
+        <div className={style.otherFeature} onClick={onShareClick}>
           <button>
             <span></span>分享
           </button>
-          <button>
+          <button onClick={printDOM}>
             <span></span>打印
           </button>
         </div>
@@ -72,7 +80,7 @@ export default function UserActionReportComponent() {
 
   function baseInfo() {
     return (
-      <div className={style.baseInfo}>
+      <div className={style.baseInfo} id="baseInfo">
         {itemHeader('车辆信息')}
         <div className={style.baseDetail}>
           {carInfo()}
@@ -141,7 +149,7 @@ export default function UserActionReportComponent() {
   // 车辆定位
   function carLocation() {
     return (
-      <div className={style.carLocation}>
+      <div className={style.carLocation} id="carLocation">
         {itemHeader('车辆定位')}
         <div id="locationMap" className={style.mapContainer}></div>
         <div className={style.locationDetail}>
@@ -176,7 +184,7 @@ export default function UserActionReportComponent() {
   // 车辆轨迹
   function carDriveLine() {
     return (
-      <div className={style.carDriveLine}>
+      <div className={style.carDriveLine} id="carDriveLine">
         {itemHeader('车辆轨迹')}
         <IMapComponent {...driveLineProps} />
         {pointPassList?.length > 1 ? (
@@ -229,7 +237,7 @@ export default function UserActionReportComponent() {
   // 车辆常驻点
   function alwaysStopMarkers() {
     return (
-      <div className={style.alwaysStopMarkers}>
+      <div className={style.alwaysStopMarkers} id="alwaysStopMarkers">
         {itemHeader('常驻地点')}
         <IMapComponent {...alwaysStopProps} />
         <div className={style.stopMarkersDetail}>
@@ -250,17 +258,23 @@ export default function UserActionReportComponent() {
   // 车辆24h报警统计
   function alarmStatistics() {
     return (
-      <div className={style.alarmStatistics}>
+      <div className={style.alarmStatistics} id="alarmStatistics">
         {itemHeader('24h报警统计')}
         <div className={style.alarmStatisticsChart} ref={chartRef}></div>
         <div className={style.alarmStatisticsDetail}>
-          {alarmStatisticsConst.map(item => (
-            <div className={style.alarmStatisticsInfo} key={item.id}>
+          {alarmTypeList?.map(item => (
+            <div className={style.alarmStatisticsInfo} key={item.alarmTypeText}>
               <div></div>
               <div>
-                <p>{item.type}</p>
-                <p>{item.address}</p>
-                <p>{item.time}</p>
+                <p>{item.alarmTypeText}</p>
+                {item.alarmList.map(itemChild => {
+                  return (
+                    <>
+                      <p>{itemChild.address}</p>
+                      <p>{itemChild.time}</p>
+                    </>
+                  );
+                })}
               </div>
             </div>
           ))}
@@ -278,20 +292,24 @@ export default function UserActionReportComponent() {
   }
 
   return (
-    <>
-      {renderSubHeader()}
-      {tabHeaders()}
-      <div className={style.userActionReportComponent} style={{ fontSize: `${fontSize}px` }}>
+    <div>
+      <div
+        className={style.userActionReportComponentLoading}
+        style={{ visibility: !loading ? 'hidden' : 'visible' }}
+      ></div>
+      <div style={{ visibility: loading ? 'hidden' : 'visible' }}>
+        {renderSubHeader()}
+        {tabHeaders()}
         {functionalDomain()}
-        {baseInfo()}
-        {/* {carInfo()}
-        {userInfo()}
-        {carStates()} */}
-        {carLocation()}
-        {carDriveLine()}
-        {alwaysStopMarkers()}
-        {alarmStatistics()}
+        <div className={style.userActionReportComponent} style={{ fontSize: `${fontSize}px` }}>
+          {baseInfo()}
+          {carLocation()}
+          {carDriveLine()}
+          {alwaysStopMarkers()}
+          {alarmStatistics()}
+        </div>
       </div>
-    </>
+      <ShareLinkModalComponent handleCancel={handleCancel} isModalVisible={isModalVisible} />
+    </div>
   );
 }

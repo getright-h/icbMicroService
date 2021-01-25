@@ -1,9 +1,10 @@
-import { alarmStatisticsConst, IUserActionReportState } from './user-action-report.interface';
+import { IUserActionReportState, POINT_NUMBER } from './user-action-report.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, ChangeEvent } from 'react';
 import { IMAP } from '~/solution/shared/util/map.util';
 import useECharts from '~/framework/aop/hooks/use-echarts';
 import { OrderReportService } from '~/solution/model/services/report-order.service';
+import { AlarmTypeList } from '~/solution/model/dto/report-order.dto';
 declare const AMap: any;
 export function useUserActionReportStore() {
   const { state, setStateWrap } = useStateStore(new IUserActionReportState());
@@ -11,18 +12,61 @@ export function useUserActionReportStore() {
   const chartRef: any = useRef();
   const orderReportService: OrderReportService = useService(OrderReportService);
   useEffect(() => {
+    getCurrentPageData();
     if (window.innerWidth <= 750) {
       document.getElementsByTagName('html')[0].style['font-size'] = `${(window.innerWidth / 750) * 15}px`;
     } else {
       document.getElementsByTagName('html')[0].style['font-size'] = `${(window.innerWidth / 2500) * 15}px`;
     }
-
-    getCurrentPageData();
     initMap('locationMap');
   }, []);
 
+  function onValueSearch() {
+    getCurrentPageData();
+  }
+
+  function setCurrentPoint(type: POINT_NUMBER) {
+    setStateWrap({
+      currentPoint: type
+    });
+  }
+
+  function onStateChange(event: ChangeEvent<HTMLInputElement>) {
+    setStateWrap({
+      deviceCode: event.target.value
+    });
+  }
+
+  function printDOM() {
+    // 获取body的全部内容并保存到一个变量中
+    const bodyHtml = window.document.body.innerHTML;
+
+    // // 通过截取字符串的方法获取所需要打印的内容
+    // const printStart = '<!--startpart-->';
+    // const printEnd = '<!--endpart-->';
+
+    // const printHtmlStart = bodyHtml.slice(bodyHtml.indexOf(printStart));
+    // const printHtml = printHtmlStart.slice(0, printHtmlStart.indexOf(printEnd));
+
+    // 将截取后打印内容 替换掉 body里的内容
+    window.document.body.innerHTML = bodyHtml;
+
+    // 打印操作
+    window.print();
+
+    // 打印完成之后再恢复body的原始内容
+    window.document.body.innerHTML = bodyHtml;
+  }
+
   function getCurrentPageData() {
+    setStateWrap({
+      loading: true
+    });
     orderReportService.queryReportTraffic({ strValue: 'LSGUL83L3HA117031' }).subscribe(async res => {
+      setStateWrap({
+        actionData: res,
+        loading: false
+      });
       if (res.longitude) {
         new AMap.Marker({
           map: map.current,
@@ -30,10 +74,6 @@ export function useUserActionReportStore() {
         });
         map.current.setCenter([res.longitude, res.latitude]);
       }
-
-      setStateWrap({
-        actionData: res
-      });
 
       // 这个时候异步去进行地址转换
 
@@ -47,13 +87,22 @@ export function useUserActionReportStore() {
           })
         ));
 
-      setStateWrap({
-        actionData: res
-      });
-
       res.residentList = await Promise.all(
         res.residentList?.map(async item => {
           item.address = (await IMAP.covertPointToAddress([item.longitude, item.latitude])) as any;
+          return item;
+        })
+      );
+
+      res.alarmTypeList = await Promise.all(
+        res.alarmTypeList?.map(async item => {
+          item.alarmList = await Promise.all(
+            item.alarmList.map(async itemChild => {
+              itemChild.address = (await IMAP.covertPointToAddress([itemChild.longitude, itemChild.latitude])) as any;
+              return itemChild;
+            })
+          );
+
           return item;
         })
       );
@@ -64,16 +113,22 @@ export function useUserActionReportStore() {
     });
   }
 
-  useECharts(chartRef, getAlarmStatisticOption());
+  function handleCancel() {
+    setStateWrap({
+      isModalVisible: false
+    });
+  }
+
+  useECharts(chartRef, getAlarmStatisticOption(state.actionData?.alarmTypeList));
 
   function initMap(mapId: string) {
     map.current = IMAP.createMap(mapId);
   }
 
-  function getAlarmStatisticOption(): {} {
+  function getAlarmStatisticOption(alarmStatisticsConst: AlarmTypeList[] = []): {} {
     const values: Array<{ value: number; name: string }> = [];
     alarmStatisticsConst.map(item => {
-      values.push({ value: item.count, name: item.type });
+      values.push({ value: item.alarmTypeCount, name: item.alarmTypeText });
     });
     const option = {
       color: [
@@ -164,5 +219,9 @@ export function useUserActionReportStore() {
     };
     return option;
   }
-  return { state, chartRef };
+
+  function onShareClick() {
+    setStateWrap({ isModalVisible: true });
+  }
+  return { state, handleCancel, onShareClick, chartRef, setCurrentPoint, printDOM, onStateChange, onValueSearch };
 }

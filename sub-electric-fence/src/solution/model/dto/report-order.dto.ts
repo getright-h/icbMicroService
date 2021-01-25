@@ -56,6 +56,7 @@ export interface AlarmTypeList {
 export interface AlarmList {
   time: string;
   longitude: number;
+  address: string;
   latitude: number;
 }
 

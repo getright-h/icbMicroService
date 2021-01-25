@@ -7,12 +7,14 @@ import {
   ResidentList,
   AlarmTypeList
 } from '../dto/report-order.dto';
+import moment from 'moment';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
 import { DepUtil } from '~/framework/aop/inject';
 import { switchMap, map } from 'rxjs/operators';
 import { REPORT_UTIL } from '~/solution/shared/util/report-manage.util';
 import { IMAP } from '~/solution/shared/util/map.util';
+import { formatToUnix } from '~/solution/shared/util/common.util';
 
 const QUERY_RESIDENT_PAGEDLIST = 'alarmCenter/manage/queryResidentPagedList';
 const QUERY_MONITOR_ALARM_INFO_PAGEDLIST = 'alarmCenter/manage/queryMonitorAlarmInfoPagedList';
@@ -74,7 +76,16 @@ export class OrderReportService implements OrderReportManage {
     );
   }
 
-  queryReportTraffic(params: { strValue: string }): Observable<QueryReportTrafficReturn> {
+  queryReportTraffic(params: {
+    strValue: string;
+    beginTime?: string;
+    endTime?: string;
+  }): Observable<QueryReportTrafficReturn> {
+    // const time = moment().format('YYYY-MM-DD');
+    const time = '2021-01-23';
+    const timeInfo = [time + ' 00:00:00', time + ' 23:59:59'];
+    // params = { ...params, beginTime: formatToUnix(timeInfo[0]), endTime: formatToUnix(timeInfo[1]) };
+    params = { ...params, beginTime: timeInfo[0], endTime: timeInfo[1] };
     return this.requestService.get(QUERY_REPORT_TRAFFIC, params).pipe(
       switchMap(async data => {
         if (data.longitude && data.latitude) {

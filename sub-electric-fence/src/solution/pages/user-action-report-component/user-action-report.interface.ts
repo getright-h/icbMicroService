@@ -6,7 +6,20 @@ import { QueryReportTrafficReturn } from '~/solution/model/dto/report-order.dto'
  */
 export class IUserActionReportState {
   fontSize = 15;
+  loading = true;
+  currentChoose: '';
+  deviceCode = '';
+  isModalVisible = false;
+  currentPoint: POINT_NUMBER = POINT_NUMBER.baseInfo;
   actionData: QueryReportTrafficReturn = new QueryReportTrafficReturn();
+}
+
+export enum POINT_NUMBER {
+  carDriveLine,
+  alwaysStopMarkers,
+  carLocation,
+  alarmStatistics,
+  baseInfo
 }
 
 export const userInfoConst = [

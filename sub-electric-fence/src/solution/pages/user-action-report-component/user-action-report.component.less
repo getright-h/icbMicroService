@@ -11,6 +11,17 @@
     width: 100%
 }
 
+.userActionReportComponentLoading {
+  background-image: url("../../assets/image/bgloading.gif");
+  height: 100vh;
+  width: 100%;
+  position: absolute;
+  background-position:center;
+  background-size: 300px 300px;
+  background-repeat: no-repeat;
+  top: 0;
+}
+
 .gradient-orange(){
   background: linear-gradient(60deg, #FF6A2F, #FF9B19);
 }
@@ -373,15 +384,16 @@
           p{
             margin-bottom: 0;
           }
+         
+          p:nth-child(2n){
+            .detailTextMain();
+          }
+          p:nth-child(2n+1){
+            .detailTextSub();
+          }
           p:nth-child(1){
             .detailTextMain();
             color: #303133;
-          }
-          p:nth-child(2){
-            .detailTextMain();
-          }
-          p:nth-child(3){
-            .detailTextSub();
           }
         }
       }
@@ -441,8 +453,10 @@
 
 .functionalDomain{
   display: flex;
+  padding: 0 2.73rem;
   justify-content: space-between;
   margin-top: 1.6rem;
+  padding-bottom: 1.6rem;
   button>span{
     display: inline-block;
     width: 1.2rem;
@@ -601,14 +615,17 @@
     }
     .alwaysStopMarkers {
       width: 100%;
+      .stopMarkersDetail {
+        width: 100%;
+      }
     }
     .alarmStatistics {
       width: 100%;
       .alarmStatisticsChart {
-        display: inline-block;
+        float: left;
       }
       .alarmStatisticsDetail {
-        display: inline-block;
+        width: 100%;
       }
     }
     .carContent {
