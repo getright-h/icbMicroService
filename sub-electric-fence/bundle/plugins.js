@@ -67,7 +67,19 @@ class PluginFactory {
     this.plugins.push(
       new HtmlWebpackPlugin({
         template: process.argv[2] == "--build" ? path.resolve(__dirname, '../public/index.html') : path.resolve(__dirname, '../public/indexMap.html'),
-        title: process.env.SITE_TITLE
+        title: process.env.SITE_TITLE,
+        chunks: ['index']
+      })
+    )
+  }
+
+  getHtmlWebpackPlugin2() {
+    this.plugins.push(
+      new HtmlWebpackPlugin({
+        filename: 'user-action-report-component.html', //http访问路径
+        template: path.resolve(__dirname, '../public/index.simple.html'),
+        title: process.env.SITE_TITLE,
+        chunks: ['indexSimple']
       })
     )
   }
@@ -98,6 +110,7 @@ class PluginFactory {
 
   getPlugins() {
     this.getProgressBarPlugin();
+    this.getHtmlWebpackPlugin2();
     this.getHtmlWebpackPlugin();
     this.getMiniCssExtractPlugin();
     this.getDotenv();

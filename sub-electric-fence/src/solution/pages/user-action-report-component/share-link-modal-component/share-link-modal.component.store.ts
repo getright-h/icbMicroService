@@ -10,7 +10,7 @@ export function useShareLinkModalStore() {
   const location = useLocation();
   useEffect(() => {
     setStateWrap({
-      copyValue: window.location.href.replace(location.pathname, '/userActionReport')
+      copyValue: process.env.SHARELINK
     });
   }, []);
   function onCopy() {

@@ -6,7 +6,9 @@ const name = "sub-electric-fence"
 const externals = require("./externals");
 const { IS_BUILD, PUBLICK_PATH } = process.env;
 module.exports = {
-  entry:path.resolve(__dirname,'../src/index.tsx'),
+  entry:{"index":path.resolve(__dirname,'../src/index.tsx'),
+  "indexSimple": path.resolve(__dirname,'../src/index.simple.tsx')
+  },
   output: {
     publicPath: PUBLICK_PATH || "",
     // 把子应用打包成 umd 库格式

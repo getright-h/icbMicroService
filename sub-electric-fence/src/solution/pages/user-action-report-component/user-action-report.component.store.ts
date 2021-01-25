@@ -11,6 +11,7 @@ export function useUserActionReportStore() {
   const map: any = useRef();
   const chartRef: any = useRef();
   const orderReportService: OrderReportService = useService(OrderReportService);
+
   useEffect(() => {
     getCurrentPageData();
     if (window.innerWidth <= 750) {
