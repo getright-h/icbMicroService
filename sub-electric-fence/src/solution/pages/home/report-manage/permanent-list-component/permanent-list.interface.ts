@@ -23,13 +23,13 @@ export const SORT_LIST: Array<{
   sort: number;
 }> = [
   {
-    // /平均停留时间
-    type: 'stayAvgText',
+    // "stayCount "到访次数"
+    type: 'stayCount',
     sort: 1
   },
   {
-    // "stayCount "到访次数"
-    type: 'stayCount',
+    // /平均停留时间
+    type: 'stayAvgText',
     sort: 2
   },
   {

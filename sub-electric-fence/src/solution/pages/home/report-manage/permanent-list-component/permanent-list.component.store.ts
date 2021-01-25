@@ -9,22 +9,23 @@ export function useDirectiveListStore() {
   const { state, setStateWrap, getState } = useStateStore(new IDirectiveListState());
   const orderReportService: OrderReportService = new OrderReportService();
   const [searchForm] = Form.useForm();
-
+  const page_index = useRef(1);
+  const sort = useRef(-1);
   useEffect(() => {
     initSearchForm();
   }, []);
 
   function getTableData() {
     setStateWrap({ isLoading: true });
-    const { pageIndex, pageSize, timeInfo } = getState();
+    const { pageIndex, pageSize, timeInfo } = state;
     orderReportService
       .queryResidentPagedList({
         ...searchForm.getFieldsValue(),
         beginTime: timeInfo[0] ? moment(timeInfo[0]).valueOf() : 0,
         endTime: timeInfo[1] ? moment(timeInfo[1]).valueOf() : 0,
-        index: pageIndex,
+        index: page_index.current,
         size: pageSize,
-        sort: state.sort,
+        sort: sort.current,
         orderBy: 1
       })
       .subscribe(
@@ -38,6 +39,7 @@ export function useDirectiveListStore() {
   }
 
   function searchClick() {
+    page_index.current = 1;
     setStateWrap({ pageIndex: 1 });
     getTableData();
   }
@@ -63,6 +65,9 @@ export function useDirectiveListStore() {
   }
 
   function changeTablePageIndex(pageIndex: number, pageSize: number) {
+    page_index.current = pageIndex;
+    console.log(page_index.current);
+
     setStateWrap({ pageIndex, pageSize });
     getTableData();
   }
@@ -91,31 +96,41 @@ export function useDirectiveListStore() {
       searchForm.setFieldsValue({ organizationId: organizationId });
     }
   }
-  function handleTableOnchange(e: any, a: any, sortObj: any) {
+  function handleTableOnchange(e: any, emptyObj: {}, sortObj: any, action: { action: string; currentDataSource: [] }) {
     const { field } = sortObj;
     const { sortInfo } = state;
     const currentSort = SORT_LIST.find(_ => _.type === field);
-    if (!currentSort) return;
+    if (!currentSort || action.action !== 'sort') return;
+    console.log(field, sortInfo?.key, sortInfo?.key === field && action.action === 'sort');
 
     // 如果当前的sort配置与当前点击的排序一样则取消排序
-    if (sortInfo?.key === field) {
+    //
+    page_index.current = 1;
+    if (sortInfo?.key === field && action.action === 'sort') {
+      console.log('重置');
+      sort.current = -1;
+
       setStateWrap({
         sort: -1,
         sortInfo: {
           key: '',
           type: ''
-        }
+        },
+        pageIndex: 1
       });
     } else {
+      console.log('搜索');
+      action.action !== 'sort' && (page_index.current = 1);
+      sort.current = currentSort.sort;
       setStateWrap({
-        sort: currentSort.sort,
         sortInfo: {
           key: field,
           type: 'descend'
-        }
+        },
+        pageIndex: 1
       });
     }
-    searchClick();
+    getTableData();
   }
   return {
     state,
