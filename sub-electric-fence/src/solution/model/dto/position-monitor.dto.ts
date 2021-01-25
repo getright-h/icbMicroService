@@ -92,6 +92,7 @@ export interface RealTimeTrackingReturn {
   ownerName?: string;
   vinNo?: string;
   deviceCode?: DeviceCode[];
+  stopPoints?: PointList[];
   isOnline?: boolean;
   durationTime?: number;
   coordinates?: number[];

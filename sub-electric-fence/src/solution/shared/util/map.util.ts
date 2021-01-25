@@ -423,7 +423,7 @@ export const IMAP = {
     let curAdd = '解析地址失败';
     return new Promise((res, rej) => {
       geocoder.getAddress(path, function(status: any, result: any) {
-        if (status === 'complete' && result.regeocode) {
+        if (result.regeocode) {
           curAdd = result.regeocode.formattedAddress;
           res(curAdd);
         } else {
@@ -436,10 +436,9 @@ export const IMAP = {
 
   bindCommonMarkers(markers: any[], map: any) {
     const mapMarkers = [];
-    markers.forEach(item => {
+    markers?.forEach(item => {
       const circleMarker = new AMap.Marker({
         map,
-
         position: item.coordinates
       });
       mapMarkers.push(circleMarker);

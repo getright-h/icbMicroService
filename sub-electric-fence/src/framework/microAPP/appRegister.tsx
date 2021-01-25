@@ -37,9 +37,7 @@ function childProjectLifeCycle() {
 }
 
 // 渲染当前子应用
-export function renderApp(props?: AppConfig) {
-  console.log('props =>>>>>>>', props);
-
+export function renderApp(props?: AppConfig, appRoutesInfo: any = appRoutes) {
   // 传递过来的路径和该应用下的子路由需要用那些
   // 拼接当前的router, 来自主应用的路由
   // // TODO: 后期需要区分是否作为子应用启动 通过window.__POWERED_BY_QIANKUN__
@@ -47,7 +45,7 @@ export function renderApp(props?: AppConfig) {
 
   const routers: any = !!window.__POWERED_BY_QIANKUN__
     ? routerMatch(JSON.parse(JSON.stringify(props.routers)))
-    : appRoutes;
+    : appRoutesInfo;
 
   render(
     <App routers={routers} />,

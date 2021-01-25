@@ -1,0 +1,678 @@
+.widthAndHeight() {
+    width: 46rem;
+    background: #FFFFFF;
+    border-radius: 1rem;
+}
+
+.userActionReportComponentCommon() {
+    display: grid;
+    justify-items: center;
+    grid-row-gap: 20px;
+    width: 100%
+}
+
+.userActionReportComponentLoading {
+  background-image: url("../../assets/image/bgloading.gif");
+  height: 100vh;
+  width: 100%;
+  position: absolute;
+  background-position:center;
+  background-size: 300px 300px;
+  background-repeat: no-repeat;
+  left: 0;
+  top: 0;
+}
+
+.gradient-orange(){
+  background: linear-gradient(60deg, #FF6A2F, #FF9B19);
+}
+.gradient-purple(){
+  background: linear-gradient(60deg, #7A27FF, #B947FF);
+}
+.gradient-blue(){
+  background: linear-gradient(60deg, #5058FF, #00AEFF);
+}
+
+.carInfo {
+    .widthAndHeight();
+    height: 20rem;
+    background-image: url("../../assets/image/carmodal.png");
+    background-size: contain;
+    .plateNumberContent {
+        justify-content: space-between;
+        display: flex;
+        font-size: 1.6rem;
+        font-weight: 600;
+        height: 3.73rem;
+        line-height: 3.73rem;
+        padding-left: 2rem;
+        align-items: center;
+    }
+    span {
+        color: #303133;
+    }
+    .plateNumber {
+        text-align: center;
+        font-size: 1.6rem;
+        color: #FFFFFF; 
+        width: 10.67rem;
+        background: linear-gradient(90deg, #4B77FE, #5A42EC);
+        border-radius: 0rem 1rem 0rem 1rem;
+    }
+
+}
+
+.userInfo {
+    .widthAndHeight();
+    padding: 2.27rem;
+    padding-top: 0;
+    display: flex;
+    flex-wrap: wrap;
+    .userInfoContent {
+        width: 50%;
+    }
+
+    .userInfoKey {
+        font-size: 1.87rem;
+        padding-top: 2.27rem;
+        font-weight: 400;
+        color: #909399;
+    }
+    .userInfoValue {
+        padding-top: 0.5rem;
+        font-size: 2.13rem;
+        font-weight: 500;
+        color: #303133;
+        line-height: 3.4rem;
+    }
+}
+
+.commonCard() {
+    width: 14.67rem;
+    padding-top: 2.33rem;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.commonBack() {
+    width: 3.47rem;
+    height: 3.73rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.commonSpan {
+    span:first-of-type {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #FFFFFF;
+        line-height: 3.4rem;
+        padding-top: 1.5rem;
+    }
+    span:last-of-type {
+        font-size: 1.6rem;
+        font-weight: 400;
+        color: #FFFFFF;
+        line-height: 3.4rem;
+        opacity: 0.7;
+        padding-bottom: 1rem;
+        padding-top: 1rem
+    }
+}
+
+.carStates {
+    .widthAndHeight();
+    background: #F7F5FA;
+    justify-content: space-between;
+    display: flex;
+    .carState {
+        .commonCard();
+        .gradient-orange();
+        div {
+            background-image: url("../../assets/image/carState.png");
+            .commonBack();
+        }
+        .commonSpan()
+        
+    }
+    .carStateSignal {
+        .commonCard();
+        .gradient-purple();
+        div {
+            background-image: url("../../assets/image/Ms.png");
+            .commonBack();
+        }
+        
+        .commonSpan()
+    }
+    .carStateMs {
+        .commonCard();
+        .gradient-blue();
+        div {
+            background-image: url("../../assets/image/signal.png");
+            .commonBack();
+        }
+        .commonSpan();
+        
+    }
+}
+
+.itemHeader{
+  padding: 0;
+  height: 2.4rem;
+  margin-bottom: 1.93rem;
+
+  .headerBorder {
+      width: 0.4rem;
+      height: 100%;
+      background: #3872FF;
+      border-radius: 0rem;
+      display: inline-block;
+      margin-right: 0.9rem;
+      vertical-align: sub;
+  }
+
+  >span{
+    font-size: 2.27rem;
+    font-weight: 600;
+    color: #303133;
+  }
+}
+
+.mapContainer{
+  height: 20rem;
+  width: 46rem;
+  margin-bottom: 1.33rem;
+}
+
+.detailContainer{
+  width: 46rem;
+  background: #FFFFFF;
+  border-radius: 1rem;
+}
+
+.detailTextMain(){
+  font-size: 2rem;
+  font-weight: 400;
+  color: #606266;
+  line-height: 3.4rem;
+}
+
+.detailTextSub{
+  font-size: 2rem;
+  font-weight: 400;
+  color: #909399;
+  line-height: 3.4rem;
+}
+
+.carLocation {
+    .widthAndHeight();
+    .locationDetail{
+      .detailContainer();
+      padding: 1.4rem 2rem;
+      display: flex;
+      div{
+        flex: none;
+        display: inline-block;
+        width: 1.4rem;
+        height: 2rem;
+        margin-right: 1.3rem;
+        margin-top: 0.8rem;
+        background-image: url("../../assets/image/location.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+      }
+      span{
+        .detailTextMain();
+      }
+    }
+}
+
+.carDriveLine {
+    .widthAndHeight();
+    .driveLineDetail{
+      .detailContainer();
+      position: relative;
+      padding: 2rem;
+      overflow: hidden;
+      &:not(:last-child){
+        margin-bottom: 1.33rem;
+      }
+      .corner{
+        .gradient-blue();
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 4.53rem;
+        height: 3.73rem;
+        line-height: 3.73rem;
+        font-weight: 600;
+        font-size: 1.6rem;
+        text-align: center;
+        color: #FFFFFF;
+        border-bottom-left-radius: 1rem;
+      }
+      .driveInfo{
+        .detailTextMain();
+        div{
+          width: 2rem;
+          height: 2rem;
+          background-size: contain;
+          background-repeat: no-repeat;
+          display: inline-block;
+          vertical-align: middle;
+          background-image: url("../../assets/image/time.png");
+        }
+        strong{
+          margin: 0 1.73rem 0 0.93rem;
+          color: #303133;
+        }
+      }
+      .driveInfo+.driveInfo div{
+        background-image: url("../../assets/image/oilmeter.png");
+      }
+      .locationInfo{
+        display: flex;
+        margin-top: 1rem;
+        div:first-of-type{
+          flex: none;
+          width: 2.67rem;
+          height: 2.67rem;
+          background-size: contain;
+          background-repeat: no-repeat;
+          display: inline-block;
+          margin: 0.3rem 1.67rem 0 0;
+          background-image: url("../../assets/image/起.png");
+        }
+        div:last-of-type{
+          span{
+            display: block;
+          }
+          span:first-of-type{
+            .detailTextMain();
+          }
+          span:last-of-type{
+            .detailTextSub();
+          }
+        }
+      }
+      .locationInfo+.locationInfo div:first-of-type{
+        background-image: url("../../assets/image/终.png");
+      }
+    }
+    .driveLineAll{
+      .corner{
+        .gradient-orange();
+      }
+    }
+    
+}
+.alwaysStopMarkers {
+    .widthAndHeight();
+    .stopMarkersDetail{
+      .detailContainer();
+      padding: 2rem;
+      .stopMarkerInfo{
+        display: flex;
+        &:not(:last-child){
+          margin-bottom: 1rem;
+        }
+        div:first-of-type{
+          flex: none;
+          width: 2.4rem;
+          height: 2.4rem;
+          border-radius: 50%;
+          background: #F56C6C;
+          line-height: 2.4rem;
+          text-align: center;
+          color: #FFFFFF;
+          font-size: 1.33rem;
+          font-weight: 600;
+          margin: 0.5rem 1.5rem 0 0;
+        }
+        div:last-of-type{
+          span{
+            display: block;
+          }
+          span:first-of-type{
+            .detailTextSub();
+          }
+          span:last-of-type{
+            .detailTextMain();
+            &::before{
+              content: '';
+              display: inline-block;
+              width: 1.4rem;
+              height: 2rem;
+              background-image: url("../../assets/image/location.png");
+              background-size: contain;
+              margin-right: 1rem;
+              vertical-align: middle;
+            }
+          }
+        }
+      }
+    }
+}
+.alarmStatistics {
+    .widthAndHeight();
+    .alarmStatisticsChart{
+      .detailContainer();
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      height: 26rem;
+    }
+    .alarmStatisticsDetail{
+      .detailContainer();
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      padding: 2.3rem;
+      .alarmStatisticsInfo{
+        display: flex;
+        &:not(:last-child){
+          margin-bottom: 2rem;
+        }
+        div:first-of-type{
+          flex: none;
+          width: 1.6rem;
+          height: 1.6rem;
+          border-radius: 50%;
+          margin: 0.8rem 1.3rem 0 0;
+        }
+        div:last-of-type{
+          p{
+            margin-bottom: 0;
+          }
+         
+          p:nth-child(2n){
+            .detailTextMain();
+          }
+          p:nth-child(2n+1){
+            .detailTextSub();
+          }
+          p:nth-child(1){
+            .detailTextMain();
+            color: #303133;
+          }
+        }
+      }
+      div:nth-child(1) div:first-of-type{
+        .gradient-purple();
+      }
+      div:nth-child(2) div:first-of-type{
+        .gradient-orange();
+      }
+      div:nth-child(3) div:first-of-type{
+        .gradient-blue();
+      }
+    }
+}
+
+.tabHeaders{
+  width: 100%;
+  height: 4rem;
+  border-bottom: 1px solid @border-main;
+  font-family: PingFang SC;
+  ul{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+  li{
+    list-style: none;
+    margin: 0 2.73rem;
+    >a{
+      // font-size: 1.2rem;
+      color: #999999;
+    }
+  }
+  li.active{
+    >a{
+      color: #3B77E3;
+    }
+  }
+}
+
+.mainButton(){
+  button{
+    width: 7.33rem;
+    height: 2.6rem;
+    background: #3B77E3;
+    border-radius: 1.3rem;
+    margin-left: 1.27rem;
+    font-size: 1.2rem;
+    color: #FFFFFF;
+    border: none;
+    cursor: pointer;
+    outline: none;
+  }
+}
+
+.functionalDomain{
+  display: flex;
+  padding: 0 2.73rem;
+  justify-content: space-between;
+  margin-top: 1.6rem;
+  padding-bottom: 1.6rem;
+  button>span{
+    display: inline-block;
+    width: 1.2rem;
+    height: 1.2rem;
+    background-size: contain;
+    margin-right: 0.6rem;
+    vertical-align: middle;
+  }
+  .searchFeature{
+    input{
+      width: 20.07rem;
+      height: 2.6rem;
+      background: #F7F5FA;
+      border: 1px solid #BFC3CC;
+      border-radius: 1.3rem;
+      padding: 0 1rem;
+      outline: none;
+      &::placeholder {
+        color: #BFC3CC;
+        font-size: 1.2rem;
+      }
+    }
+    .mainButton();
+    button>span{
+      background-image: url("../../assets/image/search.png");
+    }
+  }
+  .otherFeature{
+    .mainButton();
+    button:nth-child(1)>span{
+      background-image: url("../../assets/image/export.png");
+    }
+    button:nth-child(2)>span{
+      background-image: url("../../assets/image/print.png");
+    }
+  }
+}
+
+@media only screen and (min-width: 510px) {
+    .content-title {
+        padding: 20px;
+        border-bottom: 1px solid @border-main;
+      
+        h1 {
+          font-size: 18px;
+          font-weight: 700;
+          margin-bottom: 0;
+        }
+    }
+    .itemHeader {
+      // height: 1.5rem;
+      margin-bottom: 2rem;
+      // >span{
+      //   font-size: 1.33rem;
+      // }
+    }
+    .userActionReportComponent{
+      font-family: PingFang SC;
+      padding: 0 2.73rem;
+      >div{
+        margin-bottom: 2rem;
+      }
+    }
+    .baseInfo{
+      width: 100%;
+      .baseDetail{
+        .userActionReportComponentCommon();
+        padding: 1.4rem;
+        border-radius: 1rem;
+        background: #F7F5FA;
+        grid-auto-flow: row;
+        grid-template-columns: 36% 64%;
+        grid-template-areas: 
+          'carInfo userInfo'
+          'carStates userInfo';
+      }
+    }
+    .mapContainer {
+      width: 100%;
+      height: 30rem;
+      border-radius: 1rem;
+    }
+    .carInfo {
+      grid-area: carInfo;
+      width: 100%;
+      position: relative;
+      span {
+        position: absolute;
+        right: 1rem;
+        bottom: 0;
+      }
+      .plateNumber {
+        position: absolute;
+        right: 0;
+      }
+  
+  }
+    .userInfo {
+        grid-area: userInfo;
+        width: 97%;
+        justify-self:end;
+    }
+    .commonSpan {
+      span:first-of-type {
+          color: #333333;
+      }
+      span:last-of-type {
+          color: #666666;
+      }
+    }
+    .carStates {
+      grid-area: carStates;
+      width: 100%;
+      margin: 0;
+      .carState {
+          .commonCard();
+          background: #FFFFFF;
+          div {
+              background-image: url("../../assets/image/web-state.png");
+          }
+          .commonSpan()
+      }
+      .carStateSignal {
+          .commonCard();
+          background: #FFFFFF;
+          div {
+              background-image: url("../../assets/image/web-signal.png");
+          }
+          .commonSpan()
+      }
+      .carStateMs {
+          .commonCard();
+          background: #FFFFFF;
+          div {
+              background-image: url("../../assets/image/web-mileage.png");
+          }
+          .commonSpan();
+      }
+  }
+    .carLocation {
+        width: 100%;
+        grid-area: carLocation;
+        .locationDetail {
+          width: 100%;
+        }
+    }
+    .carDriveLine {
+      width: 100%;
+      .driveLineDetail {
+        width: 50%;
+        display: inline-block;
+      }
+      .driveLineAll {
+        width: 100%;
+      }
+    }
+    .alwaysStopMarkers {
+      width: 100%;
+      .stopMarkersDetail {
+        width: 100%;
+      }
+    }
+    .alarmStatistics {
+      width: 100%;
+      .alarmStatisticsChart {
+        float: left;
+      }
+      .alarmStatisticsDetail {
+        width: 100%;
+      }
+    }
+    .carContent {
+        display: flex;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .content-title {
+        height: 0;
+        visibility: hidden;
+    }
+    .userActionReportComponent {
+        .userActionReportComponentCommon();
+        font-family: PingFang SC;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 99999;
+        overflow-x: auto;
+        padding-top: 20px;
+        height: 100%;
+        max-width: 100vw;
+        background: #F7F5FA;
+    }
+
+    .baseDetail>div:not(:last-child){
+      margin-bottom: 2rem;
+    }
+
+    .tabHeaders,
+    .functionalDomain,
+    .baseInfo>.itemHeader
+    {
+      display: none;
+    }
+
+    .carStates {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    .carLocation,
+    .carDriveLine,
+    .alwaysStopMarkers,
+    .alarmStatistics{
+      background: transparent;
+    }
+}

@@ -1,4 +1,5 @@
 import '~framework/bootstrap';
+
 import childProjectLifeCycle, { renderApp } from './framework/microAPP/appRegister';
 if (window.__POWERED_BY_QIANKUN__) {
   // eslint-disable-next-line no-undef
