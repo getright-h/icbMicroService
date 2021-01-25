@@ -5,6 +5,8 @@ import { IMAP } from '~/solution/shared/util/map.util';
 import useECharts from '~/framework/aop/hooks/use-echarts';
 import { OrderReportService } from '~/solution/model/services/report-order.service';
 import { AlarmTypeList } from '~/solution/model/dto/report-order.dto';
+import { jsPDF } from 'jspdf';
+import Html2canvas from 'html2canvas';
 declare const AMap: any;
 export function useUserActionReportStore() {
   const { state, setStateWrap } = useStateStore(new IUserActionReportState());
@@ -37,9 +39,18 @@ export function useUserActionReportStore() {
     });
   }
 
-  function printDOM() {
+  async function printDOM() {
     // 获取body的全部内容并保存到一个变量中
     const bodyHtml = window.document.body.innerHTML;
+    const canvas = await Html2canvas(document.getElementById('print'), {});
+    // canvas为转换后的Canvas对象
+    const oImg = new Image();
+    oImg.src = canvas.toDataURL(); // 导出图片
+    document.body.appendChild(oImg); // 将生成的图片添加到body
+    const doc = new jsPDF();
+    doc.addImage(canvas.toDataURL(), 'png', 15, 15, 180, 300);
+    doc.addPage();
+    doc.save('page.pdf');
 
     // // 通过截取字符串的方法获取所需要打印的内容
     // const printStart = '<!--startpart-->';
@@ -49,13 +60,13 @@ export function useUserActionReportStore() {
     // const printHtml = printHtmlStart.slice(0, printHtmlStart.indexOf(printEnd));
 
     // 将截取后打印内容 替换掉 body里的内容
-    window.document.body.innerHTML = bodyHtml;
+    // window.document.body.innerHTML = bodyHtml;
 
     // 打印操作
-    window.print();
+    // window.print();
 
     // 打印完成之后再恢复body的原始内容
-    window.document.body.innerHTML = bodyHtml;
+    // window.document.body.innerHTML = bodyHtml;
   }
 
   function getCurrentPageData() {

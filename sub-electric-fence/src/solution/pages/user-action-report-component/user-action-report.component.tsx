@@ -37,19 +37,19 @@ export default function UserActionReportComponent() {
     return (
       <div className={style.tabHeaders} style={{ fontSize: `${fontSize}px` }}>
         <ul>
-          <li className={style.active} onClick={() => setCurrentPoint(POINT_NUMBER.baseInfo)}>
+          <li key="info" className={style.active} onClick={() => setCurrentPoint(POINT_NUMBER.baseInfo)}>
             <a href="#baseInfo">车辆信息</a>
           </li>
-          <li>
+          <li key="address">
             <a href="#carLocation">车辆定位</a>
           </li>
-          <li>
+          <li key="tail">
             <a href="#carDriveLine">车辆轨迹</a>
           </li>
-          <li>
+          <li key="position">
             <a href="#alwaysStopMarkers">常驻地点</a>
           </li>
-          <li>
+          <li key="count">
             <a href="#alarmStatistics">24h报警统计</a>
           </li>
         </ul>
@@ -188,7 +188,7 @@ export default function UserActionReportComponent() {
         {itemHeader('车辆轨迹')}
         <IMapComponent {...driveLineProps} />
         {pointPassList?.length > 1 ? (
-          pointPassList?.map((item, index) => (
+          pointPassList?.map((item: any, index: number) => (
             <div className={`${style.driveLineDetail} ${!index ? style.driveLineAll : null}`} key={index}>
               <div className={style.driveInfo}>
                 <div></div>
@@ -241,7 +241,7 @@ export default function UserActionReportComponent() {
         {itemHeader('常驻地点')}
         <IMapComponent {...alwaysStopProps} />
         <div className={style.stopMarkersDetail}>
-          {residentList?.map((item, index) => (
+          {residentList?.slice(0, 3).map((item: any, index: number) => (
             <div className={style.stopMarkerInfo} key={index}>
               <div>{index + 1}</div>
               <div>
@@ -257,17 +257,34 @@ export default function UserActionReportComponent() {
 
   // 车辆24h报警统计
   function alarmStatistics() {
+    const trupeData = {
+      alarmList: [
+        {
+          latitude: 30.58235740661621,
+          longitude: 104.06546020507812,
+          time: '2021-01-23 16:15:51'
+        }
+      ],
+      alarmTypeText: '电子围栏'
+    };
+
+    const mocaData = [];
+
+    for (let i = 0; i <= 52; i++) {
+      mocaData.push(trupeData);
+    }
+
     return (
       <div className={style.alarmStatistics} id="alarmStatistics">
         {itemHeader('24h报警统计')}
         <div className={style.alarmStatisticsChart} ref={chartRef}></div>
         <div className={style.alarmStatisticsDetail}>
-          {alarmTypeList?.map(item => (
-            <div className={style.alarmStatisticsInfo} key={item.alarmTypeText}>
+          {mocaData?.map((item: any, index: number) => (
+            <div className={style.alarmStatisticsInfo} key={index}>
               <div></div>
               <div>
                 <p>{item.alarmTypeText}</p>
-                {item.alarmList.map(itemChild => {
+                {item.alarmList.map((itemChild: any, index: number) => {
                   return (
                     <>
                       <p>{itemChild.address}</p>
@@ -301,7 +318,7 @@ export default function UserActionReportComponent() {
         {renderSubHeader()}
         {tabHeaders()}
         {functionalDomain()}
-        <div className={style.userActionReportComponent} style={{ fontSize: `${fontSize}px` }}>
+        <div id="print" className={style.userActionReportComponent} style={{ fontSize: `${fontSize}px` }}>
           {baseInfo()}
           {carLocation()}
           {carDriveLine()}
