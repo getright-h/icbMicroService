@@ -27,13 +27,13 @@ async function registerMainApp(callback: (menuInfo: any) => void) {
 
   // callback(res.menuInfo);
   routerInfo.forEach((element: any) => {
-    const { localURL, path, name, onLineURL, children, loader, tokenKey } = element;
+    const { localURL, path, name, onLineDevURL, onLineURL, children, loader, tokenKey } = element;
     // 根据children去获取子应用响应的路由节点赋值到当前的页面，作用用来生成路由
     apps.push({
       tokenKey,
       name: name,
       loader,
-      entry: isDev ? (isDevBuild ? localURL : localURL) : onLineURL,
+      entry: isDev ? (isDevBuild ? onLineDevURL : localURL) : onLineURL,
       container: currentId,
       activeRule: `/#${path}`,
       props: { baseFuntion, name, routers: JSON.parse(JSON.stringify(children)), routerBase: `/#${path}`, useInfo }
