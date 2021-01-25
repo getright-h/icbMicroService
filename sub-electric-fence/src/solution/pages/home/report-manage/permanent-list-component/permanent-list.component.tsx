@@ -18,9 +18,10 @@ export default function DirectiveListComponent() {
     changeTablePageIndex,
     searchClick,
     initSearchForm,
-    getCurrentSelectInfo
+    getCurrentSelectInfo,
+    handleTableOnchange
   } = useDirectiveListStore();
-  const { isLoading, tableData, total, pageIndex, pageSize } = state;
+  const { isLoading, tableData, total, pageIndex, pageSize, sortInfo } = state;
   const { gState } = React.useContext(GlobalContext);
 
   function renderSelectItems() {
@@ -87,13 +88,15 @@ export default function DirectiveListComponent() {
   function RenderTable() {
     return (
       <ITableComponent
-        columns={AlarmParameterColumn(callbackAction)}
+        columns={AlarmParameterColumn(sortInfo, callbackAction)}
         isLoading={isLoading}
         pageIndex={pageIndex}
         pageSize={pageSize}
         data={tableData}
         total={total}
         isPagination={true}
+        onChange={handleTableOnchange}
+        sortDirections={['descend']}
         changeTablePageIndex={(pageIndex: number, pageSize: number) => changeTablePageIndex(pageIndex, pageSize)}
       ></ITableComponent>
     );

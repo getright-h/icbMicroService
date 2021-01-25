@@ -1,9 +1,8 @@
-import { IDirectiveListState, ModalType } from './permanent-list.interface';
+import { IDirectiveListState, ModalType, SORT_LIST } from './permanent-list.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form } from 'antd';
 import { OrderReportService } from '~/solution/model/services/report-order.service';
-import { useEffect } from 'react';
-import { IMAP } from '~shared/util/map.util';
+import { useEffect, useRef } from 'react';
 import moment from 'moment';
 
 export function useDirectiveListStore() {
@@ -24,7 +23,8 @@ export function useDirectiveListStore() {
         beginTime: timeInfo[0] ? moment(timeInfo[0]).valueOf() : 0,
         endTime: timeInfo[1] ? moment(timeInfo[1]).valueOf() : 0,
         index: pageIndex,
-        size: pageSize
+        size: pageSize,
+        sort: state.sort
       })
       .subscribe(
         res => {
@@ -90,6 +90,32 @@ export function useDirectiveListStore() {
       searchForm.setFieldsValue({ organizationId: organizationId });
     }
   }
+  function handleTableOnchange(e: any, a: any, sortObj: any) {
+    const { field } = sortObj;
+    const { sortInfo } = state;
+    const currentSort = SORT_LIST.find(_ => _.type === field);
+    if (!currentSort) return;
+
+    // 如果当前的sort配置与当前点击的排序一样则取消排序
+    if (sortInfo?.key === field) {
+      setStateWrap({
+        sort: 0,
+        sortInfo: {
+          key: '',
+          type: ''
+        }
+      });
+    } else {
+      setStateWrap({
+        sort: currentSort.sort,
+        sortInfo: {
+          key: field,
+          type: 'descend'
+        }
+      });
+    }
+    searchClick();
+  }
   return {
     state,
     searchForm,
@@ -97,6 +123,7 @@ export function useDirectiveListStore() {
     callbackAction,
     changeTablePageIndex,
     searchClick,
-    getCurrentSelectInfo
+    getCurrentSelectInfo,
+    handleTableOnchange
   };
 }

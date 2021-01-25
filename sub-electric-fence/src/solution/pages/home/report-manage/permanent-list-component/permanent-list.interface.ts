@@ -10,8 +10,31 @@ export class IDirectiveListState {
   total = 0;
   timeInfo: string[] = [];
   currentId = '';
+  sort = 0;
+  sortInfo: { key: string; type: string };
 }
 export enum ModalType {
   CREATE,
   EDIT
 }
+
+export const SORT_LIST: Array<{
+  type: string;
+  sort: number;
+}> = [
+  {
+    // /平均停留时间
+    type: 'stayAvgText',
+    sort: 1
+  },
+  {
+    // "stayCount "到访次数"
+    type: 'stayCount',
+    sort: 2
+  },
+  {
+    // "stayDurationText" "停留总时长"
+    type: 'stayDurationText',
+    sort: 3
+  }
+];
