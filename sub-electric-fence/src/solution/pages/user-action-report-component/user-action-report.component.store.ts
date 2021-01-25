@@ -41,8 +41,12 @@ export function useUserActionReportStore() {
 
   async function printDOM() {
     // 获取body的全部内容并保存到一个变量中
+
     const bodyHtml = window.document.body.innerHTML;
-    const canvas = await Html2canvas(document.getElementById('print'), {});
+    const canvas = await Html2canvas(document.getElementById('print'), {
+      height: document.getElementById('print').scrollHeight, //
+      width: document.getElementById('print').scrollWidth //为了使横向滚动条的内容全部展示，这里必须指定
+    });
     // canvas为转换后的Canvas对象
     const oImg = new Image();
     oImg.src = canvas.toDataURL(); // 导出图片
