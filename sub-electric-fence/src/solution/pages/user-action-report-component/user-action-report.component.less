@@ -424,7 +424,7 @@
   height: 4rem;
   border-bottom: 1px solid @border-main;
   font-family: PingFang SC;
-  position: absolute;
+  // position: absolute;
   ul{
     margin: 0;
     padding: 0;
@@ -462,11 +462,10 @@
   }
 
   &.sticky{
-    position: fixed;
+    position: sticky;
     z-index: 1000;
     background: #FFFFFF;
-    top: 4.75rem;
-    border-top: 1px solid @border-main;
+    top: 0;
   }
 }
 
@@ -489,7 +488,7 @@
   display: flex;
   padding: 0 2.73rem;
   justify-content: space-between;
-  margin-top: 5.6rem;
+  margin-top: 1.6rem;
   padding-bottom: 1.6rem;
   button>span{
     display: inline-block;

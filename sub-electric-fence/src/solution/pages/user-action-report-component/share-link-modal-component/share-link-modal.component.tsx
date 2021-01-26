@@ -1,4 +1,5 @@
 import * as React from 'react';
+import style from './share-link-modal.component.less';
 import { useShareLinkModalStore } from './share-link-modal.component.store';
 import { Modal, Tabs, Input, Button } from 'antd';
 import { IShareLinkModalProps } from './share-link-modal.interface';
