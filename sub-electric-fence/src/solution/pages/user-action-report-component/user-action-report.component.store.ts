@@ -78,7 +78,7 @@ export function useUserActionReportStore() {
           doc.addPage();
         }
       }
-      doc.save('page.pdf');
+      doc.save('用户行为分析表.pdf');
     }
   }
   function getCurrentPageData() {
