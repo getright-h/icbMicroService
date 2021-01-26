@@ -5,17 +5,15 @@ import {
   PointList,
   PointPassList,
   ResidentList,
-  AlarmTypeList
+  AlarmTypeList,
+  ReportMonitorAlarmGroupInput
 } from '../dto/report-order.dto';
-import moment from 'moment';
-import { OrderReportManage, ReportAlarmStatisticsInput, ReportMonitorAlarmGroupInput } from '../dto/report-order.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
 import { DepUtil } from '~/framework/aop/inject';
 import { switchMap, map } from 'rxjs/operators';
 import { REPORT_UTIL } from '~/solution/shared/util/report-manage.util';
 import { IMAP } from '~/solution/shared/util/map.util';
-import { formatToUnix } from '~/solution/shared/util/common.util';
 
 const QUERY_RESIDENT_PAGEDLIST = 'alarmCenter/manage/queryResidentPagedList';
 const QUERY_MONITOR_ALARM_INFO_PAGEDLIST = 'alarmCenter/manage/queryMonitorAlarmInfoPagedList';

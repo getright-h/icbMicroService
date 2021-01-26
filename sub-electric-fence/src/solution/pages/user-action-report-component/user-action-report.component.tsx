@@ -1,7 +1,7 @@
 import * as React from 'react';
 import style from './user-action-report.component.less';
 import { useUserActionReportStore } from './user-action-report.component.store';
-import { POINT_NUMBER, userInfoConst } from './user-action-report.interface';
+import { POINT_NUMBER, tabHeaderConst, userInfoConst } from './user-action-report.interface';
 import { IMapComponent } from '~/solution/components/component.module';
 import { REPORT_UTIL } from '~/solution/shared/util/report-manage.util';
 import ShareLinkModalComponent from './share-link-modal-component/share-link-modal.component';
@@ -10,6 +10,7 @@ export default function UserActionReportComponent() {
   const {
     state,
     chartRef,
+    tabHeadersRef,
     setCurrentPoint,
     printDOM,
     onShareClick,
@@ -17,7 +18,7 @@ export default function UserActionReportComponent() {
     onStateChange,
     onValueSearch
   } = useUserActionReportStore();
-  const { fontSize, actionData, loading, deviceCode, isModalVisible } = state;
+  const { fontSize, actionData, loading, deviceCode, isModalVisible, currentPoint } = state;
   const {
     versionName,
     plateNo,
@@ -35,23 +36,17 @@ export default function UserActionReportComponent() {
 
   function tabHeaders() {
     return (
-      <div className={style.tabHeaders} style={{ fontSize: `${fontSize}px` }}>
+      <div className={style.tabHeaders} ref={tabHeadersRef} style={{ fontSize: `${fontSize}px` }}>
         <ul>
-          <li className={style.active} onClick={() => setCurrentPoint(POINT_NUMBER.baseInfo)}>
-            <a href="#baseInfo">车辆信息</a>
-          </li>
-          <li>
-            <a href="#carLocation">车辆定位</a>
-          </li>
-          <li>
-            <a href="#carDriveLine">车辆轨迹</a>
-          </li>
-          <li>
-            <a href="#alwaysStopMarkers">常驻地点</a>
-          </li>
-          <li>
-            <a href="#alarmStatistics">24h报警统计</a>
-          </li>
+          {tabHeaderConst.map(tab => (
+            <li
+              key={'tab-' + tab.key}
+              className={currentPoint === tab.key ? style.active : null}
+              onClick={() => setCurrentPoint(tab.key)}
+            >
+              <a>{tab.name}</a>
+            </li>
+          ))}
         </ul>
       </div>
     );
@@ -66,8 +61,8 @@ export default function UserActionReportComponent() {
             <span></span>搜索
           </button>
         </div>
-        <div className={style.otherFeature} onClick={onShareClick}>
-          <button>
+        <div className={style.otherFeature}>
+          <button onClick={onShareClick}>
             <span></span>分享
           </button>
           <button onClick={printDOM}>
@@ -80,7 +75,7 @@ export default function UserActionReportComponent() {
 
   function baseInfo() {
     return (
-      <div className={style.baseInfo} id="baseInfo">
+      <div className={style.baseInfo} id="baseInfo" data-x>
         {itemHeader('车辆信息')}
         <div className={style.baseDetail}>
           {carInfo()}
@@ -149,7 +144,7 @@ export default function UserActionReportComponent() {
   // 车辆定位
   function carLocation() {
     return (
-      <div className={style.carLocation} id="carLocation">
+      <div className={style.carLocation} data-x>
         {itemHeader('车辆定位')}
         <div id="locationMap" className={style.mapContainer}></div>
         <div className={style.locationDetail}>
@@ -184,7 +179,7 @@ export default function UserActionReportComponent() {
   // 车辆轨迹
   function carDriveLine() {
     return (
-      <div className={style.carDriveLine} id="carDriveLine">
+      <div className={style.carDriveLine} id="carDriveLine" data-x>
         {itemHeader('车辆轨迹')}
         <IMapComponent {...driveLineProps} />
         {pointPassList?.length > 1 ? (
@@ -237,7 +232,7 @@ export default function UserActionReportComponent() {
   // 车辆常驻点
   function alwaysStopMarkers() {
     return (
-      <div className={style.alwaysStopMarkers} id="alwaysStopMarkers">
+      <div className={style.alwaysStopMarkers} id="alwaysStopMarkers" data-x>
         {itemHeader('常驻地点')}
         <IMapComponent {...alwaysStopProps} />
         <div className={style.stopMarkersDetail}>
@@ -258,7 +253,7 @@ export default function UserActionReportComponent() {
   // 车辆24h报警统计
   function alarmStatistics() {
     return (
-      <div className={style.alarmStatistics} id="alarmStatistics">
+      <div className={style.alarmStatistics} id="alarmStatistics" data-x>
         {itemHeader('24h报警统计')}
         <div className={style.alarmStatisticsChart} ref={chartRef}></div>
         <div className={style.alarmStatisticsDetail}>
@@ -297,7 +292,7 @@ export default function UserActionReportComponent() {
         className={style.userActionReportComponentLoading}
         style={{ visibility: !loading ? 'hidden' : 'visible' }}
       ></div>
-      <div style={{ visibility: loading ? 'hidden' : 'visible' }}>
+      <div style={{ visibility: loading ? 'hidden' : 'visible', position: 'relative' }}>
         {renderSubHeader()}
         {tabHeaders()}
         {functionalDomain()}

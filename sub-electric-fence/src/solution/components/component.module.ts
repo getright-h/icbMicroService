@@ -20,4 +20,5 @@ export { default as IHeaderTitleComponent } from '~/solution/components/base/i-h
 
 export { default as AlarmFormItemComponent } from '~/solution/components/custom/alarm-form-item-component/alarm-form-item.component';
 export { IMapComponent } from '~/solution/components/base/i-map-component/i-map.component';
+export { IQrcodeComponent } from '~/solution/components/base/i-qrcode-component/i-qrcode.component';
 //  -- Package End --
