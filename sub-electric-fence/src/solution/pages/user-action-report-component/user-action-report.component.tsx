@@ -11,6 +11,7 @@ export default function UserActionReportComponent() {
     state,
     chartRef,
     tabHeadersRef,
+    containerRef,
     setCurrentPoint,
     printDOM,
     onShareClick,
@@ -287,12 +288,12 @@ export default function UserActionReportComponent() {
   }
 
   return (
-    <div>
+    <div style={{ overflowY: 'auto', height: '100%' }} ref={containerRef}>
       <div
         className={style.userActionReportComponentLoading}
         style={{ visibility: !loading ? 'hidden' : 'visible' }}
       ></div>
-      <div style={{ visibility: loading ? 'hidden' : 'visible', position: 'relative' }}>
+      <div style={{ visibility: loading ? 'hidden' : 'visible' }}>
         {renderSubHeader()}
         {tabHeaders()}
         {functionalDomain()}

@@ -11,6 +11,7 @@ export function useUserActionReportStore() {
   const { state, setStateWrap } = useStateStore(new IUserActionReportState());
   const map: any = useRef();
   const chartRef: any = useRef();
+  const containerRef: MutableRefObject<HTMLDivElement> = useRef();
   const tabHeadersRef: MutableRefObject<HTMLDivElement> = useRef();
   const orderReportService: OrderReportService = useService(OrderReportService);
 
@@ -26,10 +27,10 @@ export function useUserActionReportStore() {
   }, []);
 
   function bindScrollEvents() {
-    const tabStartY = tabHeadersRef.current.offsetTop;
+    const tabStartY = tabHeadersRef.current.clientTop;
     findClosestElement();
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > tabStartY) {
+    containerRef.current.addEventListener('scroll', () => {
+      if (containerRef.current.scrollTop > tabStartY) {
         tabHeadersRef.current.classList.add(style.sticky);
       } else {
         tabHeadersRef.current.classList.remove(style.sticky);
@@ -41,9 +42,10 @@ export function useUserActionReportStore() {
   function findClosestElement() {
     const specialTags: NodeListOf<HTMLDivElement> = document.querySelectorAll('[data-x]');
     let minIndex = 0;
-    for (let i = 1; i < specialTags.length; i++) {
+    for (let i = 0; i < specialTags.length; i++) {
       if (
-        Math.abs(specialTags[i].offsetTop - window.scrollY) < Math.abs(specialTags[minIndex].offsetTop - window.scrollY)
+        Math.abs(specialTags[i].offsetTop - containerRef.current.scrollTop) <
+        Math.abs(specialTags[minIndex].offsetTop - containerRef.current.scrollTop)
       ) {
         minIndex = i;
       }
@@ -57,8 +59,8 @@ export function useUserActionReportStore() {
 
   function setCurrentPoint(type: POINT_NUMBER) {
     const specialTags: NodeListOf<HTMLDivElement> = document.querySelectorAll('[data-x]');
-    window.scrollTo({
-      top: specialTags[type].offsetTop - 50,
+    containerRef.current.scrollTo({
+      top: specialTags[type].offsetTop - 150,
       behavior: 'smooth'
     });
   }
@@ -264,6 +266,7 @@ export function useUserActionReportStore() {
     printDOM,
     onStateChange,
     onValueSearch,
-    tabHeadersRef
+    tabHeadersRef,
+    containerRef
   };
 }
