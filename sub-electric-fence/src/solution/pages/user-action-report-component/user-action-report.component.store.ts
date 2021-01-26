@@ -1,6 +1,7 @@
+import style from './user-action-report.component.less';
 import { IUserActionReportState, POINT_NUMBER } from './user-action-report.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
-import { useEffect, useRef, ChangeEvent } from 'react';
+import { useEffect, useRef, ChangeEvent, MutableRefObject } from 'react';
 import { IMAP } from '~/solution/shared/util/map.util';
 import useECharts from '~/framework/aop/hooks/use-echarts';
 import { OrderReportService } from '~/solution/model/services/report-order.service';
@@ -10,6 +11,7 @@ export function useUserActionReportStore() {
   const { state, setStateWrap } = useStateStore(new IUserActionReportState());
   const map: any = useRef();
   const chartRef: any = useRef();
+  const tabHeadersRef: MutableRefObject<HTMLDivElement> = useRef();
   const orderReportService: OrderReportService = useService(OrderReportService);
   useEffect(() => {
     getCurrentPageData();
@@ -19,15 +21,44 @@ export function useUserActionReportStore() {
       document.getElementsByTagName('html')[0].style['font-size'] = `${(window.innerWidth / 2500) * 15}px`;
     }
     initMap('locationMap');
+    bindScrollEvents();
   }, []);
+
+  function bindScrollEvents() {
+    const tabStartY = tabHeadersRef.current.offsetTop;
+    findClosestElement();
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > tabStartY) {
+        tabHeadersRef.current.classList.add(style.sticky);
+      } else {
+        tabHeadersRef.current.classList.remove(style.sticky);
+      }
+      findClosestElement();
+    });
+  }
+
+  function findClosestElement() {
+    const specialTags: NodeListOf<HTMLDivElement> = document.querySelectorAll('[data-x]');
+    let minIndex = 0;
+    for (let i = 1; i < specialTags.length; i++) {
+      if (
+        Math.abs(specialTags[i].offsetTop - window.scrollY) < Math.abs(specialTags[minIndex].offsetTop - window.scrollY)
+      ) {
+        minIndex = i;
+      }
+    }
+    setStateWrap({ currentPoint: minIndex });
+  }
 
   function onValueSearch() {
     getCurrentPageData();
   }
 
   function setCurrentPoint(type: POINT_NUMBER) {
-    setStateWrap({
-      currentPoint: type
+    const specialTags: NodeListOf<HTMLDivElement> = document.querySelectorAll('[data-x]');
+    window.scrollTo({
+      top: specialTags[type].offsetTop - 50,
+      behavior: 'smooth'
     });
   }
 
@@ -223,5 +254,15 @@ export function useUserActionReportStore() {
   function onShareClick() {
     setStateWrap({ isModalVisible: true });
   }
-  return { state, handleCancel, onShareClick, chartRef, setCurrentPoint, printDOM, onStateChange, onValueSearch };
+  return {
+    state,
+    handleCancel,
+    onShareClick,
+    chartRef,
+    setCurrentPoint,
+    printDOM,
+    onStateChange,
+    onValueSearch,
+    tabHeadersRef
+  };
 }

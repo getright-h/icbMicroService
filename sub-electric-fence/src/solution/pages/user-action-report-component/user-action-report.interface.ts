@@ -22,6 +22,14 @@ export enum POINT_NUMBER {
   alarmStatistics
 }
 
+export const tabHeaderConst = [
+  { key: POINT_NUMBER.baseInfo, name: '车辆信息' },
+  { key: POINT_NUMBER.carLocation, name: '车辆定位' },
+  { key: POINT_NUMBER.carDriveLine, name: '车辆轨迹' },
+  { key: POINT_NUMBER.alwaysStopMarkers, name: '常驻地点' },
+  { key: POINT_NUMBER.alarmStatistics, name: '24h报警统计' }
+];
+
 export const userInfoConst = [
   {
     key: '车主姓名',
