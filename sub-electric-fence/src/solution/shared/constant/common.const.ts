@@ -68,10 +68,10 @@ export const PAGES_MENU = {
           path: 'follow',
           title: '报警跟进表'
         },
-        // {
-        //   path: 'monitor',
-        //   title: '监控组报表'
-        // },
+        {
+          path: 'monitor',
+          title: '监控组报表'
+        },
         // {
         //   path: 'odometer',
         //   title: '行驶里程表'

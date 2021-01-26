@@ -448,6 +448,13 @@ export function fetchChildAppsConfig() {
                 componentUrl: 'statisticalDetailComponent' //对应子应用的组件名
               },
               {
+                path: 'userActionReport',
+                lazyload: true,
+                title: '车辆行为报告',
+                exact: true,
+                componentUrl: 'userActionReport' //对应子应用的组件名
+              },
+              {
                 path: 'record',
                 title: '报警记录表',
                 lazyload: true,
@@ -461,13 +468,13 @@ export function fetchChildAppsConfig() {
                 exact: true,
                 componentUrl: 'followComponent' //对应子应用的组件名
               },
-              // {
-              //   path: 'monitor',
-              //   title: '监控组报表',
-              //   lazyload: true,
-              //   exact: true,
-              //   componentUrl: 'monitorComponent' //对应子应用的组件名
-              // },
+              {
+                path: 'monitor',
+                title: '监控组报表',
+                lazyload: true,
+                exact: true,
+                componentUrl: 'monitorComponent' //对应子应用的组件名
+              },
               // {
               //   path: 'odometer',
               //   title: '行驶里程表',

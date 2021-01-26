@@ -13,6 +13,7 @@ export function useUserActionReportStore() {
   const chartRef: any = useRef();
   const tabHeadersRef: MutableRefObject<HTMLDivElement> = useRef();
   const orderReportService: OrderReportService = useService(OrderReportService);
+
   useEffect(() => {
     getCurrentPageData();
     if (window.innerWidth <= 750) {

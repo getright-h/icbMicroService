@@ -3,8 +3,11 @@ import style from './move-template.component.less';
 import { useMoveTemplateStore } from './move-template.component.store';
 import { Modal, Checkbox, Col, Tree } from 'antd';
 import { IMoveTemplateProps } from './move-template.interface';
+import { AppravalTemplateManageContext } from '../appraval-template.component';
 
 export default function MoveTemplateComponent(props: IMoveTemplateProps) {
+  const { reduxState } = React.useContext(AppravalTemplateManageContext);
+  const node = reduxState.currentSelectNode;
   const {
     state,
     handleOk,
@@ -13,7 +16,8 @@ export default function MoveTemplateComponent(props: IMoveTemplateProps) {
     onChangeIsCopy,
     onLoadData,
     onChangeTemplate
-  } = useMoveTemplateStore(props);
+  } = useMoveTemplateStore({ ...props, node });
+
   const { addMoveTemplateVisible } = props;
   const { confirmLoading, allTemplate, isCopy, treeData, groupIdList, formTemplateIdList } = state;
   function RenderChooseTemplate() {

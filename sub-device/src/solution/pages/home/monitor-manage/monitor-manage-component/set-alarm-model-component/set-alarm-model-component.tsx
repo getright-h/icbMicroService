@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useSetAlarmStore } from './set-alarm-model.component.store';
 import { GlobalContext } from '~/solution/context/global/global.provider';
-import { EditAlarmTemplateItem, ISetAlarmProp, PushModeEnum } from './set-alarm-model.interface';
+import { EditAlarmTemplateItem, ISetAlarmProp, PushModeEnum, tempHiddenTypes } from './set-alarm-model.interface';
 import { Form, Modal, Checkbox, Switch, Radio, Popover } from 'antd';
 import style from './set-alarm-model.component.less';
 import AlarmFormItemComponent from '~/solution/components/alarm-form-item-component/alarm-form-item.component';
@@ -88,26 +88,28 @@ export default function SetAlarmModalComponent(props: ISetAlarmProp) {
     return (
       <div className={style.formContainer}>
         {templateList &&
-          templateList.map(template => (
-            <div className={style.alarmFormItem} key={template.id}>
-              <div className={style.itemTitle}>
-                <h3>{template.name}</h3>
-                {!template.isParam && <span style={{ flex: 1, fontSize: '0.8rem' }}>（需先发送指令）</span>}
-                <Switch
-                  defaultChecked={template.isTemplateSelected}
-                  onChange={checked => switchTemplate(checked, template)}
-                />
+          templateList
+            .filter(o => tempHiddenTypes.indexOf(o.code) < 0)
+            .map(template => (
+              <div className={style.alarmFormItem} key={template.id}>
+                <div className={style.itemTitle}>
+                  <h3>{template.name}</h3>
+                  {template.downMode == 1 && <span style={{ flex: 1, fontSize: '0.8rem' }}>（需先发送指令）</span>}
+                  <Switch
+                    defaultChecked={template.isTemplateSelected}
+                    onChange={checked => switchTemplate(checked, template)}
+                  />
+                </div>
+                {template.isTemplateSelected &&
+                  template.isParam &&
+                  template.downMode === PushModeEnum.PLATFORM &&
+                  (template.packageList.length > 0 ? (
+                    TemplateItem(template)
+                  ) : (
+                    <div className={style.itemError}>当前报警类型下未设置参数模板，无法开启报警</div>
+                  ))}
               </div>
-              {template.isTemplateSelected &&
-                template.isParam &&
-                template.downMode === PushModeEnum.PLATFORM &&
-                (template.packageList.length > 0 ? (
-                  TemplateItem(template)
-                ) : (
-                  <div className={style.itemError}>当前报警类型下未设置参数模板，无法开启报警</div>
-                ))}
-            </div>
-          ))}
+            ))}
       </div>
     );
   }

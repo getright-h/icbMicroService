@@ -18,9 +18,9 @@ export function dealWithTreeData<T>(
   content?: (element: any) => React.ReactNode,
   canSelectAll?: boolean,
   organizationChecked?: boolean,
-  monitorTranform?: {
-    currentMonitorId: string; // 当前监控组ID
-    currentCheckedId: string; //已选择的ID
+  disableNodeObj?: {
+    currentDisableId?: string; // 当前监控组ID
+    currentCheckedId?: string; //已选择的ID
   }
 ) {
   const treeData: any[] =
@@ -39,9 +39,12 @@ export function dealWithTreeData<T>(
       // 子节点禁掉 checkbox， 为应对监控组转组，不可选择自身，并且单选
       // 首先将自身ID传递过来，对相对应的节点禁用选择（自身不可选） 初始化阶段可以进行设置
       // 如果选择了一个监控组，则禁用其他按钮，取消选择，其他（除自身）可以选择（需要更新整颗树，使用外部方法，）
-      if (monitorTranform) {
-        treeDataChild.key === monitorTranform.currentMonitorId && (treeDataChild.disableCheckbox = true);
-        _initSingleCheckNode(treeDataChild, monitorTranform.currentCheckedId, monitorTranform.currentMonitorId);
+      if (disableNodeObj) {
+        if (treeDataChild.key === disableNodeObj.currentDisableId) {
+          treeDataChild.disableCheckbox = true;
+          treeDataChild.disabled = true;
+        }
+        _initSingleCheckNode(treeDataChild, disableNodeObj.currentCheckedId, disableNodeObj.currentDisableId);
       }
 
       return treeDataChild;
@@ -115,7 +118,12 @@ function renderTitle(isWarehouse: boolean, element: any, content: any, alterTitl
   );
 }
 
-// 节点key匹配
+/**
+ * 更新树节点, 节点key匹配
+ * @param list
+ * @param key
+ * @param children
+ */
 export function updateTreeData(list: any[], key: React.Key, children: any[] | any): any[] {
   return (
     list &&

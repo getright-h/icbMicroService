@@ -1,43 +1,46 @@
-import * as React from 'react';
-import { Divider } from 'antd';
-import { ModalType } from './monitor-list.interface';
 export function AlarmParameterColumn(callbackAction: Function) {
   return [
     {
+      title: '所属监控组',
+      dataIndex: 'groupName'
+    },
+    {
       title: '车主姓名',
-      dataIndex: 'vinNo'
+      dataIndex: 'ownerName'
     },
     {
       title: '车牌号',
-      dataIndex: 'deviceCodeList'
+      dataIndex: 'plateNo'
     },
     {
       title: '设备号',
-      dataIndex: 'time'
-    },
-    {
-      title: '报警次数',
-      dataIndex: 'name'
+      dataIndex: 'deviceCode'
     },
     {
       title: '设备状态',
-      dataIndex: 'name'
+      dataIndex: 'statusText'
+    },
+    {
+      title: '定位时间',
+      dataIndex: 'locateTime'
+    },
+    {
+      title: '在线时间',
+      dataIndex: 'statusTime'
     },
     {
       title: '车辆里程',
-      dataIndex: 'name'
+      dataIndex: 'mileage',
+      render: (text: string) => text + 'km'
     },
     {
       title: '最后地址',
-      dataIndex: 'deviceCodeList'
-    },
-    {
-      title: '所属监控组',
-      dataIndex: 'name'
+      dataIndex: 'address',
+      render: (text: string) => text || '-'
     },
     {
       title: '所属机构',
-      dataIndex: 'name'
+      dataIndex: 'organizationName'
     }
   ];
 }

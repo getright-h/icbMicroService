@@ -33,7 +33,7 @@ class RequestService {
 
   private getRootUrl(url: string) {
     let returnInfo = process.env.MAIN;
-    if (!!~url.indexOf('VerifyCode') || !!~url.indexOf('Login')) {
+    if (!!~url.indexOf('VerifyCode') || !!~url.indexOf('/Login')) {
       returnInfo = process.env.LOGIN;
     } else {
       returnInfo = process.env.USERINFO;

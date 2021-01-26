@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 import { IMAP } from '~/solution/shared/util/map.util';
 import { message } from 'antd';
 import { PointList } from '../../../model/dto/position-monitor.dto';
+import { REPORT_UTIL } from '~/solution/shared/util/report-manage.util';
 declare const AMap: any;
 
 const autoOptions = {
@@ -342,7 +343,7 @@ export function useIMapStore(mapProps: TIMapProps) {
       address: '转换地址中...',
       coordinates: coordinates || '无',
       number: number,
-      stopTime: Number.parseInt(stopTime / 60 + '') + 'min'
+      stopTime: REPORT_UTIL.formatStayTime(stopTime)
     };
     infoWindow.setInfoTplData(data);
     infoWindow.open(map, coordinates);
