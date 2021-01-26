@@ -157,7 +157,7 @@ export class OrderReportService implements OrderReportManage {
       })
     );
   }
-  
+
   queryMonitorAlarmGroupPagedList(params: ReportMonitorAlarmGroupInput): Observable<boolean> {
     return this.requestService.post(QUERY_MONITOR_ALARM_GROUP_PAGEDLIST, params).pipe(
       switchMap(async data => {

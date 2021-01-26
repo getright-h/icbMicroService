@@ -47,7 +47,9 @@ export class PositionMonitorService extends PositionMonitorDTO {
     function dealWithCoordinates(data: VehicleInfoParamReture[]) {
       data = data.map(item => {
         item.deviceList = item.deviceList.map(device => {
-          device.coordinates = IMAP.initLonlat(device.coordinates[0], device.coordinates[1]);
+          if (device.coordinates) {
+            device.coordinates = IMAP.initLonlat(device?.coordinates[0], device?.coordinates[1]);
+          }
           return device;
         });
         item.permanentPlaceList = item.permanentPlaceList.map(permanentPlace => {

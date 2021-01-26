@@ -1,4 +1,8 @@
-import { IPositionMonitorMapbtnDrivingLineState, SELECTDATE } from './position-monitor-mapbtn-driving-line.interface';
+import {
+  IPositionMonitorMapbtnDrivingLineState,
+  SELECTDATE,
+  BASEINFO
+} from './position-monitor-mapbtn-driving-line.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
 import moment from 'moment';
 import { useEffect } from 'react';
@@ -19,6 +23,7 @@ export function usePositionMonitorMapbtnDrivingLineStore(reduxState: TPositionMo
         deviceCode: currentDoActionCarInfo.deviceInfo.deviceCode
       });
     }
+    changeDateTimeRange(SELECTDATE.TODAY);
   }, [currentDoActionCarInfo]);
   function changeTablePageIndex() {}
 
@@ -31,7 +36,7 @@ export function usePositionMonitorMapbtnDrivingLineStore(reduxState: TPositionMo
   function setEndRunning() {
     setStateWrap({
       isRunning: true,
-      carSpeedBase: 1,
+      carSpeedBase: BASEINFO.carSpeedBase,
       currentPoint: drivingLineData.pointList.length - 1
     });
   }
@@ -112,16 +117,16 @@ export function usePositionMonitorMapbtnDrivingLineStore(reduxState: TPositionMo
   function onSwitchOFFONClick(isON: boolean) {
     setStateWrap({
       isRunning: isON,
-      carSpeedBase: 1
+      carSpeedBase: BASEINFO.carSpeedBase
     });
   }
 
   function onSpeedChangeClick(isFast: boolean) {
     let carSpeedInfo = 0;
     if (isFast) {
-      carSpeedInfo = carSpeedBase >= 1 ? carSpeedBase * 2 : 2;
+      carSpeedInfo = carSpeedBase >= BASEINFO.carSpeedBase ? carSpeedBase * 2 : BASEINFO.carSpeedBase * 2;
     } else {
-      carSpeedInfo = carSpeedBase >= 1 ? 0.5 : carSpeedBase / 2;
+      carSpeedInfo = carSpeedBase >= BASEINFO.carSpeedBase ? BASEINFO.carSpeedBase / 2 : carSpeedBase / 2;
     }
     setStateWrap({
       carSpeedBase: carSpeedInfo
@@ -179,7 +184,7 @@ export function usePositionMonitorMapbtnDrivingLineStore(reduxState: TPositionMo
         setStateWrap({
           drivingLineData: res,
           playbackLoading: false,
-          carSpeedBase: 1
+          carSpeedBase: BASEINFO.carSpeedBase
         });
       },
       () => {

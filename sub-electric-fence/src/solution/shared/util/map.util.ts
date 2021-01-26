@@ -439,7 +439,15 @@ export const IMAP = {
     markers?.forEach(item => {
       const circleMarker = new AMap.Marker({
         map,
-        position: item.coordinates
+        position: item.coordinates,
+        icon: new AMap.Icon({
+          // 图标尺寸
+          size: new AMap.Size(23, 30),
+          // 图标的取图地址
+          image: require('../../assets/image/lineLocation.png'),
+          // 图标所用图片大小
+          imageSize: new AMap.Size(23, 30)
+        })
       });
       mapMarkers.push(circleMarker);
     });

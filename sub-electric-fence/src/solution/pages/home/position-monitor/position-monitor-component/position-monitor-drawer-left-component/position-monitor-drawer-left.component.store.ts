@@ -58,9 +58,9 @@ export function usePositionMonitorDrawerLeftStore() {
   function queryVehicleInfoPagedList(state?: IQueryVehicleInfoPagedListParams) {
     setStateWrap({ tableLoading: true });
     const formInfo = JSON.parse(JSON.stringify(state || getState().searchForm));
-    if(formInfo.vehicleGroupId) {
-      formInfo.VehicleGroupOrganizationId =JSON.parse(JSON.stringify(formInfo.organizationId));
-      formInfo.organizationId = "";
+    if (formInfo.vehicleGroupId) {
+      formInfo.VehicleGroupOrganizationId = JSON.parse(JSON.stringify(formInfo.organizationId));
+      formInfo.organizationId = '';
     }
     positionMonitorService.queryVehicleInfoPagedList(formInfo).subscribe(
       res => {

@@ -157,9 +157,7 @@ export default React.memo((props: IPositionMonitorMapbtnDrivingProps) => {
             </div>
           </div>
         ) : null}
-        <div className={style.tableContent} style={!showTable ? { visibility: 'hidden' } : {}}>
-          {RenderTable()}
-        </div>
+        {showTable && <div className={style.tableContent}>{RenderTable()}</div>}
       </div>
     );
   }

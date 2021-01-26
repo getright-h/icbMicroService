@@ -9,9 +9,6 @@ export interface OrderReportManage {
   queryResidentPagedList(params: ReportAlarmStatisticsInput): Observable<{ dataList: any[]; total: number }>;
   queryMonitorAlarmInfoPagedList(params: ReportAlarmStatisticsInput): Observable<boolean>;
   queryReportAlarmStatistics(params: ReportAlarmStatisticsInput): Observable<{ data: any[]; total: number }>;
-  queryResidentPagedList(params: ReportAlarmStatisticsInput): Observable<{ dataList: any[], total: number }>;
-  queryMonitorAlarmInfoPagedList(params: ReportAlarmStatisticsInput): Observable<boolean>;
-  queryReportAlarmStatistics(params: ReportAlarmStatisticsInput): Observable<{ data: any[], total: number }>;
   queryReportAlarmStatisticsDetail(params: { deviceCode: string; alarmType: string }): Observable<boolean>;
   queryAlarmOriginalPagedList(params: ReportAlarmStatisticsInput): Observable<boolean>;
 }

@@ -17,7 +17,7 @@ export class IPositionMonitorMapbtnDrivingLineState {
   deviceCode: string;
   currentPoint = 0;
   playbackLoading = false;
-  carSpeedBase = 1;
+  carSpeedBase = BASEINFO.carSpeedBase;
   isRunning: boolean;
   tableData: Array<QueryVehicleTrajectoryArrayListReturn> = [];
   total = 0;
@@ -32,6 +32,10 @@ export class IPositionMonitorMapbtnDrivingLineState {
     [116.484648, 39.999861]
   ];
 }
+
+export const BASEINFO = {
+  carSpeedBase: 20
+};
 
 export type IPositionMonitorMapbtnDrivingProps = {
   mapbtnDrivingVisible: boolean;

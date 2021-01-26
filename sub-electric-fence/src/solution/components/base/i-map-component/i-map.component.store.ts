@@ -76,7 +76,6 @@ export function useIMapStore(mapProps: TIMapProps) {
   }, [permanentPlaceList]);
 
   //实时追踪的car,car会在最后一个点停下来
-  // 这个地方会进行轨迹修复
   useEffect(() => {
     if (mapProps.carLine) {
       if (carLineMarkerInfo.current) {
@@ -183,8 +182,20 @@ export function useIMapStore(mapProps: TIMapProps) {
         // 暂停显示当前车辆信息
         carLineMarkerInfo.current.pauseMove();
         const position = havePassedArr.current[havePassedArr.current.length - 1];
-
-        IMAP.showCarInfo(mapProps.drivingLineData, map.current, { position }, openInfoWinCar);
+        let nextPosition: { lng: number; lat: number } = { lng: 0, lat: 0 },
+          satellitesNum = 0;
+        const pointList = mapProps.drivingLineData.pointList;
+        if (havePassedArr.current.length > 1) {
+          nextPosition = havePassedArr.current[havePassedArr.current.length - 2];
+          pointList.map(item => {
+            if (item.coordinates[0] == nextPosition.lng) {
+              satellitesNum = item.satellitesNum;
+            }
+          });
+        } else {
+          satellitesNum = pointList[pointList.length - 1].satellitesNum;
+        }
+        IMAP.showCarInfo(mapProps.drivingLineData, map.current, { position, satellitesNum }, openInfoWinCar);
       } else {
         if (infoWindowInfo.current) {
           infoWindowInfo.current.close();
@@ -289,7 +300,7 @@ export function useIMapStore(mapProps: TIMapProps) {
       deviceState: deviceInfo?.isOnline ? '在线' : `离线 ${deviceInfo?.durationTime}h`,
       lalg: `${marker.position[0]}, ${marker.position[1]}`,
       place: '转换地址中...',
-      // satellitesNum,
+      // satellitesNum: '强',
       positionTime: deviceInfo.positionTime
     };
     infoWindow.setInfoTplData(data);
@@ -308,7 +319,8 @@ export function useIMapStore(mapProps: TIMapProps) {
   function openInfoWinCar(markerInfo: any, map: any, marker: any, infoWindow: any) {
     const { plateNo, vinNo, ownerName, deviceCode, isOnline, durationTime, lastLocationTime } = markerInfo;
     let bindDeviceCode = '',
-      bindTypeName = '';
+      bindTypeName = '',
+      satellitesNumText = '弱';
     if (Array.isArray(deviceCode)) {
       // 追踪里面其实是一个数组,取第一位
       bindDeviceCode = deviceCode[0].deviceCode;
@@ -318,19 +330,30 @@ export function useIMapStore(mapProps: TIMapProps) {
       bindDeviceCode = deviceCode.deviceCode;
       bindTypeName = deviceCode.typeName;
     }
+    if (marker.satellitesNum || marker.satellitesNum == 0) {
+      satellitesNumText = marker.satellitesNum > 4 ? '强' : '弱';
+    }
+
+    const data = {
+      ownerName: ownerName || '无',
+      plateNo: plateNo || '无',
+      vinNo: vinNo || '无',
+      deviceCode: bindDeviceCode || '无',
+      typeName: bindTypeName || '无',
+      // vehicleState: isRunning ? '动态' : '静止' + ' ' + deviceInfo.speed + 'km/h',
+      deviceState: isOnline ? '在线' : `离线 ${durationTime}h`,
+      lalg: `${marker.position.lng}, ${marker.position.lat}`,
+      place: '地址转换中...',
+      satellitesNum: satellitesNumText,
+      positionTime: lastLocationTime
+    };
+    infoWindow.setInfoTplData(data);
+    infoWindow.open(map, marker.position);
 
     regeoCode([marker.position.lng, marker.position.lat]).then(place => {
       infoWindow.setInfoTplData({
-        ownerName: ownerName || '无',
-        plateNo: plateNo || '无',
-        vinNo: vinNo || '无',
-        deviceCode: bindDeviceCode || '无',
-        typeName: bindTypeName || '无',
-        // vehicleState: isRunning ? '动态' : '静止' + ' ' + deviceInfo.speed + 'km/h',
-        deviceState: isOnline ? '在线' : `离线 ${durationTime}h`,
-        lalg: `${marker.position.lng}, ${marker.position.lat}`,
-        place,
-        positionTime: lastLocationTime
+        ...data,
+        place
       });
     });
     infoWindowInfo.current = infoWindow;
