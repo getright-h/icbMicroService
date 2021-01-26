@@ -7,11 +7,8 @@ import { Observable } from 'rxjs';
 export interface OrderReportManage {
   // 你的抽象方法，具体在 Service 中实现
   queryResidentPagedList(params: ReportAlarmStatisticsInput): Observable<{ dataList: any[]; total: number }>;
-  queryMonitorAlarmInfoPagedList(params: ReportAlarmStatisticsInput): Observable<boolean>;
   queryReportAlarmStatistics(params: ReportAlarmStatisticsInput): Observable<{ data: any[]; total: number }>;
-  queryResidentPagedList(params: ReportAlarmStatisticsInput): Observable<{ dataList: any[], total: number }>;
   queryMonitorAlarmInfoPagedList(params: ReportAlarmStatisticsInput): Observable<boolean>;
-  queryReportAlarmStatistics(params: ReportAlarmStatisticsInput): Observable<{ data: any[], total: number }>;
   queryReportAlarmStatisticsDetail(params: { deviceCode: string; alarmType: string }): Observable<boolean>;
   queryAlarmOriginalPagedList(params: ReportAlarmStatisticsInput): Observable<boolean>;
 }
