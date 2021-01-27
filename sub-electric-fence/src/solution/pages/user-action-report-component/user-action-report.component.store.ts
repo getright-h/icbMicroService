@@ -25,7 +25,7 @@ export function useUserActionReportStore() {
       document.getElementsByTagName('html')[0].style['font-size'] = `${(window.innerWidth / 2500) * 15}px`;
     }
     initMap('locationMap');
-    bindScrollEvents();
+    // bindScrollEvents();
   }, []);
 
   function bindScrollEvents() {

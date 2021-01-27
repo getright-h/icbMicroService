@@ -312,7 +312,7 @@ export default function UserActionReportComponent() {
       ></div>
       <div style={{ visibility: loading ? 'hidden' : 'visible' }}>
         {renderSubHeader()}
-        {tabHeaders()}
+        {/* {tabHeaders()} */}
         {functionalDomain()}
         <div id="print" className={style.userActionReportComponent} style={{ fontSize: `${fontSize}px` }}>
           {baseInfo()}
