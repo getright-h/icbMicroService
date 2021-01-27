@@ -100,7 +100,6 @@ export function usePositionMonitorMapbtnDrivingLineStore(reduxState: TPositionMo
     if (!value[0] && !value[1]) {
       value = undefined;
     }
-    console.log(value);
 
     setStateWrap({
       timeInfo: value,
@@ -141,7 +140,6 @@ export function usePositionMonitorMapbtnDrivingLineStore(reduxState: TPositionMo
           if (!tanslateLngLat) {
             tanslateLngLat = await regeoCode(value.coordinates);
           }
-          console.log('tanslateLngLat', tanslateLngLat);
 
           item.coordinates = tanslateLngLat as any;
         }

@@ -96,7 +96,7 @@ export function useUserActionReportStore() {
     setStateWrap({
       loading: true
     });
-    orderReportService.queryReportTraffic({ strValue: 'LSGUL83L3HA117031' }).subscribe(async res => {
+    orderReportService.queryReportTraffic({ strValue: state.deviceCode }).subscribe(async res => {
       setStateWrap({
         actionData: res,
         loading: false

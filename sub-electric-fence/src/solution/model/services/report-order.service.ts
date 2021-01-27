@@ -8,6 +8,7 @@ import {
   AlarmTypeList,
   ReportMonitorAlarmGroupInput
 } from '../dto/report-order.dto';
+import moment from 'moment';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
 import { DepUtil } from '~/framework/aop/inject';
@@ -81,8 +82,8 @@ export class OrderReportService implements OrderReportManage {
     beginTime?: string;
     endTime?: string;
   }): Observable<QueryReportTrafficReturn> {
-    // const time = moment().format('YYYY-MM-DD');
-    const time = '2021-01-23';
+    const time = moment().format('YYYY-MM-DD');
+    // const time = '2021-01-23';
     const timeInfo = [time + ' 00:00:00', time + ' 23:59:59'];
     // params = { ...params, beginTime: formatToUnix(timeInfo[0]), endTime: formatToUnix(timeInfo[1]) };
     params = { ...params, beginTime: timeInfo[0], endTime: timeInfo[1] };
