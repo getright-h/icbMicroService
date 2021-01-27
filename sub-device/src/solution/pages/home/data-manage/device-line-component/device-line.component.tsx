@@ -103,7 +103,7 @@ export default function DeviceLineComponent() {
   return (
     <div className={style.deviceLine}>
       <IHeaderTitleComponent pageName={'设备路线表'} className={'flexJusBetw'}>
-        {<Button>批量导出</Button>}
+        {/* {<Button>批量导出</Button>} */}
       </IHeaderTitleComponent>
       <TablePageTelComponent
         selectItems={renderSelectItems()}
