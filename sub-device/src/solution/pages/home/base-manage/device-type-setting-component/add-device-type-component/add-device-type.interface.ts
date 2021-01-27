@@ -5,6 +5,7 @@
 import { IAddDeviceTypeDTO } from '~model/dto/device-type.dto';
 export class IAddDeviceTypeState {
   imageList: any[] = [];
+  typeList: any[] = [];
   searchForm: IAddDeviceTypeDTO = {};
   submitLoading: boolean;
   visible: boolean;

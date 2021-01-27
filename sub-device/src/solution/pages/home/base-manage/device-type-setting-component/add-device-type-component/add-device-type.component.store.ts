@@ -5,6 +5,7 @@ import { DeviceTypeService } from '~/solution/model/services/device-type.service
 import { useEffect } from 'react';
 import { Subscription } from 'rxjs';
 import { Form } from 'antd';
+import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 export function useAddDeviceTypeStore(props: IAddDeviceType) {
   const { state, setStateWrap } = useStateStore(new IAddDeviceTypeState());
   const deviceTypeService: DeviceTypeService = new DeviceTypeService();
@@ -62,8 +63,29 @@ export function useAddDeviceTypeStore(props: IAddDeviceType) {
     );
   }
 
+  function getTypesList() {
+    deviceTypeService.getTypesList().subscribe(
+      (res: any) => {
+        setStateWrap({ typeList: res.data });
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    );
+  }
+
+  function checkAllTypes(e: CheckboxChangeEvent) {
+    if (e.target.checked) {
+      const arr = state.typeList.map(o => o.cmdCode);
+      form.setFieldsValue({ cmdIds: arr });
+    } else {
+      form.setFieldsValue({ cmdIds: undefined });
+    }
+  }
+
   useEffect(() => {
     form.resetFields();
+    getTypesList();
     setStateWrap({
       searchForm: props.data || {},
       imageList: props.data.image || []
@@ -74,5 +96,5 @@ export function useAddDeviceTypeStore(props: IAddDeviceType) {
       updateDeviceTypeSubscription && updateDeviceTypeSubscription.unsubscribe();
     };
   }, []);
-  return { state, form, onSubmit, alertDeviceType };
+  return { state, form, onSubmit, alertDeviceType, checkAllTypes };
 }

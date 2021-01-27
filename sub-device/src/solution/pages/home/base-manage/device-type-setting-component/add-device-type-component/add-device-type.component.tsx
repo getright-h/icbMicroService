@@ -1,13 +1,13 @@
 import * as React from 'react';
 import style from './add-device-type.component.less';
 import { useAddDeviceTypeStore } from './add-device-type.component.store';
-import { Modal, Form, Input, Radio } from 'antd';
+import { Modal, Form, Input, Radio, Select, Divider, Checkbox } from 'antd';
 import { ISelectLoadingComponent, IUploadImgComponent } from '~framework/components/component.module';
 import { IAddDeviceType } from './add-device-type.interface';
 
 export default function AddDeviceTypeModalComponent(props: IAddDeviceType) {
-  const { state, form, onSubmit } = useAddDeviceTypeStore(props);
-  const { imageList = [], submitLoading } = state;
+  const { state, form, onSubmit, checkAllTypes } = useAddDeviceTypeStore(props);
+  const { imageList = [], submitLoading, typeList } = state;
   const { visible, close, data } = props;
 
   const querySupplierList = ISelectLoadingComponent({
@@ -40,18 +40,30 @@ export default function AddDeviceTypeModalComponent(props: IAddDeviceType) {
           </Form.Item>
         </div>
         <div className={style.rowList}>
-          <Form.Item name="cmdId" label="指令类型" rules={[{ required: true }]}>
-            <ISelectLoadingComponent
-              width={'200px'}
-              allowClear={false}
-              reqUrl="getTypesList"
+          <Form.Item name="cmdIds" label="指令类型" rules={[{ required: true }]}>
+            <Select
+              style={{ width: '200px' }}
+              mode="multiple"
+              maxTagCount={5}
+              allowClear
               placeholder="请选择指令类型"
-              getCurrentSelectInfo={(value: any, option: any) => {
-                const { info = {} } = option;
-                const { cmdCode = '' } = info;
-                form.setFieldsValue({ cmdId: cmdCode });
-              }}
-            />
+              dropdownRender={menu => (
+                <div>
+                  {menu}
+                  <Divider style={{ margin: '2px 0' }} />
+                  <div style={{ padding: '4px 8px 8px 8px' }}>
+                    <Checkbox onChange={checkAllTypes}>全选</Checkbox>
+                  </div>
+                </div>
+              )}
+            >
+              {typeList &&
+                typeList.map(type => (
+                  <Select.Option key={type.cmdCode} value={type.cmdCode}>
+                    {type.cmdName}
+                  </Select.Option>
+                ))}
+            </Select>
           </Form.Item>
           <Form.Item label="定位方式" name={'locationStyle'}>
             <Input placeholder={'请输入'}></Input>
