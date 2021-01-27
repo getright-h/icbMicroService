@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { formatStayTime } from './permanent-list.util';
 
-export function AlarmParameterColumn(callbackAction: Function) {
+export function AlarmParameterColumn(sortInfo: { key: string; type: string }, callbackAction: Function) {
   return [
     {
       title: '车主姓名',
@@ -25,17 +25,20 @@ export function AlarmParameterColumn(callbackAction: Function) {
     {
       title: '到访次数',
       dataIndex: 'stayCount',
-      sorter: (a: any, b: any) => a.stayCount - b.stayCount
+      sorter: (a: any, b: any) => a.stayCount - b.stayCount,
+      sortOrder: sortInfo?.key === 'stayCount' && sortInfo?.type
     },
     {
       title: '平均停留时间',
       dataIndex: 'stayAvgText',
-      sorter: (a: any, b: any) => a.stayAvg - b.stayAvg
+      sorter: (a: any, b: any) => a.stayAvg - b.stayAvg,
+      sortOrder: sortInfo?.key === 'stayAvgText' && sortInfo?.type
     },
     {
       title: '停留总时长',
       dataIndex: 'stayDurationText',
-      sorter: (a: any, b: any) => a.stayDuration - b.stayDuration
+      sorter: (a: any, b: any) => a.stayDuration - b.stayDuration,
+      sortOrder: sortInfo?.key === 'stayDurationText' && sortInfo?.type
     },
     // {
     //   title: '停留次数',

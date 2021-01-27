@@ -16,7 +16,9 @@ export default React.memo((props: IITableProps) => {
       childrenColumnName: 'cool'
     },
     rowSelection,
-    showHeader = true
+    showHeader = true,
+    sortDirections = null,
+    onChange
   } = props;
   const { state } = useITableStore(props);
 
@@ -36,7 +38,9 @@ export default React.memo((props: IITableProps) => {
       dataSource={data}
       rowSelection={rowSelection}
       expandable={expandable}
+      onChange={onChange}
       columns={columns}
+      sortDirections={sortDirections}
       pagination={isPagination && state.pagination}
       rowKey={(row, index) => row.id || index}
     />

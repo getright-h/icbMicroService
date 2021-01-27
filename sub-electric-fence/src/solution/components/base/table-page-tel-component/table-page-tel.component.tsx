@@ -101,7 +101,6 @@ export class TablePageTelComponent extends React.Component<IProps> {
       isLeft
     } = this.props;
     const LayoutSider = this.renderSubHeader();
-    console.log(isFlex);
 
     return (
       <div className={style.pageContainer}>
