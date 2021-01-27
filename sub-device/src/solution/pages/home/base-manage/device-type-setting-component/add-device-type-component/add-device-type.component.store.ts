@@ -66,7 +66,7 @@ export function useAddDeviceTypeStore(props: IAddDeviceType) {
   function getTypesList() {
     deviceTypeService.getTypesList().subscribe(
       (res: any) => {
-        setStateWrap({ typeList: res.data });
+        setStateWrap({ typeList: res.data, isCheckAllTypes: props?.data?.cmdIds.length == res.data.length });
       },
       (error: any) => {
         console.log(error);
@@ -78,9 +78,15 @@ export function useAddDeviceTypeStore(props: IAddDeviceType) {
     if (e.target.checked) {
       const arr = state.typeList.map(o => o.cmdCode);
       form.setFieldsValue({ cmdIds: arr });
+      setStateWrap({ isCheckAllTypes: true });
     } else {
       form.setFieldsValue({ cmdIds: undefined });
+      setStateWrap({ isCheckAllTypes: false });
     }
+  }
+
+  function handleTypesSelect(value: string[]) {
+    setStateWrap({ isCheckAllTypes: value.length == state.typeList.length });
   }
 
   useEffect(() => {
@@ -96,5 +102,5 @@ export function useAddDeviceTypeStore(props: IAddDeviceType) {
       updateDeviceTypeSubscription && updateDeviceTypeSubscription.unsubscribe();
     };
   }, []);
-  return { state, form, onSubmit, alertDeviceType, checkAllTypes };
+  return { state, form, onSubmit, alertDeviceType, checkAllTypes, handleTypesSelect };
 }

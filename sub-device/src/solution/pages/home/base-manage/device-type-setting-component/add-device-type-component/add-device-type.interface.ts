@@ -9,6 +9,7 @@ export class IAddDeviceTypeState {
   searchForm: IAddDeviceTypeDTO = {};
   submitLoading: boolean;
   visible: boolean;
+  isCheckAllTypes = false;
 }
 
 export interface IAddDeviceType {
