@@ -78,7 +78,7 @@ class PluginFactory {
       new HtmlWebpackPlugin({
         filename: 'user-action-report-component.html', //http访问路径
         template: path.resolve(__dirname, '../public/index.simple.html'),
-        title: process.env.SITE_TITLE,
+        title: "今日用户行为报告",
         chunks: ['indexSimple']
       })
     )
