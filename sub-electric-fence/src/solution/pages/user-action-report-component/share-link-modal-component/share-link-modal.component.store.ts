@@ -29,7 +29,7 @@ export function useShareLinkModalStore(props: IShareLinkModalProps) {
     const url = canvas.toDataURL('image/png');
     const downloadLink = document.createElement('a');
     downloadLink.setAttribute('href', url);
-    downloadLink.setAttribute('download', 'userActionReport.jpg');
+    downloadLink.setAttribute('download', `userActionReport-${encodeURIComponent(props.searchKey)}.jpg`);
     downloadLink.click();
     ShowNotification.info('已下载二维码');
   }

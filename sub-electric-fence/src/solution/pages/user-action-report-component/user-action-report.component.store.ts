@@ -21,7 +21,7 @@ export function useUserActionReportStore() {
   const { searchKey }: any = useParams();
 
   useEffect(() => {
-    setStateWrap({ deviceCode: searchKey });
+    setStateWrap({ deviceCode: searchKey, curDeviceCode: searchKey });
     getCurrentPageData(searchKey);
     if (window.innerWidth <= 750) {
       document.getElementsByTagName('html')[0].style['font-size'] = `${(window.innerWidth / 750) * 15}px`;
@@ -60,6 +60,7 @@ export function useUserActionReportStore() {
   }
 
   function onValueSearch() {
+    setStateWrap({ curDeviceCode: state.deviceCode });
     getCurrentPageData();
   }
 

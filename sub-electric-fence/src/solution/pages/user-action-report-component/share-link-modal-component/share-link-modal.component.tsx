@@ -24,8 +24,8 @@ export default function ShareLinkModalComponent(props: IShareLinkModalProps) {
           />
         </TabPane>
         <TabPane tab="分享二维码" key="2">
-          <div className={style.qrCodeContainer}>
-            <IQrcodeComponent url={state.copyValue} qrRef={qrCodeRef} widthAndHeight={240} />
+          <div className={style.qrCodeContainer} ref={qrCodeRef}>
+            <IQrcodeComponent url={state.copyValue} widthAndHeight={240} />
             <Button type="primary" onClick={downloadQRCodeImg}>
               <DownloadOutlined />
               下载二维码

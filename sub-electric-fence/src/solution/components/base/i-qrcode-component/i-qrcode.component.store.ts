@@ -5,12 +5,16 @@ import QRCode from 'qrcodejs2';
 
 export function useIQrcodeStore(props: IIQrcodeProps) {
   const { state, setStateWrap } = useStateStore(new IIQrcodeState());
+  const qrRef = React.useRef();
   useEffect(() => {
+    while (qrRef.current.firstChild) {
+      qrRef.current.removeChild(qrRef.current.firstChild);
+    }
     initQrcode();
-  }, [props.url, props.qrRef]);
+  }, [props.url]);
 
   function initQrcode() {
-    new QRCode(props.qrRef.current, {
+    new QRCode(qrRef.current, {
       text: props.url,
       width: props.widthAndHeight || 300,
       height: props.widthAndHeight || 300,
@@ -19,5 +23,5 @@ export function useIQrcodeStore(props: IIQrcodeProps) {
       correctLevel: QRCode.CorrectLevel.H
     });
   }
-  return { state };
+  return { state, qrRef };
 }

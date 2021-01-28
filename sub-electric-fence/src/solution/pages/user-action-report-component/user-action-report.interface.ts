@@ -9,6 +9,7 @@ export class IUserActionReportState {
   loading = true;
   currentChoose: '';
   deviceCode = '';
+  curDeviceCode = '';
   isModalVisible = false;
   currentPoint: POINT_NUMBER = POINT_NUMBER.baseInfo;
   actionData: QueryReportTrafficReturn = new QueryReportTrafficReturn();

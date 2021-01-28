@@ -20,7 +20,7 @@ export default function UserActionReportComponent() {
     onStateChange,
     onValueSearch
   } = useUserActionReportStore();
-  const { fontSize, actionData, loading, deviceCode, isModalVisible, currentPoint } = state;
+  const { fontSize, actionData, loading, deviceCode, isModalVisible, currentPoint, curDeviceCode } = state;
   const {
     versionName,
     plateNo,
@@ -314,7 +314,7 @@ export default function UserActionReportComponent() {
           {alarmStatistics()}
         </div>
       </div>
-      <ShareLinkModalComponent searchKey={deviceCode} handleCancel={handleCancel} isModalVisible={isModalVisible} />
+      <ShareLinkModalComponent searchKey={curDeviceCode} handleCancel={handleCancel} isModalVisible={isModalVisible} />
     </div>
   );
 }
