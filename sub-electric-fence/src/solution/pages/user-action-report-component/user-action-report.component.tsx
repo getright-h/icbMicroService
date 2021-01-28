@@ -291,7 +291,7 @@ export default function UserActionReportComponent() {
   function renderSubHeader() {
     return (
       <div className={style.contentTitle}>
-        <h1>用户行为报表</h1>
+        <h1>今日用户行为报表</h1>
       </div>
     );
   }
