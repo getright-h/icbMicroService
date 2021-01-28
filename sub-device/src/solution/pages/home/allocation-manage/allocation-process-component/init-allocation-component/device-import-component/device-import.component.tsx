@@ -65,7 +65,9 @@ export default function DeviceImportComponent(props: IDeviceImportProps) {
           </Form.Item>
           <Form.Item name="type" label="添加方式" rules={[{ required: true }]}>
             <Radio.Group defaultValue={importType} onChange={e => changeImportType(e.target.value)}>
-              <Radio value={1}>导入excel</Radio>
+              <Radio disabled value={1}>
+                导入excel
+              </Radio>
               <Radio value={2}>手动添加</Radio>
             </Radio.Group>
           </Form.Item>
@@ -88,7 +90,7 @@ export default function DeviceImportComponent(props: IDeviceImportProps) {
               {errorTotal !== 0 && (
                 <Form.Item style={{ display: 'flex', justifyContent: 'center' }}>
                   <ITableComponent
-                    columns={columns}
+                    columns={columns.filter(_ => (importType == 2 ? _.title !== '表内行数' : _))}
                     pageIndex={currentIndex}
                     pageSize={5}
                     size={'small'}
