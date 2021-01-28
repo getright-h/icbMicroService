@@ -42,8 +42,8 @@ export default function VehicleManageComponent() {
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item name="mobile" label="查询车主">
-              <Input allowClear placeholder="手机号" />
+            <Form.Item name="strOwner" label="查询车主">
+              <Input allowClear placeholder="车主姓名/手机号" />
             </Form.Item>
           </Col>
           <Col span={8}>
