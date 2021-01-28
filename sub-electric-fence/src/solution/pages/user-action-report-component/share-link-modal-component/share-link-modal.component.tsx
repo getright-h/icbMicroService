@@ -8,7 +8,7 @@ import { IQrcodeComponent } from '~/solution/components/component.module';
 const { TabPane } = Tabs;
 const { Search } = Input;
 export default function ShareLinkModalComponent(props: IShareLinkModalProps) {
-  const { state, inputRef, qrCodeRef, onCopy, downloadQRCodeImg } = useShareLinkModalStore();
+  const { state, inputRef, qrCodeRef, onCopy, downloadQRCodeImg } = useShareLinkModalStore(props);
   const { handleCancel, isModalVisible } = props;
   return (
     <Modal title="分享" width={800} onOk={handleCancel} closable visible={isModalVisible} onCancel={handleCancel}>

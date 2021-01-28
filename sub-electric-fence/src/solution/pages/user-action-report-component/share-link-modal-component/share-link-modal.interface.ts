@@ -7,6 +7,7 @@ export class IShareLinkModalState {
 }
 
 export class IShareLinkModalProps {
+  searchKey: string;
   isModalVisible: boolean;
   handleCancel: () => void;
 }

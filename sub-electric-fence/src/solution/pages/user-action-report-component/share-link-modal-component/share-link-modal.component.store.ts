@@ -1,19 +1,18 @@
-import { IShareLinkModalState } from './share-link-modal.interface';
+import { IShareLinkModalProps, IShareLinkModalState } from './share-link-modal.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { ShowNotification } from '~/framework/util/common';
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 
-export function useShareLinkModalStore() {
+export function useShareLinkModalStore(props: IShareLinkModalProps) {
   const { state, setStateWrap } = useStateStore(new IShareLinkModalState());
   const inputRef = React.useRef(null);
   const qrCodeRef = React.useRef();
-  const location = useLocation();
   useEffect(() => {
+    const str = props.searchKey ? `#/report/${encodeURIComponent(props.searchKey)}` : '';
     setStateWrap({
-      copyValue: process.env.SHARELINK
+      copyValue: process.env.SHARELINK + str
     });
-  }, []);
+  }, [props.searchKey]);
   function onCopy() {
     inputRef.current.select();
     document.execCommand('copy');

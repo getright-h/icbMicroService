@@ -97,7 +97,7 @@ export class OrderReportService implements OrderReportManage {
           data.currentAddressDetail = await IMAP.covertPointToAddress(longitudeLatitude);
         }
         // 定位点
-        data.pointList = data.pointList.map((item: PointList) => {
+        data.pointList = data.pointList?.map((item: PointList) => {
           item.coordinates = IMAP.initLonlat(item.coordinates[0], item.coordinates[1]);
           return item;
         });
@@ -134,7 +134,7 @@ export class OrderReportService implements OrderReportManage {
         data.pointPassList?.unshift(totalInfo);
 
         // 长驻点
-        data.residentList = data.residentList.map((item: ResidentList) => {
+        data.residentList = data.residentList?.map((item: ResidentList) => {
           const LA = IMAP.initLonlat(item.longitude, item.latitude);
           item.longitude = LA[0];
           item.latitude = LA[1];
@@ -143,7 +143,7 @@ export class OrderReportService implements OrderReportManage {
         });
 
         // 报警提醒
-        data.alarmTypeList = data.alarmTypeList.map((item: AlarmTypeList) => {
+        data.alarmTypeList = data.alarmTypeList?.map((item: AlarmTypeList) => {
           item.alarmList = item.alarmList.map(itemChild => {
             const LA = IMAP.initLonlat(itemChild.longitude, itemChild.latitude);
             itemChild.longitude = LA[0];

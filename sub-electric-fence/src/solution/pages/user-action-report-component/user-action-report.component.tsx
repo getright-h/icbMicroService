@@ -5,6 +5,7 @@ import { POINT_NUMBER, tabHeaderConst, userInfoConst } from './user-action-repor
 import { IMapComponent } from '~/solution/components/component.module';
 import { REPORT_UTIL } from '~/solution/shared/util/report-manage.util';
 import ShareLinkModalComponent from './share-link-modal-component/share-link-modal.component';
+import moment from 'moment';
 
 export default function UserActionReportComponent() {
   const {
@@ -194,20 +195,20 @@ export default function UserActionReportComponent() {
               <div className={style.driveInfo}>
                 <div></div>
                 <strong>行驶里程</strong>
-                {item.mileage}
+                {Number(item.mileage).toFixed(2) + ' KM'}
               </div>
               <div className={style.locationInfo}>
                 <div></div>
                 <div>
                   <span>{item.startAddress}</span>
-                  <span>{item.startTime}</span>
+                  <span>{moment(item.startTime).format('YYYY-MM-DD hh:mm:ss')}</span>
                 </div>
               </div>
               <div className={style.locationInfo}>
                 <div></div>
                 <div>
                   <span>{item.endAddress}</span>
-                  <span>{item.endTime}</span>
+                  <span>{moment(item.endTime).format('YYYY-MM-DD hh:mm:ss')}</span>
                 </div>
               </div>
               <div className={style.corner}>{!index ? '全' : '分'}</div>
@@ -237,15 +238,17 @@ export default function UserActionReportComponent() {
         {itemHeader('常驻地点')}
         <IMapComponent {...alwaysStopProps} />
         <div className={style.stopMarkersDetail}>
-          {residentList?.slice(0, 3).map((item: any, index: number) => (
-            <div className={style.stopMarkerInfo} key={index}>
-              <div>{index + 1}</div>
-              <div>
-                <span>总时长：{REPORT_UTIL.formatStayTime(item.time)}</span>
-                <span>{item.address}</span>
-              </div>
-            </div>
-          ))}
+          {residentList?.length
+            ? residentList?.slice(0, 3).map((item: any, index: number) => (
+                <div className={style.stopMarkerInfo} key={index}>
+                  <div>{index + 1}</div>
+                  <div>
+                    <span>总时长：{REPORT_UTIL.formatStayTime(item.time)}</span>
+                    <span>{item.address}</span>
+                  </div>
+                </div>
+              ))
+            : '暂无常驻地点'}
         </div>
       </div>
     );
@@ -253,45 +256,34 @@ export default function UserActionReportComponent() {
 
   // 车辆24h报警统计
   function alarmStatistics() {
-    const trupeData = {
-      alarmList: [
-        {
-          latitude: 30.58235740661621,
-          longitude: 104.06546020507812,
-          time: '2021-01-23 16:15:51'
-        }
-      ],
-      alarmTypeText: '电子围栏'
-    };
-
-    const mocaData = [];
-
-    for (let i = 0; i <= 52; i++) {
-      mocaData.push(trupeData);
-    }
-
     return (
       <div className={style.alarmStatistics} id="alarmStatistics" data-x>
         {itemHeader('24h报警统计')}
-        <div className={style.alarmStatisticsChart} ref={chartRef}></div>
-        <div className={style.alarmStatisticsDetail}>
-          {mocaData?.map((item: any, index: number) => (
-            <div className={style.alarmStatisticsInfo} key={index}>
-              <div></div>
-              <div>
-                <p>{item.alarmTypeText}</p>
-                {item.alarmList.map((itemChild: any, index: number) => {
-                  return (
-                    <>
-                      <p>{itemChild.address}</p>
-                      <p>{itemChild.time}</p>
-                    </>
-                  );
-                })}
-              </div>
+        {alarmTypeList?.length ? (
+          <React.Fragment>
+            <div className={style.alarmStatisticsChart} ref={chartRef}></div>
+            <div className={style.alarmStatisticsDetail}>
+              {alarmTypeList?.map((item: any, index: number) => (
+                <div className={style.alarmStatisticsInfo} key={index}>
+                  <div></div>
+                  <div>
+                    <p>{item.alarmTypeText}</p>
+                    {item.alarmList.map((itemChild: any, index: number) => {
+                      return (
+                        <>
+                          <p>{itemChild.address}</p>
+                          <p>{itemChild.time}</p>
+                        </>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </React.Fragment>
+        ) : (
+          <div className={style.alarmStatisticsDetail}>暂无报警</div>
+        )}
       </div>
     );
   }
@@ -322,7 +314,7 @@ export default function UserActionReportComponent() {
           {alarmStatistics()}
         </div>
       </div>
-      <ShareLinkModalComponent handleCancel={handleCancel} isModalVisible={isModalVisible} />
+      <ShareLinkModalComponent searchKey={deviceCode} handleCancel={handleCancel} isModalVisible={isModalVisible} />
     </div>
   );
 }
