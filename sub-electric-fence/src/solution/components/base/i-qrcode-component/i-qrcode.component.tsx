@@ -4,6 +4,6 @@ import { useIQrcodeStore } from './i-qrcode.component.store';
 import { IIQrcodeProps } from './i-qrcode.interface';
 
 export const IQrcodeComponent = React.memo((props: IIQrcodeProps) => {
-  const { state } = useIQrcodeStore(props);
-  return <div ref={props.qrRef}></div>;
+  const { state, qrRef } = useIQrcodeStore(props);
+  return <div ref={qrRef}></div>;
 });

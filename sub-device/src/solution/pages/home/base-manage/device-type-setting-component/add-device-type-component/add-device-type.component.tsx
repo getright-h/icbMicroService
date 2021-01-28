@@ -6,8 +6,8 @@ import { ISelectLoadingComponent, IUploadImgComponent } from '~framework/compone
 import { IAddDeviceType } from './add-device-type.interface';
 
 export default function AddDeviceTypeModalComponent(props: IAddDeviceType) {
-  const { state, form, onSubmit, checkAllTypes } = useAddDeviceTypeStore(props);
-  const { imageList = [], submitLoading, typeList } = state;
+  const { state, form, onSubmit, checkAllTypes, handleTypesSelect } = useAddDeviceTypeStore(props);
+  const { imageList = [], submitLoading, typeList, isCheckAllTypes } = state;
   const { visible, close, data } = props;
 
   const querySupplierList = ISelectLoadingComponent({
@@ -47,12 +47,15 @@ export default function AddDeviceTypeModalComponent(props: IAddDeviceType) {
               maxTagCount={5}
               allowClear
               placeholder="请选择指令类型"
+              onChange={handleTypesSelect}
               dropdownRender={menu => (
                 <div>
                   {menu}
                   <Divider style={{ margin: '2px 0' }} />
                   <div style={{ padding: '4px 8px 8px 8px' }}>
-                    <Checkbox onChange={checkAllTypes}>全选</Checkbox>
+                    <Checkbox checked={isCheckAllTypes} onChange={checkAllTypes}>
+                      全选
+                    </Checkbox>
                   </div>
                 </div>
               )}

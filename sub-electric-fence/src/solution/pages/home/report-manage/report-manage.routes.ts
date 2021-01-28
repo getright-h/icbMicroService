@@ -68,5 +68,11 @@ export const reportManageRoutes: IRoute[] = [
     component: ROUTERS.userActionReport,
     lazyload: true,
     exact: true
+  },
+  {
+    path: `${MODULE_PATH}/userActionReport/:searchKey`,
+    component: ROUTERS.userActionReport,
+    lazyload: true,
+    exact: true
   }
 ];

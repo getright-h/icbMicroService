@@ -8,6 +8,8 @@ import { OrderReportService } from '~/solution/model/services/report-order.servi
 import { AlarmTypeList } from '~/solution/model/dto/report-order.dto';
 import { jsPDF } from 'jspdf';
 import Html2canvas from 'html2canvas';
+import { useParams } from 'react-router-dom';
+import { ShowNotification } from '~/framework/util/common';
 declare const AMap: any;
 export function useUserActionReportStore() {
   const { state, setStateWrap } = useStateStore(new IUserActionReportState());
@@ -16,9 +18,11 @@ export function useUserActionReportStore() {
   const containerRef: MutableRefObject<HTMLDivElement> = useRef();
   const tabHeadersRef: MutableRefObject<HTMLDivElement> = useRef();
   const orderReportService: OrderReportService = useService(OrderReportService);
+  const { searchKey }: any = useParams();
 
   useEffect(() => {
-    getCurrentPageData();
+    setStateWrap({ deviceCode: searchKey, curDeviceCode: searchKey });
+    getCurrentPageData(searchKey);
     if (window.innerWidth <= 750) {
       document.getElementsByTagName('html')[0].style['font-size'] = `${(window.innerWidth / 750) * 15}px`;
     } else {
@@ -56,6 +60,7 @@ export function useUserActionReportStore() {
   }
 
   function onValueSearch() {
+    setStateWrap({ curDeviceCode: state.deviceCode });
     getCurrentPageData();
   }
 
@@ -115,11 +120,18 @@ export function useUserActionReportStore() {
       doc.save('用户行为分析表.pdf');
     }
   }
-  function getCurrentPageData() {
+  function getCurrentPageData(initKey?: string) {
     setStateWrap({
       loading: true
     });
-    orderReportService.queryReportTraffic({ strValue: state.deviceCode }).subscribe(async res => {
+    orderReportService.queryReportTraffic({ strValue: initKey ?? state.deviceCode }).subscribe(async res => {
+      if (!res.plateNo) {
+        setStateWrap({
+          loading: false
+        });
+        ShowNotification.error('该车辆不存在');
+        return;
+      }
       setStateWrap({
         actionData: res,
         loading: false
@@ -137,7 +149,7 @@ export function useUserActionReportStore() {
       res.pointPassList =
         res.pointPassList?.length > 1 &&
         (await Promise.all(
-          res.pointPassList?.map(async item => {
+          res.pointPassList?.map(async (item: any) => {
             item.startAddress = (await IMAP.covertPointToAddress([item.startLon, item.startLat])) as any;
             item.endAddress = (await IMAP.covertPointToAddress([item.endLon, item.endLat])) as any;
             return item;
@@ -147,16 +159,16 @@ export function useUserActionReportStore() {
       console.log('res.pointPassList  -====>>>>>>>>>>', res.pointPassList);
 
       res.residentList = await Promise.all(
-        res.residentList?.map(async item => {
+        res.residentList?.map(async (item: any) => {
           item.address = (await IMAP.covertPointToAddress([item.longitude, item.latitude])) as any;
           return item;
         })
       );
 
       res.alarmTypeList = await Promise.all(
-        res.alarmTypeList?.map(async item => {
+        res.alarmTypeList?.map(async (item: any) => {
           item.alarmList = await Promise.all(
-            item.alarmList.map(async itemChild => {
+            item.alarmList.map(async (itemChild: any) => {
               itemChild.address = (await IMAP.covertPointToAddress([itemChild.longitude, itemChild.latitude])) as any;
               return itemChild;
             })

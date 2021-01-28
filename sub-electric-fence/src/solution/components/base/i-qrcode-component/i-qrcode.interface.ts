@@ -5,6 +5,6 @@
 export class IIQrcodeState {}
 export class IIQrcodeProps {
   url: string;
-  qrRef: { current: HTMLDivElement };
+  // qrRef: { current: HTMLDivElement };
   widthAndHeight: number;
 }

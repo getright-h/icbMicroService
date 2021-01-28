@@ -4,6 +4,13 @@ export const appSimpleRoutes: IRoute[] = [
   {
     path: '',
     component: ROUTERS.userActionReport,
-    lazyload: true
+    lazyload: true,
+    exact: true
+  },
+  {
+    path: 'report/:searchKey',
+    component: ROUTERS.userActionReport,
+    lazyload: true,
+    exact: true
   }
 ];

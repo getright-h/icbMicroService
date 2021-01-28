@@ -18,7 +18,7 @@ function useECharts(
   }
 
   useEffect(() => {
-    renderChart();
+    chartRef.current && renderChart();
   }, [config]);
 
   useEffect(() => {
