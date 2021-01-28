@@ -124,7 +124,7 @@ export default function UserActionReportComponent() {
           <div></div>
           <span>车辆状态</span>
           <span>
-            {status} {Number(statusTime)}h
+            {status} {statusTime}
           </span>
         </div>
         <div className={style.carStateSignal}>
