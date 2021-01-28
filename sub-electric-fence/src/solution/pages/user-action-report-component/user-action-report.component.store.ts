@@ -131,7 +131,7 @@ export function useUserActionReportStore() {
         });
         map.current.setCenter([res.longitude, res.latitude]);
       }
-
+      console.log('res.pointPassList  -====>>>>>>>>>>', res.pointPassList);
       // 这个时候异步去进行地址转换
 
       res.pointPassList =
@@ -143,6 +143,8 @@ export function useUserActionReportStore() {
             return item;
           })
         ));
+
+      console.log('res.pointPassList  -====>>>>>>>>>>', res.pointPassList);
 
       res.residentList = await Promise.all(
         res.residentList?.map(async item => {
@@ -163,6 +165,7 @@ export function useUserActionReportStore() {
           return item;
         })
       );
+      console.log(2);
 
       setStateWrap({
         actionData: res

@@ -114,14 +114,15 @@ export class OrderReportService implements OrderReportManage {
         // 轨迹分段
         data.pointPassList = data.pointPassList?.map((item: PointPassList, index: number) => {
           // 这个时候说明要展示全路段，不然就展示个分路段
+          const itemCopy = JSON.parse(JSON.stringify(item));
           if (index == 0) {
-            totalInfo = item;
+            totalInfo = itemCopy;
           }
-          totalInfo.mileage += item.mileage;
+          totalInfo.mileage += itemCopy.mileage;
           if (index == data.pointPassList.length - 1) {
-            totalInfo.endLon = item.endLon;
-            totalInfo.endTime = item.endTime;
-            totalInfo.endLat = item.endLat;
+            totalInfo.endLon = itemCopy.endLon;
+            totalInfo.endTime = itemCopy.endTime;
+            totalInfo.endLat = itemCopy.endLat;
           }
           const startLA = IMAP.initLonlat(item.startLon, item.startLat);
           item.startLon = startLA[0];

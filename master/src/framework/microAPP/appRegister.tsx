@@ -33,7 +33,7 @@ async function registerMainApp(callback: (menuInfo: any) => void) {
       tokenKey,
       name: name,
       loader,
-      entry: isDev ? (isDevBuild ? onLineDevURL : localURL) : onLineURL,
+      entry: isDev ? (!isDevBuild ? onLineDevURL : localURL) : onLineURL,
       container: currentId,
       activeRule: `/#${path}`,
       props: { baseFuntion, name, routers: JSON.parse(JSON.stringify(children)), routerBase: `/#${path}`, useInfo }
