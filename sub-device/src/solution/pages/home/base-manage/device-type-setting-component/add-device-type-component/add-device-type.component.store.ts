@@ -66,7 +66,7 @@ export function useAddDeviceTypeStore(props: IAddDeviceType) {
   function getTypesList() {
     deviceTypeService.getTypesList().subscribe(
       (res: any) => {
-        setStateWrap({ typeList: res.data, isCheckAllTypes: props?.data?.cmdIds.length == res.data.length });
+        setStateWrap({ typeList: res.data, isCheckAllTypes: props?.data?.cmdIds?.length == res.data.length });
       },
       (error: any) => {
         console.log(error);
