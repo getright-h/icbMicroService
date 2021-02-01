@@ -34,5 +34,5 @@ export interface IITableProps {
     extra: TableCurrentDataSource<any>
   ) => void;
   changeTablePageIndex?: (page: number, pageSize?: number) => void;
-  sortDirections: Array<SortOrder>;
+  sortDirections?: Array<SortOrder>;
 }

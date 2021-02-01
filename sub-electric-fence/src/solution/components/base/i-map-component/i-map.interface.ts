@@ -20,6 +20,7 @@ export type TIMapProps = {
   id: string; // 当前地图的id
   controllerDirectiveModal?: (isClose: boolean, deviceCode: string) => void; // 根据不同的指令
   carSpeed?: number;
+  isShowStopMarkers?: boolean;
   permanentPlaceList?: any;
   needSearchAddress?: boolean;
   height?: string;

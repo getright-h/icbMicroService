@@ -5,16 +5,18 @@ import {
 } from './position-monitor-mapbtn-driving-line.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
 import moment from 'moment';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { PositionMonitorService } from '~/solution/model/services/position-monitor.service';
 import { TPositionMonitor } from '../position-monitor-redux/position-monitor-reducer';
 import { formatToUnix } from '~/solution/shared/util/common.util';
 import { QueryVehicleTrajectoryArrayListReturn } from '~/solution/model/dto/position-monitor.dto';
+import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 declare const AMap: any;
 export function usePositionMonitorMapbtnDrivingLineStore(reduxState: TPositionMonitor) {
   const { state, setStateWrap } = useStateStore(new IPositionMonitorMapbtnDrivingLineState());
   const { carSpeedBase, drivingLineData, deviceCode, timeInfo, tableData } = state;
   const { currentDoActionCarInfo } = reduxState;
+  const iMapRef = useRef(null);
   const positionMonitorService: PositionMonitorService = useService(PositionMonitorService);
   useEffect(() => {
     // 当前需要查看信息的车
@@ -176,7 +178,7 @@ export function usePositionMonitorMapbtnDrivingLineStore(reduxState: TPositionMo
       beginTime: timeInfo && timeInfo[0] ? formatToUnix(timeInfo[0]) : -1,
       endTime: timeInfo && timeInfo[1] ? formatToUnix(timeInfo[1]) : -1
     };
-    setStateWrap({ playbackLoading: true });
+    setStateWrap({ playbackLoading: true, isShowStopMarkers: true });
     positionMonitorService.queryVehicleHistoryTrajectory(params).subscribe(
       res => {
         setStateWrap({
@@ -197,6 +199,13 @@ export function usePositionMonitorMapbtnDrivingLineStore(reduxState: TPositionMo
       });
     });
   }
+
+  function showStopMarkers(value: CheckboxChangeEvent) {
+    setStateWrap({
+      isShowStopMarkers: value.target.checked
+    });
+  }
+
   return {
     state,
     changeTablePageIndex,
@@ -210,6 +219,8 @@ export function usePositionMonitorMapbtnDrivingLineStore(reduxState: TPositionMo
     setEndRunning,
     runCurrentPoint,
     getDeviceCode,
-    changeSliderProgress
+    changeSliderProgress,
+    iMapRef,
+    showStopMarkers
   };
 }

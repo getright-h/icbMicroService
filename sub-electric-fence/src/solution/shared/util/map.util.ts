@@ -435,7 +435,7 @@ export const IMAP = {
   },
 
   bindCommonMarkers(markers: any[], map: any) {
-    const mapMarkers = [];
+    const mapMarkers: any[] = [];
     markers?.forEach(item => {
       const circleMarker = new AMap.Marker({
         map,
@@ -451,6 +451,7 @@ export const IMAP = {
       });
       mapMarkers.push(circleMarker);
     });
+    return mapMarkers;
   },
   GPS: {
     PI: 3.14159265358979324,

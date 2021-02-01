@@ -1,7 +1,7 @@
 import * as React from 'react';
 import style from './position-monitor-mapbtn-driving-line.component.less';
 import { usePositionMonitorMapbtnDrivingLineStore } from './position-monitor-mapbtn-driving-line.component.store';
-import { Drawer, Select, Button, Slider } from 'antd';
+import { Drawer, Select, Button, Slider, Checkbox } from 'antd';
 import { IPositionMonitorMapbtnDrivingProps, SELECTDATECONST } from './position-monitor-mapbtn-driving-line.interface';
 import { IMapComponent, TimePickerComponent, ITableComponent } from '~/solution/components/component.module';
 import { BackwardOutlined, ForwardOutlined, PauseCircleOutlined, PlayCircleOutlined } from '@ant-design/icons';
@@ -12,6 +12,7 @@ export default React.memo((props: IPositionMonitorMapbtnDrivingProps) => {
   const { reduxState } = React.useContext(PositionMonitorContext);
   const {
     state,
+    iMapRef,
     changeTablePageIndex,
     onShowTableClick,
     changeDateTimeRange,
@@ -23,7 +24,8 @@ export default React.memo((props: IPositionMonitorMapbtnDrivingProps) => {
     runCurrentPoint,
     changeSliderProgress,
     getDeviceCode,
-    onExchangeCoordinates
+    onExchangeCoordinates,
+    showStopMarkers
   } = usePositionMonitorMapbtnDrivingLineStore(reduxState);
   const { currentDoActionCarInfo } = reduxState;
   const {
@@ -32,7 +34,8 @@ export default React.memo((props: IPositionMonitorMapbtnDrivingProps) => {
     playbackLoading,
     drivingLineData,
     stopMarkers,
-    currentPoint
+    currentPoint,
+    isShowStopMarkers
   } = state;
   const { isLoading, searchForm, tableData, total, showTable, timeInfo, isRunning, carSpeedBase, deviceCode } = state;
   const { pointList } = drivingLineData;
@@ -152,6 +155,9 @@ export default React.memo((props: IPositionMonitorMapbtnDrivingProps) => {
             <div className={style.controllerLineButton} onClick={onShowTableClick}>
               <span>{carSpeedBase !== 1 ? `${carSpeedBase}速播放` : '正常速度播放'}</span>
             </div>
+            <Checkbox checked={isShowStopMarkers} onChange={showStopMarkers}>
+              显示停留点
+            </Checkbox>
             <div className={style.controllerLineButton} onClick={onShowTableClick}>
               <Button>{showTable ? '关闭' : '展开'}轨迹列表</Button>
             </div>
@@ -179,9 +185,10 @@ export default React.memo((props: IPositionMonitorMapbtnDrivingProps) => {
         carSpeed: carSpeedBase,
         setEndRunning,
         runCurrentPoint,
-        currentPoint
+        currentPoint,
+        isShowStopMarkers
       }),
-      [carSpeedBase, isRunning, stopMarkers, drivingLineData, currentPoint]
+      [carSpeedBase, isRunning, stopMarkers, drivingLineData, currentPoint, isShowStopMarkers]
     );
     return (
       <div>

@@ -1,6 +1,6 @@
 import { IIMapState, TIMapProps } from './i-map.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useImperativeHandle } from 'react';
 import * as _ from 'lodash';
 import { IMAP } from '~/solution/shared/util/map.util';
 import { message } from 'antd';
@@ -36,7 +36,8 @@ export function useIMapStore(mapProps: TIMapProps) {
   const currentAllPoints = useRef([]);
   const infoWindowInfo: any = useRef();
   const finishedRun = useRef(false);
-
+  const stopPointMarkers = useRef({});
+  const stopPointsRef = useRef([]);
   // 常驻点
   const circleMarkers = useRef([]);
   const {
@@ -49,7 +50,8 @@ export function useIMapStore(mapProps: TIMapProps) {
     carSpeed,
     currentPoint,
     needRunDrivingLine = true,
-    permanentPlaceList
+    permanentPlaceList,
+    isShowStopMarkers
   } = mapProps;
   useEffect(() => {
     initMap(mapProps.needBaseController);
@@ -126,13 +128,31 @@ export function useIMapStore(mapProps: TIMapProps) {
         return item.coordinates;
       });
       polyline.current = IMAP.drawLine(map.current, carLine);
-
-      IMAP.bindCommonMarkers(stopPoints, map.current);
+      stopPointsRef.current = stopPoints;
+      stopPointMarkers.current = IMAP.bindCommonMarkers(stopPoints, map.current);
       map.current.setFitView();
       needRunDrivingLine && runCarUtil(carLine);
     }
   }, [mapProps.drivingLineData]);
 
+  useEffect(() => {
+    if (isShowStopMarkers && stopPointsRef.current?.length) {
+      stopPointMarkers.current = IMAP.bindCommonMarkers(stopPointsRef.current, map.current);
+    } else {
+      cleanStopPointMarkers();
+    }
+  }, [isShowStopMarkers]);
+
+  /**
+   *  清除当前停止的停留点
+   */
+  function cleanStopPointMarkers() {
+    map.current.remove(stopPointMarkers.current);
+  }
+  /**
+   * 轨迹上让车动起来的方法
+   * @param {any[]} carLine 轨迹线的经纬度
+   */
   function runCarUtil(carLine: any[]) {
     carLineMarkerInfo.current = new AMap.Marker({
       map: map.current,
@@ -255,7 +275,6 @@ export function useIMapStore(mapProps: TIMapProps) {
       }
     });
 
-    console.log('重绘界面啦', markersInfo);
     //开始画车走起
     locationCarMarkerListFlag.current = await IMAP.bindMarkerClick(
       markersInfo,
@@ -549,6 +568,7 @@ export function useIMapStore(mapProps: TIMapProps) {
     }
     isMouseToolVisible.current = !isMouseToolVisible.current;
   }
+
   return {
     state,
     satellite,

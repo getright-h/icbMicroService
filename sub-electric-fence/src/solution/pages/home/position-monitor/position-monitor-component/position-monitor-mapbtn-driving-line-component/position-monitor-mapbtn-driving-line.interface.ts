@@ -19,6 +19,7 @@ export class IPositionMonitorMapbtnDrivingLineState {
   playbackLoading = false;
   carSpeedBase = BASEINFO.carSpeedBase;
   isRunning: boolean;
+  isShowStopMarkers = true;
   tableData: Array<QueryVehicleTrajectoryArrayListReturn> = [];
   total = 0;
   showTable = false;
