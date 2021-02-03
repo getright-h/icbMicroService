@@ -11,6 +11,8 @@ export class IDeviceStockInState {
   };
   errorList: any[] = [];
   isErrorListVisible = false;
+  deviceImportList: any[] = [];
+  importType = 1;
 }
 /**
  * @export props变量定义和初始化
