@@ -43,6 +43,8 @@ const QUERY_USER_PAGED_LIST = 'approval/manage/queryUserPagedList';
 const QUERY_APPROVAL_PAGED_LIST = 'approval/manage/queryApprovalGroupPagedList';
 const QUERY_APPROVAL_FORM_TEMPLATE_PAGED_LIST = 'approval/manage/queryApprovalFormTemplatePagedList';
 const CMD_TYPES = 'gps/cmd/types';
+const QUERY_VEHICLE_SELECTED_PAGED_LIST = 'vehicle/manage/queryVehicleSelectedPagedList';
+
 @DepUtil.Injectable()
 export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
   @DepUtil.Inject(RequestService)
@@ -139,5 +141,9 @@ export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
   // 报警指令类型
   getTypesList(): Observable<{ data: IDirectiveReturn[]; total: number }> {
     return this.requestService.post(CMD_TYPES);
+  }
+  //车辆管理列表下拉框
+  queryVehicleSelectedPagedList(params: QueryVehiclePagedListParam): Observable<DrapChooseLoadingReturn> {
+    return this.requestService.post(QUERY_VEHICLE_SELECTED_PAGED_LIST, params);
   }
 }

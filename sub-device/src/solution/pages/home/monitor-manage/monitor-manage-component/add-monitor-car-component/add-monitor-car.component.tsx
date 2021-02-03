@@ -39,7 +39,7 @@ export default function AddMonitorCarComponent(props: IAddMonitorCarProps) {
     );
   }
   const queryVehicleList = ISelectLoadingComponent({
-    reqUrl: 'queryVehicleList',
+    reqUrl: 'queryVehicleSelectedPagedList',
     placeholder: '请输入车架号',
     searchKeyName: 'strValue',
     mode: 'multiple',
