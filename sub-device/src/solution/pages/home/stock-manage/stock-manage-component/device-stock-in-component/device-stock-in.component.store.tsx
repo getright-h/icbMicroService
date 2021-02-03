@@ -7,6 +7,8 @@ import { ShowNotification } from '~/framework/util/common';
 import { MutableRefObject, useContext, useRef } from 'react';
 import { StockListManageContext } from '../stock-manage.component';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { RadioChangeEvent } from 'antd/lib/radio';
+import axios from 'axios';
 
 export function useDeviceStockInStore(props: IDeviceStockInProps) {
   const { state, setStateWrap } = useStateStore(new IDeviceStockInState());
@@ -39,6 +41,9 @@ export function useDeviceStockInStore(props: IDeviceStockInProps) {
       storeId: reduxState.currentSelectNode.id,
       storeName: reduxState.currentSelectNode.name
     };
+    if (state.importType === 2) {
+      confirmFormRef.current.deviceList = [...state.deviceImportList];
+    }
     stockManageService.materialStockIn(confirmFormRef.current).subscribe(
       (res: any) => {
         if (res.errorDeviceList.length > 0) {
@@ -95,5 +100,34 @@ export function useDeviceStockInStore(props: IDeviceStockInProps) {
     props.close?.(isSuccess);
   }
 
-  return { state, form, reduxState, selfSubmit, selfClose, getCurrentSelectInfo, callbackAction };
+  function changeImportType(e: RadioChangeEvent) {
+    setStateWrap({ importType: e.target.value });
+  }
+
+  function customRequest(item: any) {
+    const data = new FormData();
+    data.append('file', item.file);
+    return axios
+      .post(item.action, data, {
+        onUploadProgress: ({ total, loaded }) => {
+          item.onProgress({ percent: Number(Math.round((loaded / total) * 100).toFixed(2)) }, item.file);
+        }
+      })
+      .then(({ data: response }) => {
+        item.onSuccess(response, item.file);
+        setStateWrap({ deviceImportList: response.data });
+      });
+  }
+
+  return {
+    state,
+    form,
+    reduxState,
+    selfSubmit,
+    selfClose,
+    getCurrentSelectInfo,
+    callbackAction,
+    changeImportType,
+    customRequest
+  };
 }
