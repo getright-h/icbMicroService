@@ -50,7 +50,7 @@ export default function ISelectLoadingComponent(props: IISelectLoadingProps) {
                 {`${item.name}（${item.organizationName}）`}
               </Select.Option>
             );
-          } else if (reqUrl === 'queryVehicleList') {
+          } else if (reqUrl === 'queryVehicleList' || reqUrl === 'queryVehicleSelectedPagedList') {
             return (
               <Select.Option value={item.vinNo} key={item.id} info={item}>
                 {item.vinNo}
