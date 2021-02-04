@@ -22,26 +22,31 @@ export function usePositionMonitorDrawerLeftStore() {
 
   useEffect(() => {
     if (currentSelectNode?.key) {
+      console.log('currentSelectNode?.key', currentSelectNode?.key);
+
       setStateWrap(
         {
           searchForm: {
             ...searchForm,
-            organizationId: currentSelectNode.key + ''
+            organizationId: currentSelectNode.key + '',
+            vehicleGroupId: undefined
           }
         },
-        (state: IPositionMonitorDrawerLeftState) => {
-          queryVehicleInfoPagedList(state.searchForm);
+        (newState: IPositionMonitorDrawerLeftState) => {
+          queryVehicleInfoPagedList(newState.searchForm);
         }
       );
       queryVehicleGroupList();
     }
-  }, [currentSelectNode]);
+  }, [currentSelectNode?.key]);
 
   function onCurrentVehicleChange(value: string) {
     setStateWrap(
-      { searchForm: { ...state.searchForm, vehicleGroupId: value, index: 1 } },
-      (state: IPositionMonitorDrawerLeftState) => {
-        queryVehicleInfoPagedList(state.searchForm);
+      { searchForm: { ...searchForm, vehicleGroupId: value, index: 1 } },
+      (newState: IPositionMonitorDrawerLeftState) => {
+        console.log(searchForm);
+
+        queryVehicleInfoPagedList(newState.searchForm);
       }
     );
     // 去查询相应的列表信息
@@ -56,7 +61,9 @@ export function usePositionMonitorDrawerLeftStore() {
 
   //根据监控组、车架号、车主电话、车牌号、设备号信息查询车辆信息
   function queryVehicleInfoPagedList(state?: IQueryVehicleInfoPagedListParams) {
-    setStateWrap({ tableLoading: true });
+    setTimeout(() => {
+      setStateWrap({ tableLoading: true });
+    }, 0);
     const formInfo = JSON.parse(JSON.stringify(state || getState().searchForm));
     if (formInfo.vehicleGroupId) {
       formInfo.VehicleGroupOrganizationId = JSON.parse(JSON.stringify(formInfo.organizationId));

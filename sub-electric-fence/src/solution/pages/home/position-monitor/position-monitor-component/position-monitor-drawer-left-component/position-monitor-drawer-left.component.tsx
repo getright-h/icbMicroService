@@ -37,6 +37,7 @@ export const PositionMonitorDrawerLeftComponent = () => {
     }),
     [searchForm.index, searchForm.size, tableData, selectedRowKeys, total, tableLoading]
   );
+  console.log('searchForm.vehicleGroupId', searchForm.vehicleGroupId);
 
   function DrawerContent() {
     return (
