@@ -81,7 +81,7 @@ export function useMoveTemplateStore(props: IMoveTemplateProps) {
 
   function getAllTemplate() {
     // 获取所有的模板
-    approvalManageService.queryApprovalFormListByGroupId({ groupId: '' }).subscribe(res => {
+    approvalManageService.queryApprovalFormListByGroupId({ groupId: props.groupId }).subscribe(res => {
       setStateWrap({
         allTemplate: res
       });

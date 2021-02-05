@@ -26,6 +26,7 @@ export class IMoveTemplateState {
 export class IMoveTemplateProps {
   addMoveTemplateVisible = false;
   closeMoveTemplateModal?: (isRefresh?: boolean) => void;
+  groupId?: string;
   node?: IcurrentSelectNode;
 }
 

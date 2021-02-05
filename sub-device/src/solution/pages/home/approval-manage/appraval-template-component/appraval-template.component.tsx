@@ -92,7 +92,8 @@ export default function AppravalTemplateComponent() {
   function RenderMovingTemplateModal() {
     const addMoveTemplateProps = {
       addMoveTemplateVisible,
-      closeMoveTemplateModal
+      closeMoveTemplateModal,
+      groupId: (currentSelectNode.node && currentSelectNode.node.key) || ''
     };
     return addMoveTemplateVisible && <MoveTemplateComponent {...addMoveTemplateProps}></MoveTemplateComponent>;
   }
