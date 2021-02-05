@@ -175,6 +175,13 @@ export default function DeviceStockInComponent(props: IDeviceStockInProps) {
                   <Tooltip className={style.aLink} placement="right" arrowPointAtCenter title="仅导入最新上传的文件">
                     <InfoCircleOutlined className={style.primaryIcon} />
                   </Tooltip>
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href="http://file.test.i-cbao.com:88/uploads/pictures/2021/0205/a4fa2f5b7efa23c1.xlsx"
+                  >
+                    下载模板
+                  </a>
                 </Form.Item>
               </Col>
               <Col span={24}>
