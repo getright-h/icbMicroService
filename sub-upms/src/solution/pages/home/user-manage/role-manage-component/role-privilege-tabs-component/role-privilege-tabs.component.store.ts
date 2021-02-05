@@ -1,6 +1,6 @@
 import { IRolePrivilegeTabsState, IRolePrivilegeTabsProps } from './role-privilege-tabs.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
-import { MutableRefObject, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { ShowNotification } from '~/framework/util/common';
 import { RoleManageService } from '~/solution/model/services/role-manage.service';
 import _ from 'lodash';
@@ -9,13 +9,15 @@ import { MenuRelationItem, MenuTreeNode, PrivilegeGroup, PrivilegeItem } from '~
 export function useRolePrivilegeTabsStore(props: IRolePrivilegeTabsProps) {
   const { state, setStateWrap } = useStateStore(new IRolePrivilegeTabsState());
   const roleManageService: RoleManageService = useService(RoleManageService);
-  const checkedNodesRef: MutableRefObject<MenuTreeNode[]> = useRef([]);
-  const treeDataRef: MutableRefObject<MenuTreeNode[]> = useRef([]);
+  const checkedNodesRef = useRef<MenuTreeNode[]>([]);
+  const treeDataRef = useRef<MenuTreeNode[]>([]);
+  const halfCheckedKeysRef = useRef<string[]>([]);
 
   // 所选角色变化时若系统id变化，获取新的权限组
   useEffect(() => {
     if (props.roleId && props.systemId) {
       checkedNodesRef.current = [];
+      halfCheckedKeysRef.current = [];
       initForm();
       getTreeData();
     }
@@ -61,8 +63,12 @@ export function useRolePrivilegeTabsStore(props: IRolePrivilegeTabsProps) {
         menuLength++;
         expandedKeys.push(node.key);
         if (node.isMenuSelected) {
-          checkedKeys.push(node.key);
-          checkedNodes.push(node);
+          if (node.children.length) {
+            halfCheckedKeysRef.current.push(node.key);
+          } else {
+            checkedKeys.push(node.key);
+            checkedNodes.push(node);
+          }
         }
         if (node.children.length) {
           expandMethod(node.children);
@@ -135,6 +141,7 @@ export function useRolePrivilegeTabsStore(props: IRolePrivilegeTabsProps) {
       });
     }
     checkedNodesRef.current = checkedNodes;
+    halfCheckedKeysRef.current = info.halfCheckedKeys;
     setStateWrap({ checkedKeys, checkedNodes, checkAllMenu: false });
   }
 
@@ -178,6 +185,23 @@ export function useRolePrivilegeTabsStore(props: IRolePrivilegeTabsProps) {
   }
 
   function submitMenuRelation() {
+    function expandMethod(arr: MenuTreeNode[]) {
+      arr.forEach((node: MenuTreeNode) => {
+        if (halfCheckedKeysRef.current.includes(node.key)) {
+          const privilegeList: PrivilegeItem[] = [];
+          const newNode = {
+            menuId: node.key,
+            menuName: node.title,
+            privilegeList
+          };
+          submitNodes.push(newNode);
+        }
+        if (node.children.length) {
+          expandMethod(node.children);
+        }
+      });
+    }
+
     setStateWrap({ isLoading: true });
     const { roleId, systemId } = props;
     const { checkedNodes } = state;
@@ -194,6 +218,9 @@ export function useRolePrivilegeTabsStore(props: IRolePrivilegeTabsProps) {
       };
       submitNodes.push(newNode);
     });
+    if (!!halfCheckedKeysRef.current.length) {
+      expandMethod(treeDataRef.current);
+    }
     roleManageService.submitMenuRelation({ roleId, systemId, menuList: submitNodes }).subscribe(
       (res: any) => {
         ShowNotification.success('编辑权限成功！');
