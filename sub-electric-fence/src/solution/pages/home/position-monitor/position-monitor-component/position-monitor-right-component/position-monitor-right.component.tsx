@@ -82,11 +82,11 @@ export const PositionMonitorRightComponent = (props: IPositionMonitorRightProps)
           deviceId={deviceId}
         />
       )}
-      <div className={style.areaCarSearch} onClick={controllerAreaCarSearchModal}>
+      {/* <div className={style.areaCarSearch} onClick={controllerAreaCarSearchModal}>
         <Button type="primary" size="small">
           区域查车
         </Button>
-      </div>
+      </div> */}
       {mapbtnTrackrVisible && <PositionMonitorMapbtnTrackComponent {...positionMonitorMapbtnTrackProps} />}
       {mapbtnSearchCarVisible && <PositionMonitorAreaSearchCarComponent {...areaSearchCarProps} />}
       {mapbtnDrivingVisible && <PositionMonitorMapbtnDrivingComponent {...positionMonitorMapbtnDrivingProps} />}
