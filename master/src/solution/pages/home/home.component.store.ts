@@ -46,7 +46,6 @@ export function useHomeStore() {
 
         let roleIdList = [];
         roleIdList = res?.rolesCodeList.map((role: any) => role.key);
-        console.log('roleIdList', roleIdList);
 
         if (!!roleIdList.length) {
           getMenuList(res.systemId, roleIdList);
@@ -72,17 +71,33 @@ export function useHomeStore() {
         (res: any) => {
           setStateWrap({ menuList: res, loading: false });
           if (history.location.pathname == '/home') {
-            if (res[0]?.children?.length) {
-              history.replace(res[0].children[0].path);
-            } else {
-              history.replace(res[0].path);
-            }
+            parseFirstLeafPath(res);
           }
         },
         (err: any) => {
           ShowNotification.error(err);
         }
       );
+  }
+
+  // 默认跳转菜单中第一个页面
+  function parseFirstLeafPath(arr: any[]) {
+    let isValidPath = false;
+    let path = '';
+    function expand(arr: any[]) {
+      arr.map((node: any) => {
+        if (!isValidPath) {
+          if (!node.children.length) {
+            path = node.path;
+            isValidPath = true;
+          } else {
+            expand(node.children);
+          }
+        }
+      });
+    }
+    expand(arr);
+    !!path && history.replace(path);
   }
 
   return { state };
