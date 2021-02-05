@@ -2,12 +2,14 @@ import React, { useCallback, useEffect } from 'react';
 import { LoginStore } from './login.component.store';
 import { IProps, IState } from './login.interface';
 import style from './login.component.less';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, Typography } from 'antd';
 import { CubeComponent } from '~/solution/components/component.module';
 import { useStore } from '~/framework/aop/hooks/use-base-store';
 import { reducer, initialState } from './store/reducer';
 import { FormInstance } from 'antd/lib/form';
 import { UserOutlined, LockOutlined, SafetyCertificateOutlined } from '@ant-design/icons';
+
+const { Text } = Typography;
 
 export default function LoginComponent(props: IProps) {
   // 初始化 store
@@ -50,6 +52,9 @@ export default function LoginComponent(props: IProps) {
           </p>
         </div>
         <div className={style.loginBox}>
+          <div className={style.errorMsg}>
+            <Text type="danger">{state.errorMsg}</Text>
+          </div>
           <Form className="login-form" ref={loginForm} onFinish={store.handleSubmit} initialValues={{ checked: true }}>
             <Form.Item name="account" rules={[{ required: true, message: '请输入用户名' }]}>
               <Input prefix={<UserOutlined />} placeholder="请输入用户名" />

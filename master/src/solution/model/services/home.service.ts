@@ -38,6 +38,6 @@ export class HomeService extends HomeDTO {
 
   // 获取菜单
   getMenuList(params: MenuRequestParam): Observable<MenuAndAuthResult> {
-    return this.requestService.get(GET_MENU, params);
+    return this.requestService.post(GET_MENU, params);
   }
 }

@@ -5,4 +5,5 @@ export interface IProps extends RouteComponentProps {}
 export interface IState {
   loginLoading: boolean;
   vCodeImage: string;
+  errorMsg: string;
 }

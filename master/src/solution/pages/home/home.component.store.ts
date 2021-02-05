@@ -43,9 +43,13 @@ export function useHomeStore() {
       (res: any) => {
         // 获取用户数据作为补充信息, 向子应用传输数据
         setState({ userInfo: res });
-        const roleId = res.rolesCodeList[0] ? res.rolesCodeList[0].key : null;
-        if (roleId) {
-          getMenuList(res.systemId, roleId);
+
+        let roleIdList = [];
+        roleIdList = res?.rolesCodeList.map((role: any) => role.key);
+        console.log('roleIdList', roleIdList);
+
+        if (!!roleIdList.length) {
+          getMenuList(res.systemId, roleIdList);
         } else {
           ShowNotification.error('当前账号未绑定角色，无法访问！');
           history.replace('/login');
@@ -58,11 +62,11 @@ export function useHomeStore() {
   }
 
   //获取菜单
-  function getMenuList(systemId: string, roleId: string) {
+  function getMenuList(systemId: string, roleIdList: Array<string>) {
     getMenuListSubscription = homeService
       .getMenuList({
         systemId,
-        roleId
+        roleIdList
       })
       .subscribe(
         (res: any) => {

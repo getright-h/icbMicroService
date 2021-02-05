@@ -1,5 +1,6 @@
 declare namespace LoginComponentLessNamespace {
   export interface ILoginComponentLess {
+    errorMsg: string;
     formFlexItem: string;
     left: string;
     leftCover: string;

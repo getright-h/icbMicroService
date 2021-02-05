@@ -19,5 +19,5 @@ export interface MyInfo {
 
 export interface MenuRequestParam {
   systemId: string;
-  roleId: string;
+  roleIdList: Array<string>;
 }

@@ -15,3 +15,11 @@ export function setVcode(payload: string) {
     payload
   };
 }
+
+// 设置 错误信息
+export function setErrorMessage(payload: string) {
+  return {
+    type: TYPES.SET_ERROR_MESSAGE,
+    payload
+  };
+}
