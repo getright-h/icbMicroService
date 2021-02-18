@@ -46,7 +46,7 @@ export function renderApp(props?: AppConfig) {
     : appRoutes;
 
   render(
-    <App routers={routers} />,
+    <App routers={routers} userInfo={props && props.userInfo} />,
     props && props.container ? props.container.querySelector('#root') : document.getElementById('root')
   );
 }

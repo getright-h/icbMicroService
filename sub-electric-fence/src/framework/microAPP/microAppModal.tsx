@@ -5,7 +5,7 @@ export interface AppConfig {
     routers: Array<ChildrenObject>;
     routerBase: string,
     container: any;
-    useInfo: any
+    userInfo: any
   }
   
   export interface ChildrenObject {

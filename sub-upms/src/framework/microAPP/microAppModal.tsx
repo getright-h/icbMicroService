@@ -6,7 +6,7 @@ export interface AppConfig {
     routerBase: string,
     elementInfo: string,
     container: any;
-    useInfo: any
+    userInfo: any
   }
   
   export interface ChildrenObject {

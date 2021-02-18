@@ -5,7 +5,7 @@ import { StorageUtil } from '~/framework/util/storage';
 import { HomeService } from '~/solution/model/services/home.service';
 
 // 注册子应用 运行主项目
-async function registerMainApp(callback: (menuInfo: any) => void) {
+async function registerMainApp(callback: () => any) {
   const isDev = process.env.NODE_ENV === 'development';
   console.log('process.env.DEV_BUILD' + process.env.NODE_ENV, process.env.DEV_BUILD);
 
@@ -22,10 +22,11 @@ async function registerMainApp(callback: (menuInfo: any) => void) {
   const routerInfo: any = await fetchChildAppsConfig();
 
   const res = resolveRouterInfo(routerInfo);
-  const useInfo = await getCurrentUserInfo();
+  // const useInfo = await getCurrentUserInfo();
   StorageUtil.setLocalStorage('MENU_LIST', JSON.stringify(res.micInfo));
 
-  callback(res.menuInfo);
+  const userInfo = await callback();
+
   routerInfo.forEach((element: any) => {
     const { localURL, path, name, onLineDevURL, onLineURL, children, loader, tokenKey } = element;
     // 根据children去获取子应用响应的路由节点赋值到当前的页面，作用用来生成路由
@@ -33,10 +34,10 @@ async function registerMainApp(callback: (menuInfo: any) => void) {
       tokenKey,
       name: name,
       loader,
-      entry: isDev ? (isDevBuild ? onLineDevURL : localURL) : onLineURL,
+      entry: isDev ? (!isDevBuild ? onLineDevURL : localURL) : onLineURL,
       container: currentId,
       activeRule: `/#${path}`,
-      props: { baseFuntion, name, routers: JSON.parse(JSON.stringify(children)), routerBase: `/#${path}`, useInfo }
+      props: { baseFuntion, name, routers: JSON.parse(JSON.stringify(children)), routerBase: `/#${path}`, userInfo }
     });
     // element.defaultMountApp && (defaultMountApp = element.activeRule);
   });

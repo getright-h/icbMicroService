@@ -17,67 +17,55 @@ export function useHomeStore() {
   const { state, setStateWrap } = useStateStore(new IHomeProps());
   const history = useHistory();
   console.log('history =>>>', history);
-  let currentUserIndoSubscription: Subscription;
-  let getMenuListSubscription: Subscription;
   useEffect(() => {
     // 注册并启动微前端
     registerMainApp(callback);
   }, []);
 
-  function callback(result: any) {
-    // 如果当前的URL是Home那么就跳转到第一个页面
-    // setStateWrap({ menuList: result, loading: false });
-    getCurrentUserInfo();
-    // if (history.location.pathname == '/home') {
-    //   if (result[0]?.children?.length) {
-    //     history.replace(result[0].children[0].path);
-    //   } else {
-    //     history.replace(result[0].path);
-    //   }
-    // }
+  function callback() {
+    return getCurrentUserInfo();
   }
 
   // 获取登录用户信息
-  function getCurrentUserInfo() {
-    currentUserIndoSubscription = homeService.getMyInfo().subscribe(
-      (res: any) => {
-        // 获取用户数据作为补充信息, 向子应用传输数据
-        setState({ userInfo: res });
-
+  async function getCurrentUserInfo() {
+    try {
+      const res = await homeService.getMyInfo().toPromise();
+      if (res) {
         let roleIdList = [];
         roleIdList = res?.rolesCodeList.map((role: any) => role.key);
 
         if (!!roleIdList.length) {
-          getMenuList(res.systemId, roleIdList);
+          return getMenuList(res, roleIdList);
         } else {
           ShowNotification.error('当前账号未绑定角色，无法访问！');
           history.replace('/login');
         }
-      },
-      (err: any) => {
-        ShowNotification.error(err);
       }
-    );
+    } catch (error) {
+      ShowNotification.error(error);
+    }
   }
 
   //获取菜单
-  function getMenuList(systemId: string, roleIdList: Array<string>) {
-    getMenuListSubscription = homeService
-      .getMenuList({
-        systemId,
-        roleIdList
-      })
-      .subscribe(
-        (res: any) => {
-          setStateWrap({ menuList: res, loading: false });
-          if (history.location.pathname == '/home') {
-            parseFirstLeafPath(res);
-          }
-        },
-        (err: any) => {
-          ShowNotification.error(err);
+  async function getMenuList(userInfo: any, roleIdList: Array<string>) {
+    try {
+      const res = await homeService
+        .getMenuList({
+          systemId: userInfo.systemId,
+          roleIdList
+        })
+        .toPromise();
+      if (res) {
+        setStateWrap({ menuList: res, loading: false });
+        if (history.location.pathname == '/home') {
+          parseFirstLeafPath(res);
         }
-      );
+      }
+      return { ...userInfo, auth: parsePrivilegeJSON(res) };
+    } catch (error) {
+      ShowNotification.error(error);
+    }
+    return userInfo;
   }
 
   // 默认跳转菜单中第一个页面
@@ -98,6 +86,28 @@ export function useHomeStore() {
     }
     expand(arr);
     !!path && history.replace(path);
+  }
+
+  function parsePrivilegeJSON(arr: any[]) {
+    const jsonText = {};
+    function expand(arr: any[]) {
+      arr.map((node: any) => {
+        if (!node.children.length) {
+          const jsonItem = {};
+          node.privilegeGroupList.map((group: { privilegeList: any[] }) => {
+            group.privilegeList.map((p: { privilegeCode: string; isSelected: boolean }) => {
+              const code = p.privilegeCode.split('-')[1];
+              jsonItem[code] = p.isSelected;
+            });
+          });
+          Object.assign(jsonText, { [node.path]: jsonItem });
+        } else {
+          expand(node.children);
+        }
+      });
+    }
+    expand(arr);
+    return jsonText;
   }
 
   return { state };
