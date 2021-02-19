@@ -1,10 +1,14 @@
 import { IDirectiveListState, ModalType } from './statistical-list.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
+import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
 import { Form } from 'antd';
 import { OrderReportService } from '~/solution/model/services/report-order.service';
 import { useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import { IMAP } from '~shared/util/map.util';
+import { GlobalContext } from '~/solution/context/global/global.provider';
+import { useLocation } from 'react-router-dom';
+import { IGlobalState } from '~/solution/context/global/global.interface';
+
 import moment from 'moment';
 
 export function useDirectiveListStore() {
@@ -12,6 +16,9 @@ export function useDirectiveListStore() {
   const orderReportService: OrderReportService = new OrderReportService();
   const [searchForm] = Form.useForm();
   const history = useHistory();
+  const { gState }: IGlobalState = React.useContext(GlobalContext);
+
+  console.log(useAuthorityState(), 'useAuthorityState();');
 
   useEffect(() => {
     initSearchForm();
