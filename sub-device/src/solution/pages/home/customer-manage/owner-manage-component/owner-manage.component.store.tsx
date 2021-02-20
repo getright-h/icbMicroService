@@ -6,10 +6,12 @@ import { ShowNotification } from '~/framework/util/common';
 import { CustomerManageService } from '~/solution/model/services/customer-manage.service';
 import { Form, Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { useAuthorityState, useAuthorityRender } from '~/framework/aop/hooks/use-authority-state';
 
 export function useOwnerManageStore() {
   const { state, setStateWrap, getState } = useStateStore(new IOwnerManageState());
   const customerManageService: CustomerManageService = new CustomerManageService();
+  const { $auth } = useAuthorityState();
   const [searchForm] = Form.useForm();
 
   useEffect(() => {
@@ -101,6 +103,8 @@ export function useOwnerManageStore() {
   return {
     state,
     searchForm,
+    $auth,
+    useAuthorityRender,
     initSearchForm,
     callbackAction,
     changeTablePageIndex,

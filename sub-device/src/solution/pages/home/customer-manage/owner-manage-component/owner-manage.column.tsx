@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Divider, Table } from 'antd';
 import { ModalType } from './owner-manage.interface';
-export function ownerManageColumns(callbackAction: Function) {
+export function ownerManageColumns(callbackAction: Function, $auth: Record<string, boolean>) {
   return [
     {
       title: '姓名',
@@ -38,7 +38,12 @@ export function ownerManageColumns(callbackAction: Function) {
             <Divider type="vertical" />
             <a onClick={() => callbackAction(ModalType.EDIT, data)}>编辑</a>
             <Divider type="vertical" />
-            <a onClick={() => callbackAction(ModalType.DELETE, data)}>删除</a>
+            <a
+              className={`${$auth['deleteOwner'] ? '' : 'no-auth-link'}`}
+              onClick={() => callbackAction(ModalType.DELETE, data)}
+            >
+              删除
+            </a>
           </React.Fragment>
         );
       }

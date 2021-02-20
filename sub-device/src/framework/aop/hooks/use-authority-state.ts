@@ -9,6 +9,7 @@ export function useAuthorityState() {
   const { auth = {} } = gState?.myInfo as any;
   let authority = {};
   let authorityCode = {};
+  const $auth = {};
 
   // 先找一级路由,没找到再去查找对应的子路由
   if (auth[pathname]) {
@@ -20,12 +21,26 @@ export function useAuthorityState() {
   if (DEVICE_AUTHORITY_CODE[pathname]) {
     authorityCode = DEVICE_AUTHORITY_CODE[pathname];
   }
-  console.log(authorityCode, 'authorityCode', authority);
+  // console.log(authorityCode, 'authorityCode', authority);
 
-  return {
-    authority,
-    authorityCode
-  };
+  // return {
+  //   authority,
+  //   authorityCode
+  // };
+
+  for (const key in authorityCode) {
+    // 如果当前页面没有权限列表,或者未传递需要校验的权限码,则返回 true
+    if (!Object.keys(authority).length || authority[authorityCode[key]] === undefined) $auth[key] = true;
+
+    // 只是针对权限是否是 boolen类型 才对权限进行判断, 否则 返回 true
+    if (isBoolean(authority[authorityCode[key]])) {
+      $auth[key] = authority[authorityCode[key]];
+    } else {
+      $auth[key] = true;
+    }
+  }
+  console.log('$auth', $auth);
+  return { $auth };
 }
 /**
  * 匹配规则

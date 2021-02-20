@@ -16,6 +16,7 @@ export default function OwnerManageComponent() {
   const {
     state,
     searchForm,
+    $auth,
     initSearchForm,
     callbackAction,
     changeTablePageIndex,
@@ -79,12 +80,14 @@ export default function OwnerManageComponent() {
       </div>
     );
   }
-  function renderOtherButtons() {
+  function RenderOtherButtons() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary" onClick={() => callbackAction(ModalType.CREATE)}>
-          新增车主
-        </Button>
+        {$auth['addOwner'] && (
+          <Button type="primary" onClick={() => callbackAction(ModalType.CREATE)}>
+            新增车主
+          </Button>
+        )}
         {/* <Button onClick={() => callbackAction(ModalType.IMPORT)} disabled>
           批量导入
         </Button>
@@ -101,7 +104,7 @@ export default function OwnerManageComponent() {
     };
     return (
       <ITableComponent
-        columns={ownerManageColumns(callbackAction)}
+        columns={ownerManageColumns(callbackAction, $auth)}
         isLoading={isLoading}
         pageIndex={pageIndex}
         pageSize={pageSize}
@@ -124,7 +127,7 @@ export default function OwnerManageComponent() {
         pageName={'车主管理'}
         selectItems={renderSelectItems()}
         searchButton={renderSearchButtons()}
-        otherSearchBtns={renderOtherButtons()}
+        otherSearchBtns={<RenderOtherButtons />}
         table={<RenderTable />}
       ></TablePageTelComponent>
       {editVisible && <EditOwnerInfoComponent visible={editVisible} close={handleModalCancel} id={currentId} />}
