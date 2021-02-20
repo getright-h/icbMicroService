@@ -10,11 +10,13 @@ import RollbackApplyComponent from '../rollback-apply-component/rollback-apply.c
 export default function DetailComponent() {
   const {
     state,
+    authority,
     callbackAction,
     handleModalCancel,
     getAlloactionDetail,
     allocationOperate,
-    handleDownLoadAllot
+    handleDownLoadAllot,
+    useAuthorityRender
   } = useDetailStore();
   const { detail = {}, importVisible, currentData, rollbackVisible } = state;
   const layout = {
@@ -25,7 +27,7 @@ export default function DetailComponent() {
   /**
    * @description 根据[  调拨状态 ] 渲染操作按钮
    */
-  function renderOperateBtn(data: any) {
+  function RenderOperateBtn({ data }: any) {
     const { state, approvalState } = data;
 
     const back = (
@@ -165,7 +167,10 @@ export default function DetailComponent() {
         <div className={style.formPart}>
           <div className={style.formItems}>
             <div className={style.formLeft}>
-              <Form.Item label={<strong>调拨单号</strong>}>{detail.allotCode}</Form.Item>
+              {useAuthorityRender(authority, '啥啥啥') && (
+                <Form.Item label={<strong>调拨单号</strong>}>{detail.allotCode}</Form.Item>
+              )}
+
               <Form.Item label={<strong>调拨设备</strong>}>
                 <RenderTable />
               </Form.Item>
@@ -183,7 +188,7 @@ export default function DetailComponent() {
                 <Form.Item label={<strong>驳回理由</strong>}>{detail.rejectRemark || '-'}</Form.Item>
               )}
 
-              <Form.Item wrapperCol={{ span: 12, offset: 8 }}>{renderOperateBtn(detail)}</Form.Item>
+              <Form.Item wrapperCol={{ span: 12, offset: 8 }}>{<RenderOperateBtn data={detail} />}</Form.Item>
             </div>
           </div>
         </div>

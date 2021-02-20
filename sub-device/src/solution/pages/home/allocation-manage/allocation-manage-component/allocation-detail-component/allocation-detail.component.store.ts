@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { Subscription } from 'rxjs';
 import { useHistory } from 'react-router-dom';
 import { getQueryParams } from '~/framework/util/common';
-import { item } from '../../../approval-manage/appraval-template-component/approval-template-left-component/add-template-type-component/add-template-type.component.less';
+import { useAuthorityState, useAuthorityRender } from '~/framework/aop/hooks/use-authority-state';
 
 export function useAllocationDetailStore() {
   const { state, setStateWrap } = useStateStore(new IAllocationDetailState());
@@ -13,6 +13,7 @@ export function useAllocationDetailStore() {
   const allocationManageService: AllocationManageService = new AllocationManageService();
   let allocationManageServiceSubscription: Subscription;
 
+  const { authority } = useAuthorityState();
   // 获取默认路由参数
   function getDefaultParams() {
     const { id = '' } = getQueryParams();
@@ -54,5 +55,5 @@ export function useAllocationDetailStore() {
       allocationManageServiceSubscription && allocationManageServiceSubscription.unsubscribe();
     };
   }, []);
-  return { state };
+  return { state, authority, useAuthorityRender };
 }

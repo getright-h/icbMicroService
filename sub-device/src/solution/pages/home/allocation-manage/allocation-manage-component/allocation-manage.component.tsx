@@ -13,6 +13,8 @@ export default function AllocationManageComponent() {
   const {
     state,
     form,
+    authority,
+    useAuthorityRender,
     callbackAction,
     changeTablePageIndex,
     searchClick,
@@ -32,18 +34,21 @@ export default function AllocationManageComponent() {
       sm: { span: 16 }
     }
   };
-  function renderSelectItems() {
+  function RenderSelectItems() {
     return (
       <Form {...formItemLayout} layout={'inline'} form={form}>
-        <Form.Item label="输入调拨单号" name="code">
-          <Input
-            allowClear
-            placeholder="请输入调拨单号"
-            onChange={e => {
-              onChange(e.target.value, 'code');
-            }}
-          />
-        </Form.Item>
+        {useAuthorityRender(authority, 'deleteAllot') && (
+          <Form.Item label="输入调拨单号" name="code">
+            <Input
+              allowClear
+              placeholder="请输入调拨单号"
+              onChange={e => {
+                onChange(e.target.value, 'code');
+              }}
+            />
+          </Form.Item>
+        )}
+
         <Form.Item label="查找创建时间" name="time">
           <TimePickerComponent
             pickerType={'dateRange'}
@@ -106,7 +111,7 @@ export default function AllocationManageComponent() {
     <React.Fragment>
       <TablePageTelComponent
         pageName={'调拨单'}
-        selectItems={renderSelectItems()}
+        selectItems={<RenderSelectItems />}
         searchButton={renderSearchButtons()}
         // otherSearchBtns={renderOtherButtons()}
         table={<RenderTable />}

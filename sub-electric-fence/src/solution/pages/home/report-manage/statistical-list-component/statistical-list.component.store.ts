@@ -18,8 +18,6 @@ export function useDirectiveListStore() {
   const history = useHistory();
   const { gState }: IGlobalState = React.useContext(GlobalContext);
 
-  console.log(useAuthorityState(), 'useAuthorityState();');
-
   useEffect(() => {
     initSearchForm();
   }, []);

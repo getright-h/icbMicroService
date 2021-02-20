@@ -5,7 +5,7 @@ import { IHeaderTitleComponent } from '~/framework/components/component.module';
 import { Table, Row, Col, Form, Button } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 export default function AllocationDetailComponent() {
-  const { state } = useAllocationDetailStore();
+  const { state, useAuthorityRender, authority } = useAllocationDetailStore();
   const layout = {
     labelCol: { span: 7 },
     wrapperCol: { span: 12 }
@@ -52,7 +52,10 @@ export default function AllocationDetailComponent() {
         <div className={style.formPart}>
           <div className={style.formItems}>
             <div className={style.formLeft}>
-              <Form.Item label={<strong>调拨单名称</strong>}>{detail.name}</Form.Item>
+              {useAuthorityRender(authority, 'ss') && (
+                <Form.Item label={<strong>调拨单名称</strong>}>{detail.name}</Form.Item>
+              )}
+
               <Form.Item label={<strong>调拨模板</strong>}>{detail.allotTemplateName}</Form.Item>
               <Form.Item label={<strong>流程节点</strong>}>
                 {flowList.length > 0 &&
