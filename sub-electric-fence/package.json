@@ -17,7 +17,8 @@
     "dll:dev": "rimraf dll/development && cross-env NODE_ENV=development webpack --config bundle/webpack.config.dll.js",
     "dll:prod": "rimraf dll/production && cross-env NODE_ENV=production webpack --config bundle/webpack.config.dll.js",
     "lint": "eslint src --ext .js,.ts",
-    "lintcss": "stylelint 'src/**/*.less' --fix"
+    "lintcss": "stylelint 'src/**/*.less' --fix",
+    "auth": "node authority/index.js"
   },
   "dependencies": {
     "@ant-design/icons": "^4.2.1",

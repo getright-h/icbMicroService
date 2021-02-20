@@ -2,7 +2,8 @@ import { GlobalContext } from '~/solution/context/global/global.provider';
 import { IGlobalState } from '~/solution/context/global/global.interface';
 import { useLocation, useParams } from 'react-router-dom';
 import { isBoolean } from 'lodash';
-import { DEVICE_AUTHORITY_CODE, MENU_MAP } from '~shared/constant/authority';
+import { DEVICE_AUTHORITY_CODE } from '~shared/constant/authority';
+import { MENU_MAP} from '~shared/constant/menu.map'
 export function useAuthorityState() {
   const { gState }: IGlobalState = React.useContext(GlobalContext);
   const { pathname } = usePath();
