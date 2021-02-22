@@ -7,7 +7,7 @@ import { Col, Form, Row, Select } from 'antd';
 import { Button } from 'antd';
 import { approvalTableColumns } from './approval-table.column';
 import { GlobalContext } from '../../../../../context/global/global.provider';
-import { APPROVAL_APPLY_STATUS } from '~/solution/shared/constant/common.const';
+import { APPROVAL_APPLY_STATUS, APPROVAL_FLOW_STATUS } from '~/solution/shared/constant/common.const';
 import ApprovalApplyComponent from '../approval-apply-component/approval-apply.component';
 import ApprovalTemplateFormModalComponent from '../approval-template-form-modal-component/approval-template-form-modal.component';
 
@@ -123,7 +123,7 @@ export default function ApprovalTableComponent() {
           <Col span={6}>
             <Form.Item name="status" label="审批状态">
               <Select placeholder="请选择审批状态">
-                {APPROVAL_APPLY_STATUS.map((status: any, index: number) => (
+                {APPROVAL_FLOW_STATUS.map((status: any, index: number) => (
                   <Select.Option key={`apply-${index}`} value={status.value}>
                     {status.title}
                   </Select.Option>
