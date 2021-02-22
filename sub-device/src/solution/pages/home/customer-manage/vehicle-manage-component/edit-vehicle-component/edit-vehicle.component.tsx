@@ -46,7 +46,7 @@ export default function EditVehicleComponent() {
   function renderOwnerForm() {
     const queryOwnerList = ISelectLoadingComponent({
       reqUrl: 'queryOwnerList',
-      placeholder: '请选择车主',
+      placeholder: '请输入姓名/电话',
       searchKey: ownerInfo?.ownerName || '',
       searchKeyName: 'strValue',
       getCurrentSelectInfo: (value: string, option: any) => {
