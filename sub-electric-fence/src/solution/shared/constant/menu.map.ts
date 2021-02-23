@@ -1,4 +1,3 @@
-
 // 父子路由关系表
 export const MENU_MAP: any = {
   /** 电子围栏 */
@@ -27,7 +26,5 @@ export const MENU_MAP: any = {
   // 监控组报表
   '/home/report/monitor': [],
   // 常驻点统计
-  '/home/report/permanent': [],
-
-
+  '/home/report/permanent': []
 };

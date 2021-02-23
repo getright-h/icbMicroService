@@ -1,5 +1,6 @@
 import { IMonitoringObjectState, ModalType } from './monitoring-object.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
+import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
 import CreateBindCarComponent from './create-bind-car-component/create-bind-car.component';
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
@@ -15,6 +16,7 @@ const { confirm } = Modal;
 export function useMonitoringObjectStore() {
   const { state, setStateWrap, getState } = useStateStore(new IMonitoringObjectState());
   const monitorObjectServiceService = new MonitorObjectServiceService();
+  const { $auth } = useAuthorityState();
   const { searchForm } = state;
   const formInfo = useRef(null);
   const currentModal = useRef(null);
@@ -233,6 +235,7 @@ export function useMonitoringObjectStore() {
   }
   return {
     state,
+    $auth,
     callbackAction,
     changeTablePageIndex,
     searchClick,
