@@ -52,8 +52,8 @@ export function userColumns(action: Function): ColumnsType<UserTableData> {
       render: (text, row) => {
         return (
           <React.Fragment>
-            <a onClick={() => action('详情', row)}>详情</a>
-            <Divider type="vertical" />
+            {/* <a onClick={() => action('详情', row)}>详情</a>
+            <Divider type="vertical" /> */}
             <a onClick={() => action('编辑', row)}>编辑</a>
             <Divider type="vertical" />
             <a onClick={() => action('修改密码', row)}>修改密码</a>
