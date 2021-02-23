@@ -11,6 +11,7 @@ export class IDeviceStockInState {
   };
   errorList: any[] = [];
   isErrorListVisible = false;
+  isExitWrongData = false;
   deviceImportList: any[] = [];
   importType = 1;
 }

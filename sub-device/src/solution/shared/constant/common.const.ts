@@ -443,6 +443,10 @@ export enum APPROVAL_FLOW_STATUS_ENUM {
 
 export const APPROVAL_FLOW_STATUS = [
   {
+    title: '全部',
+    value: -1
+  },
+  {
     title: '已撤回',
     value: APPROVAL_FLOW_STATUS_ENUM.Revoke
   },

@@ -26,7 +26,7 @@ export function useVehicleDetailStore() {
   }
 
   function linkToEdit() {
-    history.push(`edit/${state.id}`);
+    history.push(`../editVehicle/${state.id}`);
   }
   return { state, $auth, linkToEdit };
 }

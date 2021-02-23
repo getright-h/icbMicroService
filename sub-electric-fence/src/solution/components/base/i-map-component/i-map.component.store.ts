@@ -203,19 +203,22 @@ export function useIMapStore(mapProps: TIMapProps) {
         carLineMarkerInfo.current.pauseMove();
         const position = havePassedArr.current[havePassedArr.current.length - 1];
         let nextPosition: { lng: number; lat: number } = { lng: 0, lat: 0 },
-          satellitesNum = 0;
+          satellitesNum = 0,
+          time = 0;
         const pointList = mapProps.drivingLineData.pointList;
         if (havePassedArr.current.length > 1) {
           nextPosition = havePassedArr.current[havePassedArr.current.length - 2];
           pointList.map(item => {
             if (item.coordinates[0] == nextPosition.lng) {
               satellitesNum = item.satellitesNum;
+              time = item.time;
             }
           });
         } else {
           satellitesNum = pointList[pointList.length - 1].satellitesNum;
+          time = pointList[pointList.length - 1].time;
         }
-        IMAP.showCarInfo(mapProps.drivingLineData, map.current, { position, satellitesNum }, openInfoWinCar);
+        IMAP.showCarInfo(mapProps.drivingLineData, map.current, { position, satellitesNum, time }, openInfoWinCar);
       } else {
         if (infoWindowInfo.current) {
           infoWindowInfo.current.close();
@@ -364,7 +367,7 @@ export function useIMapStore(mapProps: TIMapProps) {
       lalg: `${marker.position.lng}, ${marker.position.lat}`,
       place: '地址转换中...',
       satellitesNum: satellitesNumText,
-      positionTime: lastLocationTime
+      positionTime: marker.time || lastLocationTime
     };
     infoWindow.setInfoTplData(data);
     infoWindow.open(map, marker.position);

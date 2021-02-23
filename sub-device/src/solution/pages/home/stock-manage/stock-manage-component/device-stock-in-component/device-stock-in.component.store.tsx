@@ -44,6 +44,11 @@ export function useDeviceStockInStore(props: IDeviceStockInProps) {
     if (state.importType === 2) {
       confirmFormRef.current.deviceList = [...state.deviceImportList];
     }
+    if (state.isExitWrongData) {
+      ShowNotification.warning('设备录入有误!');
+      setStateWrap({ confirmLoading: false });
+      return;
+    }
     stockManageService.materialStockIn(confirmFormRef.current).subscribe(
       (res: any) => {
         if (res.errorDeviceList.length > 0) {
@@ -115,8 +120,28 @@ export function useDeviceStockInStore(props: IDeviceStockInProps) {
       })
       .then(({ data: response }) => {
         item.onSuccess(response, item.file);
-        setStateWrap({ deviceImportList: response.data });
+        const deviceImportList = resloveData(response.data);
+        setStateWrap({ deviceImportList });
       });
+  }
+
+  // 对数据进行清洗
+  // 对于上传的设备号，目前如果其中存在有问题的数据
+  // 则只是展示问题数据，并且展示其错误原因，
+  // 只有数据完全正确那么才展示所有数据进行正常提交
+
+  function resloveData(data: []): any[] {
+    if (!Array.isArray(data)) return [];
+    const wrongData = data.filter((_: any) => _.remark);
+    setStateWrap({
+      isExitWrongData: !!wrongData.length
+    });
+
+    if (wrongData.length) {
+      return wrongData;
+    } else {
+      return data;
+    }
   }
 
   return {
