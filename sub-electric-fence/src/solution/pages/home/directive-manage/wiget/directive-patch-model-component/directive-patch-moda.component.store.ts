@@ -96,7 +96,7 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
       }
 
       // 自定义模板
-      if (currentDirective.cmdCode == 'Forword') {
+      if (currentDirective.cmdCode == 'Forward') {
         cmdValue.push({
           key: 'content',
           value: directiveCode
@@ -112,7 +112,7 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
       setStateWrap({ confirmLoading: true });
       sendCmdSubscription = directiveService.sendCmd(params).subscribe(
         (res: any) => {
-          message.success('下发指令成功');
+          message.success('正在执行指令下发');
           setStateWrap({ confirmLoading: false });
           selfClose(true);
         },
