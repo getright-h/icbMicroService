@@ -267,7 +267,7 @@ export function fetchChildAppsConfig() {
                 componentUrl: 'editVehicle' //对应子应用的组件名
               },
               {
-                path: 'vehicleDetail/edit/:id',
+                path: 'editVehicle/:id',
                 lazyload: true,
                 exact: true,
                 componentUrl: 'editVehicle' //对应子应用的组件名
