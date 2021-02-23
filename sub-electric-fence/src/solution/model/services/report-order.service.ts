@@ -117,22 +117,23 @@ export class OrderReportService implements OrderReportManage {
           const itemCopy = JSON.parse(JSON.stringify(item));
           if (index == 0) {
             totalInfo = itemCopy;
+          } else {
+            totalInfo.mileage += itemCopy.mileage;
+            if (index == data.pointPassList.length - 1) {
+              totalInfo.endLon = itemCopy.endLon;
+              totalInfo.endTime = itemCopy.endTime;
+              totalInfo.endLat = itemCopy.endLat;
+            }
+            const startLA = IMAP.initLonlat(item.startLon, item.startLat);
+            item.startLon = startLA[0];
+            item.startLat = startLA[1];
+            const endLA = IMAP.initLonlat(item.endLon, item.endLat);
+            item.endLon = endLA[0];
+            item.endLat = endLA[1];
           }
-          totalInfo.mileage += itemCopy.mileage;
-          if (index == data.pointPassList.length - 1) {
-            totalInfo.endLon = itemCopy.endLon;
-            totalInfo.endTime = itemCopy.endTime;
-            totalInfo.endLat = itemCopy.endLat;
-          }
-          const startLA = IMAP.initLonlat(item.startLon, item.startLat);
-          item.startLon = startLA[0];
-          item.startLat = startLA[1];
-          const endLA = IMAP.initLonlat(item.endLon, item.endLat);
-          item.endLon = endLA[0];
-          item.endLat = endLA[1];
           return item;
         });
-        data.pointPassList?.unshift(totalInfo);
+        data.pointPassList?.length > 1 && data.pointPassList?.unshift(totalInfo);
 
         // 长驻点
         data.residentList = data.residentList?.map((item: ResidentList) => {

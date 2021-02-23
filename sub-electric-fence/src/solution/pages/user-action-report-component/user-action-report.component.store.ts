@@ -143,11 +143,10 @@ export function useUserActionReportStore() {
         });
         map.current.setCenter([res.longitude, res.latitude]);
       }
-      console.log('res.pointPassList  -====>>>>>>>>>>', res.pointPassList);
       // 这个时候异步去进行地址转换
 
       res.pointPassList =
-        res.pointPassList?.length > 1 &&
+        res.pointPassList?.length >= 1 &&
         (await Promise.all(
           res.pointPassList?.map(async (item: any) => {
             item.startAddress = (await IMAP.covertPointToAddress([item.startLon, item.startLat])) as any;
@@ -155,8 +154,6 @@ export function useUserActionReportStore() {
             return item;
           })
         ));
-
-      console.log('res.pointPassList  -====>>>>>>>>>>', res.pointPassList);
 
       res.residentList = await Promise.all(
         res.residentList?.map(async (item: any) => {
@@ -177,7 +174,6 @@ export function useUserActionReportStore() {
           return item;
         })
       );
-      console.log(2);
 
       setStateWrap({
         actionData: res
