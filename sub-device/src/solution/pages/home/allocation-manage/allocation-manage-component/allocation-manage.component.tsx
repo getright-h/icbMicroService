@@ -13,7 +13,7 @@ export default function AllocationManageComponent() {
   const {
     state,
     form,
-    authority,
+    $auth,
     useAuthorityRender,
     callbackAction,
     changeTablePageIndex,
@@ -37,18 +37,15 @@ export default function AllocationManageComponent() {
   function RenderSelectItems() {
     return (
       <Form {...formItemLayout} layout={'inline'} form={form}>
-        {useAuthorityRender(authority, 'deleteAllot') && (
-          <Form.Item label="输入调拨单号" name="code">
-            <Input
-              allowClear
-              placeholder="请输入调拨单号"
-              onChange={e => {
-                onChange(e.target.value, 'code');
-              }}
-            />
-          </Form.Item>
-        )}
-
+        <Form.Item label="输入调拨单号" name="code">
+          <Input
+            allowClear
+            placeholder="请输入调拨单号"
+            onChange={e => {
+              onChange(e.target.value, 'code');
+            }}
+          />
+        </Form.Item>
         <Form.Item label="查找创建时间" name="time">
           <TimePickerComponent
             pickerType={'dateRange'}
@@ -94,7 +91,7 @@ export default function AllocationManageComponent() {
   function RenderTable() {
     return (
       <ITableComponent
-        columns={allocationManageColumns(callbackAction)}
+        columns={allocationManageColumns(callbackAction, $auth)}
         rowKey="inventoryCode"
         isLoading={isLoading}
         pageIndex={searchForm.index}

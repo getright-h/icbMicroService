@@ -16,7 +16,7 @@ export function useAllocationManageStore() {
   const allocationManageService: AllocationManageService = new AllocationManageService();
   let allocationManageServiceSubscribable: Subscription;
   let deleteAllotSubscribable: Subscription;
-  const { authority } = useAuthorityState();
+  const { $auth } = useAuthorityState();
   const history = useHistory();
   const [form] = Form.useForm();
   useEffect(() => {
@@ -155,6 +155,7 @@ export function useAllocationManageStore() {
   return {
     state,
     form,
+    $auth,
     callbackAction,
     changeTablePageIndex,
     searchClick,
@@ -162,7 +163,6 @@ export function useAllocationManageStore() {
     openModal,
     onChange,
     searchClean,
-    authority,
     useAuthorityRender
   };
 }
