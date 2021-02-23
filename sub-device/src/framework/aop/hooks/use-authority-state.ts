@@ -4,7 +4,9 @@ import { useLocation, useParams } from 'react-router-dom';
 import { isBoolean } from 'lodash';
 import { DEVICE_AUTHORITY_CODE } from '~shared/constant/authority';
 import { MENU_MAP } from '~shared/constant/menu.map';
-export function useAuthorityState() {
+export function useAuthorityState(): {
+  $auth: any;
+} {
   const { gState }: IGlobalState = React.useContext(GlobalContext);
   const { pathname } = usePath();
   const { auth = {} } = gState?.myInfo as any;

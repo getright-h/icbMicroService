@@ -3,30 +3,42 @@ import { IGlobalState } from '~/solution/context/global/global.interface';
 import { useLocation, useParams } from 'react-router-dom';
 import { isBoolean } from 'lodash';
 import { DEVICE_AUTHORITY_CODE } from '~shared/constant/authority';
-import { MENU_MAP} from '~shared/constant/menu.map'
-export function useAuthorityState() {
+import { MENU_MAP } from '~shared/constant/menu.map';
+export function useAuthorityState(): {
+  $auth: any;
+} {
   const { gState }: IGlobalState = React.useContext(GlobalContext);
   const { pathname } = usePath();
   const { auth = {} } = gState?.myInfo as any;
   let authority = {};
   let authorityCode = {};
-
+  const $auth = {};
+  let target = '';
   // 先找一级路由,没找到再去查找对应的子路由
   if (auth[pathname]) {
-    authority = auth[pathname];
+    target = pathname;
   } else {
-    authority = auth[subRouterMatch(pathname)] || {};
+    target = subRouterMatch(pathname);
+  }
+  authority = auth[target] || {};
+
+  if (DEVICE_AUTHORITY_CODE[target]) {
+    authorityCode = DEVICE_AUTHORITY_CODE[target];
   }
 
-  if (DEVICE_AUTHORITY_CODE[pathname]) {
-    authorityCode = DEVICE_AUTHORITY_CODE[pathname];
-  }
-  console.log(authorityCode, 'authorityCode', authority);
+  for (const key in authorityCode) {
+    // 如果当前页面没有权限列表,或者未传递需要校验的权限码,则返回 true
+    if (!Object.keys(authority).length || authority[authorityCode[key]] === undefined) $auth[key] = true;
 
-  return {
-    authority,
-    authorityCode
-  };
+    // 只是针对权限是否是 boolen类型 才对权限进行判断, 否则 返回 true
+    if (isBoolean(authority[authorityCode[key]])) {
+      $auth[key] = authority[authorityCode[key]];
+    } else {
+      $auth[key] = true;
+    }
+  }
+  console.log('$auth', $auth);
+  return { $auth };
 }
 /**
  * 匹配规则
@@ -82,7 +94,7 @@ export function usePath() {
  */
 export function useAuthorityRender(authority: Record<string, any>, key: string): boolean {
   // 如果当前页面没有权限列表,或者未传递需要校验的权限码,则返回 true
-  if (!Object.keys(authority).length || typeof key != 'string' || !key) return true;
+  if (!authority || !Object.keys(authority).length || typeof key != 'string' || !key) return true;
 
   // 只是针对权限是否是 boolen类型 才对权限进行判断, 否则 返回 true
   if (isBoolean(authority[key])) {

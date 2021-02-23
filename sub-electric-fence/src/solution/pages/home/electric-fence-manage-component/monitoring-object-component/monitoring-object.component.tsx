@@ -13,6 +13,7 @@ import { ModalType } from './monitoring-object.interface';
 export default function MonitoringObjectComponent() {
   const {
     state,
+    $auth,
     callbackAction,
     changeTablePageIndex,
     searchClick,
@@ -73,7 +74,7 @@ export default function MonitoringObjectComponent() {
 
   function renderOtherButtons() {
     return (
-      <div className="other-search-button-item">
+      <div className={` other-search-button-item ${$auth['fenceBindVehicle'] ? '' : 'no-auth-link'}`}>
         <Button type="primary" onClick={() => openModal(ModalType.BINDCAR)}>
           绑定车辆
         </Button>

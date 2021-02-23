@@ -45,7 +45,6 @@ export default function AllocationManageComponent() {
             }}
           />
         </Form.Item>
-
         <Form.Item label="查找创建时间" name="time">
           <TimePickerComponent
             pickerType={'dateRange'}

@@ -28,7 +28,6 @@ export function allocationManageColumns(callbackAction: Function, $auth: Record<
         删除
       </a>
     );
-
     const goToAllocate = () => (
       <a
         className={`${$auth['operationAllot'] ? '' : 'no-auth-link'}`}

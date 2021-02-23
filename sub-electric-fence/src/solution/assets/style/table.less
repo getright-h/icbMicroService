@@ -35,3 +35,15 @@
 .ant-radio-group {
   line-height: inherit;
 }
+
+.no-auth-link{
+  opacity: 0.5;
+  text-decoration: none;
+  &:hover {
+    cursor: not-allowed;
+  }
+  &:active {
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}

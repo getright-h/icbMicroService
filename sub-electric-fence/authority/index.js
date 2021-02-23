@@ -2,7 +2,7 @@ const HOST = 'http://192.168.0.252:5010/'
 const URL = 'api/prvilege/common/menuTreeLogin'
 const TOKEN = 'session:30a01404-40f3-47b3-bde5-5f2015a5188b'
 // 子系统域名标识
-const SUB_SYS = '/home/device'
+const SUB_SYS = '/home/fence'
 
 const params = {
     roleIdList: ['e4a6494372d1ca01a45c08d88625cf05'],
