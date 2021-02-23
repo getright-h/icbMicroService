@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Divider } from 'antd';
 import { ModalType } from './voucher-manage.interface';
-export function voucherManageColumns(callbackAction: Function) {
+export function voucherManageColumns(callbackAction: Function, $auth: Record<string, boolean>) {
   return [
     {
       title: '车架号',
@@ -29,11 +29,26 @@ export function voucherManageColumns(callbackAction: Function) {
       render: (render: any, data: any, index: number) => {
         return (
           <React.Fragment>
-            <a onClick={() => callbackAction(ModalType.DETAIL, data)}>详情</a>
+            <a
+              className={`${$auth['detailDispatch'] ? '' : 'no-auth-link'}`}
+              onClick={() => callbackAction(ModalType.DETAIL, data)}
+            >
+              详情
+            </a>
             <Divider type="vertical" />
-            <a onClick={() => callbackAction(ModalType.EDIT, data)}>编辑</a>
+            <a
+              className={`${$auth['editDispatch'] ? '' : 'no-auth-link'}`}
+              onClick={() => callbackAction(ModalType.EDIT, data)}
+            >
+              编辑
+            </a>
             <Divider type="vertical" />
-            <a onClick={() => callbackAction(ModalType.DELETE, data)}>删除</a>
+            <a
+              className={`${$auth['deleteDispatch'] ? '' : 'no-auth-link'}`}
+              onClick={() => callbackAction(ModalType.DELETE, data)}
+            >
+              删除
+            </a>
           </React.Fragment>
         );
       }

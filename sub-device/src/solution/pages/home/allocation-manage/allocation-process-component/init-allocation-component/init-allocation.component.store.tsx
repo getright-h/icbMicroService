@@ -8,12 +8,14 @@ import { useHistory } from 'react-router-dom';
 import { Modal, Form } from 'antd';
 import { Subscription } from 'rxjs';
 import { getQueryParams } from '~/framework/util/common';
+import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
 const { confirm } = Modal;
 export function useInitAllocationStore() {
   const { state, setStateWrap, getState } = useStateStore(new IInitAllocationState());
   const allocationManageService: AllocationManageService = new AllocationManageService();
   const history = useHistory();
   const [form] = Form.useForm();
+  const { $auth } = useAuthorityState();
   let allotCode = '';
   let setAllotFlowSubscription: Subscription;
   let queryAllotPromoterPagedListSubscription: Subscription;
@@ -205,6 +207,7 @@ export function useInitAllocationStore() {
   return {
     state,
     form,
+    $auth,
     callbackAction,
     changeTablePageIndex,
     searchClick,

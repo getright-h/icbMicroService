@@ -1,6 +1,6 @@
 import { IAllocationManageState } from './allocation-manage.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
-import { useAuthorityState, useAuthorityRender } from '~/framework/aop/hooks/use-authority-state';
+import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
 
 import { ModalType } from '~shared/constant/common.const';
 import { useEffect } from 'react';
@@ -16,7 +16,7 @@ export function useAllocationManageStore() {
   const allocationManageService: AllocationManageService = new AllocationManageService();
   let allocationManageServiceSubscribable: Subscription;
   let deleteAllotSubscribable: Subscription;
-  const { authority } = useAuthorityState();
+  const { $auth } = useAuthorityState();
   const history = useHistory();
   const [form] = Form.useForm();
   useEffect(() => {
@@ -155,14 +155,13 @@ export function useAllocationManageStore() {
   return {
     state,
     form,
+    $auth,
     callbackAction,
     changeTablePageIndex,
     searchClick,
     handleModalCancel,
     openModal,
     onChange,
-    searchClean,
-    authority,
-    useAuthorityRender
+    searchClean
   };
 }

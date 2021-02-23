@@ -18,6 +18,7 @@ export default function PurchaseOrderComponent() {
   const {
     state,
     searchForm,
+    $auth,
     callbackAction,
     changeTablePageIndex,
     searchClick,
@@ -73,7 +74,7 @@ export default function PurchaseOrderComponent() {
   function renderOtherButtons() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary" onClick={() => callbackAction(ModalType.CREATE)}>
+        <Button type="primary" onClick={() => callbackAction(ModalType.CREATE)} disabled={!$auth['addPurchase']}>
           新增采购单
         </Button>
         {/* <Button onClick={() => callbackAction(ModalType.EXPORT)} disabled>
@@ -85,7 +86,7 @@ export default function PurchaseOrderComponent() {
   function renderTable() {
     return (
       <ITableComponent
-        columns={purchaseOrderColumns(callbackAction)}
+        columns={purchaseOrderColumns(callbackAction, $auth)}
         isLoading={isLoading}
         pageIndex={pageIndex}
         pageSize={pageSize}

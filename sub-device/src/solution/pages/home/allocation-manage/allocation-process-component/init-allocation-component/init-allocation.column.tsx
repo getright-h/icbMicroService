@@ -2,7 +2,7 @@ import * as React from 'react';
 import style from './init-allocation.component.less';
 import { ALLOW_FLOW_ENUM, ModalType, APPROVAL_FLOW_STATUS_ENUM } from '~shared/constant/common.const';
 
-export function initAllocationColumns(callbackAction: Function) {
+export function initAllocationColumns(callbackAction: Function, $auth: Record<string, boolean>) {
   /**
    * @description 根据[  调拨状态 ] 渲染操作按钮
    */
@@ -27,7 +27,11 @@ export function initAllocationColumns(callbackAction: Function) {
       {
         condition: [ALLOW_FLOW_ENUM.Apply],
         btn: (
-          <a className={style.button} onClick={() => callbackAction(ModalType.CREATE, data)} key={'repally'}>
+          <a
+            className={style.button + `${$auth['applyAllot'] ? '' : ' no-auth-link'}`}
+            onClick={() => callbackAction(ModalType.CREATE, data)}
+            key={'repally'}
+          >
             发起申请
           </a>
         )

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ModalType } from '../base-manage.const';
 import { Space } from 'antd';
-export function devicetypeColumns(callbackAction: Function) {
+export function devicetypeColumns(callbackAction: Function, $auth: Record<string, boolean>) {
   return [
     {
       title: '设备型号',
@@ -26,6 +26,7 @@ export function devicetypeColumns(callbackAction: Function) {
       render: (render: any, data: any, index: number) => (
         <Space>
           <a
+            className={`${$auth['editDeviceType'] ? '' : 'no-auth-link'}`}
             onClick={() => {
               callbackAction(ModalType.ALERT, data);
             }}
@@ -34,6 +35,7 @@ export function devicetypeColumns(callbackAction: Function) {
             修改
           </a>
           <a
+            className={`${$auth['deleteDeviceType'] ? '' : 'no-auth-link'}`}
             onClick={() => {
               callbackAction(ModalType.DEL, data);
             }}

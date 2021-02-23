@@ -3,7 +3,7 @@ import style from './vehicle-manage.component.less';
 import { Divider, Table } from 'antd';
 import { ModalType } from './vehicle-manage.interface';
 import { CloseCircleOutlined } from '@ant-design/icons';
-export function vehicleManageColumns(callbackAction: Function) {
+export function vehicleManageColumns(callbackAction: Function, $auth: Record<string, boolean>) {
   return [
     {
       title: '车主',
@@ -29,10 +29,14 @@ export function vehicleManageColumns(callbackAction: Function) {
           ? deviceCodeList.map(device => (
               <div key={device}>
                 {device}
-                <CloseCircleOutlined
-                  className={style.deleteDevice}
-                  onClick={() => callbackAction(ModalType.UNBIND, { code: device, id: data.id })}
-                />
+                {$auth['unBindingOperation'] ? (
+                  <CloseCircleOutlined
+                    className={style.deleteDevice}
+                    onClick={() => callbackAction(ModalType.UNBIND, { code: device, id: data.id })}
+                  />
+                ) : (
+                  <CloseCircleOutlined style={{ marginLeft: '10px', cursor: 'not-allowed', opacity: 0.5 }} />
+                )}
               </div>
             ))
           : '-';
@@ -69,9 +73,19 @@ export function vehicleManageColumns(callbackAction: Function) {
       render: (render: any, data: any, index: number) => {
         return (
           <React.Fragment>
-            <a onClick={() => callbackAction(ModalType.DETAIL, data)}>详情</a>
+            <a
+              className={`${$auth['detailVehicle'] ? '' : 'no-auth-link'}`}
+              onClick={() => callbackAction(ModalType.DETAIL, data)}
+            >
+              详情
+            </a>
             <Divider type="vertical" />
-            <a onClick={() => callbackAction(ModalType.DELETE, data)}>删除</a>
+            <a
+              className={`${$auth['deleteVehicle'] ? '' : 'no-auth-link'}`}
+              onClick={() => callbackAction(ModalType.DELETE, data)}
+            >
+              删除
+            </a>
           </React.Fragment>
         );
       }

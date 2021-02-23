@@ -5,10 +5,12 @@ import { Form, Modal } from 'antd';
 import { DeviceTypeService } from '~/solution/model/services/device-type.service';
 import { useEffect } from 'react';
 import { Subscription } from 'rxjs';
+import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
 const { confirm } = Modal;
 export function useDeviceTypeSettingStore() {
   const { state, setStateWrap } = useStateStore(new IDeviceTypeSettingState());
   const deviceTypeService: DeviceTypeService = new DeviceTypeService();
+  const { $auth } = useAuthorityState();
   let queryStockDevicePagedListSubscription: Subscription;
   // 获取设备型号列表
   function getTableList() {
@@ -109,5 +111,14 @@ export function useDeviceTypeSettingStore() {
       queryStockDevicePagedListSubscription && queryStockDevicePagedListSubscription.unsubscribe();
     };
   }, []);
-  return { state, callbackAction, handleCloseVisible, getTableList, onChange, searchClick, changeTablePageIndex };
+  return {
+    state,
+    $auth,
+    callbackAction,
+    handleCloseVisible,
+    getTableList,
+    onChange,
+    searchClick,
+    changeTablePageIndex
+  };
 }

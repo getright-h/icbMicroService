@@ -8,12 +8,14 @@ import { Form, Modal } from 'antd';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
 
 export function useVehicleManageStore() {
   const { state, setStateWrap, getState } = useStateStore(new IVehicleManageState());
   const customerManageService: CustomerManageService = new CustomerManageService();
   const [searchForm] = Form.useForm();
   const history = useHistory();
+  const { $auth } = useAuthorityState();
 
   useEffect(() => {
     initSearchForm();
@@ -109,6 +111,7 @@ export function useVehicleManageStore() {
   return {
     state,
     searchForm,
+    $auth,
     initSearchForm,
     callbackAction,
     changeTablePageIndex,

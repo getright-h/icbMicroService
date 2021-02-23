@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Divider } from 'antd';
 import { ModalType } from './purchase-order.interface';
-export function purchaseOrderColumns(callbackAction: Function) {
+export function purchaseOrderColumns(callbackAction: Function, $auth: Record<string, boolean>) {
   return [
     {
       title: '机构名',
@@ -44,6 +44,7 @@ export function purchaseOrderColumns(callbackAction: Function) {
         return (
           <React.Fragment>
             <a
+              className={`${$auth['detailPurchase'] ? '' : 'no-auth-link'}`}
               onClick={() => {
                 callbackAction(ModalType.DETAIL, data);
               }}
@@ -51,9 +52,19 @@ export function purchaseOrderColumns(callbackAction: Function) {
               详情
             </a>
             <Divider type="vertical" />
-            <a onClick={() => callbackAction(ModalType.EDIT, data)}>编辑</a>
+            <a
+              className={`${$auth['editPurchase'] ? '' : 'no-auth-link'}`}
+              onClick={() => callbackAction(ModalType.EDIT, data)}
+            >
+              编辑
+            </a>
             <Divider type="vertical" />
-            <a onClick={() => callbackAction(ModalType.DELETE, data)}>删除</a>
+            <a
+              className={`${$auth['deletePurchase'] ? '' : 'no-auth-link'}`}
+              onClick={() => callbackAction(ModalType.DELETE, data)}
+            >
+              删除
+            </a>
           </React.Fragment>
         );
       }
