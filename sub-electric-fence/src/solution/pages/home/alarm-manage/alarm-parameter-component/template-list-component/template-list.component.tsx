@@ -7,9 +7,15 @@ import { useTemplateListStore } from './template-list.component.store';
 import { ITemplateListProps } from './template-list.interface';
 
 export default function TemplateListComponent(props: ITemplateListProps) {
-  const { state, selfClose, selectTemplate, submitTemplate, getFormInfo, deleteAlarmTemplate } = useTemplateListStore(
-    props
-  );
+  const {
+    state,
+    $auth,
+    selfClose,
+    selectTemplate,
+    submitTemplate,
+    getFormInfo,
+    deleteAlarmTemplate
+  } = useTemplateListStore(props);
   const { confirmLoading, templateList, selectTempId, tempalteValue, isCurTempDefault } = state;
   const { visible, info } = props;
 
@@ -24,7 +30,9 @@ export default function TemplateListComponent(props: ITemplateListProps) {
               onClick={() => selectTemplate(template.id)}
             >
               <span>{template.alarmValue}</span>
-              {!template.isDefault && <CloseOutlined onClick={() => deleteAlarmTemplate(template)} />}
+              {!template.isDefault && $auth['deleteParamTemplate'] && (
+                <CloseOutlined onClick={() => deleteAlarmTemplate(template)} />
+              )}
             </li>
           ))
         ) : (
@@ -93,7 +101,7 @@ export default function TemplateListComponent(props: ITemplateListProps) {
                   type="primary"
                   loading={confirmLoading}
                   onClick={submitTemplate}
-                  disabled={isCurTempDefault}
+                  disabled={isCurTempDefault || !$auth['editParamTemplate']}
                 >
                   保存
                 </Button>

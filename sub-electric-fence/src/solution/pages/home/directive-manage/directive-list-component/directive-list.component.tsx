@@ -15,6 +15,7 @@ import { StorageUtil } from '~/framework/util/storage';
 export default function DirectiveListComponent() {
   const {
     state,
+    $auth,
     searchForm,
     callbackAction,
     changeTablePageIndex,
@@ -102,13 +103,13 @@ export default function DirectiveListComponent() {
   function renderSearchButtons() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary" onClick={searchClick} loading={isLoading}>
+        <Button type="primary" onClick={searchClick} loading={isLoading} disabled={!$auth['queryInstructAll']}>
           查询
         </Button>
-        <Button onClick={initSearchForm} loading={isLoading}>
+        <Button onClick={initSearchForm} loading={isLoading} disabled={!$auth['queryInstructAll']}>
           清空
         </Button>
-        <Button type="primary" onClick={() => callbackAction(ModalType.PATCH)}>
+        <Button type="primary" onClick={() => callbackAction(ModalType.PATCH)} disabled={!$auth['addInstruct']}>
           下发指令
         </Button>
       </div>
@@ -117,7 +118,7 @@ export default function DirectiveListComponent() {
   function RenderTable() {
     return (
       <ITableComponent
-        columns={AlarmParameterColumn(callbackAction)}
+        columns={AlarmParameterColumn(callbackAction, $auth)}
         isLoading={isLoading}
         pageIndex={pageIndex}
         pageSize={pageSize}

@@ -1,5 +1,6 @@
 import { IAlarmParameterState, ModalType } from './alarm-parameter.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
+import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
 import { Form, message } from 'antd';
 import { AlarmManageService } from '~/solution/model/services/alarm-manage.service';
 import { MutableRefObject, useEffect, useRef } from 'react';
@@ -9,6 +10,7 @@ export function useAlarmParameterStore() {
   const { state, setStateWrap } = useStateStore(new IAlarmParameterState());
   const alarmManageService: AlarmManageService = new AlarmManageService();
   const [searchForm] = Form.useForm();
+  const { $auth } = useAuthorityState();
   const paramTemplatesRef: MutableRefObject<AlarmParamItem[]> = useRef([]);
 
   useEffect(() => {
@@ -61,6 +63,7 @@ export function useAlarmParameterStore() {
 
   return {
     state,
+    $auth,
     searchForm,
     initSearchForm,
     callbackAction,

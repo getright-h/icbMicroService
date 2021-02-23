@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Divider } from 'antd';
 import { ACTION_TYPE } from '~/solution/shared/constant/action.const';
-export function stationColumns(callbackAction: Function) {
+export function stationColumns(callbackAction: Function, $auth: Record<string, any>) {
   return [
     {
       title: '围栏名',
@@ -53,9 +53,19 @@ export function stationColumns(callbackAction: Function) {
           <React.Fragment>
             {/* <a onClick={() => callbackAction(ACTION_TYPE.FENCEMODAL, data)}>围栏模式</a>
             <Divider type="vertical" /> */}
-            <a onClick={() => callbackAction(ACTION_TYPE.EDIT, data)}>编辑</a>
+            <a
+              onClick={() => callbackAction(ACTION_TYPE.EDIT, data)}
+              className={`${$auth['editBindVehicle'] ? '' : 'no-auth-link'}`}
+            >
+              编辑
+            </a>
             <Divider type="vertical" />
-            <a onClick={() => callbackAction(ACTION_TYPE.UNBIND, data)}>解绑</a>
+            <a
+              onClick={() => callbackAction(ACTION_TYPE.UNBIND, data)}
+              className={`${$auth['fenceUnbindVehicle'] ? '' : 'no-auth-link'}`}
+            >
+              解绑
+            </a>
             {/* <Divider type="vertical" />
             <a onClick={() => callbackAction(ACTION_TYPE.BATCH_EDIT, data)}>批量修改</a> */}
           </React.Fragment>

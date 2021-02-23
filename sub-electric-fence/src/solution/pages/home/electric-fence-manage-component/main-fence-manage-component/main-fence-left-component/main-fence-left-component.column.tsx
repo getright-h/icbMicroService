@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Divider } from 'antd';
 import { ACTION_TYPE } from '~/solution/shared/constant/action.const';
-export function stationColumns(callbackAction: Function) {
+export function stationColumns(callbackAction: Function, $auth: Record<string, any>) {
   return [
     {
       title: '围栏名称',
@@ -33,9 +33,19 @@ export function stationColumns(callbackAction: Function) {
       render: (render: any, data: any, index: number) => {
         return (
           <React.Fragment>
-            <a onClick={e => callbackAction(e, ACTION_TYPE.EDIT, data)}>编辑</a>
+            <a
+              className={`${$auth['editFence'] ? '' : 'no-auth-link'}`}
+              onClick={e => callbackAction(e, ACTION_TYPE.EDIT, data)}
+            >
+              编辑
+            </a>
             <Divider type="vertical" />
-            <a onClick={e => callbackAction(e, ACTION_TYPE.DELETE, data)}>删除</a>
+            <a
+              className={`${$auth['deleteFence'] ? '' : 'no-auth-link'}`}
+              onClick={e => callbackAction(e, ACTION_TYPE.DELETE, data)}
+            >
+              删除
+            </a>
           </React.Fragment>
         );
       }

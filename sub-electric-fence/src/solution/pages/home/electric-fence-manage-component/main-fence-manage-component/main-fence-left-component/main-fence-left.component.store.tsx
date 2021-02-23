@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { IMainFenceLeftState, IMainFenceLeftProps } from './main-fence-left.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
+import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
+
 import { useEffect } from 'react';
 import { ACTION_TYPE } from '~/solution/shared/constant/action.const';
 import { FenceManageService } from '~/solution/model/services/fence-manage.service';
@@ -13,6 +15,7 @@ const { confirm } = Modal;
 export function useMainFenceLeftStore(props: IMainFenceLeftProps) {
   const { state, getState } = useStateStore(new IMainFenceLeftState());
   const fenceManageService = new FenceManageService();
+  const { $auth } = useAuthorityState();
   const { mainFenceManageState, dispatch } = React.useContext(MainFenceManageContext);
   useEffect(() => {
     getFenceList();
@@ -67,5 +70,5 @@ export function useMainFenceLeftStore(props: IMainFenceLeftProps) {
     changeSearchForm('index', index, dispatch);
     getFenceList({ ...mainFenceManageState.searchForm, index });
   }
-  return { state, callbackAction, changeTablePageIndex, searchClick };
+  return { state, $auth, callbackAction, changeTablePageIndex, searchClick };
 }

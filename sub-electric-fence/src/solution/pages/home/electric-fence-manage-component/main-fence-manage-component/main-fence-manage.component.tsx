@@ -11,7 +11,7 @@ import { visibleInfo, newFence, getFenceListAction, changeSearchForm } from './h
 import { MainFenceReducer, mainFenceInitialState } from './hooks-redux/main-fence-reducer';
 
 export default function MainFenceManageComponent() {
-  const { state, onValueChange } = useMainFenceManageStore();
+  const { state, $auth, onValueChange } = useMainFenceManageStore();
   const { searchLoading, circleLocation, circlrR, currentChoose, singleFenceData, polygon } = state;
   const [fenceManage, dispatch] = React.useReducer(MainFenceReducer, mainFenceInitialState);
   const { visible, isEdit, searchForm } = fenceManage;
@@ -36,6 +36,8 @@ export default function MainFenceManageComponent() {
           type="primary"
           onClick={() => getFenceListAction({ ...searchForm, index: 1 }, dispatch)}
           loading={searchLoading}
+          disabled={!$auth['queryAllFence']}
+          // className={`${$auth['queryAllFence'] ? '' : 'no-auth-link'}`}
         >
           查询
         </Button>
@@ -45,7 +47,12 @@ export default function MainFenceManageComponent() {
   function renderOtherButtons() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary" onClick={() => newFence(dispatch)}>
+        <Button
+          type="primary"
+          onClick={() => newFence(dispatch)}
+          disabled={!$auth['queryAllFence']}
+          // className={`${$auth['addFence'] ? '' : 'no-auth-link'}`}
+        >
           新建围栏
         </Button>
       </div>
