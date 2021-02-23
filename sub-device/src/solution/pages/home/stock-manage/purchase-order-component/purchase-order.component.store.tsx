@@ -6,10 +6,12 @@ import { StockManageService } from '~/solution/model/services/stock-manage.servi
 import { Form, Modal } from 'antd';
 import moment from 'moment';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
 
 export function usePurchaseOrderStore() {
   const { state, setStateWrap, getState } = useStateStore(new IPurchaseOrderState());
   const stockManageService: StockManageService = useService(StockManageService);
+  const { $auth } = useAuthorityState();
   const [searchForm] = Form.useForm();
 
   useEffect(() => {
@@ -115,6 +117,7 @@ export function usePurchaseOrderStore() {
   return {
     state,
     searchForm,
+    $auth,
     callbackAction,
     changeTablePageIndex,
     searchClick,

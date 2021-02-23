@@ -83,11 +83,9 @@ export default function OwnerManageComponent() {
   function RenderOtherButtons() {
     return (
       <div className="other-search-button-item">
-        {$auth['addOwner'] && (
-          <Button type="primary" onClick={() => callbackAction(ModalType.CREATE)}>
-            新增车主
-          </Button>
-        )}
+        <Button type="primary" onClick={() => callbackAction(ModalType.CREATE)} disabled={!$auth['addOwner']}>
+          新增车主
+        </Button>
         {/* <Button onClick={() => callbackAction(ModalType.IMPORT)} disabled>
           批量导入
         </Button>

@@ -11,6 +11,7 @@ export default function DeviceLineComponent() {
   const {
     state,
     form,
+    $auth,
     onChange,
     searchClick,
     searchClean,
@@ -73,9 +74,7 @@ export default function DeviceLineComponent() {
         <Button type="primary" onClick={searchClick}>
           查询
         </Button>
-        <Button type="primary" onClick={searchClean}>
-          清空
-        </Button>
+        <Button onClick={searchClean}>清空</Button>
       </div>
     );
   }
@@ -83,7 +82,7 @@ export default function DeviceLineComponent() {
     return (
       <ITableComponent
         rowKey="code"
-        columns={deviceLineColumns(getFlowNode)}
+        columns={deviceLineColumns(getFlowNode, $auth)}
         isLoading={isLoading}
         pageIndex={searchForm.index}
         pageSize={searchForm.size}

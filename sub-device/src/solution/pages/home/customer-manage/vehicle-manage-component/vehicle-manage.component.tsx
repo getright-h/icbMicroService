@@ -19,6 +19,7 @@ export default function VehicleManageComponent() {
   const {
     state,
     searchForm,
+    $auth,
     initSearchForm,
     callbackAction,
     changeTablePageIndex,
@@ -100,7 +101,7 @@ export default function VehicleManageComponent() {
   function renderOtherButtons() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary" onClick={() => callbackAction(ModalType.CREATE)}>
+        <Button type="primary" onClick={() => callbackAction(ModalType.CREATE)} disabled={!$auth['addVehicle']}>
           新增车辆
         </Button>
         {/* <Button onClick={() => callbackAction(ModalType.IMPORT)} disabled>
@@ -119,7 +120,7 @@ export default function VehicleManageComponent() {
     };
     return (
       <ITableComponent
-        columns={vehicleManageColumns(callbackAction)}
+        columns={vehicleManageColumns(callbackAction, $auth)}
         isLoading={isLoading}
         pageIndex={pageIndex}
         pageSize={pageSize}

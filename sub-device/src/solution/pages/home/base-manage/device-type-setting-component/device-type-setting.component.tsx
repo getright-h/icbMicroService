@@ -10,6 +10,7 @@ import AddDeviceTypeModalComponent from './add-device-type-component/add-device-
 export default function DeviceTypeSettingComponent() {
   const {
     state,
+    $auth,
     callbackAction,
     changeTablePageIndex,
     onChange,
@@ -40,7 +41,7 @@ export default function DeviceTypeSettingComponent() {
         <Button type="primary" onClick={searchClick}>
           搜索
         </Button>
-        <Button type="primary" onClick={() => callbackAction(ModalType.ADD)}>
+        <Button type="primary" onClick={() => callbackAction(ModalType.ADD)} disabled={!$auth['addDeviceType']}>
           新增设备型号
         </Button>
       </div>
@@ -49,7 +50,7 @@ export default function DeviceTypeSettingComponent() {
   function RenderTable() {
     return (
       <ITableComponent
-        columns={devicetypeColumns(callbackAction)}
+        columns={devicetypeColumns(callbackAction, $auth)}
         isLoading={isLoading}
         pageIndex={searchForm.index}
         pageSize={searchForm.size}

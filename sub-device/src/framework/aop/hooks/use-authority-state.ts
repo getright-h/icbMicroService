@@ -12,17 +12,19 @@ export function useAuthorityState(): {
   const { auth = {} } = gState?.myInfo as any;
   let authority = {};
   let authorityCode = {};
+  let target = '';
   const $auth = {};
 
   // 先找一级路由,没找到再去查找对应的子路由
   if (auth[pathname]) {
-    authority = auth[pathname];
+    target = pathname;
   } else {
-    authority = auth[subRouterMatch(pathname)] || {};
+    target = subRouterMatch(pathname);
   }
+  authority = auth[target] || {};
 
-  if (DEVICE_AUTHORITY_CODE[pathname]) {
-    authorityCode = DEVICE_AUTHORITY_CODE[pathname];
+  if (DEVICE_AUTHORITY_CODE[target]) {
+    authorityCode = DEVICE_AUTHORITY_CODE[target];
   }
   // console.log(authorityCode, 'authorityCode', authority);
 

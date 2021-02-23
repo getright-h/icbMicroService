@@ -6,7 +6,7 @@ import style from './vehicle-detail.component.less';
 import { useVehicleDetailStore } from './vehicle-detail.component.store';
 
 export default function VehicleDetailComponent() {
-  const { state, linkToEdit } = useVehicleDetailStore();
+  const { state, $auth, linkToEdit } = useVehicleDetailStore();
   const { details } = state;
 
   function renderHeader(title: string, rightChild?: Function) {
@@ -92,7 +92,7 @@ export default function VehicleDetailComponent() {
     <React.Fragment>
       {renderHeader('车辆详情', () => {
         return (
-          <Button type="primary" onClick={linkToEdit}>
+          <Button type="primary" onClick={linkToEdit} disabled={!$auth['editVehicle']}>
             编辑
           </Button>
         );

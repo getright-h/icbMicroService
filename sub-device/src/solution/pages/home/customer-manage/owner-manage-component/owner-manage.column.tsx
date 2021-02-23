@@ -34,9 +34,19 @@ export function ownerManageColumns(callbackAction: Function, $auth: Record<strin
       render: (render: any, data: any, index: number) => {
         return (
           <React.Fragment>
-            <a onClick={() => callbackAction(ModalType.DETAIL, data)}>详情</a>
+            <a
+              className={`${$auth['queryOwnerDetail'] ? '' : 'no-auth-link'}`}
+              onClick={() => callbackAction(ModalType.DETAIL, data)}
+            >
+              详情
+            </a>
             <Divider type="vertical" />
-            <a onClick={() => callbackAction(ModalType.EDIT, data)}>编辑</a>
+            <a
+              className={`${$auth['editOwner'] ? '' : 'no-auth-link'}`}
+              onClick={() => callbackAction(ModalType.EDIT, data)}
+            >
+              编辑
+            </a>
             <Divider type="vertical" />
             <a
               className={`${$auth['deleteOwner'] ? '' : 'no-auth-link'}`}

@@ -10,13 +10,12 @@ import RollbackApplyComponent from '../rollback-apply-component/rollback-apply.c
 export default function DetailComponent() {
   const {
     state,
-    authority,
+    $auth,
     callbackAction,
     handleModalCancel,
     getAlloactionDetail,
     allocationOperate,
-    handleDownLoadAllot,
-    useAuthorityRender
+    handleDownLoadAllot
   } = useDetailStore();
   const { detail = {}, importVisible, currentData, rollbackVisible } = state;
   const layout = {
@@ -54,6 +53,7 @@ export default function DetailComponent() {
             className={style.button}
             onClick={() => callbackAction(ModalType.CREATE, data)}
             key={1}
+            disabled={!$auth['applyAllot']}
           >
             发起申请
           </Button>
@@ -167,10 +167,7 @@ export default function DetailComponent() {
         <div className={style.formPart}>
           <div className={style.formItems}>
             <div className={style.formLeft}>
-              {useAuthorityRender(authority, '啥啥啥') && (
-                <Form.Item label={<strong>调拨单号</strong>}>{detail.allotCode}</Form.Item>
-              )}
-
+              <Form.Item label={<strong>调拨单号</strong>}>{detail.allotCode}</Form.Item>
               <Form.Item label={<strong>调拨设备</strong>}>
                 <RenderTable />
               </Form.Item>

@@ -15,6 +15,7 @@ export default function InitAllocationComponent() {
   const {
     state,
     form,
+    $auth,
     callbackAction,
     changeTablePageIndex,
     searchClick,
@@ -101,7 +102,7 @@ export default function InitAllocationComponent() {
     return (
       <ITableComponent
         multRowkey={['allotId', 'id']}
-        columns={initAllocationColumns(callbackAction)}
+        columns={initAllocationColumns(callbackAction, $auth)}
         isLoading={isLoading}
         pageIndex={searchForm.index}
         pageSize={searchForm.size}

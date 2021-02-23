@@ -14,7 +14,6 @@ export default function AllocationManageComponent() {
     state,
     form,
     $auth,
-    useAuthorityRender,
     callbackAction,
     changeTablePageIndex,
     searchClick,
@@ -36,7 +35,7 @@ export default function AllocationManageComponent() {
   };
   function RenderSelectItems() {
     return (
-      <Form {...formItemLayout} layout={'inline'} form={form}>
+      <Form {...formItemLayout} layout={'inline'} form={form} initialValues={{ state: '' }}>
         <Form.Item label="输入调拨单号" name="code">
           <Input
             allowClear
@@ -55,7 +54,6 @@ export default function AllocationManageComponent() {
         <Form.Item label="调拨状态" name="state">
           <Select
             style={{ width: 200 }}
-            defaultValue={''}
             placeholder="请选择"
             onChange={value => {
               onChange(value, 'state');

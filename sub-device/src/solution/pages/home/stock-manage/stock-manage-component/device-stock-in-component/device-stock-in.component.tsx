@@ -21,7 +21,7 @@ export default function DeviceStockInComponent(props: IDeviceStockInProps) {
   } = useDeviceStockInStore(props);
   const { visible } = props;
   const { currentSelectNode } = reduxState;
-  const { confirmLoading, errorList, isErrorListVisible, importType, deviceImportList } = state;
+  const { confirmLoading, errorList, isExitWrongData, isErrorListVisible, importType, deviceImportList } = state;
   const layout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 16 }
@@ -101,6 +101,7 @@ export default function DeviceStockInComponent(props: IDeviceStockInProps) {
                   <Radio value={1}>手动输入</Radio>
                   <Radio value={2}>导入Excel</Radio>
                 </Radio.Group>
+                <a>设备上传模板</a>
               </Form.Item>
             </Col>
           </Row>
@@ -175,6 +176,13 @@ export default function DeviceStockInComponent(props: IDeviceStockInProps) {
                   <Tooltip className={style.aLink} placement="right" arrowPointAtCenter title="仅导入最新上传的文件">
                     <InfoCircleOutlined className={style.primaryIcon} />
                   </Tooltip>
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href="http://file.test.i-cbao.com:88/uploads/pictures/2021/0205/a4fa2f5b7efa23c1.xlsx"
+                  >
+                    下载模板
+                  </a>
                 </Form.Item>
               </Col>
               <Col span={24}>
@@ -203,20 +211,30 @@ export default function DeviceStockInComponent(props: IDeviceStockInProps) {
   }
 
   function DeviceTable() {
+    const errorText = (text: any, record: any) => <span style={{ color: record.remark && 'red' }}>{text}</span>;
     const columns = [
       {
-        title: '行号',
-        dataIndex: 'rowNumber'
+        title: 'Excel行号',
+        dataIndex: 'rowNumber',
+        render: errorText
       },
       {
         title: '设备号',
-        dataIndex: 'code'
+        dataIndex: 'code',
+        render: errorText
       },
       {
         title: 'sim卡号',
-        dataIndex: 'sim'
+        dataIndex: 'sim',
+        render: errorText
       }
     ];
+    isExitWrongData &&
+      columns.push({
+        title: '错误信息',
+        dataIndex: 'remark',
+        render: errorText
+      });
     return (
       <Table
         size="small"
@@ -274,7 +292,6 @@ export default function DeviceStockInComponent(props: IDeviceStockInProps) {
         footer={null}
         onCancel={() => selfClose(true)}
         maskClosable={false}
-        destroyOnClose={true}
       >
         <Table dataSource={errorList} columns={columns} rowKey={row => row.code}></Table>
       </Modal>

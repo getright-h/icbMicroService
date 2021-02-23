@@ -1,6 +1,6 @@
 import { IAllocationManageState } from './allocation-manage.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
-import { useAuthorityState, useAuthorityRender } from '~/framework/aop/hooks/use-authority-state';
+import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
 
 import { ModalType } from '~shared/constant/common.const';
 import { useEffect } from 'react';
@@ -162,7 +162,6 @@ export function useAllocationManageStore() {
     handleModalCancel,
     openModal,
     onChange,
-    searchClean,
-    useAuthorityRender
+    searchClean
   };
 }

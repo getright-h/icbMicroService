@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { Space } from 'antd';
 import { APPROVAL_FLOW_STATUS_ENUM, AllOT_STATE_ENUM, ModalType } from '~shared/constant/common.const';
-export function allocationManageColumns(callbackAction: Function, $auth: Record<string, any>) {
+export function allocationManageColumns(callbackAction: Function, $auth: Record<string, boolean>) {
   function renderOperateBtn(data: any) {
     const { state, approvalState } = data;
     const btn = [];
     const detailBtn = () => (
       <a
-        className={`${$auth['queryOwnerDetail'] ? '' : 'no-auth-link'}`}
+        className={`${$auth['detailAllot'] ? '' : 'no-auth-link'}`}
         onClick={() => {
           callbackAction(ModalType.SEE, data);
         }}
@@ -19,7 +19,7 @@ export function allocationManageColumns(callbackAction: Function, $auth: Record<
 
     const delBtn = () => (
       <a
-        className={`${$auth['queryOwnerDetail'] ? '' : 'no-auth-link'}`}
+        className={`${$auth['deleteAllot'] ? '' : 'no-auth-link'}`}
         onClick={() => {
           callbackAction(ModalType.DELETE, data);
         }}
@@ -30,7 +30,7 @@ export function allocationManageColumns(callbackAction: Function, $auth: Record<
     );
     const goToAllocate = () => (
       <a
-        className={`${$auth['queryOwnerDetail'] ? '' : 'no-auth-link'}`}
+        className={`${$auth['operationAllot'] ? '' : 'no-auth-link'}`}
         onClick={() => {
           callbackAction(ModalType.ALLOCATE, data);
         }}

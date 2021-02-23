@@ -15,6 +15,7 @@ const { Option } = Select;
 export default function VoucherManageComponent() {
   const {
     state,
+    $auth,
     callbackAction,
     changeTablePageIndex,
     searchClick,
@@ -49,7 +50,7 @@ export default function VoucherManageComponent() {
         <Button type="primary" onClick={searchClick}>
           查询
         </Button>
-        <Button type="primary" onClick={() => callbackAction(ModalType.CREATE)}>
+        <Button type="primary" onClick={() => callbackAction(ModalType.CREATE)} disabled={!$auth['addDispatch']}>
           新增安装凭证
         </Button>
       </div>
@@ -58,7 +59,7 @@ export default function VoucherManageComponent() {
   function RenderTable() {
     return (
       <ITableComponent
-        columns={voucherManageColumns(callbackAction)}
+        columns={voucherManageColumns(callbackAction, $auth)}
         isLoading={isLoading}
         pageIndex={searchForm.index}
         pageSize={searchForm.size}

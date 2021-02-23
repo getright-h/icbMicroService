@@ -7,6 +7,7 @@ import { DeviceTypeService } from '~/solution/model/services/device-type.service
 import { ShowNotification } from '~/framework/util/common';
 import { Subscription } from 'rxjs';
 import { DEVICE_ROUTE, DEVICE_ROUTE_ENUM } from '~shared/constant/common.const';
+import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
 
 export function useDeviceLineStore() {
   const { state, setStateWrap, getState } = useStateStore(new IDeviceLineState());
@@ -14,6 +15,8 @@ export function useDeviceLineStore() {
   let queryDevicePagedListSubscribable: Subscription;
   let queryVehicleInformationByCodeSubscribable: Subscription;
   const [form] = Form.useForm();
+  const { $auth } = useAuthorityState();
+
   useEffect(() => {
     getTableData();
     return () => {
@@ -174,6 +177,7 @@ export function useDeviceLineStore() {
   return {
     state,
     form,
+    $auth,
     changeTablePageIndex,
     searchClick,
     handleModalCancel,

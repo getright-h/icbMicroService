@@ -184,7 +184,7 @@ export default function UserActionReportComponent() {
       <div className={style.carDriveLine} id="carDriveLine" data-x>
         {itemHeader('车辆轨迹')}
         <IMapComponent {...driveLineProps} />
-        {pointPassList?.length > 1 ? (
+        {pointPassList?.length >= 1 ? (
           pointPassList?.map((item: any, index: number) => (
             <div className={`${style.driveLineDetail} ${!index ? style.driveLineAll : null}`} key={index}>
               <div className={style.driveInfo}>

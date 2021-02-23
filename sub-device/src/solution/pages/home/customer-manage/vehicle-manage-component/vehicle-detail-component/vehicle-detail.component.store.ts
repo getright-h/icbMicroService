@@ -3,12 +3,14 @@ import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { CustomerManageService } from '~/solution/model/services/customer-manage.service';
+import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
 
 export function useVehicleDetailStore() {
   const { state, setStateWrap } = useStateStore(new IVehicleDetailState());
   const customerManageService: CustomerManageService = new CustomerManageService();
   const history = useHistory();
   const params = useParams();
+  const { $auth } = useAuthorityState();
 
   useEffect(() => {
     if (params.hasOwnProperty('id')) {
@@ -24,7 +26,7 @@ export function useVehicleDetailStore() {
   }
 
   function linkToEdit() {
-    history.push(`edit/${state.id}`);
+    history.push(`../editVehicle/${state.id}`);
   }
-  return { state, linkToEdit };
+  return { state, $auth, linkToEdit };
 }

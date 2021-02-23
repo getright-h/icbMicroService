@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Row, Col } from 'antd';
-export function deviceLineColumns(getFlowNode: Function) {
+export function deviceLineColumns(getFlowNode: Function, $auth: Record<string, boolean>) {
   /**
    * @description 根据[  调拨状态 ] 渲染操作按钮
    */
@@ -32,6 +32,7 @@ export function deviceLineColumns(getFlowNode: Function) {
       dataIndex: 'action',
       render: (render: any, data: any, index: number) => (
         <a
+          className={`${$auth['detailLife'] ? '' : 'no-auth-link'}`}
           onClick={() => {
             getFlowNode(data);
           }}

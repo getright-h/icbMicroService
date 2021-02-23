@@ -8,11 +8,13 @@ import { Modal } from 'antd';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import { ShowNotification } from '~/framework/util/common';
+import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
 moment.locale('zh-cn');
 
 export function useVoucherManageStore() {
   const { state, setStateWrap, getState } = useStateStore(new IVoucherManageState());
   const voucherManageService: VoucherManageService = new VoucherManageService();
+  const { $auth } = useAuthorityState();
 
   useEffect(() => {
     getTableData();
@@ -127,6 +129,7 @@ export function useVoucherManageStore() {
   }
   return {
     state,
+    $auth,
     callbackAction,
     changeTablePageIndex,
     searchClick,

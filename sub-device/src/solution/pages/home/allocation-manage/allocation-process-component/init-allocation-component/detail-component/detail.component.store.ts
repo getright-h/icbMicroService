@@ -9,15 +9,14 @@ import { ModalType, ALLOW_FLOW_KEYCODE_ENUM } from '~shared/constant/common.cons
 import { Modal } from 'antd';
 import { ShowNotification } from '~/framework/util/common';
 import { CommonUtil } from '~/solution/shared/util/baseFunction';
-import { useAuthorityState, useAuthorityRender } from '~/framework/aop/hooks/use-authority-state';
-
 import moment from 'moment';
+import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
 const { confirm } = Modal;
 export function useDetailStore() {
   const { state, setStateWrap } = useStateStore(new IDetailState());
   const { id } = useParams() as any;
   const history = useHistory();
-  const { authority, authorityCode } = useAuthorityState();
+  const { $auth } = useAuthorityState();
   const allocationManageService: AllocationManageService = new AllocationManageService();
   let allocationManageServiceSubscription: Subscription;
   useEffect(() => {
@@ -158,12 +157,11 @@ export function useDetailStore() {
   }
   return {
     state,
-    authority,
+    $auth,
     callbackAction,
     handleModalCancel,
     getAlloactionDetail,
     allocationOperate,
-    handleDownLoadAllot,
-    useAuthorityRender
+    handleDownLoadAllot
   };
 }
