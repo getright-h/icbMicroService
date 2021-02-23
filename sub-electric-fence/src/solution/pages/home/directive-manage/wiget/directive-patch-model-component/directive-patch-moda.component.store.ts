@@ -96,7 +96,7 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
       }
 
       // 自定义模板
-      if (currentDirective.cmdCode == 'Forword') {
+      if (currentDirective.cmdCode == 'Forward') {
         cmdValue.push({
           key: 'content',
           value: directiveCode

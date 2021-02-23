@@ -180,7 +180,7 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
             />
           </Form.Item>
         )}
-        {currentDirective.cmdCode == 'Forword' && (
+        {currentDirective.cmdCode == 'Forward' && (
           <Form.Item
             label="指令码"
             name={'directiveCode'}
