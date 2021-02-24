@@ -223,6 +223,12 @@ export function fetchChildAppsConfig() {
                 componentUrl: 'approvalManageDetail' //对应子应用的组件名
               },
               {
+                path: `approvalManageDetail/:id/:isDeal/:flowAuditId`,
+                lazyload: true,
+                exact: true,
+                componentUrl: 'approvalManageDetail' //对应子应用的组件名
+              },
+              {
                 path: 'approvalTemplateFormModal/:id/:groupName/:groupId',
                 lazyload: true,
                 exact: true,
