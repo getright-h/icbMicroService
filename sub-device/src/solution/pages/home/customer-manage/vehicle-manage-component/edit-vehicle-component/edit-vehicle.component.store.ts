@@ -127,7 +127,7 @@ export function useEditVehicleStore() {
         res => {
           setStateWrap({ confirmLoading: false });
           ShowNotification.success('编辑成功！');
-          history.push(`../${state.id}`);
+          history.push(`../vehicleDetail/${state.id}`);
         },
         err => {
           setStateWrap({ confirmLoading: false });
@@ -149,7 +149,11 @@ export function useEditVehicleStore() {
   }
 
   function cancelSubmit() {
-    history.push('./vehicle');
+    if (state.isEdit) {
+      history.push('../vehicle');
+    } else {
+      history.push('./vehicle');
+    }
   }
 
   function vehicleLayoutChange(curType: string, option?: any) {
