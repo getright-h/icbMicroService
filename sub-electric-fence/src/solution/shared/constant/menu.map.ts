@@ -11,7 +11,8 @@ export const MENU_MAP: any = {
   /** 参数管理 */
   '/home/alarm/parameter': [],
   /** 定位监控 */
-  '/home/positionMonitor': [],
+  '/home/fence/positionMonitor': ['/home/positionMonitor'],
+
   /** 指令中心 */
   // 指令列表
   '/home/directive/directiveList': [],

@@ -19,7 +19,7 @@ export const PositionMonitorContext = React.createContext({
 });
 export default function PositionMonitorComponent() {
   const [positionMonitorData, dispatch] = React.useReducer(PositionMonitorReducer, positionMonitorInitialState);
-  const { refreshContentInfo, state, handleCancel, stopRefresh } = usePositionMonitorStore(
+  const { refreshContentInfo, state, $auth, handleCancel, stopRefresh } = usePositionMonitorStore(
     dispatch,
     positionMonitorData
   );
@@ -51,9 +51,15 @@ export default function PositionMonitorComponent() {
           <div
             className={style.closeButton}
             style={{ left: !leftContentVisible ? '0' : '235px' }}
-            onClick={() => setDataAction({ leftContentVisible: !leftContentVisible }, dispatch)}
+            onClick={() => {
+              if ($auth['queryAllOrganization']) {
+                setDataAction({ leftContentVisible: !leftContentVisible }, dispatch);
+              }
+            }}
           >
-            {!leftContentVisible && <span>展开机构列表</span>}
+            {!leftContentVisible && (
+              <a className={`${$auth['queryAllOrganization'] ? '' : 'no-auth-link'}`}>展开机构列表</a>
+            )}
             {leftContentVisible ? (
               <LeftOutlined style={{ fontSize: '20px' }} />
             ) : (
@@ -62,12 +68,37 @@ export default function PositionMonitorComponent() {
           </div>
         )}
 
-        <div className={style.checkedCarInfo} onClick={() => setDataAction({ rightDrawervisible: true }, dispatch)}>
+        <div
+          className={style.checkedCarInfo}
+          onClick={() => {
+            if ($auth['areaInspectionVehicle']) {
+              setDataAction({ rightDrawervisible: true }, dispatch);
+            }
+          }}
+        >
           <Badge count={checkedCarData.length} overflowCount={9999} offset={[0, 12]}>
-            <Avatar shape="circle" size={80} icon={<CarOutlined className={style.iconStyle} />} />
+            <Avatar
+              shape="circle"
+              size={80}
+              icon={
+                <CarOutlined
+                  className={style.iconStyle}
+                  style={{
+                    background: !$auth['areaInspectionVehicle'] && '#eee'
+                  }}
+                />
+              }
+            />
           </Badge>
         </div>
-        <div className={style.attention} onClick={() => handleCancel(true)}>
+        <div
+          className={style.attention}
+          onClick={() => {
+            if ($auth['unprocessedAlarmInfo']) {
+              handleCancel(true);
+            }
+          }}
+        >
           <Badge count={totalAlermManage} offset={[0, 12]}>
             <Avatar size={80} icon={<AlertOutlined className={style.iconStyleAlert} />} />
           </Badge>
