@@ -53,7 +53,7 @@ export function useApprovalDealWithStore() {
     setStateWrap({ currentId: data.id });
     switch (actionType) {
       case ModalType.DETAIL:
-        history.push(`./approvalManageDetail/${data.id}/1`);
+        history.push(`./approvalManageDetail/${data.id}/1/${data?.audit?.flowAuditId}`);
         break;
       case ModalType.EDIT:
         history.push(`./approvalEditTemplateFormModal/${data.id}/1`);

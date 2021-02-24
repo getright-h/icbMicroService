@@ -128,6 +128,7 @@ export interface QueryApprovalApplyListParams {
 export interface QueryApprovalApplyListReturn {
   approverRemark: ApproverRemark;
   id: string;
+  audit: { flowAuditId: string };
   groupId: string;
   groupName: string;
   templateId: string;

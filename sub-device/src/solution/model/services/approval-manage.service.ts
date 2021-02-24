@@ -140,7 +140,7 @@ export class ApprovalManageService extends ApprovalManageDTO {
     return this.requestService.post(FLOW_CREATE, params);
   }
 
-  flowInfo(params: { id: string }) {
+  flowInfo(params: { id: string; flowAuditId: string }) {
     return this.requestService.get(FLOW_INFO, params);
   }
 

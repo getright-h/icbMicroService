@@ -13,7 +13,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 export function useApprovalManageDetailStore() {
   const { state, setStateWrap } = useStateStore(new IApprovalManageDetailState());
-  const { id, isDeal }: { id: string; isDeal: string } = useParams();
+  const { id, isDeal, flowAuditId }: { id: string; isDeal: string; flowAuditId: string } = useParams();
   const { remark, isRefuse } = state;
 
   const approvalManageService: ApprovalManageService = useService(ApprovalManageService);
@@ -23,7 +23,7 @@ export function useApprovalManageDetailStore() {
   }, []);
 
   function queryApprovalInstanceDetail() {
-    approvalManageService.flowInfo({ id }).subscribe(res => {
+    approvalManageService.flowInfo({ id, flowAuditId }).subscribe(res => {
       const info: FormTemplateInfo = res;
       info.instanceForm.controlList = info.instanceForm.controlList.map(controll => {
         if (FormType.FlowNode == controll.type) {

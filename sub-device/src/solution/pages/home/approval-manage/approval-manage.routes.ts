@@ -22,6 +22,12 @@ export const approvalManageRoutes: IRoute[] = [
     exact: true
   },
   {
+    path: `${MODULE_PATH}/approvalManageDetail/:id/:isDeal/:flowAuditId`,
+    component: ROUTERS.approvalManageDetail,
+    lazyload: true,
+    exact: true
+  },
+  {
     path: `${MODULE_PATH}/approvalManageDetail/:id/:isDeal`,
     component: ROUTERS.approvalManageDetail,
     lazyload: true,
