@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { ITemplateListProps, ITemplateListState } from './template-list.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
+import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
+
 import { Form, message, Modal } from 'antd';
 import { AlarmManageService } from '~/solution/model/services/alarm-manage.service';
 import { MutableRefObject, useEffect, useRef } from 'react';
@@ -13,7 +15,7 @@ export function useTemplateListStore(props: ITemplateListProps) {
   const { state, setStateWrap } = useStateStore(new ITemplateListState());
   const alarmManageService: AlarmManageService = new AlarmManageService();
   const formInfoRef: MutableRefObject<AlarmTypeItem[]> = useRef(null);
-
+  const { $auth } = useAuthorityState();
   useEffect(() => {
     props.info && initTemplateList(props.info.id);
   }, []);
@@ -78,5 +80,5 @@ export function useTemplateListStore(props: ITemplateListProps) {
     });
   }
 
-  return { state, selfClose, selectTemplate, submitTemplate, getFormInfo, deleteAlarmTemplate };
+  return { state, $auth, selfClose, selectTemplate, submitTemplate, getFormInfo, deleteAlarmTemplate };
 }

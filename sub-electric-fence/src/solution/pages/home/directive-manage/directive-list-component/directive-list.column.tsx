@@ -3,7 +3,7 @@ import { ModalType } from './directive-list.interface';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 
-export function AlarmParameterColumn(callbackAction: Function) {
+export function AlarmParameterColumn(callbackAction: Function, $auth: Record<string, any>) {
   const render = (text: any) => (text ? text : '-');
   return [
     {
@@ -63,7 +63,12 @@ export function AlarmParameterColumn(callbackAction: Function) {
       render: (render: any, data: any, index: number) => {
         return (
           <React.Fragment>
-            <a onClick={() => callbackAction(ModalType.DEL, data)}>删除</a>
+            <a
+              onClick={() => callbackAction(ModalType.DEL, data)}
+              className={`${$auth['deleteInstruct'] ? '' : 'no-auth-link'}`}
+            >
+              删除
+            </a>
             {/* <Divider type="vertical" />
             <a onClick={() => callbackAction(ModalType.EDIT, data)}>处理</a>
             <Divider type="vertical" />

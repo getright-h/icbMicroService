@@ -1,5 +1,6 @@
 import { IIMapState, TIMapProps } from './i-map.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
+import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
 import { useEffect, useRef, useImperativeHandle } from 'react';
 import * as _ from 'lodash';
 import { IMAP } from '~/solution/shared/util/map.util';
@@ -14,6 +15,7 @@ const autoOptions = {
 const autoComplete = new AMap.Autocomplete(autoOptions);
 export function useIMapStore(mapProps: TIMapProps) {
   const { state, setStateWrap } = useStateStore(new IIMapState());
+  const { $auth } = useAuthorityState();
   const map: any = useRef();
   // 寻找地址打的marker
   const searchMarker = useRef();
@@ -327,6 +329,7 @@ export function useIMapStore(mapProps: TIMapProps) {
     };
     infoWindow.setInfoTplData(data);
     isBindAction && bindAction(infoWindow, marker);
+    isBindAction && bindAuthBtn(infoWindow, marker);
     infoWindow.open(map, markerInfo.getPosition());
     regeoCode([marker.position[0], marker.position[1]]).then(place => {
       infoWindow.setInfoTplData({
@@ -401,6 +404,30 @@ export function useIMapStore(mapProps: TIMapProps) {
     infoWindowInfo.current = infoWindow;
   }
 
+  // 权限控制按钮
+  function bindAuthBtn(infoWindow: any, marker: any) {
+    // 点击导航，开始导航
+    infoWindow.get$InfoBody().on('mouseenter', marker, function(event: any) {
+      //阻止冒泡
+      event.stopPropagation();
+      const $mybtnSearch = document.getElementById('mybtnSearch');
+      const $mybtnWatchLine = document.getElementById('mybtnWatchLine');
+      const $mybtnDo = document.getElementById('mybtnDo');
+
+      // 下发指令
+      if (!$auth['IssueInstructions']) {
+        !$mybtnSearch.className.includes('no-auth-link') && ($mybtnSearch.className += ' no-auth-link ');
+      }
+      // 查询轨迹
+      if (!$auth['historyTrajectory']) {
+        !$mybtnWatchLine.className.includes('no-auth-link') && ($mybtnWatchLine.className += ' no-auth-link ');
+      }
+      // 实时追踪
+      if (!$auth['realTimeTracking']) {
+        !$mybtnDo.className.includes('no-auth-link') && ($mybtnDo.className += ' no-auth-link ');
+      }
+    });
+  }
   function bindAction(infoWindow: any, marker: any) {
     // 点击导航，开始导航
     infoWindow.get$InfoBody().on('click', '#mybtnSearch', marker, function(event: any) {

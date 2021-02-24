@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Divider, message, Switch } from 'antd';
 import { ModalType } from './alarm-parameter.interface';
 import { AlarmManageService } from '~/solution/model/services/alarm-manage.service';
-export function AlarmParameterColumn(callbackAction: Function) {
+export function AlarmParameterColumn(callbackAction: Function, $auth: Record<string, any>) {
   const alarmManageService: AlarmManageService = new AlarmManageService();
 
   return [
@@ -23,6 +23,7 @@ export function AlarmParameterColumn(callbackAction: Function) {
       dataIndex: 'isCustom',
       render: (text: boolean, data: any) => (
         <Switch
+          disabled={!$auth['parmOperationCustom']}
           defaultChecked={text}
           onChange={() => {
             data.isCustom = !data.isCustom;
@@ -50,9 +51,19 @@ export function AlarmParameterColumn(callbackAction: Function) {
           <React.Fragment>
             {data.isParam && (
               <React.Fragment>
-                <a onClick={() => callbackAction(ModalType.TEMPADD, data)}>新增</a>
+                <a
+                  onClick={() => callbackAction(ModalType.TEMPADD, data)}
+                  className={`${$auth['addParamTemplate'] ? '' : 'no-auth-link'}`}
+                >
+                  新增
+                </a>
                 <Divider type="vertical" />
-                <a onClick={() => callbackAction(ModalType.TEMPLIST, data)}>模板列表</a>
+                <a
+                  onClick={() => callbackAction(ModalType.TEMPLIST, data)}
+                  className={`${$auth['queryParamTemplateList'] ? '' : 'no-auth-link'}`}
+                >
+                  模板列表
+                </a>
               </React.Fragment>
             )}
           </React.Fragment>

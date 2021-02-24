@@ -1,5 +1,6 @@
 import { IDirectiveListState, ModalType } from './directive-list.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
+import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
 import { Form, Modal, message } from 'antd';
 import { DirectiveService } from '~/solution/model/services/directive-manage.service';
 import { useEffect } from 'react';
@@ -9,6 +10,7 @@ export function useDirectiveListStore() {
   const { state, setStateWrap, getState } = useStateStore(new IDirectiveListState());
   const directiveService: DirectiveService = new DirectiveService();
   const [searchForm] = Form.useForm();
+  const { $auth } = useAuthorityState();
   let getCmdListSubscription: Subscription;
   let delCmdSubscription: Subscription;
 
@@ -110,6 +112,7 @@ export function useDirectiveListStore() {
   }
   return {
     state,
+    $auth,
     searchForm,
     initSearchForm,
     callbackAction,

@@ -12,6 +12,7 @@ const Option = Select.Option;
 export default function AlarmParameterComponent() {
   const {
     state,
+    $auth,
     searchForm,
     callbackAction,
     initSearchForm,
@@ -68,7 +69,7 @@ export default function AlarmParameterComponent() {
   function RenderTable() {
     return (
       <ITableComponent
-        columns={AlarmParameterColumn(callbackAction)}
+        columns={AlarmParameterColumn(callbackAction, $auth)}
         isLoading={isLoading}
         pageIndex={1}
         pageSize={50}

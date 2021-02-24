@@ -1,5 +1,6 @@
 import { IPositionMonitorState } from './position-monitor.interface';
 import { useStateStore, useService } from '~/framework/aop/hooks/use-base-store';
+import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
 import { Dispatch, useEffect, useRef } from 'react';
 import moment from 'moment';
 import { setDataAction } from './position-monitor-redux/position-monitor-action';
@@ -10,6 +11,7 @@ export function usePositionMonitorStore(dispatch: Dispatch<any>, positionMonitor
   const { checkedCarData } = positionMonitorData;
   let { currentSelectCar } = positionMonitorData;
   const checkedCarDataLength = useRef(0);
+  const { $auth } = useAuthorityState();
   const positionMonitorService: PositionMonitorService = useService(PositionMonitorService);
 
   function handleCancel(isClose = false) {
@@ -63,5 +65,5 @@ export function usePositionMonitorStore(dispatch: Dispatch<any>, positionMonitor
         setDataAction({ totalAlermManage: res.count }, dispatch);
       });
   }
-  return { state, refreshContentInfo, handleCancel, stopRefresh };
+  return { state, $auth, refreshContentInfo, handleCancel, stopRefresh };
 }

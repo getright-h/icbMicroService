@@ -74,8 +74,8 @@ export default function MonitoringObjectComponent() {
 
   function renderOtherButtons() {
     return (
-      <div className={` other-search-button-item ${$auth['fenceBindVehicle'] ? '' : 'no-auth-link'}`}>
-        <Button type="primary" onClick={() => openModal(ModalType.BINDCAR)}>
+      <div>
+        <Button type="primary" onClick={() => openModal(ModalType.BINDCAR)} disabled={!$auth['fenceBindVehicle']}>
           绑定车辆
         </Button>
         {/* <Button type="primary" onClick={() => openModal(ModalType.FENCETYPE)}>
@@ -88,7 +88,7 @@ export default function MonitoringObjectComponent() {
   function RenderTable() {
     return (
       <ITableComponent
-        columns={stationColumns(callbackAction)}
+        columns={stationColumns(callbackAction, $auth)}
         isLoading={isLoading}
         pageIndex={searchForm.index}
         pageSize={searchForm.size}
