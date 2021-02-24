@@ -12,6 +12,7 @@ import { useHistory } from 'react-router-dom';
 import { DataNode } from 'rc-tree/lib/interface';
 import { getCheckedList } from '~/framework/util/common/treeFunction';
 import { OrganizationExportFunction } from '~/solution/components/organization-controller-component/organization-controller.interface';
+import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
 
 const { confirm } = Modal;
 export function useMonitorManageStore() {
@@ -20,6 +21,8 @@ export function useMonitorManageStore() {
   const monitorService = useService(MonitorService);
   let queryVehicleGroupPagedListSubscription: Subscription;
   const history = useHistory();
+  const { $auth } = useAuthorityState();
+
   useEffect(() => {
     getTableData();
     return () => {
@@ -203,11 +206,17 @@ export function useMonitorManageStore() {
   function monitorGroupAction(element: any) {
     return (
       <div className="actions">
-        <a onClick={() => deletemonitorGroup(element)} className="a-link">
+        <a
+          onClick={() => deletemonitorGroup(element)}
+          className={`${$auth['deleteVehicleGroup'] ? 'a-link' : 'a-link no-auth-link'}`}
+        >
           删除
         </a>
         <p></p>
-        <a onClick={() => editmonitorGroup(element)} className="a-link">
+        <a
+          onClick={() => editmonitorGroup(element)}
+          className={`${$auth['editVehicleGroup'] ? 'a-link' : 'a-link no-auth-link'}`}
+        >
           修改
         </a>
       </div>
@@ -222,6 +231,7 @@ export function useMonitorManageStore() {
   return {
     state,
     organizationControllerRef,
+    $auth,
     callbackAction,
     changeTablePageIndex,
     searchClick,

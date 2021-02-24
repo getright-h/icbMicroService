@@ -10,6 +10,7 @@ import OrganizationControllerComponent from '~/solution/components/organization-
 export default function WarehouseListLeftComponent() {
   const {
     state,
+    $auth,
     onSelect,
     addWarehouse,
     closeAddWarehouseModal,
@@ -45,7 +46,7 @@ export default function WarehouseListLeftComponent() {
   };
   return (
     <div className={style.warehouseListLeft}>
-      <Button type="primary" style={{ width: '100%' }} onClick={addWarehouse}>
+      <Button type="primary" style={{ width: '100%' }} onClick={addWarehouse} disabled={!$auth['addStore']}>
         新增仓库 +{' '}
       </Button>
       <OrganizationControllerComponent {...prganizationControllerComponentProps} />

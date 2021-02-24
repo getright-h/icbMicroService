@@ -9,6 +9,7 @@ import { StockListManageContext } from '../stock-manage.component';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { RadioChangeEvent } from 'antd/lib/radio';
 import axios from 'axios';
+import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
 
 export function useDeviceStockInStore(props: IDeviceStockInProps) {
   const { state, setStateWrap } = useStateStore(new IDeviceStockInState());
@@ -16,6 +17,7 @@ export function useDeviceStockInStore(props: IDeviceStockInProps) {
   const { reduxState } = useContext(StockListManageContext);
   const [form] = Form.useForm();
   const confirmFormRef: MutableRefObject<any> = useRef();
+  const { $auth } = useAuthorityState();
 
   function getCurrentSelectInfo(typeName: string, option: Record<string, any>) {
     const { formData } = state;
@@ -148,6 +150,7 @@ export function useDeviceStockInStore(props: IDeviceStockInProps) {
     state,
     form,
     reduxState,
+    $auth,
     selfSubmit,
     selfClose,
     getCurrentSelectInfo,

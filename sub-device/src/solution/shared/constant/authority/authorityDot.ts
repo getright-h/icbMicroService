@@ -64,6 +64,8 @@
     deleteMonitoringVehicle: string; //删除监控车辆
     queryAllVehicleGroup: string; //查看所有监控组
     insertVehicleAcross: string; //跨机构添加车辆
+    alarmNotification: string; //报警通知
+    batchMoveVehicleGroup: string; //批量转组
 },
 "/home/device/approvalManage/approvalTemplate": { 
     queryApprovalGroup: string; //查看审批组/模板
@@ -81,6 +83,7 @@
     startApply: string; //发起申请
     recallApply: string; //撤回申请
     approveHandle: string; //审批处理
+    editApply: string; //编辑申请
 },
 "/home/device/stock/in-out": { 
     queryInOutRecord: string; //查看出入库记录

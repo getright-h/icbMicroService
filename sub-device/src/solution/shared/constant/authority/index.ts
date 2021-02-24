@@ -64,7 +64,9 @@ export const DEVICE_AUTHORITY_CODE: IAuthorityCode = {
     moveVehicleGroup: 'moveVehicleGroup',
     deleteMonitoringVehicle: 'deleteMonitoringVehicle',
     queryAllVehicleGroup: 'queryAllVehicleGroup',
-    insertVehicleAcross: 'insertVehicleAcross'
+    insertVehicleAcross: 'insertVehicleAcross',
+    alarmNotification: 'alarmNotification',
+    batchMoveVehicleGroup: 'batchMoveVehicleGroup'
   },
   '/home/device/approvalManage/approvalTemplate': {
     queryApprovalGroup: 'queryApprovalGroup',
@@ -81,7 +83,8 @@ export const DEVICE_AUTHORITY_CODE: IAuthorityCode = {
     queryAllApprovalHandle: 'queryAllApprovalHandle',
     startApply: 'startApply',
     recallApply: 'recallApply',
-    approveHandle: 'approveHandle'
+    approveHandle: 'approveHandle',
+    editApply: 'editApply'
   },
   '/home/device/stock/in-out': {
     queryInOutRecord: 'queryInOutRecord'

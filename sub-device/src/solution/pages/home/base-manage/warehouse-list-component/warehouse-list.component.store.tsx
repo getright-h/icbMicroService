@@ -8,9 +8,11 @@ import { EventDataNode } from 'antd/lib/tree';
 import { ShowNotification } from '~/framework/util/common';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import confirm from 'antd/lib/modal/confirm';
+import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
 export function useWarehouseListStore(warehouseListState: { currentSelectNode: EventDataNode }) {
   const { state, setStateWrap, getState } = useStateStore(new IWarehouseListState());
   const warehouseListService = useRef(new WarehouseListService());
+  const { $auth } = useAuthorityState();
 
   useEffect(() => {
     // 获取表单的数据，清空当前条件
@@ -130,6 +132,7 @@ export function useWarehouseListStore(warehouseListState: { currentSelectNode: E
 
   return {
     state,
+    $auth,
     changeTablePageIndex,
     callbackAction,
     handleFormDataChange,

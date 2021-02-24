@@ -11,12 +11,14 @@ import confirm from 'antd/lib/modal/confirm';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { ShowNotification } from '../../../../../../framework/util/common/showNotification';
 import { OrganizationExportFunction } from '~/solution/components/organization-controller-component/organization-controller.interface';
+import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
 
 export function useWarehouseListLeftStore() {
   const { dispatch } = useContext(WarehouseListManageContext);
   const organizationControllerRef: { current: OrganizationExportFunction } = useRef();
   const warehouseListService: WarehouseListService = new WarehouseListService();
   const { state, setStateWrap } = useStateStore(new IWarehouseListLeftState());
+  const { $auth } = useAuthorityState();
 
   // 添加仓库，显示弹窗
   function addWarehouse() {
@@ -27,11 +29,17 @@ export function useWarehouseListLeftStore() {
   function warehouseAction(element: any) {
     return (
       <div className="actions">
-        <a onClick={() => deleteWarehouse(element)} className="a-link">
+        <a
+          className={`${$auth['deleteStore'] ? 'a-link' : 'a-link no-auth-link'}`}
+          onClick={() => deleteWarehouse(element)}
+        >
           删除
         </a>
         <p></p>
-        <a onClick={() => editWarehouse(element)} className="a-link">
+        <a
+          className={`${$auth['editStore'] ? 'a-link' : 'a-link no-auth-link'}`}
+          onClick={() => editWarehouse(element)}
+        >
           编辑
         </a>
       </div>
@@ -118,6 +126,7 @@ export function useWarehouseListLeftStore() {
 
   return {
     state,
+    $auth,
     onSelect,
     addWarehouse,
     warehouseAction,

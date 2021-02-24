@@ -12,6 +12,7 @@ export default function DeviceStockInComponent(props: IDeviceStockInProps) {
     state,
     form,
     reduxState,
+    $auth,
     selfSubmit,
     selfClose,
     getCurrentSelectInfo,
@@ -268,6 +269,7 @@ export default function DeviceStockInComponent(props: IDeviceStockInProps) {
             <React.Fragment>
               {data.isRenew ? (
                 <a
+                  className={`${$auth['renewMaterial'] ? '' : 'no-auth-link'}`}
                   onClick={() => {
                     callbackAction(data);
                   }}

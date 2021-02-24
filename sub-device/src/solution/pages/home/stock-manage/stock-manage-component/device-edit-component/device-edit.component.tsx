@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { ISelectLoadingComponent } from '~/framework/components/component.module';
 
 export default function DeviceEditComponent(props: IDeviceEditProps) {
-  const { state, form, selfSubmit, selfClose, changeToEdit, getCurrentSelectInfo } = useDeviceEditStore(props);
+  const { state, form, $auth, selfSubmit, selfClose, changeToEdit, getCurrentSelectInfo } = useDeviceEditStore(props);
   const { visible } = props;
   const { confirmLoading, isEdit, details, formData } = state;
 
@@ -55,7 +55,9 @@ export default function DeviceEditComponent(props: IDeviceEditProps) {
           </div>
         )}
         <div className={style.detailRight}>
-          <a onClick={changeToEdit}>编辑</a>
+          <a className={`${$auth['editMaterial'] ? '' : 'no-auth-link'}`} onClick={changeToEdit}>
+            编辑
+          </a>
         </div>
       </div>
     );

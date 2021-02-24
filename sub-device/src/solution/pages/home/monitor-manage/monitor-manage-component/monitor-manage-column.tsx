@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ALLOW_FLOW_ENUM } from '~shared/constant/common.const';
 import { ModalType } from '../monitor-manage.const';
 import { Space } from 'antd';
-export function monitorColumns(callbackAction: Function) {
+export function monitorColumns(callbackAction: Function, $auth: Record<string, boolean>) {
   /**
    * @description 根据[  调拨状态 ] 渲染操作按钮
    */
@@ -22,7 +22,11 @@ export function monitorColumns(callbackAction: Function) {
       {
         condition: [],
         btn: (
-          <a onClick={() => callbackAction(ModalType.DEL, data)} key={2}>
+          <a
+            className={`${$auth['deleteMonitoringVehicle'] ? '' : 'no-auth-link'}`}
+            onClick={() => callbackAction(ModalType.DEL, data)}
+            key={2}
+          >
             删除
           </a>
         )
@@ -32,7 +36,11 @@ export function monitorColumns(callbackAction: Function) {
       {
         condition: [],
         btn: (
-          <a onClick={() => callbackAction(ModalType.BATCH_TRANFROM, data)} key={4}>
+          <a
+            className={`${$auth['moveVehicleGroup'] ? '' : 'no-auth-link'}`}
+            onClick={() => callbackAction(ModalType.BATCH_TRANFROM, data)}
+            key={4}
+          >
             转组
           </a>
         )

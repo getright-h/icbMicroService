@@ -20,6 +20,7 @@ export default function AppravalTemplateComponent() {
   const [appravalTemplateState, dispatch] = React.useReducer(AppravalTemplateReducer, appravalTemplateInitialState);
   const {
     state,
+    $auth,
     changeTablePageIndex,
     moveTemplate,
     callbackAction,
@@ -35,7 +36,7 @@ export default function AppravalTemplateComponent() {
   function renderTable() {
     return (
       <ITableComponent
-        columns={approvalTemplateColumns(callbackAction)}
+        columns={approvalTemplateColumns(callbackAction, $auth)}
         isLoading={isLoading}
         pageIndex={searchForm.index}
         pageSize={searchForm.size}
@@ -54,7 +55,7 @@ export default function AppravalTemplateComponent() {
         </Button>
         <Button
           type="primary"
-          disabled={appravalTemplateState.currentSelectNode.isAll}
+          disabled={appravalTemplateState.currentSelectNode.isAll || !$auth['addApprovalTemplate']}
           onClick={() => addTemplate()}
           loading={isLoading}
         >
@@ -82,7 +83,7 @@ export default function AppravalTemplateComponent() {
   function renderOtherSearchBtns() {
     return !currentSelectNode.isAll ? (
       <div className="other-search-button-item">
-        <Button type="primary" onClick={() => moveTemplate()}>
+        <Button type="primary" onClick={() => moveTemplate()} disabled={!$auth['moveApprovalTemplate']}>
           移动模板
         </Button>
       </div>

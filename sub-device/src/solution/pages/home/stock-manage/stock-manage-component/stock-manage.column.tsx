@@ -2,13 +2,23 @@ import * as React from 'react';
 import { Divider, Popover } from 'antd';
 import { ModalType } from './stock-manage.interface';
 
-export function stockManageColumns(callbackAction: Function) {
+export function stockManageColumns(callbackAction: Function, $auth: Record<string, boolean>) {
   function renderActionContent(data: any) {
     return (
       <div>
-        <a onClick={() => callbackAction(ModalType.DELETE, data)}>直接删除</a>
+        <a
+          className={`${$auth['deleteMaterial'] ? '' : 'no-auth-link'}`}
+          onClick={() => callbackAction(ModalType.DELETE, data)}
+        >
+          直接删除
+        </a>
         <p></p>
-        <a onClick={() => callbackAction(ModalType.LOST, data)}>遗失</a>
+        <a
+          className={`${$auth['removeDevice'] ? '' : 'no-auth-link'}`}
+          onClick={() => callbackAction(ModalType.LOST, data)}
+        >
+          遗失
+        </a>
       </div>
     );
   }
@@ -59,6 +69,7 @@ export function stockManageColumns(callbackAction: Function) {
         return (
           <React.Fragment>
             <a
+              className={`${$auth['detailMaterial'] ? '' : 'no-auth-link'}`}
               onClick={() => {
                 callbackAction(ModalType.EDIT, data);
               }}

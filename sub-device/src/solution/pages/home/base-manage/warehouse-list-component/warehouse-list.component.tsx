@@ -17,6 +17,7 @@ export default function WarehouseListComponent() {
 
   const {
     state,
+    $auth,
     changeTablePageIndex,
     callbackAction,
     handleFormDataChange,
@@ -58,7 +59,12 @@ export default function WarehouseListComponent() {
         <Button type="primary" disabled={!currentSelectNode} onClick={() => getTableData()} loading={isLoading}>
           查询
         </Button>
-        <Button type="primary" disabled={!currentSelectNode} onClick={() => addShippingSpace()} loading={isLoading}>
+        <Button
+          type="primary"
+          disabled={!currentSelectNode || !$auth['addPosition']}
+          onClick={() => addShippingSpace()}
+          loading={isLoading}
+        >
           添加仓位
         </Button>
       </div>
@@ -77,7 +83,7 @@ export default function WarehouseListComponent() {
   function renderTable() {
     return (
       <ITableComponent
-        columns={wareHouseListColumns(callbackAction)}
+        columns={wareHouseListColumns(callbackAction, $auth)}
         isLoading={isLoading}
         pageIndex={searchForm.index}
         pageSize={searchForm.size}

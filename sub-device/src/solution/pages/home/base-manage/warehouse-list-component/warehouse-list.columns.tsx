@@ -1,7 +1,7 @@
 import { ColumnsType } from 'antd/lib/table';
 import * as React from 'react';
 import { Divider } from 'antd';
-export function wareHouseListColumns(action: Function): ColumnsType<any> {
+export function wareHouseListColumns(action: Function, $auth: Record<string, boolean>): ColumnsType<any> {
   return [
     {
       title: '仓位名',
@@ -41,9 +41,13 @@ export function wareHouseListColumns(action: Function): ColumnsType<any> {
       render: (text, row) => {
         return (
           <React.Fragment>
-            <a onClick={() => action(row, '编辑')}>编辑</a>
+            <a className={`${$auth['editPosition'] ? '' : 'no-auth-link'}`} onClick={() => action(row, '编辑')}>
+              编辑
+            </a>
             <Divider type="vertical" />
-            <a onClick={() => action(row, '删除')}>删除</a>
+            <a className={`${$auth['deletePosition'] ? '' : 'no-auth-link'}`} onClick={() => action(row, '删除')}>
+              删除
+            </a>
           </React.Fragment>
         );
       }

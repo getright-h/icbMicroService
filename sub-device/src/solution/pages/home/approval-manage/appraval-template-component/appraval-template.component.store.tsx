@@ -9,6 +9,7 @@ import { ModalType } from '~/solution/shared/constant/common.const';
 import confirm from 'antd/lib/modal/confirm';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { ShowNotification } from '~/framework/util/common';
+import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
 export function useApprovalTemplateStore(appravalTemplateState: {
   currentSelectNode: { isAll: boolean; node: EventDataNode };
 }) {
@@ -16,6 +17,7 @@ export function useApprovalTemplateStore(appravalTemplateState: {
   const history = useHistory();
   const { currentSelectNode } = appravalTemplateState;
   const approvalManageService: ApprovalManageService = useService(ApprovalManageService);
+  const { $auth } = useAuthorityState();
 
   useEffect(() => {
     getTableData();
@@ -145,6 +147,7 @@ export function useApprovalTemplateStore(appravalTemplateState: {
 
   return {
     state,
+    $auth,
     getTableData,
     changeTablePageIndex,
     callbackAction,

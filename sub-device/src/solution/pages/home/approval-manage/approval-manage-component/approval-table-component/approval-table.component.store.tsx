@@ -9,6 +9,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { QueryApprovalApplyListReturn } from '~/solution/model/dto/approval-manage.dto';
 import { useHistory } from 'react-router-dom';
 import { IApprovalApplyState } from '../approval-apply-component/approval-apply.interface';
+import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
 
 export function useApprovalTableStore() {
   const { state, setStateWrap, getState } = useStateStore(new IApprovalTableState());
@@ -16,6 +17,8 @@ export function useApprovalTableStore() {
   const [searchForm] = Form.useForm();
   const history = useHistory();
   const currentTemplate = useRef('');
+  const { $auth } = useAuthorityState();
+
   useEffect(() => {
     getTableData();
   }, []);
@@ -131,6 +134,7 @@ export function useApprovalTableStore() {
   return {
     state,
     searchForm,
+    $auth,
     callbackAction,
     changeTablePageIndex,
     searchClick,

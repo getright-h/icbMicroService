@@ -10,6 +10,7 @@ export default function ApprovalTemplateLeftComponent() {
   const {
     state,
     organizationControllerRef,
+    $auth,
     onLoadData,
     onSelect,
     addTemplateType,
@@ -42,7 +43,12 @@ export default function ApprovalTemplateLeftComponent() {
 
   return (
     <div className={style.approvalListLeft}>
-      <Button type="primary" style={{ width: '100%', marginBottom: '10px' }} onClick={addTemplateType}>
+      <Button
+        type="primary"
+        style={{ width: '100%', marginBottom: '10px' }}
+        onClick={addTemplateType}
+        disabled={!$auth['addApprovalGroup']}
+      >
         新增模板类型 +
       </Button>
       <a

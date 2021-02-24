@@ -23,6 +23,7 @@ import { GlobalContext } from '~/solution/context/global/global.provider';
 import { TREE_MAP } from '../appraval-template.interface';
 import { ApprovalManageService } from '~/solution/model/services/approval-manage.service';
 import { DataNode } from 'rc-tree/lib/interface';
+import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
 
 export function useApprovalTemplateLeftStore() {
   const { dispatch } = useContext(AppravalTemplateManageContext);
@@ -31,6 +32,7 @@ export function useApprovalTemplateLeftStore() {
   const warehouseListService: WarehouseListService = new WarehouseListService();
   const approvalManageService: ApprovalManageService = useService(ApprovalManageService);
   const { gState }: IGlobalState = useContext(GlobalContext);
+  const { $auth } = useAuthorityState();
 
   useEffect(() => {
     queryOrganizationTypeListByTypeId();
@@ -93,11 +95,17 @@ export function useApprovalTemplateLeftStore() {
   function groupAction(element: any) {
     return (
       <div className="actions">
-        <a onClick={() => deleteGroup(element)} className="a-link">
+        <a
+          className={`${$auth['deleteApprovalGroup'] ? 'a-link' : 'a-link no-auth-link'}`}
+          onClick={() => deleteGroup(element)}
+        >
           删除
         </a>
         <p></p>
-        <a onClick={() => editGroup(element)} className="a-link">
+        <a
+          className={`${$auth['editApprovalGroup'] ? 'a-link' : 'a-link no-auth-link'}`}
+          onClick={() => editGroup(element)}
+        >
           编辑
         </a>
       </div>
@@ -184,6 +192,7 @@ export function useApprovalTemplateLeftStore() {
 
   return {
     state,
+    $auth,
     addTemplateType,
     onSelect,
     closeAddTemplateTypeModal,

@@ -4,11 +4,13 @@ import { Form } from 'antd';
 import { useEffect } from 'react';
 import { StockManageService } from '~/solution/model/services/stock-manage.service';
 import { ShowNotification } from '~/framework/util/common';
+import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
 
 export function useDeviceEditStore(props: IDeviceEditProps) {
   const { state, setStateWrap } = useStateStore(new IDeviceEditState());
   const stockManageService: StockManageService = useService(StockManageService);
   const [form] = Form.useForm();
+  const { $auth } = useAuthorityState();
 
   useEffect(() => {
     props.id && getDetails(props.id);
@@ -68,5 +70,5 @@ export function useDeviceEditStore(props: IDeviceEditProps) {
     form.setFieldsValue(state.details);
   }
 
-  return { state, form, selfSubmit, selfClose, changeToEdit, getCurrentSelectInfo };
+  return { state, form, $auth, selfSubmit, selfClose, changeToEdit, getCurrentSelectInfo };
 }

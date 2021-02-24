@@ -6,11 +6,13 @@ import { StockManageService } from '~/solution/model/services/stock-manage.servi
 import { Form, Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { EventDataNode } from 'antd/lib/tree';
+import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
 
 export function useStockManageStore(stockListState: { currentSelectNode: EventDataNode }) {
   const { state, setStateWrap, getState } = useStateStore(new IStockManageState());
   const stockManageService: StockManageService = useService(StockManageService);
   const [searchForm] = Form.useForm();
+  const { $auth } = useAuthorityState();
 
   useEffect(() => {
     searchForm.resetFields();
@@ -153,6 +155,7 @@ export function useStockManageStore(stockListState: { currentSelectNode: EventDa
   return {
     state,
     searchForm,
+    $auth,
     onSelectRows,
     callbackAction,
     changeTablePageIndex,

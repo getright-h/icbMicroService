@@ -14,6 +14,7 @@ export default function MonitorManageComponent() {
   const {
     state,
     organizationControllerRef,
+    $auth,
     callbackAction,
     changeTablePageIndex,
     onChange,
@@ -76,7 +77,7 @@ export default function MonitorManageComponent() {
   function RenderTable() {
     return (
       <ITableComponent
-        columns={monitorColumns(callbackAction)}
+        columns={monitorColumns(callbackAction, $auth)}
         isLoading={isLoading}
         pageIndex={searchForm.index}
         pageSize={searchForm.size}
@@ -116,11 +117,17 @@ export default function MonitorManageComponent() {
     <div className={style.monitor}>
       <IHeaderTitleComponent pageName={'监控组管理'}>
         <div className={style.btnArea}>
-          <Button onClick={() => callbackAction(ModalType.ADD_GROUP)}>添加监控组</Button>
+          <Button onClick={() => callbackAction(ModalType.ADD_GROUP)} disabled={!$auth['addVehicleGroup']}>
+            添加监控组
+          </Button>
           <div>
-            {currentMonitorGroup.id && <Button onClick={() => callbackAction(ModalType.ADD_CAR)}>添加监控车辆</Button>}
+            {currentMonitorGroup.id && (
+              <Button onClick={() => callbackAction(ModalType.ADD_CAR)} disabled={!$auth['addMonitoringVehicle']}>
+                添加监控车辆
+              </Button>
+            )}
             <Button
-              disabled={!currentMonitorGroup.id}
+              disabled={!currentMonitorGroup.id || !$auth['alarmNotification']}
               type={'primary'}
               style={{ marginLeft: 20 }}
               onClick={() => callbackAction(ModalType.ALARM)}
@@ -128,7 +135,7 @@ export default function MonitorManageComponent() {
               报警通知
             </Button>
             <Button
-              disabled={transformDisable}
+              disabled={transformDisable || !$auth['batchMoveVehicleGroup']}
               type={!transformDisable ? 'primary' : 'default'}
               style={{ marginLeft: 20 }}
               onClick={() => callbackAction(ModalType.BATCH_TRANFROM)}

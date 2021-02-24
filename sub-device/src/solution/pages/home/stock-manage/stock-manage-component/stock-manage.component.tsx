@@ -25,6 +25,7 @@ export default function StockManageComponent() {
   const {
     state,
     searchForm,
+    $auth,
     changeTablePageIndex,
     callbackAction,
     onSelectRows,
@@ -156,7 +157,7 @@ export default function StockManageComponent() {
           onClick={() => {
             callbackAction(ModalType.ADD);
           }}
-          disabled={!currentSelectNode}
+          disabled={!currentSelectNode || !$auth['putInStorage']}
         >
           设备入库
         </Button>
@@ -188,7 +189,7 @@ export default function StockManageComponent() {
   function renderTable() {
     return (
       <ITableComponent
-        columns={stockManageColumns(callbackAction)}
+        columns={stockManageColumns(callbackAction, $auth)}
         isLoading={isLoading}
         pageIndex={pageIndex}
         pageSize={pageSize}

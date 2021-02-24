@@ -15,6 +15,7 @@ export default function ApprovalTableComponent() {
   const {
     state,
     searchForm,
+    $auth,
     callbackAction,
     changeTablePageIndex,
     searchClick,
@@ -52,7 +53,7 @@ export default function ApprovalTableComponent() {
   function renderRenderApplyForApprovalTable() {
     return (
       <ITableComponent
-        columns={approvalTableColumns(callbackAction)}
+        columns={approvalTableColumns(callbackAction, $auth)}
         isLoading={isLoading}
         pageIndex={pageIndex}
         pageSize={pageSize}
@@ -139,7 +140,7 @@ export default function ApprovalTableComponent() {
   function renderOtherSearchRenderApplyForApprovalBtns() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary" onClick={() => changeChooseModalVisible(true)}>
+        <Button type="primary" onClick={() => changeChooseModalVisible(true)} disabled={!$auth['startApply']}>
           发起申请
         </Button>
       </div>
