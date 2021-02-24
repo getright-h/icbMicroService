@@ -103,10 +103,10 @@ export default function DirectiveListComponent() {
   function renderSearchButtons() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary" onClick={searchClick} loading={isLoading} disabled={!$auth['queryInstructAll']}>
+        <Button type="primary" onClick={searchClick} loading={isLoading}>
           查询
         </Button>
-        <Button onClick={initSearchForm} loading={isLoading} disabled={!$auth['queryInstructAll']}>
+        <Button onClick={initSearchForm} loading={isLoading}>
           清空
         </Button>
         <Button type="primary" onClick={() => callbackAction(ModalType.PATCH)} disabled={!$auth['addInstruct']}>

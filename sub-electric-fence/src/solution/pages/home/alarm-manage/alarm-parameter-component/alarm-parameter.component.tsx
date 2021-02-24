@@ -59,12 +59,10 @@ export default function AlarmParameterComponent() {
   function renderSearchButtons() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary" onClick={getTableData} disabled={!$auth['queryParamTemplateList']}>
+        <Button type="primary" onClick={getTableData}>
           查询
         </Button>
-        <Button onClick={initSearchForm} disabled={!$auth['queryParamTemplateList']}>
-          清空
-        </Button>
+        <Button onClick={initSearchForm}>清空</Button>
       </div>
     );
   }

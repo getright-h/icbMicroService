@@ -36,7 +36,7 @@ export default function MainFenceManageComponent() {
           type="primary"
           onClick={() => getFenceListAction({ ...searchForm, index: 1 }, dispatch)}
           loading={searchLoading}
-          disabled={!$auth['queryAllFence']}
+          // disabled={!$auth['queryAllFence']}
           // className={`${$auth['queryAllFence'] ? '' : 'no-auth-link'}`}
         >
           查询
@@ -50,7 +50,7 @@ export default function MainFenceManageComponent() {
         <Button
           type="primary"
           onClick={() => newFence(dispatch)}
-          disabled={!$auth['queryAllFence']}
+          disabled={!$auth['addFence']}
           // className={`${$auth['addFence'] ? '' : 'no-auth-link'}`}
         >
           新建围栏

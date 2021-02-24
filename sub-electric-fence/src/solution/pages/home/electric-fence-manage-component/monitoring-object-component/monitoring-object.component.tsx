@@ -65,7 +65,7 @@ export default function MonitoringObjectComponent() {
   function renderSearchButtons() {
     return (
       <div className="push-search-button-item">
-        <Button type="primary" onClick={() => changeTablePageIndex(1)} disabled={!$auth['fenceBindVehicle']}>
+        <Button type="primary" onClick={() => changeTablePageIndex(1)}>
           查询
         </Button>
       </div>
