@@ -101,7 +101,6 @@ export default function DeviceStockInComponent(props: IDeviceStockInProps) {
                   <Radio value={1}>手动输入</Radio>
                   <Radio value={2}>导入Excel</Radio>
                 </Radio.Group>
-                <a>设备上传模板</a>
               </Form.Item>
             </Col>
           </Row>
