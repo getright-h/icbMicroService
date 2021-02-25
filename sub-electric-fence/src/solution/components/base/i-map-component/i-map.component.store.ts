@@ -34,6 +34,7 @@ export function useIMapStore(mapProps: TIMapProps) {
   const notPassedArr = useRef([]);
   const havePassedArr = useRef([]);
   const currentAllPoints = useRef([]);
+  const currentAllPointsDetailArr = useRef([]);
   const infoWindowInfo: any = useRef();
   const finishedRun = useRef(false);
   const stopPointMarkers = useRef({});
@@ -123,7 +124,7 @@ export function useIMapStore(mapProps: TIMapProps) {
     map.current.clearMap();
     if (mapProps.drivingLineData?.pointList?.length) {
       const { pointList, stopPoints } = mapProps.drivingLineData;
-
+      currentAllPointsDetailArr.current = pointList;
       const carLine = pointList.map(item => {
         return item.coordinates;
       });
@@ -215,6 +216,8 @@ export function useIMapStore(mapProps: TIMapProps) {
             }
           });
         } else {
+          console.log('pointList[pointList.length - 1]', pointList[pointList.length - 1]);
+
           satellitesNum = pointList[pointList.length - 1].satellitesNum;
           time = pointList[pointList.length - 1].time;
         }
@@ -236,6 +239,9 @@ export function useIMapStore(mapProps: TIMapProps) {
 
   // 车当前的运行速度
   useEffect(() => {
+    console.log(currentAllPoints.current);
+    console.log(currentAllPointsDetailArr.current);
+
     if (currentAllPoints.current.length) {
       notPassedArr.current = [...currentAllPoints.current.slice(currentPoint)];
     }
@@ -246,7 +252,20 @@ export function useIMapStore(mapProps: TIMapProps) {
     if (isRunning) {
       carLineMarkerInfo?.current?.pauseMove();
       const position = notPassedArr.current[0];
-      IMAP.showCarInfo(mapProps.drivingLineData, map.current, { position }, openInfoWinCar);
+      let satellitesNum = 0,
+        time = 0;
+      if (currentAllPointsDetailArr.current) {
+        currentAllPointsDetailArr.current.forEach(item => {
+          console.log(item.coordinates, [position.lng + '', position.lat + '']);
+
+          if (item.coordinates.toString() == [position.lng + '', position.lat + ''].toString()) {
+            satellitesNum = item.satellitesNum;
+            time = item.time;
+          }
+        });
+      }
+      IMAP.showCarInfo(mapProps.drivingLineData, map.current, { position, satellitesNum, time }, openInfoWinCar);
+      // IMAP.showCarInfo(mapProps.drivingLineData, map.current, { position }, openInfoWinCar);
     }
   }, [currentPoint, carSpeed]);
 
@@ -367,7 +386,7 @@ export function useIMapStore(mapProps: TIMapProps) {
       lalg: `${marker.position.lng}, ${marker.position.lat}`,
       place: '地址转换中...',
       satellitesNum: satellitesNumText,
-      positionTime: marker.time || lastLocationTime
+      positionTime: marker.time || ''
     };
     infoWindow.setInfoTplData(data);
     infoWindow.open(map, marker.position);
