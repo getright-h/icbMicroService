@@ -187,7 +187,7 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
     info.forEach((item: any) => {
       customCmdValue.push({
         key: item.alarmKey || '',
-        values: item.alarmValue || ''
+        value: item.alarmValue || ''
       });
     });
     form.setFieldsValue({
