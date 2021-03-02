@@ -103,6 +103,7 @@ export class OrderReportService implements OrderReportManage {
         });
         let totalInfo = {
           startTime: 0,
+          totalTime: 0,
           startLon: 0,
           startLat: 0,
           endTime: 0,
@@ -115,8 +116,9 @@ export class OrderReportService implements OrderReportManage {
         data.pointPassList = data.pointPassList?.map((item: PointPassList, index: number) => {
           // 这个时候说明要展示全路段，不然就展示个分路段
           const itemCopy = JSON.parse(JSON.stringify(item));
+
           if (index == 0) {
-            totalInfo = itemCopy;
+            totalInfo = { ...totalInfo, ...itemCopy };
           } else {
             totalInfo.mileage += itemCopy.mileage;
             if (index == data.pointPassList.length - 1) {
@@ -131,8 +133,11 @@ export class OrderReportService implements OrderReportManage {
             item.endLon = endLA[0];
             item.endLat = endLA[1];
           }
+          totalInfo.totalTime += (itemCopy.endTime - itemCopy.startTime) / 1000;
           return item;
         });
+        console.log('totalInfo', totalInfo);
+
         data.pointPassList?.length > 1 && data.pointPassList?.unshift(totalInfo);
 
         // 长驻点

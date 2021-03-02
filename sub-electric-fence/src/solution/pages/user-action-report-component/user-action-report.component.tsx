@@ -190,7 +190,9 @@ export default function UserActionReportComponent() {
               <div className={style.driveInfo}>
                 <div></div>
                 <strong>行驶时间</strong>
-                {REPORT_UTIL.formatStayTime((item.endTime - item.startTime) / 1000)}
+                {!index
+                  ? REPORT_UTIL.formatStayTime(item.totalTime)
+                  : REPORT_UTIL.formatStayTime((item.endTime - item.startTime) / 1000)}
               </div>
               <div className={style.driveInfo}>
                 <div></div>
