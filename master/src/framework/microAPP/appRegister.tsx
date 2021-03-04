@@ -14,7 +14,7 @@ async function registerMainApp(callback: () => any) {
   const apps: Array<AppProps> = [];
   const baseFuntion = {
     logout: () => {
-      StorageUtil.removeLocalStorage('TOKEN');
+      StorageUtil.removeLocalStorage('token');
       location.href = '/login';
     }
   };
