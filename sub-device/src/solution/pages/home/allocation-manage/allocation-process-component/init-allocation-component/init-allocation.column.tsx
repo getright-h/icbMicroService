@@ -27,13 +27,13 @@ export function initAllocationColumns(callbackAction: Function, $auth: Record<st
       {
         condition: [ALLOW_FLOW_ENUM.Apply],
         btn: (
-          <a
+          APPROVAL_FLOW_STATUS_ENUM.Success === approvalState ? <a
             className={style.button + `${$auth['applyAllot'] ? '' : ' no-auth-link'}`}
             onClick={() => callbackAction(ModalType.CREATE, data)}
             key={'repally'}
           >
             发起申请
-          </a>
+          </a> : null
         )
       },
 

@@ -48,7 +48,7 @@ export default function DetailComponent() {
       {
         condition: [ALLOW_FLOW_ENUM.Apply],
         btn: (
-          <Button
+          APPROVAL_FLOW_STATUS_ENUM.Success === approvalState ?  <Button
             type={'primary'}
             className={style.button}
             onClick={() => callbackAction(ModalType.CREATE, data)}
@@ -56,7 +56,7 @@ export default function DetailComponent() {
             disabled={!$auth['applyAllot']}
           >
             发起申请
-          </Button>
+          </Button> : null
         )
       },
 
