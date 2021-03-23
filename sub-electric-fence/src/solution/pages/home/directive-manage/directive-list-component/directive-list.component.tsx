@@ -29,7 +29,7 @@ export default function DirectiveListComponent() {
   function renderSelectItems() {
     const layout = {
       labelCol: { span: 8 },
-      wrapperCol: { span: 25 }
+      wrapperCol: { span: 16 }
     };
     return (
       <Form {...layout} form={searchForm} style={{ width: '90%' }}>
@@ -85,8 +85,9 @@ export default function DirectiveListComponent() {
             </Form.Item>
           </Col>
           <Col span={10}>
-            <Form.Item name="time" label="发送时间" wrapperCol={{ span: 24 }} style={{ float: 'left' }}>
+            <Form.Item name="time" label="发送时间" wrapperCol={{ span: 24 }}>
               <TimePickerComponent
+                style={{ with: 200 }}
                 getDateTimeInfo={(value: any, option: any) => getCurrentSelectInfo(value, option, 'dateRange')}
                 timeInfo={[
                   moment(searchTime.beginTime).format('YYYY MM DD'),
@@ -138,6 +139,7 @@ export default function DirectiveListComponent() {
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
       ></TablePageTelComponent>
+      {/* {<DirectivePatchModalComponent visible={patchModalVisible} close={handleModalCancel} />} */}
       {patchModalVisible && <DirectivePatchModalComponent visible={patchModalVisible} close={handleModalCancel} />}
     </React.Fragment>
   );

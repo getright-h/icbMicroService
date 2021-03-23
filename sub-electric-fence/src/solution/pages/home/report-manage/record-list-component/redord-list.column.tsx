@@ -2,30 +2,38 @@ import * as React from 'react';
 import { Divider } from 'antd';
 import { ModalType } from './redord-list.interface';
 export function DwellColumn(callbackAction: Function) {
+  const render = (text: any) => (text ? text : '-');
+
   return [
     {
       title: '车主姓名',
-      dataIndex: 'ownerName'
+      dataIndex: 'ownerName',
+      render
     },
     {
       title: '车牌号',
-      dataIndex: 'plateNo'
+      dataIndex: 'plateNo',
+      render
     },
     {
       title: '设备号',
-      dataIndex: 'deviceCode'
+      dataIndex: 'deviceCode',
+      render
     },
     {
       title: '报警类型',
-      dataIndex: 'alarmTypeText'
+      dataIndex: 'alarmTypeText',
+      render
     },
     {
       title: '报警时间',
-      dataIndex: 'time'
+      dataIndex: 'time',
+      render
     },
     {
       title: '报警地址',
-      dataIndex: 'address'
+      dataIndex: 'address',
+      render
     },
     // {
     //   title: '处理状态',
@@ -37,7 +45,8 @@ export function DwellColumn(callbackAction: Function) {
     // },
     {
       title: '所属机构',
-      dataIndex: 'organizationName'
+      dataIndex: 'organizationName',
+      render
     }
     // {
     //   title: '操作',

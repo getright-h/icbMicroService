@@ -8,7 +8,7 @@ import DurationSettingComponent from './duration-setting-component/duration-sett
 export default function AlarmFormItemComponent(props: IAlarmFormItemProp) {
   const { state, handleInputChange, durationFieldsChange } = useAlarmFormItemStore(props);
   const { formInfo, durationFields } = state;
-  const { isEnbaleEdit = true } = props;
+  const { isEnbaleEdit = true, extraEle = null } = props;
   function CustomComponent(item: AlarmTypeItem) {
     let returnElement: JSX.Element = null;
     const itemProps = {
@@ -28,6 +28,7 @@ export default function AlarmFormItemComponent(props: IAlarmFormItemProp) {
                 prefix={item.prefix}
                 suffix={item.suffix || null}
               />
+              {extraEle}
             </div>
             {item.validateText && <span>填写范围：{item.validateText}</span>}
           </Form.Item>

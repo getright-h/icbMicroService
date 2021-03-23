@@ -1,5 +1,6 @@
 import { DurationField } from './duration-setting-component/duration-setting.interface';
 import { AlarmPackageContent } from '~/solution/model/dto/alarm-manage.dto';
+import React from 'react';
 
 /**
  * @export state变量定义和初始化
@@ -17,6 +18,7 @@ export class IAlarmFormItemProp {
   tempalteValue?: AlarmPackageContent[];
   getFormInfo: (formInfo: any) => void;
   isEnbaleEdit?: boolean;
+  extraEle?: React.ReactElement;
 }
 
 export enum FormTypeEnum {

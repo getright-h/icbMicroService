@@ -2,6 +2,8 @@ import * as React from 'react';
 import { formatStayTime } from './permanent-list.util';
 
 export function AlarmParameterColumn(sortInfo: { key: string; type: string }, callbackAction: Function) {
+  const render = (text: any) => (text ? text : '-');
+
   return [
     {
       title: '车主姓名',
@@ -20,7 +22,8 @@ export function AlarmParameterColumn(sortInfo: { key: string; type: string }, ca
     },
     {
       title: '常驻地点',
-      dataIndex: 'address'
+      dataIndex: 'address',
+      render
     },
     {
       title: '到访次数',

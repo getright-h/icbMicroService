@@ -12,6 +12,9 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
   const directiveService: DirectiveService = new DirectiveService();
   const alarmManageService: AlarmManageService = new AlarmManageService();
   const paramTemplatesRef: MutableRefObject<AlarmParamItem[]> = useRef([]);
+  const beforeModifyemplateRef: MutableRefObject<any> = useRef([]);
+  const cmdValueRef: MutableRefObject<any> = useRef({});
+
   const [form] = Form.useForm();
   let getTemplateSubscription: Subscription;
   let sendCmdSubscription: Subscription;
@@ -57,8 +60,11 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
 
   function submitForm() {
     form.validateFields().then((values: any) => {
+      console.log(form.getFieldsValue());
+
       const { codes, type, vehicleGroupId, directiveCode, customValue, verifyCode } = values;
-      const { currentDirective, isParams, custom, currentDirectiveTemObj } = state;
+      const { currentDirective, isParams, custom, currentDirectiveTemObj, tempalteValue } = state;
+
       const params: ISendCode = {};
       params.codes = codes && codes.split('\n');
       params.type = type;
@@ -83,17 +89,17 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
       const cmdValue: any[] = [];
 
       // 选择模板
-      if (currentDirectiveTemObj.alarmKey) {
-        // 如果当前已经选择了模板
-        const { packageList = [] } = currentDirectiveTemObj;
-        packageList.forEach((item: any) => {
-          cmdValue.push({
-            key: item.alarmKey || '',
-            value: item.alarmValue || ''
-          });
-          params.cmdValue = JSON.stringify(cmdValue);
-        });
-      }
+      // if (currentDirectiveTemObj.alarmKey) {
+      //   // 如果当前已经选择了模板
+      //   const { packageList = [] } = currentDirectiveTemObj;
+      //   packageList.forEach((item: any) => {
+      //     cmdValue.push({
+      //       key: item.alarmKey || '',
+      //       value: item.alarmValue || ''
+      //     });
+      //     params.cmdValue = JSON.stringify(cmdValue);
+      //   });
+      // }
 
       // 自定义模板
       if (currentDirective.cmdCode == 'Forward') {
@@ -103,13 +109,15 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
         });
         params.cmdValue = JSON.stringify(cmdValue);
       }
+      params.cmdValue = cmdValueRef.current;
 
-      // 自定义参数值
-      if (custom) {
-        params.cmdValue = customValue;
-      }
+      // // 自定义参数值
+      // if (custom) {
+      //   params.cmdValue = customValue;
+      // }
 
       setStateWrap({ confirmLoading: true });
+      console.log(params);
       sendCmdSubscription = directiveService.sendCmd(params).subscribe(
         (res: any) => {
           message.success('正在执行指令下发');
@@ -190,6 +198,9 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
         value: item.alarmValue || ''
       });
     });
+    console.log('得到了数据', info);
+    console.log();
+    cmdValueRef.current = JSON.stringify(customCmdValue);
     form.setFieldsValue({
       customValue: JSON.stringify(customCmdValue)
     });
@@ -200,11 +211,19 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
     const currentDirectiveTemObj = currentDirectiveTempalet[index];
     const tempalteValue = [currentDirectiveTemObj, currentDirectiveTemObj?.packageList[0]];
     // 选择了模板就不能进行自定义按钮操作
+    // const tempalteValue = [];
+    // currentDirectiveTemObj && tempalteValue.push(currentDirectiveTemObj);
+    // currentDirectiveTemObj?.packageList[0] && tempalteValue.push(currentDirectiveTemObj?.packageList[0]);
+    // 对当前选择的模板进行备份，当用户取消自定义修改的时候方便回退
+    beforeModifyemplateRef.current = JSON.parse(JSON.stringify(tempalteValue));
+
     setStateWrap({
       currentIndex: index,
       currentDirectiveTemObj,
       tempalteValue,
-      custom: false
+      custom: false,
+      // 每一次切换都要关闭编辑
+      editParam: false
     });
   }
 
@@ -220,6 +239,31 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
     props.close && props.close(isSuccess);
   }
 
+  /**
+   *
+   * @param template 用户自定义
+   */
+  function handleCustomSet(template: any) {
+    const { editParam, tempalteValue } = state;
+    let modifyTempalte = tempalteValue;
+    // 点击取消修改以后恢复为之前的值
+    if (editParam) {
+      modifyTempalte = beforeModifyemplateRef.current;
+      const { packageList = [] } = modifyTempalte[0];
+      packageList.forEach((item: any) => {
+        cmdValueRef.current = {
+          key: item.alarmKey || '',
+          value: item.alarmValue || ''
+        };
+      });
+      console.log(modifyTempalte, 'modifyTempaltemodifyTempalte');
+    }
+
+    setStateWrap({
+      editParam: !editParam,
+      tempalteValue: [...modifyTempalte]
+    });
+  }
   return {
     state,
     form,
@@ -229,6 +273,7 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
     handleFormDataChange,
     selectTemplate,
     getCurrentSelectInfo,
-    setCustomCmdValue
+    setCustomCmdValue,
+    handleCustomSet
   };
 }

@@ -4,6 +4,7 @@ import style from './directive-patch-modal.component.less';
 import { useDirectiveModalStore } from './directive-patch-moda.component.store';
 import { ISelectLoadingComponent } from '~/solution/components/component.module';
 import { AlarmFormItemComponent } from '~/solution/components/component.module';
+import { InfoCircleTwoTone } from '@ant-design/icons';
 
 import { IDirectiveModalProps, ModalType, Type } from './directive-list.interface';
 import { StorageUtil } from '~/framework/util/storage';
@@ -19,7 +20,8 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
     handleFormDataChange,
     selectTemplate,
     getCurrentSelectInfo,
-    setCustomCmdValue
+    setCustomCmdValue,
+    handleCustomSet
   } = useDirectiveModalStore(props);
   const {
     custom,
@@ -31,7 +33,8 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
     currentDirectiveTemObj,
     tempalteValue = [],
     currentTempalte,
-    confirmLoading
+    confirmLoading,
+    editParam
   } = state;
   const formItemLayout = {
     labelCol: {
@@ -43,11 +46,13 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
       sm: { span: 16 }
     }
   };
+  console.log(tempalteValue, 'tempalteValue99');
 
   return (
     <Modal
       title={'下发指令'}
       visible={visible}
+      //visible={true}
       confirmLoading={confirmLoading}
       onOk={submitForm}
       onCancel={() => selfClose()}
@@ -74,7 +79,7 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
             label={deviceId ? '关联设备' : '  '}
             prefixCls={deviceId ? '' : ' '}
             name={'codes'}
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: '请录入设备号码！' }]}
             style={{ marginBottom: 10 }}
           >
             <Input.TextArea
@@ -107,7 +112,7 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
           label="指令类型"
           name={'directiveType'}
           className={style.marginBootom10}
-          rules={[{ required: true }]}
+          rules={[{ required: true, message: '请选择指令类型！' }]}
         >
           <ISelectLoadingComponent
             reqUrl="getTypesList"
@@ -131,30 +136,44 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
          */}
         {((isParams && currentDirective.hasSwitch) || (isParams && currentDirective.hasArgs)) &&
           currentDirective.hasArgs && (
-            <Form.Item label={' '} prefixCls={' '} className={style.templateWapper}>
+            <Form.Item label={' '} prefixCls={' '} className={style.templateWapper} name="selectTemplate">
               <div className={style.template} style={{ height: !currentDirectiveTempalet.length && 50 }}>
                 {currentDirectiveTempalet.length > 0 ? (
-                  currentDirectiveTempalet.map((template: any, index) => (
-                    <p
-                      key={index}
-                      className={index == currentIndex ? style.checked : ''}
-                      onClick={() => selectTemplate(index, template)}
-                    >
-                      {template.alarmValue}
-                    </p>
-                  ))
+                  <Radio.Group>
+                    {currentDirectiveTempalet.map((template: any, index) => (
+                      <Radio
+                        key={index}
+                        value={template}
+                        onClick={() => selectTemplate(index, template)}
+                        style={{ display: 'block', marginBottom: 10 }}
+                      >
+                        {template.alarmValue}
+                      </Radio>
+                    ))}
+                  </Radio.Group>
                 ) : (
+                  // (
+                  //   currentDirectiveTempalet.map((template: any, index) => (
+                  //     <p
+                  //       key={index}
+                  //       className={index == currentIndex ? style.checked : ''}
+                  //       onClick={() => selectTemplate(index, template)}
+                  //     >
+                  //       {template.alarmValue}
+                  //     </p>
+                  //   ))
+                  // )
                   <p className={style.noTemplate}>暂无指令模板</p>
                 )}
-                {
+                {/* {
                   <Button className={style.customBtn} onClick={() => callbackAction(ModalType.CUSTOM)}>
                     {!custom ? '自定义' : '取消'}
                   </Button>
-                }
+                } */}
               </div>
             </Form.Item>
           )}
-        {(isParams || currentDirective.hasArgs) &&
+        {/* {(isParams || currentDirective.hasArgs) &&
           currentDirectiveTempalet.length > 0 &&
           currentDirectiveTempalet[currentIndex]?.packageList && (
             <AlarmFormItemComponent
@@ -165,21 +184,61 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
               tempalteValue={tempalteValue}
               getFormInfo={(info: any) => {}}
             />
+          )} */}
+        {isParams &&
+          currentDirective.hasArgs &&
+          currentDirectiveTempalet.length > 0 &&
+          currentDirectiveTempalet[currentIndex]?.packageList && (
+            <>
+              {editParam && (
+                <p style={{ color: 'red' }}>
+                  {' '}
+                  <InfoCircleTwoTone twoToneColor="red" />
+                  风险提示：请勿随意修改指令参数，修改前请询问管理员！
+                </p>
+              )}
+
+              <AlarmFormItemComponent
+                initialInfo={currentTempalte}
+                selectTempId={currentDirectiveTemObj.id + tempalteValue[0]?.alarmValue}
+                hasTempName={false}
+                isEnbaleEdit={editParam}
+                tempalteValue={tempalteValue}
+                getFormInfo={(info: any) => {
+                  setCustomCmdValue(info);
+                }}
+                extraEle={
+                  <Button type="primary" danger onClick={() => handleCustomSet(tempalteValue)}>
+                    {editParam ? '取消修改' : '自定义'}
+                  </Button>
+                }
+              />
+            </>
           )}
-        {custom && (
+        {/* {custom && (
           <Form.Item prefixCls={' '} name="customValue" rules={[{ required: true }]} style={{ marginLeft: '3%' }}>
+            <p style={{ color: 'red' }}>
+              {' '}
+              <InfoCircleTwoTone twoToneColor="red" />
+              风险提示：请勿随意修改指令参数，修改前请询问管理员！
+            </p>
             <AlarmFormItemComponent
               initialInfo={currentTempalte}
               selectTempId={currentDirectiveTemObj.id}
               hasTempName={false}
-              isEnbaleEdit={true}
+              isEnbaleEdit={editParam}
               tempalteValue={tempalteValue}
               getFormInfo={(info: any) => {
                 setCustomCmdValue(info);
               }}
+              extraEle={
+                <Button type="primary" danger>
+                  自定义
+                </Button>
+              }
             />
           </Form.Item>
-        )}
+        )} */}
         {currentDirective.cmdCode == 'Forward' && (
           <Form.Item
             label="指令码"
