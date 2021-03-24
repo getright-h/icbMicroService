@@ -46,13 +46,11 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
       sm: { span: 16 }
     }
   };
-  console.log(tempalteValue, 'tempalteValue99');
-
   return (
     <Modal
       title={'下发指令'}
       visible={visible}
-      //visible={true}
+      // visible={true}
       confirmLoading={confirmLoading}
       onOk={submitForm}
       onCancel={() => selfClose()}
@@ -203,12 +201,17 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
                 selectTempId={currentDirectiveTemObj.id + tempalteValue[0]?.alarmValue}
                 hasTempName={false}
                 isEnbaleEdit={editParam}
-                tempalteValue={tempalteValue}
+                tempalteValue={JSON.parse(JSON.stringify(tempalteValue))}
                 getFormInfo={(info: any) => {
                   setCustomCmdValue(info);
                 }}
                 extraEle={
-                  <Button type="primary" danger onClick={() => handleCustomSet(tempalteValue)}>
+                  <Button
+                    type="primary"
+                    danger
+                    style={{ marginLeft: 8 }}
+                    onClick={() => handleCustomSet(tempalteValue)}
+                  >
                     {editParam ? '取消修改' : '自定义'}
                   </Button>
                 }

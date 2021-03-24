@@ -13,7 +13,7 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
   const alarmManageService: AlarmManageService = new AlarmManageService();
   const paramTemplatesRef: MutableRefObject<AlarmParamItem[]> = useRef([]);
   const beforeModifyemplateRef: MutableRefObject<any> = useRef([]);
-  const cmdValueRef: MutableRefObject<any> = useRef({});
+  const cmdValueRef: MutableRefObject<any> = useRef(null);
 
   const [form] = Form.useForm();
   let getTemplateSubscription: Subscription;
@@ -51,8 +51,10 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
         custom: false,
         isParams: true
       });
+      // 切换后
       form.setFieldsValue({ directiveType: info });
       form.setFieldsValue({ params: true });
+      cmdValueRef.current = null;
       const { cmdCode } = info;
       getTemplateListData(cmdCode);
     }
@@ -60,11 +62,8 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
 
   function submitForm() {
     form.validateFields().then((values: any) => {
-      console.log(form.getFieldsValue());
-
       const { codes, type, vehicleGroupId, directiveCode, customValue, verifyCode } = values;
       const { currentDirective, isParams, custom, currentDirectiveTemObj, tempalteValue } = state;
-
       const params: ISendCode = {};
       params.codes = codes && codes.split('\n');
       params.type = type;
@@ -86,8 +85,6 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
         return;
       }
 
-      const cmdValue: any[] = [];
-
       // 选择模板
       // if (currentDirectiveTemObj.alarmKey) {
       //   // 如果当前已经选择了模板
@@ -103,13 +100,15 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
 
       // 自定义模板
       if (currentDirective.cmdCode == 'Forward') {
+        const cmdValue: any[] = [];
         cmdValue.push({
           key: 'content',
           value: directiveCode
         });
         params.cmdValue = JSON.stringify(cmdValue);
+      } else {
+        cmdValueRef.current && (params.cmdValue = cmdValueRef.current);
       }
-      params.cmdValue = cmdValueRef.current;
 
       // // 自定义参数值
       // if (custom) {
@@ -117,7 +116,7 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
       // }
 
       setStateWrap({ confirmLoading: true });
-      console.log(params);
+
       sendCmdSubscription = directiveService.sendCmd(params).subscribe(
         (res: any) => {
           message.success('正在执行指令下发');
@@ -198,29 +197,29 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
         value: item.alarmValue || ''
       });
     });
-    console.log('得到了数据', info);
-    console.log();
+    //
     cmdValueRef.current = JSON.stringify(customCmdValue);
-    form.setFieldsValue({
-      customValue: JSON.stringify(customCmdValue)
-    });
+    // form.setFieldsValue({
+    //   customValue: JSON.stringify(customCmdValue)
+    // });
   }
   function selectTemplate(index: number, template: any) {
     // 选择指定的模板参数
     const { currentDirectiveTempalet } = state;
     const currentDirectiveTemObj = currentDirectiveTempalet[index];
     const tempalteValue = [currentDirectiveTemObj, currentDirectiveTemObj?.packageList[0]];
+    const _value_ = JSON.parse(JSON.stringify(tempalteValue));
     // 选择了模板就不能进行自定义按钮操作
     // const tempalteValue = [];
     // currentDirectiveTemObj && tempalteValue.push(currentDirectiveTemObj);
     // currentDirectiveTemObj?.packageList[0] && tempalteValue.push(currentDirectiveTemObj?.packageList[0]);
     // 对当前选择的模板进行备份，当用户取消自定义修改的时候方便回退
-    beforeModifyemplateRef.current = JSON.parse(JSON.stringify(tempalteValue));
+    beforeModifyemplateRef.current = _value_;
 
     setStateWrap({
       currentIndex: index,
       currentDirectiveTemObj,
-      tempalteValue,
+      tempalteValue: _value_,
       custom: false,
       // 每一次切换都要关闭编辑
       editParam: false
@@ -244,19 +243,26 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
    * @param template 用户自定义
    */
   function handleCustomSet(template: any) {
+    console.log(template);
+
     const { editParam, tempalteValue } = state;
     let modifyTempalte = tempalteValue;
+
     // 点击取消修改以后恢复为之前的值
     if (editParam) {
       modifyTempalte = beforeModifyemplateRef.current;
       const { packageList = [] } = modifyTempalte[0];
+      const cmdValue: any = [];
       packageList.forEach((item: any) => {
-        cmdValueRef.current = {
+        cmdValue.push({
           key: item.alarmKey || '',
           value: item.alarmValue || ''
-        };
+        });
       });
-      console.log(modifyTempalte, 'modifyTempaltemodifyTempalte');
+      cmdValueRef.current = JSON.stringify(cmdValue);
+      console.log('取消编辑', editParam, modifyTempalte);
+    } else {
+      console.log('点击编辑以后：', editParam, modifyTempalte);
     }
 
     setStateWrap({
