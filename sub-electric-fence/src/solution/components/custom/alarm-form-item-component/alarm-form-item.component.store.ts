@@ -11,7 +11,9 @@ export function useAlarmFormItemStore(props: IAlarmFormItemProp) {
   useEffect(() => {
     initFormInfo();
   }, [selectTempId]);
-
+  // useEffect(() => {
+  //   initFormInfo();
+  // }, []);
   function initFormInfo() {
     const formInfo = [];
 

@@ -31,6 +31,7 @@ export class IDirectiveModalState {
   tempalteValue: AlarmPackageContent[] = [];
   currentDirectiveTemObj: AlarmPackageContent = {};
   currentTempalte: AlarmPackageContent = {};
+  editParam = false;
 }
 
 export interface ISendCode {
