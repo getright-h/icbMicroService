@@ -27,6 +27,7 @@ export default function DeviceImportComponent(props: IDeviceImportProps) {
     {
       title: '设备号',
       dataIndex: 'model',
+      key: 'deviceCode',
       render: (model: any) => {
         return model.code;
       }
@@ -34,6 +35,7 @@ export default function DeviceImportComponent(props: IDeviceImportProps) {
     {
       title: '表内行数',
       dataIndex: 'model',
+      key: 'lineNum',
       render: (model: any) => {
         return model.rowNumber || '-';
       }
@@ -41,6 +43,7 @@ export default function DeviceImportComponent(props: IDeviceImportProps) {
     {
       title: '失败原因',
       dataIndex: 'model',
+      key: 'resaon',
       render: (model: any) => {
         return model.remark;
       }
@@ -94,7 +97,7 @@ export default function DeviceImportComponent(props: IDeviceImportProps) {
                     pageIndex={currentIndex}
                     pageSize={5}
                     size={'small'}
-                    rowKey={'rowNumber'}
+                    rowKey={'key'}
                     data={checkResult.list}
                     total={checkResult.errorTotal}
                     isPagination={true}

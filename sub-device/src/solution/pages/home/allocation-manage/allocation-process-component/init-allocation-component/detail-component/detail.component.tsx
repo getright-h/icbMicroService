@@ -47,17 +47,18 @@ export default function DetailComponent() {
       // 发起申请操作
       {
         condition: [ALLOW_FLOW_ENUM.Apply],
-        btn: (
-          APPROVAL_FLOW_STATUS_ENUM.Success === approvalState ?  <Button
-            type={'primary'}
-            className={style.button}
-            onClick={() => callbackAction(ModalType.CREATE, data)}
-            key={1}
-            disabled={!$auth['applyAllot']}
-          >
-            发起申请
-          </Button> : null
-        )
+        btn:
+          APPROVAL_FLOW_STATUS_ENUM.Success === approvalState ? (
+            <Button
+              type={'primary'}
+              className={style.button}
+              onClick={() => callbackAction(ModalType.CREATE, data)}
+              key={1}
+              disabled={!$auth['applyAllot']}
+            >
+              发起申请
+            </Button>
+          ) : null
       },
 
       // 撤销操作

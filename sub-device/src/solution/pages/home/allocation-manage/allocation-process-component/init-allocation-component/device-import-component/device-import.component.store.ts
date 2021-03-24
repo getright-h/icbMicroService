@@ -81,7 +81,7 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
 
   function checkAllotDeviceInfo(e: any) {
     const { importType } = state;
-    const { allotId, deviceTypeList } = props.data;
+    const { allotId, deviceTypeList, storePositionId } = props.data;
 
     // TODO 获取Form.List 内部值
     const device_map: any = {};
@@ -104,7 +104,7 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
       }
     });
 
-    const params: any = { allotId, list: [] };
+    const params: any = { allotId, list: [], storePositionId };
     if (importType == 1) {
       params.list = returnFileListInfo.current;
     } else {
