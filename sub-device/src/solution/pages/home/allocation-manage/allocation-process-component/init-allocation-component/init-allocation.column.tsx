@@ -26,15 +26,16 @@ export function initAllocationColumns(callbackAction: Function, $auth: Record<st
       // 发起申请操作
       {
         condition: [ALLOW_FLOW_ENUM.Apply],
-        btn: (
-          APPROVAL_FLOW_STATUS_ENUM.Success === approvalState ? <a
-            className={style.button + `${$auth['applyAllot'] ? '' : ' no-auth-link'}`}
-            onClick={() => callbackAction(ModalType.CREATE, data)}
-            key={'repally'}
-          >
-            发起申请
-          </a> : null
-        )
+        btn:
+          APPROVAL_FLOW_STATUS_ENUM.Success === approvalState ? (
+            <a
+              className={style.button + `${$auth['applyAllot'] ? '' : ' no-auth-link'}`}
+              onClick={() => callbackAction(ModalType.CREATE, data)}
+              key={'repally'}
+            >
+              发起申请
+            </a>
+          ) : null
       },
 
       // 撤销操作
