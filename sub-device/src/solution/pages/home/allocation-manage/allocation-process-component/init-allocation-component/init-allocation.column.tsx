@@ -54,7 +54,7 @@ export function initAllocationColumns(callbackAction: Function, $auth: Record<st
       // 重新申请操作
       {
         condition: [ALLOW_FLOW_ENUM.Recall, ALLOW_FLOW_ENUM.Reject, ALLOW_FLOW_ENUM.Return],
-        btn: (
+        btn: !isRecipientReCallAudit && (
           <a className={style.button} onClick={() => callbackAction(ModalType.REAPPLY, data)} key={'reRepaly'}>
             重新申请
           </a>
