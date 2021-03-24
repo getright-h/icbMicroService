@@ -6,7 +6,7 @@ module.exports = webpackMerge(baseConfig,{
   mode: 'development',
   devtool: 'cheap-module-eval-source-map',
   devServer: {
-    host: '0.0.0.0',
+    host:process.env.WBPACK_DEV_SERVER_HOST,
     port: process.env.WBPACK_DEV_SERVER_PORT,
     contentBase: path.resolve(__dirname,'../dist'),
     overlay: {
