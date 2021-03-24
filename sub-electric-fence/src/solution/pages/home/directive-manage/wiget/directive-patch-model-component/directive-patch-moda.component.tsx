@@ -82,7 +82,7 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
           >
             <Input.TextArea
               disabled={!!deviceId}
-              style={{ height: deviceId ? 10 : 200 }}
+              style={{ minHeight: deviceId ? 10 : 50 }}
               placeholder={'请输入设备号, 多个设备换行输入 \n (录入上限为1000个设备号)'}
               onChange={(e: any) => handleFormDataChange(e.target.value, 'codes')}
             />
@@ -137,8 +137,8 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
             <Form.Item label={' '} prefixCls={' '} className={style.templateWapper} name="selectTemplate">
               <div className={style.template} style={{ height: !currentDirectiveTempalet.length && 50 }}>
                 {currentDirectiveTempalet.length > 0 ? (
-                  <Radio.Group>
-                    {currentDirectiveTempalet.map((template: any, index) => (
+                  <Radio.Group value={currentDirectiveTemObj}>
+                    {[...currentDirectiveTempalet].map((template: any, index) => (
                       <Radio
                         key={index}
                         value={template}
@@ -188,14 +188,6 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
           currentDirectiveTempalet.length > 0 &&
           currentDirectiveTempalet[currentIndex]?.packageList && (
             <>
-              {editParam && (
-                <p style={{ color: 'red' }}>
-                  {' '}
-                  <InfoCircleTwoTone twoToneColor="red" />
-                  风险提示：请勿随意修改指令参数，修改前请询问管理员！
-                </p>
-              )}
-
               <AlarmFormItemComponent
                 initialInfo={currentTempalte}
                 selectTempId={currentDirectiveTemObj.id + tempalteValue[0]?.alarmValue}
@@ -205,17 +197,23 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
                 getFormInfo={(info: any) => {
                   setCustomCmdValue(info);
                 }}
-                extraEle={
-                  <Button
-                    type="primary"
-                    danger
-                    style={{ marginLeft: 8 }}
-                    onClick={() => handleCustomSet(tempalteValue)}
-                  >
-                    {editParam ? '取消修改' : '自定义'}
-                  </Button>
-                }
+                // extraEle={
+                //   <Button
+                //     type="primary"
+                //     danger
+                //     style={{ marginLeft: 8 }}
+                //     onClick={() => handleCustomSet(tempalteValue)}
+                //   >
+                //     {editParam ? '取消修改' : '自定义'}
+                //   </Button>
+                // }
               />
+              {editParam && (
+                <p className={style.riskNotify}>
+                  <InfoCircleTwoTone twoToneColor="red" />
+                  风险提示：错误指令可能造成设备误报，指令参数请联系管理员后谨慎填写！
+                </p>
+              )}
             </>
           )}
         {/* {custom && (

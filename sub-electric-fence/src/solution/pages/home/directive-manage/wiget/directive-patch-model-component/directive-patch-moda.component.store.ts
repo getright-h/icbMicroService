@@ -29,11 +29,29 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
   function getTemplateListData(code: string) {
     if (!code) return;
     getTemplateSubscription = directiveService.queryAlarmTemplatePackage({ code }).subscribe((res: any) => {
+      // 获取默认值
+      // 选择的模板 第 0 位始终是自定义的一个按钮，这个按钮用于存放初始值，用户自定义就是更改这个东西
+      const directiveDefaultValue = { ...res.find((item: any) => item.isDefault) };
+      const currentDirectiveTempalet = [...res.reverse()];
+
+      if (directiveDefaultValue) {
+        directiveDefaultValue.alarmValue = '自定义';
+        directiveDefaultValue.isDefault = false; // 防止于真的初始值发生混乱
+        currentDirectiveTempalet.unshift(directiveDefaultValue);
+      }
+
+      // 拿到完整的模板数据以后，需要默认选择初始值， 虽然知道是 第 1 位 但是还是要去查找
+      const defaultTempIndex = currentDirectiveTempalet.findIndex((item: any) => item.isDefault);
+      const currentDirectiveTemObj = currentDirectiveTempalet[defaultTempIndex];
       setStateWrap({
-        currentDirectiveTempalet: res
+        currentDirectiveTempalet,
+        currentDirectiveTemObj,
+        currentIndex: defaultTempIndex,
+        tempalteValue: JSON.parse(JSON.stringify([currentDirectiveTemObj, currentDirectiveTemObj?.packageList[0]]))
       });
     });
   }
+  //
   function getCurrentSelectInfo(value: any, option: any, type: string) {
     const { info = {} } = option;
     if (type === 'monitorGroup') {
@@ -62,8 +80,8 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
 
   function submitForm() {
     form.validateFields().then((values: any) => {
-      const { codes, type, vehicleGroupId, directiveCode, customValue, verifyCode } = values;
-      const { currentDirective, isParams, custom, currentDirectiveTemObj, tempalteValue } = state;
+      const { codes, type, vehicleGroupId, directiveCode, verifyCode } = values;
+      const { currentDirective, isParams } = state;
       const params: ISendCode = {};
       params.codes = codes && codes.split('\n');
       params.type = type;
@@ -85,19 +103,6 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
         return;
       }
 
-      // 选择模板
-      // if (currentDirectiveTemObj.alarmKey) {
-      //   // 如果当前已经选择了模板
-      //   const { packageList = [] } = currentDirectiveTemObj;
-      //   packageList.forEach((item: any) => {
-      //     cmdValue.push({
-      //       key: item.alarmKey || '',
-      //       value: item.alarmValue || ''
-      //     });
-      //     params.cmdValue = JSON.stringify(cmdValue);
-      //   });
-      // }
-
       // 自定义模板
       if (currentDirective.cmdCode == 'Forward') {
         const cmdValue: any[] = [];
@@ -109,11 +114,8 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
       } else {
         cmdValueRef.current && (params.cmdValue = cmdValueRef.current);
       }
-
-      // // 自定义参数值
-      // if (custom) {
-      //   params.cmdValue = customValue;
-      // }
+      // 关闭以后则不传递参数
+      !params.switch && delete params.cmdValue;
 
       setStateWrap({ confirmLoading: true });
 
@@ -209,6 +211,9 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
     const currentDirectiveTemObj = currentDirectiveTempalet[index];
     const tempalteValue = [currentDirectiveTemObj, currentDirectiveTemObj?.packageList[0]];
     const _value_ = JSON.parse(JSON.stringify(tempalteValue));
+    // 第 0 位 就是自定义
+    const isCoustom = index === 0 ? true : false;
+
     // 选择了模板就不能进行自定义按钮操作
     // const tempalteValue = [];
     // currentDirectiveTemObj && tempalteValue.push(currentDirectiveTemObj);
@@ -220,9 +225,9 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
       currentIndex: index,
       currentDirectiveTemObj,
       tempalteValue: _value_,
-      custom: false,
+      custom: isCoustom,
       // 每一次切换都要关闭编辑
-      editParam: false
+      editParam: isCoustom
     });
   }
 
