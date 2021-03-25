@@ -1,6 +1,6 @@
 #/usr/bin
 version="1.0.0";
-imageName="sub-device__release";
+imageName="risk_device_manage";
 cd ../..
 # yarn
 # yarn build-dev
