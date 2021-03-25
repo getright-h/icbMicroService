@@ -1,4 +1,4 @@
-import { IDirectiveModalState, ModalType, IDirectiveModalProps, ISendCode } from './directive-list.interface';
+import { IDirectiveModalState, IDirectiveModalProps, ISendCode } from './directive-list.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form, message } from 'antd';
 import { DirectiveService } from '~/solution/model/services/directive-manage.service';
@@ -66,8 +66,8 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
         currentDirective: info,
         currentTempalte: { ...currentTempalte, id: info.id },
         currentIndex: -1,
-        custom: false,
-        isParams: true
+        isParams: true,
+        editParam: false
       });
       // 切换后
       form.setFieldsValue({ directiveType: info });
@@ -133,42 +133,10 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
     });
   }
 
-  function sloveState() {
-    form.validateFields().then((value: any) => {
-      const { device } = value;
-      setStateWrap({
-        isDevice: device
-      });
-    });
-  }
-
-  function callbackAction<T>(actionType: number, data?: T) {
-    switch (actionType) {
-      case ModalType.CUSTOM:
-        // 如果是选择自定义按钮,新增模板参数,则需要移除当前选择的模板
-        const { custom } = state;
-        setStateWrap({
-          custom: !custom,
-          currentIndex: -1,
-          currentDirectiveTemObj: {},
-          tempalteValue: []
-        });
-        break;
-      case ModalType.FORM:
-        sloveState();
-        break;
-      default:
-        break;
-    }
-  }
-
   function handleFormDataChange($event: any, type: string) {
     if (type === 'params') {
-      let { custom } = state;
-      !$event && (custom = $event);
       setStateWrap({
-        isParams: $event,
-        custom: custom
+        isParams: $event
       });
     }
 
@@ -177,8 +145,7 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
       setStateWrap({
         isDevice: $event,
         currentDirectiveTempalet: [],
-        currentDirective: {},
-        custom: false
+        currentDirective: {}
       });
       form.resetFields();
       form.setFieldsValue({ type: $event });
@@ -199,12 +166,9 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
         value: item.alarmValue || ''
       });
     });
-    //
     cmdValueRef.current = JSON.stringify(customCmdValue);
-    // form.setFieldsValue({
-    //   customValue: JSON.stringify(customCmdValue)
-    // });
   }
+
   function selectTemplate(index: number, template: any) {
     // 选择指定的模板参数
     const { currentDirectiveTempalet } = state;
@@ -213,11 +177,7 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
     const _value_ = JSON.parse(JSON.stringify(tempalteValue));
     // 第 0 位 就是自定义
     const isCoustom = index === 0 ? true : false;
-
     // 选择了模板就不能进行自定义按钮操作
-    // const tempalteValue = [];
-    // currentDirectiveTemObj && tempalteValue.push(currentDirectiveTemObj);
-    // currentDirectiveTemObj?.packageList[0] && tempalteValue.push(currentDirectiveTemObj?.packageList[0]);
     // 对当前选择的模板进行备份，当用户取消自定义修改的时候方便回退
     beforeModifyemplateRef.current = _value_;
 
@@ -225,7 +185,6 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
       currentIndex: index,
       currentDirectiveTemObj,
       tempalteValue: _value_,
-      custom: isCoustom,
       // 每一次切换都要关闭编辑
       editParam: isCoustom
     });
@@ -244,15 +203,11 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
   }
 
   /**
-   *
    * @param template 用户自定义
    */
   function handleCustomSet(template: any) {
-    console.log(template);
-
     const { editParam, tempalteValue } = state;
     let modifyTempalte = tempalteValue;
-
     // 点击取消修改以后恢复为之前的值
     if (editParam) {
       modifyTempalte = beforeModifyemplateRef.current;
@@ -279,7 +234,6 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
     state,
     form,
     submitForm,
-    callbackAction,
     selfClose,
     handleFormDataChange,
     selectTemplate,
