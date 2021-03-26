@@ -129,10 +129,17 @@ export function useAddTemplateStore(addTemplateState: AddTemplateState, dispatch
       return item.attributeList.length;
     });
     const url = !!Number(isEdit) ? 'setApprovalFormTemplate' : 'insertApprovalFormTemplate';
-    approvalManageService[url](commitInfo).subscribe(() => {
-      ShowNotification.success('添加成功');
-      history.push('../../approvalTemplate');
-    });
+    setStateWrap({ commitLoading: true });
+    approvalManageService[url](commitInfo).subscribe(
+      () => {
+        setStateWrap({ commitLoading: false });
+        ShowNotification.success('添加成功');
+        history.push('../../approvalTemplate');
+      },
+      () => {
+        setStateWrap({ commitLoading: false });
+      }
+    );
   }
 
   function goback() {

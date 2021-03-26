@@ -4,4 +4,5 @@
  */
 export class IAddTemplateState {
   current = 0;
+  commitLoading = false;
 }

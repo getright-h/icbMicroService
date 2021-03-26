@@ -19,7 +19,7 @@ export default function AddTemplateComponent() {
 
   const { state, next, prev, commit, goback } = useAddTemplateStore(addTemplateState, dispatch);
 
-  const { current } = state;
+  const { current, commitLoading } = state;
   const STEPS = [
     {
       title: '表单设置',
@@ -54,7 +54,7 @@ export default function AddTemplateComponent() {
             </>
           )}
           {current === STEPS.length - 1 && (
-            <Button type="primary" onClick={commit}>
+            <Button type="primary" onClick={commit} loading={commitLoading}>
               完成
             </Button>
           )}

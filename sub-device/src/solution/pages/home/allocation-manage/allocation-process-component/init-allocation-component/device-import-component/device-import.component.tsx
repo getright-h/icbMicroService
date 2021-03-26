@@ -20,7 +20,7 @@ export default function DeviceImportComponent(props: IDeviceImportProps) {
   } = useDeviceImportStore(props);
   const { visible, data = {} } = props;
   const { deviceTypeList = [] } = data;
-  const { importType, submitLoading, checkResult = {}, currentIndex } = state;
+  const { importType, submitLoading, checkLoading, checkResult = {}, currentIndex } = state;
   const { errorTotal = 0, list = [], successTotal = 0, message = '' } = checkResult;
 
   const columns = [
@@ -125,7 +125,7 @@ export default function DeviceImportComponent(props: IDeviceImportProps) {
             <UploadOutlined /> 点击上传文件
           </Button>
         </Upload>
-        <Button onClick={checkAllotDeviceInfo} className={style.checkBtn}>
+        <Button onClick={checkAllotDeviceInfo} className={style.checkBtn} loading={checkLoading}>
           验证设备
         </Button>
 
@@ -174,6 +174,7 @@ export default function DeviceImportComponent(props: IDeviceImportProps) {
                   ))}
                   {index == 0 && (
                     <Button
+                      loading={checkLoading}
                       onClick={checkAllotDeviceInfo}
                       className={style.checkBtn}
                       style={{

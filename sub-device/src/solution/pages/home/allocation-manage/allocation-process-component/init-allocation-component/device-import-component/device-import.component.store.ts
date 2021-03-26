@@ -114,9 +114,15 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
       ShowNotification.warning('请录入设备号!');
       return;
     }
-    allocationManageService.checkAllotDeviceInfo(params).subscribe((res: any) => {
-      setStateWrap({ checkResult: res });
-    });
+    setStateWrap({ checkLoading: true });
+    allocationManageService.checkAllotDeviceInfo(params).subscribe(
+      (res: any) => {
+        setStateWrap({ checkResult: res, checkLoading: false });
+      },
+      () => {
+        setStateWrap({ checkLoading: false });
+      }
+    );
   }
   function selfClose() {
     form.resetFields();

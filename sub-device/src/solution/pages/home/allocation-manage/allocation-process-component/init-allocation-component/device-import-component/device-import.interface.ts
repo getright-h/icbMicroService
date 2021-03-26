@@ -9,6 +9,7 @@ export class IDeviceImportState {
   searchForm = {};
   deviceList: Array<any> = [];
   submitLoading = false;
+  checkLoading = false;
   fileList: any[] = [];
   checkResult: any = {};
 }

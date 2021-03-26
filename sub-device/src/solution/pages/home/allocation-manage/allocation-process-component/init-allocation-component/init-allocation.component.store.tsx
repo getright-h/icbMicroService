@@ -9,7 +9,11 @@ import { Modal, Form } from 'antd';
 import { Subscription } from 'rxjs';
 import { getQueryParams } from '~/framework/util/common';
 import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
+/**
+ * moda需要返回一个 promise 来实现异步关闭
+ */
 const { confirm } = Modal;
+
 export function useInitAllocationStore() {
   const { state, setStateWrap, getState } = useStateStore(new IInitAllocationState());
   const allocationManageService: AllocationManageService = new AllocationManageService();
@@ -114,12 +118,20 @@ export function useInitAllocationStore() {
           operation: ALLOW_FLOW_KEYCODE_ENUM.ReturnReceived
         };
         const msg = '收货成功!';
-        allocationOperate(data, params).then((res: any) => {
-          const { isSuccess } = res;
-          if (isSuccess) {
-            getTableData();
-            ShowNotification.success(msg);
-          }
+        return new Promise((reslove: any, reject: any) => {
+          allocationOperate(data, params).then(
+            (res: any) => {
+              const { isSuccess } = res;
+              if (isSuccess) {
+                getTableData();
+                ShowNotification.success(msg);
+              }
+              reslove();
+            },
+            () => {
+              reslove();
+            }
+          );
         });
       }
     });
@@ -127,6 +139,7 @@ export function useInitAllocationStore() {
   /**
    * 渲染撤销数据提示框
    * @param data
+   *
    */
   function renderRevokeModal(data: any) {
     const { totalNumber } = data;
@@ -137,12 +150,20 @@ export function useInitAllocationStore() {
           operation: ALLOW_FLOW_KEYCODE_ENUM.ReCall
         };
         const msg = '撤回成功!';
-        allocationOperate(data, params).then((res: any) => {
-          const { isSuccess } = res;
-          if (isSuccess) {
-            getTableData();
-            ShowNotification.success(msg);
-          }
+        return new Promise((reslove: any, reject: any) => {
+          allocationOperate(data, params).then(
+            (res: any) => {
+              const { isSuccess } = res;
+              if (isSuccess) {
+                getTableData();
+                ShowNotification.success(msg);
+              }
+              reslove();
+            },
+            () => {
+              reslove();
+            }
+          );
         });
       }
     });

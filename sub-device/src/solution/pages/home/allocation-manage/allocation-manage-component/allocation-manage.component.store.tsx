@@ -118,16 +118,18 @@ export function useAllocationManageStore() {
     confirm({
       content: '确认删除此调拨',
       onOk() {
-        deleteAllotSubscribable = allocationManageService.deleteAllot({ id: allotId }).subscribe(
-          (res: any) => {
-            ShowNotification.success('删除成功');
-            console.log(res);
-            getTableData();
-          },
-          (error: any) => {
-            console.log(error);
-          }
-        );
+        return new Promise((reslove: any, reject: any) => {
+          deleteAllotSubscribable = allocationManageService.deleteAllot({ id: allotId }).subscribe(
+            (res: any) => {
+              ShowNotification.success('删除成功');
+              getTableData();
+              reslove();
+            },
+            (error: any) => {
+              reslove();
+            }
+          );
+        });
       },
       onCancel() {
         console.log('Cancel');

@@ -67,12 +67,15 @@ export function useTransformMonitorStore(props: ITransformMonitorProps) {
       vehicleIdList: selectedRowKeys.length ? selectedRowKeys : [props.data.vehicleId],
       ...params
     };
+    setStateWrap({ submitLoading: true });
     monitorService.transferGroup({ ...param }).subscribe(
       (res: any) => {
+        setStateWrap({ submitLoading: false });
         ShowNotification.success('转组成功');
         props.close && props.close(true);
       },
       (error: any) => {
+        setStateWrap({ submitLoading: false });
         console.log(error);
       }
     );
