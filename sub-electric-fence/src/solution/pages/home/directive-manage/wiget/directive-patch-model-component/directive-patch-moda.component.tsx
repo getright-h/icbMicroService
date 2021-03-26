@@ -1,20 +1,20 @@
-import { Form, Modal, Radio, Input, Button } from 'antd';
+import { Form, Modal, Radio, Input } from 'antd';
 import * as React from 'react';
 import style from './directive-patch-modal.component.less';
 import { useDirectiveModalStore } from './directive-patch-moda.component.store';
 import { ISelectLoadingComponent } from '~/solution/components/component.module';
 import { AlarmFormItemComponent } from '~/solution/components/component.module';
+import { InfoCircleTwoTone } from '@ant-design/icons';
 
-import { IDirectiveModalProps, ModalType, Type } from './directive-list.interface';
+import { IDirectiveModalProps, Type } from './directive-list.interface';
 import { StorageUtil } from '~/framework/util/storage';
 
 export default function DirectivePatchModalComponent(props: IDirectiveModalProps) {
-  const { visible, close, deviceId } = props;
+  const { visible, deviceId } = props;
   const {
     state,
     form,
     submitForm,
-    callbackAction,
     selfClose,
     handleFormDataChange,
     selectTemplate,
@@ -22,7 +22,6 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
     setCustomCmdValue
   } = useDirectiveModalStore(props);
   const {
-    custom,
     isDevice,
     isParams,
     currentIndex,
@@ -31,7 +30,8 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
     currentDirectiveTemObj,
     tempalteValue = [],
     currentTempalte,
-    confirmLoading
+    confirmLoading,
+    editParam
   } = state;
   const formItemLayout = {
     labelCol: {
@@ -43,11 +43,11 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
       sm: { span: 16 }
     }
   };
-
   return (
     <Modal
       title={'下发指令'}
       visible={visible}
+      // visible={true}
       confirmLoading={confirmLoading}
       onOk={submitForm}
       onCancel={() => selfClose()}
@@ -74,12 +74,12 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
             label={deviceId ? '关联设备' : '  '}
             prefixCls={deviceId ? '' : ' '}
             name={'codes'}
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: <p style={{ color: 'red' }}>请录入设备号码!</p> }]}
             style={{ marginBottom: 10 }}
           >
             <Input.TextArea
               disabled={!!deviceId}
-              style={{ height: deviceId ? 10 : 200 }}
+              style={{ minHeight: deviceId ? 10 : 50 }}
               placeholder={'请输入设备号, 多个设备换行输入 \n (录入上限为1000个设备号)'}
               onChange={(e: any) => handleFormDataChange(e.target.value, 'codes')}
             />
@@ -107,7 +107,7 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
           label="指令类型"
           name={'directiveType'}
           className={style.marginBootom10}
-          rules={[{ required: true }]}
+          rules={[{ required: true, message: '请选择指令类型！' }]}
         >
           <ISelectLoadingComponent
             reqUrl="getTypesList"
@@ -123,63 +123,52 @@ export default function DirectivePatchModalComponent(props: IDirectiveModalProps
             </Radio.Group>
           </Form.Item>
         )}
-        {/* 
-          如果 currentDirective.hasSwitch === true , 打开 关闭 两个按钮用于控制 [模板] 以及 [自定义] 的显示 
-          如果 currentDirective.hasSwitch === false 但是 currentDirective.hasArgs === true [模板] 以及 [自定义] 的显示 脱离于
-          如果  currentDirective.hasSwitch === true 并且 currentDirective.hasArgs === true 以 开关 为主导配置
-        currentDirective.hasSwitch的开关
-         */}
         {((isParams && currentDirective.hasSwitch) || (isParams && currentDirective.hasArgs)) &&
           currentDirective.hasArgs && (
-            <Form.Item label={' '} prefixCls={' '} className={style.templateWapper}>
+            <Form.Item label={' '} prefixCls={' '} className={style.templateWapper} name="selectTemplate">
               <div className={style.template} style={{ height: !currentDirectiveTempalet.length && 50 }}>
                 {currentDirectiveTempalet.length > 0 ? (
-                  currentDirectiveTempalet.map((template: any, index) => (
-                    <p
-                      key={index}
-                      className={index == currentIndex ? style.checked : ''}
-                      onClick={() => selectTemplate(index, template)}
-                    >
-                      {template.alarmValue}
-                    </p>
-                  ))
+                  <Radio.Group value={currentDirectiveTemObj}>
+                    {[...currentDirectiveTempalet].map((template: any, index) => (
+                      <Radio
+                        key={index}
+                        value={template}
+                        onClick={() => selectTemplate(index, template)}
+                        style={{ display: 'block', marginBottom: 10 }}
+                      >
+                        {template.alarmValue}
+                      </Radio>
+                    ))}
+                  </Radio.Group>
                 ) : (
                   <p className={style.noTemplate}>暂无指令模板</p>
                 )}
-                {
-                  <Button className={style.customBtn} onClick={() => callbackAction(ModalType.CUSTOM)}>
-                    {!custom ? '自定义' : '取消'}
-                  </Button>
-                }
               </div>
             </Form.Item>
           )}
-        {(isParams || currentDirective.hasArgs) &&
+        {isParams &&
+          currentDirective.hasArgs &&
           currentDirectiveTempalet.length > 0 &&
           currentDirectiveTempalet[currentIndex]?.packageList && (
-            <AlarmFormItemComponent
-              initialInfo={currentTempalte}
-              selectTempId={currentDirectiveTemObj.id}
-              hasTempName={false}
-              isEnbaleEdit={false}
-              tempalteValue={tempalteValue}
-              getFormInfo={(info: any) => {}}
-            />
+            <>
+              <AlarmFormItemComponent
+                initialInfo={currentTempalte}
+                selectTempId={currentDirectiveTemObj.id + tempalteValue[0]?.alarmValue}
+                hasTempName={false}
+                isEnbaleEdit={editParam}
+                tempalteValue={JSON.parse(JSON.stringify(tempalteValue))}
+                getFormInfo={(info: any) => {
+                  setCustomCmdValue(info);
+                }}
+              />
+              {editParam && (
+                <p className={style.riskNotify}>
+                  <InfoCircleTwoTone twoToneColor="red" />
+                  风险提示：错误指令可能造成设备误报，指令参数请联系管理员后谨慎填写！
+                </p>
+              )}
+            </>
           )}
-        {custom && (
-          <Form.Item prefixCls={' '} name="customValue" rules={[{ required: true }]} style={{ marginLeft: '3%' }}>
-            <AlarmFormItemComponent
-              initialInfo={currentTempalte}
-              selectTempId={currentDirectiveTemObj.id}
-              hasTempName={false}
-              isEnbaleEdit={true}
-              tempalteValue={tempalteValue}
-              getFormInfo={(info: any) => {
-                setCustomCmdValue(info);
-              }}
-            />
-          </Form.Item>
-        )}
         {currentDirective.cmdCode == 'Forward' && (
           <Form.Item
             label="指令码"

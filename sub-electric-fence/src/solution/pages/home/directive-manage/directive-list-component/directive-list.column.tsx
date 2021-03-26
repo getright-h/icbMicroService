@@ -14,11 +14,13 @@ export function AlarmParameterColumn(callbackAction: Function, $auth: Record<str
     {
       title: '关联车主',
       dataIndex: 'ownerName',
+      width: 100,
       render
     },
     {
       title: '关联车牌',
       dataIndex: 'plateNumber',
+      width: 100,
       render
     },
     {
@@ -39,6 +41,7 @@ export function AlarmParameterColumn(callbackAction: Function, $auth: Record<str
     {
       title: '指令状态',
       dataIndex: 'statusText',
+      width: 100,
       render
     },
     {
@@ -54,12 +57,14 @@ export function AlarmParameterColumn(callbackAction: Function, $auth: Record<str
     {
       title: '创建机构',
       dataIndex: 'organizationName',
+      width: 150,
       render
     },
     {
       title: '操作',
       fixed: 'right' as 'right',
       dataIndex: 'action',
+      width: 100,
       render: (render: any, data: any, index: number) => {
         return (
           <React.Fragment>

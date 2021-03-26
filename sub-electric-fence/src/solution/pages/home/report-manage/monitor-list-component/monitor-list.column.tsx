@@ -1,32 +1,41 @@
 export function AlarmParameterColumn(callbackAction: Function) {
+  const render = (text: any) => (text ? text : '-');
+
   return [
     {
       title: '所属监控组',
-      dataIndex: 'groupName'
+      dataIndex: 'groupName',
+      render
     },
     {
       title: '车主姓名',
-      dataIndex: 'ownerName'
+      dataIndex: 'ownerName',
+      render
     },
     {
       title: '车牌号',
-      dataIndex: 'plateNo'
+      dataIndex: 'plateNo',
+      render
     },
     {
       title: '设备号',
-      dataIndex: 'deviceCode'
+      dataIndex: 'deviceCode',
+      render
     },
     {
       title: '设备状态',
-      dataIndex: 'statusText'
+      dataIndex: 'statusText',
+      render
     },
     {
       title: '定位时间',
-      dataIndex: 'locateTime'
+      dataIndex: 'locateTime',
+      render
     },
     {
       title: '在线时间',
-      dataIndex: 'statusTime'
+      dataIndex: 'statusTime',
+      render
     },
     {
       title: '车辆里程',
@@ -40,7 +49,8 @@ export function AlarmParameterColumn(callbackAction: Function) {
     },
     {
       title: '所属机构',
-      dataIndex: 'organizationName'
+      dataIndex: 'organizationName',
+      render
     }
   ];
 }

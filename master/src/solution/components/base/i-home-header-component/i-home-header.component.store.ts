@@ -14,8 +14,9 @@ export function useHomeHeaderStore() {
 
   function logout() {
     // 清除cookie 返回登录界面
-    StorageUtil.removeLocalStorage('TOKEN');
-    createHashHistory().push('/login');
+    StorageUtil.removeLocalStorage('token');
+    history.pushState({}, '', '#/login');
+    location.reload();
   }
 
   function changePwd() {

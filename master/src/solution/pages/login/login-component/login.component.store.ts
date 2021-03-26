@@ -9,7 +9,6 @@ import { ReducerStore } from '~/framework/aop/hooks/use-base-store';
 import { StorageUtil } from '~/framework/util/storage';
 import { VCodeInfo } from '../../../model/dto/login.dto';
 import { Store } from 'antd/lib/form/interface';
-import { setState } from '~/framework/microAPP/appStore';
 
 export class LoginStore extends ReducerStore<IState> {
   @DepUtil.Inject(LoginService)
@@ -66,7 +65,7 @@ export class LoginStore extends ReducerStore<IState> {
         StorageUtil.setLocalStorage('token', res.token);
         message.success('登录成功');
         this.dispatch(setLoadingAction(false));
-        this.props.history.push('/home');
+        this.props.history.replace('/home');
       },
       err => {
         this.dispatch(setErrorMessage(err));

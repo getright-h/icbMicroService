@@ -1,38 +1,48 @@
 import * as React from 'react';
 import { ModalType } from './statistical-list.interface';
 export function AlarmParameterColumn(callbackAction: Function) {
+  const render = (text: any) => (text ? text : '-');
+
   return [
     {
       title: '车主姓名',
-      dataIndex: 'ownerName'
+      dataIndex: 'ownerName',
+      render
     },
     {
       title: '车牌号',
-      dataIndex: 'plateNo'
+      dataIndex: 'plateNo',
+      render
     },
     {
       title: '设备号',
-      dataIndex: 'deviceCode'
+      dataIndex: 'deviceCode',
+      render
     },
     {
       title: '报警类型',
-      dataIndex: 'alarmTypeText'
+      dataIndex: 'alarmTypeText',
+      render
     },
     {
       title: '最后报警时间',
-      dataIndex: 'time'
+      dataIndex: 'time',
+      render
     },
     {
       title: '报警次数',
-      dataIndex: 'alarmNumber'
+      dataIndex: 'alarmNumber',
+      render
     },
     {
       title: '最后报警地址',
-      dataIndex: 'address'
+      dataIndex: 'address',
+      render
     },
     {
       title: '所属机构',
-      dataIndex: 'organizationName'
+      dataIndex: 'organizationName',
+      render
     },
     {
       title: '操作',

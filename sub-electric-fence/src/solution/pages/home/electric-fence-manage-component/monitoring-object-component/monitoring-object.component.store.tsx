@@ -79,7 +79,7 @@ export function useMonitoringObjectStore() {
     formInfo.current = null;
     switch (type) {
       case ACTION_TYPE.FENCEMODAL:
-        confirm({
+        currentModal.current = confirm({
           title: '围栏模式',
           content: <FenceModalViewComponent />,
           onOk() {
@@ -91,7 +91,7 @@ export function useMonitoringObjectStore() {
         });
         break;
       case ACTION_TYPE.EDIT:
-        confirm({
+        currentModal.current = confirm({
           title: '编辑',
           width: 700,
           content: <CreateBindCarComponent onValuesChange={getFormInfo} formInitValue={{ ...data, isEdit: true }} />,
@@ -102,7 +102,7 @@ export function useMonitoringObjectStore() {
         });
         break;
       case ACTION_TYPE.UNBIND:
-        confirm({
+        currentModal.current = confirm({
           title: '提示',
           width: 700,
           content: <span>请再次确定所选车辆解绑电子围栏？</span>,
@@ -115,7 +115,7 @@ export function useMonitoringObjectStore() {
         });
         break;
       case ACTION_TYPE.BATCH_EDIT:
-        confirm({
+        currentModal.current = confirm({
           title: '批量修改',
           width: 700,
           content: <CreateBindCarComponent onValuesChange={getFormInfo} formInitValue={{ ...data, isEdit: true }} />,
@@ -219,7 +219,7 @@ export function useMonitoringObjectStore() {
         });
         break;
       case ModalType.FENCETYPE:
-        confirm({
+        currentModal.current = confirm({
           title: '围栏模式',
           width: 700,
           content: <FenceModalViewComponent />,
