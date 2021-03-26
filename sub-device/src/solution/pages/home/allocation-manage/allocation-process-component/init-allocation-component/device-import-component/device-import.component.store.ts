@@ -76,10 +76,11 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
       .then(({ data: response }) => {
         item.onSuccess(response, item.file);
         returnFileListInfo.current = response.data;
+        checkAllotDeviceInfo();
       });
   }
 
-  function checkAllotDeviceInfo(e: any) {
+  function checkAllotDeviceInfo() {
     const { importType } = state;
     const { allotId, deviceTypeList, storePositionId } = props.data;
 
@@ -110,7 +111,7 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
     } else {
       params.list = paramsDevicelist;
     }
-    if (!params.list.length) {
+    if (!params?.list?.length) {
       ShowNotification.warning('请录入设备号!');
       return;
     }

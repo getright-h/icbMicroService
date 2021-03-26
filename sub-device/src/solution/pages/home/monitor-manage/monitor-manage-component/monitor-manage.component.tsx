@@ -56,9 +56,19 @@ export default function MonitorManageComponent() {
           <span className="label">查找车辆:</span>
           <Input
             allowClear
-            placeholder="请输入设备号/车架号"
+            placeholder="请输入车架号"
             onChange={e => {
               onChange(e.target.value, 'vinNo');
+            }}
+          />
+        </div>
+        <div className="push-search-item">
+          <span className="label">设备号:</span>
+          <Input
+            allowClear
+            placeholder="请输入设备号"
+            onChange={e => {
+              onChange(e.target.value, 'code');
             }}
           />
         </div>

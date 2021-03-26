@@ -3,8 +3,8 @@ import style from './device-import.component.less';
 import { ITableComponent } from '~/framework/components/component.module';
 import { useDeviceImportStore } from './device-import.component.store';
 import { IDeviceImportProps } from './device-import.interface';
-import { Modal, Form, Input, Radio, Button, Upload, Space, Table } from 'antd';
-import { UploadOutlined, PlusOutlined, MinusOutlined } from '@ant-design/icons';
+import { Modal, Form, Input, Radio, Button, Upload, Space, Tooltip } from 'antd';
+import { UploadOutlined, PlusOutlined, MinusOutlined, InfoCircleOutlined } from '@ant-design/icons';
 export default function DeviceImportComponent(props: IDeviceImportProps) {
   const {
     state,
@@ -45,7 +45,7 @@ export default function DeviceImportComponent(props: IDeviceImportProps) {
       dataIndex: 'model',
       key: 'resaon',
       render: (model: any) => {
-        return model.remark;
+        return <p style={{ color: 'red' }}>{model.remark}</p>;
       }
     }
   ];
@@ -68,9 +68,7 @@ export default function DeviceImportComponent(props: IDeviceImportProps) {
           </Form.Item>
           <Form.Item name="type" label="添加方式" rules={[{ required: true }]}>
             <Radio.Group defaultValue={importType} onChange={e => changeImportType(e.target.value)}>
-              <Radio disabled value={1}>
-                导入excel
-              </Radio>
+              <Radio value={1}>导入excel</Radio>
               <Radio value={2}>手动添加</Radio>
             </Radio.Group>
           </Form.Item>
@@ -115,9 +113,9 @@ export default function DeviceImportComponent(props: IDeviceImportProps) {
   }
   function RenderTypeOne() {
     return (
-      <Form.Item label="选择文件" style={{ position: 'relative' }}>
+      <Form.Item label="选择文件" style={{ position: 'relative' }} required={true}>
         <Upload
-          showUploadList={true}
+          showUploadList={false}
           action={`${process.env.MAIN}allot/manage/uploadAllotDeviceExcel`}
           customRequest={customRequest}
         >
@@ -125,9 +123,19 @@ export default function DeviceImportComponent(props: IDeviceImportProps) {
             <UploadOutlined /> 点击上传文件
           </Button>
         </Upload>
-        <Button onClick={checkAllotDeviceInfo} className={style.checkBtn} loading={checkLoading}>
+        <Tooltip className={style.aLink} placement="right" arrowPointAtCenter title="仅导入最新上传的文件">
+          <InfoCircleOutlined className={style.primaryIcon} />
+        </Tooltip>
+        <a
+          target="_blank"
+          rel="noreferrer"
+          href="http://file.i-cbao.com/uploads/pictures/2021/0326/84481c4e6775857b.xlsx"
+        >
+          下载模板
+        </a>
+        {/* <Button onClick={checkAllotDeviceInfo} className={style.checkBtn} loading={checkLoading}>
           验证设备
-        </Button>
+        </Button> */}
 
         {/* <Form.Item style={{ display: 'inline-block', margin: '0 8px' }}>
           <a>下载模板</a>
