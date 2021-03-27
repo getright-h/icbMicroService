@@ -115,7 +115,19 @@ export function useDirectiveModalStore(props: IDirectiveModalProps) {
         cmdValueRef.current && (params.cmdValue = cmdValueRef.current);
       }
       // 关闭以后则不传递参数
-      !params.switch && delete params.cmdValue;
+      // 传递参数分多种情况
+      /**
+       * 1. 下发指令开关 hasSwith 控制显示
+       *  如果开关关闭
+       *    不传递参数
+       *    hasArg = true 传递参数
+       *    Forward 自定义 传递参数
+       */
+      // !params.switch && currentDirective.cmdCode !== 'Forward' && delete params.cmdValue;
+
+      if (!params.switch && currentDirective.cmdCode !== 'Forward' && !currentDirective.hasArgs) {
+        delete params.cmdValue;
+      }
 
       setStateWrap({ confirmLoading: true });
 
