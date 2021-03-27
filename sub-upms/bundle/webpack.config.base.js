@@ -4,7 +4,8 @@ const PluginFactory = require('./plugins');
 const getAlias = require('./alias');
 const externals = require("./externals");
 const name = "sub-upms"
-const { IS_BUILD, PUBLICK_PATH } = process.env;
+const { IS_BUILD, PUBLIC_PATH } = process.env;
+console.log(PUBLIC_PATH, 'PUBLIC_PATHPUBLIC_PATH');
 module.exports = {
   entry:path.resolve(__dirname,'../src/index.tsx'),
   output: {
@@ -13,7 +14,9 @@ module.exports = {
     path:path.resolve(__dirname,'../dist'),
     library: `${name}`,
     libraryTarget: "umd",
-    jsonpFunction: `webpackJsonp_${name}`
+    jsonpFunction: `webpackJsonp_${name}`,
+    publicPath: PUBLIC_PATH || '/'
+
   },
   externals : IS_BUILD == "build" ? externals : {},
   module:{

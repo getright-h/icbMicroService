@@ -4,13 +4,18 @@ imageName="risk_upms_manage";
 cd ../..
 # yarn
 # yarn build-dev
+echo "--> clean cache"
+sudo  yarn cache clean
+sudo rm -rf node_modules
+echo "--> yarn  install && build"
+sudo yarn install && sudo yarn build
 
 echo "--> copy files···"
-# cp -rf Dockerfile ecosystem.config.js server/* ./dist
-echo "--> install node dependencies···"
+cp -rf Dockerfile  ./dist
+
 echo "--> docker build"
-cd dist
-yarn install
+cd ./dist
+ls
 # sudo docker build -t web/"$imageName":"$version" .
 # sudo docker tag "$imageName":"$version" docker.local61:5000/web/"$imageName":"$version"
 # sudo docker push docker.local61:5000/web/"$imageName":"$version"
