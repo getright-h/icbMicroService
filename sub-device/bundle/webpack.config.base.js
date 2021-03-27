@@ -4,7 +4,8 @@ const PluginFactory = require('./plugins');
 const externals = require("./externals");
 const getAlias = require('./alias');
 const name = "sub-device";
-const { IS_BUILD, PUBLICK_PATH } = process.env;
+const { IS_BUILD, PUBLIC_PATH } = process.env;
+console.log(PUBLIC_PATH, 'PUBLICK_PATH');
 module.exports = {
   entry:path.resolve(__dirname,'../src/index.tsx'),
   output: {
@@ -14,7 +15,7 @@ module.exports = {
     library: `${name}`,
     libraryTarget: "umd",
     jsonpFunction: `webpackJsonp_${name}`,
-    publicPath: PUBLICK_PATH || '/'
+    publicPath: PUBLIC_PATH || '/'
   },
   externals : IS_BUILD == "build" ? externals : {},
   module: {
