@@ -27,7 +27,7 @@ class LoaderFactory {
     // Exclude
     const loaderExcludeLess =  /\.(module|component)\.less$/;
     const loaderExcludeCss =  /\.(module|component)\.css$/;
-
+    console.log(this.isProd, 'this.isProdthis.isProd');
      // 生产环境提取 CSS
      const styleLoaderPre = this.isProd ? {
       loader:MiniCSSExtractPlugin.loader,

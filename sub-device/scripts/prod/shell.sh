@@ -11,6 +11,8 @@ echo "--> copy files···"
 sudo cp -rf Dockerfile  ./dist
 
 cd ./dist
+ls
+
 
 # sudo docker build -t web/"$imageName":"$version" .
 # sudo docker tag "$imageName":"$version" docker.local61:5000/web/"$imageName":"$version"
