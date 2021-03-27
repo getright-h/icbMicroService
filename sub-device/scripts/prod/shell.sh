@@ -4,6 +4,9 @@ imageName="risk_device_manage";
 cd ../..
 # yarn
 # yarn build-dev
+echo "--> clean cache"
+sudo  yarn cache clean
+
 echo "--> yarn  install && build"
 sudo yarn install && sudo yarn build
 
