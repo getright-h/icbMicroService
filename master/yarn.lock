@@ -6414,7 +6414,7 @@ q@^1.1.2:
   resolved "https://registry.npm.taobao.org/q/download/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
   integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
 
-qiankun@^2.4.0:
+qiankun@^2.0.21:
   version "2.4.0"
   resolved "https://registry.npm.taobao.org/qiankun/download/qiankun-2.4.0.tgz#e0c847fcee1e79c167899bfcb7441a23590c5430"
   integrity sha1-4MhH/O4eecFniZv8t0QaI1kMVDA=

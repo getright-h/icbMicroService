@@ -4,17 +4,19 @@ imageName="risk_device_manage";
 cd ../..
 # yarn
 # yarn build-dev
+echo "--> yarn  install && build"
+sudo yarn install && sudo yarn build
 
 echo "--> copy files···"
-# cp -rf Dockerfile ecosystem.config.js server/* ./dist
-echo "--> install node dependencies···"
-echo "--> docker build"
-cd dist
-yarn install
+sudo cp -rf Dockerfile  ./dist
+
+cd ./dist
+
 # sudo docker build -t web/"$imageName":"$version" .
 # sudo docker tag "$imageName":"$version" docker.local61:5000/web/"$imageName":"$version"
 # sudo docker push docker.local61:5000/web/"$imageName":"$version"
 # sudo docker rmi docker.local61:5000/web/"$imageName":"$version"
+echo "--> docker build"
 sudo docker build -t web/"$imageName":"$version" .
 sudo docker tag web/"$imageName":"$version" docker.local61:5000/web/"$imageName":"$version"
 sudo docker push docker.local61:5000/web/"$imageName":"$version"
