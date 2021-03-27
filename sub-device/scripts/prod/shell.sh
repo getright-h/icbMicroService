@@ -6,6 +6,7 @@ cd ../..
 # yarn build-dev
 echo "--> clean cache"
 sudo  yarn cache clean
+sudo rm -rf node_modules
 
 echo "--> yarn  install && build"
 sudo yarn install && sudo yarn build
