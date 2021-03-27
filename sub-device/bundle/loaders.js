@@ -1,7 +1,6 @@
 const path = require('path');
 const tsImportPluginFactory = require('ts-import-plugin');
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
-
 class LoaderFactory {
   constructor(){
     this.isProd = process.env.NODE_ENV === 'production';
