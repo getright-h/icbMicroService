@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "start": "rimraf dist && cross-env NODE_ENV=development webpack-dev-server",
-    "build": "rimraf dist && cross-env NODE_ENV=production IS_BUILD=build webpack --build",
+    "build": "rimraf dist && cross-env NODE_ENV=production IS_BUILD=build PUBLIC_PATH=/gpssass/  webpack --build",
     "build-dev": "rimraf dist && cross-env NODE_ENV=development IS_BUILD=build webpack",
     "build-ana": "rimraf dist && cross-env NODE_ENV=production webpack",
     "dll:dev": "rimraf dll/development && cross-env NODE_ENV=development webpack --config bundle/webpack.config.dll.js",

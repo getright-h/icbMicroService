@@ -35,6 +35,7 @@ async function registerMainApp(callback: () => any) {
       name: name,
       loader,
       entry: isDev ? (isDevBuild ? onLineDevURL : localURL) : onLineURL,
+      // entry: onLineURL,
       container: currentId,
       activeRule: `/#${path}`,
       props: { baseFuntion, name, routers: JSON.parse(JSON.stringify(children)), routerBase: `/#${path}`, userInfo }
