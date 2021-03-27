@@ -1,6 +1,6 @@
 #/usr/bin
 version="1.0.0";
-imageName="risk_gpsasss_manage";
+imageName="risk_gpssass_manage";
 cd ../..
 # yarn
 # yarn build-dev
