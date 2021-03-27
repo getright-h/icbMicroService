@@ -5,12 +5,20 @@ cd ../..
 # yarn
 # yarn build-dev
 
+echo "--> clean cache"
+sudo  yarn cache clean
+sudo rm -rf node_modules
+
+echo "--> yarn  install && build"
+sudo yarn install && sudo yarn build
+
 echo "--> copy files···"
-# cp -rf Dockerfile ecosystem.config.js server/* ./dist
-echo "--> install node dependencies···"
-echo "--> docker build"
-cd dist
-yarn install
+sudo cp -rf Dockerfile  ./dist
+
+cd ./dist
+ls
+
+
 # sudo docker build -t web/"$imageName":"$version" .
 # sudo docker tag "$imageName":"$version" docker.local61:5000/web/"$imageName":"$version"
 # sudo docker push docker.local61:5000/web/"$imageName":"$version"

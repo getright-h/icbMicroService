@@ -15,7 +15,7 @@ module.exports = {
     library: `${name}`,
     libraryTarget: "umd",
     jsonpFunction: `webpackJsonp_${name}`,
-    publicPath: PUBLIC_PATH || '/'
+    publicPath: PUBLIC_PATH || "",
 
   },
   externals : IS_BUILD == "build" ? externals : {},

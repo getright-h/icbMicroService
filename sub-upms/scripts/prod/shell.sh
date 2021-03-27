@@ -11,7 +11,7 @@ echo "--> yarn  install && build"
 sudo yarn install && sudo yarn build
 
 echo "--> copy files···"
-cp -rf Dockerfile  ./dist
+sudo cp -rf Dockerfile  ./dist
 
 echo "--> docker build"
 cd ./dist
