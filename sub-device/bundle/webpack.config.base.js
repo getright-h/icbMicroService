@@ -13,7 +13,8 @@ module.exports = {
     path:path.resolve(__dirname,'../dist'),
     library: `${name}`,
     libraryTarget: "umd",
-    jsonpFunction: `webpackJsonp_${name}`
+    jsonpFunction: `webpackJsonp_${name}`,
+    publicPath: PUBLICK_PATH || '/'
   },
   externals : IS_BUILD == "build" ? externals : {},
   module: {
