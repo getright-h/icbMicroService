@@ -364,7 +364,7 @@
       border-bottom-right-radius: 0;
       height: 26rem;
     }
-    .alarmStatisticsDetail{
+    .alarmStatisticsDetail, .alarmStatisticsDetailWeb{
       .detailContainer();
       border-top-left-radius: 0;
       border-top-right-radius: 0;
@@ -406,6 +406,11 @@
       }
       div:nth-child(3) div:first-of-type{
         .gradient-blue();
+      }
+
+      .alarmStatisticsDetailAction{
+        margin-left: 1rem;
+        font-size: 1.5rem;
       }
     }
 }
@@ -524,6 +529,18 @@
     }
     button:nth-child(2)>span{
       background-image: url("../../assets/image/print.png");
+    }
+  }
+}
+
+.popAlarmDetail{
+  .popAlarmDetailItem{
+    display: flex;
+    >span:nth-child(1){
+      width: 2rem;
+    }
+    >span:nth-child(2){
+      flex: 1;
     }
   }
 }
@@ -659,7 +676,12 @@
         float: left;
       }
       .alarmStatisticsDetail {
+        display: none;
+      }
+      .alarmStatisticsDetailWeb{
+        display: block;
         width: 100%;
+        padding-left: 46rem;
       }
     }
     .carContent {
@@ -707,5 +729,14 @@
     .alwaysStopMarkers,
     .alarmStatistics{
       background: transparent;
+    }
+
+    .alarmStatistics{
+      .alarmStatisticsDetailWeb {
+        display: none;
+      }
+      .alarmStatisticsDetail{
+        display: block;
+      }
     }
 }

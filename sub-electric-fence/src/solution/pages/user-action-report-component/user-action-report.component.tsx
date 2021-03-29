@@ -6,6 +6,7 @@ import { IMapComponent } from '~/solution/components/component.module';
 import { REPORT_UTIL } from '~/solution/shared/util/report-manage.util';
 import ShareLinkModalComponent from './share-link-modal-component/share-link-modal.component';
 import moment from 'moment';
+import { Button, Popover } from 'antd';
 
 export default function UserActionReportComponent() {
   const {
@@ -282,10 +283,54 @@ export default function UserActionReportComponent() {
                 </div>
               ))}
             </div>
+            <div className={style.alarmStatisticsDetailWeb}>
+              {alarmTypeList?.map((item: any, index: number) => (
+                <div className={style.alarmStatisticsInfo} key={index}>
+                  <div></div>
+                  <div>
+                    <p>
+                      {item.alarmTypeText}
+                      <span className={style.alarmStatisticsDetailAction}>{`共 ${item.alarmList.length} 条`}</span>
+                      {!!item.alarmList.length && (
+                        <Popover
+                          className={style.alarmStatisticsDetailAction}
+                          placement="right"
+                          content={renderAlarmDetail(item)}
+                          title={item.alarmTypeText}
+                          trigger="click"
+                        >
+                          <Button type="link">查看全部</Button>
+                        </Popover>
+                      )}
+                    </p>
+                    <p>{item.alarmList[0].address}</p>
+                    <p>{item.alarmList[0].time}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </React.Fragment>
         ) : (
-          <div className={style.alarmStatisticsDetail}>暂无报警</div>
+          <div className={`${style.alarmStatisticsDetail} ${style.alarmStatisticsDetailWeb}`}>暂无报警</div>
         )}
+      </div>
+    );
+  }
+
+  function renderAlarmDetail(item: any) {
+    return (
+      <div className={style.popAlarmDetail}>
+        {item.alarmList.map((itemChild: any, index: number) => {
+          return (
+            <div className={style.popAlarmDetailItem} key={item.alarmTypeText + index}>
+              <span>{index + 1}</span>
+              <span>
+                <p>{itemChild.address}</p>
+                <p>{itemChild.time}</p>
+              </span>
+            </div>
+          );
+        })}
       </div>
     );
   }
