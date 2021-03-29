@@ -37,7 +37,7 @@ async function registerMainApp(callback: () => any) {
       entry: isDev ? (isDevBuild ? onLineDevURL : localURL) : onLineURL,
       // entry: onLineURL,
       container: currentId,
-      activeRule: `/#${path}`,
+      activeRule:   isDev ? "" : '/gpssass' + `/#${path}`,
       props: { baseFuntion, name, routers: JSON.parse(JSON.stringify(children)), routerBase: `/#${path}`, userInfo }
     });
     // element.defaultMountApp && (defaultMountApp = element.activeRule);
