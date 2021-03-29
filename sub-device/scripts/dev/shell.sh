@@ -11,7 +11,7 @@ exposePort="9527";
 
 echo "--> yarn install"
 cd ../..
-sudo yarn install && sudo yarn build:dev
+sudo yarn install && sudo yarn fch:build-dev
 
 echo "--> copy files shell.dev.sh"
 sudo cp -rf Dockerfile ./dist

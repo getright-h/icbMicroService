@@ -14,7 +14,9 @@ export default class TimePickerComponent extends React.Component<IProps> {
     dateFormat: 'YYYY-MM-DD HH:mm:ss',
     timeFormat: 'HH:mm:ss',
     timeInfo: '',
-    getDateTimeInfo: () => {}
+    getDateTimeInfo: () => {
+      // do
+    }
   };
 
   onChange = (value: any, dateString: any) => {
