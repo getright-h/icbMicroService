@@ -121,7 +121,7 @@ class PluginFactory {
     this.getDotenv();
     this.getFriendlyErrorsWebpackPlugin();
     // DLL 的插件放在最后 PUSH
-   this.getWebpackCdnPlugin();
+    !IS_BUILD && this.getWebpackCdnPlugin()
     // this.getDllPlugins();
     return this.plugins;
   }

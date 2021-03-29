@@ -37,12 +37,12 @@ async function registerMainApp(callback: () => any) {
       entry: isDev ? (isDevBuild ? onLineDevURL : localURL) : onLineURL,
       // entry: onLineURL,
       container: currentId,
-      activeRule:   isDev ? "" : '/gpssass' + `/#${path}`,
+      activeRule: () => [isDev ? '' : '/gpssass' + `/#${path}`, isDev ? '' : '/gpssass' + `#${path}`],
       props: { baseFuntion, name, routers: JSON.parse(JSON.stringify(children)), routerBase: `/#${path}`, userInfo }
     });
 
     console.log('apps', apps);
-    
+
     // element.defaultMountApp && (defaultMountApp = element.activeRule);
   });
   // 启用微前端应用间通讯
