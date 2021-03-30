@@ -11,8 +11,8 @@
   ],
   "scripts": {
     "fch:start": "rimraf dist && fch start",
-    "fch:build": "rimraf dist && fch build --ignoreCdn ",
-    "fch:build-dev": "rimraf dist && fch build -d --ignoreCdn"
+    "fch:build": "rimraf dist && fch build  -s --ignoreCdn ",
+    "fch:build-dev": "rimraf dist && fch build -d  -s --ignoreCdn"
   },
   "dependencies": {
     "@ant-design/icons": "^4.2.1",
