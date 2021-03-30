@@ -311,7 +311,9 @@ export default function UserActionReportComponent() {
             </div>
           </React.Fragment>
         ) : (
-          <div className={`${style.alarmStatisticsDetail} ${style.alarmStatisticsDetailWeb}`}>暂无报警</div>
+          <div className={style.alarmStatisticsDetail} style={{ display: 'block' }}>
+            暂无报警
+          </div>
         )}
       </div>
     );
