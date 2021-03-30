@@ -552,6 +552,6 @@ export interface AppProps {
   singular?: boolean;
   entry: string;
   container: string;
-  activeRule: string | ((location: string) => boolean | Array<any>);
+  activeRule: string | Array<string>;
   children?: Array<ChildrenObject>;
 }

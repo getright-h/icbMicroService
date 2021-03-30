@@ -26,6 +26,7 @@ async function registerMainApp(callback: () => any) {
   StorageUtil.setLocalStorage('MENU_LIST', JSON.stringify(res.micInfo));
 
   const userInfo = await callback();
+  console.log(isDev, 'isDev');
 
   routerInfo.forEach((element: any) => {
     const { localURL, path, name, onLineDevURL, onLineURL, children, loader, tokenKey } = element;
@@ -34,9 +35,12 @@ async function registerMainApp(callback: () => any) {
       tokenKey,
       name: name,
       loader,
+
       entry: isDev ? localURL : onLineURL,
       container: currentId,
-      activeRule: () => [isDev ? '' : '/gpssass' + `/#${path}`, isDev ? '' : '/gpssass' + `#${path}`],
+      activeRule: [(isDev ? '/' : '/gpssass') + `/#${path}`, (isDev ? '/' : '/gpssass') + `#${path}`],
+      // activeRule: `/#${path}`,
+      //activeRule: () => [(isDev ? '/' : '/gpssass') + `/#${path}`, (isDev ? '/' : '/gpssass') + `#${path}`],
       props: { baseFuntion, name, routers: JSON.parse(JSON.stringify(children)), routerBase: `/#${path}`, userInfo }
     });
 
