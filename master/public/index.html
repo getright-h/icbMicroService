@@ -23,7 +23,7 @@
     if ('serviceWorker' in navigator) {
       // Use the window load event to keep the page load performant
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register(`./workboxServiceWorker.js?${(new Date()).getTime()}`);
+        navigator.serviceWorker.register(`/workboxServiceWorker.js?${(new Date()).getTime()}`);
       });
     } else {
       console.log("不支持serviceWorker");
