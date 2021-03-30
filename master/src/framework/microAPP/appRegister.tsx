@@ -35,7 +35,7 @@ async function registerMainApp(callback: () => any) {
 
       entry: isDev ? onLineURL : onLineURL,
       container: currentId,
-      activeRule: [(isDev ? '/' : '/gpssass') + `#${path}`, (isDev ? '/' : '/gpssass') + `#${path}`],
+      activeRule: [(isDev ? '' : '/gpssass') + `/#${path}`, (isDev ? '/' : '/gpssass') + `#${path}`],
       props: { baseFuntion, name, routers: JSON.parse(JSON.stringify(children)), routerBase: `/#${path}`, userInfo }
     });
 
