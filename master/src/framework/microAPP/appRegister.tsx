@@ -49,7 +49,7 @@ async function registerMainApp(callback: () => any) {
 
   // setDefaultApp(defaultMountApp);
   // 启动微前端
-  start({ sandbox: { loose: true }, prefetch: false });
+  start({ sandbox: { loose: true } });
   // 监听第一个启动的微前端app
   listenFirstStartApp();
 }
