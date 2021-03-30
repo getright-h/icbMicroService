@@ -4,6 +4,13 @@ import { reducer, initialState } from './store/global.reducer';
 export const GlobalContext = React.createContext({ dispatch: undefined, gState: initialState });
 
 const GlobalProvider = (props: any) => {
+  initialState.myInfo = !(props && props.userInfo)
+    ? {
+        userId: '',
+        typeId: 'c59c75eec2d3cc075cca08d84386bcb9',
+        systemId: '938880216d89c68eb6ea08d69b143c52'
+      }
+    : { ...props.userInfo, userId: props.userInfo.id, typeId: 'c59c75eec2d3cc075cca08d84386bcb9' };
   const [state, dispatch] = useReducer(reducer, initialState);
   return <GlobalContext.Provider value={{ gState: state, dispatch }}>{props.children}</GlobalContext.Provider>;
 };

@@ -8,7 +8,7 @@ const AddAssetHtmlWebpackPlugin = require('add-asset-html-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const Dotenv = require('dotenv-webpack');
 const WebpackCdnPlugin = require('webpack-cdn-plugin');
-const { NODE_ENV } = process.env;
+const { NODE_ENV, IS_BUILD } = process.env;
 
 class PluginFactory {
   constructor() {
@@ -41,18 +41,34 @@ class PluginFactory {
     this.plugins.push(...dllPlugins);
   }
 
+  // getWebpackCdnPlugin() {
+  //   let forFileName = this.isProd ? ".min" : "";
+  //   this.plugins.push(
+  //     new WebpackCdnPlugin({
+  //       prodUrl: 'https://lib.baomitu.com/:name/:version/:path',
+  //       devUrl: ':name/:path',
+  //       modules: {
+  //          'react': [
+  //            { name: 'react', var: 'React', path: `umd/react.${process.env.NODE_ENV}${forFileName}.js` },
+  //            { name: 'react-dom', var: 'ReactDOM', path: `umd/react-dom.${process.env.NODE_ENV}${forFileName}.js` },
+  //          ]
+  //        }
+  //     })
+  //   )
+  // }
   getWebpackCdnPlugin() {
-    let forFileName = this.isProd ? ".min" : "";
+    let forFileName = this.isProd ? ".min" : ".min";
     this.plugins.push(
       new WebpackCdnPlugin({
-        prodUrl: 'https://lib.baomitu.com/:name/:version/:path',
+        prodUrl: 'http://staticcdn.i-cbao.com/globcdn/:name/:path',
         devUrl: ':name/:path',
-        modules: {
-           'react': [
-             { name: 'react', var: 'React', path: `umd/react.${process.env.NODE_ENV}${forFileName}.js` },
-             { name: 'react-dom', var: 'ReactDOM', path: `umd/react-dom.${process.env.NODE_ENV}${forFileName}.js` },
-           ]
-         }
+         modules: 
+          [
+            { name: 'react', var: 'React', path: `16.14.0/react.${process.env.NODE_ENV}${forFileName}.js` },
+            { name: 'react-dom', var: 'ReactDOM', path: `16.14.0/react-dom.${process.env.NODE_ENV}${forFileName}.js` },
+            { name: 'react-router', var: 'ReactRouter', path: `5.2.0/react-router${forFileName}.js` },
+            { name: 'axios', var: 'axios', path: `0.21.1/axios${forFileName}.js` },
+          ]     
       })
     )
   }
@@ -66,8 +82,20 @@ class PluginFactory {
   getHtmlWebpackPlugin() {
     this.plugins.push(
       new HtmlWebpackPlugin({
-        template: path.resolve(__dirname, '../public/index.html'),
-        title: process.env.SITE_TITLE
+        template: process.argv[2] == "--build" ? path.resolve(__dirname, '../public/index.html') : path.resolve(__dirname, '../public/indexMap.html'),
+        title: process.env.SITE_TITLE,
+        chunks: ['index']
+      })
+    )
+  }
+
+  getHtmlWebpackPlugin2() {
+    this.plugins.push(
+      new HtmlWebpackPlugin({
+        filename: 'user-action-report-component.html', //http访问路径
+        template: path.resolve(__dirname, '../public/index.simple.html'),
+        title: "今日用户行为报告",
+        chunks: ['indexSimple']
       })
     )
   }
@@ -98,12 +126,13 @@ class PluginFactory {
 
   getPlugins() {
     this.getProgressBarPlugin();
+    this.getHtmlWebpackPlugin2();
     this.getHtmlWebpackPlugin();
     this.getMiniCssExtractPlugin();
     this.getDotenv();
-    this.getFriendlyErrorsWebpackPlugin();
+    // this.getFriendlyErrorsWebpackPlugin();
     // DLL 的插件放在最后 PUSH
-    this.getWebpackCdnPlugin();
+    !IS_BUILD && this.getWebpackCdnPlugin()
     // this.getDllPlugins();
     return this.plugins;
   }

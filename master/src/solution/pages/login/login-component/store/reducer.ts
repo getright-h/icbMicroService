@@ -4,7 +4,8 @@ import { TYPES } from './type';
 
 export const initialState: IState = {
   loginLoading: false,
-  vCodeImage: ''
+  vCodeImage: '',
+  errorMsg: ''
 };
 
 export function reducer(state = initialState, action: IAction<any>) {
@@ -19,6 +20,11 @@ export function reducer(state = initialState, action: IAction<any>) {
       return {
         ...state,
         vCodeImage: payload
+      };
+    case TYPES.SET_ERROR_MESSAGE:
+      return {
+        ...state,
+        errorMsg: payload
       };
     default:
       return state;

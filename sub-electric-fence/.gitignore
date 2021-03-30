@@ -2,7 +2,7 @@
 
 # dependencies
 /*/node_modules
-#/dist
+/dist
 # testing
 /coverage
 
@@ -18,8 +18,8 @@ yarn-error.log*
 src/**/*.d.ts
 # 本地环境变量
 .env.local
-yarn.lock
-yarn.lock
+# yarn.lock
+# yarn.lock
 *.lock
 *.less.d.ts
 

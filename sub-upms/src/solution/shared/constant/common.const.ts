@@ -9,39 +9,26 @@ export const PAGES_MENU = {
     {
       path: 'account',
       title: '账号管理',
-      icon: 'container',
       children: [
         {
           path: 'organizationManage',
-          title: '机构管理',
-          icon: 'container'
+          title: '机构管理'
         },
         {
           path: 'userManage',
-          title: '用户管理',
-          icon: 'container',
-          children: [
-            {
-              path: 'main',
-              title: '用户管理',
-              icon: 'container'
-            },
-            {
-              path: 'roleManage',
-              title: '角色管理',
-              icon: 'container'
-            },
-            {
-              path: 'departmentManage',
-              title: '部门管理',
-              icon: 'container'
-            },
-            {
-              path: 'stationManage',
-              title: '岗位管理',
-              icon: 'container'
-            }
-          ]
+          title: '用户管理'
+        },
+        {
+          path: 'roleManage',
+          title: '角色管理'
+        },
+        {
+          path: 'departmentManage',
+          title: '部门管理'
+        },
+        {
+          path: 'stationManage',
+          title: '岗位管理'
         }
       ]
     }

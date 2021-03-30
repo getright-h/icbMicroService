@@ -14,7 +14,7 @@ export default function SelectGroupComponent(props: ISelectGroupProps) {
   const { state } = useSelectGroupStore(props);
   const { searchDepartForm, searchPositionForm, relateRolesText } = state;
   return (
-    <Space key={field.key} className={style.space} align="start">
+    <Space key={field.key} className={style.space} align="center">
       <Form.Item
         {...field}
         name={[field.name, 'organizationId']}
@@ -22,6 +22,7 @@ export default function SelectGroupComponent(props: ISelectGroupProps) {
         rules={[{ required: true, message: '请选择所属机构' }]}
       >
         <ISelectLoadingComponent
+          width="200px"
           reqUrl="queryOrganizationSelectList"
           placeholder="请选择机构"
           searchForm={{
@@ -35,22 +36,26 @@ export default function SelectGroupComponent(props: ISelectGroupProps) {
       </Form.Item>
       <Form.Item {...field} name={[field.name, 'departmentId']} className={style.fieldItem}>
         <ISelectLoadingComponent
+          width="200px"
           reqUrl="queryOrganizationSelectList"
           placeholder="请选择部门"
           searchForm={{ ...searchDepartForm, systemId: gState.myInfo.systemId }}
           searchKey={selectValues ? selectValues.departmentName : ''}
           selectedValue={selectValues ? selectValues.departmentId : undefined}
           getCurrentSelectInfo={(value, option) => props.handleOrganSelect(option, index, 'department')}
+          disabled={selectValues ? !selectValues.organizationId : true}
         ></ISelectLoadingComponent>
       </Form.Item>
       <Form.Item {...field} name={[field.name, 'positionId']} className={style.fieldItem}>
         <ISelectLoadingComponent
+          width="200px"
           reqUrl="queryOrganizationSelectList"
           placeholder="请选择岗位"
           searchForm={{ ...searchPositionForm, systemId: gState.myInfo.systemId }}
           searchKey={selectValues ? selectValues.positionName : ''}
           selectedValue={selectValues ? selectValues.positionId : undefined}
           getCurrentSelectInfo={(value, option) => props.handleOrganSelect(option, index, 'position')}
+          disabled={selectValues ? !selectValues.departmentId : true}
         ></ISelectLoadingComponent>
       </Form.Item>
       <Popover content={relateRolesText} title={null} trigger="hover" placement="bottom">

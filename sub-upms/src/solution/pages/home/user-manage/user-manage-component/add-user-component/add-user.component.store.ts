@@ -20,8 +20,10 @@ export function useAddUserStore(props: IAddUserProps) {
   const relateRoles = useRef({});
 
   useEffect(() => {
-    getRoleOptions(gState.myInfo.systemId, gState.myInfo.userId);
-  }, []);
+    if (gState.myInfo.systemId && gState.myInfo.userId) {
+      getRoleOptions();
+    }
+  }, [gState.myInfo.systemId, gState.myInfo.userId]);
 
   useEffect(() => {
     if (userId && visible) {
@@ -75,8 +77,8 @@ export function useAddUserStore(props: IAddUserProps) {
     userForm.setFieldsValue([organizationIds]);
   }
 
-  function getRoleOptions(systemId: string, userId: string) {
-    roleManageService.queryRoleList({ systemId, userId }).subscribe(
+  function getRoleOptions() {
+    roleManageService.queryRoleList({ systemId: gState.myInfo.systemId, userId: gState.myInfo.userId }).subscribe(
       (res: any) => {
         setStateWrap({ roleOptions: res });
       },

@@ -1,8 +1,9 @@
-import axios, { AxiosInstance, AxiosPromise } from 'axios';
+import axios, { AxiosInstance, AxiosPromise, ResponseType } from 'axios';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { DepUtil } from '~/framework/aop/inject';
 import * as Sentry from '@sentry/browser';
+import { StorageUtil } from '~/framework/util/storage';
 
 export interface HttpResponseModel {
   message: string;
@@ -23,7 +24,7 @@ class RequestService {
 
   private createAuthHeaders(): any {
     const headers = { token: '' };
-    const token = localStorage.getItem('TOKENINFO');
+    const token = StorageUtil.getLocalStorage('token');
     if (token) {
       headers.token = token;
     }
@@ -32,21 +33,38 @@ class RequestService {
 
   private getRootUrl(url: string) {
     let returnInfo = process.env.MAIN;
-    if (!!~url.indexOf('VerifyCode')) {
-      returnInfo = process.env.LOGIN;
+    if (!!~url.indexOf('/Login')) {
+      returnInfo = process.env.VERIFICATIONCODE;
+    } else if (!!~url.indexOf('VerifyCode')) {
+      returnInfo = process.env.VERIFICATIONCODE;
     } else {
-      returnInfo = process.env.MAIN;
+      returnInfo = process.env.USERINFO;
     }
     return returnInfo;
   }
 
-  private _makeRequest(method: string, url: string, queryParams?: object, body?: object, reponseType = 'json') {
-    const request: AxiosPromise = this._httpClient[method](this.getRootUrl(url) + url, {
-      params: queryParams,
-      headers: this.createAuthHeaders(),
-      reponseType,
-      timeout: 300000
-    });
+  private _makeRequest(
+    method: string,
+    url: string,
+    queryParams?: object,
+    // body?: object,
+    responseType: ResponseType = 'json'
+  ) {
+    let request: AxiosPromise;
+    if (method == 'post' || method == 'put') {
+      request = this._httpClient[method](this.getRootUrl(url) + url, queryParams, {
+        headers: this.createAuthHeaders(),
+        responseType,
+        timeout: 300000
+      });
+    } else {
+      request = this._httpClient[method](this.getRootUrl(url) + url, {
+        params: queryParams,
+        headers: this.createAuthHeaders(),
+        responseType,
+        timeout: 300000
+      });
+    }
     return new Observable(subscriber => {
       request
         .then(response => {
@@ -69,8 +87,8 @@ class RequestService {
     );
   }
 
-  public post(url: string, body: object, queryParams?: object) {
-    return this._makeRequest('post', url, queryParams, body).pipe(
+  public post(url: string, queryParams?: object) {
+    return this._makeRequest('post', url, queryParams).pipe(
       map(data => {
         return this.dealWithError(data);
       }),
@@ -78,8 +96,8 @@ class RequestService {
     );
   }
 
-  public put(url: string, body: object, queryParams?: object) {
-    return this._makeRequest('put', url, queryParams, body).pipe(
+  public put(url: string, queryParams?: object) {
+    return this._makeRequest('put', url, queryParams).pipe(
       map(data => {
         return this.dealWithError(data);
       }),
@@ -97,7 +115,7 @@ class RequestService {
   }
 
   public getDownload(url: string, queryParams?: object) {
-    return this._makeRequest('get', url, queryParams, {}, 'arraybuffer').pipe(
+    return this._makeRequest('get', url, queryParams, 'arraybuffer').pipe(
       map(data => {
         return this.dealWithError(data);
       }),
@@ -105,8 +123,8 @@ class RequestService {
     );
   }
 
-  public postDownload(url: string, queryParams?: object, body?: any) {
-    return this._makeRequest('post', url, queryParams, body, 'arraybuffer').pipe(
+  public postDownload(url: string, queryParams?: object) {
+    return this._makeRequest('post', url, queryParams, 'arraybuffer').pipe(
       map(data => {
         return this.dealWithError(data);
       }),
@@ -128,8 +146,9 @@ class RequestService {
         if (status && parseInt(status) >= 500) {
           error = '服务器错误，请联系管理员。';
         } else if (status === 401) {
-          localStorage.getItem('TOKENINFO');
-          // this.route.navigateByUrl('login');
+          StorageUtil.removeLocalStorage('token');
+          history.pushState({}, '', '#/login');
+          location.reload();
           error = '登录失效，请重新登录。';
         } else if (status && parseInt(status) >= 400) {
           error = '页面找不到了，请联系管理员。';
@@ -155,8 +174,9 @@ class RequestService {
       }
     } else {
       if (data.code === 401 || data.StatusCode === 401) {
-        // this.cookieService.remove("FanCheHuiToken");
-        // this.route.navigateByUrl('login');
+        StorageUtil.removeLocalStorage('token');
+        history.pushState({}, '', '#/login');
+        location.reload();
         throw '登录失效，请重新登录！';
       }
 

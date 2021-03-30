@@ -42,15 +42,18 @@ class PluginFactory {
   }
 
   getWebpackCdnPlugin() {
-    let forFileName = this.isProd ? ".min" : "";
+    let forFileName = this.isProd ? ".min" : ".min";
     this.plugins.push(
       new WebpackCdnPlugin({
-        modules: {
-           'react': [
-             { name: 'react', var: 'React', path: `umd/react.${process.env.NODE_ENV}${forFileName}.js` },
-             { name: 'react-dom', var: 'ReactDOM', path: `umd/react-dom.${process.env.NODE_ENV}${forFileName}.js` },
-           ]
-         }
+        prodUrl: 'http://staticcdn.i-cbao.com/globcdn/:name/:path',
+        devUrl: ':name/:path',
+         modules: 
+          [
+            { name: 'react', var: 'React', path: `16.14.0/react.${process.env.NODE_ENV}${forFileName}.js` },
+            { name: 'react-dom', var: 'ReactDOM', path: `16.14.0/react-dom.${process.env.NODE_ENV}${forFileName}.js` },
+            { name: 'react-router', var: 'ReactRouter', path: `5.2.0/react-router${forFileName}.js` },
+            { name: 'axios', var: 'axios', path: `0.21.1/axios${forFileName}.js` },
+          ]     
       })
     )
   }
@@ -102,7 +105,7 @@ class PluginFactory {
     this.getFriendlyErrorsWebpackPlugin();
     // DLL 的插件放在最后 PUSH
     // this.getDllPlugins();
-    this.getWebpackCdnPlugin();
+     this.getWebpackCdnPlugin();
     return this.plugins;
   }
 }

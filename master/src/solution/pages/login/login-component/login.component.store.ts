@@ -3,11 +3,12 @@ import { LoginService } from '~/solution/model/services/login.service';
 import { LoginParam } from '~/solution/model/dto/login.dto';
 import React, { useRef } from 'react';
 import { IProps, IState } from './login.interface';
-import { setLoadingAction, setVcode } from './store/action';
+import { setErrorMessage, setLoadingAction, setVcode } from './store/action';
 import { message } from 'antd';
 import { ReducerStore } from '~/framework/aop/hooks/use-base-store';
 import { StorageUtil } from '~/framework/util/storage';
 import { VCodeInfo } from '../../../model/dto/login.dto';
+import { Store } from 'antd/lib/form/interface';
 
 export class LoginStore extends ReducerStore<IState> {
   @DepUtil.Inject(LoginService)
@@ -38,22 +39,19 @@ export class LoginStore extends ReducerStore<IState> {
   };
 
   // 登陆
-  handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  handleSubmit = (values: Store) => {
+    this.dispatch(setErrorMessage(''));
     this.dispatch(setLoadingAction(true));
 
     // 获取请求参数
-    const { getFieldsValue } = this.props.form;
-    const formValues = getFieldsValue();
-    const params: LoginParam = {
-      account: formValues.username,
-      password: formValues.password,
+    const params = {
+      account: values.account,
+      password: values.password,
       verificationCodeInfo: {
         sessionId: this.codeKey,
-        codeStrValue: formValues.vcode
+        codeStrValue: values.vcode
       },
-      systemId: process.env.SYSTEMID,
-      systemCode: process.env.SYSTEMCODE
+      systemCode: '04'
     };
 
     // 登陆操作
@@ -62,24 +60,19 @@ export class LoginStore extends ReducerStore<IState> {
 
   // 执行登陆
   handleLogin = (params: LoginParam) => {
-    this.props.history.push('/home');
-    // return this.loginService.login(params).subscribe(
-    //   res => {
-    //     StorageUtil.setLocalStorage('TOKEN', res.token);
-    //     this.loginService.checkIdentity({ loginRole: 0 }).subscribe(
-    //       res => {
-    //         message.success('登录成功');
-    //         this.dispatch(setLoadingAction(false));
-    //         this.props.history.push('/home');
-    //       },
-    //       error => {
-    //         this.dispatch(setLoadingAction(false));
-    //       }
-    //     );
-    //   },
-    //   error => {
-    //     this.dispatch(setLoadingAction(false));
-    //   }
-    // );
+    return this.loginService.login(params).subscribe(
+      res => {
+        StorageUtil.setLocalStorage('token', res.token);
+        message.success('登录成功');
+        this.dispatch(setLoadingAction(false));
+        this.props.history.replace('/home');
+      },
+      err => {
+        this.dispatch(setErrorMessage(err));
+        // message.error(err, 30);
+        this.dispatch(setLoadingAction(false));
+        this.getVcode();
+      }
+    );
   };
 }

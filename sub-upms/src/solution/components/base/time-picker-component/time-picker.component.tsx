@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { inject, observer } from 'mobx-react';
 import { TimePickerStore } from './time-picker.component.store';
 import { IProps } from './time-picker.interface';
 import { DatePicker, TimePicker } from 'antd';
@@ -7,9 +6,6 @@ import moment from 'moment';
 import style from './time-picker.component.less';
 
 const { RangePicker } = DatePicker;
-
-@inject('timePickerStore')
-@observer
 export default class TimePickerComponent extends React.Component<IProps> {
   private readonly store: TimePickerStore = this.props.timePickerStore;
   private startDate: string;
@@ -18,7 +14,9 @@ export default class TimePickerComponent extends React.Component<IProps> {
     dateFormat: 'YYYY-MM-DD HH:mm:ss',
     timeFormat: 'HH:mm:ss',
     timeInfo: '',
-    getDateTimeInfo: () => {}
+    getDateTimeInfo: () => {
+      // do
+    }
   };
 
   onChange = (value: any, dateString: any) => {

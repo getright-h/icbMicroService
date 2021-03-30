@@ -3,18 +3,24 @@ import { IITableProps } from './i-table.interface';
 import { useITableStore } from './i-table.component.store';
 import { Table } from 'antd';
 
-export default function ITableComponent(props: IITableProps) {
+export default React.memo((props: IITableProps) => {
   const {
     isLoading = false,
     data = [],
     columns,
-    total,
+    size = 'large',
     isPagination = true,
     rowClick = () => {},
-    changeTablePageIndex
+    scroll = {},
+    expandable = {
+      childrenColumnName: 'cool'
+    },
+    rowSelection,
+    showHeader = true,
+    sortDirections = null,
+    onChange
   } = props;
   const { state } = useITableStore(props);
-  console.log(state.pagination);
 
   return (
     <Table
@@ -26,10 +32,17 @@ export default function ITableComponent(props: IITableProps) {
           } // 点击行
         };
       }}
+      scroll={scroll}
+      showHeader={showHeader}
+      size={size}
       dataSource={data}
+      rowSelection={rowSelection}
+      expandable={expandable}
+      onChange={onChange}
       columns={columns}
+      sortDirections={sortDirections}
       pagination={isPagination && state.pagination}
-      rowKey={row => row.id}
+      rowKey={(row, index) => row.id || index}
     />
   );
-}
+});

@@ -30,7 +30,7 @@ export default function AddUserComponent(props: IAddUserProps) {
                 label="所属机构"
                 required={true}
                 className="form-item"
-                style={{ width: '90%', alignItems: 'start' }}
+                style={{ width: '90%', alignItems: 'start', marginBottom: 0 }}
                 labelCol={{
                   xs: { span: 24 },
                   sm: { span: 3 }
@@ -143,7 +143,7 @@ export default function AddUserComponent(props: IAddUserProps) {
   }
   return (
     <Modal
-      width={'75vw'}
+      width={1000}
       title={isEdit && !isDetail ? '编辑用户' : isDetail ? '用户详情' : '添加用户'}
       visible={visible}
       okText={'保存'}

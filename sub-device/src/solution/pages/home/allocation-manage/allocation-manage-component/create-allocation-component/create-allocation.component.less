@@ -1,0 +1,123 @@
+.main-form{
+  .title{
+    padding: 1.25rem;
+    border-bottom: 1px solid #ddd;
+    h1{
+      font-family: Exo;
+      font-size: 1.125rem;
+      font-weight: 500;
+      margin-bottom: 0;
+    }
+  }
+  .form-part{
+    padding: 12px 0;
+    .sub-title{
+      padding: 0 2.25rem;
+      height: 2.2rem;
+      background: #D8DAF4;
+      h3{
+        line-height: 2rem;
+      }
+    }
+    .form-items{
+      padding: 1rem 0;
+      display: flex;
+      .form-left{
+        width: 80%;
+      }
+    }
+  }
+}
+
+.field-item {
+  margin-bottom: 0;
+  min-width: 200px;
+}
+.field-number {
+  min-width: 100px;
+}
+.space {
+  display: flex;
+  margin-bottom: 8px;
+  align-items: center;
+}
+
+.field-add-button {
+  margin: 5px;
+
+  >span {
+    margin-right: 10px;
+  }
+  
+}
+.flowNodeWapper {
+    display: flex;
+    min-height: 50px;
+    margin: 0 auto;
+    border: 1px solid;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    &:last-child {
+      max-width: 200px;
+    }
+    .node {
+      cursor: pointer;
+      width: 247px;
+      height: 30px;
+      text-align: center;
+      i {
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        margin-right: 8px;
+        vertical-align: middle;
+      }
+      span {
+        vertical-align: middle;
+      }
+      .notchecked {
+  background: url(../../../../../assets/image/nochecked.png);
+                background-size: 100% 100%;
+      }
+      .checked {
+        background: url(../../../../../assets/image/checked.png);
+                background-size: 100% 100%;
+      }
+    }
+}
+.minWidth {
+  max-width: 200px;
+}
+.arrowWapepr {
+  position: relative;
+  left: 50%;
+
+  .line {
+    position: relative;
+    height: 100px;
+    width: 2px;
+    border: 1px solid;
+    background: #000000;
+    i {
+      position: absolute;
+      display: inline-block;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 10px solid #000000;
+      border-bottom: 10px solid transparent;
+      bottom: -12px;
+      left: -10px;
+    }
+  }
+}
+
+.createAllot {
+  display: flex;
+  .left {
+flex: 1;
+  }
+  .right {
+    width: 500px;
+  }
+}

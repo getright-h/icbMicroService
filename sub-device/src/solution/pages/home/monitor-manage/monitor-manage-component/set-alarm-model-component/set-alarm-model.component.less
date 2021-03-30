@@ -1,0 +1,45 @@
+.title {
+  font-weight: 600;
+}
+
+.marginBottom {
+  margin-bottom: 10px;
+}
+
+.formContainer {
+  padding: 1rem 0;
+}
+
+.alarmFormItem {
+  border: 1px solid #DCDCDC;
+  &:not(:first-child){
+    border-top: 0;
+  }
+
+  .itemTitle{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 1rem;
+    background: #FAFAFA;
+
+    >h3{
+      margin: 0;
+      width: 8rem;
+    }
+    >span{
+      font-size: 0.8rem;
+      flex: 1;
+    }
+  }
+
+  .itemContent{
+    border-top: 1px solid #DCDCDC;
+    padding-top: 10px;
+  }
+  
+  .itemError{
+    padding: 10px 20px;
+    color: #AAA;
+  }
+}

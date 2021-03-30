@@ -13,8 +13,9 @@ import { RoutesService } from '~/framework/util/routes/routes.service';
 import { ChildrenObject } from '~/framework/microAPP/microAppModal';
 moment.locale('zh-cn');
 
-const App = (props: { routers: Array<ChildrenObject>; routerBase: string }) => {
-  const { routers, routerBase } = props;
+const App = (props: { routers: Array<ChildrenObject>; userInfo: {} }) => {
+  const { routers, userInfo } = props;
+  console.log('userInfo =>>>>>>>>>', userInfo);
   // 项目内部用的hooks provicer
   const { GlobalProvider } = useGlobalContext();
   // 主项目用的store 主要用来接收子应用传来的信息
@@ -22,8 +23,8 @@ const App = (props: { routers: Array<ChildrenObject>; routerBase: string }) => {
   return (
     <ConfigProvider locale={zhCN}>
       <Provider store={store}>
-        <GlobalProvider>
-          <HashRouter basename={routerBase}>{RoutesService.renderRoutes(routers, false)}</HashRouter>
+        <GlobalProvider userInfo={userInfo}>
+          <HashRouter>{RoutesService.renderRoutes(routers, false)}</HashRouter>
         </GlobalProvider>
       </Provider>
     </ConfigProvider>

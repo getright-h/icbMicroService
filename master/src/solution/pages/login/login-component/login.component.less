@@ -73,6 +73,7 @@
 // 登录框
 .loginBox{
   max-width: @login-box-width;
+  position: relative;
 }
 
 .loginBtn{
@@ -93,18 +94,36 @@
   }
 }
 
+.formItem {
+  margin-bottom: 15px;
+}
+.inputItem {
+  height: 46px;
+  border-radius: 0;
+}
+
 .vcodeInput{
   width: 0.6 * @login-box-width !important;
 }
 
-.vcodeBox{
+
+.vcodeBox {
   width: 0.4 * @login-box-width;
   text-align: center;
-  margin-left: 5px;
-  border: 1px solid #d9d9d9;
   box-sizing: border-box;
   cursor: pointer;
-  img {
+  display: inline-block;
+  height: 40px;
+  vertical-align: top;
+
+  >img {
     width: 100%;
   }
+}
+
+.errorMsg{
+  position: absolute;
+  z-index: 10;
+  line-height: 20px;
+  top: -20px;
 }

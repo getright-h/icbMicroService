@@ -1,5 +1,6 @@
 import { IMonitoringObjectState, ModalType } from './monitoring-object.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
+import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
 import CreateBindCarComponent from './create-bind-car-component/create-bind-car.component';
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
@@ -15,6 +16,7 @@ const { confirm } = Modal;
 export function useMonitoringObjectStore() {
   const { state, setStateWrap, getState } = useStateStore(new IMonitoringObjectState());
   const monitorObjectServiceService = new MonitorObjectServiceService();
+  const { $auth } = useAuthorityState();
   const { searchForm } = state;
   const formInfo = useRef(null);
   const currentModal = useRef(null);
@@ -77,7 +79,7 @@ export function useMonitoringObjectStore() {
     formInfo.current = null;
     switch (type) {
       case ACTION_TYPE.FENCEMODAL:
-        confirm({
+        currentModal.current = confirm({
           title: '围栏模式',
           content: <FenceModalViewComponent />,
           onOk() {
@@ -89,7 +91,7 @@ export function useMonitoringObjectStore() {
         });
         break;
       case ACTION_TYPE.EDIT:
-        confirm({
+        currentModal.current = confirm({
           title: '编辑',
           width: 700,
           content: <CreateBindCarComponent onValuesChange={getFormInfo} formInitValue={{ ...data, isEdit: true }} />,
@@ -100,7 +102,7 @@ export function useMonitoringObjectStore() {
         });
         break;
       case ACTION_TYPE.UNBIND:
-        confirm({
+        currentModal.current = confirm({
           title: '提示',
           width: 700,
           content: <span>请再次确定所选车辆解绑电子围栏？</span>,
@@ -113,7 +115,7 @@ export function useMonitoringObjectStore() {
         });
         break;
       case ACTION_TYPE.BATCH_EDIT:
-        confirm({
+        currentModal.current = confirm({
           title: '批量修改',
           width: 700,
           content: <CreateBindCarComponent onValuesChange={getFormInfo} formInitValue={{ ...data, isEdit: true }} />,
@@ -217,7 +219,7 @@ export function useMonitoringObjectStore() {
         });
         break;
       case ModalType.FENCETYPE:
-        confirm({
+        currentModal.current = confirm({
           title: '围栏模式',
           width: 700,
           content: <FenceModalViewComponent />,
@@ -233,6 +235,7 @@ export function useMonitoringObjectStore() {
   }
   return {
     state,
+    $auth,
     callbackAction,
     changeTablePageIndex,
     searchClick,

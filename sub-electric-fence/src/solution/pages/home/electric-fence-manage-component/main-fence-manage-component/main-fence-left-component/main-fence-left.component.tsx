@@ -8,14 +8,14 @@ import { IMainFenceLeftProps } from './main-fence-left.interface';
 import { MainFenceManageContext } from '../main-fence-manage.provider';
 
 function MainFenceLeftComponent(props: IMainFenceLeftProps, ref: any) {
-  const { state, callbackAction, changeTablePageIndex } = useMainFenceLeftStore(props);
+  const { state, $auth, callbackAction, changeTablePageIndex } = useMainFenceLeftStore(props);
   const { mainFenceManageState, dispatch } = React.useContext(MainFenceManageContext);
   const { isLoading, total, tableData, searchForm } = mainFenceManageState;
 
   return (
     <div className={style.test}>
       <ITableComponent
-        columns={stationColumns(callbackAction)}
+        columns={stationColumns(callbackAction, $auth)}
         isLoading={isLoading}
         rowClick={record => rowClickAction(record, dispatch)}
         pageIndex={searchForm.index}
