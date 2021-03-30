@@ -2,14 +2,11 @@ import { registerMicroApps, runAfterFirstMounted, setDefaultMountApp, start, ini
 import { appStore } from './appStore';
 import { fetchChildAppsConfig, AppProps } from './fetchChildAppsConfig';
 import { StorageUtil } from '~/framework/util/storage';
-import { HomeService } from '~/solution/model/services/home.service';
 
 // 注册子应用 运行主项目
 async function registerMainApp(callback: () => any) {
   const isDev = process.env.NODE_ENV === 'development';
   console.log('process.env.DEV_BUILD' + process.env.NODE_ENV, process.env.DEV_BUILD);
-
-  const isDevBuild = process.env.DEV_BUILD === 'build';
   const currentId = '#subapp-viewport';
   const apps: Array<AppProps> = [];
   const baseFuntion = {
@@ -29,22 +26,18 @@ async function registerMainApp(callback: () => any) {
   console.log(isDev, 'isDev');
 
   routerInfo.forEach((element: any) => {
-    const { localURL, path, name, onLineDevURL, onLineURL, children, loader, tokenKey } = element;
+    const { localURL, path, name, onLineURL, children, loader, tokenKey } = element;
     // 根据children去获取子应用响应的路由节点赋值到当前的页面，作用用来生成路由
     apps.push({
       tokenKey,
       name: name,
       loader,
 
-      entry: isDev ? localURL : onLineURL,
+      entry: isDev ? onLineURL : onLineURL,
       container: currentId,
       activeRule: [(isDev ? '/' : '/gpssass') + `#${path}`, (isDev ? '/' : '/gpssass') + `#${path}`],
-      // activeRule: `/#${path}`,
-      //activeRule: () => [(isDev ? '/' : '/gpssass') + `/#${path}`, (isDev ? '/' : '/gpssass') + `#${path}`],
       props: { baseFuntion, name, routers: JSON.parse(JSON.stringify(children)), routerBase: `/#${path}`, userInfo }
     });
-
-    console.log('apps', apps);
 
     // element.defaultMountApp && (defaultMountApp = element.activeRule);
   });
@@ -56,7 +49,7 @@ async function registerMainApp(callback: () => any) {
 
   // setDefaultApp(defaultMountApp);
   // 启动微前端
-  start({ sandbox: { loose: true } });
+  start({ sandbox: { loose: true }, prefetch: false });
   // 监听第一个启动的微前端app
   listenFirstStartApp();
 }
@@ -130,11 +123,6 @@ function resolveChildProject(itemChild: any, childProject: any, micInfo: any[], 
     // }
   });
   return itemChildFilterArray;
-}
-
-// 获取当前的用户的数据信息
-async function getCurrentUserInfo() {
-  return await new HomeService().getMyInfo().toPromise();
 }
 
 export default registerMainApp;
