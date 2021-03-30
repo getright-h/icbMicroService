@@ -56,20 +56,29 @@ export default function LoginComponent(props: IProps) {
             <Text type="danger">{state.errorMsg}</Text>
           </div>
           <Form className="login-form" ref={loginForm} onFinish={store.handleSubmit} initialValues={{ checked: true }}>
-            <Form.Item name="account" rules={[{ required: true, message: '请输入用户名' }]}>
-              <Input prefix={<UserOutlined />} placeholder="请输入用户名" />
+            <Form.Item className={style.formItem} name="account" rules={[{ required: true, message: '请输入用户名' }]}>
+              <Input className={style.inputItem} prefix={<UserOutlined />} placeholder="请输入用户名" />
             </Form.Item>
-            <Form.Item name="password" rules={[{ required: true, message: '请输入登录密码' }]}>
-              <Input prefix={<LockOutlined />} type="password" placeholder="请输入登录密码" />
+            <Form.Item
+              className={style.formItem}
+              name="password"
+              rules={[{ required: true, message: '请输入登录密码' }]}
+            >
+              <Input
+                className={style.inputItem}
+                prefix={<LockOutlined />}
+                type="password"
+                placeholder="请输入登录密码"
+              />
             </Form.Item>
             <Form.Item
               name="vcode"
-              className={style.formFlexItem}
+              className={`${style.formFlexItem} ${style.formItem}`}
               rules={[{ required: true, message: '请输入验证码' }]}
             >
               <Input
                 prefix={<SafetyCertificateOutlined />}
-                className={style.vcodeInput}
+                className={`${style.inputItem} ${style.vcodeInput}`}
                 placeholder="请输入验证码"
                 onChange={e => {
                   loginForm.current.setFieldsValue({ vcode: e.target.value });
