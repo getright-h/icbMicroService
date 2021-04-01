@@ -139,6 +139,7 @@ export class OrderReportService implements OrderReportManage {
         console.log('totalInfo', totalInfo);
 
         data.pointPassList?.length > 1 && data.pointPassList?.unshift(totalInfo);
+        data.pointPassList?.length === 1 && (data.pointPassList = [totalInfo]);
 
         // 长驻点
         data.residentList = data.residentList?.map((item: ResidentList) => {
