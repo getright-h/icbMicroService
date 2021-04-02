@@ -2,22 +2,27 @@ import * as React from 'react';
 import { ModalType } from '../base-manage.const';
 import { Space } from 'antd';
 export function devicetypeColumns(callbackAction: Function, $auth: Record<string, boolean>) {
+  const render = (text: any) => (text ? text : '-');
   return [
     {
       title: '设备型号',
-      dataIndex: 'name'
+      dataIndex: 'name',
+      render
     },
     {
       title: '供应商',
-      dataIndex: 'supplierName'
+      dataIndex: 'supplierName',
+      render
     },
     {
       title: '创建人',
-      dataIndex: 'creatorName'
+      dataIndex: 'creatorName',
+      render
     },
     {
       title: '创建时间',
-      dataIndex: 'createTime'
+      dataIndex: 'createTime',
+      render
     },
     {
       title: '操作',

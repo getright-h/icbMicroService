@@ -81,7 +81,7 @@ export default function SupplierSettingComponent() {
   }
 
   return (
-    <div className={style.monitor}>
+    <div>
       <IHeaderTitleComponent pageName={'设备型号设置'} />
 
       <TablePageTelComponent

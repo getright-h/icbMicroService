@@ -1,5 +1,4 @@
 import * as React from 'react';
-import style from './device-type-setting.component.less';
 import { ModalType } from '../base-manage.const';
 import { useDeviceTypeSettingStore } from './device-type-setting.component.store';
 import { devicetypeColumns } from './device-setting-column';
@@ -41,6 +40,12 @@ export default function DeviceTypeSettingComponent() {
         <Button type="primary" onClick={searchClick}>
           搜索
         </Button>
+      </div>
+    );
+  }
+  function renderOtherButtons() {
+    return (
+      <div className="other-search-button-item">
         <Button type="primary" onClick={() => callbackAction(ModalType.ADD)} disabled={!$auth['addDeviceType']}>
           新增设备型号
         </Button>
@@ -63,12 +68,12 @@ export default function DeviceTypeSettingComponent() {
   }
 
   return (
-    <div className={style.monitor}>
+    <div>
       <IHeaderTitleComponent pageName={'设备型号设置'} />
-
       <TablePageTelComponent
         selectItems={renderSelectItems()}
         searchButton={renderSearchButtons()}
+        otherSearchBtns={renderOtherButtons()}
         table={<RenderTable />}
       />
       {addDeviceTypeVisible && (
