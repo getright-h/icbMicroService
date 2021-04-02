@@ -1,4 +1,11 @@
-import { registerMicroApps, runAfterFirstMounted, setDefaultMountApp, start, initGlobalState } from 'qiankun';
+import {
+  registerMicroApps,
+  runAfterFirstMounted,
+  setDefaultMountApp,
+  start,
+  initGlobalState,
+  prefetchApps
+} from 'qiankun';
 import { appStore } from './appStore';
 import { fetchChildAppsConfig, AppProps } from './fetchChildAppsConfig';
 import { StorageUtil } from '~/framework/util/storage';
@@ -26,14 +33,14 @@ async function registerMainApp(callback: () => any) {
   console.log(isDev, 'isDev');
 
   routerInfo.forEach((element: any) => {
-    const { localURL, path, name, onLineURL, children, loader, tokenKey } = element;
+    const { localURL, onLineDevURL, path, name, onLineURL, children, loader, tokenKey } = element;
     // 根据children去获取子应用响应的路由节点赋值到当前的页面，作用用来生成路由
     apps.push({
       tokenKey,
       name: name,
       loader,
 
-      entry: isDev ? onLineURL : onLineURL,
+      entry: isDev ? onLineDevURL : onLineURL,
       container: currentId,
       activeRule: [(isDev ? '' : '/gpssass') + `/#${path}`, (isDev ? '/' : '/gpssass') + `#${path}`],
       props: { baseFuntion, name, routers: JSON.parse(JSON.stringify(children)), routerBase: `/#${path}`, userInfo }
@@ -46,8 +53,8 @@ async function registerMainApp(callback: () => any) {
   // 注册当前的子应用，监听部分生命周期
   registerApps(apps);
   // 设定个默认的app
-
-  // setDefaultApp(defaultMountApp);
+  prefetchApps(apps);
+  // setDefaultApp('/#/home/fence');
   // 启动微前端
   start({ sandbox: { loose: true } });
   // 监听第一个启动的微前端app

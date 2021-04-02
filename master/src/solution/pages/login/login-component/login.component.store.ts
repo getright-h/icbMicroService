@@ -65,7 +65,7 @@ export class LoginStore extends ReducerStore<IState> {
         StorageUtil.setLocalStorage('token', res.token);
         message.success('登录成功');
         this.dispatch(setLoadingAction(false));
-        this.props.history.replace('/home');
+        this.props.history.replace('/home/index');
       },
       err => {
         this.dispatch(setErrorMessage(err));

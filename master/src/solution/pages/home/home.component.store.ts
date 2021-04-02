@@ -7,7 +7,7 @@ import { setState } from '~/framework/microAPP/appStore';
 import { fetchChildAppsConfig } from '~/framework/microAPP/fetchChildAppsConfig';
 import registerMainApp from '~/framework/microAPP/appRegister';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Subscription } from 'rxjs';
 import { HomeService } from '~/solution/model/services/home.service';
 import { ShowNotification } from '~/framework/util/common';
@@ -16,12 +16,17 @@ export function useHomeStore() {
   const homeService = useService(HomeService);
   const { state, setStateWrap } = useStateStore(new IHomeProps());
   const history = useHistory();
+  const { pathname } = useLocation();
+
   console.log('history =>>>', history);
   useEffect(() => {
     // 注册并启动微前端
     registerMainApp(callback);
   }, []);
-
+  // 监听路由变化，设置首页状态
+  useEffect(() => {
+    setStateWrap({ isIndex: pathname.includes('home/index') });
+  }, [pathname]);
   function callback() {
     return getCurrentUserInfo();
   }
