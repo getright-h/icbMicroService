@@ -178,6 +178,10 @@ export function useUserActionReportStore() {
       setStateWrap({
         actionData: res
       });
+    }, () => {
+      setStateWrap({
+        loading: false
+      });
     });
   }
 
