@@ -124,65 +124,68 @@ export function useUserActionReportStore() {
     setStateWrap({
       loading: true
     });
-    orderReportService.queryReportTraffic({ strValue: initKey ?? state.deviceCode }).subscribe(async res => {
-      if (!res.plateNo) {
+    orderReportService.queryReportTraffic({ strValue: initKey ?? state.deviceCode }).subscribe(
+      async res => {
+        if (!res.plateNo) {
+          setStateWrap({
+            loading: false
+          });
+          ShowNotification.error('该车辆不存在');
+          return;
+        }
+        setStateWrap({
+          actionData: res,
+          loading: false
+        });
+        if (res.longitude) {
+          new AMap.Marker({
+            map: map.current,
+            position: [res.longitude, res.latitude]
+          });
+          map.current.setCenter([res.longitude, res.latitude]);
+        }
+        // 这个时候异步去进行地址转换
+
+        res.pointPassList =
+          res.pointPassList?.length >= 1 &&
+          (await Promise.all(
+            res.pointPassList?.map(async (item: any) => {
+              item.startAddress = (await IMAP.covertPointToAddress([item.startLon, item.startLat])) as any;
+              item.endAddress = (await IMAP.covertPointToAddress([item.endLon, item.endLat])) as any;
+              return item;
+            })
+          ));
+
+        res.residentList = await Promise.all(
+          res.residentList?.map(async (item: any) => {
+            item.address = (await IMAP.covertPointToAddress([item.longitude, item.latitude])) as any;
+            return item;
+          })
+        );
+
+        res.alarmTypeList = await Promise.all(
+          res.alarmTypeList?.map(async (item: any) => {
+            item.alarmList = await Promise.all(
+              item.alarmList.map(async (itemChild: any) => {
+                itemChild.address = (await IMAP.covertPointToAddress([itemChild.longitude, itemChild.latitude])) as any;
+                return itemChild;
+              })
+            );
+
+            return item;
+          })
+        );
+
+        setStateWrap({
+          actionData: res
+        });
+      },
+      () => {
         setStateWrap({
           loading: false
         });
-        ShowNotification.error('该车辆不存在');
-        return;
       }
-      setStateWrap({
-        actionData: res,
-        loading: false
-      });
-      if (res.longitude) {
-        new AMap.Marker({
-          map: map.current,
-          position: [res.longitude, res.latitude]
-        });
-        map.current.setCenter([res.longitude, res.latitude]);
-      }
-      // 这个时候异步去进行地址转换
-
-      res.pointPassList =
-        res.pointPassList?.length >= 1 &&
-        (await Promise.all(
-          res.pointPassList?.map(async (item: any) => {
-            item.startAddress = (await IMAP.covertPointToAddress([item.startLon, item.startLat])) as any;
-            item.endAddress = (await IMAP.covertPointToAddress([item.endLon, item.endLat])) as any;
-            return item;
-          })
-        ));
-
-      res.residentList = await Promise.all(
-        res.residentList?.map(async (item: any) => {
-          item.address = (await IMAP.covertPointToAddress([item.longitude, item.latitude])) as any;
-          return item;
-        })
-      );
-
-      res.alarmTypeList = await Promise.all(
-        res.alarmTypeList?.map(async (item: any) => {
-          item.alarmList = await Promise.all(
-            item.alarmList.map(async (itemChild: any) => {
-              itemChild.address = (await IMAP.covertPointToAddress([itemChild.longitude, itemChild.latitude])) as any;
-              return itemChild;
-            })
-          );
-
-          return item;
-        })
-      );
-
-      setStateWrap({
-        actionData: res
-      });
-    }, () => {
-      setStateWrap({
-        loading: false
-      });
-    });
+    );
   }
 
   function handleCancel() {

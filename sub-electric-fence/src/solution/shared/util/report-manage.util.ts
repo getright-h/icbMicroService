@@ -30,18 +30,21 @@ export const REPORT_UTIL = {
       for (const item of dataList) {
         const { latitude, longitude } = item;
         if (latitude && longitude) {
-          fetchArrary.push(IMAP.covertPointToAddress(IMAP.initLonlat(longitude, latitude)));
+          item.address = await IMAP.covertPointToAddress(IMAP.initLonlat(longitude, latitude));
+          // fetchArrary.push(IMAP.covertPointToAddress(IMAP.initLonlat(longitude, latitude)));
         }
       }
     }
-    try {
-      const res = await Promise.all(fetchArrary);
-      for (let i = 0; i < res.length; i++) {
-        dataList[i].address = res[i];
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   const res = await Promise.all(fetchArrary);
+    //   for (let i = 0; i < res.length; i++) {
+    //     dataList[i].address = res[i];
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
+    // console.log(dataList, 'dataList');
+
     return dataList;
   }
 };
