@@ -92,17 +92,16 @@ export function useMoveTemplateStore(props: IMoveTemplateProps) {
 
   function onChangeTemplate(checkedKeys: string[], node: any) {
     const { allTemplate } = state;
-    let checked: any[] = [];
+    const checked: any[] = [];
 
     checkedKeys.forEach((key: string) => {
-      checked = allTemplate.map(({ id, groupRelationTemplateId }) => {
+      allTemplate.forEach(({ id, groupRelationTemplateId }) => {
         if (id == key) {
-          return {
+          checked.push({
             groupRelationTemplateId,
             id
-          };
+          });
         }
-        return null;
       });
     });
     templateData.current = checked.filter(item => !!item);
