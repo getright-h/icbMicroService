@@ -25,7 +25,7 @@ export function useMoveTemplateStore(props: IMoveTemplateProps) {
 
   function onChangeIsCopy(e: CheckboxChangeEvent) {
     setStateWrap({
-      isCopy: e.target.value
+      isCopy: e.target.checked
     });
   }
 
