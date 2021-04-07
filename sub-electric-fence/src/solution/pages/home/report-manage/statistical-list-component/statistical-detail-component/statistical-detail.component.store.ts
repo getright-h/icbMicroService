@@ -1,17 +1,16 @@
-import { IDirectiveListState, ModalType } from './statistical-detail.interface';
+import { IDirectiveListState } from './statistical-detail.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form } from 'antd';
 import { OrderReportService } from '~/solution/model/services/report-order.service';
 import { useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { IMAP } from '~shared/util/map.util';
 
 export function useDirectiveListStore() {
-  const { state, setStateWrap, getState } = useStateStore(new IDirectiveListState());
+  const { state, setStateWrap } = useStateStore(new IDirectiveListState());
   const orderReportService: OrderReportService = new OrderReportService();
   const [searchForm] = Form.useForm();
   const { deviceCode, alarmType }: any = useParams();
-  const history = useHistory();
 
   useEffect(() => {
     initSearchForm();
@@ -44,12 +43,6 @@ export function useDirectiveListStore() {
             }
             setStateWrap({ tableData, total: res?.pagedList?.total, detail: res, isLoading: false });
           });
-          // setStateWrap({
-          //   tableData,
-          //   total: res?.pagedList?.total,
-          //   detail: res
-          // });
-          // setStateWrap({ isLoading: false });
         },
         err => {
           setStateWrap({ isLoading: false });
@@ -57,47 +50,20 @@ export function useDirectiveListStore() {
       );
   }
 
-  // function searchClick() {
-  //   setStateWrap({ pageIndex: 1 });
-  //   getTableData();
-  // }
-
   function initSearchForm() {
     searchForm.resetFields();
     getTableData(1);
   }
-
-  // function callbackAction<T>(actionType: number, data?: T) {
-  //   setStateWrap({ currentId: data ? data.id : '' });
-  //   switch (actionType) {
-  //     case ModalType.CREATE:
-  //       history;
-  //       break;
-  //     case ModalType.EDIT:
-  //       setStateWrap({});
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // }
 
   function changeTablePageIndex(pageIndex: number, pageSize: number) {
     setStateWrap({ pageIndex, pageSize });
     getTableData(pageIndex);
   }
 
-  // function handleModalCancel(isSuccess = false) {
-  //   setStateWrap({});
-  //   isSuccess && searchClick();
-  // }
-
   return {
     state,
     searchForm,
     initSearchForm,
-    // callbackAction,
     changeTablePageIndex
-    // searchClick,
-    // handleModalCancel
   };
 }
