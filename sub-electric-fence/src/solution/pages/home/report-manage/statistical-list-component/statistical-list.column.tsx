@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { ModalType } from './statistical-list.interface';
+import { Tooltip } from 'antd';
 export function AlarmParameterColumn(callbackAction: Function) {
   const render = (text: any) => (text ? text : '-');
 
@@ -35,6 +36,23 @@ export function AlarmParameterColumn(callbackAction: Function) {
       render
     },
     {
+      title: '报警说明',
+      dataIndex: 'explain',
+      render: (text: string) => {
+        const des = text.split('|');
+        const _text_ = text.length > 8 ? text.slice(0, 8) + '....' : text;
+        return (
+          <Tooltip
+            title={des.map((_: string, index: number) => (
+              <p key={index}>{_}</p>
+            ))}
+          >
+            {_text_}
+          </Tooltip>
+        );
+      }
+    },
+    {
       title: '最后报警地址',
       dataIndex: 'address',
       render
@@ -42,12 +60,14 @@ export function AlarmParameterColumn(callbackAction: Function) {
     {
       title: '所属机构',
       dataIndex: 'organizationName',
-      render
+
+      render: (text: string) => <Tooltip title={text}>{text.slice(0, 5) + '...'}</Tooltip>
     },
     {
       title: '操作',
-      fixed: 'right' as 'right',
+      fixed: 'right',
       dataIndex: 'action',
+      width: 80,
       render: (render: any, data: any, index: number) => {
         return (
           <React.Fragment>

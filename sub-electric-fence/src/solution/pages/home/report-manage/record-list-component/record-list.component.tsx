@@ -105,6 +105,7 @@ export default function DirectiveListComponent() {
         data={tableData}
         total={total}
         isPagination={true}
+        // scroll={{ x: '110%' }}
         changeTablePageIndex={(pageIndex: number, pageSize: number) => changeTablePageIndex(pageIndex, pageSize)}
       ></ITableComponent>
     );

@@ -26,15 +26,21 @@ export const REPORT_UTIL = {
 
   async formatAddress(dataList: any[]) {
     const fetchArrary: any[] = [];
-    if (Array.isArray(dataList)) {
-      for (const item of dataList) {
-        const { latitude, longitude } = item;
-        if (latitude && longitude) {
-          item.address = await IMAP.covertPointToAddress(IMAP.initLonlat(longitude, latitude));
-          // fetchArrary.push(IMAP.covertPointToAddress(IMAP.initLonlat(longitude, latitude)));
+
+    return new Promise(async (reslove: any, reject: any) => {
+      if (Array.isArray(dataList)) {
+        for (const item of dataList) {
+          const { latitude, longitude } = item;
+          if (latitude && longitude) {
+            await IMAP.covertPointToAddress(IMAP.initLonlat(longitude, latitude)).then((res: any) => {
+              item.address = res;
+            });
+          }
         }
+        reslove(dataList);
       }
-    }
+    });
+
     // try {
     //   const res = await Promise.all(fetchArrary);
     //   for (let i = 0; i < res.length; i++) {
