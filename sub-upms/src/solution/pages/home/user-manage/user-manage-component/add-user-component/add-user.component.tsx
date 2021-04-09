@@ -87,7 +87,13 @@ export default function AddUserComponent(props: IAddUserProps) {
               { required: true },
               {
                 pattern: /(?!^[0-9]+$)(?!^[A-z]+$)(?!^[^A-z0-9]+$)^.{6,20}$/,
-                message: '密码需为6到20位字符，必须包含字母和数字',
+                message: (
+                  <>
+                    <span>密码需为6到20位字符,</span>
+                    <br />
+                    <span>必须包含字母和数字</span>
+                  </>
+                ),
                 validateTrigger: 'onChange'
               }
             ]}
