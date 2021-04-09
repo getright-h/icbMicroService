@@ -37,7 +37,7 @@ export default function AddTemplateTypeComponent(props: IAddTemplateTypeProps) {
           <div className={style.chooseOrganization}>{RenderTree()}</div>
         </div>
         <div>
-          <span>已选: </span>
+          <span className={style.haveChooseTitle}>已选: </span>
           <div className={style.haveChooseOrganization}>
             <div className={style.searchApproval}>
               <Select
