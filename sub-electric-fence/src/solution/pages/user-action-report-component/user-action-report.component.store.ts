@@ -130,7 +130,7 @@ export function useUserActionReportStore() {
           setStateWrap({
             loading: false
           });
-          ShowNotification.error('该车辆不存在');
+          // ShowNotification.error('该车辆不存在');
           return;
         }
         setStateWrap({
