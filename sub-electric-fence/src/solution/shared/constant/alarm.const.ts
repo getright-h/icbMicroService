@@ -72,7 +72,7 @@ export const AlarmType_FOR_REPORT = [
   { value: AlarmTypeEnum_FOR_REPORT.LongStay, name: '长停报警' },
   { value: AlarmTypeEnum_FOR_REPORT.Segregate, name: '人车分离报警' },
   { value: AlarmTypeEnum_FOR_REPORT.RiskArea, name: '高危区域报警' },
-  { value: AlarmTypeEnum_FOR_REPORT.Calibration, name: '位置聚集地报警' },
+  { value: AlarmTypeEnum_FOR_REPORT.Focus, name: '位置聚集地报警' },
   { value: AlarmTypeEnum_FOR_REPORT.Online, name: '上线报警' },
   { value: AlarmTypeEnum_FOR_REPORT.BatteryLevel, name: '电瓶低电压报警' },
   { value: AlarmTypeEnum_FOR_REPORT.Fence, name: '电子围栏' }
