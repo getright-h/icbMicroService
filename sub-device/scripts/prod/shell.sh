@@ -24,6 +24,6 @@ ls
 # sudo docker rmi docker.local61:5000/web/"$imageName":"$version"
 echo "--> docker build"
 sudo docker build -t web/"$imageName":"$version" .
-sudo docker tag web/"$imageName":"$version" docker.local61:5000/web/"$imageName":"$version"
-sudo docker push docker.local61:5000/web/"$imageName":"$version"
+sudo docker tag web/"$imageName":"$version" registry.docker.icb:5000/web/"$imageName":"$version"
+sudo docker push registry.docker.icb:5000/web/"$imageName":"$version"
 sudo docker rmi web/"$imageName":"$version"
