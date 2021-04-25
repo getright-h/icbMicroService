@@ -8,6 +8,6 @@ export interface IRoute {
   component: RouteComponent | RouteComponentPromise | any;
   path: string;
   exact?: boolean;
-  strategy?: any;
+  ignoreStrategy?: boolean;
   lazyload?:boolean;
 }

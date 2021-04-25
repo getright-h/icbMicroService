@@ -54,7 +54,6 @@ function HomeModule() {
 
   return (
     <Spin spinning={state.loading} wrapperClassName="custom-layout-spin">
-      {/* <Layout> */}
       <div className={style.homeMain}>
         <IHomeHeaderComponent />
         <div className={style.bodyContainer}>
@@ -68,7 +67,6 @@ function HomeModule() {
           </div>
         </div>
       </div>
-      {/* </Layout> */}
     </Spin>
   );
 }

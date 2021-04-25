@@ -9,6 +9,7 @@ export const appRoutes: IRoute[] = [
   },
   {
     path: '/',
+    ignoreStrategy: true,
     component: LoginModule
   }
 ];
