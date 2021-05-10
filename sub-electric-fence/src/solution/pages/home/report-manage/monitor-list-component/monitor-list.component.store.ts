@@ -83,6 +83,19 @@ export function useDirectiveListStore() {
     isSuccess && searchClick();
   }
 
+  function exportClick() {
+    const { pageIndex, pageSize } = getState();
+    orderReportService
+      .exportMonitorAlarmGroupList({
+        ...searchForm.getFieldsValue(),
+        index: pageIndex,
+        size: pageSize
+      })
+      .subscribe(res => {
+        console.log('monitor_group_export===>', res);
+      });
+  }
+
   return {
     state,
     searchForm,
@@ -91,6 +104,7 @@ export function useDirectiveListStore() {
     changeTablePageIndex,
     searchClick,
     handleModalCancel,
-    getCurrentSelectInfo
+    getCurrentSelectInfo,
+    exportClick
   };
 }

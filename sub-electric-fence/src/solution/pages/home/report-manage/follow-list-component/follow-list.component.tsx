@@ -21,7 +21,8 @@ export default function DirectiveListComponent() {
     searchClick,
     initSearchForm,
     handleModalCancel,
-    getCurrentSelectInfo
+    getCurrentSelectInfo,
+    exportClick
   } = useDirectiveListStore();
   const {
     isLoading,
@@ -178,6 +179,9 @@ export default function DirectiveListComponent() {
           查询
         </Button>
         <Button onClick={initSearchForm}>清空</Button>
+        <Button type="primary" onClick={exportClick}>
+          导出
+        </Button>
       </div>
     );
   }

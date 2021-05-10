@@ -100,6 +100,22 @@ export function useDirectiveListStore() {
       searchForm.setFieldsValue({ organizationId: organizationId });
     }
   }
+
+  function exportClick() {
+    const { pageIndex, pageSize, timeInfo } = getState();
+    orderReportService
+      .exportMonitorAlarmStatisticsList({
+        ...searchForm.getFieldsValue(),
+        beginTime: timeInfo[0] ? moment(timeInfo[0]).valueOf() : 0,
+        endTime: timeInfo[1] ? moment(timeInfo[1]).valueOf() : 0,
+        index: pageIndex,
+        size: pageSize
+      })
+      .subscribe(res => {
+        console.log('monitor_group_export===>', res);
+      });
+  }
+
   return {
     state,
     searchForm,
@@ -108,6 +124,7 @@ export function useDirectiveListStore() {
     changeTablePageIndex,
     searchClick,
     handleModalCancel,
-    getCurrentSelectInfo
+    getCurrentSelectInfo,
+    exportClick
   };
 }

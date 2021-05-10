@@ -24,6 +24,12 @@ const QUERY_ALARM_ORIGINAL_PAGEDLIST = 'alarmCenter/manage/queryAlarmOriginalPag
 const QUERY_REPORT_MONITOR_ROLE_PAGEDLIST = 'alarmCenter/manage/queryReportMonitorRolePagedList';
 const QUERY_REPORT_TRAFFIC = 'alarmCenter/manage/queryReportTraffic';
 const QUERY_MONITOR_ALARM_GROUP_PAGEDLIST = 'alarmCenter/manage/queryMonitorAlarmGroupPagedList';
+const EXPORT_MONITOR_ALARM_GROUP_LIST = 'dataProcess/monitorAlarmInfoGroupExport';
+const EXPORT_MONITOR_ALARM_FOLLOW_LIST = 'dataProcess/monitorAlarmFollowExport';
+const EXPORT_MONITOR_ALARM_RECORD_LIST = 'dataProcess/monitorAlarmRecordExport';
+const EXPORT_MONITOR_ALARM_STATISTICS_LIST = 'dataProcess/monitorAlarmStatisticsExport';
+const EXPORT_RESIDENT_STATISTICS_LIST = 'dataProcess/residentStatisticsExport';
+
 @DepUtil.Injectable()
 export class OrderReportService implements OrderReportManage {
   @DepUtil.Inject(RequestService)
@@ -175,5 +181,25 @@ export class OrderReportService implements OrderReportManage {
         return { ...data, dataList };
       })
     );
+  }
+
+  exportMonitorAlarmGroupList(params: ReportMonitorAlarmGroupInput): Observable<boolean> {
+    return this.requestService.post(EXPORT_MONITOR_ALARM_GROUP_LIST, params);
+  }
+
+  exportMonitorAlarmFollowList(params: ReportAlarmStatisticsInput): Observable<boolean> {
+    return this.requestService.post(EXPORT_MONITOR_ALARM_FOLLOW_LIST, params);
+  }
+
+  exportMonitorAlarmRecordList(params: ReportAlarmStatisticsInput): Observable<boolean> {
+    return this.requestService.post(EXPORT_MONITOR_ALARM_RECORD_LIST, params);
+  }
+
+  exportMonitorAlarmStatisticsList(params: ReportAlarmStatisticsInput): Observable<boolean> {
+    return this.requestService.post(EXPORT_MONITOR_ALARM_STATISTICS_LIST, params);
+  }
+
+  exportResidentStatisticsList(params: ReportAlarmStatisticsInput): Observable<boolean> {
+    return this.requestService.post(EXPORT_RESIDENT_STATISTICS_LIST, params);
   }
 }

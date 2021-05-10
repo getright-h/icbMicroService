@@ -132,6 +132,24 @@ export function useDirectiveListStore() {
     }
     getTableData();
   }
+
+  function exportClick() {
+    const { pageIndex, pageSize, timeInfo } = getState();
+    orderReportService
+      .exportResidentStatisticsList({
+        ...searchForm.getFieldsValue(),
+        beginTime: timeInfo[0] ? moment(timeInfo[0]).valueOf() : 0,
+        endTime: timeInfo[1] ? moment(timeInfo[1]).valueOf() : 0,
+        index: page_index.current,
+        size: pageSize,
+        sort: sort.current,
+        orderBy: 1
+      })
+      .subscribe(res => {
+        console.log('monitor_group_export===>', res);
+      });
+  }
+
   return {
     state,
     searchForm,
@@ -140,6 +158,7 @@ export function useDirectiveListStore() {
     changeTablePageIndex,
     searchClick,
     getCurrentSelectInfo,
-    handleTableOnchange
+    handleTableOnchange,
+    exportClick
   };
 }

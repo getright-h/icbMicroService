@@ -2,15 +2,23 @@ import { StorageUtil } from '~/framework/util/storage';
 import { createHashHistory } from 'history';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { IHomeHeader } from './i-home-header.interface';
-import { FocusEvent } from 'react';
+import { FocusEvent, useEffect } from 'react';
 import { HomeService } from '~/solution/model/services/home.service';
 import { useService } from '../../../../framework/aop/hooks/use-base-store';
 import { Form, message } from 'antd';
+import { EventBus } from '~/framework/util/common';
+
+interface MyWindow {
+  eventBus?: EventBus;
+}
 
 export function useHomeHeaderStore() {
   const { state, setStateWrap } = useStateStore(new IHomeHeader());
   const [form] = Form.useForm();
   const homeService = useService(HomeService);
+  const eventBus = new EventBus('global');
+  (window as MyWindow & typeof globalThis).eventBus = eventBus;
+  eventBus.subscribe(showTaskCenterChange, 'showTaskCenterChange');
 
   function logout() {
     // 清除cookie 返回登录界面
@@ -52,5 +60,9 @@ export function useHomeHeaderStore() {
       });
   }
 
-  return { state, form, logout, changePwd, handleCancel, handleOk, handleConfirmBlur };
+  function showTaskCenterChange(visible: boolean) {
+    setStateWrap({ showTaskCenter: visible });
+  }
+
+  return { state, form, logout, changePwd, handleCancel, handleOk, handleConfirmBlur, showTaskCenterChange };
 }

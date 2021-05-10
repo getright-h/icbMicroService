@@ -19,7 +19,8 @@ export default function DirectiveListComponent() {
     searchClick,
     initSearchForm,
     getCurrentSelectInfo,
-    handleTableOnchange
+    handleTableOnchange,
+    exportClick
   } = useDirectiveListStore();
   const { isLoading, tableData, total, pageIndex, pageSize, sortInfo } = state;
   const { gState } = React.useContext(GlobalContext);
@@ -81,6 +82,9 @@ export default function DirectiveListComponent() {
           查询
         </Button>
         <Button onClick={initSearchForm}>清空</Button>
+        <Button type="primary" onClick={exportClick}>
+          导出
+        </Button>
       </div>
     );
   }
