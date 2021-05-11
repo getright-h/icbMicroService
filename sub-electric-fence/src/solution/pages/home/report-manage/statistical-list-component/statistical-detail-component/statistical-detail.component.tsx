@@ -44,9 +44,7 @@ export default function DirectiveListComponent() {
               data={state.tableData}
               total={state.total}
               isPagination={true}
-              changeTablePageIndex={(pageIndex: number, pageSize: number) =>
-                changeTablePageIndex(pageIndex, pageSize)
-              }
+              changeTablePageIndex={(pageIndex: number, pageSize: number) => changeTablePageIndex(pageIndex, pageSize)}
             ></ITableComponent>
           </Descriptions.Item>
         </Descriptions>
