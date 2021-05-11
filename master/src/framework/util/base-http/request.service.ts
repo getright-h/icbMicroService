@@ -37,6 +37,8 @@ class RequestService {
       returnInfo = process.env.VERIFICATIONCODE;
     } else if (!!~url.indexOf('VerifyCode')) {
       returnInfo = process.env.VERIFICATIONCODE;
+    } else if (!!~url.indexOf('dataProcess/')) {
+      returnInfo = process.env.REPORT_EXPORT;
     } else {
       returnInfo = process.env.USERINFO;
     }

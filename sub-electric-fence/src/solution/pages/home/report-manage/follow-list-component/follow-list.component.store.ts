@@ -4,6 +4,7 @@ import { Form } from 'antd';
 import { OrderReportService } from '~/solution/model/services/report-order.service';
 import { useEffect } from 'react';
 import moment from 'moment';
+import { setState } from '~/framework/microAPP/appStore';
 
 export function useDirectiveListStore() {
   const { state, setStateWrap, getState } = useStateStore(new IDirectiveListState());
@@ -103,6 +104,36 @@ export function useDirectiveListStore() {
       searchForm.resetFields(['groupId']);
     }
   }
+
+  function handleExport(value: string) {
+    const { pageIndex, pageSize, timeInfo } = getState();
+    let searchData: any = {};
+    searchData = searchForm.getFieldsValue();
+    searchData.isSettle = typeof searchData.isSettle === 'number' ? !!searchData.isSettle : undefined;
+    orderReportService
+      .exportMonitorAlarmFollowList({
+        ...searchData,
+        beginTime: timeInfo[0] ? moment(timeInfo[0]).valueOf() : 0,
+        endTime: timeInfo[1] ? moment(timeInfo[1]).valueOf() : 0,
+        index: pageIndex,
+        size: pageSize,
+        name: value
+      })
+      .subscribe(
+        res => {
+          setState({ showTaskCenter: true });
+          handleExportVisible(false);
+        },
+        err => {
+          handleExportVisible(false);
+        }
+      );
+  }
+
+  function handleExportVisible(visible: boolean) {
+    setStateWrap({ exportVisible: visible });
+  }
+
   return {
     state,
     searchForm,
@@ -111,6 +142,8 @@ export function useDirectiveListStore() {
     changeTablePageIndex,
     searchClick,
     handleModalCancel,
-    getCurrentSelectInfo
+    getCurrentSelectInfo,
+    handleExport,
+    handleExportVisible
   };
 }

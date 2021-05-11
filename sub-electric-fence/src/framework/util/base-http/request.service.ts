@@ -46,6 +46,8 @@ class RequestService {
       returnInfo = process.env.ALARM_CENTER;
     } else if (!!~url.indexOf('vehicle/manage/') || !!~url.indexOf('dispatch/manage/')) {
       returnInfo = process.env.VEHICLE;
+    } else if (!!~url.indexOf('dataProcess/')) {
+      returnInfo = process.env.REPORT_EXPORT;
     } else {
       returnInfo = process.env.MAIN;
     }

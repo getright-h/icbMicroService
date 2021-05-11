@@ -4,6 +4,7 @@ import { Form } from 'antd';
 import { OrderReportService } from '~/solution/model/services/report-order.service';
 import { useEffect, useRef } from 'react';
 import moment from 'moment';
+import { setState } from '~/framework/microAPP/appStore';
 
 export function useDirectiveListStore() {
   const { state, setStateWrap, getState } = useStateStore(new IDirectiveListState());
@@ -132,6 +133,35 @@ export function useDirectiveListStore() {
     }
     getTableData();
   }
+
+  function handleExport(value: string) {
+    const { timeInfo, pageSize } = getState();
+    orderReportService
+      .exportResidentStatisticsList({
+        ...searchForm.getFieldsValue(),
+        beginTime: timeInfo[0] ? moment(timeInfo[0]).valueOf() : 0,
+        endTime: timeInfo[1] ? moment(timeInfo[1]).valueOf() : 0,
+        index: page_index.current,
+        size: pageSize,
+        sort: sort.current,
+        orderBy: 1,
+        name: value
+      })
+      .subscribe(
+        res => {
+          setState({ showTaskCenter: true });
+          handleExportVisible(false);
+        },
+        err => {
+          handleExportVisible(false);
+        }
+      );
+  }
+
+  function handleExportVisible(visible: boolean) {
+    setStateWrap({ exportVisible: visible });
+  }
+
   return {
     state,
     searchForm,
@@ -140,6 +170,8 @@ export function useDirectiveListStore() {
     changeTablePageIndex,
     searchClick,
     getCurrentSelectInfo,
-    handleTableOnchange
+    handleTableOnchange,
+    handleExport,
+    handleExportVisible
   };
 }

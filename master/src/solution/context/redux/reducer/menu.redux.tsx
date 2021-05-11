@@ -3,7 +3,8 @@ import { MenuState } from './reducer.interface';
 import { IMenu } from '~/solution/components/base/menu-component/menu.interface';
 
 export const initialState: MenuState | any = {
-  menuList: 1
+  menuList: 1,
+  showTaskCenter: false
 };
 
 const menuReducer = (state = {}, action: { type: string; payload: any }) => {

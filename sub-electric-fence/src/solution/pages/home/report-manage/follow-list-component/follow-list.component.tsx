@@ -4,7 +4,8 @@ import {
   ITableComponent,
   TablePageTelComponent,
   TimePickerComponent,
-  ISelectLoadingComponent
+  ISelectLoadingComponent,
+  InputExportFilenameComponent
 } from '~/solution/components/component.module';
 import { AlarmParameterColumn } from './follow-list.column';
 import { useDirectiveListStore } from './follow-list.component.store';
@@ -21,7 +22,9 @@ export default function DirectiveListComponent() {
     searchClick,
     initSearchForm,
     handleModalCancel,
-    getCurrentSelectInfo
+    getCurrentSelectInfo,
+    handleExport,
+    handleExportVisible
   } = useDirectiveListStore();
   const {
     isLoading,
@@ -178,6 +181,9 @@ export default function DirectiveListComponent() {
           查询
         </Button>
         <Button onClick={initSearchForm}>清空</Button>
+        <Button type="primary" onClick={() => handleExportVisible(true)}>
+          导出
+        </Button>
       </div>
     );
   }
@@ -207,6 +213,11 @@ export default function DirectiveListComponent() {
       ></TablePageTelComponent>
       <SloveModalComponent visible={state.sloveModalVisible} close={handleModalCancel} />
       {recordModalVisible && !sloveModalVisible && showRecordModal()}
+      <InputExportFilenameComponent
+        visible={state.exportVisible}
+        getValues={v => handleExport(v.name)}
+        close={() => handleExportVisible(false)}
+      />
     </React.Fragment>
   );
 }

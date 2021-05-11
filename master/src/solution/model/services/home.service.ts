@@ -1,4 +1,4 @@
-import { HomeDTO, MenuAndAuthResult, MenuRequestParam } from '../dto/home.dto';
+import { HomeDTO, MenuAndAuthResult, MenuRequestParam, DownloadTaskParam, DownloadTaskResult } from '../dto/home.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable, Subscriber } from 'rxjs';
 import { DepUtil } from '~/framework/aop/inject';
@@ -11,6 +11,7 @@ import { MyInfo } from '~/solution/model/dto/home.dto';
  */
 const GET_MY_INFO = 'prvilege/GetMyInfo';
 const GET_MENU = 'prvilege/common/menuTreeLogin';
+const GET_DOWNLOAD_TASK = 'dataProcess/userDownloadTaskPagedList';
 
 @DepUtil.Injectable()
 export class HomeService extends HomeDTO {
@@ -39,5 +40,10 @@ export class HomeService extends HomeDTO {
   // 获取菜单
   getMenuList(params: MenuRequestParam): Observable<MenuAndAuthResult> {
     return this.requestService.post(GET_MENU, params);
+  }
+
+  // 获取下载任务
+  getDownloadTask(params: DownloadTaskParam): Observable<DownloadTaskResult> {
+    return this.requestService.post(GET_DOWNLOAD_TASK, params);
   }
 }
