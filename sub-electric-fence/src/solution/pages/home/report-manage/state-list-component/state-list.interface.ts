@@ -1,8 +1,8 @@
 /**
  * @export state变量定义和初始化
- * @class IAlarmParameterState
+ * @class IStateListState
  */
-export class IDirectiveListState {
+export class IStateListState {
   isLoading = false;
   pageIndex = 1;
   pageSize = 10;

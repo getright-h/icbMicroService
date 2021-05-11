@@ -1,11 +1,11 @@
-import { IDirectiveListState, ModalType } from './offline-list.interface';
+import { IOfflineListState, ModalType } from './offline-list.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form } from 'antd';
 import { AlarmManageService } from '~/solution/model/services/alarm-manage.service';
 import { useEffect } from 'react';
 
 export function useDirectiveListStore() {
-  const { state, setStateWrap, getState } = useStateStore(new IDirectiveListState());
+  const { state, setStateWrap, getState } = useStateStore(new IOfflineListState());
   const alarmManageService: AlarmManageService = new AlarmManageService();
   const [searchForm] = Form.useForm();
 
@@ -42,6 +42,13 @@ export function useDirectiveListStore() {
     searchClick();
   }
 
+  function getCurrentSelectInfo(data: any, type: string) {
+    if (type == 'organizationId') {
+      const { organizationId } = data;
+      searchForm.setFieldsValue({ organizationId: organizationId });
+    }
+  }
+
   function callbackAction<T>(actionType: number, data?: T) {
     setStateWrap({ currentId: data ? data.id : '' });
     switch (actionType) {
@@ -73,6 +80,7 @@ export function useDirectiveListStore() {
     callbackAction,
     changeTablePageIndex,
     searchClick,
-    handleModalCancel
+    handleModalCancel,
+    getCurrentSelectInfo
   };
 }

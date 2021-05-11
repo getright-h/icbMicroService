@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Divider } from 'antd';
 import { ModalType } from './odometer-list.interface';
-export function AlarmParameterColumn(callbackAction: Function) {
+export function OdometerListColumn(callbackAction: Function) {
   return [
     {
       title: '车主姓名',

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Divider } from 'antd';
 import { ModalType } from './state-list.interface';
-export function AlarmParameterColumn(callbackAction: Function) {
+export function StateListColumn(callbackAction: Function) {
   return [
     {
       title: '车主姓名',
