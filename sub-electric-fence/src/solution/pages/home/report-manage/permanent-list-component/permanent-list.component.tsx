@@ -4,7 +4,8 @@ import {
   ITableComponent,
   TablePageTelComponent,
   TimePickerComponent,
-  ISelectLoadingComponent
+  ISelectLoadingComponent,
+  InputExportFilenameComponent
 } from '~/solution/components/component.module';
 import { AlarmParameterColumn } from './permanent-list.column';
 import { useDirectiveListStore } from './permanent-list.component.store';
@@ -20,7 +21,8 @@ export default function DirectiveListComponent() {
     initSearchForm,
     getCurrentSelectInfo,
     handleTableOnchange,
-    exportClick
+    handleExport,
+    handleExportVisible
   } = useDirectiveListStore();
   const { isLoading, tableData, total, pageIndex, pageSize, sortInfo } = state;
   const { gState } = React.useContext(GlobalContext);
@@ -82,7 +84,7 @@ export default function DirectiveListComponent() {
           查询
         </Button>
         <Button onClick={initSearchForm}>清空</Button>
-        <Button type="primary" onClick={exportClick}>
+        <Button type="primary" onClick={() => handleExportVisible(true)}>
           导出
         </Button>
       </div>
@@ -114,6 +116,11 @@ export default function DirectiveListComponent() {
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
       ></TablePageTelComponent>
+      <InputExportFilenameComponent
+        visible={state.exportVisible}
+        getValues={v => handleExport(v.name)}
+        close={() => handleExportVisible(false)}
+      />
     </React.Fragment>
   );
 }

@@ -4,6 +4,7 @@ import { Form } from 'antd';
 import { OrderReportService } from '~/solution/model/services/report-order.service';
 import { useEffect } from 'react';
 import { IMAP } from '~shared/util/map.util';
+import { setState } from '~/framework/microAPP/appStore';
 
 export function useDirectiveListStore() {
   const { state, setStateWrap, getState } = useStateStore(new IDirectiveListState());
@@ -83,17 +84,28 @@ export function useDirectiveListStore() {
     isSuccess && searchClick();
   }
 
-  function exportClick() {
+  function handleExport(value: string) {
     const { pageIndex, pageSize } = getState();
     orderReportService
       .exportMonitorAlarmGroupList({
         ...searchForm.getFieldsValue(),
         index: pageIndex,
-        size: pageSize
+        size: pageSize,
+        name: value
       })
-      .subscribe(res => {
-        console.log('monitor_group_export===>', res);
-      });
+      .subscribe(
+        res => {
+          setState({ showTaskCenter: true });
+          handleExportVisible(false);
+        },
+        err => {
+          handleExportVisible(false);
+        }
+      );
+  }
+
+  function handleExportVisible(visible: boolean) {
+    setStateWrap({ exportVisible: visible });
   }
 
   return {
@@ -105,6 +117,7 @@ export function useDirectiveListStore() {
     searchClick,
     handleModalCancel,
     getCurrentSelectInfo,
-    exportClick
+    handleExport,
+    handleExportVisible
   };
 }

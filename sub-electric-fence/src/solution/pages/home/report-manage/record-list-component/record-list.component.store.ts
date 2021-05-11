@@ -5,6 +5,7 @@ import { OrderReportService } from '~/solution/model/services/report-order.servi
 import { useEffect } from 'react';
 import { IMAP } from '~shared/util/map.util';
 import moment from 'moment';
+import { setState } from '~/framework/microAPP/appStore';
 
 export function useDwellListStore() {
   const { state, setStateWrap, getState } = useStateStore(new IDwellListState());
@@ -90,19 +91,30 @@ export function useDwellListStore() {
     isSuccess && searchClick();
   }
 
-  function exportClick() {
+  function handleExport(value: string) {
     const { pageIndex, pageSize, timeInfo } = getState();
     orderReportService
-      .exportMonitorAlarmFollowList({
+      .exportMonitorAlarmRecordList({
         ...searchForm.getFieldsValue(),
         beginTime: timeInfo[0] ? moment(timeInfo[0]).valueOf() : 0,
         endTime: timeInfo[1] ? moment(timeInfo[1]).valueOf() : 0,
         index: pageIndex,
-        size: pageSize
+        size: pageSize,
+        name: value
       })
-      .subscribe(res => {
-        console.log('monitor_group_export===>', res);
-      });
+      .subscribe(
+        res => {
+          setState({ showTaskCenter: true });
+          handleExportVisible(false);
+        },
+        err => {
+          handleExportVisible(false);
+        }
+      );
+  }
+
+  function handleExportVisible(visible: boolean) {
+    setStateWrap({ exportVisible: visible });
   }
 
   return {
@@ -114,6 +126,7 @@ export function useDwellListStore() {
     searchClick,
     handleModalCancel,
     getCurrentSelectInfo,
-    exportClick
+    handleExport,
+    handleExportVisible
   };
 }

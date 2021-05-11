@@ -78,7 +78,7 @@ export default function TaskCenterComponent(props: ITaskCenterProps) {
                   <div className={style.taskContent}>
                     <div className={style.taskTitle}>{task.businessName}</div>
                     <div className={style.taskAction}>
-                      <span>{task.name + task.suffixName}</span>
+                      <span>{task.name}</span>
                       <Button type="link" onClick={() => downloadFile(task)}>
                         下载
                       </Button>

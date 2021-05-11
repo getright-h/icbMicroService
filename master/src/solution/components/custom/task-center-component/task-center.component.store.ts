@@ -21,7 +21,7 @@ export function useTaskCenterStore(props: ITaskCenterProps) {
         let hasMore = false;
         if (res.list.dataList.length) {
           taskList = taskList.concat(res.list.dataList);
-          hasMore = res.list.total > indexRef * 10;
+          hasMore = res.list.total > taskList.length;
         } else {
           indexRef--;
           hasMore = false;
