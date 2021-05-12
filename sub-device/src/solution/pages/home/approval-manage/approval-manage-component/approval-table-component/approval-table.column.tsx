@@ -30,6 +30,10 @@ export function approvalTableColumns(action: Function, $auth: Record<string, boo
       dataIndex: 'organizationName'
     },
     {
+      title: '调拨单名称',
+      dataIndex: 'allotName'
+    },
+    {
       title: '操作',
       dataIndex: 'action',
       fixed: 'right',
