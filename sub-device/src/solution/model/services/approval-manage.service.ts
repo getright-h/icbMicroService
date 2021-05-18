@@ -94,7 +94,7 @@ export class ApprovalManageService extends ApprovalManageDTO {
   }
 
   // 删除模板
-  deleteApprovalFormTemplate(params: { id: string }) {
+  deleteApprovalFormTemplate(params: { id: string; groupId: string }) {
     return this.requestService.delete(APPROVAL_FORM_TEMPLATE, params);
   }
 

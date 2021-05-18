@@ -31,6 +31,10 @@ export function approvalDealWithColumns(action: Function): ColumnsType<any> {
       dataIndex: 'organizationName'
     },
     {
+      title: '调拨单名称',
+      dataIndex: 'allotName'
+    },
+    {
       title: '上级备注',
       dataIndex: 'approverRemark'
     },
