@@ -1,9 +1,9 @@
 import { StorageUtil } from '~/framework/util/storage';
 import { Strategy } from './base.strategy';
-import { MenuListService } from './MenuListService';
+// import { MenuListService } from './MenuListService';
 
 export class AuthStrategy extends Strategy {
-  menuListService = new MenuListService();
+  // menuListService = new MenuListService();
   constructor() {
     super();
   }
