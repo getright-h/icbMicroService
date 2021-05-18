@@ -74,7 +74,10 @@ export function useHomeStore() {
       arr.map((node: any) => {
         if (!isValidPath) {
           if (!node.children.length) {
-            if (urlPath == node.path) {
+            // TODO:
+            if (urlPath.includes(node.path)) {
+              isValidPath = true;
+            } else {
               isValidPath = true;
             }
           } else {
