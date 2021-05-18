@@ -4,9 +4,9 @@ import { useEffect } from 'react';
 import registerMainApp from '~/framework/microAPP/appRegister';
 import { useHistory, useLocation } from 'react-router-dom';
 import { ShowNotification } from '~/framework/util/common';
-// import { MenuListService } from '~/framework/aop/strategy/MenuListService';
+import { MenuListService } from '~/framework/aop/strategy/menuListService';
 export function useHomeStore() {
-  //const menuListService = useService(MenuListService);
+  const menuListService = useService(MenuListService);
   const { state, setStateWrap } = useStateStore(new IHomeProps());
   const history = useHistory();
   const { pathname } = useLocation();

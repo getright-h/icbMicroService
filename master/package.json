@@ -12,7 +12,7 @@
   "scripts": {
     "fch:start": "rimraf dist && fch start ",
     "fch:build": "rimraf dist && fch build -s",
-    "fch:build-dev": "rimraf dist && fch build -d  -s"
+    "fch:build-dev": "rimraf dist && fch build -d -s"
   },
   "dependencies": {
     "@ant-design/icons": "^4.3.0",
