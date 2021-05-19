@@ -93,6 +93,10 @@ export const PAGES_MENU = {
           title: '常驻点统计'
         }
       ]
+    },
+    {
+      path: 'home/dataScreen',
+      title: '可视化'
     }
   ]
 };

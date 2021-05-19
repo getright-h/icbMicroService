@@ -26,5 +26,11 @@ export const homeRoutes: IRoute[] = [
     path: `${MODULE_PATH}/positionMonitor`,
     component: ROUTERS.PositionMonitorModule,
     lazyload: true
+  },
+  {
+    path: `${MODULE_PATH}/dataScreen`,
+    component: ROUTERS.dataScreen,
+    lazyload: true,
+    exact: true
   }
 ];
