@@ -5,47 +5,44 @@ export function StateListColumn(callbackAction: Function) {
   return [
     {
       title: '车主姓名',
-      dataIndex: 'vinNo'
+      dataIndex: 'ownerName'
     },
     {
       title: '车牌号',
-      dataIndex: 'deviceCodeList'
+      dataIndex: 'plateNo'
     },
     {
       title: '设备号',
-      dataIndex: 'time'
+      dataIndex: 'deviceCode'
     },
     {
       title: '状态',
-      dataIndex: 'name'
+      dataIndex: 'status',
+      render: (text: number) => (text ? '在线' : '离线')
     },
     {
       title: '运行模式',
-      dataIndex: 'name'
+      dataIndex: 'runMode'
     },
     {
       title: '最后上线时间',
-      dataIndex: 'name'
+      dataIndex: 'statusTime'
     },
     {
       title: '地址',
-      dataIndex: 'deviceCodeList'
+      dataIndex: 'address'
     },
     {
       title: 'GPS信号',
-      dataIndex: 'time'
+      dataIndex: 'satelliteStatus'
     },
     {
       title: '电压',
-      dataIndex: 'name'
-    },
-    {
-      title: '监控组',
-      dataIndex: 'name'
+      dataIndex: 'voltage'
     },
     {
       title: '所属机构',
-      dataIndex: 'name'
+      dataIndex: 'organizationName'
     }
   ];
 }
