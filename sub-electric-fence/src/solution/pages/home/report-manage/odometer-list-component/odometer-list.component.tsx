@@ -1,7 +1,12 @@
 import { Button, Col, Form, Input, Row, Select } from 'antd';
 import * as React from 'react';
-import { ITableComponent, TablePageTelComponent } from '~/solution/components/component.module';
-import { AlarmParameterColumn } from './odometer-list.column';
+import {
+  ISelectLoadingComponent,
+  ITableComponent,
+  TablePageTelComponent
+} from '~/solution/components/component.module';
+import { GlobalContext } from '~/solution/context/global/global.provider';
+import { OdometerListColumn } from './odometer-list.column';
 
 import { useDirectiveListStore } from './odometer-list.component.store';
 
@@ -12,10 +17,22 @@ export default function DirectiveListComponent() {
     callbackAction,
     changeTablePageIndex,
     searchClick,
-    initSearchForm
+    initSearchForm,
+    getCurrentSelectInfo
   } = useDirectiveListStore();
   const { isLoading, tableData, total, pageIndex, pageSize } = state;
-
+  const { gState } = React.useContext(GlobalContext);
+  const queryOrgList = ISelectLoadingComponent({
+    reqUrl: 'queryStoreOrganization',
+    placeholder: '请选择机构',
+    // searchKey: organization.organizationName || '',
+    getCurrentSelectInfo: (value: string, option: any) => {
+      getCurrentSelectInfo(option.info || {}, 'organizationId');
+    },
+    searchForm: {
+      systemId: gState?.myInfo?.systemId
+    }
+  });
   function renderSelectItems() {
     const layout = {
       labelCol: { span: 8 },
@@ -24,14 +41,15 @@ export default function DirectiveListComponent() {
     return (
       <Form {...layout} form={searchForm} style={{ width: '90%' }}>
         <Row gutter={24}>
-          <Col span={6}>
-            <Form.Item name="type" label="报警类型">
-              <Input placeholder="请输入报警类型" />
+          <Col span={8}>
+            <Form.Item name="strValue" label="查询车辆/设备">
+              <Input placeholder="电话/车牌号/车架号/设备" allowClear={true} />
             </Form.Item>
           </Col>
-          <Col span={6}>
-            <Form.Item name="method" label="下发方式">
-              <Select placeholder="请选择下发方式"></Select>
+          <Col span={8}>时间</Col>
+          <Col span={8}>
+            <Form.Item label="所属机构" name="organizationId">
+              {queryOrgList}
             </Form.Item>
           </Col>
         </Row>
@@ -51,7 +69,7 @@ export default function DirectiveListComponent() {
   function RenderTable() {
     return (
       <ITableComponent
-        columns={AlarmParameterColumn(callbackAction)}
+        columns={OdometerListColumn(callbackAction)}
         isLoading={isLoading}
         pageIndex={pageIndex}
         pageSize={pageSize}
@@ -66,7 +84,7 @@ export default function DirectiveListComponent() {
   return (
     <React.Fragment>
       <TablePageTelComponent
-        pageName={'报警参数管理'}
+        pageName={'里程统计'}
         selectItems={renderSelectItems()}
         searchButton={renderSearchButtons()}
         table={<RenderTable />}

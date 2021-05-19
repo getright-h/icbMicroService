@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ModalType } from './statistical-list.interface';
 import { Tooltip } from 'antd';
-export function AlarmParameterColumn(callbackAction: Function) {
+export function StatisticalListColumn(callbackAction: Function) {
   const render = (text: any) => (text ? text : '-');
 
   return [

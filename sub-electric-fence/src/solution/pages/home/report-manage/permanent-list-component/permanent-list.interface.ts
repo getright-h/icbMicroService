@@ -12,6 +12,7 @@ export class IDirectiveListState {
   currentId = '';
   sort = -1;
   sortInfo: { key: string; type: string };
+  exportVisible = false;
 }
 export enum ModalType {
   CREATE,

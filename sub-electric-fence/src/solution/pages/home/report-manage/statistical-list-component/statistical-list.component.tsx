@@ -4,9 +4,10 @@ import {
   ITableComponent,
   TablePageTelComponent,
   TimePickerComponent,
-  ISelectLoadingComponent
+  ISelectLoadingComponent,
+  InputExportFilenameComponent
 } from '~/solution/components/component.module';
-import { AlarmParameterColumn } from './statistical-list.column';
+import { StatisticalListColumn } from './statistical-list.column';
 import { AlarmType_FOR_REPORT } from '~shared/constant/alarm.const';
 import { useDirectiveListStore } from './statistical-list.component.store';
 import { GlobalContext } from '~/solution/context/global/global.provider';
@@ -19,7 +20,9 @@ export default function DirectiveListComponent() {
     changeTablePageIndex,
     searchClick,
     initSearchForm,
-    getCurrentSelectInfo
+    getCurrentSelectInfo,
+    handleExport,
+    handleExportVisible
   } = useDirectiveListStore();
   const { isLoading, tableData, total, pageIndex, pageSize, timeInfo } = state;
   const { gState } = React.useContext(GlobalContext);
@@ -68,6 +71,7 @@ export default function DirectiveListComponent() {
           <Col span={11}>
             <Form.Item label="时间范围" name="time">
               <TimePickerComponent
+                timeInfo={timeInfo}
                 pickerType="dateTimeRange"
                 getDateTimeInfo={(time: any, other: any) => getCurrentSelectInfo(time, 'time')}
               />
@@ -87,17 +91,20 @@ export default function DirectiveListComponent() {
   function renderSearchButtons() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary" onClick={searchClick}>
+        <Button type="primary" onClick={searchClick} loading={isLoading}>
           查询
         </Button>
         <Button onClick={initSearchForm}>清空</Button>
+        <Button type="primary" onClick={() => handleExportVisible(true)}>
+          导出
+        </Button>
       </div>
     );
   }
   function RenderTable() {
     return (
       <ITableComponent
-        columns={AlarmParameterColumn(callbackAction)}
+        columns={StatisticalListColumn(callbackAction)}
         isLoading={isLoading}
         pageIndex={pageIndex}
         pageSize={pageSize}
@@ -118,6 +125,11 @@ export default function DirectiveListComponent() {
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
       ></TablePageTelComponent>
+      <InputExportFilenameComponent
+        visible={state.exportVisible}
+        getValues={v => handleExport(v.name)}
+        close={() => handleExportVisible(false)}
+      />
     </React.Fragment>
   );
 }

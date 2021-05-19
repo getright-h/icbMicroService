@@ -1,6 +1,6 @@
 /**
  * @export state变量定义和初始化
- * @class IAlarmParameterState
+ * @class IDwellListState
  */
 export class IDwellListState {
   isLoading = false;

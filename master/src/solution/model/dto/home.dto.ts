@@ -21,3 +21,38 @@ export interface MenuRequestParam {
   systemId: string;
   roleIdList: Array<string>;
 }
+
+export interface DownloadTaskParam {
+  index: number;
+  size: number;
+  name?: string;
+}
+
+export interface DownloadTaskResult {
+  taskCount: number;
+  list: DownloadTaskList;
+}
+
+interface DownloadTaskList {
+  dataList: DownloadTask[];
+  index: number;
+  size: number;
+  total: number;
+  pages: number;
+  hasPrev: boolean;
+  hasNext: boolean;
+}
+
+interface DownloadTask {
+  id: string;
+  name: string;
+  fileSize: string;
+  businessName: string;
+  finishTime: string;
+  downloadPath: string;
+  state: number;
+  suffixName: string;
+  creatorId: string;
+  creatorName: string;
+  createTime: string;
+}

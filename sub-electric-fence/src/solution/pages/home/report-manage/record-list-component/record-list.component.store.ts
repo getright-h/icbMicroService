@@ -1,10 +1,11 @@
-import { IDwellListState, ModalType } from './redord-list.interface';
+import { IDwellListState, ModalType } from './record-list.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form } from 'antd';
 import { OrderReportService } from '~/solution/model/services/report-order.service';
 import { useEffect } from 'react';
 import { IMAP } from '~shared/util/map.util';
 import moment from 'moment';
+import { setState } from '~/framework/microAPP/appStore';
 
 export function useDwellListStore() {
   const { state, setStateWrap, getState } = useStateStore(new IDwellListState());
@@ -53,7 +54,7 @@ export function useDwellListStore() {
       searchForm.setFieldsValue({ deviceCode: deviceCode });
     }
     if (type == 'time') {
-      setStateWrap({ timeInfo: data });
+      setStateWrap({ timeInfo: !!data[0] ? data : [] });
       //   let beginTime, endTime;
       //   data[0] ? (beginTime = Date.parse(data[0])) : (beginTime = 0);
       //   data[1] ? (endTime = Date.parse(data[1])) : (endTime = 0);
@@ -90,6 +91,32 @@ export function useDwellListStore() {
     isSuccess && searchClick();
   }
 
+  function handleExport(value: string) {
+    const { pageIndex, pageSize, timeInfo } = getState();
+    orderReportService
+      .exportMonitorAlarmRecordList({
+        ...searchForm.getFieldsValue(),
+        beginTime: timeInfo[0] ? moment(timeInfo[0]).valueOf() : 0,
+        endTime: timeInfo[1] ? moment(timeInfo[1]).valueOf() : 0,
+        index: pageIndex,
+        size: pageSize,
+        name: value
+      })
+      .subscribe(
+        res => {
+          setState({ showTaskCenter: true });
+          handleExportVisible(false);
+        },
+        err => {
+          handleExportVisible(false);
+        }
+      );
+  }
+
+  function handleExportVisible(visible: boolean) {
+    setStateWrap({ exportVisible: visible });
+  }
+
   return {
     state,
     searchForm,
@@ -98,6 +125,8 @@ export function useDwellListStore() {
     changeTablePageIndex,
     searchClick,
     handleModalCancel,
-    getCurrentSelectInfo
+    getCurrentSelectInfo,
+    handleExport,
+    handleExportVisible
   };
 }

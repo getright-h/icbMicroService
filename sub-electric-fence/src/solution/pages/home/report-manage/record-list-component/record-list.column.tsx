@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Tooltip } from 'antd';
-import { ModalType } from './redord-list.interface';
-export function DwellColumn(callbackAction: Function) {
+import { ModalType } from './record-list.interface';
+export function RecordListColumn(callbackAction: Function) {
   const render = (text: any) => (text ? text : '-');
 
   return [

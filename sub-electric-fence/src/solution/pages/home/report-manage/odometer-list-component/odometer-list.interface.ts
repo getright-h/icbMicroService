@@ -1,8 +1,8 @@
 /**
  * @export state变量定义和初始化
- * @class IAlarmParameterState
+ * @class IOdometerListState
  */
-export class IDirectiveListState {
+export class IOdometerListState {
   isLoading = false;
   pageIndex = 1;
   pageSize = 10;

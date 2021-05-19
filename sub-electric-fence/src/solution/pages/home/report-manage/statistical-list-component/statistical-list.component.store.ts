@@ -10,6 +10,7 @@ import { useLocation } from 'react-router-dom';
 import { IGlobalState } from '~/solution/context/global/global.interface';
 
 import moment from 'moment';
+import { setState } from '~/framework/microAPP/appStore';
 
 export function useDirectiveListStore() {
   const { state, setStateWrap, getState } = useStateStore(new IDirectiveListState());
@@ -92,7 +93,7 @@ export function useDirectiveListStore() {
       // data[0] ? (beginTime = Date.parse(data[0])) : (beginTime = 0);
       // data[1] ? (endTime = Date.parse(data[1])) : (endTime = 0);
       // searchForm.setFieldsValue({ beginTime, endTime });
-      setStateWrap({ timeInfo: data });
+      setStateWrap({ timeInfo: !!data[0] ? data : [] });
     }
 
     if (type == 'organizationId') {
@@ -100,6 +101,33 @@ export function useDirectiveListStore() {
       searchForm.setFieldsValue({ organizationId: organizationId });
     }
   }
+
+  function handleExport(value: string) {
+    const { pageIndex, pageSize, timeInfo } = getState();
+    orderReportService
+      .exportMonitorAlarmStatisticsList({
+        ...searchForm.getFieldsValue(),
+        beginTime: timeInfo[0] ? moment(timeInfo[0]).valueOf() : 0,
+        endTime: timeInfo[1] ? moment(timeInfo[1]).valueOf() : 0,
+        index: pageIndex,
+        size: pageSize,
+        name: value
+      })
+      .subscribe(
+        res => {
+          setState({ showTaskCenter: true });
+          handleExportVisible(false);
+        },
+        err => {
+          handleExportVisible(false);
+        }
+      );
+  }
+
+  function handleExportVisible(visible: boolean) {
+    setStateWrap({ exportVisible: visible });
+  }
+
   return {
     state,
     searchForm,
@@ -108,6 +136,8 @@ export function useDirectiveListStore() {
     changeTablePageIndex,
     searchClick,
     handleModalCancel,
-    getCurrentSelectInfo
+    getCurrentSelectInfo,
+    handleExport,
+    handleExportVisible
   };
 }

@@ -9,6 +9,7 @@ export class IDirectiveListState {
   tableData: any = [];
   total = 0;
   currentId = '';
+  exportVisible = false;
 }
 export enum ModalType {
   CREATE,

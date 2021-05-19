@@ -1,0 +1,37 @@
+.taskContainer {
+    overflow-y: auto;
+    max-height: 350px;
+    min-width: 350px;
+    border-bottom: 1px solid #f0f0f0;
+    margin-top: -16px;
+    .taskItem{
+        display: flex;
+        padding: 10px 0;
+        &:not(:last-child){
+            border-bottom: 1px solid #ddd;
+        }
+        .taskIcon{
+            font-size: 30px;
+            padding: 0 10px;
+        }
+        .taskContent{
+            flex: 1;
+        }
+        .taskTitle{
+            font-weight: 600;
+        }
+        .taskAction{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    }
+}
+
+.hint{
+    padding: 10px;
+    span:first-child{
+        color: @primary-color;
+        margin-right: 10px;
+    }
+}

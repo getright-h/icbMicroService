@@ -1,7 +1,13 @@
 import { Button, Col, Form, Input, Row, Select } from 'antd';
 import * as React from 'react';
-import { ITableComponent, TablePageTelComponent } from '~/solution/components/component.module';
-import { AlarmParameterColumn } from './state-list.column';
+import {
+  InputExportFilenameComponent,
+  ISelectLoadingComponent,
+  ITableComponent,
+  TablePageTelComponent
+} from '~/solution/components/component.module';
+import { GlobalContext } from '~/solution/context/global/global.provider';
+import { StateListColumn } from './state-list.column';
 
 import { useDirectiveListStore } from './state-list.component.store';
 
@@ -12,9 +18,25 @@ export default function DirectiveListComponent() {
     callbackAction,
     changeTablePageIndex,
     searchClick,
-    initSearchForm
+    initSearchForm,
+    getCurrentSelectInfo,
+    handleExport,
+    handleExportVisible
   } = useDirectiveListStore();
   const { isLoading, tableData, total, pageIndex, pageSize } = state;
+  const { gState } = React.useContext(GlobalContext);
+
+  const queryOrgList = ISelectLoadingComponent({
+    reqUrl: 'queryStoreOrganization',
+    placeholder: '请选择机构',
+    // searchKey: organization.organizationName || '',
+    getCurrentSelectInfo: (value: string, option: any) => {
+      getCurrentSelectInfo(option.info || {}, 'organizationId');
+    },
+    searchForm: {
+      systemId: gState?.myInfo?.systemId
+    }
+  });
 
   function renderSelectItems() {
     const layout = {
@@ -22,16 +44,25 @@ export default function DirectiveListComponent() {
       wrapperCol: { span: 16 }
     };
     return (
-      <Form {...layout} form={searchForm} style={{ width: '90%' }}>
+      <Form {...layout} form={searchForm} style={{ width: '90%' }} initialValues={{ status: -1 }}>
         <Row gutter={24}>
-          <Col span={6}>
-            <Form.Item name="type" label="报警类型">
-              <Input placeholder="请输入报警类型" />
+          <Col span={8}>
+            <Form.Item name="strValue" label="查询车辆/设备">
+              <Input placeholder="电话/车牌号/车架号/设备号" allowClear />
             </Form.Item>
           </Col>
-          <Col span={6}>
-            <Form.Item name="method" label="下发方式">
-              <Select placeholder="请选择下发方式"></Select>
+          <Col span={8}>
+            <Form.Item name="status" label="设备状态">
+              <Select placeholder="请选择设备状态">
+                <Select.Option value={-1}>全部</Select.Option>
+                <Select.Option value={1}>在线</Select.Option>
+                <Select.Option value={0}>离线</Select.Option>
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item label="所属机构" name="organizationId">
+              {queryOrgList}
             </Form.Item>
           </Col>
         </Row>
@@ -41,17 +72,20 @@ export default function DirectiveListComponent() {
   function renderSearchButtons() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary" onClick={searchClick}>
+        <Button type="primary" onClick={searchClick} loading={isLoading}>
           查询
         </Button>
         <Button onClick={initSearchForm}>清空</Button>
+        <Button type="primary" onClick={() => handleExportVisible(true)}>
+          导出
+        </Button>
       </div>
     );
   }
   function RenderTable() {
     return (
       <ITableComponent
-        columns={AlarmParameterColumn(callbackAction)}
+        columns={StateListColumn(callbackAction)}
         isLoading={isLoading}
         pageIndex={pageIndex}
         pageSize={pageSize}
@@ -71,6 +105,11 @@ export default function DirectiveListComponent() {
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
       ></TablePageTelComponent>
+      <InputExportFilenameComponent
+        visible={state.exportVisible}
+        getValues={v => handleExport(v.name)}
+        close={() => handleExportVisible(false)}
+      />
     </React.Fragment>
   );
 }

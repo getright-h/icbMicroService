@@ -488,20 +488,20 @@ export function fetchChildAppsConfig() {
               //   exact: true,
               //   componentUrl: 'odometerListComponent' //对应子应用的组件名
               // },
-              // {
-              //   path: 'state',
-              //   title: '设备状态统计表',
-              //   lazyload: true,
-              //   exact: true,
-              //   componentUrl: 'stateListComponent' //对应子应用的组件名
-              // },
-              // {
-              //   path: 'offline',
-              //   title: '离线设备统计',
-              //   lazyload: true,
-              //   exact: true,
-              //   componentUrl: 'offlineListComponent' //对应子应用的组件名
-              // },
+              {
+                path: 'state',
+                title: '设备状态表',
+                lazyload: true,
+                exact: true,
+                componentUrl: 'stateListComponent' //对应子应用的组件名
+              },
+              {
+                path: 'offline',
+                title: '离线设备统计',
+                lazyload: true,
+                exact: true,
+                componentUrl: 'offlineListComponent' //对应子应用的组件名
+              },
               // {
               //   path: 'dwell',
               //   title: '设备停留点统计',

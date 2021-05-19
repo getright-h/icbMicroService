@@ -42,6 +42,14 @@ export function useDwellListStore() {
     searchClick();
   }
 
+  function getCurrentSelectInfo(data: any, type: string) {
+    // console.log(data, type);
+    if (type == 'organizationId') {
+      const { organizationId } = data;
+      searchForm.setFieldsValue({ organizationId: organizationId });
+    }
+  }
+
   function callbackAction<T>(actionType: number, data?: T) {
     setStateWrap({ currentId: data ? data.id : '' });
     switch (actionType) {
@@ -73,6 +81,7 @@ export function useDwellListStore() {
     callbackAction,
     changeTablePageIndex,
     searchClick,
-    handleModalCancel
+    handleModalCancel,
+    getCurrentSelectInfo
   };
 }
