@@ -89,7 +89,7 @@ export function useDirectiveListStore() {
       // data[1] ? (endTime = Date.parse(data[1])) : (endTime = 0);
       // searchForm.setFieldsValue({ beginTime: beginTime });
       // searchForm.setFieldsValue({ endTime: endTime });
-      setStateWrap({ timeInfo: data });
+      setStateWrap({ timeInfo: !!data[0] ? data : [] });
     }
 
     if (type == 'organizationId') {

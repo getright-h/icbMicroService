@@ -1,4 +1,4 @@
-import { IDwellListState, ModalType } from './redord-list.interface';
+import { IDwellListState, ModalType } from './record-list.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form } from 'antd';
 import { OrderReportService } from '~/solution/model/services/report-order.service';
@@ -54,7 +54,7 @@ export function useDwellListStore() {
       searchForm.setFieldsValue({ deviceCode: deviceCode });
     }
     if (type == 'time') {
-      setStateWrap({ timeInfo: data });
+      setStateWrap({ timeInfo: !!data[0] ? data : [] });
       //   let beginTime, endTime;
       //   data[0] ? (beginTime = Date.parse(data[0])) : (beginTime = 0);
       //   data[1] ? (endTime = Date.parse(data[1])) : (endTime = 0);

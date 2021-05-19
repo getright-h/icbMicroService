@@ -6,7 +6,9 @@ import {
   PointPassList,
   ResidentList,
   AlarmTypeList,
-  ReportMonitorAlarmGroupInput
+  ReportMonitorAlarmGroupInput,
+  QueryMonitorDeviceStatusInput,
+  QueryMonitorDeviceOfflineInput
 } from '../dto/report-order.dto';
 import moment from 'moment';
 import { RequestService } from '~/framework/util/base-http/request.service';
@@ -24,11 +26,15 @@ const QUERY_ALARM_ORIGINAL_PAGEDLIST = 'alarmCenter/manage/queryAlarmOriginalPag
 const QUERY_REPORT_MONITOR_ROLE_PAGEDLIST = 'alarmCenter/manage/queryReportMonitorRolePagedList';
 const QUERY_REPORT_TRAFFIC = 'alarmCenter/manage/queryReportTraffic';
 const QUERY_MONITOR_ALARM_GROUP_PAGEDLIST = 'alarmCenter/manage/queryMonitorAlarmGroupPagedList';
+const QUERY_MONITOR_DEVICE_STATUS_PAGEDLIST = 'alarmCenter/manage/queryMonitorDeviceStatusPagedList';
+const QUERY_MONITOR_DEVICE_OFFLINE_PAGEDLIST = 'alarmCenter/manage/queryMonitorDeviceOfflinePagedList';
+
 const EXPORT_MONITOR_ALARM_GROUP_LIST = 'dataProcess/monitorAlarmInfoGroupExport';
 const EXPORT_MONITOR_ALARM_FOLLOW_LIST = 'dataProcess/monitorAlarmFollowExport';
 const EXPORT_MONITOR_ALARM_RECORD_LIST = 'dataProcess/monitorAlarmRecordExport';
 const EXPORT_MONITOR_ALARM_STATISTICS_LIST = 'dataProcess/monitorAlarmStatisticsExport';
 const EXPORT_RESIDENT_STATISTICS_LIST = 'dataProcess/residentStatisticsExport';
+const EXPORT_DEVICE_STATUS_LIST = 'dataProcess/deviceStatusExport';
 
 @DepUtil.Injectable()
 export class OrderReportService implements OrderReportManage {
@@ -183,6 +189,32 @@ export class OrderReportService implements OrderReportManage {
     );
   }
 
+  queryMonitorDeviceStatusPagedList(params: QueryMonitorDeviceStatusInput): Observable<any> {
+    return this.requestService.post(QUERY_MONITOR_DEVICE_STATUS_PAGEDLIST, params);
+    //   .pipe(
+    //   switchMap(async data => {
+    //     const dataList = await REPORT_UTIL.formatAddress(data.dataList);
+    //     dataList.map((item, index) => {
+    //       item.id = item.id.slice(0, -1) + index;
+    //     });
+    //     return { ...data, dataList };
+    //   })
+    // );
+  }
+
+  queryMonitorDeviceOfflinePagedList(params: QueryMonitorDeviceOfflineInput): Observable<any> {
+    return this.requestService.post(QUERY_MONITOR_DEVICE_OFFLINE_PAGEDLIST, params);
+    //   .pipe(
+    //   switchMap(async data => {
+    //     const dataList = await REPORT_UTIL.formatAddress(data.dataList);
+    //     dataList.map((item, index) => {
+    //       item.id = item.id.slice(0, -1) + index;
+    //     });
+    //     return { ...data, dataList };
+    //   })
+    // );
+  }
+
   exportMonitorAlarmGroupList(params: ReportMonitorAlarmGroupInput): Observable<boolean> {
     return this.requestService.post(EXPORT_MONITOR_ALARM_GROUP_LIST, params);
   }
@@ -201,5 +233,9 @@ export class OrderReportService implements OrderReportManage {
 
   exportResidentStatisticsList(params: ReportAlarmStatisticsInput): Observable<boolean> {
     return this.requestService.post(EXPORT_RESIDENT_STATISTICS_LIST, params);
+  }
+
+  exportMonitorDeviceStatusList(params: QueryMonitorDeviceStatusInput): Observable<boolean> {
+    return this.requestService.post(EXPORT_DEVICE_STATUS_LIST, params);
   }
 }

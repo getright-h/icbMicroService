@@ -93,28 +93,13 @@ export function useDirectiveListStore() {
       // data[0] ? (beginTime = Date.parse(data[0])) : (beginTime = 0);
       // data[1] ? (endTime = Date.parse(data[1])) : (endTime = 0);
       // searchForm.setFieldsValue({ beginTime, endTime });
-      setStateWrap({ timeInfo: data });
+      setStateWrap({ timeInfo: !!data[0] ? data : [] });
     }
 
     if (type == 'organizationId') {
       const { organizationId } = data;
       searchForm.setFieldsValue({ organizationId: organizationId });
     }
-  }
-
-  function exportClick() {
-    const { pageIndex, pageSize, timeInfo } = getState();
-    orderReportService
-      .exportMonitorAlarmStatisticsList({
-        ...searchForm.getFieldsValue(),
-        beginTime: timeInfo[0] ? moment(timeInfo[0]).valueOf() : 0,
-        endTime: timeInfo[1] ? moment(timeInfo[1]).valueOf() : 0,
-        index: pageIndex,
-        size: pageSize
-      })
-      .subscribe(res => {
-        console.log('monitor_group_export===>', res);
-      });
   }
 
   function handleExport(value: string) {

@@ -24,7 +24,7 @@ export default function DirectiveListComponent() {
     handleExport,
     handleExportVisible
   } = useDirectiveListStore();
-  const { isLoading, tableData, total, pageIndex, pageSize, sortInfo } = state;
+  const { isLoading, tableData, total, pageIndex, pageSize, sortInfo, timeInfo } = state;
   const { gState } = React.useContext(GlobalContext);
 
   function renderSelectItems() {
@@ -61,6 +61,7 @@ export default function DirectiveListComponent() {
           <Col span={11}>
             <Form.Item label="时间范围" name="time">
               <TimePickerComponent
+                timeInfo={timeInfo}
                 pickerType="dateTimeRange"
                 getDateTimeInfo={(time: any, other: any) => getCurrentSelectInfo(time, 'time')}
               />
@@ -80,7 +81,7 @@ export default function DirectiveListComponent() {
   function renderSearchButtons() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary" onClick={searchClick}>
+        <Button type="primary" onClick={searchClick} loading={isLoading}>
           查询
         </Button>
         <Button onClick={initSearchForm}>清空</Button>

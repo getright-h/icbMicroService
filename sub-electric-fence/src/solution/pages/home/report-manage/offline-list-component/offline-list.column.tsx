@@ -5,31 +5,31 @@ export function OfflineListColumn(callbackAction: Function) {
   return [
     {
       title: '车主姓名',
-      dataIndex: 'vinNo'
+      dataIndex: 'ownerName'
     },
     {
       title: '车牌号',
-      dataIndex: 'deviceCodeList'
+      dataIndex: 'plateNo'
     },
     {
       title: '设备号',
-      dataIndex: 'time'
+      dataIndex: 'deviceCode'
     },
     {
       title: '离线时长',
-      dataIndex: 'name'
+      dataIndex: 'offlineTime'
     },
     {
       title: '最后上线时间',
-      dataIndex: 'name'
+      dataIndex: 'lastTime'
     },
     {
       title: '地址',
-      dataIndex: 'name'
+      dataIndex: 'address'
     },
     {
       title: '所属机构',
-      dataIndex: 'name'
+      dataIndex: 'organizationName'
     }
   ];
 }

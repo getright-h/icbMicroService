@@ -1,6 +1,7 @@
 import { Button, Col, Form, Input, Row, Select } from 'antd';
 import * as React from 'react';
 import {
+  InputExportFilenameComponent,
   ISelectLoadingComponent,
   ITableComponent,
   TablePageTelComponent
@@ -18,7 +19,9 @@ export default function DirectiveListComponent() {
     changeTablePageIndex,
     searchClick,
     initSearchForm,
-    getCurrentSelectInfo
+    getCurrentSelectInfo,
+    handleExport,
+    handleExportVisible
   } = useDirectiveListStore();
   const { isLoading, tableData, total, pageIndex, pageSize } = state;
   const { gState } = React.useContext(GlobalContext);
@@ -48,12 +51,12 @@ export default function DirectiveListComponent() {
               <Input placeholder="电话/车牌号/车架号/设备" allowClear={true} />
             </Form.Item>
           </Col>
-          <Col span={8}>时间</Col>
+          {/* <Col span={8}>时间</Col>
           <Col span={8}>
             <Form.Item name="strValue" label="离线时长">
               <Select></Select>
             </Form.Item>
-          </Col>
+          </Col> */}
           <Col span={8}>
             <Form.Item label="所属机构" name="organizationId">
               {queryOrgList}
@@ -66,10 +69,13 @@ export default function DirectiveListComponent() {
   function renderSearchButtons() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary" onClick={searchClick}>
+        <Button type="primary" onClick={searchClick} loading={isLoading}>
           查询
         </Button>
         <Button onClick={initSearchForm}>清空</Button>
+        {/* <Button type="primary" onClick={() => handleExportVisible(true)}>
+          导出
+        </Button> */}
       </div>
     );
   }
@@ -96,6 +102,11 @@ export default function DirectiveListComponent() {
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
       ></TablePageTelComponent>
+      {/* <InputExportFilenameComponent
+        visible={state.exportVisible}
+        getValues={v => handleExport(v.name)}
+        close={() => handleExportVisible(false)}
+      /> */}
     </React.Fragment>
   );
 }

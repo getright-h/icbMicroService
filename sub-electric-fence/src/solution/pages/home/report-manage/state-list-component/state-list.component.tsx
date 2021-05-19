@@ -1,6 +1,7 @@
 import { Button, Col, Form, Input, Row, Select } from 'antd';
 import * as React from 'react';
 import {
+  InputExportFilenameComponent,
   ISelectLoadingComponent,
   ITableComponent,
   TablePageTelComponent
@@ -18,7 +19,9 @@ export default function DirectiveListComponent() {
     changeTablePageIndex,
     searchClick,
     initSearchForm,
-    getCurrentSelectInfo
+    getCurrentSelectInfo,
+    handleExport,
+    handleExportVisible
   } = useDirectiveListStore();
   const { isLoading, tableData, total, pageIndex, pageSize } = state;
   const { gState } = React.useContext(GlobalContext);
@@ -41,16 +44,17 @@ export default function DirectiveListComponent() {
       wrapperCol: { span: 16 }
     };
     return (
-      <Form {...layout} form={searchForm} style={{ width: '90%' }}>
+      <Form {...layout} form={searchForm} style={{ width: '90%' }} initialValues={{ status: -1 }}>
         <Row gutter={24}>
           <Col span={8}>
             <Form.Item name="strValue" label="查询车辆/设备">
-              <Input placeholder="电话/车牌号/车架号/设备号" />
+              <Input placeholder="电话/车牌号/车架号/设备号" allowClear />
             </Form.Item>
           </Col>
           <Col span={8}>
             <Form.Item name="status" label="设备状态">
               <Select placeholder="请选择设备状态">
+                <Select.Option value={-1}>全部</Select.Option>
                 <Select.Option value={1}>在线</Select.Option>
                 <Select.Option value={0}>离线</Select.Option>
               </Select>
@@ -68,10 +72,13 @@ export default function DirectiveListComponent() {
   function renderSearchButtons() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary" onClick={searchClick}>
+        <Button type="primary" onClick={searchClick} loading={isLoading}>
           查询
         </Button>
         <Button onClick={initSearchForm}>清空</Button>
+        <Button type="primary" onClick={() => handleExportVisible(true)}>
+          导出
+        </Button>
       </div>
     );
   }
@@ -98,6 +105,11 @@ export default function DirectiveListComponent() {
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
       ></TablePageTelComponent>
+      <InputExportFilenameComponent
+        visible={state.exportVisible}
+        getValues={v => handleExport(v.name)}
+        close={() => handleExportVisible(false)}
+      />
     </React.Fragment>
   );
 }

@@ -97,3 +97,22 @@ export interface ReportMonitorAlarmGroupInput {
   index: number;
   size: number;
 }
+
+export interface QueryMonitorDeviceStatusInput {
+  strValue: string;
+  status: number;
+  organizationId: string;
+  index: number;
+  size: number;
+  beginTime: number;
+  endTime: number;
+}
+
+export interface QueryMonitorDeviceOfflineInput {
+  strValue: string;
+  organizationId: string;
+  index: number;
+  size: number;
+  beginTime: number;
+  endTime: number;
+}

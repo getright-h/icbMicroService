@@ -7,7 +7,7 @@ import {
   ISelectLoadingComponent,
   InputExportFilenameComponent
 } from '~/solution/components/component.module';
-import { AlarmParameterColumn } from './statistical-list.column';
+import { StatisticalListColumn } from './statistical-list.column';
 import { AlarmType_FOR_REPORT } from '~shared/constant/alarm.const';
 import { useDirectiveListStore } from './statistical-list.component.store';
 import { GlobalContext } from '~/solution/context/global/global.provider';
@@ -71,6 +71,7 @@ export default function DirectiveListComponent() {
           <Col span={11}>
             <Form.Item label="时间范围" name="time">
               <TimePickerComponent
+                timeInfo={timeInfo}
                 pickerType="dateTimeRange"
                 getDateTimeInfo={(time: any, other: any) => getCurrentSelectInfo(time, 'time')}
               />
@@ -90,7 +91,7 @@ export default function DirectiveListComponent() {
   function renderSearchButtons() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary" onClick={searchClick}>
+        <Button type="primary" onClick={searchClick} loading={isLoading}>
           查询
         </Button>
         <Button onClick={initSearchForm}>清空</Button>
@@ -103,7 +104,7 @@ export default function DirectiveListComponent() {
   function RenderTable() {
     return (
       <ITableComponent
-        columns={AlarmParameterColumn(callbackAction)}
+        columns={StatisticalListColumn(callbackAction)}
         isLoading={isLoading}
         pageIndex={pageIndex}
         pageSize={pageSize}

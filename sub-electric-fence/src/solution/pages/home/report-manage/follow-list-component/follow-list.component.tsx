@@ -30,6 +30,7 @@ export default function DirectiveListComponent() {
     isLoading,
     tableData,
     currentRoleId,
+    timeInfo,
     total,
     pageIndex,
     pageSize,
@@ -151,6 +152,7 @@ export default function DirectiveListComponent() {
             <Col span={10}>
               <Form.Item label="时间范围" name="time">
                 <TimePickerComponent
+                  timeInfo={timeInfo}
                   pickerType="dateTimeRange"
                   getDateTimeInfo={(time: any, other: any) => getCurrentSelectInfo(time, 'time')}
                 />
@@ -177,7 +179,7 @@ export default function DirectiveListComponent() {
   function renderSearchButtons() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary" onClick={searchClick}>
+        <Button type="primary" onClick={searchClick} loading={isLoading}>
           查询
         </Button>
         <Button onClick={initSearchForm}>清空</Button>
