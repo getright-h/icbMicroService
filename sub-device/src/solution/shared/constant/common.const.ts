@@ -361,7 +361,8 @@ export enum DEVICE_ROUTE_ENUM {
   Allot = 3,
   Bind = 4,
   Delete = 5,
-  Scrap = 6
+  Scrap = 6,
+  UnBind = 7
 }
 
 export const DEVICE_ROUTE = [
@@ -396,6 +397,10 @@ export const DEVICE_ROUTE = [
   {
     title: '已废弃',
     value: DEVICE_ROUTE_ENUM.Scrap
+  },
+  {
+    title: '已解绑',
+    value: DEVICE_ROUTE_ENUM.UnBind
   }
 ];
 
