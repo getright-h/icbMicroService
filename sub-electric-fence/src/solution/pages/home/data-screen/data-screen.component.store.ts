@@ -1,7 +1,9 @@
-import { gradients, IDataScreenState } from './data-screen.interface';
+import { geoCoordMap, gradients, IDataScreenState } from './data-screen.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect, useRef } from 'react';
 import useECharts from '~/framework/aop/hooks/use-echarts';
+import * as echarts from 'echarts';
+import geoJson from '~assets/library/china_full.json';
 
 export function useDataScreenStore() {
   const { state, setStateWrap } = useStateStore(new IDataScreenState());
@@ -17,72 +19,98 @@ export function useDataScreenStore() {
   }
 
   // 地图区域数据
-  // useECharts(areaStatRef, getAreaStatOption());
+  useECharts(areaStatRef, getAreaStatOption());
   function getAreaStatOption(): {} {
-    return {
-      // backgroundColor: '#c5d6e7',
-      // title: [
-      //   {
-      //     textStyle: {
-      //       color: '#000',
-      //       fontSize: 18
-      //     },
-      //     subtext: '',
-      //     text: '中国地图',
-      //     top: 'auto',
-      //     subtextStyle: {
-      //       color: '#aaa',
-      //       fontSize: 12
-      //     },
-      //     left: 'auto'
-      //   }
-      // ],
-      legend: [
-        {
-          selectedMode: 'multiple',
-          top: 'top',
-          orient: 'horizontal',
-          data: [
-            {
-              left: 'center',
-              show: true
-            }
-          ]
+    function convertData(data: any[]) {
+      return data.map(d => {
+        const geoCoord = geoCoordMap[d.name];
+        if (geoCoord) {
+          return {
+            name: d.name,
+            value: geoCoord.concat(d.value)
+          };
         }
-      ],
+      });
+    }
+    function lineData(data: any[]) {
+      return data.map(d => {
+        return { coords: [geoCoordMap['0'], geoCoordMap[d.name]] };
+      });
+    }
+    const datas = [
+      { name: '四川省', value: 10 },
+      { name: '北京市', value: 30 },
+      { name: '江苏省', value: 20 }
+    ];
+    echarts.registerMap('china', geoJson);
+    return {
+      geo: {
+        type: 'map',
+        map: 'china',
+        layoutCenter: ['50%', '70%'],
+        layoutSize: '130%',
+        itemStyle: {
+          areaColor: '#3B4E95',
+          borderColor: 'rgba(255,255,255,0.3)'
+        },
+        // emphasis: {
+        //   label: {
+        //     show: false
+        //   }
+        // },
+        tooltip: {
+          show: false
+        }
+      },
+      tooltip: {
+        trigger: 'item'
+      },
       series: [
         {
-          mapType: 'china',
-          data: [],
-          name: '',
-          symbol: 'circle',
-          type: 'map',
-          roam: true,
-          label: {
-            normal: {
-              show: true
+          type: 'effectScatter',
+          coordinateSystem: 'geo',
+          symbolSize: 8,
+          rippleEffect: {
+            brushType: 'stroke',
+            scale: 3
+          },
+          itemStyle: {
+            color: '#fff'
+          },
+          data: convertData(datas),
+          tooltip: {
+            formatter: (data: any) => {
+              return `${data.name}：${data.value[2]}`;
+            },
+            show: true,
+            backgroundColor: 'rgba(33,33,33,0.6)',
+            borderWidth: 0,
+            padding: [10, 12],
+            textStyle: {
+              fontSize: 12,
+              color: '#fff'
             }
           }
-        }
-      ],
-      geo: {
-        map: 'china',
-        label: {
-          emphasis: {
-            show: false
-          }
         },
-        roam: true,
-        itemStyle: {
-          normal: {
-            areaColor: '#323c48',
-            borderColor: '#404a59'
+        {
+          type: 'lines',
+          coordinateSystem: 'geo',
+          effect: {
+            show: true,
+            trailLength: 0,
+            symbol: 'path://M8,0L16,30L8,24L0,30L8,0Z',
+            color: '#BAC2E0',
+            symbolSize: 12
           },
-          emphasis: {
-            areaColor: '#2a333d'
-          }
+          lineStyle: {
+            width: 2,
+            type: 'dashed',
+            curveness: 0.1,
+            color: '#7885B8'
+          },
+          data: lineData(datas)
         }
-      }
+      ]
     };
   }
 
@@ -297,7 +325,9 @@ export function useDataScreenStore() {
         }
       },
       legend: {
-        icon: 'path://M0,0L5,0L5,5L0,5L0,0Z',
+        icon: 'rect',
+        itemWidth: 15,
+        itemHeight: 15,
         orient: 'vertical',
         left: '3%',
         top: '8%',
@@ -346,9 +376,9 @@ export function useDataScreenStore() {
 
   /** temp */
   useEffect(() => {
-    // setInterval(() => {
-    //   setStateWrap({ num: getRandomNumber(0, 1000000) });
-    // }, 5000);
+    setTimeout(() => {
+      setStateWrap({ num: getRandomNumber(0, 1000000) });
+    }, 10000);
   }, []);
 
   function getRandomNumber(min: number, max: number) {

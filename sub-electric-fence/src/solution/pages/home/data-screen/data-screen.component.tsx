@@ -3,6 +3,7 @@ import style from './data-screen.component.less';
 import { useDataScreenStore } from './data-screen.component.store';
 import { CustomPanelProps } from './data-screen.interface';
 import DigitRoll from './digit-roll-component/digit-roll.component';
+import Table from 'rc-table';
 
 export default function DataScreenComponent() {
   const {
@@ -102,8 +103,36 @@ export default function DataScreenComponent() {
             </div>
           </div>
           <div className={style.areaStatMiddle} ref={areaStatRef}></div>
+          <div className={style.areaStatBottom}></div>
         </section>
-        <section className={style.cPanel}></section>
+        <section className={`${style.cPanel} ${style.alarmStat}`}>
+          <div className={style.alarmStatWrap}>
+            <div className={style.alarmStatTitle}>
+              <span>围栏报警</span>
+            </div>
+            <div className={`${style.alarmStatItems} ${style.alarmStatItemsPurple}`}>
+              {[0, 1, 2].map((o, i) => (
+                <div key={`b1-${i}`}>
+                  <span>围栏数</span>
+                  <span>100</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className={style.alarmStatWrap}>
+            <div className={style.alarmStatTitle}>
+              <span>二押点报警</span>
+            </div>
+            <div className={`${style.alarmStatItems} ${style.alarmStatItemsOrange}`}>
+              {[0, 1, 2].map((o, i) => (
+                <div key={`b2-${i}`}>
+                  <span>围栏数</span>
+                  <span>100</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
       </div>
     );
   }
