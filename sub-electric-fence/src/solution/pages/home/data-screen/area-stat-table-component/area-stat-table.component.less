@@ -1,0 +1,41 @@
+@tablePrefixCls: area-table;
+@text-color: #7b8bc6;
+@header-color: #fff;
+@font-size-base: 14px;
+@line-height: 1.1;
+@vertical-padding: 8px;
+@horizontal-padding: 40px;
+@cell-padding: @vertical-padding @horizontal-padding;
+@cell-margin: -@vertical-padding -@horizontal-padding;
+
+.@{tablePrefixCls} {
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+  color: @text-color;
+  font-size: @font-size-base;
+  line-height: @line-height;
+  // ================= Global =================
+  table {
+    width: 100%;
+    border-spacing: 0px;
+  }
+
+  th,
+  td {
+    position: relative;
+    box-sizing: border-box;
+    padding: @cell-padding;
+    white-space: normal;
+    word-break: break-word;
+    border-top: 0;
+    border-left: 0;
+    transition: box-shadow 0.3s;
+  }
+
+  // ================= Header =================
+  thead {
+    border-bottom: 2px solid #2D54B8;
+    color: @header-color;
+  }
+}

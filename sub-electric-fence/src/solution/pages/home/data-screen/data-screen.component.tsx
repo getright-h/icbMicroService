@@ -1,9 +1,12 @@
 import * as React from 'react';
+import AreaStatTableComponent from './area-stat-table-component/area-stat-table.component';
 import style from './data-screen.component.less';
 import { useDataScreenStore } from './data-screen.component.store';
 import { CustomPanelProps } from './data-screen.interface';
 import DigitRoll from './digit-roll-component/digit-roll.component';
-import Table from 'rc-table';
+import FollowStatTableComponent from './follow-stat-table-component/follow-stat-table.component';
+import OrgSelectComponent from './org-select-component/org-select.component';
+import Select, { Option } from 'rc-select';
 
 export default function DataScreenComponent() {
   const {
@@ -21,7 +24,9 @@ export default function DataScreenComponent() {
   function OrgSearch() {
     return (
       <div className={style.orgSearch}>
-        <div className={style.orgSearchSelect}></div>
+        <div className={style.orgSearchSelect}>
+          <OrgSelectComponent />
+        </div>
       </div>
     );
   }
@@ -79,8 +84,34 @@ export default function DataScreenComponent() {
         </CustomPanel>
         <CustomPanel title="报警数据统计">
           <div className={style.chartWrap} ref={alarmStatRef}></div>
+          <div className={style.totalCarSelect}>
+            <Select
+              animation="slide-up"
+              prefixCls="custom-select"
+              defaultValue="1"
+              // onChange={onChange}
+            >
+              <Option value="1">今日</Option>
+              <Option value="2">本周</Option>
+              <Option value="3">本月</Option>
+            </Select>
+          </div>
         </CustomPanel>
-        <CustomPanel title="报警跟进统计">3</CustomPanel>
+        <CustomPanel title="报警跟进统计">
+          <div className={style.followStatSelect}>
+            <Select
+              animation="slide-up"
+              prefixCls="custom-select"
+              defaultValue="1"
+              // onChange={onChange}
+            >
+              <Option value="1">今日</Option>
+              <Option value="2">本周</Option>
+              <Option value="3">本月</Option>
+            </Select>
+          </div>
+          <FollowStatTableComponent />
+        </CustomPanel>
       </div>
     );
   }
@@ -103,7 +134,9 @@ export default function DataScreenComponent() {
             </div>
           </div>
           <div className={style.areaStatMiddle} ref={areaStatRef}></div>
-          <div className={style.areaStatBottom}></div>
+          <div className={style.areaStatBottom}>
+            <AreaStatTableComponent />
+          </div>
         </section>
         <section className={`${style.cPanel} ${style.alarmStat}`}>
           <div className={style.alarmStatWrap}>
@@ -144,6 +177,18 @@ export default function DataScreenComponent() {
         </CustomPanel>
         <CustomPanel title="监控组报警统计">
           <div className={style.chartWrap} ref={monitorStatRef}></div>
+          <div className={style.monitorStatSelect}>
+            <Select
+              animation="slide-up"
+              prefixCls="custom-select"
+              defaultValue="1"
+              // onChange={onChange}
+            >
+              <Option value="1">今日</Option>
+              <Option value="2">本周</Option>
+              <Option value="3">本月</Option>
+            </Select>
+          </div>
         </CustomPanel>
         <CustomPanel title="车辆里程统计">
           <div className={style.chartWrap} ref={mileageStatRef}></div>

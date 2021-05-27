@@ -16,7 +16,7 @@
     position: fixed;
     left: 0;
     top: 0;
-    z-index: 2000;
+    z-index: 200;
   }
 }
 
@@ -101,7 +101,6 @@ section.panel {
   height: 272px;
   border: 1px solid @border-color-1;
   margin-bottom: 16px;
-  color: #fff;
   position: relative;
   background: #0a0b3f;
   .panel-l-t,
@@ -171,7 +170,9 @@ section.c-panel {
   &-select {
     width: 500px;
     height: 30px;
-    border: 1px solid #ace;
+    background: #0a0b3f;
+    border: 1px solid #5473e9;
+    border-radius: 4px;
   }
 }
 
@@ -213,6 +214,7 @@ section.c-panel {
   &-bottom {
     flex: 1;
     width: 100%;
+    padding: 20px;
     background: rgba(10, 11, 63, 0.8);
   }
 }
@@ -260,8 +262,25 @@ section.c-panel {
   height: 236px;
 }
 // 平台车辆总览 left-1
-// 报警数据统计 left-2
-// 报警跟进统计 left-3
+
+// select 报警数据统计 left-2, 报警跟进统计 left-3, 监控组报警统计 right-2
+.total-car-select,
+.follow-stat-select,
+.monitor-stat-select {
+  width: 84px;
+  height: 28px;
+  border: 1px solid #2d54b8;
+  border-radius: 4px;
+  position: absolute;
+  right: 10px;
+}
+.total-car-select,
+.monitor-stat-select {
+  top: 50px;
+}
+.follow-stat-select {
+  top: 5px;
+}
 // 离线车辆统计 right-1
 // 监控组报警统计 right-2
 // 车辆里程统计 right-3

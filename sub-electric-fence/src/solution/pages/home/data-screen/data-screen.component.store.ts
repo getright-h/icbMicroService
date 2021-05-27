@@ -376,9 +376,9 @@ export function useDataScreenStore() {
 
   /** temp */
   useEffect(() => {
-    setTimeout(() => {
-      setStateWrap({ num: getRandomNumber(0, 1000000) });
-    }, 10000);
+    // setTimeout(() => {
+    setStateWrap({ num: getRandomNumber(0, 1000000) });
+    // }, 10000);
   }, []);
 
   function getRandomNumber(min: number, max: number) {
