@@ -1,10 +1,74 @@
+import {
+  AlarmStatRequest,
+  AlarmTypeStatisticDto,
+  GpsPanelStatisticMileageSummaryDto,
+  GpsPanelStatisticOfflineSummaryDto,
+  GpsPanelVehicleStatusDto,
+  GroupAlarmSummaryStatisticDto,
+  OrganizationAlarmStatisticDto,
+  VehicleBindDto
+} from '~/solution/model/dto/data-screen.dto';
+
 /**
  * @export state变量定义和初始化
  * @class IDataScreenState
  */
 export class IDataScreenState {
-  isFull = true;
+  isFull = false;
   num = 0;
+  organizationId: string;
+
+  // getFenceAlarmStat
+  fenceCount = 0;
+  fenceVehicleCount = 0;
+
+  // getTotalStat
+  bindVehicleCount = 0;
+  deviceCount = 0;
+  vehicleCount = 0;
+  vehicleBinds: VehicleBindDto[] = [];
+
+  // getAlarmStat
+  // request
+  // alarmForm: AlarmStatRequest = {
+  //   organizationIds: [],
+  //   alarmTypeTimeRange: { start: 0, end: 0 },
+  //   alarmFollowTimeRange: { start: 0, end: 0 },
+  //   groupAlarmTimeRange: { start: 0, end: 0 }
+  // };
+  alarmForm: Omit<AlarmStatRequest, 'organizationIds'> = {
+    alarmTypeTimeRange: { start: 1611931297000, end: 1621931297000 },
+    alarmFollowTimeRange: { start: 1611931297000, end: 1621931297000 },
+    groupAlarmTimeRange: { start: 1611931297000, end: 1621931297000 }
+  };
+  // response
+  alarmCount = 0;
+  alarmFollowCount = 0;
+  fenceAlarmTodayCount = 0;
+  alarmTypeStatistics: AlarmTypeStatisticDto[] = [];
+  groupAlarmStatistic: GroupAlarmSummaryStatisticDto[] = [];
+  organizationAlarmStatistic: OrganizationAlarmStatisticDto = {
+    data: [],
+    alarmTotal: 0,
+    followedTotal: 0,
+    followingTotal: 0,
+    unFollowTotal: 0
+  };
+
+  // getGpsStat
+  offline: GpsPanelStatisticOfflineSummaryDto = {
+    total: 0,
+    offline: []
+  };
+  vehicleStatus: GpsPanelVehicleStatusDto = {
+    onlineCount: 0,
+    offlineCount: 0,
+    data: []
+  };
+  mileage: GpsPanelStatisticMileageSummaryDto = {
+    total: 0,
+    mileage: []
+  };
 }
 
 export interface CustomPanelProps {

@@ -1,41 +1,44 @@
-@tablePrefixCls: area-table;
-@text-color: #7b8bc6;
+@text-color: #7B8BC6;
 @header-color: #fff;
 @font-size-base: 14px;
-@line-height: 1.1;
-@vertical-padding: 8px;
-@horizontal-padding: 40px;
-@cell-padding: @vertical-padding @horizontal-padding;
-@cell-margin: -@vertical-padding -@horizontal-padding;
+@cell-height: 28px;
 
-.@{tablePrefixCls} {
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.area-stat {
   width: 100%;
-  position: relative;
-  box-sizing: border-box;
-  color: @text-color;
-  font-size: @font-size-base;
-  line-height: @line-height;
-  // ================= Global =================
-  table {
-    width: 100%;
-    border-spacing: 0px;
-  }
-
-  th,
-  td {
-    position: relative;
-    box-sizing: border-box;
-    padding: @cell-padding;
-    white-space: normal;
-    word-break: break-word;
-    border-top: 0;
-    border-left: 0;
-    transition: box-shadow 0.3s;
-  }
-
-  // ================= Header =================
-  thead {
+  &-header{
+    display: flex;
     border-bottom: 2px solid #2D54B8;
     color: @header-color;
+    font-size: @font-size-base;
+  }
+
+  &-body {
+    color: @text-color;
+    height: 3 * @cell-height;
+    overflow: hidden;
+    font-size: @font-size-base;
+    li {
+      display: flex;
+      height: @cell-height;
+    }
+  }
+  &-list {
+    position: relative;
+  }
+  ul .cell {
+    flex: 1;
+    height: @cell-height;
+    line-height: @cell-height;
+    box-sizing: border-box;
+    padding-left: 40px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
 }

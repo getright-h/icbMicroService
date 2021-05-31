@@ -17,15 +17,28 @@ export default function DataScreenComponent() {
     offlineStatRef,
     monitorStatRef,
     mileageStatRef,
-    changeFullScreen
+    changeFullScreen,
+    orgSelectChange
   } = useDataScreenStore();
-  const { isFull } = state;
+  const {
+    isFull,
+    fenceCount,
+    fenceVehicleCount,
+    bindVehicleCount,
+    deviceCount,
+    vehicleCount,
+    alarmCount,
+    alarmFollowCount,
+    fenceAlarmTodayCount,
+    organizationAlarmStatistic,
+    vehicleStatus
+  } = state;
 
   function OrgSearch() {
     return (
-      <div className={style.orgSearch}>
+      <div className={style.orgSearch} style={{ visibility: state.isFull ? 'hidden' : 'visible' }}>
         <div className={style.orgSearchSelect}>
-          <OrgSelectComponent />
+          <OrgSelectComponent onChange={orgSelectChange} />
         </div>
       </div>
     );
@@ -36,25 +49,25 @@ export default function DataScreenComponent() {
       <div className={style.totalStatistic}>
         <div className={style.totalStatisticItem}>
           <div>平台车辆总数</div>
-          <DigitRoll numLength={7} num={state.num}>
+          <DigitRoll numLength={7} num={vehicleCount}>
             辆
           </DigitRoll>
         </div>
         <div className={style.totalStatisticItem}>
           <div>平台设备总数</div>
-          <DigitRoll numLength={7} num={state.num}>
+          <DigitRoll numLength={7} num={deviceCount}>
             台
           </DigitRoll>
         </div>
         <div className={style.totalStatisticItem}>
           <div>平台报警总数</div>
-          <DigitRoll numLength={7} num={state.num}>
+          <DigitRoll numLength={7} num={alarmCount}>
             条
           </DigitRoll>
         </div>
         <div className={style.totalStatisticItem}>
           <div>报警跟进总数</div>
-          <DigitRoll numLength={7} num={state.num}>
+          <DigitRoll numLength={7} num={alarmFollowCount}>
             条
           </DigitRoll>
         </div>
@@ -88,12 +101,12 @@ export default function DataScreenComponent() {
             <Select
               animation="slide-up"
               prefixCls="custom-select"
-              defaultValue="1"
+              defaultValue="day"
               // onChange={onChange}
             >
-              <Option value="1">今日</Option>
-              <Option value="2">本周</Option>
-              <Option value="3">本月</Option>
+              <Option value="day">今日</Option>
+              <Option value="week">本周</Option>
+              <Option value="month">本月</Option>
             </Select>
           </div>
         </CustomPanel>
@@ -102,15 +115,15 @@ export default function DataScreenComponent() {
             <Select
               animation="slide-up"
               prefixCls="custom-select"
-              defaultValue="1"
+              defaultValue="day"
               // onChange={onChange}
             >
-              <Option value="1">今日</Option>
-              <Option value="2">本周</Option>
-              <Option value="3">本月</Option>
+              <Option value="day">今日</Option>
+              <Option value="week">本周</Option>
+              <Option value="month">本月</Option>
             </Select>
           </div>
-          <FollowStatTableComponent />
+          <FollowStatTableComponent propData={organizationAlarmStatistic} />
         </CustomPanel>
       </div>
     );
@@ -122,20 +135,20 @@ export default function DataScreenComponent() {
           <div className={style.areaStatTop}>
             <div>
               <span>绑定车辆</span>
-              <DigitRoll numLength={5} num={state.num} bgColor="#FF852F" bgBorder="none"></DigitRoll>
+              <DigitRoll numLength={5} num={bindVehicleCount} bgColor="#FF852F" bgBorder="none"></DigitRoll>
             </div>
             <div>
               <span>在线车辆</span>
-              <DigitRoll numLength={5} num={state.num} bgColor="#FF852F" bgBorder="none"></DigitRoll>
+              <DigitRoll numLength={5} num={vehicleStatus.onlineCount} bgColor="#FF852F" bgBorder="none"></DigitRoll>
             </div>
             <div>
               <span>离线车辆</span>
-              <DigitRoll numLength={5} num={state.num} bgColor="#697295" bgBorder="none"></DigitRoll>
+              <DigitRoll numLength={5} num={vehicleStatus.offlineCount} bgColor="#697295" bgBorder="none"></DigitRoll>
             </div>
           </div>
           <div className={style.areaStatMiddle} ref={areaStatRef}></div>
           <div className={style.areaStatBottom}>
-            <AreaStatTableComponent />
+            <AreaStatTableComponent propData={vehicleStatus.data} />
           </div>
         </section>
         <section className={`${style.cPanel} ${style.alarmStat}`}>
@@ -144,15 +157,21 @@ export default function DataScreenComponent() {
               <span>围栏报警</span>
             </div>
             <div className={`${style.alarmStatItems} ${style.alarmStatItemsPurple}`}>
-              {[0, 1, 2].map((o, i) => (
-                <div key={`b1-${i}`}>
-                  <span>围栏数</span>
-                  <span>100</span>
-                </div>
-              ))}
+              <div>
+                <span>围栏数</span>
+                <span>{fenceCount}</span>
+              </div>
+              <div>
+                <span>监控车辆数</span>
+                <span>{fenceVehicleCount}</span>
+              </div>
+              <div>
+                <span>今日报警数</span>
+                <span>{fenceAlarmTodayCount}</span>
+              </div>
             </div>
           </div>
-          <div className={style.alarmStatWrap}>
+          {/* <div className={style.alarmStatWrap}>
             <div className={style.alarmStatTitle}>
               <span>二押点报警</span>
             </div>
@@ -164,7 +183,7 @@ export default function DataScreenComponent() {
                 </div>
               ))}
             </div>
-          </div>
+          </div> */}
         </section>
       </div>
     );
@@ -181,12 +200,12 @@ export default function DataScreenComponent() {
             <Select
               animation="slide-up"
               prefixCls="custom-select"
-              defaultValue="1"
+              defaultValue="day"
               // onChange={onChange}
             >
-              <Option value="1">今日</Option>
-              <Option value="2">本周</Option>
-              <Option value="3">本月</Option>
+              <Option value="day">今日</Option>
+              <Option value="week">本周</Option>
+              <Option value="month">本月</Option>
             </Select>
           </div>
         </CustomPanel>
