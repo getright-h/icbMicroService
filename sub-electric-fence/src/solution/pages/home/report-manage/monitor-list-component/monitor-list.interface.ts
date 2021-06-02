@@ -10,6 +10,7 @@ export class IDirectiveListState {
   total = 0;
   currentId = '';
   exportVisible = false;
+  canExport = false;
 }
 export enum ModalType {
   CREATE,

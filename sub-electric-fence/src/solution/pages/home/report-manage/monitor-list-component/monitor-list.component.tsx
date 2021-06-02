@@ -10,7 +10,8 @@ import {
 import { AlarmParameterColumn } from './monitor-list.column';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 import { useDirectiveListStore } from './monitor-list.component.store';
-import { AlarmType_FOR_REPORT } from '~shared/constant/alarm.const';
+import style from './monitor-list.component.less';
+import { InfoCircleOutlined } from '@ant-design/icons';
 
 export default function DirectiveListComponent() {
   const {
@@ -46,7 +47,7 @@ export default function DirectiveListComponent() {
       reqUrl: 'queryGroupSearchList',
       placeholder: '请选择监控组',
       getCurrentSelectInfo: (value: string, option: any) => {
-        getCurrentSelectInfo(option.info || {}, 'groupId');
+        getCurrentSelectInfo(option?.info || {}, 'groupId');
       },
       searchForm: {
         systemId: gState?.myInfo?.systemId
@@ -69,6 +70,12 @@ export default function DirectiveListComponent() {
               name="groupId"
             >
               {queryMonitorGroup}
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item className={style.hint}>
+              <InfoCircleOutlined />
+              <span>未选择监控组不可导出</span>
             </Form.Item>
           </Col>
         </Row>
@@ -94,7 +101,7 @@ export default function DirectiveListComponent() {
           查询
         </Button>
         <Button onClick={initSearchForm}>清空</Button>
-        <Button type="primary" onClick={() => handleExportVisible(true)}>
+        <Button type="primary" disabled={!state.canExport} onClick={() => handleExportVisible(true)}>
           导出
         </Button>
       </div>

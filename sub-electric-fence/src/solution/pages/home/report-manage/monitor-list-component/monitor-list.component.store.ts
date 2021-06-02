@@ -47,6 +47,7 @@ export function useDirectiveListStore() {
     if (type == 'groupId') {
       const { id } = data;
       searchForm.setFieldsValue({ groupId: id });
+      setStateWrap({ canExport: !!id });
     }
   }
 

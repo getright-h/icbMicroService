@@ -99,7 +99,7 @@ export function useDirectiveListStore() {
 
     if (type == 'roleId') {
       const { id } = data;
-      setStateWrap({ currentRoleId: id });
+      setStateWrap({ currentRoleId: id, canExport: !!id });
       searchForm.setFieldsValue({ roleId: id });
       searchForm.resetFields(['groupId']);
     }

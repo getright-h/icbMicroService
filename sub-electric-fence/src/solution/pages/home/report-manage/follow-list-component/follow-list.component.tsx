@@ -12,6 +12,8 @@ import { useDirectiveListStore } from './follow-list.component.store';
 import { AlarmType_FOR_REPORT } from '~shared/constant/alarm.const';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 import SloveModalComponent from './slove-modal-component/slove-modal.component';
+import style from './follow-list.component.less';
+import { InfoCircleOutlined } from '@ant-design/icons';
 
 export default function DirectiveListComponent() {
   const {
@@ -121,6 +123,12 @@ export default function DirectiveListComponent() {
                 {queryRoleList}
               </Form.Item>
             </Col>
+            <Col span={8}>
+              <Form.Item className={style.hint}>
+                <InfoCircleOutlined />
+                <span>未选择监控角色不可导出</span>
+              </Form.Item>
+            </Col>
           </Row>
         </Form>
 
@@ -183,7 +191,7 @@ export default function DirectiveListComponent() {
           查询
         </Button>
         <Button onClick={initSearchForm}>清空</Button>
-        <Button type="primary" onClick={() => handleExportVisible(true)}>
+        <Button type="primary" onClick={() => handleExportVisible(true)} disabled={!state.canExport}>
           导出
         </Button>
       </div>
