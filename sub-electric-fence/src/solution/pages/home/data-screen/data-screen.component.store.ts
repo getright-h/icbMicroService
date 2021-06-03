@@ -6,10 +6,13 @@ import * as echarts from 'echarts';
 import geoJson from '~assets/library/china_full.json';
 import { DataScreenService } from '~/solution/model/services/data-screen.service';
 import moment from 'moment';
+import { AlarmStatRequest } from '~/solution/model/dto/data-screen.dto';
 
 export function useDataScreenStore() {
-  const { state, setStateWrap, getState } = useStateStore(new IDataScreenState());
+  const { state, setStateWrap } = useStateStore(new IDataScreenState());
   const dataService: DataScreenService = new DataScreenService();
+  const timeRangeTypes = ['all', 'day', 'week', 'month'];
+  // chart refs
   const areaStatRef = useRef();
   const totalCarRef = useRef();
   const alarmStatRef = useRef();
@@ -17,27 +20,75 @@ export function useDataScreenStore() {
   const monitorStatRef = useRef();
   const mileageStatRef = useRef();
 
-  // useEffect(() => {
-  //   getFenceStat();
-  //   getTotalStat();
-  //   getGpsStat();
-  // const alarmForm: AlarmStatRequest = {
-  //   organizationIds: state.organizationId && [state.organizationId],
-  //   alarmTypeTimeRange: formatTime('day'),
-  //   alarmFollowTimeRange: formatTime('day'),
-  //   groupAlarmTimeRange: formatTime('day')
-  // };
-  // setStateWrap({ alarmForm });
-
-  //   getAlarmStat();
-  // }, []);
+  // refs
+  const screenRef = useRef<HTMLDivElement>();
+  const containerRef = useRef<HTMLDivElement>();
+  const timer = useRef(null);
+  const curTimeRange = useRef(0);
+  const alarmForm = useRef<Omit<AlarmStatRequest, 'organizationIds'>>({
+    alarmTypeTimeRange: formatTime('all'),
+    alarmFollowTimeRange: formatTime('all'),
+    groupAlarmTimeRange: formatTime('all')
+  });
 
   useEffect(() => {
+    window.addEventListener('resize', () => handleResize());
+    return () => {
+      window.removeEventListener('resize', () => handleResize());
+    };
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    timer.current && clearInterval(timer.current);
+    handleResize();
+    if (state.isFull) {
+      curTimeRange.current = 0;
+      timer.current = setInterval(() => {
+        const type = timeRangeTypes[curTimeRange.current];
+        alarmForm.current = {
+          alarmTypeTimeRange: formatTime(type),
+          alarmFollowTimeRange: formatTime(type),
+          groupAlarmTimeRange: formatTime(type)
+        };
+        setStateWrap({
+          timeRange: {
+            alarmType: type,
+            alarmFollow: type,
+            groupAlarm: type
+          }
+        });
+        fetchAllData();
+        curTimeRange.current = (curTimeRange.current + 1) % 4;
+      }, 15000);
+    } else {
+      fetchAllData();
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [state.organizationId, state.isFull]);
+
+  function handleResize() {
+    const rect = screenRef.current.getBoundingClientRect();
+    const scale = Math.max(rect.width / 1920, 0.6);
+    setStateWrap({ scale });
+  }
+
+  function handleKeyDown(e: KeyboardEvent) {
+    const shiftCombine = e.shiftKey;
+    const keyCode = e.keyCode || e.which;
+    if (shiftCombine && (keyCode == 70 || e.code == 'KeyF')) {
+      changeFullScreen();
+    }
+  }
+
+  function fetchAllData() {
     getFenceStat();
     getTotalStat();
     getAlarmStat();
     getGpsStat();
-  }, [state.organizationId]);
+  }
 
   // fetch data
   function getFenceStat() {
@@ -53,9 +104,8 @@ export function useDataScreenStore() {
   }
 
   function getAlarmStat() {
-    const { alarmForm } = state;
     dataService
-      .getAlarmStat({ ...alarmForm, organizationIds: state.organizationId && [state.organizationId] })
+      .getAlarmStat({ ...alarmForm.current, organizationIds: state.organizationId && [state.organizationId] })
       .subscribe(res => {
         setStateWrap({ ...res });
       });
@@ -99,12 +149,12 @@ export function useDataScreenStore() {
   }
 
   function changeTimeRange(type: string, rangeType: string) {
-    setStateWrap({
-      alarmForm: {
-        ...state.alarmForm,
-        [type]: formatTime(rangeType)
-      }
-    });
+    alarmForm.current = {
+      ...alarmForm.current,
+      [`${type}TimeRange`]: formatTime(rangeType)
+    };
+    setStateWrap({ timeRange: { ...state.timeRange, [type]: rangeType } });
+    getAlarmStat();
   }
 
   function changeFullScreen() {
@@ -160,6 +210,15 @@ export function useDataScreenStore() {
             borderColor: 'rgba(255,255,255,0.3)'
           },
           emphasis: {
+            itemStyle: {
+              areaColor: '#929FD1',
+              borderColor: 'rgba(255,255,255,0.3)'
+            },
+            label: {
+              show: false
+            }
+          },
+          select: {
             itemStyle: {
               areaColor: '#929FD1',
               borderColor: 'rgba(255,255,255,0.3)'
@@ -253,7 +312,7 @@ export function useDataScreenStore() {
   }
 
   // 平台车辆总览
-  useECharts(totalCarRef, getTotalCarOption());
+  useECharts(totalCarRef, !!state.vehicleBinds.length ? getTotalCarOption() : createEmptyOption());
   function getTotalCarOption(): {} {
     const { vehicleBinds } = state;
     const sortData = vehicleBinds.sort((a, b) => b.total - a.total);
@@ -312,22 +371,20 @@ export function useDataScreenStore() {
   }
 
   // 报警数据统计
-  useECharts(alarmStatRef, getAlarmStatOption());
+  useECharts(alarmStatRef, !!state.alarmTypeStatistics.length ? getAlarmStatOption() : createEmptyOption());
   function getAlarmStatOption(): {} {
     const { alarmTypeStatistics } = state;
-    const sum = alarmTypeStatistics.reduce((total, a) => (total += a.count), 0);
     const datas = alarmTypeStatistics.map(d => {
-      return { name: d.alarmTypeText || '', value: d.count, percent: ((d.count / sum) * 100).toFixed(2) || 0 };
+      return { name: d.alarmTypeText || '', value: d.count };
     });
     return createPieOptions(datas, {
-      name: '报警数据统计',
+      // name: '报警数据统计',
       radius: ['50%', '75%'],
+      minAngle: 5,
       startAngle: 60,
       data: datas
     });
   }
-
-  // 报警跟进统计
 
   // 离线车辆统计
   useECharts(offlineStatRef, getOfflineStatOption());
@@ -338,14 +395,14 @@ export function useDataScreenStore() {
     });
     return createPieOptions(datas, {
       name: '离线车辆统计',
-      radius: [0, '75%'],
+      radius: [1, '75%'],
       startAngle: 180,
       data: datas
     });
   }
 
   // 监控组报警统计
-  useECharts(monitorStatRef, getMonitorOption());
+  useECharts(monitorStatRef, !!state.groupAlarmStatistic.length ? getMonitorOption() : createEmptyOption());
   function getMonitorOption(): {} {
     const { groupAlarmStatistic } = state;
     const formatData = groupAlarmStatistic.sort((a, b) => b.total - a.total);
@@ -469,7 +526,7 @@ export function useDataScreenStore() {
         return;
       }
     });
-    return [`{a|${v}}`, `{b|${((datas[index]?.value / sum) * 100).toFixed(2)}%}`].join('');
+    return [`{a|${v}}`, `{b|${((sum ? datas[index]?.value / sum : 0) * 100).toFixed(2)}%}`].join('');
   }
 
   function createPieOptions(datas: any[], customSeries: {}) {
@@ -489,13 +546,19 @@ export function useDataScreenStore() {
         }
       },
       legend: {
+        type: 'scroll',
         icon: 'rect',
         itemWidth: 15,
         itemHeight: 15,
         orient: 'vertical',
         left: '3%',
         top: '8%',
-        itemGap: 16,
+        itemGap: 14,
+        pageIconColor: '#929FD1',
+        pageIconInactiveColor: '#3B4E95',
+        pageTextStyle: {
+          color: '#929FD1'
+        },
         formatter: (v: any) => formatAlarmLegend(v, datas),
         textStyle: {
           rich: {
@@ -526,6 +589,7 @@ export function useDataScreenStore() {
           label: { show: false },
           labelLine: { show: false },
           itemStyle: {
+            // borderRadius: 2,
             borderColor: '#0A0B3F',
             borderWidth: 4
           },
@@ -537,9 +601,31 @@ export function useDataScreenStore() {
     };
   }
 
+  function createEmptyOption() {
+    return {
+      graphic: [
+        {
+          type: 'text',
+          left: 'center',
+          top: 'center',
+          style: {
+            fill: '#7b8bc6',
+            text: 'NO DATA',
+            font: 'bold 26px sans-serif'
+          }
+        }
+      ]
+    };
+  }
+
   // util
   function formatTime(type: string) {
     switch (type) {
+      case 'all':
+        return {
+          start: 0,
+          end: 0
+        };
       case 'day':
         return {
           start: moment()
@@ -568,6 +654,8 @@ export function useDataScreenStore() {
 
   return {
     state,
+    screenRef,
+    containerRef,
     areaStatRef,
     totalCarRef,
     alarmStatRef,
@@ -575,6 +663,8 @@ export function useDataScreenStore() {
     monitorStatRef,
     mileageStatRef,
     changeFullScreen,
-    orgSelectChange
+    orgSelectChange,
+    changeTimeRange,
+    fetchAllData
   };
 }

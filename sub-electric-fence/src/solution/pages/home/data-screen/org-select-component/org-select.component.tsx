@@ -21,6 +21,7 @@ export default function OrgSelectComponent(props: IOrgSelectProps) {
       onSearch={value => debounceFnSearch(value)}
       onFocus={focusSearch}
       value={curValue}
+      dropdownStyle={props.dropdownStyle}
     >
       {orgList.map((item: { [x: string]: any }) => {
         return (

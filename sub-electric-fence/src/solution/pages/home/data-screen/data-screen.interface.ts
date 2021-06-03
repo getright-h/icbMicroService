@@ -1,5 +1,4 @@
 import {
-  AlarmStatRequest,
   AlarmTypeStatisticDto,
   GpsPanelStatisticMileageSummaryDto,
   GpsPanelStatisticOfflineSummaryDto,
@@ -15,8 +14,8 @@ import {
  */
 export class IDataScreenState {
   isFull = false;
-  num = 0;
   organizationId: string;
+  scale = 1;
 
   // getFenceAlarmStat
   fenceCount = 0;
@@ -29,17 +28,11 @@ export class IDataScreenState {
   vehicleBinds: VehicleBindDto[] = [];
 
   // getAlarmStat
-  // request
-  // alarmForm: AlarmStatRequest = {
-  //   organizationIds: [],
-  //   alarmTypeTimeRange: { start: 0, end: 0 },
-  //   alarmFollowTimeRange: { start: 0, end: 0 },
-  //   groupAlarmTimeRange: { start: 0, end: 0 }
-  // };
-  alarmForm: Omit<AlarmStatRequest, 'organizationIds'> = {
-    alarmTypeTimeRange: { start: 1611931297000, end: 1621931297000 },
-    alarmFollowTimeRange: { start: 1611931297000, end: 1621931297000 },
-    groupAlarmTimeRange: { start: 1611931297000, end: 1621931297000 }
+  // timeRange
+  timeRange: Record<string, string> = {
+    alarmType: 'all',
+    alarmFollow: 'all',
+    groupAlarm: 'all'
   };
   // response
   alarmCount = 0;
@@ -70,7 +63,6 @@ export class IDataScreenState {
     mileage: []
   };
 }
-
 export interface CustomPanelProps {
   children: any;
   title: string;

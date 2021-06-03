@@ -13,5 +13,6 @@ export class IOrgSelectState {
  * @class IOrgSelectProps
  */
 export class IOrgSelectProps {
+  dropdownStyle: Record<string, any>;
   onChange: (value: string) => void;
 }

@@ -11,6 +11,8 @@ import Select, { Option } from 'rc-select';
 export default function DataScreenComponent() {
   const {
     state,
+    screenRef,
+    containerRef,
     areaStatRef,
     totalCarRef,
     alarmStatRef,
@@ -18,7 +20,9 @@ export default function DataScreenComponent() {
     monitorStatRef,
     mileageStatRef,
     changeFullScreen,
-    orgSelectChange
+    orgSelectChange,
+    changeTimeRange,
+    fetchAllData
   } = useDataScreenStore();
   const {
     isFull,
@@ -31,14 +35,18 @@ export default function DataScreenComponent() {
     alarmFollowCount,
     fenceAlarmTodayCount,
     organizationAlarmStatistic,
-    vehicleStatus
+    vehicleStatus,
+    timeRange
   } = state;
 
   function OrgSearch() {
     return (
       <div className={style.orgSearch} style={{ visibility: state.isFull ? 'hidden' : 'visible' }}>
         <div className={style.orgSearchSelect}>
-          <OrgSelectComponent onChange={orgSelectChange} />
+          <OrgSelectComponent
+            onChange={orgSelectChange}
+            dropdownStyle={{ transform: `scale(${state.scale})`, transformOrigin: 'top left' }}
+          />
         </div>
       </div>
     );
@@ -101,9 +109,11 @@ export default function DataScreenComponent() {
             <Select
               animation="slide-up"
               prefixCls="custom-select"
-              defaultValue="day"
-              // onChange={onChange}
+              value={timeRange['alarmType']}
+              onChange={v => changeTimeRange('alarmType', v)}
+              dropdownStyle={{ transform: `scale(${state.scale})`, transformOrigin: 'top left' }}
             >
+              <Option value="all">全部</Option>
               <Option value="day">今日</Option>
               <Option value="week">本周</Option>
               <Option value="month">本月</Option>
@@ -115,9 +125,11 @@ export default function DataScreenComponent() {
             <Select
               animation="slide-up"
               prefixCls="custom-select"
-              defaultValue="day"
-              // onChange={onChange}
+              value={timeRange['alarmFollow']}
+              onChange={v => changeTimeRange('alarmFollow', v)}
+              dropdownStyle={{ transform: `scale(${state.scale})`, transformOrigin: 'top left' }}
             >
+              <Option value="all">全部</Option>
               <Option value="day">今日</Option>
               <Option value="week">本周</Option>
               <Option value="month">本月</Option>
@@ -171,19 +183,6 @@ export default function DataScreenComponent() {
               </div>
             </div>
           </div>
-          {/* <div className={style.alarmStatWrap}>
-            <div className={style.alarmStatTitle}>
-              <span>二押点报警</span>
-            </div>
-            <div className={`${style.alarmStatItems} ${style.alarmStatItemsOrange}`}>
-              {[0, 1, 2].map((o, i) => (
-                <div key={`b2-${i}`}>
-                  <span>围栏数</span>
-                  <span>100</span>
-                </div>
-              ))}
-            </div>
-          </div> */}
         </section>
       </div>
     );
@@ -200,9 +199,11 @@ export default function DataScreenComponent() {
             <Select
               animation="slide-up"
               prefixCls="custom-select"
-              defaultValue="day"
-              // onChange={onChange}
+              value={timeRange['groupAlarm']}
+              onChange={v => changeTimeRange('groupAlarm', v)}
+              dropdownStyle={{ transform: `scale(${state.scale})`, transformOrigin: 'top left' }}
             >
+              <Option value="all">全部</Option>
               <Option value="day">今日</Option>
               <Option value="week">本周</Option>
               <Option value="month">本月</Option>
@@ -216,14 +217,22 @@ export default function DataScreenComponent() {
     );
   }
   return (
-    <div className={`${style.screen} ${isFull ? style.full : ''}`}>
-      <div className={style.container}>
+    <div className={`${style.screen} ${isFull ? style.full : ''}`} ref={screenRef}>
+      <div
+        className={style.container}
+        ref={containerRef}
+        style={{ transform: `scale(${state.scale})`, transformOrigin: 'top left' }}
+      >
         <div className={style.header}>
           <div
             className={`${style.headerBtn} ${isFull ? style.headerBtnHide : ''}`}
             onClick={() => changeFullScreen()}
           ></div>
-          <div className={`${style.headerBtn} ${isFull ? style.headerBtnHide : ''}`}></div>
+          <div
+            className={style.headerBtn}
+            style={{ visibility: state.isFull ? 'hidden' : 'visible' }}
+            onClick={() => fetchAllData()}
+          ></div>
         </div>
 
         <div className={style.content}>

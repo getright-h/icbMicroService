@@ -11,7 +11,11 @@ export function useAreaStatTableStore(props: IAreaStatTableProps) {
   const anime = useRef<Animation>(null);
 
   useEffect(() => {
-    !!props.propData.length && formatScrollData(props.propData);
+    if (!!props.propData.length) {
+      formatScrollData(props.propData);
+    } else {
+      setStateWrap({ scrollData: [] });
+    }
   }, [props.propData]);
 
   useEffect(() => {

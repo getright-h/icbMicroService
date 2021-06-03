@@ -11,7 +11,11 @@ export function useFollowStatTableStore(props: IFollowStatTableProps) {
   const anime = useRef<Animation>(null);
 
   useEffect(() => {
-    !!props.propData.data.length && formatScrollData(props.propData.data);
+    if (!!props.propData.data.length) {
+      formatScrollData(props.propData.data);
+    } else {
+      setStateWrap({ scrollData: [] });
+    }
   }, [props.propData.data]);
 
   useEffect(() => {
