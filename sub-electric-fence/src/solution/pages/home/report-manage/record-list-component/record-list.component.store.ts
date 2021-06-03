@@ -114,6 +114,7 @@ export function useDwellListStore() {
   }
 
   function handleExportVisible(visible: boolean) {
+    visible && searchClick();
     setStateWrap({ exportVisible: visible });
   }
 
