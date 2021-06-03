@@ -49,7 +49,7 @@ export function useDirectiveListStore() {
 
   function initSearchForm() {
     searchForm.resetFields();
-    setStateWrap({ timeInfo: [] });
+    setStateWrap({ timeInfo: [], canExport: false });
     searchClick();
   }
 

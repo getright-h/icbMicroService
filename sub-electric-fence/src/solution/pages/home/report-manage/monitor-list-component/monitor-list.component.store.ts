@@ -58,6 +58,7 @@ export function useDirectiveListStore() {
 
   function initSearchForm() {
     searchForm.resetFields();
+    setStateWrap({ canExport: false });
     searchClick();
   }
 
