@@ -371,6 +371,15 @@ export function fetchChildAppsConfig() {
         path: '/home/fence',
         children: [
           {
+            path: 'dataScreen',
+            title: '大数据中心',
+            defaultMountApp: false, // 是否默认启动当前第一个页面
+            icon: 'pie',
+            lazyload: true,
+            exact: true,
+            componentUrl: 'dataScreen' //对应子应用的组件名
+          },
+          {
             path: 'parameter', // 菜单路径
             title: '参数管理', // 菜单名
             icon: 'inbox', // 图标

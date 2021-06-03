@@ -46,8 +46,10 @@ function HomeModule(props: any) {
     );
   }
 
-  function renderLayoutContainer() {
-    return <Layout.Content>{RoutesService.renderRoutes(homeRoutes)}</Layout.Content>;
+  const RouterInfo = React.useMemo(() => RoutesService.renderRoutes(homeRoutes), []);
+
+  function RenderLayoutContainer() {
+    return <Layout.Content>{RouterInfo}</Layout.Content>;
   }
 
   return (
@@ -56,7 +58,7 @@ function HomeModule(props: any) {
         {!source && <IHomeHeaderComponent></IHomeHeaderComponent>}
         <div className={style.bodyContainer} style={{ paddingTop: !source ? '6.75rem' : '1rem' }}>
           {!source && renderLayoutSider()}
-          <div className={style.pageContainer}>{renderLayoutContainer()}</div>
+          <div className={style.pageContainer}>{RenderLayoutContainer()}</div>
         </div>
       </div>
     </Spin>

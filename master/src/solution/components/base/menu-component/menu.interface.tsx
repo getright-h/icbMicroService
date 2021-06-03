@@ -10,7 +10,8 @@ import {
   RadarChartOutlined,
   TableOutlined,
   TeamOutlined,
-  UserOutlined
+  UserOutlined,
+  PieChartOutlined
 } from '@ant-design/icons';
 import * as React from 'react';
 export interface IMenu {
@@ -42,5 +43,6 @@ export const IconList = {
   inbox: <PartitionOutlined />,
   user: <UserOutlined />,
   table: <TableOutlined />,
-  aim: <AimOutlined />
+  aim: <AimOutlined />,
+  pie: <PieChartOutlined />
 };

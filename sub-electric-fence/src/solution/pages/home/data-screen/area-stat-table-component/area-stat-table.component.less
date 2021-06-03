@@ -1,0 +1,44 @@
+@text-color: #7B8BC6;
+@header-color: #fff;
+@font-size-base: 14px;
+@cell-height: 28px;
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.area-stat {
+  width: 100%;
+  &-header{
+    display: flex;
+    border-bottom: 2px solid #2D54B8;
+    color: @header-color;
+    font-size: @font-size-base;
+  }
+
+  &-body {
+    color: @text-color;
+    height: 3 * @cell-height;
+    overflow: hidden;
+    font-size: @font-size-base;
+    li {
+      display: flex;
+      height: @cell-height;
+    }
+  }
+  &-list {
+    position: relative;
+  }
+  ul .cell {
+    flex: 1;
+    height: @cell-height;
+    line-height: @cell-height;
+    box-sizing: border-box;
+    padding-left: 40px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}
