@@ -18,9 +18,9 @@ yarn-error.log*
 src/**/*.d.ts
 # 本地环境变量
 .env.local
+package-lock.json
 # yarn.lock
-# yarn.lock
-*.lock
+# *.lock
 *.less.d.ts
 
 .vscode
