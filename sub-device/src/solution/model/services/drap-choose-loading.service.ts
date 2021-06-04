@@ -136,7 +136,7 @@ export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
   }
   //监控组搜索
   queryGroupSearchList(params: QueryVehiclePagedListParam): Observable<DrapChooseLoadingReturn> {
-    return this.requestService.get(QUERY_GROUP_SEARCH_LIST, params);
+    return this.requestService.post(QUERY_GROUP_SEARCH_LIST, params);
   }
   // 报警指令类型
   getTypesList(): Observable<{ data: IDirectiveReturn[]; total: number }> {
