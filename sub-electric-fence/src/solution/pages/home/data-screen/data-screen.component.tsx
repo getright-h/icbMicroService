@@ -24,19 +24,20 @@ export default function DataScreenComponent() {
     changeTimeRange,
     fetchAllData
   } = useDataScreenStore();
+
   const {
     isFull,
     fenceCount,
     fenceVehicleCount,
-    bindVehicleCount,
-    deviceCount,
-    vehicleCount,
     alarmCount,
     alarmFollowCount,
     fenceAlarmTodayCount,
     organizationAlarmStatistic,
     vehicleStatus,
-    timeRange
+    timeRange,
+    bindVehicleCount,
+    deviceCount,
+    vehicleCount
   } = state;
 
   function OrgSearch() {
@@ -97,29 +98,42 @@ export default function DataScreenComponent() {
       </section>
     );
   }
+
+  const totalCarRefComponent = React.useMemo(() => {
+    return (
+      <CustomPanel title="平台车辆总览">
+        <div className={style.chartWrap} ref={totalCarRef}></div>
+      </CustomPanel>
+    );
+  }, [JSON.stringify(state.vehicleBinds)]);
+
+  const alarmStatRefComponent = React.useMemo(() => {
+    return (
+      <CustomPanel title="报警数据统计">
+        <div className={style.chartWrap} ref={alarmStatRef}></div>;
+        <div className={style.totalCarSelect}>
+          <Select
+            animation="slide-up"
+            prefixCls="custom-select"
+            value={timeRange['alarmType']}
+            onChange={v => changeTimeRange('alarmType', v)}
+            dropdownStyle={{ transform: `scale(${state.scale})`, transformOrigin: 'top left' }}
+          >
+            <Option value="all">全部</Option>
+            <Option value="day">今日</Option>
+            <Option value="week">本周</Option>
+            <Option value="month">本月</Option>
+          </Select>
+        </div>
+      </CustomPanel>
+    );
+  }, [JSON.stringify(state.alarmTypeStatistics), timeRange['alarmType'], state.scale]);
+
   function MainLeft() {
     return (
       <div className={style.contentMainLeft}>
-        <CustomPanel title="平台车辆总览">
-          <div className={style.chartWrap} ref={totalCarRef}></div>
-        </CustomPanel>
-        <CustomPanel title="报警数据统计">
-          <div className={style.chartWrap} ref={alarmStatRef}></div>
-          <div className={style.totalCarSelect}>
-            <Select
-              animation="slide-up"
-              prefixCls="custom-select"
-              value={timeRange['alarmType']}
-              onChange={v => changeTimeRange('alarmType', v)}
-              dropdownStyle={{ transform: `scale(${state.scale})`, transformOrigin: 'top left' }}
-            >
-              <Option value="all">全部</Option>
-              <Option value="day">今日</Option>
-              <Option value="week">本周</Option>
-              <Option value="month">本月</Option>
-            </Select>
-          </div>
-        </CustomPanel>
+        {totalCarRefComponent}
+        {alarmStatRefComponent}
         <CustomPanel title="报警跟进统计">
           <div className={style.followStatSelect}>
             <Select
@@ -187,32 +201,50 @@ export default function DataScreenComponent() {
       </div>
     );
   }
+
+  const offlineStatRefComponent = React.useMemo(() => {
+    return (
+      <CustomPanel title="离线车辆统计">
+        <div className={style.chartWrap} ref={offlineStatRef}></div>
+      </CustomPanel>
+    );
+  }, [JSON.stringify(state.offline)]);
+
+  const monitorStatRefC = React.useMemo(() => {
+    return (
+      <CustomPanel title="监控组报警统计">
+        <div className={style.chartWrap} ref={monitorStatRef}></div>;
+        <div className={style.monitorStatSelect}>
+          <Select
+            animation="slide-up"
+            prefixCls="custom-select"
+            value={timeRange['groupAlarm']}
+            onChange={v => changeTimeRange('groupAlarm', v)}
+            dropdownStyle={{ transform: `scale(${state.scale})`, transformOrigin: 'top left' }}
+          >
+            <Option value="all">全部</Option>
+            <Option value="day">今日</Option>
+            <Option value="week">本周</Option>
+            <Option value="month">本月</Option>
+          </Select>
+        </div>
+      </CustomPanel>
+    );
+  }, [JSON.stringify(state.groupAlarmStatistic), timeRange['groupAlarm'], state.scale]);
+
+  const mileageStatRefC = React.useMemo(() => {
+    return (
+      <CustomPanel title="车辆里程统计">
+        <div className={style.chartWrap} ref={mileageStatRef}></div>
+      </CustomPanel>
+    );
+  }, [JSON.stringify(state.mileage)]);
   function MainRight() {
     return (
       <div className={style.contentMainRight}>
-        <CustomPanel title="离线车辆统计">
-          <div className={style.chartWrap} ref={offlineStatRef}></div>
-        </CustomPanel>
-        <CustomPanel title="监控组报警统计">
-          <div className={style.chartWrap} ref={monitorStatRef}></div>
-          <div className={style.monitorStatSelect}>
-            <Select
-              animation="slide-up"
-              prefixCls="custom-select"
-              value={timeRange['groupAlarm']}
-              onChange={v => changeTimeRange('groupAlarm', v)}
-              dropdownStyle={{ transform: `scale(${state.scale})`, transformOrigin: 'top left' }}
-            >
-              <Option value="all">全部</Option>
-              <Option value="day">今日</Option>
-              <Option value="week">本周</Option>
-              <Option value="month">本月</Option>
-            </Select>
-          </div>
-        </CustomPanel>
-        <CustomPanel title="车辆里程统计">
-          <div className={style.chartWrap} ref={mileageStatRef}></div>
-        </CustomPanel>
+        {offlineStatRefComponent}
+        {monitorStatRefC}
+        {mileageStatRefC}
       </div>
     );
   }

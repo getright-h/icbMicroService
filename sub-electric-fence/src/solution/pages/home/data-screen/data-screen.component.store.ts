@@ -162,7 +162,11 @@ export function useDataScreenStore() {
   }
 
   // 地图区域数据
-  useECharts(areaStatRef, getAreaStatOption());
+  const getAreaStatOptionCB = React.useMemo(() => {
+    return getAreaStatOption();
+  }, [state.vehicleStatus]);
+
+  useECharts(areaStatRef, getAreaStatOptionCB);
   function getAreaStatOption(): {} {
     const { vehicleStatus } = state;
     const datas = vehicleStatus.data.map(d => {
@@ -312,7 +316,10 @@ export function useDataScreenStore() {
   }
 
   // 平台车辆总览
-  useECharts(totalCarRef, !!state.vehicleBinds.length ? getTotalCarOption() : createEmptyOption());
+  const getTotalCarOptionCB = React.useMemo(() => {
+    return !!state.vehicleBinds.length ? getTotalCarOption() : createEmptyOption();
+  }, [state.vehicleBinds, state.scale]);
+  useECharts(totalCarRef, getTotalCarOptionCB);
   function getTotalCarOption(): {} {
     const { vehicleBinds } = state;
     const sortData = vehicleBinds.sort((a, b) => b.total - a.total);
@@ -371,7 +378,10 @@ export function useDataScreenStore() {
   }
 
   // 报警数据统计
-  useECharts(alarmStatRef, !!state.alarmTypeStatistics.length ? getAlarmStatOption() : createEmptyOption());
+  const getAlarmStatOptionCB = React.useMemo(() => {
+    return !!state.alarmTypeStatistics.length ? getAlarmStatOption() : createEmptyOption();
+  }, [state.alarmTypeStatistics, state.scale]);
+  useECharts(alarmStatRef, getAlarmStatOptionCB);
   function getAlarmStatOption(): {} {
     const { alarmTypeStatistics } = state;
     const datas = alarmTypeStatistics.map(d => {
@@ -387,7 +397,10 @@ export function useDataScreenStore() {
   }
 
   // 离线车辆统计
-  useECharts(offlineStatRef, getOfflineStatOption());
+  const getOfflineStatOptionCB = React.useMemo(() => {
+    return getOfflineStatOption();
+  }, [state.offline]);
+  useECharts(offlineStatRef, getOfflineStatOptionCB);
   function getOfflineStatOption(): {} {
     const { offline } = state;
     const datas = ['一天', '三天', '七天', '一个月以上'].map((n, i) => {
@@ -402,7 +415,10 @@ export function useDataScreenStore() {
   }
 
   // 监控组报警统计
-  useECharts(monitorStatRef, !!state.groupAlarmStatistic.length ? getMonitorOption() : createEmptyOption());
+  const monitorStatRefCB = React.useMemo(() => {
+    return !!state.groupAlarmStatistic.length ? getMonitorOption() : createEmptyOption();
+  }, [state.groupAlarmStatistic, state.scale]);
+  useECharts(monitorStatRef, monitorStatRefCB);
   function getMonitorOption(): {} {
     const { groupAlarmStatistic } = state;
     const formatData = groupAlarmStatistic.sort((a, b) => b.total - a.total);
@@ -436,7 +452,10 @@ export function useDataScreenStore() {
   }
 
   // 车辆里程统计
-  useECharts(mileageStatRef, getMileageStatOption());
+  const getMileageStatOptionCB = React.useMemo(() => {
+    return getMileageStatOption();
+  }, [state.mileage]);
+  useECharts(mileageStatRef, getMileageStatOptionCB);
   function getMileageStatOption(): {} {
     const { mileage } = state;
     const datas = ['0-1W公里', '1W-5W公里', '5W-10W公里', '10W公里以上'].map((n, i) => {
