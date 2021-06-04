@@ -18,15 +18,21 @@ export default function FollowStatTableComponent(props: IFollowStatTableProps) {
         </ul>
         <div className={style.followStatBody}>
           <ul className={style.followStatList} ref={scrollRef}>
-            {scrollData.map(item => (
-              <li key={item.id} className={style.row}>
-                <span className={style.cell}>{item.organizationName}</span>
-                <span className={style.cell}>{item.total}</span>
-                <span className={style.cell}>{item.following}</span>
-                <span className={style.cell}>{item.unFollow}</span>
-                <span className={style.cell}>{item.followed}</span>
-              </li>
-            ))}
+            {!!scrollData.length ? (
+              scrollData.map(item => (
+                <li key={item.id} className={style.row}>
+                  <span className={style.cell}>{item.organizationName}</span>
+                  <span className={style.cell}>{item.total}</span>
+                  <span className={style.cell}>{item.following}</span>
+                  <span className={style.cell}>{item.unFollow}</span>
+                  <span className={style.cell}>{item.followed}</span>
+                </li>
+              ))
+            ) : (
+              <div className={style.noData}>
+                <span>NO DATA</span>
+              </div>
+            )}
           </ul>
         </div>
         <ul className={style.followStatFooter}>

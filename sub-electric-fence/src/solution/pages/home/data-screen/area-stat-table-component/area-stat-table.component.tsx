@@ -15,13 +15,19 @@ export default function AreaStatTableComponent(props: IAreaStatTableProps) {
       </ul>
       <div className={style.areaStatBody}>
         <ul className={style.areaStatList} ref={scrollRef}>
-          {scrollData.map((item, i) => (
-            <li key={`area-${i}`} className={style.row}>
-              <span className={style.cell}>{item.province}</span>
-              <span className={style.cell}>{item.onlineCount}</span>
-              <span className={style.cell}>{item.offlineCount}</span>
-            </li>
-          ))}
+          {!!scrollData.length ? (
+            scrollData.map((item, i) => (
+              <li key={`area-${i}`} className={style.row}>
+                <span className={style.cell}>{item.province}</span>
+                <span className={style.cell}>{item.onlineCount}</span>
+                <span className={style.cell}>{item.offlineCount}</span>
+              </li>
+            ))
+          ) : (
+            <div className={style.noData}>
+              <span>NO DATA</span>
+            </div>
+          )}
         </ul>
       </div>
     </div>

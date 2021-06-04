@@ -105,7 +105,7 @@ export default function DataScreenComponent() {
         <div className={style.chartWrap} ref={totalCarRef}></div>
       </CustomPanel>
     );
-  }, [JSON.stringify(state.vehicleBinds)]);
+  }, [JSON.stringify(state.vehicleBinds), state.scale]);
 
   const alarmStatRefComponent = React.useMemo(() => {
     return (
@@ -154,6 +154,9 @@ export default function DataScreenComponent() {
       </div>
     );
   }
+  const areaStatRefC = React.useMemo(() => <div className={style.areaStatMiddle} ref={areaStatRef}></div>, [
+    JSON.stringify(vehicleStatus)
+  ]);
   function MainCenter() {
     return (
       <div className={style.contentMainCenter}>
@@ -172,7 +175,7 @@ export default function DataScreenComponent() {
               <DigitRoll numLength={5} num={vehicleStatus.offlineCount} bgColor="#697295" bgBorder="none"></DigitRoll>
             </div>
           </div>
-          <div className={style.areaStatMiddle} ref={areaStatRef}></div>
+          {areaStatRefC}
           <div className={style.areaStatBottom}>
             <AreaStatTableComponent propData={vehicleStatus.data} />
           </div>

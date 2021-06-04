@@ -24,6 +24,7 @@ export function useDataScreenStore() {
   const screenRef = useRef<HTMLDivElement>();
   const containerRef = useRef<HTMLDivElement>();
   const timer = useRef(null);
+  const scaleTimer = useRef(null);
   const curTimeRange = useRef(0);
   const alarmForm = useRef<Omit<AlarmStatRequest, 'organizationIds'>>({
     alarmTypeTimeRange: formatTime('all'),
@@ -70,9 +71,15 @@ export function useDataScreenStore() {
   }, [state.organizationId, state.isFull]);
 
   function handleResize() {
-    const rect = screenRef.current.getBoundingClientRect();
-    const scale = Math.max(rect.width / 1920, 0.6);
-    setStateWrap({ scale });
+    if (!scaleTimer.current) {
+      const rect = screenRef.current.getBoundingClientRect();
+      const scale = Math.max(rect.width / 1920, 0.6);
+      scaleTimer.current = true;
+      setTimeout(function() {
+        scaleTimer.current = false;
+        setStateWrap({ scale });
+      }, 100);
+    }
   }
 
   function handleKeyDown(e: KeyboardEvent) {
@@ -84,31 +91,25 @@ export function useDataScreenStore() {
   }
 
   function fetchAllData() {
-    getFenceStat();
-    getTotalStat();
-    getAlarmStat();
-    getGpsStat();
+    Promise.all([getFenceStat(), getTotalStat(), getAlarmStat(), getGpsStat()]).then(values => {
+      const res = values.reduce((a, b) => Object.assign(a, b), {});
+      setStateWrap(res);
+    });
   }
 
   // fetch data
   function getFenceStat() {
-    dataService.getFenceStat(state.organizationId && [state.organizationId]).subscribe(res => {
-      setStateWrap({ ...res });
-    });
+    return dataService.getFenceStat(state.organizationId && [state.organizationId]).toPromise();
   }
 
   function getTotalStat() {
-    dataService.getTotalStat(state.organizationId && [state.organizationId]).subscribe(res => {
-      setStateWrap({ ...res });
-    });
+    return dataService.getTotalStat(state.organizationId && [state.organizationId]).toPromise();
   }
 
   function getAlarmStat() {
-    dataService
+    return dataService
       .getAlarmStat({ ...alarmForm.current, organizationIds: state.organizationId && [state.organizationId] })
-      .subscribe(res => {
-        setStateWrap({ ...res });
-      });
+      .toPromise();
   }
 
   function getGpsStat() {
@@ -132,15 +133,13 @@ export function useDataScreenStore() {
         .subtract(1, 'M')
         .valueOf()
     ];
-    dataService
+    return dataService
       .getGpsStat({
         organizationIds: state.organizationId && [state.organizationId],
         mielageParam,
         offlineTimeStamps
       })
-      .subscribe(res => {
-        setStateWrap({ ...res });
-      });
+      .toPromise();
   }
 
   //handle change
@@ -154,7 +153,7 @@ export function useDataScreenStore() {
       [`${type}TimeRange`]: formatTime(rangeType)
     };
     setStateWrap({ timeRange: { ...state.timeRange, [type]: rangeType } });
-    getAlarmStat();
+    getAlarmStat().then(res => setStateWrap({ ...res }));
   }
 
   function changeFullScreen() {
