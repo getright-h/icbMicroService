@@ -91,25 +91,31 @@ export function useDataScreenStore() {
   }
 
   function fetchAllData() {
-    Promise.all([getFenceStat(), getTotalStat(), getAlarmStat(), getGpsStat()]).then(values => {
-      const res = values.reduce((a, b) => Object.assign(a, b), {});
-      setStateWrap(res);
-    });
+    getFenceStat();
+    getTotalStat();
+    getAlarmStat();
+    getGpsStat();
   }
 
   // fetch data
   function getFenceStat() {
-    return dataService.getFenceStat(state.organizationId && [state.organizationId]).toPromise();
+    dataService.getFenceStat(state.organizationId && [state.organizationId]).subscribe(res => {
+      setStateWrap({ ...res });
+    });
   }
 
   function getTotalStat() {
-    return dataService.getTotalStat(state.organizationId && [state.organizationId]).toPromise();
+    dataService.getTotalStat(state.organizationId && [state.organizationId]).subscribe(res => {
+      setStateWrap({ ...res });
+    });
   }
 
   function getAlarmStat() {
-    return dataService
+    dataService
       .getAlarmStat({ ...alarmForm.current, organizationIds: state.organizationId && [state.organizationId] })
-      .toPromise();
+      .subscribe(res => {
+        setStateWrap({ ...res });
+      });
   }
 
   function getGpsStat() {
@@ -133,13 +139,15 @@ export function useDataScreenStore() {
         .subtract(1, 'M')
         .valueOf()
     ];
-    return dataService
+    dataService
       .getGpsStat({
         organizationIds: state.organizationId && [state.organizationId],
         mielageParam,
         offlineTimeStamps
       })
-      .toPromise();
+      .subscribe(res => {
+        setStateWrap({ ...res });
+      });
   }
 
   //handle change
