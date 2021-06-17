@@ -164,11 +164,11 @@ export default function DataScreenComponent() {
           <div className={style.areaStatTop}>
             <div>
               <span>绑定车辆</span>
-              <DigitRoll numLength={5} num={bindVehicleCount} bgColor="#FF852F" bgBorder="none"></DigitRoll>
+              <DigitRoll numLength={6} num={bindVehicleCount} bgColor="#FF852F" bgBorder="none"></DigitRoll>
             </div>
             <div>
               <span>在线车辆</span>
-              <DigitRoll numLength={5} num={vehicleStatus.onlineCount} bgColor="#FF852F" bgBorder="none"></DigitRoll>
+              <DigitRoll numLength={6} num={vehicleStatus.onlineCount} bgColor="#FF852F" bgBorder="none"></DigitRoll>
             </div>
             <div>
               <span>离线车辆</span>
