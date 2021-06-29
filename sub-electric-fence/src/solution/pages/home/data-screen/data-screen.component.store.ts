@@ -1,9 +1,10 @@
-import { geoCoordMap, gradients, IDataScreenState } from './data-screen.interface';
+import { gradients, IDataScreenState } from './data-screen.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect, useRef } from 'react';
 import useECharts from '~/framework/aop/hooks/use-echarts';
 import * as echarts from 'echarts';
-import geoJson from '~assets/library/china_full.json';
+import { china } from '~/solution/assets/library/china';
+// import china from '~/solution/assets/library/china.svg';
 import { DataScreenService } from '~/solution/model/services/data-screen.service';
 import moment from 'moment';
 import { AlarmStatRequest } from '~/solution/model/dto/data-screen.dto';
@@ -161,7 +162,7 @@ export function useDataScreenStore() {
       [`${type}TimeRange`]: formatTime(rangeType)
     };
     setStateWrap({ timeRange: { ...state.timeRange, [type]: rangeType } });
-    getAlarmStat().then(res => setStateWrap({ ...res }));
+    getAlarmStat();
   }
 
   function changeFullScreen() {
@@ -176,6 +177,15 @@ export function useDataScreenStore() {
   useECharts(areaStatRef, getAreaStatOptionCB);
   function getAreaStatOption(): {} {
     const { vehicleStatus } = state;
+
+    echarts.registerMap('china', china);
+    const geoCoordMap = { '0': [104, 53.5] };
+    const mapFeatures = echarts.getMap('china').geoJson['features'];
+    mapFeatures.forEach(function(v: any) {
+      const name = v.properties.name;
+      geoCoordMap[name] = v.properties.cp;
+    });
+
     const datas = vehicleStatus.data.map(d => {
       return { name: d.province, value: d.onlineCount };
     });
@@ -198,12 +208,11 @@ export function useDataScreenStore() {
         return { coords: [geoCoordMap['0'], geoCoordMap[d.name]] };
       });
     }
-    echarts.registerMap('china', geoJson);
     return {
       geo: {
         type: 'map',
         map: 'china',
-        layoutCenter: ['50%', '70%'],
+        layoutCenter: ['50%', '50%'],
         layoutSize: '130%'
       },
       tooltip: {
@@ -214,7 +223,7 @@ export function useDataScreenStore() {
           type: 'map',
           map: 'china',
           zlevel: 1,
-          layoutCenter: ['50%', '70%'],
+          layoutCenter: ['50%', '50%'],
           layoutSize: '130%',
           itemStyle: {
             areaColor: '#3B4E95',
