@@ -54,14 +54,14 @@ export function StatisticalListColumn(callbackAction: Function) {
     },
     {
       title: '最后报警地址',
-      dataIndex: 'address',
-      render
+      dataIndex: 'address'
     },
     {
       title: '所属机构',
       dataIndex: 'organizationName',
-
-      render: (text: string) => <Tooltip title={text}>{text.slice(0, 5) + '...'}</Tooltip>
+      render: (text: string) => (
+        <Tooltip title={text}>{text && text.length > 6 ? text.slice(0, 5) + '...' : text}</Tooltip>
+      )
     },
     {
       title: '操作',
