@@ -113,12 +113,22 @@ export default function AddDeviceTypeModalComponent(props: IAddDeviceType) {
         </Row>
         <Row gutter={24}>
           <Col span={12}>
-            <Form.Item label="LED" name={'led'}>
-              <Input placeholder={'请输入'}></Input>
+            <Form.Item label="是否配线" name={'isWired'}>
+              <Radio.Group>
+                <Radio value={true}>有线</Radio>
+                <Radio value={false}>无线</Radio>
+              </Radio.Group>
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item label="内置电池描述" name={'batteryDesc'}>
+              <Input placeholder={'请输入'}></Input>
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={24}>
+          <Col span={12}>
+            <Form.Item label="LED" name={'led'}>
               <Input placeholder={'请输入'}></Input>
             </Form.Item>
           </Col>
