@@ -43,6 +43,10 @@ export function vehicleManageColumns(callbackAction: Function, $auth: Record<str
       }
     },
     {
+      title: '类型',
+      dataIndex: 'typeText'
+    },
+    {
       title: '车型',
       dataIndex: 'versionName'
     },
