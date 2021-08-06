@@ -21,6 +21,7 @@ export function useEditVehicleStore() {
       getDetails(params['id']);
     }
     getBrandList();
+    getTypeList();
   }, []);
 
   function getDetails(id: string) {
@@ -215,6 +216,12 @@ export function useEditVehicleStore() {
     });
   }
 
+  function getTypeList() {
+    customerManageService.getVehicleType().subscribe(res => {
+      setStateWrap({ vehicleTypeList: res.data });
+    });
+  }
+
   function unbindDevice(code: string) {
     const { id } = state;
     setStateWrap({ isUnbindDevice: true, unbindInfo: { code, id } });
@@ -236,6 +243,7 @@ export function useEditVehicleStore() {
     handleDeviceListChange,
     vehicleLayoutChange,
     unbindDevice,
-    modalCancel
+    modalCancel,
+    getTypeList
   };
 }
