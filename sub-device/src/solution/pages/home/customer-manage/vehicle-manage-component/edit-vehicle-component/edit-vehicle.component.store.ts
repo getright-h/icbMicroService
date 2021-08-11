@@ -108,9 +108,18 @@ export function useEditVehicleStore() {
   }
 
   function handleSubmit(values: any) {
+    const { createUserType, ownerInfo } = state;
     setStateWrap({ confirmLoading: true });
+    let owner = values.owner;
+    if (createUserType == 1) {
+      owner = {
+        name: ownerInfo.ownerName,
+        mobile: ownerInfo.ownerMobile
+      };
+    }
     const confirmForm = {
       ...values,
+      owner,
       vehicle: {
         ...values.vehicle,
         ...state.extraFormData,
