@@ -43,6 +43,7 @@ export default function VehicleDetailComponent() {
     const { vehicle } = details;
     return (
       <Descriptions style={{ padding: '10px 50px' }}>
+        <Descriptions.Item label="汽车类型">{vehicle.typeText || '-'}</Descriptions.Item>
         <Descriptions.Item label="车架号">{vehicle.vinNo || '-'}</Descriptions.Item>
         <Descriptions.Item label="车牌号">{vehicle.plateNo || '-'}</Descriptions.Item>
         <Descriptions.Item label="车辆发动机号">{vehicle.engineNo || '-'}</Descriptions.Item>

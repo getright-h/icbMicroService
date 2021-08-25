@@ -62,6 +62,12 @@ export default function ISelectLoadingComponent(props: IISelectLoadingProps) {
                 {item.cmdName}
               </Select.Option>
             );
+          } else if (reqUrl === 'queryOwnerList') {
+            return (
+              <Select.Option value={item.id} key={item.id} info={item}>
+                {`${item.name}（${item.mobile}）`}
+              </Select.Option>
+            );
           } else {
             return (
               <Select.Option value={item.id} key={item.id} info={item}>

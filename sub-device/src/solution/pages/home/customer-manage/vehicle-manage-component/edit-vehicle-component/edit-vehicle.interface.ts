@@ -1,4 +1,4 @@
-import { OwnerInfo } from '~/solution/model/dto/customer-manage.dto';
+import { OwnerInfo, VehicletypeResType } from '~/solution/model/dto/customer-manage.dto';
 import { VehicleLayout } from '~/solution/model/dto/customer-manage.dto';
 
 /**
@@ -29,6 +29,7 @@ export class IEditVehicleState {
   vehicleFactoryList: VehicleLayout[] = [];
   vehicleVersionList: VehicleLayout[] = [];
   vehicleConfigList: VehicleLayout[] = [];
+  vehicleTypeList: VehicletypeResType[] = [];
   confirmLoading = false;
   isUnbindDevice = false;
   unbindInfo: any;

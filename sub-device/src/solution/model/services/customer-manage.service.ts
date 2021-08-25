@@ -9,7 +9,8 @@ import {
   VehicleDetailResponse,
   VehicleLayout,
   VehicleListRequestParam,
-  VehicleListResponseResult
+  VehicleListResponseResult,
+  VehicletypeResType
 } from '../dto/customer-manage.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
@@ -37,6 +38,7 @@ const VEHICLE_BRAND = 'vehicle/manage/vehicleBrand';
 const VEHICLE_FACTORY = 'vehicle/manage/vehicleFactory';
 const VEHICLE_VERSION = 'vehicle/manage/vehicleVersion';
 const VEHICLE_CONFIG = 'vehicle/manage/vehicleConfig';
+const VEHICLE_TYPE = 'vehicle/manage/vehicletype';
 
 @DepUtil.Injectable()
 export class CustomerManageService extends CustomerManageDTO {
@@ -110,5 +112,9 @@ export class CustomerManageService extends CustomerManageDTO {
   // 车辆配置
   getVehicleConfig(params: { name?: string; id?: string }): Observable<Array<VehicleLayout>> {
     return this.requestService.get(VEHICLE_CONFIG, params);
+  }
+  // 车辆类型
+  getVehicleType(): Observable<{ total: number; data: VehicletypeResType[] }> {
+    return this.requestService.get(VEHICLE_TYPE);
   }
 }

@@ -223,3 +223,9 @@ export interface VehicleLayout {
   value: string;
   code: string;
 }
+
+export interface VehicletypeResType {
+  desction: string;
+  enumName: string;
+  enumValue: number;
+}

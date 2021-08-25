@@ -18,7 +18,8 @@ export default function EditVehicleComponent() {
     handleDeviceListChange,
     vehicleLayoutChange,
     unbindDevice,
-    modalCancel
+    modalCancel,
+    getTypeList
   } = useEditVehicleStore();
   const { isEdit, createUserType, extraFormData, bindedDeviceList, ownerInfo, imageList, confirmLoading } = state;
   const layout = {
@@ -113,7 +114,14 @@ export default function EditVehicleComponent() {
     );
   }
   function renderVehicleForm() {
-    const { vehicleBrandList, vehicleFactoryList, vehicleVersionList, vehicleConfigList, vehicleCode } = state;
+    const {
+      vehicleBrandList,
+      vehicleFactoryList,
+      vehicleVersionList,
+      vehicleConfigList,
+      vehicleCode,
+      vehicleTypeList
+    } = state;
     const queryDistributorList = ISelectLoadingComponent({
       reqUrl: 'queryOrganizationList',
       placeholder: '请选择所属经销商',
@@ -143,6 +151,23 @@ export default function EditVehicleComponent() {
         <Form {...layout} form={form}>
           <Row gutter={32}>
             <Col span={6}>
+              <Form.Item label="车辆类型" name={['vehicle', 'type']} initialValue={1}>
+                <Select
+                  onClick={() => {
+                    !vehicleTypeList.length && getTypeList();
+                  }}
+                  placeholder="请选择车辆类型"
+                >
+                  {vehicleTypeList.length &&
+                    vehicleTypeList.map(type => (
+                      <Select.Option key={type.enumValue} value={type.enumValue}>
+                        {type.desction}
+                      </Select.Option>
+                    ))}
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={6} offset={1}>
               <Form.Item label="车架号" name={['vehicle', 'vinNo']} rules={[{ required: true }]}>
                 <Input placeholder="请输入车架号" />
               </Form.Item>
@@ -152,12 +177,12 @@ export default function EditVehicleComponent() {
                 <Input placeholder="请输入车牌号" />
               </Form.Item>
             </Col>
-            <Col span={6} offset={1}>
+            <Col span={6}>
               <Form.Item label="车辆发动机号" name={['vehicle', 'engineNo']}>
                 <Input placeholder="请输入发动机号" />
               </Form.Item>
             </Col>
-            <Col span={6}>
+            <Col span={6} offset={1}>
               <Form.Item label="车辆品牌" name={['vehicle', 'brandName']}>
                 <Select
                   showSearch
@@ -192,7 +217,7 @@ export default function EditVehicleComponent() {
                 </Select>
               </Form.Item>
             </Col>
-            <Col span={6} offset={1}>
+            <Col span={6}>
               <Form.Item label="车辆系列" name={['vehicle', 'versionName']}>
                 <Select
                   showSearch
@@ -210,7 +235,7 @@ export default function EditVehicleComponent() {
                 </Select>
               </Form.Item>
             </Col>
-            <Col span={6}>
+            <Col span={6} offset={1}>
               <Form.Item label="车辆配置" name={['vehicle', 'configName']}>
                 <Select
                   showSearch
@@ -233,7 +258,7 @@ export default function EditVehicleComponent() {
                 <Input placeholder="请输入车辆颜色" />
               </Form.Item>
             </Col>
-            <Col span={6} offset={1}>
+            <Col span={6}>
               <Form.Item label="购买日期" name={['vehicle', 'buyTime']}>
                 <DatePicker
                   style={{ width: '100%' }}
@@ -243,7 +268,7 @@ export default function EditVehicleComponent() {
                 />
               </Form.Item>
             </Col>
-            <Col span={6}>
+            <Col span={6} offset={1}>
               <Form.Item label="金融公司" name={['vehicle', 'financeId']}>
                 {queryFinanceList}
               </Form.Item>
