@@ -17,21 +17,34 @@ export default function AddShippingSpaceComponent(props: IAddShippingSpaceProps)
       centered={true}
       destroyOnClose
       visible={addShippingSpaceVisible}
-      onOk={handleOk}
+      onOk={() => {
+        form
+          .validateFields()
+          .then(() => {
+            handleOk();
+          })
+          .catch(e => console.log(e));
+      }}
       confirmLoading={confirmLoading}
       onCancel={handleCancel}
     >
       <Form {...layout} form={form} initialValues={{ isDefault: true }}>
-        <Form.Item name="name" label="仓库名" rules={[{ required: true }]}>
-          <Input placeholder="请输入仓库名" />
+        <Form.Item name="name" label="仓位名" rules={[{ required: true }]}>
+          <Input placeholder="请输入仓位名" />
         </Form.Item>
         <Form.Item name="positionAddress" label="请输入货架位置">
           <Input placeholder="请输入货架位置" />
         </Form.Item>
         <Form.Item label="库存报警">
           <Input.Group compact>
-            <Form.Item name="minAlarm" noStyle>
-              <Input style={{ width: 100, textAlign: 'center' }} type="number" suffix="个" placeholder="请输入" />
+            <Form.Item name="minAlarm" noStyle rules={[{ pattern: /^[0-9]*$/, message: '请输入正整数' }]}>
+              <Input
+                style={{ width: 100, textAlign: 'center' }}
+                type="number"
+                min={0}
+                suffix="个"
+                placeholder="请输入"
+              />
             </Form.Item>
             <Input
               className="site-input-split"
@@ -44,9 +57,10 @@ export default function AddShippingSpaceComponent(props: IAddShippingSpaceProps)
               placeholder="~"
               disabled
             />
-            <Form.Item name="maxAlarm" noStyle>
+            <Form.Item name="maxAlarm" noStyle rules={[{ pattern: /^[0-9]*$/, message: '请输入正整数' }]}>
               <Input
                 type="number"
+                min={0}
                 className="site-input-right"
                 style={{
                   width: 100,
@@ -58,9 +72,10 @@ export default function AddShippingSpaceComponent(props: IAddShippingSpaceProps)
             </Form.Item>
           </Input.Group>
         </Form.Item>
-        <Form.Item name="alarmDay" label="长时报警">
+        <Form.Item name="alarmDay" label="长时报警" rules={[{ pattern: /^[0-9]*$/, message: '请输入正整数' }]}>
           <Input
             type="number"
+            min={0}
             style={{
               width: 100,
               textAlign: 'center'

@@ -78,12 +78,14 @@ export default function InitAllocationComponent() {
               </Select>
             </Form.Item>{' '}
           </Col>
-          <Form.Item label="调拨时间">
-            <TimePickerComponent
-              pickerType="dateRange"
-              getDateTimeInfo={(time: any, other: any) => onChange(time, 'time')}
-            />
-          </Form.Item>
+          <Col span={8}>
+            <Form.Item label="调拨时间">
+              <TimePickerComponent
+                pickerType="dateRange"
+                getDateTimeInfo={(time: any, other: any) => onChange(time, 'time')}
+              />
+            </Form.Item>
+          </Col>
         </Row>
       </Form>
     );

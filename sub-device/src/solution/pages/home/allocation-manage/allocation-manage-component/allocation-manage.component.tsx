@@ -2,7 +2,7 @@ import * as React from 'react';
 import { TablePageTelComponent, ITableComponent, TimePickerComponent } from '~/framework/components/component.module';
 import { allocationManageColumns } from './allocation-manage.column';
 import { useAllocationManageStore } from './allocation-manage.component.store';
-import { Button, Input, Select, Form } from 'antd';
+import { Button, Input, Select, Form, Row, Col } from 'antd';
 import { ModalType } from '~shared/constant/common.const';
 import { AllOT_STATE } from '~shared/constant/common.const';
 import TransferRecordComponent from './transfer-record-component/transfer-record.component';
@@ -23,49 +23,52 @@ export default function AllocationManageComponent() {
     onChange
   } = useAllocationManageStore();
   const { isLoading, searchForm, tableData, total, visibleModal } = state;
-  const formItemLayout = {
-    labelCol: {
-      xs: { span: 24 },
-      sm: { span: 8 }
-    },
-    wrapperCol: {
-      xs: { span: 24 },
-      sm: { span: 16 }
-    }
-  };
+
   function RenderSelectItems() {
+    const layout = {
+      labelCol: { span: 8 },
+      wrapperCol: { span: 16 }
+    };
     return (
-      <Form {...formItemLayout} layout={'inline'} form={form} initialValues={{ state: '' }}>
-        <Form.Item label="输入调拨单号" name="code">
-          <Input
-            allowClear
-            placeholder="请输入调拨单号"
-            onChange={e => {
-              onChange(e.target.value, 'code');
-            }}
-          />
-        </Form.Item>
-        <Form.Item label="查找创建时间" name="time">
-          <TimePickerComponent
-            pickerType={'dateRange'}
-            getDateTimeInfo={(time: any, other: any) => onChange(time, 'time')}
-          />
-        </Form.Item>
-        <Form.Item label="调拨状态" name="state">
-          <Select
-            style={{ width: 200 }}
-            placeholder="请选择"
-            onChange={value => {
-              onChange(value, 'state');
-            }}
-          >
-            {AllOT_STATE.map((item, index) => (
-              <Option key={index} value={item.value}>
-                {item.label}
-              </Option>
-            ))}
-          </Select>
-        </Form.Item>
+      <Form {...layout} layout={'inline'} form={form} initialValues={{ state: '' }}>
+        <Row gutter={24}>
+          <Col span={8}>
+            <Form.Item label="输入调拨单号" name="code">
+              <Input
+                allowClear
+                placeholder="请输入调拨单号"
+                onChange={e => {
+                  onChange(e.target.value, 'code');
+                }}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item label="查找创建时间" name="time">
+              <TimePickerComponent
+                pickerType={'dateRange'}
+                getDateTimeInfo={(time: any, other: any) => onChange(time, 'time')}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item label="调拨状态" name="state">
+              <Select
+                style={{ width: 200 }}
+                placeholder="请选择"
+                onChange={value => {
+                  onChange(value, 'state');
+                }}
+              >
+                {AllOT_STATE.map((item, index) => (
+                  <Option key={index} value={item.value}>
+                    {item.label}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </Col>
+        </Row>
       </Form>
     );
   }

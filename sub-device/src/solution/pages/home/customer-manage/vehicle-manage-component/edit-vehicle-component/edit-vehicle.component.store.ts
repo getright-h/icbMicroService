@@ -21,6 +21,7 @@ export function useEditVehicleStore() {
       getDetails(params['id']);
     }
     getBrandList();
+    getTypeList();
   }, []);
 
   function getDetails(id: string) {
@@ -107,9 +108,18 @@ export function useEditVehicleStore() {
   }
 
   function handleSubmit(values: any) {
+    const { createUserType, ownerInfo } = state;
     setStateWrap({ confirmLoading: true });
+    let owner = values.owner;
+    if (createUserType == 1) {
+      owner = {
+        name: ownerInfo.ownerName,
+        mobile: ownerInfo.ownerMobile
+      };
+    }
     const confirmForm = {
       ...values,
+      owner,
       vehicle: {
         ...values.vehicle,
         ...state.extraFormData,
@@ -215,6 +225,12 @@ export function useEditVehicleStore() {
     });
   }
 
+  function getTypeList() {
+    customerManageService.getVehicleType().subscribe(res => {
+      setStateWrap({ vehicleTypeList: res.data });
+    });
+  }
+
   function unbindDevice(code: string) {
     const { id } = state;
     setStateWrap({ isUnbindDevice: true, unbindInfo: { code, id } });
@@ -236,6 +252,7 @@ export function useEditVehicleStore() {
     handleDeviceListChange,
     vehicleLayoutChange,
     unbindDevice,
-    modalCancel
+    modalCancel,
+    getTypeList
   };
 }

@@ -4,6 +4,7 @@ import { Form } from 'antd';
 import { OrderReportService } from '~/solution/model/services/report-order.service';
 import { useEffect } from 'react';
 import { IMAP } from '~shared/util/map.util';
+import { setState } from '~/framework/microAPP/appStore';
 
 export function useDirectiveListStore() {
   const { state, setStateWrap, getState } = useStateStore(new IDirectiveListState());
@@ -46,6 +47,7 @@ export function useDirectiveListStore() {
     if (type == 'groupId') {
       const { id } = data;
       searchForm.setFieldsValue({ groupId: id });
+      setStateWrap({ canExport: !!id });
     }
   }
 
@@ -56,6 +58,7 @@ export function useDirectiveListStore() {
 
   function initSearchForm() {
     searchForm.resetFields();
+    setStateWrap({ canExport: false });
     searchClick();
   }
 
@@ -83,6 +86,31 @@ export function useDirectiveListStore() {
     isSuccess && searchClick();
   }
 
+  function handleExport(value: string) {
+    const { pageIndex, pageSize } = getState();
+    orderReportService
+      .exportMonitorAlarmGroupList({
+        ...searchForm.getFieldsValue(),
+        index: pageIndex,
+        size: pageSize,
+        name: value
+      })
+      .subscribe(
+        res => {
+          setState({ showTaskCenter: true });
+          handleExportVisible(false);
+        },
+        err => {
+          handleExportVisible(false);
+        }
+      );
+  }
+
+  function handleExportVisible(visible: boolean) {
+    visible && searchClick();
+    setStateWrap({ exportVisible: visible });
+  }
+
   return {
     state,
     searchForm,
@@ -91,6 +119,8 @@ export function useDirectiveListStore() {
     changeTablePageIndex,
     searchClick,
     handleModalCancel,
-    getCurrentSelectInfo
+    getCurrentSelectInfo,
+    handleExport,
+    handleExportVisible
   };
 }

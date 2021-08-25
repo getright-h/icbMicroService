@@ -1,12 +1,14 @@
-import { IDirectiveListState, ModalType } from './offline-list.interface';
+import { IOfflineListState, ModalType } from './offline-list.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form } from 'antd';
 import { AlarmManageService } from '~/solution/model/services/alarm-manage.service';
 import { useEffect } from 'react';
+import { OrderReportService } from '~/solution/model/services/report-order.service';
+import { setState } from '~/framework/microAPP/appStore';
 
 export function useDirectiveListStore() {
-  const { state, setStateWrap, getState } = useStateStore(new IDirectiveListState());
-  const alarmManageService: AlarmManageService = new AlarmManageService();
+  const { state, setStateWrap, getState } = useStateStore(new IOfflineListState());
+  const orderReportService: OrderReportService = new OrderReportService();
   const [searchForm] = Form.useForm();
 
   useEffect(() => {
@@ -14,22 +16,22 @@ export function useDirectiveListStore() {
   }, []);
 
   function getTableData() {
-    // setStateWrap({ isLoading: true });
-    // const { pageIndex, pageSize } = getState();
-    // alarmManageService
-    //   .queryOwnerPagedList({
-    //     ...searchForm.getFieldsValue(),
-    //     index: pageIndex,
-    //     size: pageSize
-    //   })
-    //   .subscribe(
-    //     res => {
-    //       setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
-    //     },
-    //     err => {
-    //       setStateWrap({ isLoading: false });
-    //     }
-    //   );
+    setStateWrap({ isLoading: true });
+    const { pageIndex, pageSize } = getState();
+    orderReportService
+      .queryMonitorDeviceOfflinePagedList({
+        ...searchForm.getFieldsValue(),
+        index: pageIndex,
+        size: pageSize
+      })
+      .subscribe(
+        res => {
+          setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
+        },
+        err => {
+          setStateWrap({ isLoading: false });
+        }
+      );
   }
 
   function searchClick() {
@@ -40,6 +42,13 @@ export function useDirectiveListStore() {
   function initSearchForm() {
     searchForm.resetFields();
     searchClick();
+  }
+
+  function getCurrentSelectInfo(data: any, type: string) {
+    if (type == 'organizationId') {
+      const { organizationId } = data;
+      searchForm.setFieldsValue({ organizationId });
+    }
   }
 
   function callbackAction<T>(actionType: number, data?: T) {
@@ -66,6 +75,30 @@ export function useDirectiveListStore() {
     isSuccess && searchClick();
   }
 
+  function handleExport(value: string) {
+    const { pageIndex, pageSize } = getState();
+    orderReportService
+      .queryMonitorDeviceOfflinePagedList({
+        ...searchForm.getFieldsValue(),
+        index: pageIndex,
+        size: pageSize,
+        name: value
+      })
+      .subscribe(
+        res => {
+          setState({ showTaskCenter: true });
+          handleExportVisible(false);
+        },
+        err => {
+          handleExportVisible(false);
+        }
+      );
+  }
+
+  function handleExportVisible(visible: boolean) {
+    setStateWrap({ exportVisible: visible });
+  }
+
   return {
     state,
     searchForm,
@@ -73,6 +106,9 @@ export function useDirectiveListStore() {
     callbackAction,
     changeTablePageIndex,
     searchClick,
-    handleModalCancel
+    handleModalCancel,
+    getCurrentSelectInfo,
+    handleExport,
+    handleExportVisible
   };
 }

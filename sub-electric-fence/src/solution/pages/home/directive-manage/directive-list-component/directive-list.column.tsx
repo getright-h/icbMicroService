@@ -29,6 +29,11 @@ export function AlarmParameterColumn(callbackAction: Function, $auth: Record<str
       render
     },
     {
+      title: '指令内容',
+      dataIndex: 'cmdContent',
+      render
+    },
+    {
       title: '发送时间',
       dataIndex: 'time',
       render: (text: any) => (text && typeof text == 'number' ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '-')

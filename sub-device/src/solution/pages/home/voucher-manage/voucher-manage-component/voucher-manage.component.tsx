@@ -50,6 +50,12 @@ export default function VoucherManageComponent() {
         <Button type="primary" onClick={searchClick}>
           查询
         </Button>
+      </div>
+    );
+  }
+  function renderOtherButtons() {
+    return (
+      <div className="other-search-button-item">
         <Button type="primary" onClick={() => callbackAction(ModalType.CREATE)} disabled={!$auth['addDispatch']}>
           新增安装凭证
         </Button>
@@ -77,6 +83,7 @@ export default function VoucherManageComponent() {
         pageName={'安装凭证管理'}
         selectItems={renderSelectItems()}
         searchButton={renderSearchButtons()}
+        otherSearchBtns={renderOtherButtons()}
         table={<RenderTable />}
       ></TablePageTelComponent>
       <VoucherEditComponent visible={editVisible} close={handleModalCancel} id={currentId} />

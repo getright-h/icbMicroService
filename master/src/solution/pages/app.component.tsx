@@ -11,6 +11,7 @@ import { HashRouter } from 'react-router-dom';
 import MainReducer from '../context/redux/reducer/index';
 import { RoutesService } from '~/framework/util/routes/routes.service';
 import { appRoutes } from './app.routes';
+import { AuthStrategy } from '~/framework/aop/strategy/auth.strategy';
 moment.locale('zh-cn');
 const App = () => {
   // 项目内部用的hooks provicer
@@ -21,7 +22,7 @@ const App = () => {
     <ConfigProvider locale={zhCN} prefixCls={'micMaster'}>
       <Provider store={store}>
         <GlobalProvider>
-          <HashRouter>{RoutesService.renderRoutes(appRoutes, false)}</HashRouter>
+          <HashRouter>{RoutesService.renderRoutes(appRoutes, AuthStrategy)}</HashRouter>
         </GlobalProvider>
       </Provider>
     </ConfigProvider>

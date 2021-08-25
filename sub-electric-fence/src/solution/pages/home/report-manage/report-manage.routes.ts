@@ -38,25 +38,25 @@ export const reportManageRoutes: IRoute[] = [
   //   component: ROUTERS.odometerListComponent,
   //   lazyload: true,
   //   exact: true
-  // },
-  // {
-  //   path: `${MODULE_PATH}/state`,
-  //   component: ROUTERS.stateListComponent,
-  //   lazyload: true,
-  //   exact: true
-  // },
-  // {
-  //   path: `${MODULE_PATH}/offline`,
-  //   component: ROUTERS.offlineListComponent,
-  //   lazyload: true,
-  //   exact: true
-  // },
+  // }, // 里程
+  {
+    path: `${MODULE_PATH}/state`,
+    component: ROUTERS.stateListComponent,
+    lazyload: true,
+    exact: true
+  }, // 设备状态
+  {
+    path: `${MODULE_PATH}/offline`,
+    component: ROUTERS.offlineListComponent,
+    lazyload: true,
+    exact: true
+  }, // 离线设备
   // {
   //   path: `${MODULE_PATH}/dwell`,
   //   component: ROUTERS.dwellListComponent,
   //   lazyload: true,
   //   exact: true
-  // },
+  // }, // 停留
   {
     path: `${MODULE_PATH}/permanent`,
     component: ROUTERS.permanentListComponent,

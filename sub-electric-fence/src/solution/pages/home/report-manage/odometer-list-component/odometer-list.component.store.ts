@@ -1,11 +1,11 @@
-import { IDirectiveListState, ModalType } from './odometer-list.interface';
+import { IOdometerListState, ModalType } from './odometer-list.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form } from 'antd';
 import { AlarmManageService } from '~/solution/model/services/alarm-manage.service';
 import { useEffect } from 'react';
 
 export function useDirectiveListStore() {
-  const { state, setStateWrap, getState } = useStateStore(new IDirectiveListState());
+  const { state, setStateWrap, getState } = useStateStore(new IOdometerListState());
   const alarmManageService: AlarmManageService = new AlarmManageService();
   const [searchForm] = Form.useForm();
 
@@ -42,6 +42,14 @@ export function useDirectiveListStore() {
     searchClick();
   }
 
+  function getCurrentSelectInfo(data: any, type: string) {
+    // console.log(data, type);
+    if (type == 'organizationId') {
+      const { organizationId } = data;
+      searchForm.setFieldsValue({ organizationId });
+    }
+  }
+
   function callbackAction<T>(actionType: number, data?: T) {
     setStateWrap({ currentId: data ? data.id : '' });
     switch (actionType) {
@@ -73,6 +81,7 @@ export function useDirectiveListStore() {
     callbackAction,
     changeTablePageIndex,
     searchClick,
-    handleModalCancel
+    handleModalCancel,
+    getCurrentSelectInfo
   };
 }

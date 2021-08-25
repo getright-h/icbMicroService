@@ -4,9 +4,10 @@ import {
   ITableComponent,
   TablePageTelComponent,
   TimePickerComponent,
-  ISelectLoadingComponent
+  ISelectLoadingComponent,
+  InputExportFilenameComponent
 } from '~/solution/components/component.module';
-import { DwellColumn } from './redord-list.column';
+import { RecordListColumn } from './record-list.column';
 import { useDwellListStore } from './record-list.component.store';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 import { AlarmType_FOR_REPORT } from '~shared/constant/alarm.const';
@@ -19,9 +20,11 @@ export default function DirectiveListComponent() {
     callbackAction,
     changeTablePageIndex,
     searchClick,
-    initSearchForm
+    initSearchForm,
+    handleExport,
+    handleExportVisible
   } = useDwellListStore();
-  const { isLoading, tableData, total, pageIndex, pageSize } = state;
+  const { isLoading, tableData, total, pageIndex, pageSize, timeInfo } = state;
   const { gState } = React.useContext(GlobalContext);
 
   function renderSelectItems() {
@@ -69,6 +72,7 @@ export default function DirectiveListComponent() {
           <Col span={11}>
             <Form.Item label="时间范围" name="time">
               <TimePickerComponent
+                timeInfo={timeInfo}
                 pickerType="dateTimeRange"
                 getDateTimeInfo={(time: any, other: any) => getCurrentSelectInfo(time, 'time')}
               />
@@ -88,23 +92,27 @@ export default function DirectiveListComponent() {
   function renderSearchButtons() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary" onClick={searchClick}>
+        <Button type="primary" onClick={searchClick} loading={isLoading}>
           查询
         </Button>
         <Button onClick={initSearchForm}>清空</Button>
+        <Button type="primary" onClick={() => handleExportVisible(true)}>
+          导出
+        </Button>
       </div>
     );
   }
   function RenderTable() {
     return (
       <ITableComponent
-        columns={DwellColumn(callbackAction)}
+        columns={RecordListColumn(callbackAction)}
         isLoading={isLoading}
         pageIndex={pageIndex}
         pageSize={pageSize}
         data={tableData}
         total={total}
         isPagination={true}
+        // scroll={{ x: '110%' }}
         changeTablePageIndex={(pageIndex: number, pageSize: number) => changeTablePageIndex(pageIndex, pageSize)}
       ></ITableComponent>
     );
@@ -118,6 +126,11 @@ export default function DirectiveListComponent() {
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
       ></TablePageTelComponent>
+      <InputExportFilenameComponent
+        visible={state.exportVisible}
+        getValues={v => handleExport(v.name)}
+        close={() => handleExportVisible(false)}
+      />
     </React.Fragment>
   );
 }

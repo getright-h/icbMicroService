@@ -62,7 +62,7 @@ export class MonitorService {
     return this.requestService.post(CALCULATION_MONITOR_VEHICLE_NUMBER, params);
   }
   queryGroupSearchList(params: any): Observable<any> {
-    return this.requestService.get(QUERY_GROUP_SEARCH_LIST, params);
+    return this.requestService.post(QUERY_GROUP_SEARCH_LIST, params);
   }
   groupRelation(params: { id: string }): Observable<any> {
     return this.requestService.delete(GROUP_RELATION, params);

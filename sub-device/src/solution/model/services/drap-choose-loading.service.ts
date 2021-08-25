@@ -30,7 +30,7 @@ const QUERY_STORE_USER = 'store/manage/queryStoreUser';
 const QUERY_PURCHASE_SELECT_LIST = 'allot/manage/queryPurchasePagedListSelected';
 const QUERY_STORE_POSITION_LIST = 'store/manage/queryStorePositionPagedListByStoreIdSelected';
 const QUERY_ALLOT_FLOW_TEMPLATE_PAGED_LIST = 'allot/manage/queryAllotFlowTemplatePagedList';
-const QUERY_OWNER_LIST = 'vehicle/manage/queryOwnerPagedList';
+const QUERY_OWNER_LIST = 'vehicle/manage/dropDownOwnerPagedList';
 const QUERY_DEVICE_LIST = 'material/manage/queryNormalStateDevicePagedList';
 const QUERY_STORE_LIST = 'store/manage/queryStorePagedListSelected';
 const QUERY_VEHICLE_LIST = 'vehicle/manage/queryVehiclePagedList';
@@ -136,7 +136,7 @@ export class DrapChooseLoadingService extends DrapChooseLoadingDTO {
   }
   //监控组搜索
   queryGroupSearchList(params: QueryVehiclePagedListParam): Observable<DrapChooseLoadingReturn> {
-    return this.requestService.get(QUERY_GROUP_SEARCH_LIST, params);
+    return this.requestService.post(QUERY_GROUP_SEARCH_LIST, params);
   }
   // 报警指令类型
   getTypesList(): Observable<{ data: IDirectiveReturn[]; total: number }> {

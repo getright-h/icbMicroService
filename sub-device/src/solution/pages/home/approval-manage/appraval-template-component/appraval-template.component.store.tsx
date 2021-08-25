@@ -97,7 +97,8 @@ export function useApprovalTemplateStore(appravalTemplateState: {
   }
 
   function confirmDeleteTemplate(resolve: Function, element: any) {
-    approvalManageService.deleteApprovalFormTemplate({ id: element.id }).subscribe(() => {
+    const { id, groupId } = element;
+    approvalManageService.deleteApprovalFormTemplate({ id, groupId }).subscribe(() => {
       ShowNotification.success('删除成功');
       getTableData();
       resolve();

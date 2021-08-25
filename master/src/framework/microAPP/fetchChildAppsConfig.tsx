@@ -371,6 +371,15 @@ export function fetchChildAppsConfig() {
         path: '/home/fence',
         children: [
           {
+            path: 'dataScreen',
+            title: '大数据中心',
+            defaultMountApp: false, // 是否默认启动当前第一个页面
+            icon: 'pie',
+            lazyload: true,
+            exact: true,
+            componentUrl: 'dataScreen' //对应子应用的组件名
+          },
+          {
             path: 'parameter', // 菜单路径
             title: '参数管理', // 菜单名
             icon: 'inbox', // 图标
@@ -488,20 +497,20 @@ export function fetchChildAppsConfig() {
               //   exact: true,
               //   componentUrl: 'odometerListComponent' //对应子应用的组件名
               // },
-              // {
-              //   path: 'state',
-              //   title: '设备状态统计表',
-              //   lazyload: true,
-              //   exact: true,
-              //   componentUrl: 'stateListComponent' //对应子应用的组件名
-              // },
-              // {
-              //   path: 'offline',
-              //   title: '离线设备统计',
-              //   lazyload: true,
-              //   exact: true,
-              //   componentUrl: 'offlineListComponent' //对应子应用的组件名
-              // },
+              {
+                path: 'state',
+                title: '设备状态表',
+                lazyload: true,
+                exact: true,
+                componentUrl: 'stateListComponent' //对应子应用的组件名
+              },
+              {
+                path: 'offline',
+                title: '离线设备统计',
+                lazyload: true,
+                exact: true,
+                componentUrl: 'offlineListComponent' //对应子应用的组件名
+              },
               // {
               //   path: 'dwell',
               //   title: '设备停留点统计',

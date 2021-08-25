@@ -48,5 +48,6 @@ export const ROUTERS = {
     import(
       '~/solution/pages/home/position-monitor/position-monitor-component/position-monitor-right-component/position-monitor-right.component'
     ),
-  userActionReport: () => import('~/solution/pages/user-action-report-component/user-action-report.component')
+  userActionReport: () => import('~/solution/pages/user-action-report-component/user-action-report.component'),
+  dataScreen: () => import('~/solution/pages/home/data-screen/data-screen.component')
 };

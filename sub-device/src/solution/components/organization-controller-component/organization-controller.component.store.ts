@@ -118,6 +118,9 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
 
   // 获取当前选择的监控组
   function getCurrentGroup<T>(value: T, key: string) {
+    if (!value) {
+      return;
+    }
     const { info }: any = value;
     getCurrentSelectInfo(info.organizationId, 'id');
   }

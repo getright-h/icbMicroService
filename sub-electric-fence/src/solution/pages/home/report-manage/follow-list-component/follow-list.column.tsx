@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Tag } from 'antd';
+import { Tag, Tooltip } from 'antd';
 import { ModalType } from './follow-list.interface';
 export function AlarmParameterColumn(callbackAction: Function) {
   const render = (text: any) => (text ? text : '-');
@@ -39,8 +39,26 @@ export function AlarmParameterColumn(callbackAction: Function) {
       render
     },
     {
-      title: '报警地址',
+      title: '报警说明',
+      dataIndex: 'explain',
+      render: (text: string) => {
+        const des = text.split('|');
+        const _text_ = text.length > 8 ? text.slice(0, 8) + '....' : text;
+        return (
+          <Tooltip
+            title={des.map((_: string, index: number) => (
+              <p key={index}>{_}</p>
+            ))}
+          >
+            {_text_}
+          </Tooltip>
+        );
+      }
+    },
+    {
+      title: '最后报警地址',
       dataIndex: 'address',
+      width: 200,
       render
     },
     {
@@ -56,10 +74,12 @@ export function AlarmParameterColumn(callbackAction: Function) {
     {
       title: '所属机构',
       dataIndex: 'organizationName',
+
       render
     },
     {
       title: '处理状态',
+      fixed: 'right',
       dataIndex: 'isSettle',
       render: (text: any) => (text ? <Tag color="green">已处理</Tag> : <Tag color="red">未处理</Tag>)
     }

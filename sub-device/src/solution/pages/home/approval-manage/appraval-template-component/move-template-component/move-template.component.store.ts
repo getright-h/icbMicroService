@@ -1,7 +1,7 @@
 import { IMoveTemplateProps, IMoveTemplateState, TREE_MAP } from './move-template.interface';
 import { useService, useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { DataNode, EventDataNode } from 'rc-tree/lib/interface';
-import { useEffect, useContext } from 'react';
+import { useEffect, useContext, useRef } from 'react';
 import { ApprovalManageService } from '~/solution/model/services/approval-manage.service';
 import { WarehouseListService } from '~/solution/model/services/warehouse-list.service';
 import { dealWithTreeData, updateTreeData } from '~/framework/util/common/treeFunction';
@@ -9,12 +9,14 @@ import { QueryStoreOrganizationReturn } from '~/solution/model/dto/warehouse-lis
 import { IGlobalState } from '~/solution/context/global/global.interface';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
+import { ShowNotification } from '~/framework/util/common';
 
 export function useMoveTemplateStore(props: IMoveTemplateProps) {
   const { state, setStateWrap } = useStateStore(new IMoveTemplateState());
   const approvalManageService: ApprovalManageService = useService(ApprovalManageService);
   const warehouseListService: WarehouseListService = useService(WarehouseListService);
   const { gState }: IGlobalState = useContext(GlobalContext);
+  const templateData = useRef([]);
   useEffect(() => {
     // 获取所有的模板
     getAllTemplate();
@@ -23,7 +25,7 @@ export function useMoveTemplateStore(props: IMoveTemplateProps) {
 
   function onChangeIsCopy(e: CheckboxChangeEvent) {
     setStateWrap({
-      isCopy: e.target.value
+      isCopy: e.target.checked
     });
   }
 
@@ -38,7 +40,7 @@ export function useMoveTemplateStore(props: IMoveTemplateProps) {
     });
   }
 
-  function onCheckData(checkedKeys: string[]) {
+  function onCheckData(checkedKeys: string[], data) {
     setStateWrap({
       groupIdList: checkedKeys
     });
@@ -88,7 +90,21 @@ export function useMoveTemplateStore(props: IMoveTemplateProps) {
     });
   }
 
-  function onChangeTemplate(checkedKeys: string[]) {
+  function onChangeTemplate(checkedKeys: string[], node: any) {
+    const { allTemplate } = state;
+    const checked: any[] = [];
+
+    checkedKeys.forEach((key: string) => {
+      allTemplate.forEach(({ id, groupRelationTemplateId }) => {
+        if (id == key) {
+          checked.push({
+            groupRelationTemplateId,
+            id
+          });
+        }
+      });
+    });
+    templateData.current = checked.filter(item => !!item);
     setStateWrap({
       formTemplateIdList: checkedKeys
     });
@@ -99,20 +115,23 @@ export function useMoveTemplateStore(props: IMoveTemplateProps) {
       confirmLoading: true
     });
     // 传true表示这个时候需要刷新列表
-    const { formTemplateIdList, groupIdList, isCopy } = state;
-    approvalManageService.moveApprovalFormTemplate({ formTemplateIdList, groupIdList, isCopy }).subscribe(
-      () => {
-        props.closeMoveTemplateModal(true);
-        setStateWrap({
-          confirmLoading: false
-        });
-      },
-      () => {
-        setStateWrap({
-          confirmLoading: false
-        });
-      }
-    );
+    const { groupIdList, isCopy } = state;
+    approvalManageService
+      .moveApprovalFormTemplate({ formTemplateIdList: templateData.current, groupIdList, isCopy })
+      .subscribe(
+        () => {
+          props.closeMoveTemplateModal(true);
+          setStateWrap({
+            confirmLoading: false
+          });
+          ShowNotification.success('移动成功！');
+        },
+        () => {
+          setStateWrap({
+            confirmLoading: false
+          });
+        }
+      );
   }
 
   function handleCancel() {

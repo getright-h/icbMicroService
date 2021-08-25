@@ -13,6 +13,8 @@ export class IDirectiveListState {
   sloveModalVisible = false;
   recordModalVisible = false;
   timeInfo: string[] = [];
+  exportVisible = false;
+  canExport = false;
 }
 export enum ModalType {
   RECORD,

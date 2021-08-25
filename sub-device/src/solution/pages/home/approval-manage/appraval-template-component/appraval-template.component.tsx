@@ -5,7 +5,7 @@ import {
   appravalTemplateInitialState
 } from './appraval-template-redux/appraval-template-reducer';
 import ApprovalTemplateLeftComponent from './approval-template-left-component/approval-template-left.component';
-import { Button, Input } from 'antd';
+import { Button, Input, Form, Row, Col } from 'antd';
 import { useApprovalTemplateStore } from './appraval-template.component.store';
 import { TablePageTelComponent, ITableComponent } from '~/framework/components/component.module';
 import { approvalTemplateColumns } from './appraval-template.columns';
@@ -53,6 +53,41 @@ export default function AppravalTemplateComponent() {
         <Button type="primary" onClick={() => getTableData()} loading={isLoading}>
           查询
         </Button>
+      </div>
+    );
+  }
+  function renderSelectItems() {
+    const layout = {
+      labelCol: { span: 6 },
+      wrapperCol: { span: 16 }
+    };
+    return (
+      <Form {...layout} style={{ width: '90%' }}>
+        <Row gutter={24}>
+          <Col span={10}>
+            <Form.Item label="模板名称">
+              <Input
+                disabled={!currentSelectNode}
+                allowClear
+                placeholder="请输入模板名称"
+                value={searchForm.name}
+                onChange={($event: any) => handleFormDataChange('name', $event.target.value)}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+      </Form>
+    );
+  }
+
+  function renderOtherSearchBtns() {
+    return (
+      <div className="other-search-button-item">
+        {!currentSelectNode.isAll && (
+          <Button type="primary" onClick={() => moveTemplate()} disabled={!$auth['moveApprovalTemplate']}>
+            移动模板
+          </Button>
+        )}
         <Button
           type="primary"
           disabled={appravalTemplateState.currentSelectNode.isAll || !$auth['addApprovalTemplate']}
@@ -63,31 +98,6 @@ export default function AppravalTemplateComponent() {
         </Button>
       </div>
     );
-  }
-
-  function renderSelectItems() {
-    return (
-      <div className="push-search-item">
-        <span className="label">模板名称</span>
-        <Input
-          disabled={!currentSelectNode}
-          allowClear
-          placeholder="请输入模板名称"
-          value={searchForm.name}
-          onChange={($event: any) => handleFormDataChange('name', $event.target.value)}
-        />
-      </div>
-    );
-  }
-
-  function renderOtherSearchBtns() {
-    return !currentSelectNode.isAll ? (
-      <div className="other-search-button-item">
-        <Button type="primary" onClick={() => moveTemplate()} disabled={!$auth['moveApprovalTemplate']}>
-          移动模板
-        </Button>
-      </div>
-    ) : null;
   }
 
   function RenderMovingTemplateModal() {

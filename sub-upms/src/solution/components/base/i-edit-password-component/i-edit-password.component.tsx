@@ -54,8 +54,8 @@ export default function IEditPasswordComponent(props: IIEditPasswordProps) {
           rules={[
             { required: true },
             {
-              pattern: /(?!^[0-9]+$)(?!^[A-z]+$)(?!^[^A-z0-9]+$)^.{6,20}$/,
-              message: '密码需为6到20位字符，必须包含字母和数字',
+              pattern: /(?!^[0-9]+$)(?!^[A-z]+$)(?!^[^A-z0-9]+$)^.{8,20}$/,
+              message: '密码需为8到20位字符，必须包含字母和数字',
               validateTrigger: 'onChange'
             }
           ]}

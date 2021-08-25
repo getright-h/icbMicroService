@@ -5,10 +5,20 @@ import style from './i-home-header.component.less';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 import { TYPES } from '~/solution/context/global/store/global.type';
 import { IGlobalState } from '~/solution/context/global/global.interface';
-import { HomeOutlined, MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
+import { HomeOutlined, MenuUnfoldOutlined, MenuFoldOutlined, DownloadOutlined } from '@ant-design/icons';
+import TaskCenterComponent from '../../custom/task-center-component/task-center.component';
 
 export default function IHomeHeaderComponent() {
-  const { state, form, logout, changePwd, handleOk, handleCancel, handleConfirmBlur } = useHomeHeaderStore();
+  const {
+    state,
+    form,
+    logout,
+    changePwd,
+    handleOk,
+    handleCancel,
+    handleConfirmBlur,
+    showTaskCenterChange
+  } = useHomeHeaderStore();
   const { gState, dispatch }: IGlobalState = React.useContext(GlobalContext);
 
   // function validateToNextPassword(rule: any, value: any, callback: any, source?: any, options?: any) {
@@ -128,6 +138,16 @@ export default function IHomeHeaderComponent() {
             </div>
           </div>
           <div className={style.headerRight}>
+            <Popover
+              content={<TaskCenterComponent visible={state.showTaskCenter} />}
+              placement="bottomRight"
+              trigger="click"
+              visible={state.showTaskCenter}
+              onVisibleChange={showTaskCenterChange}
+              destroyTooltipOnHide={{ keepParent: false }}
+            >
+              <DownloadOutlined style={{ marginRight: '50px' }} />
+            </Popover>
             <Popover content={renderActionContent()} placement="bottom">
               <HomeOutlined />
             </Popover>

@@ -1,34 +1,56 @@
 import * as React from 'react';
-import { Divider } from 'antd';
-import { ModalType } from './redord-list.interface';
-export function DwellColumn(callbackAction: Function) {
+import { Tooltip } from 'antd';
+import { ModalType } from './record-list.interface';
+export function RecordListColumn(callbackAction: Function) {
   const render = (text: any) => (text ? text : '-');
 
   return [
     {
       title: '车主姓名',
       dataIndex: 'ownerName',
+      width: 100,
       render
     },
     {
       title: '车牌号',
       dataIndex: 'plateNo',
+      width: 100,
       render
     },
     {
       title: '设备号',
       dataIndex: 'deviceCode',
+      width: 150,
       render
     },
     {
       title: '报警类型',
       dataIndex: 'alarmTypeText',
+      width: 150,
       render
     },
     {
       title: '报警时间',
       dataIndex: 'time',
       render
+    },
+    {
+      title: '报警说明',
+      width: 150,
+      dataIndex: 'explain',
+      render: (text: string) => {
+        const des = text.split('|');
+        const _text_ = text.length > 8 ? text.slice(0, 8) + '....' : text;
+        return (
+          <Tooltip
+            title={des.map((_: string, index: number) => (
+              <p key={index}>{_}</p>
+            ))}
+          >
+            {_text_}
+          </Tooltip>
+        );
+      }
     },
     {
       title: '报警地址',

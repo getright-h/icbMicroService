@@ -1,71 +1,93 @@
-import { IMenu } from '~components/base/menu-component/menu.interface';
-import { MenuService } from '~/framework/util/menu/menu.service';
 import { useService, useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { IHomeProps } from './home.interface';
 import { useEffect } from 'react';
-import { setState } from '~/framework/microAPP/appStore';
-import { fetchChildAppsConfig } from '~/framework/microAPP/fetchChildAppsConfig';
 import registerMainApp from '~/framework/microAPP/appRegister';
-import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { Subscription } from 'rxjs';
-import { HomeService } from '~/solution/model/services/home.service';
+import { useHistory, useLocation } from 'react-router-dom';
 import { ShowNotification } from '~/framework/util/common';
+import { MenuListService } from '~/framework/aop/strategy/menuListService';
 export function useHomeStore() {
-  const dispatch = useDispatch();
-  const homeService = useService(HomeService);
+  const menuListService = useService(MenuListService);
   const { state, setStateWrap } = useStateStore(new IHomeProps());
   const history = useHistory();
+  const { pathname } = useLocation();
+
   console.log('history =>>>', history);
   useEffect(() => {
     // 注册并启动微前端
     registerMainApp(callback);
   }, []);
-
+  // 监听路由变化，设置首页状态
+  useEffect(() => {
+    setStateWrap({ isIndex: pathname.includes('home/index') });
+    getMenuList();
+  }, [pathname]);
   function callback() {
-    return getCurrentUserInfo();
+    return getMenuList();
   }
 
   // 获取登录用户信息
-  async function getCurrentUserInfo() {
-    try {
-      const res = await homeService.getMyInfo().toPromise();
-      if (res) {
-        let roleIdList = [];
-        roleIdList = res?.rolesCodeList.map((role: any) => role.key);
+  // async function getCurrentUserInfo() {
+  //   try {
+  //     const res = await menuListService.getMenuList().toPromise();
+  //     if (res) {
+  //       let roleIdList = [];
+  //       roleIdList = res?.rolesCodeList.map((role: any) => role.key);
 
-        if (!!roleIdList.length) {
-          return getMenuList(res, roleIdList);
-        } else {
-          ShowNotification.error('当前账号未绑定角色，无法访问！');
-          history.replace('/login');
+  //       if (!!roleIdList.length) {
+  //         return getMenuList(res, roleIdList);
+  //       } else {
+  //         ShowNotification.error('当前账号未绑定角色，无法访问！');
+  //         history.replace('/login');
+  //       }
+  //     }
+  //   } catch (error) {
+  //     ShowNotification.error(error);
+  //   }
+  // }
+
+  //获取菜单
+  async function getMenuList() {
+    try {
+      const res = await menuListService.getMenuList().toPromise();
+      console.log('menuListService =>>>>>>>>>>>>>>>>>>>>>>>>', menuListService);
+
+      const menuList = res?.menuList;
+      if (menuList) {
+        setStateWrap({ menuList, loading: false });
+        if (history.location.pathname == '/home') {
+          parseFirstLeafPath(menuList);
+        } else if (history.location.pathname !== '/home/index') {
+          const canActive = judgeInMenu(menuList, history.location.pathname);
+          !canActive && history.replace('/home/index');
         }
       }
+      return { ...res.userInfo, auth: parsePrivilegeJSON(menuList) };
     } catch (error) {
       ShowNotification.error(error);
     }
   }
 
-  //获取菜单
-  async function getMenuList(userInfo: any, roleIdList: Array<string>) {
-    try {
-      const res = await homeService
-        .getMenuList({
-          systemId: userInfo.systemId,
-          roleIdList
-        })
-        .toPromise();
-      if (res) {
-        setStateWrap({ menuList: res, loading: false });
-        if (history.location.pathname == '/home') {
-          parseFirstLeafPath(res);
+  // 默认跳转菜单中第一个页面
+  function judgeInMenu(arr: any[], urlPath: string) {
+    let isValidPath = false;
+    function expand(arr: any[]) {
+      arr.map((node: any) => {
+        if (!isValidPath) {
+          if (!node.children.length) {
+            // TODO:
+            if (urlPath.includes(node.path)) {
+              isValidPath = true;
+            } else {
+              isValidPath = true;
+            }
+          } else {
+            expand(node.children);
+          }
         }
-      }
-      return { ...userInfo, auth: parsePrivilegeJSON(res) };
-    } catch (error) {
-      ShowNotification.error(error);
+      });
     }
-    return userInfo;
+    expand(arr);
+    return isValidPath;
   }
 
   // 默认跳转菜单中第一个页面

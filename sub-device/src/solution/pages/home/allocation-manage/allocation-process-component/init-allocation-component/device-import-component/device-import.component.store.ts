@@ -28,6 +28,10 @@ export function useDeviceImportStore(props: IDeviceImportProps) {
     const { errorTotal = 0, message = '', successList = [] } = checkResult;
     // 如果 有错误提示 message 不成功
     // 如果 errorTotal  不成功
+    if (!message && !errorTotal && !successList.length) {
+      ShowNotification.warning('请先验证设备!');
+      return;
+    }
     if (message || errorTotal || !successList.length) {
       ShowNotification.warning('设备号有误!');
       return;

@@ -10,6 +10,7 @@ export class IDirectiveListState {
   total = 0;
   currentId = '';
   timeInfo: string[] = [];
+  exportVisible = false;
 }
 export enum ModalType {
   CREATE,

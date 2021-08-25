@@ -3,6 +3,8 @@ import { Route, Switch, Redirect, RouteComponentProps } from 'react-router-dom';
 import { IRoute } from '~framework/interfaces/IRoute';
 import NotFoundComponent from '~/solution/pages/public/not-found-component/not-found.component';
 import { LazyloadLoadingComponent } from '~/solution/components/component.module';
+import { message } from 'antd';
+import { ShowNotification } from '~/framework/util/common';
 
 export class RoutesService {
   // 渲染路由
@@ -34,9 +36,10 @@ export class RoutesService {
   // 路由守卫
   static render(route: IRoute, StrategyType?: any) {
     return (props: RouteComponentProps) => {
-      let canActive = StrategyType ? new StrategyType().canActive() : true;
-      const canActiveCertainRoute = route.strategy ? new route.strategy().canActive() : undefined;
-      if (canActiveCertainRoute !== undefined) canActive = canActiveCertainRoute;
+      let canActive = true;
+      if (!route.ignoreStrategy) {
+        canActive = StrategyType ? new StrategyType().canActive() : true;
+      }
 
       if (canActive === true) {
         let TargetComponent = route.component;
@@ -50,6 +53,7 @@ export class RoutesService {
         }
         return <TargetComponent {...props} />;
       } else if (canActive === false) {
+        ShowNotification.warning('当前用户没有权限，请换账号登录');
         return <Redirect to="/login" {...props} />;
       } else {
         return <Redirect to={canActive} {...props} />;

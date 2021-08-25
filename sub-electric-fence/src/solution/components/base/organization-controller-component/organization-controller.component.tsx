@@ -1,17 +1,21 @@
 import * as React from 'react';
 import style from './organization-controller.component.less';
 import { useOrganizationControllerStore } from './organization-controller.component.store';
-import { Tree } from 'antd';
+import { Tree, Button } from 'antd';
 import { IOrganizationControllerProps } from './organization-controller.interface';
 import { ISelectLoadingComponent } from '~/solution/components/component.module';
 
 function OrganizationControllerComponent(props: IOrganizationControllerProps, ref: any) {
-  const { state, onLoadData, getCurrentSelectInfo, onCheck, getCurrentGroup } = useOrganizationControllerStore(
-    props,
-    ref
-  );
+  const {
+    state,
+    onLoadData,
+    getCurrentSelectInfo,
+    onCheck,
+    getCurrentGroup,
+    getMoreOrganization
+  } = useOrganizationControllerStore(props, ref);
   const { onSelect, expandedKeys, treeSelectedKeys, onExpand, checkedKeys, checkable, isGroup = false } = props;
-  const { treeData } = state;
+  const { treeData, loading, loadStoreOrganizationParams } = state;
 
   return (
     <>
@@ -37,18 +41,26 @@ function OrganizationControllerComponent(props: IOrganizationControllerProps, re
           />
         )}
       </div>
-      <Tree
-        loadData={onLoadData}
-        onSelect={onSelect}
-        expandedKeys={expandedKeys}
-        selectedKeys={treeSelectedKeys}
-        onExpand={onExpand}
-        checkedKeys={checkedKeys}
-        onCheck={onCheck}
-        blockNode
-        checkable={checkable}
-        treeData={treeData}
-      />
+      <div className={style.searchResultTree}>
+        <Tree
+          loadData={onLoadData}
+          onSelect={onSelect}
+          expandedKeys={expandedKeys}
+          selectedKeys={treeSelectedKeys}
+          onExpand={onExpand}
+          checkedKeys={checkedKeys}
+          onCheck={onCheck}
+          blockNode
+          checkable={checkable}
+          treeData={treeData}
+        />
+
+        {!loadStoreOrganizationParams.id && (
+          <Button type="link" loading={loading} onClick={getMoreOrganization}>
+            {loading ? '加载中...' : '加载更多'}
+          </Button>
+        )}
+      </div>
     </>
   );
 }

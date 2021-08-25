@@ -4,6 +4,7 @@ import { Form } from 'antd';
 import { OrderReportService } from '~/solution/model/services/report-order.service';
 import { useEffect } from 'react';
 import moment from 'moment';
+import { setState } from '~/framework/microAPP/appStore';
 
 export function useDirectiveListStore() {
   const { state, setStateWrap, getState } = useStateStore(new IDirectiveListState());
@@ -48,7 +49,7 @@ export function useDirectiveListStore() {
 
   function initSearchForm() {
     searchForm.resetFields();
-    setStateWrap({ timeInfo: [] });
+    setStateWrap({ timeInfo: [], canExport: false });
     searchClick();
   }
 
@@ -88,7 +89,7 @@ export function useDirectiveListStore() {
       // data[1] ? (endTime = Date.parse(data[1])) : (endTime = 0);
       // searchForm.setFieldsValue({ beginTime: beginTime });
       // searchForm.setFieldsValue({ endTime: endTime });
-      setStateWrap({ timeInfo: data });
+      setStateWrap({ timeInfo: !!data[0] ? data : [] });
     }
 
     if (type == 'organizationId') {
@@ -98,11 +99,42 @@ export function useDirectiveListStore() {
 
     if (type == 'roleId') {
       const { id } = data;
-      setStateWrap({ currentRoleId: id });
+      setStateWrap({ currentRoleId: id, canExport: !!id });
       searchForm.setFieldsValue({ roleId: id });
       searchForm.resetFields(['groupId']);
     }
   }
+
+  function handleExport(value: string) {
+    const { pageIndex, pageSize, timeInfo } = getState();
+    let searchData: any = {};
+    searchData = searchForm.getFieldsValue();
+    searchData.isSettle = typeof searchData.isSettle === 'number' ? !!searchData.isSettle : undefined;
+    orderReportService
+      .exportMonitorAlarmFollowList({
+        ...searchData,
+        beginTime: timeInfo[0] ? moment(timeInfo[0]).valueOf() : 0,
+        endTime: timeInfo[1] ? moment(timeInfo[1]).valueOf() : 0,
+        index: pageIndex,
+        size: pageSize,
+        name: value
+      })
+      .subscribe(
+        res => {
+          setState({ showTaskCenter: true });
+          handleExportVisible(false);
+        },
+        err => {
+          handleExportVisible(false);
+        }
+      );
+  }
+
+  function handleExportVisible(visible: boolean) {
+    visible && searchClick();
+    setStateWrap({ exportVisible: visible });
+  }
+
   return {
     state,
     searchForm,
@@ -111,6 +143,8 @@ export function useDirectiveListStore() {
     changeTablePageIndex,
     searchClick,
     handleModalCancel,
-    getCurrentSelectInfo
+    getCurrentSelectInfo,
+    handleExport,
+    handleExportVisible
   };
 }

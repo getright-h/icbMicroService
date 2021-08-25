@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Divider } from 'antd';
 import { ModalType } from './dwell-list.interface';
-export function DwellColumn(callbackAction: Function) {
+export function DwellListColumn(callbackAction: Function) {
   return [
     {
       title: '车主姓名',
@@ -30,10 +30,6 @@ export function DwellColumn(callbackAction: Function) {
     {
       title: '地址',
       dataIndex: 'deviceCodeList'
-    },
-    {
-      title: '监控组',
-      dataIndex: 'time'
     },
     {
       title: '所属机构',

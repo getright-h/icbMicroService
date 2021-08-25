@@ -5,7 +5,7 @@ import { TablePageTelComponent, ITableComponent } from '~/framework/components/c
 import WarehouseListLeftComponent from './warehouse-list-left-component/warehouse-list-left.component';
 import { useWarehouseListStore } from './warehouse-list.component.store';
 import { wareHouseListColumns } from './warehouse-list.columns';
-import { Button, Input } from 'antd';
+import { Button, Input, Row, Col, Form } from 'antd';
 import AddShippingSpaceComponent from './add-shipping-space-component/add-shipping-space.component';
 export const WarehouseListManageContext = React.createContext({
   reduxState: warehouseListInitialState,
@@ -39,17 +39,26 @@ export default function WarehouseListComponent() {
   } = state;
 
   function renderSelectItems() {
+    const layout = {
+      labelCol: { span: 6 },
+      wrapperCol: { span: 16 }
+    };
     return (
-      <div className="push-search-item">
-        <span className="label">仓位名：</span>
-        <Input
-          disabled={!currentSelectNode}
-          allowClear
-          placeholder="请输入仓位名"
-          value={searchForm.name}
-          onChange={($event: any) => handleFormDataChange($event, 'name')}
-        />
-      </div>
+      <Form {...layout} style={{ width: '90%' }}>
+        <Row gutter={24}>
+          <Col span={8}>
+            <Form.Item label="仓位名">
+              <Input
+                disabled={!currentSelectNode}
+                allowClear
+                placeholder="请输入仓位名"
+                value={searchForm.name}
+                onChange={($event: any) => handleFormDataChange($event, 'name')}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+      </Form>
     );
   }
 
@@ -59,6 +68,13 @@ export default function WarehouseListComponent() {
         <Button type="primary" disabled={!currentSelectNode} onClick={() => getTableData()} loading={isLoading}>
           查询
         </Button>
+      </div>
+    );
+  }
+
+  function renderOtherButtons() {
+    return (
+      <div className="other-search-button-item">
         <Button
           type="primary"
           disabled={!currentSelectNode || !$auth['addPosition']}
@@ -67,16 +83,19 @@ export default function WarehouseListComponent() {
         >
           添加仓位
         </Button>
-      </div>
-    );
-  }
-
-  function renderOtherButtons() {
-    return (
-      <div className={style.totalShow}>
-        库存总数: {!currentSelectNode ? '**' : totalNumber}
+        <Button type="primary" ghost style={{ cursor: 'auto' }}>
+          {' '}
+          库存总数: {!currentSelectNode ? '**' : totalNumber}
+        </Button>
+        {/* <div className={style.totalShow}> */}
+        {/* 库存总数: {!currentSelectNode ? '**' : totalNumber} */}
         {/* <span>({totalAlarm})</span> */}
+        {/* </div> */}
       </div>
+      // <div className={style.totalShow}>
+      //   库存总数: {!currentSelectNode ? '**' : totalNumber}
+      //   {/* <span>({totalAlarm})</span> */}
+      // </div>
     );
   }
   // component --- 渲染table

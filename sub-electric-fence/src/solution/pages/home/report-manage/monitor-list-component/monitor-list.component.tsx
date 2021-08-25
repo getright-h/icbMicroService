@@ -4,12 +4,14 @@ import {
   ITableComponent,
   TablePageTelComponent,
   TimePickerComponent,
-  ISelectLoadingComponent
+  ISelectLoadingComponent,
+  InputExportFilenameComponent
 } from '~/solution/components/component.module';
 import { AlarmParameterColumn } from './monitor-list.column';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 import { useDirectiveListStore } from './monitor-list.component.store';
-import { AlarmType_FOR_REPORT } from '~shared/constant/alarm.const';
+import style from './monitor-list.component.less';
+import { InfoCircleOutlined } from '@ant-design/icons';
 
 export default function DirectiveListComponent() {
   const {
@@ -19,7 +21,9 @@ export default function DirectiveListComponent() {
     changeTablePageIndex,
     searchClick,
     initSearchForm,
-    getCurrentSelectInfo
+    getCurrentSelectInfo,
+    handleExport,
+    handleExportVisible
   } = useDirectiveListStore();
   const { isLoading, tableData, total, pageIndex, pageSize } = state;
   const { gState } = React.useContext(GlobalContext);
@@ -43,7 +47,7 @@ export default function DirectiveListComponent() {
       reqUrl: 'queryGroupSearchList',
       placeholder: '请选择监控组',
       getCurrentSelectInfo: (value: string, option: any) => {
-        getCurrentSelectInfo(option.info || {}, 'groupId');
+        getCurrentSelectInfo(option?.info || {}, 'groupId');
       },
       searchForm: {
         systemId: gState?.myInfo?.systemId
@@ -68,6 +72,12 @@ export default function DirectiveListComponent() {
               {queryMonitorGroup}
             </Form.Item>
           </Col>
+          <Col span={8}>
+            <Form.Item className={style.hint}>
+              <InfoCircleOutlined />
+              <span>未选择监控组不可导出</span>
+            </Form.Item>
+          </Col>
         </Row>
         <Row gutter={[8, 8]}>
           <Col span={8}>
@@ -87,10 +97,13 @@ export default function DirectiveListComponent() {
   function renderSearchButtons() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary" onClick={searchClick}>
+        <Button type="primary" onClick={searchClick} loading={isLoading}>
           查询
         </Button>
         <Button onClick={initSearchForm}>清空</Button>
+        <Button type="primary" disabled={!state.canExport} onClick={() => handleExportVisible(true)}>
+          导出
+        </Button>
       </div>
     );
   }
@@ -117,6 +130,11 @@ export default function DirectiveListComponent() {
         searchButton={renderSearchButtons()}
         table={<RenderTable />}
       ></TablePageTelComponent>
+      <InputExportFilenameComponent
+        visible={state.exportVisible}
+        getValues={v => handleExport(v.name)}
+        close={() => handleExportVisible(false)}
+      />
     </React.Fragment>
   );
 }
