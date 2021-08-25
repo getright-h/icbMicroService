@@ -7,8 +7,11 @@ import { Key, ReactNode } from 'react';
 export class IOrganizationControllerState {
   loadStoreOrganizationParams = {
     typeId: 'c59c75eec2d3cc075cca08d84386bcb9',
-    id: ''
+    id: '',
+    index: 1,
+    size: 10
   };
+  loading = false;
   treeData: DataNode[] = [];
 }
 
