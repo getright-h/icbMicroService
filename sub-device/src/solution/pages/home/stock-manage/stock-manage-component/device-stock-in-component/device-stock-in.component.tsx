@@ -134,7 +134,10 @@ export default function DeviceStockInComponent(props: IDeviceStockInProps) {
                                 name={[field.name, 'sim']}
                                 style={{ maxWidth: '200px' }}
                                 className={style.fieldItem}
-                                rules={[{ required: true, message: '请填写sim卡号' }]}
+                                rules={[
+                                  { required: true, message: '请填写sim卡号' },
+                                  { pattern: /^[0-9A-Za-z]*$/, message: '只能输入数字及英文字母' }
+                                ]}
                               >
                                 <Input placeholder="请填写sim卡号" />
                               </Form.Item>

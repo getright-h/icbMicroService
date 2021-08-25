@@ -19,13 +19,13 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
   searchParams.current = props.searchForm || {};
   searchName.current = props.searchKey || '';
 
-  function getOptionList(isSearch = false) {
+  function getOptionList(isSearch = false, searchNameInfo = searchName.current) {
     const { optionList } = state;
 
     setStateWrap({ fetching: true });
     getOptionListSubscription = drapChooseLoadingService[reqUrl]({
       ...searchParams.current,
-      [searchKeyName]: searchName.current,
+      [searchKeyName]: searchNameInfo,
       index: scrollPage.current,
       size: props.pageSize || 100
     }).subscribe(
@@ -68,16 +68,13 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
     );
   }
 
-  const fetchOptions = useCallback(
-    _.throttle((isSearch?: boolean, value?: string) => {
-      if (isSearch) {
-        scrollPage.current = 1;
-        searchName.current = value || '';
-      }
-      getOptionList(true);
-    }, 300),
-    []
-  );
+  const fetchOptions = _.debounce((isSearch?: boolean, value?: string) => {
+    if (isSearch) {
+      scrollPage.current = 1;
+      searchName.current = value || '';
+    }
+    getOptionList(true, searchName.current);
+  }, 300);
 
   function optionScroll(e: any) {
     e.persist();

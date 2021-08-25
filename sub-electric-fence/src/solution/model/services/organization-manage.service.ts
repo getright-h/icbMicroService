@@ -32,7 +32,12 @@ export class OrganizationManageService extends OrganizationManageDTO {
   }
 
   // 获取当前头部组织的列表
-  queryGpsOrganization(params: { typeId: string; id: string }): Observable<QueryStoreOrganizationReturn[]> {
+  queryGpsOrganization(params: {
+    typeId: string;
+    id: string;
+    index: number;
+    size: number;
+  }): Observable<QueryStoreOrganizationReturn[]> {
     return this.requestService.get(QUERY_GPS_ORGANIZATION, params);
   }
 

@@ -4,7 +4,7 @@ import {
   IOrganizationControllerProps
 } from './organization-controller.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
-import { useEffect, useImperativeHandle } from 'react';
+import { useEffect, useImperativeHandle, useRef } from 'react';
 import { dealWithTreeData, updateTreeData, deleteTreeDataByKey } from '~/framework/util/common/treeFunction';
 import { EventDataNode, DataNode } from 'rc-tree/lib/interface';
 import { forkJoin } from 'rxjs';
@@ -15,16 +15,18 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
   const { state, setStateWrap, getState } = useStateStore(new IOrganizationControllerState());
   const organizationManageService: OrganizationManageService = new OrganizationManageService();
   const { warehouseAction, onExpand, queryChildInfo, currentOrganazation, allCanSelect } = props;
-  console.log('props', props);
-
+  const formInfo = useRef({ index: 1, size: 10 });
   useEffect(() => {
     queryOrganizationTypeListByTypeId();
   }, [currentOrganazation]);
 
   // 根据根据系统id查找机构类型
   function queryOrganizationTypeListByTypeId(id?: string) {
+    setStateWrap({
+      loading: true
+    });
     organizationManageService
-      .queryGpsOrganization({ typeId: 'c59c75eec2d3cc075cca08d84386bcb9', id })
+      .queryGpsOrganization({ typeId: 'c59c75eec2d3cc075cca08d84386bcb9', id, ...formInfo.current })
       .subscribe(res => {
         if (!res) res = [];
         // 如果只要求显示一个currentOrganazation 才执行这行过滤数据的代码
@@ -42,9 +44,16 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
           props.organizationChecked
         );
         setStateWrap({
-          treeData
+          loading: false,
+          treeData: [...getState().treeData, ...treeData]
         });
       });
+  }
+
+  // 加载更过
+  function getMoreOrganization() {
+    formInfo.current = { ...formInfo.current, index: formInfo.current.index + 1 };
+    queryOrganizationTypeListByTypeId();
   }
 
   // 点击展开加载数据
@@ -94,11 +103,16 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
       loadStoreOrganizationParams: {
         ...state.loadStoreOrganizationParams,
         [key]: value
-      }
+      },
+      treeData: []
     });
-    console.log(value);
 
-    searchCurrentSelectInfo(getState().loadStoreOrganizationParams);
+    if (getState().loadStoreOrganizationParams.id) {
+      searchCurrentSelectInfo(getState().loadStoreOrganizationParams);
+    } else {
+      formInfo.current.index = 1;
+      queryOrganizationTypeListByTypeId();
+    }
   }
 
   // 获取当前选择的监控组
@@ -107,14 +121,23 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     getCurrentSelectInfo(info.organizationId, 'id');
   }
   // 选择当前的机构信息，这边进行搜索
-  function searchCurrentSelectInfo(params: { typeId: string; id: string }) {
+  function searchCurrentSelectInfo(params: { typeId: string; id: string; index: number; size: number }) {
+    setStateWrap({
+      loading: true
+    });
     organizationManageService.queryStoreOrganization(params).subscribe(res => {
-      const expandedKeys: string[] = [];
-      res.forEach(item => {
-        expandedKeys.push(item.id);
+      const treeData = dealWithTreeData<QueryStoreOrganizationReturn>(
+        res,
+        TREE_MAP,
+        false,
+        warehouseAction,
+        allCanSelect,
+        props.organizationChecked
+      );
+      setStateWrap({
+        loading: false,
+        treeData: [...treeData]
       });
-
-      onExpand(expandedKeys);
     });
   }
 
@@ -132,5 +155,5 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     queryOrganizationTypeListByTypeId
   }));
 
-  return { state, onLoadData, getCurrentSelectInfo, onCheck, getCurrentGroup };
+  return { state, onLoadData, getCurrentSelectInfo, onCheck, getCurrentGroup, getMoreOrganization };
 }
