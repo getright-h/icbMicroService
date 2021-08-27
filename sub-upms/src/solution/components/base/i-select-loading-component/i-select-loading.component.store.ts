@@ -23,7 +23,7 @@ export function useISelectLoadingStore(props: IISelectLoadingProps) {
       ...searchParams.current,
       [searchKeyName]: searchName.current,
       index: scrollPage.current,
-      size: props.pageSize || 100
+      size: props.pageSize || 10
     }).subscribe(
       (res: any) => {
         if (res) {
