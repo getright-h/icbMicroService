@@ -4,7 +4,7 @@ import {
   IOrganizationControllerProps
 } from './organization-controller.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
-import { useEffect, useContext, useImperativeHandle } from 'react';
+import { useEffect, useContext, useImperativeHandle, useRef } from 'react';
 import { WarehouseListService } from '~/solution/model/services/warehouse-list.service';
 import { IGlobalState } from '~/solution/context/global/global.interface';
 import { GlobalContext } from '~/solution/context/global/global.provider';
@@ -25,6 +25,7 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
   const { state, setStateWrap, getState } = useStateStore(new IOrganizationControllerState());
   const warehouseListService: WarehouseListService = new WarehouseListService();
   const { warehouseAction, onExpand, queryChildInfo, currentOrganazation } = props;
+  const formInfo = useRef({ index: 1, size: 10 });
   const { gState }: IGlobalState = useContext(GlobalContext);
   __initContent__(warehouseAction);
   useEffect(() => {
@@ -33,26 +34,36 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
 
   // 根据根据系统id查找机构类型
   function queryOrganizationTypeListByTypeId(id?: string) {
-    warehouseListService.queryStoreOrganization({ typeId: gState.myInfo.typeId, id }).subscribe(res => {
-      // 如果只要求显示一个currentOrganazation 才执行这行过滤数据的代码
-      if (currentOrganazation) {
-        res = res.filter(item => {
-          return item.id == currentOrganazation;
+    setStateWrap({ loading: true });
+    warehouseListService
+      .queryStoreOrganization({ typeId: gState.myInfo.typeId, id, ...formInfo.current })
+      .subscribe(res => {
+        // 如果只要求显示一个currentOrganazation 才执行这行过滤数据的代码
+        if (currentOrganazation) {
+          res = res.filter(item => {
+            return item.id == currentOrganazation;
+          });
+        }
+        const treeData = dealWithTreeData<QueryStoreOrganizationReturn>(
+          res,
+          TREE_MAP,
+          false,
+          undefined,
+          undefined,
+          props.organizationChecked,
+          props.disableNodeObj
+        );
+        setStateWrap({
+          loading: false,
+          treeData: [...getState().treeData, ...treeData]
         });
-      }
-      const treeData = dealWithTreeData<QueryStoreOrganizationReturn>(
-        res,
-        TREE_MAP,
-        false,
-        undefined,
-        undefined,
-        props.organizationChecked,
-        props.disableNodeObj
-      );
-      setStateWrap({
-        treeData
       });
-    });
+  }
+
+  // 加载更多
+  function getMoreOrganization() {
+    formInfo.current = { ...formInfo.current, index: formInfo.current.index + 1 };
+    queryOrganizationTypeListByTypeId();
   }
 
   // 点击展开加载数据
@@ -110,10 +121,16 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
       loadStoreOrganizationParams: {
         ...state.loadStoreOrganizationParams,
         [key]: value
-      }
+      },
+      treeData: []
     });
 
-    searchCurrentSelectInfo(getState().loadStoreOrganizationParams);
+    if (getState().loadStoreOrganizationParams.id) {
+      searchCurrentSelectInfo(getState().loadStoreOrganizationParams);
+    } else {
+      formInfo.current.index = 1;
+      queryOrganizationTypeListByTypeId();
+    }
   }
 
   // 获取当前选择的监控组
@@ -125,13 +142,23 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     getCurrentSelectInfo(info.organizationId, 'id');
   }
   // 选择当前的机构信息，这边进行搜索
-  function searchCurrentSelectInfo(params: { typeId: string; id: string }) {
+  function searchCurrentSelectInfo(params: { typeId: string; id: string; index: number; size: number }) {
+    setStateWrap({
+      loading: true
+    });
     warehouseListService.queryStoreOrganization(params).subscribe(res => {
-      const expandedKeys: string[] = [];
-      res.forEach(item => {
-        expandedKeys.push(item.id);
+      const treeData = dealWithTreeData<QueryStoreOrganizationReturn>(
+        res,
+        TREE_MAP,
+        false,
+        warehouseAction,
+        undefined,
+        props.organizationChecked
+      );
+      setStateWrap({
+        loading: false,
+        treeData: [...treeData]
       });
-      onExpand(expandedKeys);
     });
   }
 
@@ -176,5 +203,5 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     setSingleCheckTreeData
   }));
 
-  return { state, onLoadData, getCurrentSelectInfo, onCheck, getCurrentGroup };
+  return { state, onLoadData, getCurrentSelectInfo, onCheck, getCurrentGroup, getMoreOrganization };
 }
