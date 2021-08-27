@@ -44,7 +44,12 @@ export class WarehouseListService extends WarehouseListDTO {
   }
 
   // 获取当前头部组织的列表
-  queryStoreOrganization(params: { typeId: string; id: string }): Observable<QueryStoreOrganizationReturn[]> {
+  queryStoreOrganization(params: {
+    typeId: string;
+    id: string;
+    index: number;
+    size: number;
+  }): Observable<QueryStoreOrganizationReturn[]> {
     return this.requestService.get(QUERYSTORE_ORGANIZATION, params);
   }
 
