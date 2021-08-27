@@ -125,7 +125,7 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     setStateWrap({
       loading: true
     });
-    organizationManageService.queryStoreOrganization(params).subscribe(res => {
+    organizationManageService.queryGpsOrganization(params).subscribe(res => {
       const treeData = dealWithTreeData<QueryStoreOrganizationReturn>(
         res,
         TREE_MAP,
