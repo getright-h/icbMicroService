@@ -15,14 +15,13 @@ export default function MoveTemplateComponent(props: IMoveTemplateProps) {
     handleCancel,
     onCheckData,
     onChangeIsCopy,
-    onLoadData,
     onExpand,
     onChangeTemplate,
     queryChildInfo
   } = useMoveTemplateStore({ ...props, node });
 
   const { addMoveTemplateVisible } = props;
-  const { confirmLoading, allTemplate, isCopy, treeData, groupIdList, expandedKeys, formTemplateIdList } = state;
+  const { confirmLoading, allTemplate, isCopy, groupIdList, expandedKeys, formTemplateIdList } = state;
   function RenderChooseTemplate() {
     return (
       <div className={style.linkOrganization}>
