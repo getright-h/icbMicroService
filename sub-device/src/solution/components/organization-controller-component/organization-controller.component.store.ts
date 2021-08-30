@@ -24,7 +24,7 @@ import { forkJoin } from 'rxjs';
 export function useOrganizationControllerStore(props: IOrganizationControllerProps, ref: any) {
   const { state, setStateWrap, getState } = useStateStore(new IOrganizationControllerState());
   const warehouseListService: WarehouseListService = new WarehouseListService();
-  const { warehouseAction, onExpand, queryChildInfo, currentOrganazation } = props;
+  const { warehouseAction, onExpand, queryChildInfo, currentOrganazation, allCanSelect } = props;
   const formInfo = useRef({ index: 1, size: 10 });
   const { gState }: IGlobalState = useContext(GlobalContext);
   __initContent__(warehouseAction);
@@ -48,8 +48,8 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
           res,
           TREE_MAP,
           false,
-          undefined,
-          undefined,
+          warehouseAction,
+          allCanSelect,
           props.organizationChecked,
           props.disableNodeObj
         );
@@ -89,7 +89,7 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     forkJoin(warehouseListService.queryStoreOrganizationListSub({ parentId }), queryChildInfoSubscription).subscribe(
       (res: any) => {
         const queryChildInfoData: DataNode[] = queryChildInfo
-          ? dealWithTreeData(res[1], TREE_MAP, true, warehouseAction, undefined, undefined, props.disableNodeObj)
+          ? dealWithTreeData(res[1], TREE_MAP, true, warehouseAction, allCanSelect, undefined, props.disableNodeObj)
           : [];
 
         treeNode.children = [
@@ -99,7 +99,7 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
             TREE_MAP,
             false,
             undefined,
-            undefined,
+            allCanSelect,
             props.organizationChecked,
             props.disableNodeObj
           )
@@ -152,7 +152,7 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
         TREE_MAP,
         false,
         warehouseAction,
-        undefined,
+        allCanSelect,
         props.organizationChecked
       );
       setStateWrap({

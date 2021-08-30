@@ -32,6 +32,7 @@ export class IOrganizationControllerProps {
     currentDisableId?: string; // 当前监控组ID
     currentCheckedId?: string;
   };
+  allCanSelect?: boolean = false;
 }
 
 export const TREE_MAP = {
