@@ -31,16 +31,18 @@ export function useMoveTemplateStore(props: IMoveTemplateProps) {
 
   // 根据根据系统id查找机构类型
   function queryOrganizationTypeListByTypeId(id?: string) {
-    warehouseListService.queryStoreOrganization({ typeId: gState.myInfo.typeId, id }).subscribe(res => {
-      const treeData = dealWithTreeData<QueryStoreOrganizationReturn>(res, TREE_MAP, false, undefined);
-      setStateWrap({
-        treeData,
-        organazationList: res
+    warehouseListService
+      .queryStoreOrganization({ typeId: gState.myInfo.typeId, id, index: 1, size: 10 })
+      .subscribe(res => {
+        const treeData = dealWithTreeData<QueryStoreOrganizationReturn>(res, TREE_MAP, false, undefined);
+        setStateWrap({
+          treeData,
+          organazationList: res
+        });
       });
-    });
   }
 
-  function onCheckData(checkedKeys: string[], data) {
+  function onCheckData(treeData: DataNode[], checkedKeys: string[]) {
     setStateWrap({
       groupIdList: checkedKeys
     });
@@ -90,7 +92,7 @@ export function useMoveTemplateStore(props: IMoveTemplateProps) {
     });
   }
 
-  function onChangeTemplate(checkedKeys: string[], node: any) {
+  function onChangeTemplate(checkedKeys: string[]) {
     const { allTemplate } = state;
     const checked: any[] = [];
 

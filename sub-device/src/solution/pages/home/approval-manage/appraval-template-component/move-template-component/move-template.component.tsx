@@ -4,6 +4,7 @@ import { useMoveTemplateStore } from './move-template.component.store';
 import { Modal, Checkbox, Col, Tree } from 'antd';
 import { IMoveTemplateProps } from './move-template.interface';
 import { AppravalTemplateManageContext } from '../appraval-template.component';
+import OrganizationControllerComponent from '~/solution/components/organization-controller-component/organization-controller.component';
 
 export default function MoveTemplateComponent(props: IMoveTemplateProps) {
   const { reduxState } = React.useContext(AppravalTemplateManageContext);
@@ -15,11 +16,12 @@ export default function MoveTemplateComponent(props: IMoveTemplateProps) {
     onCheckData,
     onChangeIsCopy,
     onLoadData,
+    onExpand,
     onChangeTemplate
   } = useMoveTemplateStore({ ...props, node });
 
   const { addMoveTemplateVisible } = props;
-  const { confirmLoading, allTemplate, isCopy, treeData, groupIdList, formTemplateIdList } = state;
+  const { confirmLoading, allTemplate, isCopy, treeData, groupIdList, expandedKeys, formTemplateIdList } = state;
   function RenderChooseTemplate() {
     return (
       <div className={style.linkOrganization}>
@@ -59,17 +61,18 @@ export default function MoveTemplateComponent(props: IMoveTemplateProps) {
   }
 
   function RenderRight() {
+    const prganizationControllerComponentProps = {
+      expandedKeys,
+      onExpand,
+      getCheckedInfo: onCheckData,
+      checkedKeys: groupIdList,
+      checkable: true,
+      organizationChecked: true
+    };
     // 移动至
     return (
       <div style={{ textAlign: 'center' }}>
-        <Tree
-          checkable
-          loadData={onLoadData}
-          checkedKeys={groupIdList}
-          onCheck={onCheckData}
-          blockNode
-          treeData={treeData}
-        />
+        <OrganizationControllerComponent {...prganizationControllerComponentProps} />
       </div>
     );
   }

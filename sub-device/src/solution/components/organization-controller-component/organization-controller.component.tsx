@@ -57,6 +57,7 @@ function OrganizationControllerComponent(props: IOrganizationControllerProps, re
           checkable={checkable}
           treeData={treeData}
         />
+        {/* 如果是搜索隐藏加载中 */}
         {!loadStoreOrganizationParams.id && (
           <Button type="link" loading={loading} onClick={getMoreOrganization}>
             {loading ? '加载中...' : '加载更多'}
