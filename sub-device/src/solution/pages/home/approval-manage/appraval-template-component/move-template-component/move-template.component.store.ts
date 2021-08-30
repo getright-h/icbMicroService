@@ -151,6 +151,7 @@ export function useMoveTemplateStore(props: IMoveTemplateProps) {
       checkedKeys
     });
   }
+  const queryChildInfo = (item: any) => approvalManageService.queryApprovalGroupList(item);
   return {
     state,
     handleOk,
@@ -160,6 +161,7 @@ export function useMoveTemplateStore(props: IMoveTemplateProps) {
     onExpand,
     onCheck,
     onChangeTemplate,
-    onLoadData
+    onLoadData,
+    queryChildInfo
   };
 }
