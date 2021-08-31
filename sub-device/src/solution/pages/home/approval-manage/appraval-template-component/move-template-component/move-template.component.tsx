@@ -16,7 +16,8 @@ export default function MoveTemplateComponent(props: IMoveTemplateProps) {
     onCheckData,
     onChangeIsCopy,
     onExpand,
-    onChangeTemplate
+    onChangeTemplate,
+    queryChildInfo
   } = useMoveTemplateStore({ ...props, node });
 
   const { addMoveTemplateVisible } = props;
@@ -66,7 +67,8 @@ export default function MoveTemplateComponent(props: IMoveTemplateProps) {
       getCheckedInfo: onCheckData,
       checkedKeys: groupIdList,
       checkable: true,
-      organizationChecked: true
+      // organizationChecked: true
+      queryChildInfo
     };
     // 移动至
     return (
