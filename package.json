@@ -1,27 +1,25 @@
 {
   "name": "fch-micro-front",
   "version": "1.0.0",
+  "private": true,
   "description": "",
   "main": "index.js",
   "scripts": {
-    "packages:install": "npm-run-all --serial install:*",
-    "packages:start": "npm-run-all --parallel start:*",
-    "install:m": "yarn",
-    "install:device": "cd sub-device && yarn",
-    "start:device": "cd sub-device && yarn start",
-    "install:master": "cd master && yarn",
-    "start:master": "cd master && yarn start",
-    "install:fence": "cd sub-electric-fence && yarn",
-    "start:fence": "cd sub-electric-fence && yarn start",
-    "install:upms": "cd sub-upms && yarn",
-    "start:upms": "cd sub-upms && yarn start"
+    "start:device": "lerna run fch:start --scope=sub-device --stream",
+    "start:master": "lerna run fch:start --scope=master --stream",
+    "start:fence": "lerna run fch:start --scope=sub-electric-fence --stream",
+    "start:upms": "lerna run fch:start --scope=sub-upms --stream"
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "inquirer": "^7.3.1"
   },
   "devDependencies": {
+    "lerna": "^3.22.1",
     "npm-run-all": "^4.1.5"
   }
 }
