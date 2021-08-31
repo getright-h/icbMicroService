@@ -1,0 +1,59 @@
+.vehicle-divide-line {
+  margin: 5px 0;
+  border-bottom: 1px solid #ccc;
+}
+.vehicle-basic-info,
+.vehicle-state-info {
+  .title {
+    font-weight: bold;
+    color: #333;
+  }
+  .basic {
+    padding-left: 1rem;
+  }
+}
+.vehicle-action-buttons {
+  button {
+    padding: 4px 12px;
+    cursor: pointer;
+    color: #333;
+    background: #fff;
+    border-radius: 5px;
+    border: 1px solid #d9d9d9;
+    box-shadow: 0 1px 0 fade-out(black, 0.95);
+    transition: background 250ms;
+    margin-right: 8px;
+  }
+  button:hover,
+  button:active {
+    border: 1px solid @primary-color;
+    background: @primary-color;
+    color: #fff;
+  }
+  button:active{
+    opacity: 0.8;
+  }
+  button:focus {
+    outline: none;
+  }
+}
+.vehicle-action-buttons_disable {
+  button {
+    padding: 4px 12px;
+    cursor: pointer;
+    color: #333;
+    background: #fff;
+    border-radius: 5px;
+    border: 1px solid #d9d9d9;
+    box-shadow: 0 1px 0 fade-out(black, 0.95);
+    transition: background 250ms;
+    margin-right: 8px;
+  }
+  button:hover,
+  button:active {
+  }
+  button:active{
+  }
+  button:focus {
+  }
+}

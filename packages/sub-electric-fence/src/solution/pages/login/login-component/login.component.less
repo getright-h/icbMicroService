@@ -1,0 +1,117 @@
+@page-min-width: 1200px;
+@page-min-height: 500px;
+@left-bg-color: #0135c9;
+@right-bg-color: #f0f0f0;
+@login-box-width: 330px;
+
+.main {
+  min-width: @page-min-width;
+  min-height: @page-min-height;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.stage {
+  background: url('../../../assets/image/login_page_bg.png') no-repeat center center;
+  height: 100%;
+  width: 100%;
+  background-size: contain;
+  position: absolute;
+  z-index: 100;
+}
+
+.left {
+  height: 100%;
+  width: 60%;
+  background-color: @left-bg-color;
+  background-image: radial-gradient(#009bee 10%, @left-bg-color 98%);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.leftCover {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-color: transparent transparent @right-bg-color transparent;
+}
+
+// 右侧
+.right {
+  height: 100%;
+  width: 50%;
+  background-color: @right-bg-color;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding-left: 5%;
+  box-sizing: border-box;
+}
+
+.welcome {
+  font-size: 36px;
+  margin-bottom: 0;
+}
+
+// 站点标题
+.siteTitleBox {
+  display: flex;
+  font-size: 24px;
+  color: #acacac;
+
+  strong {
+    font-size: 24px;
+    color: @primary-color;
+  }
+}
+
+// 登录框
+.loginBox {
+  max-width: @login-box-width;
+}
+
+.loginBtn {
+  width: 100%;
+  height: 40px;
+  border-radius: 0;
+}
+
+.formFlexItem {
+  display: flex;
+
+  &>div {
+    width: 100%;
+
+    &>div>span {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}
+
+.vcodeInput {
+  width: 0.6 * @login-box-width  !important;
+}
+
+.vcodeBox {
+  width: 0.4 * @login-box-width;
+  text-align: center;
+  // margin-left: 5px;
+  // border: 1px solid #d9d9d9;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-block;
+  height: 40px;
+  vertical-align: top;
+
+  >img {
+    width: 100%;
+  }
+}
