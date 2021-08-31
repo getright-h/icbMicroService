@@ -4,7 +4,7 @@ import {
   IOrganizationControllerProps
 } from './organization-controller.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
-import { useEffect, useImperativeHandle, useRef } from 'react';
+import { useEffect, useImperativeHandle, useRef, Key } from 'react';
 import { dealWithTreeData, updateTreeData, deleteTreeDataByKey } from '~/framework/util/common/treeFunction';
 import { EventDataNode, DataNode } from 'rc-tree/lib/interface';
 import { forkJoin } from 'rxjs';
@@ -56,6 +56,18 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     queryOrganizationTypeListByTypeId();
   }
 
+  function onLoad(
+    loadedKeys: Key[],
+    info: {
+      event: 'load';
+      node: EventDataNode;
+    }
+  ) {
+    console.log(loadedKeys);
+
+    setStateWrap({ loadedKeys: [...getState().loadedKeys, ...loadedKeys] });
+  }
+
   // 点击展开加载数据
   function onLoadData(treeNode: EventDataNode | any): Promise<void> {
     return new Promise(resolve => {
@@ -87,7 +99,6 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
           ...dealWithTreeData(res[0], TREE_MAP, false, undefined, allCanSelect, props.organizationChecked)
         ];
         const treeData = updateTreeData(state.treeData, treeNode.key, treeNode.children);
-
         props.checkable && props.getCheckedInfo(treeData);
         setStateWrap({
           treeData
@@ -104,9 +115,10 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
         ...state.loadStoreOrganizationParams,
         [key]: value
       },
-      treeData: []
+      treeData: [],
+      loadedKeys: []
     });
-
+    onExpand && onExpand([]);
     if (getState().loadStoreOrganizationParams.id) {
       searchCurrentSelectInfo(getState().loadStoreOrganizationParams);
     } else {
@@ -155,5 +167,5 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     queryOrganizationTypeListByTypeId
   }));
 
-  return { state, onLoadData, getCurrentSelectInfo, onCheck, getCurrentGroup, getMoreOrganization };
+  return { state, onLoadData, onLoad, getCurrentSelectInfo, onCheck, getCurrentGroup, getMoreOrganization };
 }

@@ -13,6 +13,7 @@ export class IOrganizationControllerState {
   };
   loading = false;
   treeData: DataNode[] = [];
+  loadedKeys: Key[] = [];
 }
 
 export class IOrganizationControllerProps {

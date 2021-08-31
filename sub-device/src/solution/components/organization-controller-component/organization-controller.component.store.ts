@@ -4,7 +4,7 @@ import {
   IOrganizationControllerProps
 } from './organization-controller.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
-import { useEffect, useContext, useImperativeHandle, useRef } from 'react';
+import { useEffect, useContext, useImperativeHandle, useRef, Key } from 'react';
 import { WarehouseListService } from '~/solution/model/services/warehouse-list.service';
 import { IGlobalState } from '~/solution/context/global/global.interface';
 import { GlobalContext } from '~/solution/context/global/global.provider';
@@ -122,9 +122,10 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
         ...state.loadStoreOrganizationParams,
         [key]: value
       },
-      treeData: []
+      treeData: [],
+      loadedKeys: []
     });
-
+    onExpand && onExpand([]);
     if (getState().loadStoreOrganizationParams.id) {
       searchCurrentSelectInfo(getState().loadStoreOrganizationParams);
     } else {
@@ -170,6 +171,16 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     });
   }
 
+  function onLoad(
+    loadedKeys: Key[],
+    info: {
+      event: 'load';
+      node: EventDataNode;
+    }
+  ) {
+    setStateWrap({ loadedKeys: [...getState().loadedKeys, ...loadedKeys] });
+  }
+
   // 修改tree
   function alertCurrentTreeData(id: string, title: string) {
     const treeData = alterTreeDataByKey(state.treeData, id, title);
@@ -203,5 +214,5 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     setSingleCheckTreeData
   }));
 
-  return { state, onLoadData, getCurrentSelectInfo, onCheck, getCurrentGroup, getMoreOrganization };
+  return { state, onLoadData, onLoad, getCurrentSelectInfo, onCheck, getCurrentGroup, getMoreOrganization };
 }
