@@ -4,7 +4,7 @@ import {
   IOrganizationControllerProps
 } from './organization-controller.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
-import { useEffect, useContext, useImperativeHandle, useRef } from 'react';
+import { useEffect, useContext, useImperativeHandle, useRef, Key } from 'react';
 import { WarehouseListService } from '~/solution/model/services/warehouse-list.service';
 import { IGlobalState } from '~/solution/context/global/global.interface';
 import { GlobalContext } from '~/solution/context/global/global.provider';
@@ -24,7 +24,7 @@ import { forkJoin } from 'rxjs';
 export function useOrganizationControllerStore(props: IOrganizationControllerProps, ref: any) {
   const { state, setStateWrap, getState } = useStateStore(new IOrganizationControllerState());
   const warehouseListService: WarehouseListService = new WarehouseListService();
-  const { warehouseAction, onExpand, queryChildInfo, currentOrganazation } = props;
+  const { warehouseAction, onExpand, queryChildInfo, currentOrganazation, allCanSelect } = props;
   const formInfo = useRef({ index: 1, size: 10 });
   const { gState }: IGlobalState = useContext(GlobalContext);
   __initContent__(warehouseAction);
@@ -48,8 +48,8 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
           res,
           TREE_MAP,
           false,
-          undefined,
-          undefined,
+          warehouseAction,
+          allCanSelect,
           props.organizationChecked,
           props.disableNodeObj
         );
@@ -89,7 +89,7 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     forkJoin(warehouseListService.queryStoreOrganizationListSub({ parentId }), queryChildInfoSubscription).subscribe(
       (res: any) => {
         const queryChildInfoData: DataNode[] = queryChildInfo
-          ? dealWithTreeData(res[1], TREE_MAP, true, warehouseAction, undefined, undefined, props.disableNodeObj)
+          ? dealWithTreeData(res[1], TREE_MAP, true, warehouseAction, allCanSelect, undefined, props.disableNodeObj)
           : [];
 
         treeNode.children = [
@@ -99,7 +99,7 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
             TREE_MAP,
             false,
             undefined,
-            undefined,
+            allCanSelect,
             props.organizationChecked,
             props.disableNodeObj
           )
@@ -122,9 +122,10 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
         ...state.loadStoreOrganizationParams,
         [key]: value
       },
-      treeData: []
+      treeData: [],
+      loadedKeys: []
     });
-
+    onExpand && onExpand([]);
     if (getState().loadStoreOrganizationParams.id) {
       searchCurrentSelectInfo(getState().loadStoreOrganizationParams);
     } else {
@@ -152,7 +153,7 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
         TREE_MAP,
         false,
         warehouseAction,
-        undefined,
+        allCanSelect,
         props.organizationChecked
       );
       setStateWrap({
@@ -168,6 +169,16 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     setStateWrap({
       treeData: treeData
     });
+  }
+
+  function onLoad(
+    loadedKeys: Key[],
+    info: {
+      event: 'load';
+      node: EventDataNode;
+    }
+  ) {
+    setStateWrap({ loadedKeys: [...getState().loadedKeys, ...loadedKeys] });
   }
 
   // 修改tree
@@ -203,5 +214,5 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     setSingleCheckTreeData
   }));
 
-  return { state, onLoadData, getCurrentSelectInfo, onCheck, getCurrentGroup, getMoreOrganization };
+  return { state, onLoadData, onLoad, getCurrentSelectInfo, onCheck, getCurrentGroup, getMoreOrganization };
 }

@@ -12,10 +12,11 @@ function OrganizationControllerComponent(props: IOrganizationControllerProps, re
     getCurrentSelectInfo,
     onCheck,
     getCurrentGroup,
-    getMoreOrganization
+    getMoreOrganization,
+    onLoad
   } = useOrganizationControllerStore(props, ref);
   const { onSelect, expandedKeys, treeSelectedKeys, onExpand, checkedKeys, checkable, isGroup = false } = props;
-  const { treeData, loading, loadStoreOrganizationParams } = state;
+  const { treeData, loading, loadStoreOrganizationParams, loadedKeys } = state;
 
   return (
     <>
@@ -51,6 +52,8 @@ function OrganizationControllerComponent(props: IOrganizationControllerProps, re
           checkedKeys={checkedKeys}
           onCheck={onCheck}
           blockNode
+          onLoad={onLoad}
+          loadedKeys={loadedKeys}
           checkable={checkable}
           treeData={treeData}
         />

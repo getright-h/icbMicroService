@@ -33,6 +33,7 @@ export function useApprovalTemplateLeftStore() {
   const approvalManageService: ApprovalManageService = useService(ApprovalManageService);
   const { gState }: IGlobalState = useContext(GlobalContext);
   const { $auth } = useAuthorityState();
+  const formInfo = useRef({ index: 1, size: 10 });
 
   useEffect(() => {
     queryOrganizationTypeListByTypeId();
@@ -40,13 +41,15 @@ export function useApprovalTemplateLeftStore() {
 
   // 根据根据系统id查找机构类型
   function queryOrganizationTypeListByTypeId(id?: string) {
-    warehouseListService.queryStoreOrganization({ typeId: gState.myInfo.typeId, id }).subscribe(res => {
-      const treeData = dealWithTreeData<QueryStoreOrganizationReturn>(res, TREE_MAP, false, undefined);
-      setStateWrap({
-        treeData,
-        organazationList: res
+    warehouseListService
+      .queryStoreOrganization({ typeId: gState.myInfo.typeId, id, ...formInfo.current })
+      .subscribe(res => {
+        const treeData = dealWithTreeData<QueryStoreOrganizationReturn>(res, TREE_MAP, false, undefined);
+        setStateWrap({
+          treeData,
+          organazationList: res
+        });
       });
-    });
   }
 
   // 点击展开加载数据
@@ -190,6 +193,8 @@ export function useApprovalTemplateLeftStore() {
     });
   }
 
+  const queryChildInfo = (item: any) => approvalManageService.queryApprovalGroupList(item);
+
   return {
     state,
     $auth,
@@ -199,6 +204,8 @@ export function useApprovalTemplateLeftStore() {
     organizationControllerRef,
     onExpand,
     onChooseAll,
-    onLoadData
+    onLoadData,
+    groupAction,
+    queryChildInfo
   };
 }

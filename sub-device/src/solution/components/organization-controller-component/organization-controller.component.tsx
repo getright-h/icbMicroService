@@ -13,11 +13,12 @@ function OrganizationControllerComponent(props: IOrganizationControllerProps, re
     getCurrentSelectInfo,
     onCheck,
     getCurrentGroup,
+    onLoad,
     getMoreOrganization
   } = useOrganizationControllerStore(props, ref);
   const { onSelect, expandedKeys, treeSelectedKeys, onExpand, checkedKeys, checkable, isGroup = false } = props;
   const { gState } = React.useContext(GlobalContext);
-  const { treeData, loading, loadStoreOrganizationParams } = state;
+  const { treeData, loading, loadStoreOrganizationParams, loadedKeys } = state;
   treeData.length && console.log(treeData);
   return (
     <>
@@ -54,9 +55,12 @@ function OrganizationControllerComponent(props: IOrganizationControllerProps, re
           checkedKeys={checkedKeys}
           onCheck={onCheck}
           blockNode
+          onLoad={onLoad}
+          loadedKeys={loadedKeys}
           checkable={checkable}
           treeData={treeData}
         />
+        {/* 如果是搜索隐藏加载中 */}
         {!loadStoreOrganizationParams.id && (
           <Button type="link" loading={loading} onClick={getMoreOrganization}>
             {loading ? '加载中...' : '加载更多'}

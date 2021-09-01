@@ -1,7 +1,7 @@
 import * as React from 'react';
 import style from './approval-template-left.component.less';
 import { useApprovalTemplateLeftStore } from './approval-template-left.component.store';
-
+import OrganizationControllerComponent from '~/solution/components/organization-controller-component/organization-controller.component';
 import { Button, Tree } from 'antd';
 import AddTemplateTypeComponent from './add-template-type-component/add-template-type.component';
 import { AppravalTemplateManageContext } from '../appraval-template.component';
@@ -16,7 +16,9 @@ export default function ApprovalTemplateLeftComponent() {
     addTemplateType,
     closeAddTemplateTypeModal,
     onExpand,
-    onChooseAll
+    onChooseAll,
+    groupAction,
+    queryChildInfo
   } = useApprovalTemplateLeftStore();
   const {
     treeSelectedKeys,
@@ -28,6 +30,16 @@ export default function ApprovalTemplateLeftComponent() {
     organazationList
   } = state;
   const { reduxState } = React.useContext(AppravalTemplateManageContext);
+
+  const organizationControllerProps = {
+    onSelect,
+    expandedKeys,
+    treeSelectedKeys,
+    onExpand,
+    warehouseAction: groupAction,
+    queryChildInfo
+  };
+
   // component --- 渲染添加仓库的modal
   function RenderAddWarehouseModal() {
     const addWarehouseComponentProps = {
@@ -58,7 +70,7 @@ export default function ApprovalTemplateLeftComponent() {
       >
         查看全部
       </a>
-      <div style={{ textAlign: 'center' }}>
+      {/* <div style={{ textAlign: 'center' }}>
         <Tree
           loadedKeys={expandedKeys}
           loadData={onLoadData}
@@ -69,7 +81,8 @@ export default function ApprovalTemplateLeftComponent() {
           blockNode
           treeData={treeData}
         />
-      </div>
+      </div> */}
+      <OrganizationControllerComponent {...organizationControllerProps} />
 
       {addApprovalTypeVisible && <RenderAddWarehouseModal />}
     </div>
