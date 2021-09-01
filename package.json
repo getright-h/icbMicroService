@@ -6,9 +6,17 @@
   "main": "index.js",
   "scripts": {
     "start:device": "lerna run fch:start --scope=sub-device --stream",
-    "start:master": "lerna run fch:start --scope=master --stream",
+    "start:master": "lerna run fch:start --scope=microfront-main --stream",
     "start:fence": "lerna run fch:start --scope=sub-electric-fence --stream",
-    "start:upms": "lerna run fch:start --scope=sub-upms --stream"
+    "start:upms": "lerna run fch:start --scope=sub-upms --stream",
+    "build:device": "lerna run fch:build --scope=sub-device --stream",
+    "build:master": "lerna run fch:build --scope=microfront-main --stream",
+    "build:fence": "lerna run fch:build --scope=sub-electric-fence --stream",
+    "build:upms": "lerna run fch:build --scope=sub-upms --stream",
+    "build-dev:upms": "lerna run fch:build-dev --scope=sub-upms --stream",
+    "build-dev:device": "lerna run fch:build-dev --scope=sub-device --stream",
+    "build-dev:master": "lerna run fch:build-dev --scope=microfront-main --stream",
+    "build-dev:fence": "lerna run fch:build-dev --scope=sub-electric-fence --stream",
   },
   "workspaces": [
     "packages/*"
