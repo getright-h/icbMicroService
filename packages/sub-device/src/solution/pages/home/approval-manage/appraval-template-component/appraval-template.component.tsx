@@ -1,5 +1,4 @@
 import * as React from 'react';
-import style from './appraval-template.component.less';
 import {
   AppravalTemplateReducer,
   appravalTemplateInitialState

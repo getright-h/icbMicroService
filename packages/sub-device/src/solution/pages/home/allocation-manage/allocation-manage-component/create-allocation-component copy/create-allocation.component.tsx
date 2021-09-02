@@ -3,7 +3,8 @@ import style from './create-allocation.component.less';
 import { useCreateAllocationStore } from './create-allocation.component.store';
 import { Form, Input, Checkbox, Select, Space, Button, InputNumber } from 'antd';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
-import { IHeaderTitleComponent, ISelectLoadingComponent } from '~framework/components/component.module';
+import { ISelectLoadingComponent } from '~framework/components/component.module';
+import { IHeaderTitleComponent } from "fch-shop-component-micweb";
 export default function CreateAllocationComponent() {
   const {
     state,

@@ -1,0 +1,26 @@
+{
+  "name": "fch-shop-component-micweb",
+  "version": "1.0.0",
+  "description": "> TODO: description",
+  "author": "Mickxuanyuan <303062086@qq.com>",
+  "homepage": "",
+  "license": "ISC",
+  "main": "lib/component.module.ts",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "http://47.109.82.188:4873/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@220.167.101.49:18389/FE-ZeroToOne/microFront-platform/RM-micro-web.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  }
+}
