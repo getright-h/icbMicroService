@@ -3,8 +3,15 @@
     "baseUrl": "./src",
     "outDir": "./dist/",
     "module": "esnext",
-    "target": "es5",
-    "lib": ["es6", "dom"],
+    "target": "es2015",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext",
+      "ES6",
+      "es2017",
+      "es2015"
+    ],
     "sourceMap": true, 
     "allowJs": true,
     "experimentalDecorators": true,

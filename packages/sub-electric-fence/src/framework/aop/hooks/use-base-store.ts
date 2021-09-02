@@ -1,7 +1,6 @@
-import React, { useState, useMemo, useReducer, useRef } from 'react';
+import React, { useState, useMemo, useReducer } from 'react';
 import { emptyFunction } from '~/framework/util/common';
 import { IAction } from '~/solution/shared/interfaces/common.interface';
-import { FormInstance } from 'antd/lib/form';
 type Partial<T> = {
   [P in keyof T]?: T[P];
 };
@@ -25,19 +24,6 @@ export function useStateStore<T>(initialState?: T) {
     getState
   };
 }
-
-// export function useRefInit<T>(initInfo: T) {
-//   const useRefInit = useRef(initInfo);
-//   const initRef: any = new Proxy(useRefInit, {
-//     get() {
-//       return useRefInit.current;
-//     },
-//     set(target, value) {
-//       return Reflect.set(target, 'current', value);
-//     }
-//   });
-//   return initRef;
-// }
 
 export class ReducerStore<T> {
   state: T;

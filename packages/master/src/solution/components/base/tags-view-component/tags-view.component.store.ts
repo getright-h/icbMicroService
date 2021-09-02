@@ -2,7 +2,7 @@ import { ITagsViewState } from './tags-view.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useHistory } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
-import { useStore, useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 export function useTagsViewStore() {
   const dispatch = useDispatch();
   const history: any = useHistory();

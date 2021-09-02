@@ -7,7 +7,7 @@ import { AlarmFormItemComponent } from '~/solution/components/component.module';
 import { InfoCircleTwoTone } from '@ant-design/icons';
 
 import { IDirectiveModalProps, Type } from './directive-list.interface';
-import { StorageUtil } from '~/framework/util/storage';
+import { StorageUtil } from '@fch/fch-tool';
 
 export default function DirectivePatchModalComponent(props: IDirectiveModalProps) {
   const { visible, deviceId } = props;

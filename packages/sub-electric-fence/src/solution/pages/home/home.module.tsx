@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Layout, Spin } from 'antd';
 import style from './home.component.less';
-import { MenuComponent } from '~/solution/components/component.module';
+import { IMenuComponent } from '@fch/fch-shop-web';
 import { IHomeHeaderComponent } from '../../components/base/i-home-header-component/i-home-header.component';
 import { useHomeStore } from './home.component.store';
 import { GlobalContext } from '~/solution/context/global/global.provider';
@@ -10,11 +10,13 @@ import { useLocation } from 'react-router-dom';
 import { RoutesService } from '~/framework/util/routes/routes.service';
 import { homeRoutes } from './home.routes';
 import { getHashParameter } from '~/solution/shared/util/common.util';
-import { StorageUtil } from '~/framework/util/storage';
+import { StorageUtil } from '@fch/fch-tool';
+import { IconList } from './home.interface';
 
-function HomeModule(props: any) {
+function HomeModule() {
   const { state } = useHomeStore();
   const source = getHashParameter('source');
+  const { menuList } = state;
   const { gState }: IGlobalState = React.useContext(GlobalContext);
   const location = useLocation();
   React.useEffect(() => {
@@ -40,8 +42,13 @@ function HomeModule(props: any) {
     const expandList: string[] = getCurrentExpandList(currentUrl);
 
     return (
-      <Layout.Sider trigger={null} collapsible collapsed={gState.collapsed}>
-        <MenuComponent currentUrl={currentUrl} menuList={state.menuList} expandList={expandList} />
+      <Layout.Sider
+        trigger={null}
+        collapsible
+        collapsed={gState.collapsed}
+        style={{ height: '80vh', overflow: 'hidden auto' }}
+      >
+        <IMenuComponent currentUrl={currentUrl} menuList={menuList} iconList={IconList} expandList={expandList} />
       </Layout.Sider>
     );
   }

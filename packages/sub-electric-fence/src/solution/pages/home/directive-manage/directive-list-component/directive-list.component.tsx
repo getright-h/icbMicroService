@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Row, Select } from 'antd';
+import { Button, Col, Form, Row } from 'antd';
 import * as React from 'react';
 import {
   ITableComponent,
@@ -11,7 +11,6 @@ import { useDirectiveListStore } from './directive-list.component.store';
 import DirectivePatchModalComponent from '../wiget/directive-patch-model-component/directive-patch-moda.component';
 import { ModalType } from './directive-list.interface';
 import moment from 'moment';
-import { StorageUtil } from '~/framework/util/storage';
 export default function DirectiveListComponent() {
   const {
     state,
@@ -87,7 +86,6 @@ export default function DirectiveListComponent() {
           <Col span={10}>
             <Form.Item name="time" label="发送时间" wrapperCol={{ span: 24 }}>
               <TimePickerComponent
-                style={{ with: 200 }}
                 getDateTimeInfo={(value: any, option: any) => getCurrentSelectInfo(value, option, 'dateRange')}
                 timeInfo={[
                   moment(searchTime.beginTime).format('YYYY MM DD'),

@@ -1,4 +1,4 @@
-import { StorageUtil } from '~/framework/util/storage';
+import { StorageUtil } from '@fch/fch-tool';
 import { Strategy } from './base.strategy';
 
 export class AuthStrategy extends Strategy {

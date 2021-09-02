@@ -11,39 +11,39 @@ export const PAGES_MENU = {
     {
       path: 'home/fence',
       title: '电子围栏',
-      icon: 'container',
+      icon: 'project',
       children: [
         {
           path: 'mainfence',
           title: '围栏管理',
-          icon: 'container'
+          icon: 'project'
         },
         {
           path: 'fenceAttention',
           title: '围栏告警',
-          icon: 'container'
+          icon: 'project'
         },
         {
           path: 'monitoringObject',
           title: '监控对象',
-          icon: 'container'
+          icon: 'project'
         }
       ]
     },
     {
       path: 'home/alarm/parameter',
       title: '参数管理',
-      icon: 'container'
+      icon: 'project'
     },
     {
       path: 'home/positionMonitor',
       title: '定位监控',
-      icon: 'container'
+      icon: 'project'
     },
     {
       path: 'home/directive',
       title: '指令中心',
-      icon: 'container',
+      icon: 'project',
       children: [
         {
           path: 'directiveList',
@@ -54,7 +54,7 @@ export const PAGES_MENU = {
     {
       path: 'home/report',
       title: '报表',
-      icon: 'container',
+      icon: 'project',
       children: [
         {
           path: 'statistical',
