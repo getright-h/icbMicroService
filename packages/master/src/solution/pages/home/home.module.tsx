@@ -9,6 +9,7 @@ import { useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
 import TagView from '../../components/base/tags-view-component/tags-view.component';
 import IndexComponent from '../public/index-component/index.component';
+import TaskCenterComponent from '~/solution/components/custom/task-center-component/task-center.component';
 function HomeModule() {
   const { state } = useHomeStore();
   const { gState }: IGlobalState = React.useContext(GlobalContext);
@@ -55,7 +56,7 @@ function HomeModule() {
   return (
     <Spin spinning={state.loading} wrapperClassName="custom-layout-spin">
       <div className={style.homeMain}>
-        <IHomeHeaderComponent />
+        <IHomeHeaderComponent extra={TaskCenterComponent} />
         <div className={style.bodyContainer}>
           {renderLayoutSider()}
           <div className={style.pageContainer}>
