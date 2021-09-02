@@ -6,9 +6,10 @@ import { setLoadingAction, setVcode } from './store/action';
 import { message } from 'antd';
 import { ReducerStore } from '~/framework/aop/hooks/use-base-store';
 import { Store } from 'antd/lib/form/interface';
-import { StorageUtil } from '~/framework/util/storage';
+import { StorageUtil } from '@fch/fch-tool';
 import { VCodeInfo, LoginParam } from '~/solution/model/dto/login.dto';
 import { ShowNotification } from '~/framework/util/common';
+import { TOKEN_NAME } from '~/solution/baseConfig';
 
 export class LoginStore extends ReducerStore<IState> {
   @DepUtil.Inject(LoginService)
@@ -66,7 +67,7 @@ export class LoginStore extends ReducerStore<IState> {
         const organizationValueStr = extionValueList.find((data: any) => data.key == 'OrganizationIds')?.value;
         const organizationValueArr = organizationValueStr && JSON.parse(organizationValueStr || '[]');
         const organizationId = organizationValueArr[0]?.OrganizationId;
-        StorageUtil.setLocalStorage('token', res.token);
+        StorageUtil.setLocalStorage(TOKEN_NAME, res.token);
         StorageUtil.setLocalStorage('organizationId', organizationId);
         message.success('登录成功');
         this.dispatch(setLoadingAction(false));

@@ -2,6 +2,7 @@ import { GlobalContext } from '~/solution/context/global/global.provider';
 import { IGlobalState } from '~/solution/context/global/global.interface';
 import { useLocation, useParams } from 'react-router-dom';
 import { isBoolean } from 'lodash';
+import React from 'react';
 import { DEVICE_AUTHORITY_CODE } from '~shared/constant/authority';
 import { MENU_MAP } from '~shared/constant/menu.map';
 export function useAuthorityState(): {

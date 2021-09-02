@@ -8,7 +8,6 @@ import { IMAP } from '~/solution/shared/util/map.util';
 //  -- Package Start --
 export { default as AddressChooseComponent } from '~/solution/components/base/address-choose-component/address-choose.component';
 export { default as SelectAddressComponent } from '~/solution/components/base/select-address-component/select-address.component';
-export { default as MenuComponent } from '~/solution/components/base/menu-component/menu.component';
 export { default as TimePickerComponent } from '~/solution/components/base/time-picker-component/time-picker.component';
 export { default as LazyloadLoadingComponent } from '~/solution/components/base/lazyload-loading-component/lazyload-loading.component';
 export { default as LazyloadComponent } from '~/solution/components/base/lazyload-component/lazyload.component';
