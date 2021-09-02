@@ -6,7 +6,10 @@ export class ITaskCenterState {
   isRefreshing = false;
   hasMore = false;
   taskList: DownloadTask[] = [];
+  handleList: DownloadTask[] = [];
+  finishList: DownloadTask[] = [];
   showTaskCenter = false;
+  hasNewComplete = false;
 }
 
 export interface DownloadTask {

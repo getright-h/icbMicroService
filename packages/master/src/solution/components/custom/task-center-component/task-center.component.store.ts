@@ -13,12 +13,16 @@ export function useTaskCenterStore() {
   const { state, setStateWrap } = useStateStore(new ITaskCenterState());
   const homeService: HomeService = new HomeService();
   let { current: indexRef } = useRef(1);
+  let { current: handleListLengthRef } = useRef(0);
+  let { current: timer } = useRef(null);
   const eventBus = new EventBus('global');
   (window as MyWindow & typeof globalThis).eventBus = eventBus;
   eventBus.subscribe(showTaskCenterChange, 'showTaskCenterChange');
 
   useEffect(() => {
-    state.showTaskCenter && refreshDownloadTasks();
+    if (state.showTaskCenter && !state.hasNewComplete) {
+      refreshDownloadTasks();
+    }
   }, [state.showTaskCenter]);
 
   function getDownloadTasks(isRefresh = false) {
@@ -26,15 +30,34 @@ export function useTaskCenterStore() {
     homeService.getDownloadTask({ index: indexRef, size: 10 }).subscribe(
       res => {
         let taskList: DownloadTask[] = isRefresh ? [] : state.taskList;
+        let handleList: DownloadTask[] = [];
+        let finishList: DownloadTask[] = [];
         let hasMore = false;
         if (res.list.dataList.length) {
           taskList = taskList.concat(res.list.dataList);
+          handleList = taskList.filter(task => task.state == 0);
+          finishList = taskList.filter(task => task.state == 1);
           hasMore = res.list.total > taskList.length;
         } else {
           indexRef--;
           hasMore = false;
         }
-        setStateWrap({ taskList, isRefreshing: false, hasMore });
+        setStateWrap({
+          taskList,
+          handleList,
+          finishList,
+          isRefreshing: false,
+          hasMore,
+          hasNewComplete: handleListLengthRef && !handleList.length
+        });
+        handleListLengthRef = handleList.length;
+        if (handleListLengthRef) {
+          timer = setInterval(() => {
+            refreshDownloadTasks();
+          }, 10000);
+        } else {
+          timer && clearInterval(timer);
+        }
       },
       err => {
         ShowNotification.error(err);
@@ -64,5 +87,27 @@ export function useTaskCenterStore() {
     setStateWrap({ showTaskCenter: visible });
   }
 
-  return { state, indexRef, refreshDownloadTasks, downloadFile, loadMore, showTaskCenterChange };
+  function initiativeClick() {
+    if (!state.showTaskCenter) {
+      timer && clearInterval(timer);
+    }
+  }
+
+  function onTabClick(key: string, e: any) {
+    if (key == '2' && state.hasNewComplete) {
+      timer && clearInterval(timer);
+      setStateWrap({ hasNewComplete: false });
+    }
+  }
+
+  return {
+    state,
+    indexRef,
+    refreshDownloadTasks,
+    downloadFile,
+    loadMore,
+    showTaskCenterChange,
+    initiativeClick,
+    onTabClick
+  };
 }
