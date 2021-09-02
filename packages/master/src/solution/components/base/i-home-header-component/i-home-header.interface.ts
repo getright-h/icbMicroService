@@ -2,5 +2,8 @@ export class IHomeHeader {
   visibleModal = false;
   confirmDirty = false;
   confirmLoading = false;
-  showTaskCenter = false;
+}
+
+export interface IHomeHeaderProps {
+  extra?: () => JSX.Element;
 }

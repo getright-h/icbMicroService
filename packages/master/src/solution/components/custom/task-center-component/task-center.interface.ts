@@ -6,10 +6,7 @@ export class ITaskCenterState {
   isRefreshing = false;
   hasMore = false;
   taskList: DownloadTask[] = [];
-}
-
-export class ITaskCenterProps {
-  visible: boolean;
+  showTaskCenter = false;
 }
 
 export interface DownloadTask {

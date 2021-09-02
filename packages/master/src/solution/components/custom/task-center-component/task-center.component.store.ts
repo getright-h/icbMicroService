@@ -1,17 +1,25 @@
-import { DownloadTask, ITaskCenterProps, ITaskCenterState } from './task-center.interface';
+import { DownloadTask, ITaskCenterState } from './task-center.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect, useRef } from 'react';
 import { HomeService } from '~/solution/model/services/home.service';
 import { ShowNotification } from '~/framework/util/common';
+import { EventBus } from '~/framework/util/common';
 
-export function useTaskCenterStore(props: ITaskCenterProps) {
+interface MyWindow {
+  eventBus?: EventBus;
+}
+
+export function useTaskCenterStore() {
   const { state, setStateWrap } = useStateStore(new ITaskCenterState());
   const homeService: HomeService = new HomeService();
   let { current: indexRef } = useRef(1);
+  const eventBus = new EventBus('global');
+  (window as MyWindow & typeof globalThis).eventBus = eventBus;
+  eventBus.subscribe(showTaskCenterChange, 'showTaskCenterChange');
 
   useEffect(() => {
-    props.visible && refreshDownloadTasks();
-  }, [props.visible]);
+    state.showTaskCenter && refreshDownloadTasks();
+  }, [state.showTaskCenter]);
 
   function getDownloadTasks(isRefresh = false) {
     setStateWrap({ isRefreshing: true });
@@ -52,5 +60,9 @@ export function useTaskCenterStore(props: ITaskCenterProps) {
     a.click();
   }
 
-  return { state, indexRef, refreshDownloadTasks, downloadFile, loadMore };
+  function showTaskCenterChange(visible: boolean) {
+    setStateWrap({ showTaskCenter: visible });
+  }
+
+  return { state, indexRef, refreshDownloadTasks, downloadFile, loadMore, showTaskCenterChange };
 }
