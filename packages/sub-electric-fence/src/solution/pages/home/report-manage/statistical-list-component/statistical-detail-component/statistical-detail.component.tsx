@@ -1,17 +1,14 @@
-import { Descriptions, Form, Table } from 'antd';
+import { Descriptions } from 'antd';
 import * as React from 'react';
-import { IHeaderTitleComponent, ITableComponent } from '~components/component.module';
+import { ITableComponent } from '~components/component.module';
 import style from './statistical-detail.component.less';
 
 import { useDirectiveListStore } from './statistical-detail.component.store';
+import { IHeaderTitleComponent } from 'fch-shop-component-micweb';
 
 export default function DirectiveListComponent() {
   const { state, changeTablePageIndex } = useDirectiveListStore();
   const { detail, pageIndex, pageSize } = state;
-  const layout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 12 }
-  };
 
   const columns = [
     {
@@ -24,7 +21,7 @@ export default function DirectiveListComponent() {
     }
   ];
   return (
-    <div className={style.mainForm}>
+    <div>
       <IHeaderTitleComponent pageName={'报警统计详情'} />
       <div className={style.formPart}>
         <Descriptions column={2}>

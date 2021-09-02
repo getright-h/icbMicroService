@@ -2,7 +2,8 @@ import * as React from 'react';
 import style from './device-line.component.less';
 import { useDeviceLineStore } from './device-line.component.store';
 import { TablePageTelComponent } from '~/framework/components/component.module';
-import { IHeaderTitleComponent, ITableComponent } from '~framework/components/component.module';
+import { ITableComponent } from '~framework/components/component.module';
+import { IHeaderTitleComponent } from 'fch-shop-component-micweb';
 import { deviceLineColumns, OwnerExpandedRow } from './device-line-column';
 import { Form, Button, Input, Select } from 'antd';
 import { DEVICE_ROUTE, DEVICE_ROUTE_ENUM } from '~shared/constant/common.const';
@@ -17,8 +18,7 @@ export default function DeviceLineComponent() {
     searchClean,
     getFlowNode,
     changeTablePageIndex,
-    handleModalCancel,
-    queryVehicleInformationByCode
+    handleModalCancel
   } = useDeviceLineStore();
   const { searchForm, tableData, isLoading, total, routeModalVisible, currentData, flowList } = state;
   const formItemLayout = {
@@ -100,7 +100,7 @@ export default function DeviceLineComponent() {
   }
 
   return (
-    <div className={style.deviceLine}>
+    <div>
       <IHeaderTitleComponent pageName={'设备路线表'} className={'flexJusBetw'}>
         {/* {<Button>批量导出</Button>} */}
       </IHeaderTitleComponent>

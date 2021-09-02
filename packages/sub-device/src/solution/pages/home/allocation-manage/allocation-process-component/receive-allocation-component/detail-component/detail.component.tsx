@@ -4,7 +4,7 @@ import { useDetailStore } from './detail.component.store';
 import { Form, Button, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { ALLOW_FLOW_ENUM, ModalType } from '~shared/constant/common.const';
-import { IHeaderTitleComponent } from '~framework/components/component.module';
+import { IHeaderTitleComponent } from 'fch-shop-component-micweb';
 import RejectAllocationComponent from '../reject-allocation-component/reject-allocation.component';
 import DeviceImportComponent from '../../init-allocation-component/device-import-component/device-import.component';
 export default function DetailComponent() {

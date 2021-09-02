@@ -1,12 +1,12 @@
 import * as React from 'react';
 import style from './create-allocation.component.less';
 import { useCreateAllocationStore } from './create-allocation.component.store';
-import { Form, Input, Checkbox, Select, Space, Button, InputNumber } from 'antd';
+import { Form, Input, Space, Button, InputNumber } from 'antd';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
-import { useCallback } from 'react';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 import WarehouseCascaderComponent from '~/solution/components/warehouse-cascader-component/warehouse-cascader.component';
-import { IHeaderTitleComponent, ISelectLoadingComponent } from '~framework/components/component.module';
+import { ISelectLoadingComponent } from '~framework/components/component.module';
+import { IHeaderTitleComponent } from 'fch-shop-component-micweb';
 export default function CreateAllocationComponent() {
   const {
     state,
@@ -22,7 +22,7 @@ export default function CreateAllocationComponent() {
     setCascaderInfo,
     getCurrentSelectInfo
   } = useCreateAllocationStore();
-  const { searchForm = {}, submitLoading, flowList = [], NodeList = [] } = state;
+  const { searchForm = {}, submitLoading, NodeList = [] } = state;
   const layout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 16 }
@@ -126,7 +126,6 @@ export default function CreateAllocationComponent() {
           </Form>
         </div>
       </div>
-      <div className={style.approval}></div>
       <Form {...layout} initialValues={{ deviceList: [{}] }} form={form}>
         <div className={style.formPart}>
           <div className={style.formItems}>

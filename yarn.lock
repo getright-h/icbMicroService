@@ -1078,6 +1078,34 @@
     unique-filename "^1.1.1"
     which "^1.3.1"
 
+"@fch/fch-shop-web@^0.0.20":
+  version "0.0.20"
+  resolved "http://47.109.82.188:4873/@fch%2ffch-shop-web/-/fch-shop-web-0.0.20.tgz#4f54d669530c6b3e3623e371518b11dfcae622af"
+  integrity sha512-iHZdamGVz0HuV/hkgJAMqhsZHBo0x/R/nMRp096JQuMgTNB8IhZ8yV2xD7fwXG10VwwiHFkn16oVGt4FrkFmWA==
+  dependencies:
+    "@fch/fch-tool" "^0.0.4"
+    antd "^4.16.7"
+    axios "^0.19.0"
+    classnames "^2.3.1"
+    compressorjs "^1.0.6"
+    lodash "^4.17.21"
+    moment "^2.29.1"
+    react "^16.12.0"
+    react-is "^17.0.2"
+    react-router "^5.2.0"
+    react-router-dom "^5.2.0"
+    viewerjs "^1.10.0"
+
+"@fch/fch-tool@^0.0.4":
+  version "0.0.4"
+  resolved "http://47.109.82.188:4873/@fch%2ffch-tool/-/fch-tool-0.0.4.tgz#13a772438e9d87ab71778ebd7f1a50f1af2fa19a"
+  integrity sha512-s+c24aM2Rb/JoxiuXiGwqfuoFfDJcAfODlI6Ur1/IW49Ns/j+QTNpQ/zwAkLDHy0MbW9H/mypbsCi+tN1f/AeQ==
+  dependencies:
+    axios "^0.21.1"
+    dayjs "^1.10.4"
+    rxjs "^7.3.0"
+    tslib "^2.1.0"
+
 "@hot-loader/react-dom@^16.11.0":
   version "16.14.0"
   resolved "http://47.109.82.188:4873/@hot-loader%2freact-dom/-/react-dom-16.14.0.tgz#3cfc64e40bb78fa623e59b582b8f09dcdaad648a"
@@ -2492,7 +2520,7 @@ antd@4.8.3:
     scroll-into-view-if-needed "^2.2.25"
     warning "^4.0.3"
 
-antd@^4.8.4:
+antd@^4.16.7, antd@^4.8.4:
   version "4.16.13"
   resolved "http://47.109.82.188:4873/antd/-/antd-4.16.13.tgz#e9b9b4a590db28747aae1cab98981649a35880af"
   integrity sha1-6bm0pZDbKHR6rhyrmJgWSaNYgK8=
@@ -2560,12 +2588,12 @@ aproba@^2.0.0:
   integrity sha1-UlILiuW1aSFbNU78DKo/4eRaitw=
 
 are-we-there-yet@~1.1.2:
-  version "1.1.5"
-  resolved "http://47.109.82.188:4873/are-we-there-yet/-/are-we-there-yet-1.1.5.tgz#4b35c2944f062a8bfcda66410760350fe9ddfc21"
-  integrity sha1-SzXClE8GKov82mZBB2A1D+nd/CE=
+  version "1.1.6"
+  resolved "http://47.109.82.188:4873/are-we-there-yet/-/are-we-there-yet-1.1.6.tgz#bc9101d19670c7bdb1546ed036568a6c9879ee79"
+  integrity sha1-vJEB0ZZwx72xVG7QNlaKbJh57nk=
   dependencies:
     delegates "^1.0.0"
-    readable-stream "^2.0.6"
+    readable-stream "^3.6.0"
 
 argparse@^1.0.7:
   version "1.0.10"
@@ -2747,6 +2775,13 @@ axios@^0.19.0:
   integrity sha1-PqNsXYgY0NX4qKl6bTa4bNwAyyc=
   dependencies:
     follow-redirects "1.5.10"
+
+axios@^0.21.1:
+  version "0.21.1"
+  resolved "http://47.109.82.188:4873/axios/-/axios-0.21.1.tgz#22563481962f4d6bde9a76d516ef0e5d3c09b2b8"
+  integrity sha1-IlY0gZYvTWvemnbVFu8OXTwJsrg=
+  dependencies:
+    follow-redirects "^1.10.0"
 
 babel-plugin-dynamic-import-node@^2.3.3:
   version "2.3.3"
@@ -3113,7 +3148,7 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classnames@2.x, classnames@^2.2.1, classnames@^2.2.3, classnames@^2.2.5, classnames@^2.2.6:
+classnames@2.x, classnames@^2.2.1, classnames@^2.2.3, classnames@^2.2.5, classnames@^2.2.6, classnames@^2.3.1:
   version "2.3.1"
   resolved "http://47.109.82.188:4873/classnames/-/classnames-2.3.1.tgz#dfcfa3891e306ec1dad105d0e88f4417b8535e8e"
   integrity sha1-38+jiR4wbsHa0QXQ6I9EF7hTXo4=
@@ -3463,17 +3498,17 @@ copy-to-clipboard@^3.2.0:
     toggle-selection "^1.0.6"
 
 core-js-compat@^3.14.0, core-js-compat@^3.16.0:
-  version "3.16.4"
-  resolved "http://47.109.82.188:4873/core-js-compat/-/core-js-compat-3.16.4.tgz#cf28abe0e45a43645b04b2c1a073efa03d0b3b26"
-  integrity sha1-zyir4ORaQ2RbBLLBoHPvoD0LOyY=
+  version "3.17.1"
+  resolved "http://47.109.82.188:4873/core-js-compat/-/core-js-compat-3.17.1.tgz#a0264ed6712affb3334c56f6a6159f20aedad56b"
+  integrity sha1-oCZO1nEq/7MzTFb2phWfIK7a1Ws=
   dependencies:
     browserslist "^4.16.8"
     semver "7.0.0"
 
 core-js-pure@^3.16.0:
-  version "3.16.4"
-  resolved "http://47.109.82.188:4873/core-js-pure/-/core-js-pure-3.16.4.tgz#8b23122628d88c560f209812b9b2d9ebbce5e29c"
-  integrity sha1-iyMSJijYjFYPIJgSubLZ67zl4pw=
+  version "3.17.1"
+  resolved "http://47.109.82.188:4873/core-js-pure/-/core-js-pure-3.17.1.tgz#4f2faa60843409a4cb4070431dbaa8cc6e602c78"
+  integrity sha1-Ty+qYIQ0CaTLQHBDHbqozG5gLHg=
 
 core-js@^1.0.0:
   version "1.2.7"
@@ -3481,9 +3516,9 @@ core-js@^1.0.0:
   integrity sha1-ZSKUwUZR2yj6k70tX/KYOk8IxjY=
 
 core-js@^3.6.0:
-  version "3.16.4"
-  resolved "http://47.109.82.188:4873/core-js/-/core-js-3.16.4.tgz#0fb1029a554fc2688c0963d7c900e188188a78e0"
-  integrity sha1-D7ECmlVPwmiMCWPXyQDhiBiKeOA=
+  version "3.17.1"
+  resolved "http://47.109.82.188:4873/core-js/-/core-js-3.17.1.tgz#b39e086f413789cf2ca4680c4ecd1b36a50ba277"
+  integrity sha1-s54Ib0E3ic8spGgMTs0bNqULonc=
 
 core-util-is@1.0.2:
   version "1.0.2"
@@ -3659,7 +3694,7 @@ dateformat@^3.0.0:
   resolved "http://47.109.82.188:4873/dateformat/-/dateformat-3.0.3.tgz#a6e37499a4d9a9cf85ef5872044d62901c9889ae"
   integrity sha1-puN0maTZqc+F71hyBE1ikByYia4=
 
-dayjs@1.x, dayjs@^1.8.30:
+dayjs@1.x, dayjs@^1.10.4, dayjs@^1.8.30:
   version "1.10.6"
   resolved "http://47.109.82.188:4873/dayjs/-/dayjs-1.10.6.tgz#288b2aa82f2d8418a6c9d4df5898c0737ad02a63"
   integrity sha1-KIsqqC8thBimydTfWJjAc3rQKmM=
@@ -3996,9 +4031,9 @@ echarts@^5.1.1:
     zrender "5.2.0"
 
 electron-to-chromium@^1.3.811:
-  version "1.3.826"
-  resolved "http://47.109.82.188:4873/electron-to-chromium/-/electron-to-chromium-1.3.826.tgz#dbe356b1546b39d83bcd47e675a9c5f61dadaed2"
-  integrity sha1-2+NWsVRrOdg7zUfmdanF9h2trtI=
+  version "1.3.827"
+  resolved "http://47.109.82.188:4873/electron-to-chromium/-/electron-to-chromium-1.3.827.tgz#c725e8db8c5be18b472a919e5f57904512df0fc1"
+  integrity sha1-xyXo24xb4YtHKpGeX1eQRRLfD8E=
 
 elegant-spinner@^1.0.1:
   version "1.0.1"
@@ -4600,6 +4635,11 @@ follow-redirects@1.5.10:
   integrity sha1-e3qfmuov3/NnhqlP9kPtB/T/Xio=
   dependencies:
     debug "=3.1.0"
+
+follow-redirects@^1.10.0:
+  version "1.14.2"
+  resolved "http://47.109.82.188:4873/follow-redirects/-/follow-redirects-1.14.2.tgz#cecb825047c00f5e66b142f90fed4f515dec789b"
+  integrity sha1-zsuCUEfAD15msUL5D+1PUV3seJs=
 
 for-in@^0.1.3:
   version "0.1.8"
@@ -6589,7 +6629,7 @@ modify-values@^1.0.0:
   resolved "http://47.109.82.188:4873/modify-values/-/modify-values-1.0.1.tgz#b3939fa605546474e3e3e3c63d64bd43b4ee6022"
   integrity sha1-s5OfpgVUZHTj4+PGPWS9Q7TuYCI=
 
-moment@^2.24.0, moment@^2.25.3, moment@^2.27.0:
+moment@^2.24.0, moment@^2.25.3, moment@^2.27.0, moment@^2.29.1:
   version "2.29.1"
   resolved "http://47.109.82.188:4873/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
   integrity sha1-sr52n6MZQL6e7qZGnAdeNQBvo9M=
@@ -6668,9 +6708,9 @@ nanomatch@^1.2.9:
     to-regex "^3.0.1"
 
 native-request@^1.0.5:
-  version "1.0.9"
-  resolved "http://47.109.82.188:4873/native-request/-/native-request-1.0.9.tgz#2269748379c004415d9721c204d8da3455abc175"
-  integrity sha1-Iml0g3nABEFdlyHCBNjaNFWrwXU=
+  version "1.1.0"
+  resolved "http://47.109.82.188:4873/native-request/-/native-request-1.1.0.tgz#acdb30fe2eefa3e1bc8c54b3a6852e9c5c0d3cb0"
+  integrity sha1-rNsw/i7vo+G8jFSzpoUunFwNPLA=
 
 natural-compare@^1.4.0:
   version "1.4.0"
@@ -8276,6 +8316,11 @@ react-is@^16.12.0, react-is@^16.13.1, react-is@^16.6.0, react-is@^16.7.0, react-
   resolved "http://47.109.82.188:4873/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha1-eJcppNw23imZ3BVt1sHZwYzqVqQ=
 
+react-is@^17.0.2:
+  version "17.0.2"
+  resolved "http://47.109.82.188:4873/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
+  integrity sha1-5pHUqOnHiTZWVVOas3J2Kw77VPA=
+
 react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "http://47.109.82.188:4873/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
@@ -8339,7 +8384,7 @@ react-router-dom@^5.2.0:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
 
-react-router@5.2.1:
+react-router@5.2.1, react-router@^5.2.0:
   version "5.2.1"
   resolved "http://47.109.82.188:4873/react-router/-/react-router-5.2.1.tgz#4d2e4e9d5ae9425091845b8dbc6d9d276239774d"
   integrity sha1-TS5OnVrpQlCRhFuNvG2dJ2I5d00=
@@ -8394,7 +8439,7 @@ react-view-pager@^0.6.0:
     resize-observer-polyfill "1.5.0"
     tabbable "1.1.2"
 
-react@^16.9.35:
+react@^16.12.0, react@^16.9.35:
   version "16.14.0"
   resolved "http://47.109.82.188:4873/react/-/react-16.14.0.tgz#94d776ddd0aaa37da3eda8fc5b6b18a4c9a3114d"
   integrity sha1-lNd23dCqo32j7aj8W2sYpMmjEU0=
@@ -8489,7 +8534,7 @@ read@1, read@~1.0.1:
   dependencies:
     mute-stream "~0.0.4"
 
-"readable-stream@1 || 2", readable-stream@^2.0.0, readable-stream@^2.0.1, readable-stream@^2.0.6, readable-stream@^2.1.5, readable-stream@^2.2.2, readable-stream@^2.3.6, readable-stream@~2.3.6:
+"readable-stream@1 || 2", readable-stream@^2.0.0, readable-stream@^2.0.1, readable-stream@^2.1.5, readable-stream@^2.2.2, readable-stream@^2.3.6, readable-stream@~2.3.6:
   version "2.3.7"
   resolved "http://47.109.82.188:4873/readable-stream/-/readable-stream-2.3.7.tgz#1eca1cf711aef814c04f62252a36a62f6cb23b57"
   integrity sha1-Hsoc9xGu+BTAT2IlKjamL2yyO1c=
@@ -8502,7 +8547,7 @@ read@1, read@~1.0.1:
     string_decoder "~1.1.1"
     util-deprecate "~1.0.1"
 
-"readable-stream@2 || 3", readable-stream@3, readable-stream@^3.0.0, readable-stream@^3.0.2, readable-stream@^3.1.1:
+"readable-stream@2 || 3", readable-stream@3, readable-stream@^3.0.0, readable-stream@^3.0.2, readable-stream@^3.1.1, readable-stream@^3.6.0:
   version "3.6.0"
   resolved "http://47.109.82.188:4873/readable-stream/-/readable-stream-3.6.0.tgz#337bbda3adc0706bd3e024426a286d4b4b2c9198"
   integrity sha1-M3u9o63AcGvT4CRCaihtS0sskZg=
@@ -8847,6 +8892,13 @@ rxjs@^6.3.3, rxjs@^6.4.0, rxjs@^6.5.3, rxjs@^6.6.0:
   integrity sha1-kKwBisq/SRv2UEQjXVhjxNq4BMk=
   dependencies:
     tslib "^1.9.0"
+
+rxjs@^7.3.0:
+  version "7.3.0"
+  resolved "http://47.109.82.188:4873/rxjs/-/rxjs-7.3.0.tgz#39fe4f3461dc1e50be1475b2b85a0a88c1e938c6"
+  integrity sha1-Of5PNGHcHlC+FHWyuFoKiMHpOMY=
+  dependencies:
+    tslib "~2.1.0"
 
 safe-buffer@^5.0.1, safe-buffer@^5.1.1, safe-buffer@^5.1.2, safe-buffer@^5.2.0, safe-buffer@^5.2.1, safe-buffer@~5.2.0:
   version "5.2.1"
@@ -9799,6 +9851,11 @@ tslib@^2.0.3, tslib@^2.1.0:
   resolved "http://47.109.82.188:4873/tslib/-/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
   integrity sha1-6KM1rdXOrlGqJh0ypJAVjvBC7wE=
 
+tslib@~2.1.0:
+  version "2.1.0"
+  resolved "http://47.109.82.188:4873/tslib/-/tslib-2.1.0.tgz#da60860f1c2ecaa5703ab7d39bc05b6bf988b97a"
+  integrity sha1-2mCGDxwuyqVwOrfTm8Bba/mIuXo=
+
 tsutils@^3.17.1:
   version "3.21.0"
   resolved "http://47.109.82.188:4873/tsutils/-/tsutils-3.21.0.tgz#b48717d394cea6c1e096983eed58e9d61715b623"
@@ -10074,6 +10131,11 @@ verror@1.10.0:
     assert-plus "^1.0.0"
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
+
+viewerjs@^1.10.0:
+  version "1.10.1"
+  resolved "http://47.109.82.188:4873/viewerjs/-/viewerjs-1.10.1.tgz#07499ed043d0a29e3002b90f55c5b228bd1a742c"
+  integrity sha1-B0me0EPQop4wArkPVcWyKL0adCw=
 
 warning@^4.0.1, warning@^4.0.3:
   version "4.0.3"

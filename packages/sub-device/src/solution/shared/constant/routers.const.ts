@@ -48,16 +48,8 @@ export const ROUTERS = {
   dataManagModule: () => import('~/solution/pages/home/data-manage/data-manage.module'),
   deviceMonitor: () => import('~/solution/pages/home/data-manage/device-monitor-component/device-monitor.component'),
   deviceLine: () => import('~/solution/pages/home/data-manage/device-line-component/device-line.component'),
-  carTypeSetting: () =>
-    import('~/solution/pages/home/base-manage/car-type-setting-component/car-type-setting.component'),
-  supplierSetting: () =>
-    import('~/solution/pages/home/base-manage/supplier-setting-component/supplier-setting.component'),
   deviceTypeSetting: () =>
     import('~/solution/pages/home/base-manage/device-type-setting-component/device-type-setting.component'),
-  addSupplier: () =>
-    import(
-      '~/solution/pages/home/base-manage/supplier-setting-component/add-supplier-component/add-supplier.component'
-    ),
   voucherManageModule: () => import('~/solution/pages/home/voucher-manage/voucher-manage.module'),
   voucherManage: () => import('~/solution/pages/home/voucher-manage/voucher-manage-component/voucher-manage.component'),
   customerManageModule: () => import('~/solution/pages/home/customer-manage/customer-manage.module'),

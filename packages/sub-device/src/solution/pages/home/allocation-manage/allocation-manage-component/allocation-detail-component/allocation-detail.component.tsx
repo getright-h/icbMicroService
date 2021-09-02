@@ -1,7 +1,7 @@
 import * as React from 'react';
 import style from './allocation-detail.component.less';
 import { useAllocationDetailStore } from './allocation-detail.component.store';
-import { IHeaderTitleComponent } from '~/framework/components/component.module';
+import { IHeaderTitleComponent } from 'fch-shop-component-micweb';
 import { Table, Row, Col, Form, Button } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 export default function AllocationDetailComponent() {

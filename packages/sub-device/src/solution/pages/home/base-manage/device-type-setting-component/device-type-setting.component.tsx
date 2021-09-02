@@ -2,7 +2,8 @@ import * as React from 'react';
 import { ModalType } from '../base-manage.const';
 import { useDeviceTypeSettingStore } from './device-type-setting.component.store';
 import { devicetypeColumns } from './device-setting-column';
-import { TablePageTelComponent, IHeaderTitleComponent, ITableComponent } from '~/framework/components/component.module';
+import { TablePageTelComponent, ITableComponent } from '~/framework/components/component.module';
+import { IHeaderTitleComponent } from 'fch-shop-component-micweb';
 import { Button, Input } from 'antd';
 import AddDeviceTypeModalComponent from './add-device-type-component/add-device-type.component';
 

@@ -1,7 +1,8 @@
 import * as React from 'react';
 import style from './monitor-manage.component.less';
-import { useMonitorManageStore } from './monitor-manage.component.store.tsx';
-import { IHeaderTitleComponent, ITableComponent, TablePageTelComponent } from '~framework/components/component.module';
+import { useMonitorManageStore } from './monitor-manage.component.store';
+import { ITableComponent, TablePageTelComponent } from '~framework/components/component.module';
+import { IHeaderTitleComponent } from 'fch-shop-component-micweb';
 import { monitorColumns } from './monitor-manage-column';
 import { Button, Input } from 'antd';
 import { ModalType } from '../monitor-manage.const';
@@ -24,7 +25,6 @@ export default function MonitorManageComponent() {
     onExpand,
     onSelect,
     getTableData,
-    deletemonitorGroup,
     setSingleCheckTreeData,
     onSelectChange,
     alertCurrentTreeData,

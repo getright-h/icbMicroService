@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useAllocationProcessStore } from './allocation-process.component.store';
 import { Tabs } from 'antd';
-import { IHeaderTitleComponent } from '~framework/components/component.module';
+import { IHeaderTitleComponent } from 'fch-shop-component-micweb';
 import InitAllocationComponent from './init-allocation-component/init-allocation.component';
 import ReceiveAllocationComponent from './receive-allocation-component/receive-allocation.component';
 
