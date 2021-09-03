@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Layout, Spin } from 'antd';
 import style from './home.component.less';
 import { IMenuComponent } from '@fch/fch-shop-web';
-import { IHomeHeaderComponent } from '../../components/base/i-home-header-component/i-home-header.component';
 import { useHomeStore } from './home.component.store';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 import { IGlobalState } from '~/solution/context/global/global.interface';
@@ -12,6 +11,7 @@ import { homeRoutes } from './home.routes';
 import { getHashParameter } from '~/solution/shared/util/common.util';
 import { StorageUtil } from '@fch/fch-tool';
 import { IconList } from './home.interface';
+import HocHomeHeaderComponent from '~/solution/HOC/hoc-home-header-component/hoc-home-header.component';
 
 function HomeModule() {
   const { state } = useHomeStore();
@@ -62,7 +62,7 @@ function HomeModule() {
   return (
     <Spin spinning={state.loading} wrapperClassName="custom-layout-spin">
       <div className={style.homeMain}>
-        {!source && <IHomeHeaderComponent></IHomeHeaderComponent>}
+        {!source && <HocHomeHeaderComponent></HocHomeHeaderComponent>}
         <div className={style.bodyContainer} style={{ paddingTop: !source ? '6.75rem' : '1rem' }}>
           {!source && renderLayoutSider()}
           <div className={style.pageContainer}>{RenderLayoutContainer()}</div>
