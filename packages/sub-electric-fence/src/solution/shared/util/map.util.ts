@@ -311,6 +311,8 @@ export const IMAP = {
              <div class="basic">
                  <div class="item">车辆状态：<%- vehicleState %></div>
                  <div class="item">设备状态：<%- deviceState %></div>
+                 <div class="item">报警状态：<%- statusText %></div>
+                 <div class="item">电池：<%- batteryStatus %></div>
                  <div class="item">经纬度：<%- lalg %></div>
                  <div class="item">地址：<%- place %></div>
                  <div class="item">定位时间：<%- positionTime %></div>
@@ -333,7 +335,9 @@ export const IMAP = {
               vehicleState: '',
               positionTime: '',
               lalg: '',
-              place: ''
+              place: '',
+              statusText: '',
+              batteryStatus: ''
             },
 
             //基点指向marker的头部位置

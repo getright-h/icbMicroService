@@ -344,7 +344,9 @@ export function useIMapStore(mapProps: TIMapProps) {
       lalg: `${marker.position[0]}, ${marker.position[1]}`,
       place: '转换地址中...',
       // satellitesNum: '强',
-      positionTime: deviceInfo.positionTime
+      positionTime: deviceInfo.positionTime,
+      statusText: deviceInfo.statusText,
+      batteryStatus: deviceInfo.batteryStatus
     };
     infoWindow.setInfoTplData(data);
     isBindAction && bindAction(infoWindow, marker);
