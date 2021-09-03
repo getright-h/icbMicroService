@@ -49,5 +49,6 @@ export const ROUTERS = {
       '~/solution/pages/home/position-monitor/position-monitor-component/position-monitor-right-component/position-monitor-right.component'
     ),
   userActionReport: () => import('~/solution/pages/user-action-report-component/user-action-report.component'),
-  dataScreen: () => import('~/solution/pages/home/data-screen/data-screen.component')
+  dataScreen: () => import('~/solution/pages/home/data-screen/data-screen.component'),
+  historyTrack: () => import('~/solution/pages/home/report-manage/history-track-component/history-track.component')
 };

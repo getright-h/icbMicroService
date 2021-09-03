@@ -524,6 +524,13 @@ export function fetchChildAppsConfig() {
                 lazyload: true,
                 exact: true,
                 componentUrl: 'permanentListComponent' //对应子应用的组件名
+              },
+              {
+                path: 'historyTrack',
+                title: '历史轨迹数据',
+                lazyload: true,
+                exact: true,
+                componentUrl: 'historyTrack' //对应子应用的组件名
               }
             ]
           }

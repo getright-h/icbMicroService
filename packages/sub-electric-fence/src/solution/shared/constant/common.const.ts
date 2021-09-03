@@ -91,6 +91,10 @@ export const PAGES_MENU = {
         {
           path: 'permanent',
           title: '常驻点统计'
+        },
+        {
+          path: 'historyTrack',
+          title: '历史轨迹数据'
         }
       ]
     },

@@ -74,5 +74,11 @@ export const reportManageRoutes: IRoute[] = [
     component: ROUTERS.userActionReport,
     lazyload: true,
     exact: true
+  },
+  {
+    path: `${MODULE_PATH}/historyTrack`,
+    component: ROUTERS.historyTrack,
+    lazyload: true,
+    exact: true
   }
 ];
