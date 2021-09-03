@@ -7,7 +7,6 @@ import PositionMonitorMapbtnTrackComponent from '../position-monitor-mapbtn-trac
 import PositionMonitorMapbtnDrivingComponent from '../position-monitor-mapbtn-driving-line-component/position-monitor-mapbtn-driving-line.component';
 import DirectivePatchModalComponent from '../../../directive-manage/wiget/directive-patch-model-component/directive-patch-moda.component';
 import { IPositionMonitorRightProps } from './position-monitor-right.interface';
-import { Button } from 'antd';
 import PositionMonitorAreaSearchCarComponent from '../position-monitor-area-search-car-component/position-monitor-area-search-car.component';
 export const PositionMonitorRightComponent = (props: IPositionMonitorRightProps) => {
   const { reduxState } = React.useContext(PositionMonitorContext);
@@ -20,8 +19,7 @@ export const PositionMonitorRightComponent = (props: IPositionMonitorRightProps)
     drawDrivingLine,
     controllerDirectiveModal,
     closeMapDrivingPage,
-    closeMapSearchCarbtnPage,
-    controllerAreaCarSearchModal
+    closeMapSearchCarbtnPage
   } = usePositionMonitorRightStore(props);
   const { checkedCarData, currentSelectCar } = reduxState;
   const { mapbtnTrackrVisible, mapbtnDrivingVisible, modalDirectiveVisible, deviceId, mapbtnSearchCarVisible } = state;
