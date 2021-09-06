@@ -23,7 +23,7 @@ function OrganizationControllerComponent(props: IOrganizationControllerProps, re
   const { gState } = React.useContext(GlobalContext);
 
   return (
-    <>
+    <div className={style.orgController}>
       <div className={style.searchWarehouse}>
         {isGroup ? (
           <ISelectLoadingComponent
@@ -66,6 +66,8 @@ function OrganizationControllerComponent(props: IOrganizationControllerProps, re
             treeData={treeData}
           />
         )}
+      </div>
+      <div className={style.searchPagination}>
         <Pagination
           showSizeChanger
           onChange={onPageSizeChange}
@@ -81,7 +83,7 @@ function OrganizationControllerComponent(props: IOrganizationControllerProps, re
           </Button>
         )} */}
       </div>
-    </>
+    </div>
   );
 }
 

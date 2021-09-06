@@ -52,7 +52,7 @@ export function dealWithTreeData<T>(
           </div>
         </div>
       );
-      treeDataChild['isLeaf'] = isWarehouse;
+      treeDataChild['isLeaf'] = isWarehouse || !element.isHasChildOrganization;
       treeDataChild.selectable = canSelectAll || isWarehouse;
       treeDataChild.checkable = isWarehouse || !!organizationChecked;
       return treeDataChild;
