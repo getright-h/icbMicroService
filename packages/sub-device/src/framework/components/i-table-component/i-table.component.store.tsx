@@ -6,11 +6,11 @@ import * as React from 'react';
 export function useITableStore(props: IITableProps) {
   const { state, setStateWrap } = useStateStore(new IITableState());
   useEffect(() => {
-    const { pageIndex = 1, pageSize = 10, total = 0, changeTablePageIndex } = props;
+    const { pageIndex = 1, pageSize = 10, total = 0, changeTablePageIndex, showSizeChanger = false } = props;
     const pagination = {
       current: pageIndex,
       showQuickJumper: true,
-      // showSizeChanger: true,
+      showSizeChanger: showSizeChanger,
       // onShowSizeChange: changeTablePageIndex,
       showTotal: (total: number) => {
         return <div>共 {total} 条</div>;

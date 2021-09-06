@@ -25,4 +25,5 @@ export interface IITableProps {
   title?: string;
   expandable?: any;
   size?: SizeType;
+  showSizeChanger?: boolean | null;
 }

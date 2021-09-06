@@ -35,4 +35,5 @@ export interface IITableProps {
   ) => void;
   changeTablePageIndex?: (page: number, pageSize?: number) => void;
   sortDirections?: Array<SortOrder>;
+  showSizeChanger?: boolean | null;
 }
