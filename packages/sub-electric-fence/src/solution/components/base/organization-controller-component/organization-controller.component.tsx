@@ -4,6 +4,7 @@ import { useOrganizationControllerStore } from './organization-controller.compon
 import { Tree, Button } from 'antd';
 import { IOrganizationControllerProps } from './organization-controller.interface';
 import { ISelectLoadingComponent } from '~/solution/components/component.module';
+import { GlobalContext } from '~/solution/context/global/global.provider';
 
 function OrganizationControllerComponent(props: IOrganizationControllerProps, ref: any) {
   const {
@@ -17,6 +18,7 @@ function OrganizationControllerComponent(props: IOrganizationControllerProps, re
   } = useOrganizationControllerStore(props, ref);
   const { onSelect, expandedKeys, treeSelectedKeys, onExpand, checkedKeys, checkable, isGroup = false } = props;
   const { treeData, loading, loadStoreOrganizationParams, loadedKeys } = state;
+  const { gState } = React.useContext(GlobalContext);
 
   return (
     <>
@@ -35,7 +37,8 @@ function OrganizationControllerComponent(props: IOrganizationControllerProps, re
             width={'100%'}
             showSearch
             searchForm={{
-              systemId: '938880216d89c68eb6ea08d69b143c52'
+              systemId: gState.myInfo.systemId,
+              typeId: gState.myInfo.typeId
             }}
             reqUrl="queryStoreOrganization"
             getCurrentSelectInfo={value => getCurrentSelectInfo<string>(value, 'id')}

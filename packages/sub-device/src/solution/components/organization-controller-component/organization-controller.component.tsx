@@ -37,7 +37,8 @@ function OrganizationControllerComponent(props: IOrganizationControllerProps, re
             width={'100%'}
             showSearch
             searchForm={{
-              systemId: gState.myInfo.systemId
+              systemId: gState.myInfo.systemId,
+              typeId: gState.myInfo.typeId
             }}
             reqUrl="queryStoreOrganization"
             getCurrentSelectInfo={value => getCurrentSelectInfo<string>(value, 'id')}
