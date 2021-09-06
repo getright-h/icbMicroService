@@ -51,7 +51,6 @@ export function useStockManageStore(stockListState: { currentSelectNode: EventDa
           setStateWrap({
             tableData: res.pagedList.dataList,
             total: res.pagedList.total,
-            totalStock: res.totalNumber,
             isLoading: false
           });
         },
@@ -61,9 +60,16 @@ export function useStockManageStore(stockListState: { currentSelectNode: EventDa
       );
   }
 
+  function getTotalStock() {
+    stockManageService.countMaterialNumberListByStoreIds({ storeId: getState().selectedOrgId }).subscribe(res => {
+      setStateWrap({ totalStock: res });
+    });
+  }
+
   function searchClick() {
     setStateWrap({ pageIndex: 1 });
     getTableData();
+    getTotalStock();
   }
 
   function onSelectRows(selectedRowKeys: any) {
@@ -94,7 +100,7 @@ export function useStockManageStore(stockListState: { currentSelectNode: EventDa
                 (res: any) => {
                   ShowNotification.success('遗失已上报！');
                   getTableData();
-                  resolve();
+                  resolve(true);
                 },
                 (err: any) => {
                   reject();
@@ -114,7 +120,7 @@ export function useStockManageStore(stockListState: { currentSelectNode: EventDa
                 (res: any) => {
                   ShowNotification.success('已删除！');
                   getTableData();
-                  resolve();
+                  resolve(true);
                 },
                 (err: any) => {
                   reject();

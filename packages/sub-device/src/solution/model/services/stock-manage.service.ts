@@ -25,6 +25,7 @@ import { DepUtil } from '~/framework/aop/inject';
  */
 
 const QUERY_STOCK_DEVICE_LIST = 'material/manage/queryStockDevicePagedList';
+const COUNT_MATERIAL_NUMBER_LIST_BY_STORE_IDS = 'material/manage/countMaterialNumberListByStoreIds';
 const QUERY_STOCK_DEVICE_DETAIL = 'material/manage/queryStockDeviceDetail';
 const INSERT_PUT_STORE = 'material/manage/insertPutStore';
 const SET_MATERIAL = 'material/manage/setMaterial';
@@ -53,6 +54,10 @@ export class StockManageService extends StockManageDTO {
   // 设备列表
   queryStockDeviceList(params: QueryStockDeviceListParam): Observable<QueryStockDeviceListResult> {
     return this.requestService.post(QUERY_STOCK_DEVICE_LIST, params);
+  }
+  // 设备总数
+  countMaterialNumberListByStoreIds(params: { storeId: string }): Observable<number> {
+    return this.requestService.get(COUNT_MATERIAL_NUMBER_LIST_BY_STORE_IDS, params);
   }
   // 设备详情
   queryStockDeviceDetail(materialId: string): Observable<QueryStockDeviceDetailResult> {

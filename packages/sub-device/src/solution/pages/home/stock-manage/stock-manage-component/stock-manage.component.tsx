@@ -196,6 +196,7 @@ export default function StockManageComponent() {
         data={tableData}
         total={total}
         isPagination={true}
+        showSizeChanger={true}
         changeTablePageIndex={(pageIndex: number, pageSize: number) => changeTablePageIndex(pageIndex, pageSize)}
         // rowSelection={rowSelection}
         rowKey="materialId"
