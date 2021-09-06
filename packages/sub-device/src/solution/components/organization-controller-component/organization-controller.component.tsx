@@ -67,6 +67,8 @@ function OrganizationControllerComponent(props: IOrganizationControllerProps, re
             treeData={treeData}
           />
         )}
+      </div>
+      <div className={style.searchPagination}>
         <Pagination
           showSizeChanger
           onChange={onPageSizeChange}
