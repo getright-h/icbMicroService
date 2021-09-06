@@ -14,6 +14,7 @@ export class IOrganizationControllerState {
   loading = false;
   treeData: DataNode[] = [];
   loadedKeys: Key[] = [];
+  total = 0;
 }
 
 export class IOrganizationControllerProps {

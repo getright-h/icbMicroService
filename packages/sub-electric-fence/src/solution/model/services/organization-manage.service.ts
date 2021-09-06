@@ -37,7 +37,7 @@ export class OrganizationManageService extends OrganizationManageDTO {
     id: string;
     index: number;
     size: number;
-  }): Observable<QueryStoreOrganizationReturn[]> {
+  }): Observable<{ dataList: QueryStoreOrganizationReturn[]; total: number }> {
     return this.requestService.get(QUERY_GPS_ORGANIZATION, params);
   }
 

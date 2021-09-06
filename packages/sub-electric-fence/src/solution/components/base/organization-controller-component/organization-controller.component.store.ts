@@ -4,17 +4,20 @@ import {
   IOrganizationControllerProps
 } from './organization-controller.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
-import { useEffect, useImperativeHandle, useRef, Key } from 'react';
+import { useEffect, useImperativeHandle, useRef, Key, useContext } from 'react';
 import { dealWithTreeData, updateTreeData, deleteTreeDataByKey } from '~/framework/util/common/treeFunction';
 import { EventDataNode, DataNode } from 'rc-tree/lib/interface';
 import { forkJoin } from 'rxjs';
 import { OrganizationManageService } from '~/solution/model/services/organization-manage.service';
 import { QueryStoreOrganizationReturn } from '~/solution/model/dto/organization-manage.dto';
+import { IGlobalState } from '~/solution/context/global/global.interface';
+import { GlobalContext } from '~/solution/context/global/global.provider';
 
 export function useOrganizationControllerStore(props: IOrganizationControllerProps, ref: any) {
   const { state, setStateWrap, getState } = useStateStore(new IOrganizationControllerState());
   const organizationManageService: OrganizationManageService = new OrganizationManageService();
   const { warehouseAction, onExpand, queryChildInfo, currentOrganazation, allCanSelect } = props;
+  const { gState }: IGlobalState = useContext(GlobalContext);
   const formInfo = useRef({ index: 1, size: 10 });
   useEffect(() => {
     queryOrganizationTypeListByTypeId();
@@ -26,17 +29,17 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
       loading: true
     });
     organizationManageService
-      .queryGpsOrganization({ typeId: 'c59c75eec2d3cc075cca08d84386bcb9', id, ...formInfo.current })
+      .queryGpsOrganization({ typeId: gState.myInfo.typeId, id, ...formInfo.current })
       .subscribe(res => {
-        if (!res) res = [];
+        if (!res.dataList) res.dataList = [];
         // 如果只要求显示一个currentOrganazation 才执行这行过滤数据的代码
         if (currentOrganazation) {
-          res = res.filter(item => {
+          res.dataList = res.dataList.filter(item => {
             return item.id == currentOrganazation;
           });
         }
         const treeData = dealWithTreeData<QueryStoreOrganizationReturn>(
-          res,
+          res.dataList,
           TREE_MAP,
           false,
           warehouseAction,
@@ -45,9 +48,16 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
         );
         setStateWrap({
           loading: false,
-          treeData: [...getState().treeData, ...treeData]
+          treeData,
+          total: res.total
         });
       });
+  }
+
+  // 页码页尺寸改变
+  function onPageSizeChange(index: number, size: number) {
+    formInfo.current = { index, size };
+    queryOrganizationTypeListByTypeId(getState().loadStoreOrganizationParams.id);
   }
 
   // 加载更过
@@ -139,7 +149,7 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     });
     organizationManageService.queryGpsOrganization(params).subscribe(res => {
       const treeData = dealWithTreeData<QueryStoreOrganizationReturn>(
-        res,
+        res.dataList,
         TREE_MAP,
         false,
         warehouseAction,
@@ -148,7 +158,8 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
       );
       setStateWrap({
         loading: false,
-        treeData: [...treeData]
+        treeData,
+        total: res.total
       });
     });
   }
@@ -167,5 +178,15 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     queryOrganizationTypeListByTypeId
   }));
 
-  return { state, onLoadData, onLoad, getCurrentSelectInfo, onCheck, getCurrentGroup, getMoreOrganization };
+  return {
+    state,
+    formInfo,
+    onLoadData,
+    onLoad,
+    getCurrentSelectInfo,
+    onCheck,
+    getCurrentGroup,
+    getMoreOrganization,
+    onPageSizeChange
+  };
 }

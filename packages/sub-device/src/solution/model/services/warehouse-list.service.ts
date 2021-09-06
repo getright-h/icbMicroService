@@ -49,7 +49,7 @@ export class WarehouseListService extends WarehouseListDTO {
     id: string;
     index: number;
     size: number;
-  }): Observable<QueryStoreOrganizationReturn[]> {
+  }): Observable<{ dataList: QueryStoreOrganizationReturn[]; total: number }> {
     return this.requestService.get(QUERYSTORE_ORGANIZATION, params);
   }
 

@@ -40,12 +40,12 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
       .subscribe(res => {
         // 如果只要求显示一个currentOrganazation 才执行这行过滤数据的代码
         if (currentOrganazation) {
-          res = res.filter(item => {
+          res.dataList = res.dataList.filter(item => {
             return item.id == currentOrganazation;
           });
         }
         const treeData = dealWithTreeData<QueryStoreOrganizationReturn>(
-          res,
+          res.dataList,
           TREE_MAP,
           false,
           warehouseAction,
@@ -55,9 +55,16 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
         );
         setStateWrap({
           loading: false,
-          treeData: [...getState().treeData, ...treeData]
+          treeData,
+          total: res.total
         });
       });
+  }
+
+  // 页码页尺寸改变
+  function onPageSizeChange(index: number, size: number) {
+    formInfo.current = { index, size };
+    queryOrganizationTypeListByTypeId(getState().loadStoreOrganizationParams.id);
   }
 
   // 加载更多
@@ -149,7 +156,7 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     });
     warehouseListService.queryStoreOrganization(params).subscribe(res => {
       const treeData = dealWithTreeData<QueryStoreOrganizationReturn>(
-        res,
+        res.dataList,
         TREE_MAP,
         false,
         warehouseAction,
@@ -158,7 +165,8 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
       );
       setStateWrap({
         loading: false,
-        treeData: [...treeData]
+        treeData,
+        total: res.total
       });
     });
   }
@@ -214,5 +222,15 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     setSingleCheckTreeData
   }));
 
-  return { state, onLoadData, onLoad, getCurrentSelectInfo, onCheck, getCurrentGroup, getMoreOrganization };
+  return {
+    state,
+    formInfo,
+    onLoadData,
+    onLoad,
+    getCurrentSelectInfo,
+    onCheck,
+    getCurrentGroup,
+    getMoreOrganization,
+    onPageSizeChange
+  };
 }
