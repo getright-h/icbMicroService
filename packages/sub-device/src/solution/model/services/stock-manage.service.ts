@@ -56,7 +56,7 @@ export class StockManageService extends StockManageDTO {
     return this.requestService.post(QUERY_STOCK_DEVICE_LIST, params);
   }
   // 设备总数
-  countMaterialNumberListByStoreIds(params: { storeId: string }): Observable<number> {
+  countMaterialNumberListByStoreIds(params: { storeId: string }): Observable<any> {
     return this.requestService.get(COUNT_MATERIAL_NUMBER_LIST_BY_STORE_IDS, params);
   }
   // 设备详情

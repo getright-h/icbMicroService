@@ -62,7 +62,7 @@ export function useStockManageStore(stockListState: { currentSelectNode: EventDa
 
   function getTotalStock() {
     stockManageService.countMaterialNumberListByStoreIds({ storeId: getState().selectedOrgId }).subscribe(res => {
-      setStateWrap({ totalStock: res });
+      setStateWrap({ totalStock: res?.data ?? res });
     });
   }
 
