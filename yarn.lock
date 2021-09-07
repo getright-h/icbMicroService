@@ -1078,12 +1078,12 @@
     unique-filename "^1.1.1"
     which "^1.3.1"
 
-"@fch/fch-shop-web@^0.0.20":
-  version "0.0.20"
-  resolved "http://47.109.82.188:4873/@fch%2ffch-shop-web/-/fch-shop-web-0.0.20.tgz#4f54d669530c6b3e3623e371518b11dfcae622af"
-  integrity sha512-iHZdamGVz0HuV/hkgJAMqhsZHBo0x/R/nMRp096JQuMgTNB8IhZ8yV2xD7fwXG10VwwiHFkn16oVGt4FrkFmWA==
+"@fch/fch-shop-web@^0.0.23":
+  version "0.0.23"
+  resolved "http://47.109.82.188:4873/@fch%2ffch-shop-web/-/fch-shop-web-0.0.23.tgz#eec3a4620cb336590865a83bddd56499c43cb095"
+  integrity sha512-uR3F+dECMemxjRar2/fuD2qS5nookhegWibqLAQ4WfNotHqAAjDavfFEholM7j3ZQRvGXPtfN9xLcNRx7l7AnQ==
   dependencies:
-    "@fch/fch-tool" "^0.0.4"
+    "@fch/fch-tool" "^0.0.8"
     antd "^4.16.7"
     axios "^0.19.0"
     classnames "^2.3.1"
@@ -1096,10 +1096,10 @@
     react-router-dom "^5.2.0"
     viewerjs "^1.10.0"
 
-"@fch/fch-tool@^0.0.4":
-  version "0.0.4"
-  resolved "http://47.109.82.188:4873/@fch%2ffch-tool/-/fch-tool-0.0.4.tgz#13a772438e9d87ab71778ebd7f1a50f1af2fa19a"
-  integrity sha512-s+c24aM2Rb/JoxiuXiGwqfuoFfDJcAfODlI6Ur1/IW49Ns/j+QTNpQ/zwAkLDHy0MbW9H/mypbsCi+tN1f/AeQ==
+"@fch/fch-tool@^0.0.8":
+  version "0.0.8"
+  resolved "http://47.109.82.188:4873/@fch%2ffch-tool/-/fch-tool-0.0.8.tgz#9a362f9a91ecdef2ab44a933acaf8987442b8eee"
+  integrity sha512-3xs3UizJMdIPjAYbbYJD7328M+jfP3vO1VhBJzzHxTGr3s1OBOlkexJY02x0z6c8dmjKLFqRxBFh5o5xBF2SGw==
   dependencies:
     axios "^0.21.1"
     dayjs "^1.10.4"

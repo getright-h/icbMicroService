@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.3.0",
-    "@fch/fch-shop-web": "^0.0.20",
+    "@fch/fch-shop-web": "^0.0.23",
     "@sentry/browser": "^5.7.1",
     "@types/js-cookie": "^2.2.2",
     "@types/lodash": "^4.14.144",
