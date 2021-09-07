@@ -1,6 +1,6 @@
 import * as jsCookie from 'js-cookie';
 
-const { STORAGE_PREFIX } = process.env;
+const STORAGE_PREFIX = process.env.STORAGE_PREFIX;
 export class StorageUtil {
   // LocalStorage
   static getLocalStorage(key: string) {
