@@ -23,16 +23,16 @@ export function vehicleManageColumns(callbackAction: Function, $auth: Record<str
     },
     {
       title: '设备号',
-      dataIndex: 'deviceCodeList',
-      render: (deviceCodeList: any[], data: any) => {
-        return deviceCodeList.length
-          ? deviceCodeList.map(device => (
-              <div key={device}>
-                {device}
+      dataIndex: 'deviceList',
+      render: (deviceList: any[], data: any) => {
+        return deviceList.length
+          ? deviceList.map(device => (
+              <div key={device.code}>
+                {`【${device.typeName}】${device.code}`}
                 {$auth['unBindingOperation'] ? (
                   <CloseCircleOutlined
                     className={style.deleteDevice}
-                    onClick={() => callbackAction(ModalType.UNBIND, { code: device, id: data.id })}
+                    onClick={() => callbackAction(ModalType.UNBIND, { code: device.code, id: data.id })}
                   />
                 ) : (
                   <CloseCircleOutlined style={{ marginLeft: '10px', cursor: 'not-allowed', opacity: 0.5 }} />
