@@ -73,6 +73,10 @@ export function useIMapStore(mapProps: TIMapProps) {
       // 比对
       renderMarker(locationCarMarkerList);
     }
+    // 多个车清空时，关闭窗体
+    if (!locationCarMarkerList.length) {
+      infoWindowInfo.current?.close();
+    }
   }, [locationCarMarkerList, currentSelectCar]);
 
   // 专门用来设置常驻点
