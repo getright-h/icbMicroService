@@ -302,7 +302,7 @@ export const IMAP = {
             <div class="item">车主姓名：<%- ownerName %></div>
              <div class="item">车牌号：<%- plateNo %></div>
              <div class="item">车架号：<%- vinNo %></div>
-             <div class="item">设备号：<%- deviceCode %></div>
+             <div class="item">设备号：【<%- typeName %>】<%- deviceCode %></div>
          </div>
          </div>
          <div class="vehicle-divide-line"></div>
