@@ -52,9 +52,11 @@ export function useTaskCenterStore() {
         });
         handleListLengthRef = handleList.length;
         if (handleListLengthRef) {
-          timer = setInterval(() => {
-            refreshDownloadTasks();
-          }, 10000);
+          if (!timer) {
+            timer = setInterval(() => {
+              refreshDownloadTasks();
+            }, 10000);
+          }
         } else {
           timer && clearInterval(timer);
         }
