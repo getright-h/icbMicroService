@@ -74,7 +74,7 @@ export function useIMapStore(mapProps: TIMapProps) {
       renderMarker(locationCarMarkerList);
     }
     // 多个车清空时，关闭窗体
-    if (!locationCarMarkerList.length) {
+    if (!locationCarMarkerList?.length) {
       infoWindowInfo.current?.close();
     }
   }, [locationCarMarkerList, currentSelectCar]);
