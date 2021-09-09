@@ -60,7 +60,12 @@ export function monitorColumns(callbackAction: Function, $auth: Record<string, b
     },
     {
       title: '设备号',
-      dataIndex: 'deviceCode'
+      dataIndex: 'deviceList',
+      render: (deviceList: any[], data: any) => {
+        return deviceList.length
+          ? deviceList.map(device => <div key={device.code}>{`【${device.typeName}】${device.code}`}</div>)
+          : '-';
+      }
     },
     {
       title: '车架号',

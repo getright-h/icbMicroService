@@ -10,7 +10,9 @@ export class IMonitorManageState {
   alarmModalVisible = false;
   currentData: any = {};
   searchForm: any = {
-    groupId: ''
+    groupId: '',
+    index: 1,
+    size: 10
   };
   tableData: any[] = [];
   total = 0;

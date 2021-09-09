@@ -16,7 +16,7 @@ import { useAuthorityState } from '~/framework/aop/hooks/use-authority-state';
 
 const { confirm } = Modal;
 export function useMonitorManageStore() {
-  const { state, setStateWrap } = useStateStore(new IMonitorManageState());
+  const { state, setStateWrap, getState } = useStateStore(new IMonitorManageState());
   const organizationControllerRef: { current: OrganizationExportFunction } = useRef();
   const monitorService = useService(MonitorService);
   let queryVehicleGroupPagedListSubscription: Subscription;
@@ -31,7 +31,7 @@ export function useMonitorManageStore() {
   }, []);
   function getTableData() {
     setStateWrap({ isLoading: true });
-    queryVehicleGroupPagedListSubscription = monitorService.queryVehicleGroupPagedList(state.searchForm).subscribe(
+    queryVehicleGroupPagedListSubscription = monitorService.queryVehicleGroupPagedList(getState().searchForm).subscribe(
       (res: any) => {
         setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
       },
