@@ -18,7 +18,8 @@ export default React.memo((props: IITableProps) => {
     rowSelection,
     showHeader = true,
     sortDirections = null,
-    onChange
+    onChange,
+    rowKey = 'id'
   } = props;
   const { state } = useITableStore(props);
 
@@ -42,7 +43,7 @@ export default React.memo((props: IITableProps) => {
       columns={columns}
       sortDirections={sortDirections}
       pagination={isPagination && state.pagination}
-      rowKey={(row, index) => row.id || index}
+      rowKey={rowKey}
     />
   );
 });

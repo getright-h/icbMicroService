@@ -36,4 +36,5 @@ export interface IITableProps {
   changeTablePageIndex?: (page: number, pageSize?: number) => void;
   sortDirections?: Array<SortOrder>;
   showSizeChanger?: boolean | null;
+  rowKey?: string;
 }
