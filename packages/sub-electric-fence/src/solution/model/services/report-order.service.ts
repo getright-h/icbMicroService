@@ -8,7 +8,10 @@ import {
   AlarmTypeList,
   ReportMonitorAlarmGroupInput,
   QueryMonitorDeviceStatusInput,
-  QueryMonitorDeviceOfflineInput
+  QueryMonitorDeviceOfflineInput,
+  QueryHistoryPagedListReqType,
+  QueryHistoryPagedListResType,
+  HistoryExportReqType
 } from '../dto/report-order.dto';
 import moment from 'moment';
 import { RequestService } from '~/framework/util/base-http/request.service';
@@ -28,6 +31,7 @@ const QUERY_REPORT_TRAFFIC = 'alarmCenter/manage/queryReportTraffic';
 const QUERY_MONITOR_ALARM_GROUP_PAGEDLIST = 'alarmCenter/manage/queryMonitorAlarmGroupPagedList';
 const QUERY_MONITOR_DEVICE_STATUS_PAGEDLIST = 'alarmCenter/manage/queryMonitorDeviceStatusPagedList';
 const QUERY_MONITOR_DEVICE_OFFLINE_PAGEDLIST = 'alarmCenter/manage/queryMonitorDeviceOfflinePagedList';
+const QUERY_HISTORY_PAGED_LIST = 'alarmCenter/manage/queryHistoryPagedList';
 
 const EXPORT_MONITOR_ALARM_GROUP_LIST = 'dataProcess/monitorAlarmInfoGroupExport';
 const EXPORT_MONITOR_ALARM_FOLLOW_LIST = 'dataProcess/monitorAlarmFollowExport';
@@ -35,6 +39,7 @@ const EXPORT_MONITOR_ALARM_RECORD_LIST = 'dataProcess/monitorAlarmRecordExport';
 const EXPORT_MONITOR_ALARM_STATISTICS_LIST = 'dataProcess/monitorAlarmStatisticsExport';
 const EXPORT_RESIDENT_STATISTICS_LIST = 'dataProcess/residentStatisticsExport';
 const EXPORT_DEVICE_STATUS_LIST = 'dataProcess/deviceStatusExport';
+const HISTORY_EXPORT = 'dataProcess/historyExport'; //历史轨迹数据导出
 
 @DepUtil.Injectable()
 export class OrderReportService implements OrderReportManage {
@@ -215,6 +220,20 @@ export class OrderReportService implements OrderReportManage {
     // );
   }
 
+  queryHistoryPagedList(
+    params: QueryHistoryPagedListReqType
+  ): Observable<{ total: number; dataList: QueryHistoryPagedListResType[] }> {
+    return this.requestService.post(QUERY_HISTORY_PAGED_LIST, params).pipe(
+      switchMap(async (data: { total: number; dataList: QueryHistoryPagedListResType[] }) => {
+        let dataList: any = [];
+        if (Array.isArray(data.dataList)) {
+          dataList = await REPORT_UTIL.formatAddress(data.dataList);
+        }
+        return { ...data, dataList };
+      })
+    );
+  }
+
   exportMonitorAlarmGroupList(params: ReportMonitorAlarmGroupInput): Observable<boolean> {
     return this.requestService.post(EXPORT_MONITOR_ALARM_GROUP_LIST, params);
   }
@@ -237,5 +256,10 @@ export class OrderReportService implements OrderReportManage {
 
   exportMonitorDeviceStatusList(params: QueryMonitorDeviceStatusInput): Observable<boolean> {
     return this.requestService.post(EXPORT_DEVICE_STATUS_LIST, params);
+  }
+
+  // 历史轨迹数据导出
+  exportHistoryPagedList(params: HistoryExportReqType): Observable<any> {
+    return this.requestService.post(HISTORY_EXPORT, params);
   }
 }

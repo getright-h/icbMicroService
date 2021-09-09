@@ -1,9 +1,9 @@
 import { IHistoryTrackState } from './history-track.interface';
 import { useStateStore } from '@fch/fch-tool';
 import { OrderReportService } from '~/solution/model/services/report-order.service';
-import { useEffect } from 'react';
 import { Form } from 'antd';
 import { setState } from '~/framework/microAPP/appStore';
+import moment from 'moment';
 
 export function useHistoryTrackStore() {
   const { state, setStateWrap, getState } = useStateStore(new IHistoryTrackState());
@@ -11,42 +11,36 @@ export function useHistoryTrackStore() {
   const [searchForm] = Form.useForm();
 
   function getTableData() {
-    // setStateWrap({ isLoading: true });
-    const { pageIndex, pageSize } = getState();
+    const { pageIndex, pageSize, timeInfo } = getState();
     searchForm.validateFields().then(values => {
-      console.log('values===>', values);
+      setStateWrap({ isLoading: true });
+      orderReportService
+        .queryHistoryPagedList({
+          deviceCode: values.deviceCode,
+          beginTime: timeInfo[0] ? moment(timeInfo[0]).valueOf() : 0,
+          endTime: timeInfo[1] ? moment(timeInfo[1]).valueOf() : 0,
+          index: pageIndex,
+          size: pageSize
+        })
+        .subscribe(
+          (res: any) => {
+            setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
+          },
+          null,
+          () => {
+            setStateWrap({ isLoading: false });
+          }
+        );
     });
-    // orderReportService
-    //   .queryMonitorAlarmGroupPagedList({
-    //     ...searchForm.getFieldsValue(),
-    //     index: pageIndex,
-    //     size: pageSize
-    //   })
-    //   .subscribe(
-    //     (res: any) => {
-    //       setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
-    //     },
-    //     (err: any) => {
-    //       setStateWrap({ isLoading: false });
-    //     }
-    //   );
   }
 
-  function getCurrentSelectInfo(data: any, type: string) {
-    // console.log(data, type);
-    // if (type == 'strValue') {
-    //   const { deviceCode = '' } = Array.isArray(data?.info?.deviceList) && data?.info?.deviceList[0];
-    //   searchForm.setFieldsValue({ deviceCode: deviceCode });
-    // }
-    // if (type == 'organizationId') {
-    //   const { organizationId } = data;
-    //   searchForm.setFieldsValue({ organizationId: organizationId });
-    // }
-    // if (type == 'groupId') {
-    //   const { id } = data;
-    //   searchForm.setFieldsValue({ groupId: id });
-    //   setStateWrap({ canExport: !!id });
-    // }
+  function getCurrentInfo(data: any, type: string) {
+    if (type == 'time') {
+      setStateWrap({ timeInfo: !!data[0] ? data : [] });
+    }
+    if (type == 'device') {
+      setStateWrap({ canExport: !!searchForm.getFieldValue('deviceCode') });
+    }
   }
 
   function searchClick() {
@@ -79,23 +73,25 @@ export function useHistoryTrackStore() {
   }
 
   function handleExport(value: string) {
-    const { pageIndex, pageSize } = getState();
-    // orderReportService
-    //   .exportMonitorAlarmGroupList({
-    //     ...searchForm.getFieldsValue(),
-    //     index: pageIndex,
-    //     size: pageSize,
-    //     name: value
-    //   })
-    //   .subscribe(
-    //     res => {
-    //       setState({ showTaskCenter: true });
-    //       handleExportVisible(false);
-    //     },
-    //     err => {
-    //       handleExportVisible(false);
-    //     }
-    //   );
+    const { timeInfo } = getState();
+    searchForm.validateFields().then(values => {
+      orderReportService
+        .exportHistoryPagedList({
+          deviceCode: values.deviceCode,
+          beginTime: timeInfo[0] ? moment(timeInfo[0]).valueOf() : 0,
+          endTime: timeInfo[1] ? moment(timeInfo[1]).valueOf() : 0,
+          name: value
+        })
+        .subscribe(
+          res => {
+            setState({ showTaskCenter: true });
+            handleExportVisible(false);
+          },
+          err => {
+            handleExportVisible(false);
+          }
+        );
+    });
   }
 
   function handleExportVisible(visible: boolean) {
@@ -108,7 +104,7 @@ export function useHistoryTrackStore() {
     initSearchForm,
     changeTablePageIndex,
     searchClick,
-    getCurrentSelectInfo,
+    getCurrentInfo,
     handleExport,
     handleExportVisible
   };

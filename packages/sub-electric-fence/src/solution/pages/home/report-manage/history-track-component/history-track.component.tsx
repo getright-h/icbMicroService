@@ -18,7 +18,7 @@ export default function HistoryTrackComponent() {
     changeTablePageIndex,
     searchClick,
     initSearchForm,
-    getCurrentSelectInfo,
+    getCurrentInfo,
     handleExport,
     handleExportVisible
   } = useHistoryTrackStore();
@@ -33,11 +33,11 @@ export default function HistoryTrackComponent() {
       <Form form={searchForm} {...layout} style={{ width: '90%' }} initialValues={{ state: -1 }}>
         <Row gutter={24}>
           <Col span={8}>
-            <Form.Item name="device" label="查询设备" rules={[{ required: true }]}>
-              <Input placeholder="设备号" allowClear={true} />
+            <Form.Item name="deviceCode" label="查询设备" rules={[{ required: true }]}>
+              <Input placeholder="设备号" allowClear={true} onChange={e => getCurrentInfo(e, 'device')} />
             </Form.Item>
           </Col>
-          <Col span={5}>
+          {/* <Col span={5}>
             <Form.Item name="state" label="设备状态">
               <Select placeholder="请选择设备状态">
                 <Select.Option value={-1}>全部</Select.Option>
@@ -46,21 +46,21 @@ export default function HistoryTrackComponent() {
                 <Select.Option value={3}>拆除</Select.Option>
               </Select>
             </Form.Item>
-          </Col>
+          </Col> */}
           <Col span={11}>
             <Form.Item label="时间范围" name="time">
               <TimePickerComponent
                 timeInfo={timeInfo}
                 pickerType="dateTimeRange"
-                getDateTimeInfo={(time: any, other: any) => getCurrentSelectInfo(time, 'time')}
+                getDateTimeInfo={(time: any, other: any) => getCurrentInfo(time, 'time')}
               />
             </Form.Item>
           </Col>
-          <Col span={8}>
+          {/* <Col span={8}>
             <Form.Item name="strValue" label="查询车辆">
               <Input placeholder="车牌号/车架号" allowClear={true} />
             </Form.Item>
-          </Col>
+          </Col> */}
         </Row>
       </Form>
     );

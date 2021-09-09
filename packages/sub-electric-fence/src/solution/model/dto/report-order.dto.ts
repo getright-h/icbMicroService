@@ -116,3 +116,30 @@ export interface QueryMonitorDeviceOfflineInput {
   beginTime: number;
   endTime: number;
 }
+
+export interface QueryHistoryPagedListReqType {
+  deviceCode: string;
+  index: number;
+  size: number;
+  beginTime: number;
+  endTime: number;
+}
+
+export interface QueryHistoryPagedListResType {
+  time: string;
+  longitude: number;
+  latitude: number;
+  baseStation: string;
+  positionStyle: string;
+  speed: number;
+  vehicleStatus: number;
+  plateNo: string;
+  vinNo: string;
+}
+
+export interface HistoryExportReqType {
+  name: string;
+  deviceCode: string;
+  beginTime: number;
+  endTime: number;
+}
