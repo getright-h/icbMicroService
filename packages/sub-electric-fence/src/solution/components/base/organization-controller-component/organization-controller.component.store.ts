@@ -28,35 +28,39 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     setStateWrap({
       loading: true
     });
-    organizationManageService
-      .queryGpsOrganization({ typeId: gState.myInfo.typeId, id, ...formInfo.current })
-      .subscribe(res => {
-        if (!res.dataList) res.dataList = [];
-        // 如果只要求显示一个currentOrganazation 才执行这行过滤数据的代码
-        if (currentOrganazation) {
-          res.dataList = res.dataList.filter(item => {
-            return item.id == currentOrganazation;
-          });
-        }
-        const treeData = dealWithTreeData<QueryStoreOrganizationReturn>(
-          res.dataList,
-          TREE_MAP,
-          false,
-          warehouseAction,
-          allCanSelect,
-          props.organizationChecked
-        );
-        setStateWrap({
-          loading: false,
-          treeData,
-          total: res.total
+    organizationManageService.queryGpsOrganization(getState().loadStoreOrganizationParams).subscribe(res => {
+      if (!res.dataList) res.dataList = [];
+      // 如果只要求显示一个currentOrganazation 才执行这行过滤数据的代码
+      if (currentOrganazation) {
+        res.dataList = res.dataList.filter(item => {
+          return item.id == currentOrganazation;
         });
+      }
+      const treeData = dealWithTreeData<QueryStoreOrganizationReturn>(
+        res.dataList,
+        TREE_MAP,
+        false,
+        warehouseAction,
+        allCanSelect,
+        props.organizationChecked
+      );
+      setStateWrap({
+        loading: false,
+        treeData,
+        total: res.total
       });
+    });
   }
 
   // 页码页尺寸改变
   function onPageSizeChange(index: number, size: number) {
-    formInfo.current = { index, size };
+    setStateWrap({
+      loadStoreOrganizationParams: {
+        ...state.loadStoreOrganizationParams,
+        index,
+        size
+      }
+    });
     queryOrganizationTypeListByTypeId(getState().loadStoreOrganizationParams.id);
   }
 
@@ -123,7 +127,8 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     setStateWrap({
       loadStoreOrganizationParams: {
         ...state.loadStoreOrganizationParams,
-        [key]: value
+        [key]: value,
+        index: 1
       },
       treeData: [],
       loadedKeys: []
@@ -132,7 +137,6 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     if (getState().loadStoreOrganizationParams.id) {
       searchCurrentSelectInfo(getState().loadStoreOrganizationParams);
     } else {
-      formInfo.current.index = 1;
       queryOrganizationTypeListByTypeId();
     }
   }

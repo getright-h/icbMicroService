@@ -4,10 +4,8 @@ import {
   IOrganizationControllerProps
 } from './organization-controller.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
-import { useEffect, useContext, useImperativeHandle, useRef, Key } from 'react';
+import { useEffect, useImperativeHandle, useRef, Key } from 'react';
 import { WarehouseListService } from '~/solution/model/services/warehouse-list.service';
-import { IGlobalState } from '~/solution/context/global/global.interface';
-import { GlobalContext } from '~/solution/context/global/global.provider';
 import {
   __initContent__,
   dealWithTreeData,
@@ -26,7 +24,6 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
   const warehouseListService: WarehouseListService = new WarehouseListService();
   const { warehouseAction, onExpand, queryChildInfo, currentOrganazation, allCanSelect } = props;
   const formInfo = useRef({ index: 1, size: 10 });
-  const { gState }: IGlobalState = useContext(GlobalContext);
   __initContent__(warehouseAction);
   useEffect(() => {
     queryOrganizationTypeListByTypeId();
@@ -35,35 +32,39 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
   // 根据根据系统id查找机构类型
   function queryOrganizationTypeListByTypeId(id?: string) {
     setStateWrap({ loading: true });
-    warehouseListService
-      .queryStoreOrganization({ typeId: gState.myInfo.typeId, id, ...formInfo.current })
-      .subscribe(res => {
-        // 如果只要求显示一个currentOrganazation 才执行这行过滤数据的代码
-        if (currentOrganazation) {
-          res.dataList = res.dataList.filter(item => {
-            return item.id == currentOrganazation;
-          });
-        }
-        const treeData = dealWithTreeData<QueryStoreOrganizationReturn>(
-          res.dataList,
-          TREE_MAP,
-          false,
-          warehouseAction,
-          allCanSelect,
-          props.organizationChecked,
-          props.disableNodeObj
-        );
-        setStateWrap({
-          loading: false,
-          treeData,
-          total: res.total
+    warehouseListService.queryStoreOrganization(getState().loadStoreOrganizationParams).subscribe(res => {
+      // 如果只要求显示一个currentOrganazation 才执行这行过滤数据的代码
+      if (currentOrganazation) {
+        res.dataList = res.dataList.filter(item => {
+          return item.id == currentOrganazation;
         });
+      }
+      const treeData = dealWithTreeData<QueryStoreOrganizationReturn>(
+        res.dataList,
+        TREE_MAP,
+        false,
+        warehouseAction,
+        allCanSelect,
+        props.organizationChecked,
+        props.disableNodeObj
+      );
+      setStateWrap({
+        loading: false,
+        treeData,
+        total: res.total
       });
+    });
   }
 
   // 页码页尺寸改变
   function onPageSizeChange(index: number, size: number) {
-    formInfo.current = { index, size };
+    setStateWrap({
+      loadStoreOrganizationParams: {
+        ...state.loadStoreOrganizationParams,
+        index,
+        size
+      }
+    });
     queryOrganizationTypeListByTypeId(getState().loadStoreOrganizationParams.id);
   }
 
@@ -127,7 +128,8 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     setStateWrap({
       loadStoreOrganizationParams: {
         ...state.loadStoreOrganizationParams,
-        [key]: value
+        [key]: value,
+        index: 1
       },
       treeData: [],
       loadedKeys: []
@@ -136,7 +138,6 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
     if (getState().loadStoreOrganizationParams.id) {
       searchCurrentSelectInfo(getState().loadStoreOrganizationParams);
     } else {
-      formInfo.current.index = 1;
       queryOrganizationTypeListByTypeId();
     }
   }

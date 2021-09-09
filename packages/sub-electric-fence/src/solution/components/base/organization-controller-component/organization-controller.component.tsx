@@ -71,8 +71,8 @@ function OrganizationControllerComponent(props: IOrganizationControllerProps, re
         <Pagination
           showSizeChanger
           onChange={onPageSizeChange}
-          current={formInfo.current.index}
-          pageSize={formInfo.current.size}
+          current={loadStoreOrganizationParams.index}
+          pageSize={loadStoreOrganizationParams.size}
           total={total}
           size="small"
         />

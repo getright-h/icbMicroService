@@ -6,7 +6,7 @@ import { Key, ReactNode } from 'react';
  */
 export class IOrganizationControllerState {
   loadStoreOrganizationParams = {
-    typeId: 'c59c75eec2d3cc075cca08d84386bcb9',
+    typeId: process.env.TYPE_ID,
     id: '',
     index: 1,
     size: 10
