@@ -26,7 +26,6 @@ export function useHistoryTrackStore() {
           (res: any) => {
             setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
           },
-          null,
           () => {
             setStateWrap({ isLoading: false });
           }

@@ -29,7 +29,7 @@ export function HistoryTrackColumn(action?: Function) {
     },
     {
       title: '设备状态',
-      dataIndex: 'positionStyle',
+      dataIndex: 'statusText',
       render
     },
     {
