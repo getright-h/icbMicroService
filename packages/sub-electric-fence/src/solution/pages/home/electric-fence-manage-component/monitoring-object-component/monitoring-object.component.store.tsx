@@ -28,26 +28,22 @@ export function useMonitoringObjectStore() {
     };
   }, []);
 
-  function getFormSearchInfo(key: string, value: any) {
-    if (value == undefined) {
-      value = JSON.stringify('');
+  function getFormSearchInfo(key: string, option: any) {
+    if (option == undefined) {
+      option = JSON.stringify('');
     }
-
-    const selectItem = Number.isInteger(value) ? value : JSON.parse(value);
+    const { info = undefined } = option;
     switch (key) {
-      case 'fenceId':
-        searchForm[key] = selectItem.id ? selectItem.id : '';
-        break;
       case 'fenceDdlBelong':
-        searchForm['thingType'] = selectItem.type ? selectItem.type : 0;
-        searchForm['thingId'] = selectItem.key ? selectItem.key : '';
+        searchForm['thingType'] = info?.type ? info?.type : 0;
+        searchForm['thingId'] = info?.key ? info?.key : '';
         break;
       case 'vehicleId':
-        searchForm['keyType'] = selectItem.type ? selectItem.type : 0;
-        searchForm['keyId'] = selectItem.key ? selectItem.key : '';
+        searchForm['keyType'] = info?.type ? info?.type : 0;
+        searchForm['keyId'] = info?.key ? info?.key : '';
         break;
       default:
-        searchForm[key] = value;
+        searchForm[key] = option.value;
         break;
     }
   }

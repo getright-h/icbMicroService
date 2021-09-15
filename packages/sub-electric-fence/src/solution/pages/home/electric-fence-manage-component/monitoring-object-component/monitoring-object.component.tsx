@@ -29,7 +29,7 @@ export default function MonitoringObjectComponent() {
         <div className="push-search-item">
           <span className="label">围栏名称：</span>
           <ISelectLoadingComponent
-            getCurrentSelectInfo={value => getFormSearchInfo('fenceId', value)}
+            getCurrentSelectInfo={(value, option) => getFormSearchInfo('fenceId', option)}
             placeholder="请输入围栏名"
             reqUrl="fenceList"
           ></ISelectLoadingComponent>
@@ -37,7 +37,7 @@ export default function MonitoringObjectComponent() {
         <div className="push-search-item">
           <span className="label">车辆所属：</span>
           <ISelectLoadingComponent
-            getCurrentSelectInfo={value => getFormSearchInfo('fenceDdlBelong', value)}
+            getCurrentSelectInfo={(value, option) => getFormSearchInfo('fenceDdlBelong', option)}
             placeholder="请输入机构名/车队名"
             reqUrl="fenceDdlBelong"
           ></ISelectLoadingComponent>
@@ -45,7 +45,7 @@ export default function MonitoringObjectComponent() {
         <div className="push-search-item">
           <span className="label">车辆信息：</span>
           <ISelectLoadingComponent
-            getCurrentSelectInfo={value => getFormSearchInfo('vehicleId', value)}
+            getCurrentSelectInfo={(value, option) => getFormSearchInfo('vehicleId', option)}
             placeholder="车主电话/车主姓名/车牌号"
             reqUrl="fenceDdlVehicleInfo"
           ></ISelectLoadingComponent>
