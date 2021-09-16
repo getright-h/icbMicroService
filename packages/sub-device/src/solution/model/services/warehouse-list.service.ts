@@ -12,6 +12,7 @@ import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
 import { DepUtil } from '~/framework/aop/inject';
 import { AddWarehouseParams } from '~/solution/model/dto/warehouse-list.dto';
+import { map } from 'rxjs/operators';
 
 const QUERYORGANIZATIONPAGEDLIST = 'store/manage/queryOrganizationPagedList';
 const QUERYSTOREPOSITIONPAGEDLISTBYSTOREID = 'store/manage/queryStorePositionPagedListByStoreId';
@@ -54,8 +55,20 @@ export class WarehouseListService extends WarehouseListDTO {
   }
 
   // 获取子集组织
-  queryStoreOrganizationListSub(params: { parentId: string }): Observable<QueryStoreOrganizationReturn[]> {
-    return this.requestService.get(QUERY_STORE_ORGANIZATION_LIST_SUB, params);
+  queryStoreOrganizationListSub(params: {
+    parentId: string;
+    index: number;
+    size: number;
+  }): Observable<{ dataList: QueryStoreOrganizationReturn[]; total: number }> {
+    return this.requestService.get(QUERY_STORE_ORGANIZATION_LIST_SUB, params).pipe(
+      map((data: { dataList: QueryStoreOrganizationReturn[]; total: number }) => {
+        let dataList: QueryStoreOrganizationReturn[] = [];
+        if (Array.isArray(data.dataList)) {
+          dataList = data.dataList;
+        }
+        return { ...data, dataList };
+      })
+    );
   }
   // 添加仓库
   insertStore(params: AddWarehouseParams) {

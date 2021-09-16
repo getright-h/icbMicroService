@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { DatabaseOutlined, AppstoreOutlined } from '@ant-design/icons';
 import { Popover } from 'antd';
+import { EventDataNode } from 'antd/lib/tree';
+import { generateGUID } from '@fch/fch-tool';
 
 //  需要将当前content缓存下来,便于修改和增加操作
 let __content__: React.ReactNode = null;
@@ -12,7 +14,7 @@ export function __initContent__(content: React.ReactNode) {
 }
 
 export function dealWithTreeData<T>(
-  res: T[],
+  res: T[] = [],
   treeMap: Record<string, any>,
   isWarehouse?: boolean,
   content?: (element: any) => React.ReactNode,
@@ -33,7 +35,7 @@ export function dealWithTreeData<T>(
       treeDataChild.title = renderTitle(isWarehouse, element, content);
       // 缓存当前列表Content
       __initContent__(content);
-      treeDataChild['isLeaf'] = isWarehouse;
+      treeDataChild['isLeaf'] = isWarehouse ?? !element.isHasChildOrganization;
       treeDataChild.selectable = canSelectAll || isWarehouse;
       treeDataChild.checkable = isWarehouse || !!organizationChecked;
       // 子节点禁掉 checkbox， 为应对监控组转组，不可选择自身，并且单选
@@ -262,4 +264,46 @@ export function flatAtree(arr: Array<any>) {
     }
   }
   return result;
+}
+
+export function formatTreeDataByParentId(arr: Array<any>, compareKeys = ['id', 'parentId']) {
+  const mainKey = compareKeys[0];
+  const compareKey = compareKeys[1];
+  const result: Array<any> = [];
+  let node: any = {};
+  let i = 0;
+  const map: any = {};
+  for (i = 0; i < arr.length; i++) {
+    map[arr[i][mainKey]] = i;
+    arr[i].children = [];
+  }
+  for (i = 0; i < arr.length; i++) {
+    node = arr[i];
+    if (node[compareKey]) {
+      arr[map[node[compareKey]]].children.push(node);
+    } else {
+      result.push(node);
+    }
+  }
+  return result;
+}
+
+export function addLoadMoreNode(curParams: any, parentNode: EventDataNode | any) {
+  const node: any = { key: generateGUID(true), isLeaf: true, isLoadMoreBtn: true, parentNode };
+  node.title = (
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <a
+        onClick={e => {
+          e.preventDefault();
+        }}
+      >
+        加载更多
+      </a>
+    </div>
+  );
+  node.nextParams = {
+    ...curParams,
+    index: curParams.index + 1
+  };
+  return node;
 }

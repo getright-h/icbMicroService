@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { DatabaseOutlined, AppstoreOutlined } from '@ant-design/icons';
 import { Popover } from 'antd';
+import { EventDataNode } from 'antd/lib/tree';
+import { generateGUID } from '@fch/fch-tool';
+
 // 是否需要
 export function dealWithTreeData<T>(
   res: T[] = [],
@@ -52,7 +55,7 @@ export function dealWithTreeData<T>(
           </div>
         </div>
       );
-      treeDataChild['isLeaf'] = isWarehouse || !element.isHasChildOrganization;
+      treeDataChild['isLeaf'] = isWarehouse ?? !element.isHasChildOrganization;
       treeDataChild.selectable = canSelectAll || isWarehouse;
       treeDataChild.checkable = isWarehouse || !!organizationChecked;
       return treeDataChild;
@@ -123,4 +126,46 @@ export function flatAtree(arr: Array<any>) {
     }
   }
   return result;
+}
+
+export function formatTreeDataByParentId(arr: Array<any>, compareKeys = ['id', 'parentId']) {
+  const mainKey = compareKeys[0];
+  const compareKey = compareKeys[1];
+  const result: Array<any> = [];
+  let node: any = {};
+  let i = 0;
+  const map: any = {};
+  for (i = 0; i < arr.length; i++) {
+    map[arr[i][mainKey]] = i;
+    arr[i].children = [];
+  }
+  for (i = 0; i < arr.length; i++) {
+    node = arr[i];
+    if (node[compareKey]) {
+      arr[map[node[compareKey]]].children.push(node);
+    } else {
+      result.push(node);
+    }
+  }
+  return result;
+}
+
+export function addLoadMoreNode(curParams: any, parentNode: EventDataNode | any) {
+  const node: any = { key: generateGUID(true), isLeaf: true, isLoadMoreBtn: true, parentNode };
+  node.title = (
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <a
+        onClick={e => {
+          e.preventDefault();
+        }}
+      >
+        加载更多
+      </a>
+    </div>
+  );
+  node.nextParams = {
+    ...curParams,
+    index: curParams.index + 1
+  };
+  return node;
 }

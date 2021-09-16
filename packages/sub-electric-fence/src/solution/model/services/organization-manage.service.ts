@@ -7,6 +7,7 @@ import {
 } from '../dto/organization-manage.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 /**
  * 真实开发中，请将示例代码移除
@@ -57,8 +58,20 @@ export class OrganizationManageService extends OrganizationManageDTO {
   }
 
   // 获取GPS子集组织
-  queryGpsOrganizationListSub(params: { parentId: string }): Observable<QueryStoreOrganizationReturn[]> {
-    return this.requestService.get(QUERY_GPS_ORGANIZATION_LIST_SUB, params);
+  queryGpsOrganizationListSub(params: {
+    parentId: string;
+    index: number;
+    size: number;
+  }): Observable<{ dataList: QueryStoreOrganizationReturn[]; total: number }> {
+    return this.requestService.get(QUERY_GPS_ORGANIZATION_LIST_SUB, params).pipe(
+      map((data: { dataList: QueryStoreOrganizationReturn[]; total: number }) => {
+        let dataList: QueryStoreOrganizationReturn[] = [];
+        if (Array.isArray(data.dataList)) {
+          dataList = data.dataList;
+        }
+        return { ...data, dataList };
+      })
+    );
   }
 
   // 根据系统id查找机构类型
