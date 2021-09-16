@@ -46,6 +46,7 @@ export default function ApprovalDealWithComponent() {
   function renderRenderApplyForApprovalTable() {
     return (
       <ITableComponent
+        rowKey="uniqueId"
         columns={approvalDealWithColumns(callbackAction)}
         isLoading={isLoading}
         pageIndex={pageIndex}

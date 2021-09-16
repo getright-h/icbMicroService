@@ -13,6 +13,7 @@ import {
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
 import { DepUtil } from '~/framework/aop/inject';
+import { map } from 'rxjs/operators';
 
 /**
  * 真实开发中，请将示例代码移除
@@ -113,7 +114,15 @@ export class ApprovalManageService extends ApprovalManageDTO {
   queryApprovalProcessList(
     params: QueryApprovalProcessListParams
   ): Observable<{ data: QueryApprovalProcessListReturn[]; total: number }> {
-    return this.requestService.post(QUERY_APPROVAL_PROCESS_LIST, params);
+    return this.requestService.post(QUERY_APPROVAL_PROCESS_LIST, params).pipe(
+      map((res: { data: any[]; total: number }) => {
+        const data = res.data.map(item => {
+          item.uniqueId = item.audit.flowAuditId;
+          return item;
+        });
+        return { ...res, data };
+      })
+    );
   }
 
   setApprovalFormTemplate(params: InsertApprovalFormTemplateParams | any) {
