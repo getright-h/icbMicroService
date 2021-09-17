@@ -79,6 +79,7 @@ function OrganizationControllerComponent(props: IOrganizationControllerProps, re
       <div className={style.searchPagination}>
         {!loadStoreOrganizationParams.id && (
           <Pagination
+            simple
             showSizeChanger
             onChange={onPageSizeChange}
             current={loadStoreOrganizationParams.index}
