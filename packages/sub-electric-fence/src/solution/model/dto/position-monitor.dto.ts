@@ -81,7 +81,8 @@ export interface DeviceList {
 export interface IQueryVehicleInfoPagedListParams {
   index: number;
   size: number;
-  organizationId: string;
+  organizationId?: string;
+  financeId?: string;
   vehicleGroupId: string;
   strValue: string;
 }

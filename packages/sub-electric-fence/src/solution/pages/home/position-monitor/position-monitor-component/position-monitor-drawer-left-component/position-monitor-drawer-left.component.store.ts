@@ -22,13 +22,14 @@ export function usePositionMonitorDrawerLeftStore() {
 
   useEffect(() => {
     if (currentSelectNode?.key) {
-      console.log('currentSelectNode?.key', currentSelectNode?.key);
-
+      const keyword = currentSelectNode?.['isFinance'] ? 'financeId' : 'organizationId';
       setStateWrap(
         {
           searchForm: {
             ...searchForm,
-            organizationId: currentSelectNode.key + '',
+            organizationId: undefined,
+            financeId: undefined,
+            [keyword]: currentSelectNode?.key + '',
             vehicleGroupId: undefined
           }
         },
@@ -66,8 +67,9 @@ export function usePositionMonitorDrawerLeftStore() {
     }, 0);
     const formInfo = JSON.parse(JSON.stringify(state || getState().searchForm));
     if (formInfo.vehicleGroupId) {
-      formInfo.VehicleGroupOrganizationId = JSON.parse(JSON.stringify(formInfo.organizationId));
+      formInfo.VehicleGroupOrganizationId = JSON.parse(JSON.stringify(formInfo.organizationId || formInfo.financeId));
       formInfo.organizationId = '';
+      formInfo.financeId = '';
     }
     positionMonitorService.queryVehicleInfoPagedList(formInfo).subscribe(
       res => {
