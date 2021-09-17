@@ -44,10 +44,10 @@ export function useApprovalTemplateLeftStore() {
     warehouseListService
       .queryStoreOrganization({ typeId: gState.myInfo.typeId, id, ...formInfo.current })
       .subscribe(res => {
-        const treeData = dealWithTreeData<QueryStoreOrganizationReturn>(res, TREE_MAP, false, undefined);
+        const treeData = dealWithTreeData<QueryStoreOrganizationReturn>(res.dataList, TREE_MAP, false, undefined);
         setStateWrap({
           treeData,
-          organazationList: res
+          organazationList: res.dataList
         });
       });
   }
