@@ -4,4 +4,5 @@ export class IHomeProps {
   loading = true;
   isIndex = false;
   menuList: IMenu[] = [];
+  userInfo: Record<string, any>;
 }

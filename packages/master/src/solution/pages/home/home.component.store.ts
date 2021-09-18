@@ -61,6 +61,7 @@ export function useHomeStore() {
           !canActive && history.replace('/home/index');
         }
       }
+      setStateWrap({ userInfo: res.userInfo });
       return { ...res.userInfo, auth: parsePrivilegeJSON(menuList) };
     } catch (error) {
       ShowNotification.error(error);

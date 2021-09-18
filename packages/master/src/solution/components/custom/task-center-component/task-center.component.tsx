@@ -109,7 +109,7 @@ export default function TaskCenterComponent() {
   }
 
   return (
-    <span style={{ marginRight: '50px' }}>
+    <span style={{ marginRight: '30px' }}>
       <Popover
         content={renderMain}
         placement="bottomRight"
