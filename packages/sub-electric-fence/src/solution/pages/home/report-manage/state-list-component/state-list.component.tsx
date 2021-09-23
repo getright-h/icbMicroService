@@ -7,6 +7,7 @@ import {
   TablePageTelComponent
 } from '~/solution/components/component.module';
 import { GlobalContext } from '~/solution/context/global/global.provider';
+import { DeviceStateConst } from '~/solution/shared/enums/home.enum';
 import { StateListColumn } from './state-list.column';
 
 import { useDirectiveListStore } from './state-list.component.store';
@@ -55,8 +56,11 @@ export default function DirectiveListComponent() {
             <Form.Item name="status" label="设备状态">
               <Select placeholder="请选择设备状态">
                 <Select.Option value={-1}>全部</Select.Option>
-                <Select.Option value={1}>在线</Select.Option>
-                <Select.Option value={0}>离线</Select.Option>
+                {DeviceStateConst.map(item => (
+                  <Select.Option key={item.key} value={item.key}>
+                    {item.title}
+                  </Select.Option>
+                ))}
               </Select>
             </Form.Item>
           </Col>
