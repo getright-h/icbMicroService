@@ -18,6 +18,7 @@ export function AlarmParameterColumn(callbackAction: Function) {
     {
       title: '设备号',
       dataIndex: 'deviceCode',
+      width: 150,
       render
     },
     {
@@ -36,6 +37,7 @@ export function AlarmParameterColumn(callbackAction: Function) {
     {
       title: '报警时间',
       dataIndex: 'createTime',
+      width: 200,
       render
     },
     {
@@ -58,12 +60,15 @@ export function AlarmParameterColumn(callbackAction: Function) {
     {
       title: '最后报警地址',
       dataIndex: 'address',
-      width: 200,
+      width: 400,
+      ellipsis: true,
       render
     },
     {
       title: '监控角色',
       dataIndex: 'roleName',
+      ellipsis: true,
+      width: 150,
       render
     },
     {
@@ -74,7 +79,8 @@ export function AlarmParameterColumn(callbackAction: Function) {
     {
       title: '所属机构',
       dataIndex: 'organizationName',
-
+      ellipsis: true,
+      width: 240,
       render
     },
     {

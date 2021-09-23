@@ -8,13 +8,11 @@ export function RecordListColumn(callbackAction: Function) {
     {
       title: '车主姓名',
       dataIndex: 'ownerName',
-      width: 100,
       render
     },
     {
       title: '车牌号',
       dataIndex: 'plateNo',
-      width: 100,
       render
     },
     {
@@ -26,12 +24,12 @@ export function RecordListColumn(callbackAction: Function) {
     {
       title: '报警类型',
       dataIndex: 'alarmTypeText',
-      width: 150,
       render
     },
     {
       title: '报警时间',
       dataIndex: 'time',
+      width: 200,
       render
     },
     {
@@ -55,7 +53,9 @@ export function RecordListColumn(callbackAction: Function) {
     {
       title: '报警地址',
       dataIndex: 'address',
-      render
+      render,
+      ellipsis: true,
+      width: 400
     },
     // {
     //   title: '处理状态',
@@ -68,7 +68,9 @@ export function RecordListColumn(callbackAction: Function) {
     {
       title: '所属机构',
       dataIndex: 'organizationName',
-      render
+      render,
+      ellipsis: true,
+      width: 240
     }
     // {
     //   title: '操作',

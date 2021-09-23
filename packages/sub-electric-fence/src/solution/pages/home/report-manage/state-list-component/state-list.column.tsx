@@ -15,7 +15,8 @@ export function StateListColumn(callbackAction: Function) {
     },
     {
       title: '设备号',
-      dataIndex: 'deviceCode'
+      dataIndex: 'deviceCode',
+      width: 150
     },
     {
       title: '状态',
@@ -29,11 +30,8 @@ export function StateListColumn(callbackAction: Function) {
     },
     {
       title: '最后上线时间',
-      dataIndex: 'statusTime'
-    },
-    {
-      title: '地址',
-      dataIndex: 'address'
+      dataIndex: 'statusTime',
+      width: 180
     },
     {
       title: 'GPS信号',
@@ -45,7 +43,15 @@ export function StateListColumn(callbackAction: Function) {
     },
     {
       title: '所属机构',
-      dataIndex: 'organizationName'
+      dataIndex: 'organizationName',
+      ellipsis: true,
+      width: 240
+    },
+    {
+      title: '地址',
+      dataIndex: 'address',
+      ellipsis: true,
+      width: 400
     }
   ];
 }

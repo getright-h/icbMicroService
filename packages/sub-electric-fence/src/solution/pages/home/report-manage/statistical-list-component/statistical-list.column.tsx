@@ -18,7 +18,8 @@ export function StatisticalListColumn(callbackAction: Function) {
     {
       title: '设备号',
       dataIndex: 'deviceCode',
-      render
+      render,
+      width: 150
     },
     {
       title: '报警类型',
@@ -28,7 +29,8 @@ export function StatisticalListColumn(callbackAction: Function) {
     {
       title: '最后报警时间',
       dataIndex: 'time',
-      render
+      render,
+      width: 200
     },
     {
       title: '报警次数',
@@ -54,14 +56,19 @@ export function StatisticalListColumn(callbackAction: Function) {
     },
     {
       title: '最后报警地址',
-      dataIndex: 'address'
+      dataIndex: 'address',
+      ellipsis: true,
+      width: 400
     },
     {
       title: '所属机构',
       dataIndex: 'organizationName',
-      render: (text: string) => (
-        <Tooltip title={text}>{text && text.length > 6 ? text.slice(0, 5) + '...' : text}</Tooltip>
-      )
+      render,
+      // render: (text: string) => (
+      //   <Tooltip title={text}>{text && text.length > 6 ? text.slice(0, 5) + '...' : text}</Tooltip>
+      // ),
+      ellipsis: true,
+      width: 240
     },
     {
       title: '操作',

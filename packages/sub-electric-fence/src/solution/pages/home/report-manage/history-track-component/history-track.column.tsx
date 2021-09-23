@@ -50,6 +50,8 @@ export function HistoryTrackColumn(action?: Function) {
     {
       title: '地址',
       dataIndex: 'address',
+      ellipsis: true,
+      width: 400,
       render
     }
   ];

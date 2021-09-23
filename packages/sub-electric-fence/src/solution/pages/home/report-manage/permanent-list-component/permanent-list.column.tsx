@@ -23,7 +23,9 @@ export function AlarmParameterColumn(sortInfo: { key: string; type: string }, ca
     {
       title: '常驻地点',
       dataIndex: 'address',
-      render
+      render,
+      ellipsis: true,
+      width: 400
     },
     {
       title: '到访次数',
@@ -58,7 +60,9 @@ export function AlarmParameterColumn(sortInfo: { key: string; type: string }, ca
     {
       title: '所属机构',
       dataIndex: 'organizationName',
-      render: (text: any) => <span>{text || '未绑定'}</span>
+      render: (text: any) => <span>{text || '未绑定'}</span>,
+      ellipsis: true,
+      width: 240
     }
   ];
 }

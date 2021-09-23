@@ -20,6 +20,7 @@ export function AlarmParameterColumn(callbackAction: Function) {
     {
       title: '设备号',
       dataIndex: 'deviceCode',
+      width: 150,
       render
     },
     {
@@ -45,11 +46,15 @@ export function AlarmParameterColumn(callbackAction: Function) {
     {
       title: '最后地址',
       dataIndex: 'address',
-      render: (text: string) => text || '-'
+      render: (text: string) => text || '-',
+      ellipsis: true,
+      width: 400
     },
     {
       title: '所属机构',
       dataIndex: 'organizationName',
+      ellipsis: true,
+      width: 240,
       render
     }
   ];
