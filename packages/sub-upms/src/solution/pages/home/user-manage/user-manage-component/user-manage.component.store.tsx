@@ -50,13 +50,14 @@ export function useUserManageStore() {
   function getTableData(isClick?: boolean) {
     const { searchForm } = getState();
     isClick && (searchForm.index = 1);
-    setStateWrap({ searchForm });
+    setStateWrap({ isLoading: true });
     getTableDataSubscription = userManageService.queryUserList({ systemId: systemId.current, ...searchForm }).subscribe(
       (res: any) => {
-        setStateWrap({ tableData: res.dataList, total: res.total });
+        setStateWrap({ tableData: res.dataList, total: res.total, isLoading: false });
       },
       (err: any) => {
         ShowNotification.error(err);
+        setStateWrap({ isLoading: false });
       }
     );
   }

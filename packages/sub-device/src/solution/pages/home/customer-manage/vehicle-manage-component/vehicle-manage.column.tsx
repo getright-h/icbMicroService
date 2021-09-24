@@ -73,6 +73,7 @@ export function vehicleManageColumns(callbackAction: Function, $auth: Record<str
     {
       title: '操作',
       fixed: 'right' as 'right',
+      width: 100,
       dataIndex: 'action',
       render: (render: any, data: any, index: number) => {
         return (

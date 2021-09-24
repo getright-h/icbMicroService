@@ -140,7 +140,7 @@ export default function StockManageComponent() {
   function renderSearchButtons() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary" onClick={searchClick} disabled={!currentSelectNode}>
+        <Button type="primary" onClick={searchClick} disabled={!currentSelectNode} loading={isLoading}>
           查询
         </Button>
         <Button onClick={initSearchform} disabled={!currentSelectNode}>

@@ -38,7 +38,7 @@ export default function DeviceTypeSettingComponent() {
   function renderSearchButtons() {
     return (
       <div className="other-search-button-item">
-        <Button type="primary" onClick={searchClick}>
+        <Button type="primary" onClick={searchClick} loading={isLoading}>
           搜索
         </Button>
       </div>

@@ -38,16 +38,21 @@ export function useWarehouseListStore(warehouseListState: { currentSelectNode: E
     getTableData();
   }
   function getTableData() {
-    warehouseListService.current
-      .queryStorePositionPagedListByStoreId(getState().searchForm)
-      .subscribe((data: QueryStorePositionReturn) => {
+    setStateWrap({ isLoading: true });
+    warehouseListService.current.queryStorePositionPagedListByStoreId(getState().searchForm).subscribe(
+      (data: QueryStorePositionReturn) => {
         setStateWrap({
           tableData: data.storePositionPagedList.dataList,
           total: data.storePositionPagedList.total,
           totalAlarm: data.totalAlarm,
-          totalNumber: data.totalNumber + ''
+          totalNumber: data.totalNumber + '',
+          isLoading: false
         });
-      });
+      },
+      err => {
+        setStateWrap({ isLoading: false });
+      }
+    );
   }
 
   function handleFormDataChange(value: { target: { value: string } }, key: string) {

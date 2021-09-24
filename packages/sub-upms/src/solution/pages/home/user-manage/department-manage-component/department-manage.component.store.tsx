@@ -11,22 +11,23 @@ import { GlobalContext } from '~/solution/context/global/global.provider';
 
 export function useDepartmentManageStore() {
   const { gState }: IGlobalState = useContext(GlobalContext);
-  const { state, setStateWrap } = useStateStore(new IDepartmentManageState());
+  const { state, setStateWrap, getState } = useStateStore(new IDepartmentManageState());
   const departmentManageService = useService(DepartmentManageService);
   let getTableDataSubscription: Subscription;
 
   function getTableData(isClick?: boolean) {
-    const { searchForm } = state;
+    const { searchForm } = getState();
     isClick && (searchForm.index = 1);
-    setStateWrap({ searchForm });
+    setStateWrap({ isLoading: true });
     getTableDataSubscription = departmentManageService
       .queryDepartmentList({ systemId: gState.myInfo.systemId, ...searchForm })
       .subscribe(
         (res: any) => {
-          setStateWrap({ tableData: res.dataList });
+          setStateWrap({ tableData: res.dataList, isLoading: false });
         },
         (err: any) => {
           ShowNotification.error(err);
+          setStateWrap({ isLoading: false });
         }
       );
   }
