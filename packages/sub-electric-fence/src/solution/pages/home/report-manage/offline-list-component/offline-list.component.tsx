@@ -90,6 +90,7 @@ export default function DirectiveListComponent() {
         total={total}
         isPagination={true}
         changeTablePageIndex={(pageIndex: number, pageSize: number) => changeTablePageIndex(pageIndex, pageSize)}
+        rowKey="lastTime"
       ></ITableComponent>
     );
   }

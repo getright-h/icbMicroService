@@ -26,4 +26,5 @@ export interface IITableProps {
   expandable?: any;
   size?: SizeType;
   showSizeChanger?: boolean | null;
+  scroll?: Record<string, any>;
 }

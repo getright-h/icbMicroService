@@ -15,12 +15,14 @@ export function useDeviceTypeSettingStore() {
   // 获取设备型号列表
   function getTableList() {
     const { searchForm } = state;
+    setStateWrap({ isLoading: true });
     deviceTypeService.queryDeviceTypePagedList(searchForm).subscribe(
       (res: any) => {
         console.log(res);
-        setStateWrap({ tableData: res.dataList || [], total: res.total });
+        setStateWrap({ tableData: res.dataList || [], total: res.total, isLoading: false });
       },
       (error: any) => {
+        setStateWrap({ isLoading: false });
         console.log(error);
       }
     );

@@ -79,7 +79,6 @@ export default function WarehouseListComponent() {
           type="primary"
           disabled={!currentSelectNode || !$auth['addPosition']}
           onClick={() => addShippingSpace()}
-          loading={isLoading}
         >
           添加仓位
         </Button>

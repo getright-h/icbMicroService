@@ -91,6 +91,8 @@ export default function HistoryTrackComponent() {
         total={total}
         isPagination={true}
         changeTablePageIndex={(pageIndex: number, pageSize: number) => changeTablePageIndex(pageIndex, pageSize)}
+        scroll={{ x: 'max-content' }}
+        rowKey="time"
       ></ITableComponent>
     );
   }
