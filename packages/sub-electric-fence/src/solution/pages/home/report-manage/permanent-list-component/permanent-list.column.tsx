@@ -8,6 +8,7 @@ export function AlarmParameterColumn(sortInfo: { key: string; type: string }, ca
     {
       title: '车主姓名',
       dataIndex: 'ownerName',
+      ellipsis: true,
       render: (text: any) => <span>{text || '未绑定'}</span>
     },
     {

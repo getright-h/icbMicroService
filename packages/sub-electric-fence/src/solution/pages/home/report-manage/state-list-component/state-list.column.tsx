@@ -7,16 +7,20 @@ export function StateListColumn(callbackAction: Function) {
   return [
     {
       title: '车主姓名',
-      dataIndex: 'ownerName'
+      dataIndex: 'ownerName',
+      ellipsis: true,
+      render
     },
     {
       title: '车牌号',
-      dataIndex: 'plateNo'
+      dataIndex: 'plateNo',
+      render
     },
     {
       title: '设备号',
       dataIndex: 'deviceCode',
-      width: 150
+      width: 150,
+      render
     },
     {
       title: '状态',
@@ -31,27 +35,32 @@ export function StateListColumn(callbackAction: Function) {
     {
       title: '最后上线时间',
       dataIndex: 'statusTime',
-      width: 180
+      width: 180,
+      render
     },
     {
       title: 'GPS信号',
-      dataIndex: 'satelliteStatus'
+      dataIndex: 'satelliteStatus',
+      render
     },
     {
       title: '电压',
-      dataIndex: 'voltage'
+      dataIndex: 'voltage',
+      render
     },
     {
       title: '所属机构',
       dataIndex: 'organizationName',
       ellipsis: true,
-      width: 240
+      width: 240,
+      render
     },
     {
       title: '地址',
       dataIndex: 'address',
       ellipsis: true,
-      width: 400
+      width: 400,
+      render
     }
   ];
 }
