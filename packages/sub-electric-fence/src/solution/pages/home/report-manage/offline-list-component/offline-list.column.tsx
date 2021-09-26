@@ -7,6 +7,7 @@ export function OfflineListColumn(callbackAction: Function) {
     {
       title: '车主姓名',
       dataIndex: 'ownerName',
+      ellipsis: true,
       render
     },
     {

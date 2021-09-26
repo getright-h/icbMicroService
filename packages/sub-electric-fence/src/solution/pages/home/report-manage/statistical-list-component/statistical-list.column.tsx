@@ -8,7 +8,8 @@ export function StatisticalListColumn(callbackAction: Function) {
     {
       title: '车主姓名',
       dataIndex: 'ownerName',
-      render
+      render,
+      ellipsis: true
     },
     {
       title: '车牌号',
