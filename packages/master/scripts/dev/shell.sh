@@ -15,6 +15,7 @@ sudo lerna bootstrap && sudo yarn fch:build-dev
 
 echo "--> copy files shell.dev.sh"
 sudo cp -rf Dockerfile ./dist
+sudo cp -rf ./public/favicon.ico  ./dist
 cd ./dist
 
 echo "--> docker build"
