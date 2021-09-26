@@ -13,6 +13,7 @@ sudo lerna bootstrap && sudo yarn fch:build
 
 echo "--> copy files···"
 sudo cp -rf Dockerfile  ./dist
+sudo cp -rf ./public/favicon.ico  ./dist
 
 cd ./dist
 ls
