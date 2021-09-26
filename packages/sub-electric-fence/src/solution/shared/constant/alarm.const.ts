@@ -58,11 +58,14 @@ export enum AlarmTypeEnum_FOR_REPORT {
   // [Description("电瓶低电压")]
   BatteryLevel = 13,
   // [Description("电子围栏")]
-  Fence = 14
+  Fence = 14,
+  // 跨省报警（临时
+  Province = 15
 }
 
 export const AlarmType_FOR_REPORT = [
   { value: AlarmTypeEnum_FOR_REPORT.All, name: '全部' },
+  { value: AlarmTypeEnum_FOR_REPORT.Province, name: '跨省报警' },
   { value: AlarmTypeEnum_FOR_REPORT.Collide, name: '碰撞报警' },
   { value: AlarmTypeEnum_FOR_REPORT.Running, name: '行驶报警' },
   { value: AlarmTypeEnum_FOR_REPORT.Motion, name: '震动报警' },
