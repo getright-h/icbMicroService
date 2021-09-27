@@ -8,7 +8,7 @@ export function positionMonitorDrawerLeftColumns(): ColumnsType<any> {
       title: '',
       dataIndex: 'name',
       render: (text, record, index) => {
-        const { ownerName, ownerMobile, plateNo } = record;
+        const { ownerName, ownerMobile, plateNo, deviceList } = record;
         return (
           <div className={style.cardContent}>
             <div>
@@ -17,6 +17,7 @@ export function positionMonitorDrawerLeftColumns(): ColumnsType<any> {
               </span>
               <div> {ownerMobile} </div>
             </div>
+            {!deviceList.length && <div className={style.warn}>暂未绑定设备</div>}
           </div>
         );
       }
