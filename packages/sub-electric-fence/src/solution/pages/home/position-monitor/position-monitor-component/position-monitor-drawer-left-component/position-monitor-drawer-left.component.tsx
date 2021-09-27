@@ -28,7 +28,10 @@ export const PositionMonitorDrawerLeftComponent = () => {
       rowSelection: {
         onSelect: onCheckedUserInfo,
         selectedRowKeys: selectedRowKeys,
-        onSelectAll: onCheckedUserSelectAllInfo
+        onSelectAll: onCheckedUserSelectAllInfo,
+        getCheckboxProps: (row: any) => ({
+          disabled: !row.deviceList.length
+        })
       },
       size: 'small' as SizeType,
       total: total,

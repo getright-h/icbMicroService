@@ -27,6 +27,7 @@ export function usePositionMonitorDrawerLeftStore() {
         {
           searchForm: {
             ...searchForm,
+            index: 1,
             organizationId: undefined,
             financeId: undefined,
             [keyword]: currentSelectNode?.key + '',
