@@ -79,11 +79,11 @@ export default function VehicleManageComponent() {
               />
             </Form.Item>
           </Col>
-          <Col span={8}>
+          {/* <Col span={8}>
             <Form.Item name="deviceNumber" label="单个车辆设备数">
               <Input placeholder="请输入设备数" />
             </Form.Item>
-          </Col>
+          </Col> */}
         </Row>
       </Form>
     );

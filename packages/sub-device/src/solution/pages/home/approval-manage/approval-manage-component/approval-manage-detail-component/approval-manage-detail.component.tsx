@@ -43,6 +43,7 @@ export default function ApprovalManageDetailComponent() {
     if (controll.type == FormType.FlowNode) {
       props = {
         ...props,
+        hasChecked: true,
         flowNodeSettingField: controll.controlValue
       };
     }
