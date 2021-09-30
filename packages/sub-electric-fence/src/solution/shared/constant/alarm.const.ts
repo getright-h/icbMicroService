@@ -59,13 +59,18 @@ export enum AlarmTypeEnum_FOR_REPORT {
   BatteryLevel = 13,
   // [Description("电子围栏")]
   Fence = 14,
-  // 跨省报警（临时
-  Province = 15
+  // [Description("断电")]
+  Blackout = 15,
+  // [Description("翻转脱落")]
+  FallDown = 16,
+  // [Description("拔出翻转")]
+  PullOut = 17,
+  // [Description("跨省报警")]
+  Province = 18
 }
 
 export const AlarmType_FOR_REPORT = [
   { value: AlarmTypeEnum_FOR_REPORT.All, name: '全部' },
-  { value: AlarmTypeEnum_FOR_REPORT.Province, name: '跨省报警' },
   { value: AlarmTypeEnum_FOR_REPORT.Collide, name: '碰撞报警' },
   { value: AlarmTypeEnum_FOR_REPORT.Running, name: '行驶报警' },
   { value: AlarmTypeEnum_FOR_REPORT.Motion, name: '震动报警' },
@@ -78,7 +83,11 @@ export const AlarmType_FOR_REPORT = [
   { value: AlarmTypeEnum_FOR_REPORT.Focus, name: '位置聚集地报警' },
   { value: AlarmTypeEnum_FOR_REPORT.Online, name: '上线报警' },
   { value: AlarmTypeEnum_FOR_REPORT.BatteryLevel, name: '电瓶低电压报警' },
-  { value: AlarmTypeEnum_FOR_REPORT.Fence, name: '电子围栏' }
+  { value: AlarmTypeEnum_FOR_REPORT.Fence, name: '电子围栏' },
+  { value: AlarmTypeEnum_FOR_REPORT.Blackout, name: '断电报警' },
+  { value: AlarmTypeEnum_FOR_REPORT.FallDown, name: '翻转脱落' },
+  { value: AlarmTypeEnum_FOR_REPORT.PullOut, name: '拔出翻转' },
+  { value: AlarmTypeEnum_FOR_REPORT.Province, name: '跨省报警' }
 ];
 
 export const AlarmType = [
