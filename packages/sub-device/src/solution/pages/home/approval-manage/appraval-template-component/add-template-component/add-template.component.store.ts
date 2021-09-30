@@ -125,9 +125,16 @@ export function useAddTemplateStore(addTemplateState: AddTemplateState, dispatch
       }
       return item;
     });
-    commitInfo.approverList = addTemplateState.approverInput.filter(item => {
-      return item.attributeList.length;
-    });
+    commitInfo.approverList = addTemplateState.approverInput
+      .filter(item => {
+        return item.attributeList.length;
+      })
+      .map(item => {
+        if (item.attributeList.length == 1) {
+          item.isAllPass = false;
+        }
+        return item;
+      });
     const url = !!Number(isEdit) ? 'setApprovalFormTemplate' : 'insertApprovalFormTemplate';
     setStateWrap({ commitLoading: true });
     approvalManageService[url](commitInfo).subscribe(
