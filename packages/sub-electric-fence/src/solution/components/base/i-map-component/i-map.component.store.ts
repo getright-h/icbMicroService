@@ -441,7 +441,7 @@ export function useIMapStore(mapProps: TIMapProps) {
 
       // 下发指令
       if (!$auth['IssueInstructions']) {
-        !$mybtnSearch.className.includes('no-auth-link') && ($mybtnSearch.className += ' no-auth-link ');
+        !$mybtnDo.className.includes('no-auth-link') && ($mybtnDo.className += ' no-auth-link ');
       }
       // 查询轨迹
       if (!$auth['historyTrajectory']) {
@@ -449,7 +449,7 @@ export function useIMapStore(mapProps: TIMapProps) {
       }
       // 实时追踪
       if (!$auth['realTimeTracking']) {
-        !$mybtnDo.className.includes('no-auth-link') && ($mybtnDo.className += ' no-auth-link ');
+        !$mybtnSearch.className.includes('no-auth-link') && ($mybtnSearch.className += ' no-auth-link ');
       }
     });
   }
