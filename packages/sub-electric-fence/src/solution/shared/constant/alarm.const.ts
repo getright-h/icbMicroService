@@ -70,7 +70,7 @@ export enum AlarmTypeEnum_FOR_REPORT {
 }
 
 export const AlarmType_FOR_REPORT = [
-  { value: AlarmTypeEnum_FOR_REPORT.All, name: '全部' },
+  // { value: AlarmTypeEnum_FOR_REPORT.All, name: '全部' },
   { value: AlarmTypeEnum_FOR_REPORT.Collide, name: '碰撞报警' },
   { value: AlarmTypeEnum_FOR_REPORT.Running, name: '行驶报警' },
   { value: AlarmTypeEnum_FOR_REPORT.Motion, name: '震动报警' },

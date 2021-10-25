@@ -49,7 +49,7 @@ export default function DirectiveListComponent() {
         style={{ width: '90%' }}
         form={searchForm}
         initialValues={{
-          alarmType: -1
+          alarmType: 1
         }}
       >
         <Row gutter={24}>

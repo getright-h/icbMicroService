@@ -98,14 +98,7 @@ export default function DirectiveListComponent() {
     };
     return (
       <div>
-        <Form
-          {...layout}
-          form={aliaNameSearchForm}
-          style={{ width: '90%' }}
-          initialValues={{
-            alarmType: -1
-          }}
-        >
+        <Form {...layout} form={aliaNameSearchForm} style={{ width: '90%' }}>
           <Row gutter={24}>
             <Col span={8}>
               <Form.Item
@@ -137,7 +130,7 @@ export default function DirectiveListComponent() {
           form={aliaNameSearchForm}
           style={{ width: '90%' }}
           initialValues={{
-            alarmType: -1
+            alarmType: 1
           }}
         >
           <Row gutter={24}>

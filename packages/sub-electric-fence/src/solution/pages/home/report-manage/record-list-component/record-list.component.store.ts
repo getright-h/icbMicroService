@@ -44,7 +44,14 @@ export function useDwellListStore() {
 
   function initSearchForm() {
     searchForm.resetFields();
-    setStateWrap({ timeInfo: [] });
+    setStateWrap({
+      timeInfo: [
+        moment()
+          .startOf('month')
+          .format('YYYY-MM-DD HH:mm:ss'),
+        moment().format('YYYY-MM-DD HH:mm:ss')
+      ]
+    });
     searchClick();
   }
 

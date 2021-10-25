@@ -18,7 +18,7 @@ export function useDirectiveListStore() {
 
   function getTableData() {
     setStateWrap({ isLoading: true });
-    const { pageIndex, pageSize, timeInfo } = state;
+    const { pageSize, timeInfo } = getState();
     orderReportService
       .queryResidentPagedList({
         ...searchForm.getFieldsValue(),
@@ -47,7 +47,14 @@ export function useDirectiveListStore() {
 
   function initSearchForm() {
     searchForm.resetFields();
-    setStateWrap({ timeInfo: [] });
+    setStateWrap({
+      timeInfo: [
+        moment()
+          .startOf('month')
+          .format('YYYY-MM-DD HH:mm:ss'),
+        moment().format('YYYY-MM-DD HH:mm:ss')
+      ]
+    });
     searchClick();
   }
 
