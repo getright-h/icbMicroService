@@ -49,7 +49,15 @@ export function useDirectiveListStore() {
 
   function initSearchForm() {
     searchForm.resetFields();
-    setStateWrap({ timeInfo: [], canExport: false });
+    setStateWrap({
+      timeInfo: [
+        moment()
+          .startOf('month')
+          .format('YYYY-MM-DD HH:mm:ss'),
+        moment().format('YYYY-MM-DD HH:mm:ss')
+      ],
+      canExport: false
+    });
     searchClick();
   }
 

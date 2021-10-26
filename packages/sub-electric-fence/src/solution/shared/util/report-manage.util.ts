@@ -25,8 +25,7 @@ export const REPORT_UTIL = {
   },
 
   async formatAddress(dataList: any[]) {
-    const fetchArrary: any[] = [];
-
+    // 无法批量转换地址：数据可能有经纬度为空或超出有效范围的情况
     return new Promise(async (resolve: any, reject: any) => {
       if (Array.isArray(dataList)) {
         for (const item of dataList) {
@@ -37,7 +36,7 @@ export const REPORT_UTIL = {
                 item.address = res;
               },
               (err: any) => {
-                item.address = '';
+                item.address = undefined;
               }
             );
           }
@@ -45,17 +44,5 @@ export const REPORT_UTIL = {
         resolve(dataList);
       }
     });
-
-    // try {
-    //   const res = await Promise.all(fetchArrary);
-    //   for (let i = 0; i < res.length; i++) {
-    //     dataList[i].address = res[i];
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // }
-    // console.log(dataList, 'dataList');
-
-    return dataList;
   }
 };

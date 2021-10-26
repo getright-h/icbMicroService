@@ -59,7 +59,8 @@ export function StatisticalListColumn(callbackAction: Function) {
       title: '最后报警地址',
       dataIndex: 'address',
       ellipsis: true,
-      width: 400
+      width: 400,
+      render
     },
     {
       title: '所属机构',
