@@ -6,7 +6,7 @@ import { IMapComponent } from '~/solution/components/component.module';
 import { REPORT_UTIL } from '~/solution/shared/util/report-manage.util';
 import ShareLinkModalComponent from './share-link-modal-component/share-link-modal.component';
 import moment from 'moment';
-import { Button, Popover } from 'antd';
+import { Button, Popover, Progress } from 'antd';
 
 export default function UserActionReportComponent() {
   const {
@@ -345,6 +345,24 @@ export default function UserActionReportComponent() {
     );
   }
 
+  function carScore() {
+    return (
+      <div className={style.carLocation} data-x>
+        {itemHeader('车辆评分')}
+        <div className={style.scoreLine}>
+          <Progress
+            strokeColor={{
+              '0%': 'red',
+              '100%': '#87d068'
+            }}
+            format={percent => `评分${percent}`}
+            percent={!!mileage ? 90 : 95}
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div style={{ overflowY: 'auto', height: '100%' }} ref={containerRef}>
       <div
@@ -357,6 +375,7 @@ export default function UserActionReportComponent() {
         {functionalDomain()}
         <div id="print" className={style.userActionReportComponent} style={{ fontSize: `${fontSize}px` }}>
           {baseInfo()}
+          {carScore()}
           {carLocation()}
           {carDriveLine()}
           {alwaysStopMarkers()}
