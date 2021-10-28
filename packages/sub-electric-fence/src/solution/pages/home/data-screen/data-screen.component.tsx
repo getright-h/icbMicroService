@@ -158,21 +158,36 @@ export default function DataScreenComponent() {
     JSON.stringify(vehicleStatus)
   ]);
   function MainCenter() {
+    const bindLength = bindVehicleCount.toString().length > 7 ? bindVehicleCount.toString().length : 7;
+    const onlineLength =
+      vehicleStatus.onlineCount.toString().length > 7 ? vehicleStatus.onlineCount.toString().length : 7;
+    const offlineLength =
+      vehicleStatus.offlineCount.toString().length > 7 ? vehicleStatus.offlineCount.toString().length : 7;
     return (
       <div className={style.contentMainCenter}>
         <section className={`${style.cPanel} ${style.areaStat}`}>
           <div className={style.areaStatTop}>
             <div>
               <span>绑定车辆</span>
-              <DigitRoll numLength={6} num={bindVehicleCount} bgColor="#FF852F" bgBorder="none"></DigitRoll>
+              <DigitRoll numLength={bindLength} num={bindVehicleCount} bgColor="#FF852F" bgBorder="none"></DigitRoll>
             </div>
             <div>
               <span>在线车辆</span>
-              <DigitRoll numLength={6} num={vehicleStatus.onlineCount} bgColor="#FF852F" bgBorder="none"></DigitRoll>
+              <DigitRoll
+                numLength={onlineLength}
+                num={vehicleStatus.onlineCount}
+                bgColor="#FF852F"
+                bgBorder="none"
+              ></DigitRoll>
             </div>
             <div>
               <span>离线车辆</span>
-              <DigitRoll numLength={6} num={vehicleStatus.offlineCount} bgColor="#697295" bgBorder="none"></DigitRoll>
+              <DigitRoll
+                numLength={offlineLength}
+                num={vehicleStatus.offlineCount}
+                bgColor="#697295"
+                bgBorder="none"
+              ></DigitRoll>
             </div>
           </div>
           {areaStatRefC}
