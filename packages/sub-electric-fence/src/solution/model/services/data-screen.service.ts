@@ -10,6 +10,7 @@ import {
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
 import { DepUtil } from '~/framework/aop/inject';
+import { map } from 'rxjs/operators';
 
 /**
  * 真实开发中，请将示例代码移除
@@ -33,11 +34,24 @@ export class DataScreenService extends DataScreenDTO {
   }
 
   getTotalStat(organizationIds?: string[]): Observable<TotalStatReturn> {
-    return this.requestService.post(GET_TOTAL_STAT, { organizationIds });
+    return this.requestService.post(GET_TOTAL_STAT, { organizationIds }).pipe(
+      map((data: TotalStatReturn) => {
+        const vehicleBinds = data.vehicleBinds.slice(0, 30);
+        return { ...data, vehicleBinds };
+      })
+    );
   }
 
   getAlarmStat(params: AlarmStatRequest): Observable<AlarmStatReturn> {
-    return this.requestService.post(GET_ALARM_STAT, params);
+    return this.requestService.post(GET_ALARM_STAT, params).pipe(
+      map((data: AlarmStatReturn) => {
+        const organizationAlarmStatistic = {
+          ...data.organizationAlarmStatistic,
+          data: data.organizationAlarmStatistic.data.slice(0, 30)
+        };
+        return { ...data, organizationAlarmStatistic };
+      })
+    );
   }
 
   getGpsStat(params: GpsStatRequest): Observable<GpsStatReturn> {
