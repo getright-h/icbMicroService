@@ -172,7 +172,7 @@ export default function DataScreenComponent() {
             </div>
             <div>
               <span>离线车辆</span>
-              <DigitRoll numLength={5} num={vehicleStatus.offlineCount} bgColor="#697295" bgBorder="none"></DigitRoll>
+              <DigitRoll numLength={6} num={vehicleStatus.offlineCount} bgColor="#697295" bgBorder="none"></DigitRoll>
             </div>
           </div>
           {areaStatRefC}
