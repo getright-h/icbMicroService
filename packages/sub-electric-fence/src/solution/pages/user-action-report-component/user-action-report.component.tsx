@@ -303,8 +303,8 @@ export default function UserActionReportComponent() {
                         </Popover>
                       )}
                     </p>
-                    <p>{item.alarmList[0].address}</p>
-                    <p>{item.alarmList[0].time}</p>
+                    <p>{item.alarmList[0]?.address}</p>
+                    <p>{item.alarmList[0]?.time}</p>
                   </div>
                 </div>
               ))}
