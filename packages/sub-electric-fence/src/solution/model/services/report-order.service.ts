@@ -164,6 +164,7 @@ export class OrderReportService implements OrderReportManage {
           item.longitude = LA[0];
           item.latitude = LA[1];
           item.coordinates = LA;
+          item.stopTime = item.time;
           return item;
         });
 
