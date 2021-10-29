@@ -5,8 +5,7 @@ import { OrganizationAlarmStatisticData, OrganizationAlarmStatisticDto } from '~
  * @class IFollowStatTableState
  */
 export class IFollowStatTableState {
-  alarmStatistic: OrganizationAlarmStatisticDto = {
-    data: [],
+  alarmStatistic: Omit<OrganizationAlarmStatisticDto, 'data'> = {
     alarmTotal: 0,
     followedTotal: 0,
     followingTotal: 0,

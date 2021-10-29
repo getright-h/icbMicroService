@@ -1,7 +1,8 @@
 import { IFollowStatTableProps, IFollowStatTableState, ScrollDataDto } from './follow-stat-table.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { useEffect, useRef } from 'react';
-import { OrganizationAlarmStatisticData } from '~/solution/model/dto/data-screen.dto';
+import { OrganizationAlarmStatisticData, OrganizationAlarmStatisticDto } from '~/solution/model/dto/data-screen.dto';
+import { generateGUID } from '@fch/fch-tool';
 
 const MIN_LENGTH = 4;
 
@@ -9,50 +10,53 @@ export function useFollowStatTableStore(props: IFollowStatTableProps) {
   const { state, setStateWrap } = useStateStore(new IFollowStatTableState());
   const scrollRef = useRef<HTMLUListElement>();
   const anime = useRef<Animation>(null);
+  const dataRef = useRef<OrganizationAlarmStatisticDto>();
 
   useEffect(() => {
-    if (!!props.propData.data.length) {
-      formatScrollData(props.propData.data);
-    } else {
-      setStateWrap({ scrollData: [] });
+    anime.current && anime.current.cancel();
+    if (props.propData.data.length) {
+      dataRef.current = { ...props.propData };
+      formatScrollData();
     }
-  }, [props.propData.data]);
+  }, [props.propData]);
 
-  useEffect(() => {
-    initAnimation();
-  }, [state.scrollData]);
+  // useEffect(() => {
+  //   initAnimation();
+  // }, [state.scrollData]);
 
-  function formatScrollData(dataList: OrganizationAlarmStatisticData[]) {
+  function formatScrollData() {
     // dataList连接三次作为滚动数据，达到无缝滚动（包括每行背景色）效果
     let scrollData: ScrollDataDto[] = [];
-    if (props.propData.data.length >= MIN_LENGTH) {
-      scrollData = handleDataList(dataList)
-        .concat(handleDataList(dataList, '1'))
-        .concat(handleDataList(dataList, '2'));
+    if (dataRef.current.data.length >= MIN_LENGTH) {
+      scrollData = handleDataList(dataRef.current.data)
+        .concat(handleDataList(dataRef.current.data, '1'))
+        .concat(handleDataList(dataRef.current.data, '2'));
     } else {
-      scrollData = handleDataList(dataList);
+      scrollData = handleDataList(dataRef.current.data);
     }
-    setStateWrap({ alarmStatistic: props.propData, scrollData });
+    const { alarmTotal, followedTotal, followingTotal, unFollowTotal } = dataRef.current;
+    setStateWrap(
+      { alarmStatistic: { alarmTotal, followedTotal, followingTotal, unFollowTotal }, scrollData },
+      initAnimation
+    );
   }
 
   function handleDataList(dataList: OrganizationAlarmStatisticData[], char?: string): ScrollDataDto[] {
     return dataList.map(d => {
       return {
         ...d,
-        id: char ? d.organizationId.slice(0, -1) + char : d.organizationId
+        id: char ? generateGUID() : d.organizationId
       };
     });
   }
 
   function initAnimation() {
-    const len = props.propData.data.length;
+    const len = dataRef.current.data.length;
     if (len >= MIN_LENGTH) {
       scrollRef.current.animate([{ top: 0 }, { top: -len * 2 * 36 + 'px' }], {
         duration: 1500 * len * 2,
         iterations: Infinity
       });
-    } else {
-      anime.current && anime.current.cancel();
     }
   }
   return { state, scrollRef };

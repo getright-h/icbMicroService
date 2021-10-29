@@ -3,6 +3,7 @@ import style from './follow-stat-table.component.less';
 import { useFollowStatTableStore } from './follow-stat-table.component.store';
 import { IFollowStatTableProps } from './follow-stat-table.interface';
 export default function FollowStatTableComponent(props: IFollowStatTableProps) {
+  console.log('FollowStatTable=========');
   const { state, scrollRef } = useFollowStatTableStore(props);
   const { alarmStatistic, scrollData } = state;
   const { alarmTotal, followedTotal, followingTotal, unFollowTotal } = alarmStatistic;

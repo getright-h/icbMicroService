@@ -6,7 +6,9 @@ export function useDigitRollStore(props: IDigitRollProps) {
   const { state, setStateWrap } = useStateStore(new IDigitRollState());
 
   useEffect(() => {
-    setStateWrap({ curNum: props.num });
+    if (props.num != state.curNum) {
+      setStateWrap({ curNum: props.num });
+    }
   }, [props.num]);
 
   function formatDigit(num: number, length: number) {
