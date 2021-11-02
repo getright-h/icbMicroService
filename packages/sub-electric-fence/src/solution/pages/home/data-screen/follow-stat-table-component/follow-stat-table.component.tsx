@@ -2,6 +2,8 @@ import * as React from 'react';
 import style from './follow-stat-table.component.less';
 import { useFollowStatTableStore } from './follow-stat-table.component.store';
 import { IFollowStatTableProps } from './follow-stat-table.interface';
+import { of } from 'rxjs';
+import VirtureListComponent from '../../../../../framework/components/virture-list-component/virture-list.component';
 export default function FollowStatTableComponent(props: IFollowStatTableProps) {
   console.log('FollowStatTable=========');
   const { state, scrollRef } = useFollowStatTableStore(props);
@@ -20,15 +22,17 @@ export default function FollowStatTableComponent(props: IFollowStatTableProps) {
         <div className={style.followStatBody}>
           <ul className={style.followStatList} ref={scrollRef}>
             {!!scrollData.length ? (
-              scrollData.map(item => (
-                <li key={item.id} className={style.row}>
-                  <span className={style.cell}>{item.organizationName}</span>
-                  <span className={style.cell}>{item.total}</span>
-                  <span className={style.cell}>{item.following}</span>
-                  <span className={style.cell}>{item.unFollow}</span>
-                  <span className={style.cell}>{item.followed}</span>
-                </li>
-              ))
+              <VirtureListComponent data={scrollData} options={{ itemHeight: 36 }} style={{ height: 4 * 36 }}>
+                {(item: any, index: number) => (
+                  <li key={index} className={style.row}>
+                    <span className={style.cell}>{item.organizationName}</span>
+                    <span className={style.cell}>{item.total}</span>
+                    <span className={style.cell}>{item.following}</span>
+                    <span className={style.cell}>{item.unFollow}</span>
+                    <span className={style.cell}>{item.followed}</span>
+                  </li>
+                )}
+              </VirtureListComponent>
             ) : (
               <div className={style.noData}>
                 <span>NO DATA</span>

@@ -16,6 +16,8 @@ export function useFollowStatTableStore(props: IFollowStatTableProps) {
     anime.current && anime.current.cancel();
     if (props.propData.data.length) {
       dataRef.current = { ...props.propData };
+      console.log('dataRef.current', dataRef.current);
+
       formatScrollData();
     }
   }, [props.propData]);
@@ -28,16 +30,14 @@ export function useFollowStatTableStore(props: IFollowStatTableProps) {
     // dataList连接三次作为滚动数据，达到无缝滚动（包括每行背景色）效果
     let scrollData: ScrollDataDto[] = [];
     if (dataRef.current.data.length >= MIN_LENGTH) {
-      scrollData = handleDataList(dataRef.current.data)
-        .concat(handleDataList(dataRef.current.data, '1'))
-        .concat(handleDataList(dataRef.current.data, '2'));
+      scrollData = handleDataList(dataRef.current.data);
     } else {
       scrollData = handleDataList(dataRef.current.data);
     }
     const { alarmTotal, followedTotal, followingTotal, unFollowTotal } = dataRef.current;
     setStateWrap(
-      { alarmStatistic: { alarmTotal, followedTotal, followingTotal, unFollowTotal }, scrollData },
-      initAnimation
+      { alarmStatistic: { alarmTotal, followedTotal, followingTotal, unFollowTotal }, scrollData }
+      // initAnimation
     );
   }
 
@@ -48,16 +48,6 @@ export function useFollowStatTableStore(props: IFollowStatTableProps) {
         id: char ? generateGUID() : d.organizationId
       };
     });
-  }
-
-  function initAnimation() {
-    const len = dataRef.current.data.length;
-    if (len >= MIN_LENGTH) {
-      scrollRef.current.animate([{ top: 0 }, { top: -len * 2 * 36 + 'px' }], {
-        duration: 1500 * len * 2,
-        iterations: Infinity
-      });
-    }
   }
   return { state, scrollRef };
 }

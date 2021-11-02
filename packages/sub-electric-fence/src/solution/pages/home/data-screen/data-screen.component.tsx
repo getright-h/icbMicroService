@@ -173,7 +173,7 @@ export default function DataScreenComponent() {
             </Select>
           </div>
         </CustomPanel>
-        {/* <CustomPanel title="报警跟进统计">
+        <CustomPanel title="报警跟进统计">
           <div className={style.followStatSelect}>
             <Select
               animation="slide-up"
@@ -189,7 +189,7 @@ export default function DataScreenComponent() {
             </Select>
           </div>
           {organizationStatComponent}
-        </CustomPanel> */}
+        </CustomPanel>
       </div>
     );
   }
@@ -331,8 +331,8 @@ export default function DataScreenComponent() {
           </div>
           <div className={style.contentMain}>
             {MainLeft()}
-            {/* {MainCenter()}
-            {MainRight()} */}
+            {MainCenter()}
+            {MainRight()}
           </div>
         </div>
       </div>

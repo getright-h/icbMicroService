@@ -36,7 +36,7 @@ export class DataScreenService extends DataScreenDTO {
   getTotalStat(organizationIds?: string[]): Observable<TotalStatReturn> {
     return this.requestService.post(GET_TOTAL_STAT, { organizationIds }).pipe(
       map((data: TotalStatReturn) => {
-        const vehicleBinds = data.vehicleBinds.slice(0, 30);
+        const vehicleBinds = data.vehicleBinds;
         return { ...data, vehicleBinds };
       })
     );
@@ -46,8 +46,8 @@ export class DataScreenService extends DataScreenDTO {
     return this.requestService.post(GET_ALARM_STAT, params).pipe(
       map((data: AlarmStatReturn) => {
         const organizationAlarmStatistic = {
-          ...data.organizationAlarmStatistic,
-          data: data.organizationAlarmStatistic.data.slice(0, 30)
+          ...data.organizationAlarmStatistic
+          // data: data.organizationAlarmStatistic.data.slice(0, 30)
         };
         return { ...data, organizationAlarmStatistic };
       })
