@@ -1,4 +1,8 @@
+import { ShowNotification } from '@fch/fch-shop-web';
 import { IMAP } from './map.util';
+
+const REG_LONGITUDE = /^[\-\+]?(0(\.\d+)?|([1-9](\d)?)(\.\d+)?|1[0-7]\d{1}(\.\d+)?|180(\.0+)?)$/;
+const REG_LATITUDE = /^[\-\+]?(\d(\.\d+)?|([1-8]\d)(\.\d+)?|90(\.0+)?)$/;
 
 export const REPORT_UTIL = {
   formatStayTime(time: number) {
@@ -25,24 +29,51 @@ export const REPORT_UTIL = {
   },
 
   async formatAddress(dataList: any[]) {
-    // 无法批量转换地址：数据可能有经纬度为空或超出有效范围的情况
     return new Promise(async (resolve: any, reject: any) => {
-      if (Array.isArray(dataList)) {
-        for (const item of dataList) {
-          const { latitude, longitude } = item;
-          if (latitude && longitude) {
-            await IMAP.covertPointToAddress(IMAP.initLonlat(longitude, latitude)).then(
-              (res: any) => {
-                item.address = res;
-              },
-              (err: any) => {
-                item.address = undefined;
-              }
-            );
+      if (Array.isArray(dataList) && dataList.length > 0) {
+        const errIndexArr: number[] = [];
+        const lnglats: any[] = [];
+        dataList.forEach((o, i) => {
+          if (!new RegExp(REG_LONGITUDE).test(o.longitude) || !new RegExp(REG_LATITUDE).test(o.latitude)) {
+            errIndexArr.push(i);
+          } else {
+            lnglats.push(IMAP.initLonlat(o.longitude, o.latitude));
           }
-        }
-        resolve(dataList);
+        });
+        await IMAP.covertLnglatsToAddress(lnglats).then(
+          (res: any) => {
+            let ii = 0;
+            dataList.forEach((o, i) => {
+              if (!errIndexArr.includes(i)) {
+                o.address = res[ii]?.formattedAddress;
+                ii++;
+              }
+            });
+          },
+          (err: any) => {
+            ShowNotification.error(err);
+          }
+        );
       }
+      resolve(dataList);
     });
+    // return new Promise(async (resolve: any, reject: any) => {
+    //   if (Array.isArray(dataList)) {
+    //     for (const item of dataList) {
+    //       const { latitude, longitude } = item;
+    //       if (latitude && longitude) {
+    //         await IMAP.covertPointToAddress(IMAP.initLonlat(longitude, latitude)).then(
+    //           (res: any) => {
+    //             item.address = res;
+    //           },
+    //           (err: any) => {
+    //             item.address = undefined;
+    //           }
+    //         );
+    //       }
+    //     }
+    //     resolve(dataList);
+    //   }
+    // });
   }
 };

@@ -438,6 +438,24 @@ export const IMAP = {
     });
   },
 
+  /**
+   * @description 获取一组经纬度（最大20个）对应的实际地址
+   * @param lnglats 经纬度数组
+   */
+  async covertLnglatsToAddress(lnglats: Array<any>) {
+    const geocoder = new AMap.Geocoder();
+    return new Promise((res, rej) => {
+      geocoder.getAddress(lnglats, function(status: any, result: any) {
+        if (result.regeocodes) {
+          res(result.regeocodes);
+        } else {
+          rej('根据经纬度查询地址失败');
+          console.error('根据经纬度查询地址失败');
+        }
+      });
+    });
+  },
+
   bindCommonMarkers(markers: any[], map: any) {
     const mapMarkers: any[] = [];
     markers?.forEach(item => {
