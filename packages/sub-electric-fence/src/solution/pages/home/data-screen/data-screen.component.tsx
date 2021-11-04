@@ -131,9 +131,7 @@ export default function DataScreenComponent() {
     );
   }
 
-  // 左侧
   const totalCarRefComponent = React.useMemo(() => {
-    console.log('chart totalCar======');
     return (
       <CustomPanel title="平台车辆总览">
         <div className={style.chartWrap} ref={totalCarRef}></div>
@@ -142,17 +140,14 @@ export default function DataScreenComponent() {
   }, [JSON.stringify(state.vehicleBinds[0]), state.scale]);
 
   const alarmStatRefComponent = React.useMemo(() => {
-    console.log('chart alarmStat======');
     return <div className={style.chartWrap} ref={alarmStatRef}></div>;
-  }, [JSON.stringify(state.alarmTypeStatistics[0]), state.scale]);
+  }, [state.alarmTypeStatistics, state.scale]);
 
   const organizationStatComponent = React.useMemo(() => {
-    console.log('table organizationAlarm======');
     return <FollowStatTableComponent propData={organizationAlarmStatistic} />;
   }, [state.organizationAlarmStatistic.alarmTotal, state.scale]);
 
   function MainLeft() {
-    console.warn('render MainLeft');
     return (
       <div className={style.contentMainLeft}>
         {totalCarRefComponent}
@@ -193,46 +188,49 @@ export default function DataScreenComponent() {
       </div>
     );
   }
+
+  const BindVehicleCountMemo = useMemo(() => {
+    const len = bindVehicleCount.toString().length;
+    const numL = len > 7 ? len : 7;
+    return <DigitRoll numLength={numL} num={bindVehicleCount} bgColor="#FF852F" bgBorder="none"></DigitRoll>;
+  }, [bindVehicleCount]);
+  const OnlineCountMemo = useMemo(() => {
+    const len = vehicleStatus.onlineCount.toString().length;
+    const numL = len > 7 ? len : 7;
+    return <DigitRoll numLength={numL} num={vehicleStatus.onlineCount} bgColor="#FF852F" bgBorder="none"></DigitRoll>;
+  }, [vehicleStatus.onlineCount]);
+  const OfflineCountMemo = useMemo(() => {
+    const len = vehicleStatus.offlineCount.toString().length;
+    const numL = len > 7 ? len : 7;
+    return <DigitRoll numLength={numL} num={vehicleStatus.offlineCount} bgColor="#697295" bgBorder="none"></DigitRoll>;
+  }, [vehicleStatus.offlineCount]);
+
   const areaStatRefC = React.useMemo(() => <div className={style.areaStatMiddle} ref={areaStatRef}></div>, [
-    JSON.stringify(vehicleStatus)
+    vehicleStatus.onlineCount
   ]);
+  const areaStatComponent = React.useMemo(() => {
+    return <AreaStatTableComponent propData={vehicleStatus.data} />;
+  }, [vehicleStatus.data, state.scale]);
   function MainCenter() {
-    const bindLength = bindVehicleCount.toString().length > 7 ? bindVehicleCount.toString().length : 7;
-    const onlineLength =
-      vehicleStatus.onlineCount.toString().length > 7 ? vehicleStatus.onlineCount.toString().length : 7;
-    const offlineLength =
-      vehicleStatus.offlineCount.toString().length > 7 ? vehicleStatus.offlineCount.toString().length : 7;
     return (
       <div className={style.contentMainCenter}>
         <section className={`${style.cPanel} ${style.areaStat}`}>
           <div className={style.areaStatTop}>
             <div>
               <span>绑定车辆</span>
-              <DigitRoll numLength={bindLength} num={bindVehicleCount} bgColor="#FF852F" bgBorder="none"></DigitRoll>
+              {BindVehicleCountMemo}
             </div>
             <div>
               <span>在线车辆</span>
-              <DigitRoll
-                numLength={onlineLength}
-                num={vehicleStatus.onlineCount}
-                bgColor="#FF852F"
-                bgBorder="none"
-              ></DigitRoll>
+              {OnlineCountMemo}
             </div>
             <div>
               <span>离线车辆</span>
-              <DigitRoll
-                numLength={offlineLength}
-                num={vehicleStatus.offlineCount}
-                bgColor="#697295"
-                bgBorder="none"
-              ></DigitRoll>
+              {OfflineCountMemo}
             </div>
           </div>
           {areaStatRefC}
-          <div className={style.areaStatBottom}>
-            <AreaStatTableComponent propData={vehicleStatus.data} />
-          </div>
+          <div className={style.areaStatBottom}>{areaStatComponent}</div>
         </section>
         <section className={`${style.cPanel} ${style.alarmStat}`}>
           <div className={style.alarmStatWrap}>

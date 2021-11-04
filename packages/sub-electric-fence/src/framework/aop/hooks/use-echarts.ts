@@ -8,7 +8,6 @@ function useECharts(
   let chartInstance: echarts.ECharts = null;
 
   function renderChart() {
-    console.log('render chart===>', chartRef.current);
     const renderedInstance = echarts.getInstanceByDom(chartRef.current);
     if (renderedInstance) {
       chartInstance = renderedInstance;

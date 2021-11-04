@@ -10,6 +10,7 @@ export class IVirtureListState {
 export interface IVirtureListProps {
   options: {
     itemHeight: number; // 代表的每个item的高度
+    minLength?: number;
   };
   style: { [key: string]: number | string };
   children?: any;

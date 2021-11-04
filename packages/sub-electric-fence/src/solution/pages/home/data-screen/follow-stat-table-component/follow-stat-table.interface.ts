@@ -11,7 +11,7 @@ export class IFollowStatTableState {
     followingTotal: 0,
     unFollowTotal: 0
   };
-  scrollData: ScrollDataDto[] = [];
+  scrollData: OrganizationAlarmStatisticData[] = [];
 }
 
 /**
@@ -20,8 +20,4 @@ export class IFollowStatTableState {
  */
 export class IFollowStatTableProps {
   propData: OrganizationAlarmStatisticDto;
-}
-
-export interface ScrollDataDto extends OrganizationAlarmStatisticData {
-  id: string;
 }

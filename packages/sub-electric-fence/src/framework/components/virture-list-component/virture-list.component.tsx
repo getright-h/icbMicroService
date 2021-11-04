@@ -11,7 +11,11 @@ export default function VirtureListComponent(props: IVirtureListProps) {
     <div style={style} ref={virtualListRef} className={styles.VirtualList}>
       <div className={styles.VirtualListContainer} ref={virtualListScrollRef} style={{ height: scrollHeight }}>
         {showData.map((item: any, i: number) => (
-          <div key={i} className={styles.VirtualListPlaceholder} style={{ top: item.$pos }}>
+          <div
+            key={i}
+            className={styles.VirtualListPlaceholder}
+            style={{ transform: `translate3D(0, ${item.$pos}px, 0)` }}
+          >
             {item.origin !== undefined ? (props.children as any)(item.origin, item.$index) : null}
           </div>
         ))}

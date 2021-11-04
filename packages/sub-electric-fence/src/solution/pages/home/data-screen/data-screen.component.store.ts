@@ -10,7 +10,6 @@ import moment from 'moment';
 import { AlarmStatRequest } from '~/solution/model/dto/data-screen.dto';
 
 export function useDataScreenStore() {
-  console.warn('set state=');
   const { state, setStateWrap } = useStateStore(new IDataScreenState());
   const dataService: DataScreenService = new DataScreenService();
   const timeRangeTypes = ['all', 'day', 'week', 'month'];
@@ -63,7 +62,7 @@ export function useDataScreenStore() {
         });
         fetchAllData();
         curTimeRange.current = (curTimeRange.current + 1) % 4;
-      }, 15000);
+      }, 20000);
     } else {
       fetchAllData();
     }
@@ -98,7 +97,6 @@ export function useDataScreenStore() {
     // getAlarmStat();
     // getGpsStat();
     Promise.all([getFenceStat(), getTotalStat(), getAlarmStat(), getGpsStat()]).then(res => {
-      console.log('all res ==>');
       const resData = res.reduce((a, b) => Object.assign(a, b), {});
       setStateWrap({ ...resData });
     });
@@ -190,7 +188,7 @@ export function useDataScreenStore() {
   // 地图区域数据
   const getAreaStatOptionCB = useMemo(() => {
     return getAreaStatOption();
-  }, [state.vehicleStatus]);
+  }, [state.vehicleStatus, state.scale]);
 
   useECharts(areaStatRef, getAreaStatOptionCB);
   function getAreaStatOption(): {} {
@@ -433,7 +431,7 @@ export function useDataScreenStore() {
   // 离线车辆统计
   const getOfflineStatOptionCB = useMemo(() => {
     return getOfflineStatOption();
-  }, [state.offline]);
+  }, [state.offline, state.scale]);
   useECharts(offlineStatRef, getOfflineStatOptionCB);
   function getOfflineStatOption(): {} {
     const { offline } = state;
@@ -458,12 +456,11 @@ export function useDataScreenStore() {
     const formatData = groupAlarmStatistic.sort((a, b) => b.total - a.total);
     const labels = formatData.map(d => d.groupName);
     function formatAlarmCount(datas: any[]) {
-      let sum = 0;
+      const sum = datas[0].value;
       let res = '';
       const list = formatData.find(d => d.groupName == datas[0].axisValue);
       if (list) {
         list.data.forEach(o => {
-          sum += o.count;
           res += `${o.alarmTypeText}报警：${o.count}<br/>`;
         });
       }
@@ -488,7 +485,7 @@ export function useDataScreenStore() {
   // 车辆里程统计
   const getMileageStatOptionCB = useMemo(() => {
     return getMileageStatOption();
-  }, [state.mileage]);
+  }, [state.mileage, state.scale]);
   useECharts(mileageStatRef, getMileageStatOptionCB);
   function getMileageStatOption(): {} {
     const { mileage } = state;

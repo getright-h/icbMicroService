@@ -5,7 +5,7 @@ import { useRef, useEffect } from 'react';
 export function useVirtureListStore(props: IVirtureListProps) {
   const { state, setStateWrap } = useStateStore(new IVirtureListState());
   const { options, data } = props;
-  const { itemHeight } = options;
+  const { itemHeight, minLength = 4 } = options;
 
   const virtualListScrollRef = useRef(null);
   const virtualListRef = useRef(null);
@@ -32,11 +32,14 @@ export function useVirtureListStore(props: IVirtureListProps) {
 
   function initAnimation() {
     const len = data.length;
-    if (len >= 3) {
-      virtualListScrollRef.current.animate([{ top: 0 }, { top: -len * 36 * 100 + 'px' }], {
-        duration: 1500 * len * 100,
-        iterations: Infinity
-      });
+    if (len >= minLength) {
+      virtualListScrollRef.current.animate(
+        [{ transform: 'translate3D(0, 0, 0)' }, { transform: `translate3D(0, -${len * itemHeight}px, 0)` }],
+        {
+          duration: 1500 * len,
+          iterations: Infinity
+        }
+      );
     }
   }
 
