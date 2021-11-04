@@ -9,9 +9,9 @@ import {
 import { GlobalContext } from '~/solution/context/global/global.provider';
 import { OfflineListColumn } from './offline-list.column';
 
-import { useDirectiveListStore } from './offline-list.component.store';
+import { useOfflineListStore } from './offline-list.component.store';
 
-export default function DirectiveListComponent() {
+export default function OfflineListComponent() {
   const {
     state,
     searchForm,
@@ -22,7 +22,7 @@ export default function DirectiveListComponent() {
     getCurrentSelectInfo,
     handleExport,
     handleExportVisible
-  } = useDirectiveListStore();
+  } = useOfflineListStore();
   const { isLoading, tableData, total, pageIndex, pageSize } = state;
   const { gState } = React.useContext(GlobalContext);
 

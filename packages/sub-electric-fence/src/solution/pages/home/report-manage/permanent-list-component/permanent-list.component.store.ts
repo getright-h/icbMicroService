@@ -1,4 +1,4 @@
-import { IDirectiveListState, ModalType, SORT_LIST } from './permanent-list.interface';
+import { IPermanentListState, ModalType, SORT_LIST } from './permanent-list.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form } from 'antd';
 import { OrderReportService } from '~/solution/model/services/report-order.service';
@@ -6,8 +6,8 @@ import { useEffect, useRef } from 'react';
 import moment from 'moment';
 import { setState } from '~/framework/microAPP/appStore';
 
-export function useDirectiveListStore() {
-  const { state, setStateWrap, getState } = useStateStore(new IDirectiveListState());
+export function usePermanentListStore() {
+  const { state, setStateWrap, getState } = useStateStore(new IPermanentListState());
   const orderReportService: OrderReportService = new OrderReportService();
   const [searchForm] = Form.useForm();
   const page_index = useRef(1);

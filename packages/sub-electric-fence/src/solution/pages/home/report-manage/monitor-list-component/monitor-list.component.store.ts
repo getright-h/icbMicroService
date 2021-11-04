@@ -1,13 +1,12 @@
-import { IDirectiveListState, ModalType } from './monitor-list.interface';
+import { IMonitorListState, ModalType } from './monitor-list.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form } from 'antd';
 import { OrderReportService } from '~/solution/model/services/report-order.service';
 import { useEffect } from 'react';
-import { IMAP } from '~shared/util/map.util';
 import { setState } from '~/framework/microAPP/appStore';
 
-export function useDirectiveListStore() {
-  const { state, setStateWrap, getState } = useStateStore(new IDirectiveListState());
+export function useMonitorListStore() {
+  const { state, setStateWrap, getState } = useStateStore(new IMonitorListState());
   const orderReportService: OrderReportService = new OrderReportService();
   const [searchForm] = Form.useForm();
 
@@ -35,7 +34,6 @@ export function useDirectiveListStore() {
   }
 
   function getCurrentSelectInfo(data: any, type: string) {
-    // console.log(data, type);
     if (type == 'strValue') {
       const { deviceCode = '' } = Array.isArray(data?.info?.deviceList) && data?.info?.deviceList[0];
       searchForm.setFieldsValue({ deviceCode: deviceCode });

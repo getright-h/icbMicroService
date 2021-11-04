@@ -1,8 +1,8 @@
 /**
  * @export state变量定义和初始化
- * @class IAlarmParameterState
+ * @class IRecordListState
  */
-export class IDwellListState {
+export class IRecordListState {
   isLoading = false;
   pageIndex = 1;
   pageSize = 10;

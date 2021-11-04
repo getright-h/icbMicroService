@@ -1,4 +1,5 @@
 import React from 'react';
+import { REPORT_UTIL } from '~/solution/shared/util/report-manage.util';
 
 export function HistoryTrackColumn(action?: Function) {
   const render = (text: any) => (text ? text : '-');
@@ -11,7 +12,9 @@ export function HistoryTrackColumn(action?: Function) {
     {
       title: '经纬度定位',
       dataIndex: 'coordinate',
-      render: (text: any, row: any) => <span>{row.longitude + ',' + row.latitude}</span>
+      ellipsis: true,
+      width: 160,
+      render: (text: any, data: any) => REPORT_UTIL.linkToMapWithLnglat(data.longitude, data.latitude)
     },
     {
       title: '基站',

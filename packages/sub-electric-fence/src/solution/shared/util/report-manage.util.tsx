@@ -1,4 +1,5 @@
 import { ShowNotification } from '@fch/fch-shop-web';
+import * as React from 'react';
 import { IMAP } from './map.util';
 
 const REG_LONGITUDE = /^[\-\+]?(0(\.\d+)?|([1-9](\d)?)(\.\d+)?|1[0-7]\d{1}(\.\d+)?|180(\.0+)?)$/;
@@ -28,7 +29,7 @@ export const REPORT_UTIL = {
     }
   },
 
-  async formatAddress(dataList: any[]) {
+  async formatAddress(dataList: any[]): Promise<any[]> {
     return new Promise(async (resolve: any, reject: any) => {
       if (Array.isArray(dataList) && dataList.length > 0) {
         const errIndexArr: number[] = [];
@@ -37,7 +38,10 @@ export const REPORT_UTIL = {
           if (!new RegExp(REG_LONGITUDE).test(o.longitude) || !new RegExp(REG_LATITUDE).test(o.latitude)) {
             errIndexArr.push(i);
           } else {
-            lnglats.push(IMAP.initLonlat(o.longitude, o.latitude));
+            const format = IMAP.initLonlat(o.longitude, o.latitude);
+            o.longitude = format[0];
+            o.latitude = format[1];
+            lnglats.push(format);
           }
         });
         await IMAP.covertLnglatsToAddress(lnglats).then(
@@ -75,5 +79,17 @@ export const REPORT_UTIL = {
     //     resolve(dataList);
     //   }
     // });
+  },
+
+  linkToMapWithLnglat(lng: string, lat: string) {
+    return lng && lat ? (
+      <a
+        target="_blank"
+        href={`https://uri.amap.com/marker?position=${lng},${lat}`}
+        rel="noreferrer"
+      >{`${lng},${lat}`}</a>
+    ) : (
+      '-'
+    );
   }
 };

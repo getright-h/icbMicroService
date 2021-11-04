@@ -1,4 +1,4 @@
-import { IDirectiveListState, ModalType } from './follow-list.interface';
+import { IFollowListState, ModalType } from './follow-list.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form } from 'antd';
 import { OrderReportService } from '~/solution/model/services/report-order.service';
@@ -6,8 +6,8 @@ import { useEffect } from 'react';
 import moment from 'moment';
 import { setState } from '~/framework/microAPP/appStore';
 
-export function useDirectiveListStore() {
-  const { state, setStateWrap, getState } = useStateStore(new IDirectiveListState());
+export function useFollowListStore() {
+  const { state, setStateWrap, getState } = useStateStore(new IFollowListState());
   const orderReportService: OrderReportService = new OrderReportService();
   const [searchForm] = Form.useForm();
 

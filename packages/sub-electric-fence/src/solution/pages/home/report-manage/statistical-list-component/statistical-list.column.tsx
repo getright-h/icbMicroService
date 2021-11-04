@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ModalType } from './statistical-list.interface';
 import { Tooltip } from 'antd';
+import { REPORT_UTIL } from '~/solution/shared/util/report-manage.util';
 export function StatisticalListColumn(callbackAction: Function) {
   const render = (text: any) => (text ? text : '-');
 
@@ -54,6 +55,13 @@ export function StatisticalListColumn(callbackAction: Function) {
           </Tooltip>
         );
       }
+    },
+    {
+      title: '经纬度',
+      dataIndex: 'lnglat',
+      ellipsis: true,
+      width: 160,
+      render: (text: any, data: any) => REPORT_UTIL.linkToMapWithLnglat(data.longitude, data.latitude)
     },
     {
       title: '最后报警地址',
