@@ -1,12 +1,11 @@
 import { IStateListState, ModalType } from './state-list.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form } from 'antd';
-import { AlarmManageService } from '~/solution/model/services/alarm-manage.service';
 import { useEffect } from 'react';
 import { OrderReportService } from '~/solution/model/services/report-order.service';
 import { setState } from '~/framework/microAPP/appStore';
 
-export function useDirectiveListStore() {
+export function useStateListStore() {
   const { state, setStateWrap, getState } = useStateStore(new IStateListState());
   const orderReportService: OrderReportService = new OrderReportService();
   const [searchForm] = Form.useForm();
@@ -45,7 +44,6 @@ export function useDirectiveListStore() {
   }
 
   function getCurrentSelectInfo(data: any, type: string) {
-    // console.log(data, type);
     if (type == 'organizationId') {
       const { organizationId } = data;
       searchForm.setFieldsValue({ organizationId: organizationId });

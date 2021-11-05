@@ -8,11 +8,11 @@ import {
   InputExportFilenameComponent
 } from '~/solution/components/component.module';
 import { RecordListColumn } from './record-list.column';
-import { useDwellListStore } from './record-list.component.store';
+import { useRecordListStore } from './record-list.component.store';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 import { AlarmType_FOR_REPORT } from '~shared/constant/alarm.const';
 
-export default function DirectiveListComponent() {
+export default function RecordListComponent() {
   const {
     state,
     searchForm,
@@ -23,7 +23,7 @@ export default function DirectiveListComponent() {
     initSearchForm,
     handleExport,
     handleExportVisible
-  } = useDwellListStore();
+  } = useRecordListStore();
   const { isLoading, tableData, total, pageIndex, pageSize, timeInfo } = state;
   const { gState } = React.useContext(GlobalContext);
 

@@ -7,6 +7,7 @@ import DigitRoll from './digit-roll-component/digit-roll.component';
 import FollowStatTableComponent from './follow-stat-table-component/follow-stat-table.component';
 import OrgSelectComponent from './org-select-component/org-select.component';
 import Select, { Option } from 'rc-select';
+import { useMemo } from 'react';
 
 export default function DataScreenComponent() {
   const {
@@ -40,6 +41,7 @@ export default function DataScreenComponent() {
     vehicleCount
   } = state;
 
+  // 机构搜索栏
   function OrgSearch() {
     return (
       <div className={style.orgSearch} style={{ visibility: state.isFull ? 'hidden' : 'visible' }}>
@@ -52,33 +54,63 @@ export default function DataScreenComponent() {
       </div>
     );
   }
+  const OrgSearchComponent = useMemo(() => <OrgSearch />, [state.isFull, state.scale]);
 
+  // 统计总数-数字滚动
+  const VehicleCountMemo = useMemo(() => {
+    const len = vehicleCount.toString().length;
+    const numL = len > 7 ? len : 7;
+    return (
+      <DigitRoll numLength={numL} num={vehicleCount}>
+        辆
+      </DigitRoll>
+    );
+  }, [vehicleCount]);
+  const DeviceCountMemo = useMemo(() => {
+    const len = deviceCount.toString().length;
+    const numL = len > 7 ? len : 7;
+    return (
+      <DigitRoll numLength={numL} num={deviceCount}>
+        台
+      </DigitRoll>
+    );
+  }, [deviceCount]);
+  const AlarmCountMemo = useMemo(() => {
+    const len = alarmCount.toString().length;
+    const numL = len > 7 ? len : 7;
+    return (
+      <DigitRoll numLength={numL} num={alarmCount}>
+        条
+      </DigitRoll>
+    );
+  }, [alarmCount]);
+  const AlarmFollowCountMemo = useMemo(() => {
+    const len = alarmFollowCount.toString().length;
+    const numL = len > 7 ? len : 7;
+    return (
+      <DigitRoll numLength={numL} num={alarmFollowCount}>
+        条
+      </DigitRoll>
+    );
+  }, [alarmFollowCount]);
   function TotalStatistics() {
     return (
       <div className={style.totalStatistic}>
         <div className={style.totalStatisticItem}>
           <div>平台车辆总数</div>
-          <DigitRoll numLength={7} num={vehicleCount}>
-            辆
-          </DigitRoll>
+          {VehicleCountMemo}
         </div>
         <div className={style.totalStatisticItem}>
           <div>平台设备总数</div>
-          <DigitRoll numLength={7} num={deviceCount}>
-            台
-          </DigitRoll>
+          {DeviceCountMemo}
         </div>
         <div className={style.totalStatisticItem}>
           <div>平台报警总数</div>
-          <DigitRoll numLength={7} num={alarmCount}>
-            条
-          </DigitRoll>
+          {AlarmCountMemo}
         </div>
         <div className={style.totalStatisticItem}>
           <div>报警跟进总数</div>
-          <DigitRoll numLength={7} num={alarmFollowCount}>
-            条
-          </DigitRoll>
+          {AlarmFollowCountMemo}
         </div>
       </div>
     );
@@ -105,35 +137,37 @@ export default function DataScreenComponent() {
         <div className={style.chartWrap} ref={totalCarRef}></div>
       </CustomPanel>
     );
-  }, [JSON.stringify(state.vehicleBinds), state.scale]);
+  }, [JSON.stringify(state.vehicleBinds[0]), state.scale]);
 
   const alarmStatRefComponent = React.useMemo(() => {
-    return (
-      <CustomPanel title="报警数据统计">
-        <div className={style.chartWrap} ref={alarmStatRef}></div>;
-        <div className={style.totalCarSelect}>
-          <Select
-            animation="slide-up"
-            prefixCls="custom-select"
-            value={timeRange['alarmType']}
-            onChange={v => changeTimeRange('alarmType', v)}
-            dropdownStyle={{ transform: `scale(${state.scale})`, transformOrigin: 'top left' }}
-          >
-            <Option value="all">全部</Option>
-            <Option value="day">今日</Option>
-            <Option value="week">本周</Option>
-            <Option value="month">本月</Option>
-          </Select>
-        </div>
-      </CustomPanel>
-    );
-  }, [JSON.stringify(state.alarmTypeStatistics), timeRange['alarmType'], state.scale]);
+    return <div className={style.chartWrap} ref={alarmStatRef}></div>;
+  }, [state.alarmTypeStatistics, state.scale]);
+
+  const organizationStatComponent = React.useMemo(() => {
+    return <FollowStatTableComponent propData={organizationAlarmStatistic} />;
+  }, [state.organizationAlarmStatistic.alarmTotal, state.scale]);
 
   function MainLeft() {
     return (
       <div className={style.contentMainLeft}>
         {totalCarRefComponent}
-        {alarmStatRefComponent}
+        <CustomPanel title="报警数据统计">
+          {alarmStatRefComponent}
+          <div className={style.totalCarSelect}>
+            <Select
+              animation="slide-up"
+              prefixCls="custom-select"
+              value={timeRange['alarmType']}
+              onChange={v => changeTimeRange('alarmType', v)}
+              dropdownStyle={{ transform: `scale(${state.scale})`, transformOrigin: 'top left' }}
+            >
+              <Option value="all">全部</Option>
+              <Option value="day">今日</Option>
+              <Option value="week">本周</Option>
+              <Option value="month">本月</Option>
+            </Select>
+          </div>
+        </CustomPanel>
         <CustomPanel title="报警跟进统计">
           <div className={style.followStatSelect}>
             <Select
@@ -149,51 +183,54 @@ export default function DataScreenComponent() {
               <Option value="month">本月</Option>
             </Select>
           </div>
-          <FollowStatTableComponent propData={organizationAlarmStatistic} />
+          {organizationStatComponent}
         </CustomPanel>
       </div>
     );
   }
+
+  const BindVehicleCountMemo = useMemo(() => {
+    const len = bindVehicleCount.toString().length;
+    const numL = len > 7 ? len : 7;
+    return <DigitRoll numLength={numL} num={bindVehicleCount} bgColor="#FF852F" bgBorder="none"></DigitRoll>;
+  }, [bindVehicleCount]);
+  const OnlineCountMemo = useMemo(() => {
+    const len = vehicleStatus.onlineCount.toString().length;
+    const numL = len > 7 ? len : 7;
+    return <DigitRoll numLength={numL} num={vehicleStatus.onlineCount} bgColor="#FF852F" bgBorder="none"></DigitRoll>;
+  }, [vehicleStatus.onlineCount]);
+  const OfflineCountMemo = useMemo(() => {
+    const len = vehicleStatus.offlineCount.toString().length;
+    const numL = len > 7 ? len : 7;
+    return <DigitRoll numLength={numL} num={vehicleStatus.offlineCount} bgColor="#697295" bgBorder="none"></DigitRoll>;
+  }, [vehicleStatus.offlineCount]);
+
   const areaStatRefC = React.useMemo(() => <div className={style.areaStatMiddle} ref={areaStatRef}></div>, [
-    JSON.stringify(vehicleStatus)
+    vehicleStatus.onlineCount
   ]);
+  const areaStatComponent = React.useMemo(() => {
+    return <AreaStatTableComponent propData={vehicleStatus.data} />;
+  }, [vehicleStatus.data, state.scale]);
   function MainCenter() {
-    const bindLength = bindVehicleCount.toString().length > 7 ? bindVehicleCount.toString().length : 7;
-    const onlineLength =
-      vehicleStatus.onlineCount.toString().length > 7 ? vehicleStatus.onlineCount.toString().length : 7;
-    const offlineLength =
-      vehicleStatus.offlineCount.toString().length > 7 ? vehicleStatus.offlineCount.toString().length : 7;
     return (
       <div className={style.contentMainCenter}>
         <section className={`${style.cPanel} ${style.areaStat}`}>
           <div className={style.areaStatTop}>
             <div>
               <span>绑定车辆</span>
-              <DigitRoll numLength={bindLength} num={bindVehicleCount} bgColor="#FF852F" bgBorder="none"></DigitRoll>
+              {BindVehicleCountMemo}
             </div>
             <div>
               <span>在线车辆</span>
-              <DigitRoll
-                numLength={onlineLength}
-                num={vehicleStatus.onlineCount}
-                bgColor="#FF852F"
-                bgBorder="none"
-              ></DigitRoll>
+              {OnlineCountMemo}
             </div>
             <div>
               <span>离线车辆</span>
-              <DigitRoll
-                numLength={offlineLength}
-                num={vehicleStatus.offlineCount}
-                bgColor="#697295"
-                bgBorder="none"
-              ></DigitRoll>
+              {OfflineCountMemo}
             </div>
           </div>
           {areaStatRefC}
-          <div className={style.areaStatBottom}>
-            <AreaStatTableComponent propData={vehicleStatus.data} />
-          </div>
+          <div className={style.areaStatBottom}>{areaStatComponent}</div>
         </section>
         <section className={`${style.cPanel} ${style.alarmStat}`}>
           <div className={style.alarmStatWrap}>
@@ -287,7 +324,7 @@ export default function DataScreenComponent() {
 
         <div className={style.content}>
           <div className={style.contentTop}>
-            {OrgSearch()}
+            {OrgSearchComponent}
             {TotalStatistics()}
           </div>
           <div className={style.contentMain}>

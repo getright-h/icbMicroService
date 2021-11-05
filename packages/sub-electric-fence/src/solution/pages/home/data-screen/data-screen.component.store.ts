@@ -1,6 +1,6 @@
 import { gradients, IDataScreenState } from './data-screen.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useMemo } from 'react';
 import useECharts from '~/framework/aop/hooks/use-echarts';
 import * as echarts from 'echarts';
 import { china } from '~/solution/assets/library/china';
@@ -62,7 +62,7 @@ export function useDataScreenStore() {
         });
         fetchAllData();
         curTimeRange.current = (curTimeRange.current + 1) % 4;
-      }, 15000);
+      }, 20000);
     } else {
       fetchAllData();
     }
@@ -92,31 +92,40 @@ export function useDataScreenStore() {
   }
 
   function fetchAllData() {
-    getFenceStat();
-    getTotalStat();
-    getAlarmStat();
-    getGpsStat();
+    // getFenceStat();
+    // getTotalStat();
+    // getAlarmStat();
+    // getGpsStat();
+    Promise.all([getFenceStat(), getTotalStat(), getAlarmStat(), getGpsStat()]).then(res => {
+      const resData = res.reduce((a, b) => Object.assign(a, b), {});
+      setStateWrap({ ...resData });
+    });
   }
 
   // fetch data
   function getFenceStat() {
-    dataService.getFenceStat(state.organizationId && [state.organizationId]).subscribe(res => {
-      setStateWrap({ ...res });
-    });
+    // dataService.getFenceStat(state.organizationId && [state.organizationId]).subscribe(res => {
+    //   setStateWrap({ ...res });
+    // });
+    return dataService.getFenceStat(state.organizationId && [state.organizationId]).toPromise();
   }
 
   function getTotalStat() {
-    dataService.getTotalStat(state.organizationId && [state.organizationId]).subscribe(res => {
-      setStateWrap({ ...res });
-    });
+    // dataService.getTotalStat(state.organizationId && [state.organizationId]).subscribe(res => {
+    //   setStateWrap({ ...res });
+    // });
+    return dataService.getTotalStat(state.organizationId && [state.organizationId]).toPromise();
   }
 
   function getAlarmStat() {
-    dataService
+    // dataService
+    //   .getAlarmStat({ ...alarmForm.current, organizationIds: state.organizationId && [state.organizationId] })
+    //   .subscribe(res => {
+    //     setStateWrap({ ...res });
+    //   });
+    return dataService
       .getAlarmStat({ ...alarmForm.current, organizationIds: state.organizationId && [state.organizationId] })
-      .subscribe(res => {
-        setStateWrap({ ...res });
-      });
+      .toPromise();
   }
 
   function getGpsStat() {
@@ -140,15 +149,22 @@ export function useDataScreenStore() {
         .subtract(1, 'M')
         .valueOf()
     ];
-    dataService
+    // dataService
+    //   .getGpsStat({
+    //     organizationIds: state.organizationId && [state.organizationId],
+    //     mielageParam,
+    //     offlineTimeStamps
+    //   })
+    //   .subscribe(res => {
+    //     setStateWrap({ ...res });
+    //   });
+    return dataService
       .getGpsStat({
         organizationIds: state.organizationId && [state.organizationId],
         mielageParam,
         offlineTimeStamps
       })
-      .subscribe(res => {
-        setStateWrap({ ...res });
-      });
+      .toPromise();
   }
 
   //handle change
@@ -162,7 +178,7 @@ export function useDataScreenStore() {
       [`${type}TimeRange`]: formatTime(rangeType)
     };
     setStateWrap({ timeRange: { ...state.timeRange, [type]: rangeType } });
-    getAlarmStat();
+    getAlarmStat().then(res => setStateWrap({ ...res }));
   }
 
   function changeFullScreen() {
@@ -170,9 +186,9 @@ export function useDataScreenStore() {
   }
 
   // 地图区域数据
-  const getAreaStatOptionCB = React.useMemo(() => {
+  const getAreaStatOptionCB = useMemo(() => {
     return getAreaStatOption();
-  }, [state.vehicleStatus]);
+  }, [state.vehicleStatus, state.scale]);
 
   useECharts(areaStatRef, getAreaStatOptionCB);
   function getAreaStatOption(): {} {
@@ -332,7 +348,7 @@ export function useDataScreenStore() {
   }
 
   // 平台车辆总览
-  const getTotalCarOptionCB = React.useMemo(() => {
+  const getTotalCarOptionCB = useMemo(() => {
     return !!state.vehicleBinds.length ? getTotalCarOption() : createEmptyOption();
   }, [state.vehicleBinds, state.scale]);
   useECharts(totalCarRef, getTotalCarOptionCB);
@@ -394,7 +410,7 @@ export function useDataScreenStore() {
   }
 
   // 报警数据统计
-  const getAlarmStatOptionCB = React.useMemo(() => {
+  const getAlarmStatOptionCB = useMemo(() => {
     return !!state.alarmTypeStatistics.length ? getAlarmStatOption() : createEmptyOption();
   }, [state.alarmTypeStatistics, state.scale]);
   useECharts(alarmStatRef, getAlarmStatOptionCB);
@@ -413,9 +429,9 @@ export function useDataScreenStore() {
   }
 
   // 离线车辆统计
-  const getOfflineStatOptionCB = React.useMemo(() => {
+  const getOfflineStatOptionCB = useMemo(() => {
     return getOfflineStatOption();
-  }, [state.offline]);
+  }, [state.offline, state.scale]);
   useECharts(offlineStatRef, getOfflineStatOptionCB);
   function getOfflineStatOption(): {} {
     const { offline } = state;
@@ -431,7 +447,7 @@ export function useDataScreenStore() {
   }
 
   // 监控组报警统计
-  const monitorStatRefCB = React.useMemo(() => {
+  const monitorStatRefCB = useMemo(() => {
     return !!state.groupAlarmStatistic.length ? getMonitorOption() : createEmptyOption();
   }, [state.groupAlarmStatistic, state.scale]);
   useECharts(monitorStatRef, monitorStatRefCB);
@@ -440,12 +456,11 @@ export function useDataScreenStore() {
     const formatData = groupAlarmStatistic.sort((a, b) => b.total - a.total);
     const labels = formatData.map(d => d.groupName);
     function formatAlarmCount(datas: any[]) {
-      let sum = 0;
+      const sum = datas[0].value;
       let res = '';
       const list = formatData.find(d => d.groupName == datas[0].axisValue);
       if (list) {
         list.data.forEach(o => {
-          sum += o.count;
           res += `${o.alarmTypeText}报警：${o.count}<br/>`;
         });
       }
@@ -468,9 +483,9 @@ export function useDataScreenStore() {
   }
 
   // 车辆里程统计
-  const getMileageStatOptionCB = React.useMemo(() => {
+  const getMileageStatOptionCB = useMemo(() => {
     return getMileageStatOption();
-  }, [state.mileage]);
+  }, [state.mileage, state.scale]);
   useECharts(mileageStatRef, getMileageStatOptionCB);
   function getMileageStatOption(): {} {
     const { mileage } = state;

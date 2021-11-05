@@ -1,19 +1,18 @@
-import { Button, Col, Form, Input, Row, Select } from 'antd';
+import { Button, Col, Form, Input, Row } from 'antd';
 import * as React from 'react';
 import {
   ITableComponent,
   TablePageTelComponent,
-  TimePickerComponent,
   ISelectLoadingComponent,
   InputExportFilenameComponent
 } from '~/solution/components/component.module';
-import { AlarmParameterColumn } from './monitor-list.column';
+import { MonitorListColumn } from './monitor-list.column';
 import { GlobalContext } from '~/solution/context/global/global.provider';
-import { useDirectiveListStore } from './monitor-list.component.store';
+import { useMonitorListStore } from './monitor-list.component.store';
 import style from './monitor-list.component.less';
 import { InfoCircleOutlined } from '@ant-design/icons';
 
-export default function DirectiveListComponent() {
+export default function MonitorListComponent() {
   const {
     state,
     searchForm,
@@ -24,7 +23,7 @@ export default function DirectiveListComponent() {
     getCurrentSelectInfo,
     handleExport,
     handleExportVisible
-  } = useDirectiveListStore();
+  } = useMonitorListStore();
   const { isLoading, tableData, total, pageIndex, pageSize } = state;
   const { gState } = React.useContext(GlobalContext);
 
@@ -110,13 +109,14 @@ export default function DirectiveListComponent() {
   function RenderTable() {
     return (
       <ITableComponent
-        columns={AlarmParameterColumn(callbackAction)}
+        columns={MonitorListColumn(callbackAction)}
         isLoading={isLoading}
         pageIndex={pageIndex}
         pageSize={pageSize}
         data={tableData}
         total={total}
         isPagination={true}
+        scroll={{ x: '110%' }}
         changeTablePageIndex={(pageIndex: number, pageSize: number) => changeTablePageIndex(pageIndex, pageSize)}
       ></ITableComponent>
     );

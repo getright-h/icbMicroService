@@ -67,6 +67,7 @@ export interface ResidentList {
   latitude: number;
   number: number;
   time: number;
+  stopTime?: number;
 }
 
 export interface PointPassList {

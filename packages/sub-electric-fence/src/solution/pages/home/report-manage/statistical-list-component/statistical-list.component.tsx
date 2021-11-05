@@ -9,10 +9,10 @@ import {
 } from '~/solution/components/component.module';
 import { StatisticalListColumn } from './statistical-list.column';
 import { AlarmType_FOR_REPORT } from '~shared/constant/alarm.const';
-import { useDirectiveListStore } from './statistical-list.component.store';
+import { useStatisticalListStore } from './statistical-list.component.store';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 
-export default function DirectiveListComponent() {
+export default function StatisticalListComponent() {
   const {
     state,
     searchForm,
@@ -23,13 +23,12 @@ export default function DirectiveListComponent() {
     getCurrentSelectInfo,
     handleExport,
     handleExportVisible
-  } = useDirectiveListStore();
+  } = useStatisticalListStore();
   const { isLoading, tableData, total, pageIndex, pageSize, timeInfo } = state;
   const { gState } = React.useContext(GlobalContext);
   const queryOrgList = ISelectLoadingComponent({
     reqUrl: 'queryStoreOrganization',
     placeholder: '请选择机构',
-    // searchKey: organization.organizationName || '',
     getCurrentSelectInfo: (value: string, option: any) => {
       getCurrentSelectInfo(option.info || {}, 'organizationId');
     },
@@ -82,8 +81,6 @@ export default function DirectiveListComponent() {
               {queryOrgList}
             </Form.Item>
           </Col>
-          {/* <Form.Item name="beginTime" noStyle></Form.Item>
-          <Form.Item name="endTime" noStyle></Form.Item> */}
         </Row>
       </Form>
     );

@@ -47,7 +47,7 @@ export class OrderReportService implements OrderReportManage {
   private readonly requestService: RequestService;
   queryResidentPagedList(params: ReportAlarmStatisticsInput): Observable<{ dataList: any[]; total: number }> {
     return this.requestService.post(QUERY_RESIDENT_PAGEDLIST, params).pipe(
-      switchMap(async data => {
+      switchMap(async (data: { dataList: any[]; total: number }) => {
         const dataList = await REPORT_UTIL.formatAddress(data.dataList);
         for (const item of dataList) {
           const { stayAvg, stayDuration } = item;
@@ -63,7 +63,7 @@ export class OrderReportService implements OrderReportManage {
   }
   queryReportAlarmStatistics(params: ReportAlarmStatisticsInput): Observable<{ data: any[]; total: number }> {
     return this.requestService.post(QUERY_REPORT_ALARM_STATISTICS, params).pipe(
-      switchMap(async data => {
+      switchMap(async (data: any) => {
         const dataList = await REPORT_UTIL.formatAddress(data.dataList);
         return { ...data, dataList };
       })
@@ -79,7 +79,7 @@ export class OrderReportService implements OrderReportManage {
   }
   queryAlarmOriginalPagedList(params: ReportAlarmStatisticsInput): Observable<boolean> {
     return this.requestService.post(QUERY_ALARM_ORIGINAL_PAGEDLIST, params).pipe(
-      switchMap(async data => {
+      switchMap(async (data: any) => {
         const dataList = await REPORT_UTIL.formatAddress(data.dataList);
         return { ...data, dataList };
       })
@@ -87,7 +87,7 @@ export class OrderReportService implements OrderReportManage {
   }
   queryReportMonitorRolePagedList(params: ReportAlarmStatisticsInput): Observable<boolean> {
     return this.requestService.post(QUERY_REPORT_MONITOR_ROLE_PAGEDLIST, params).pipe(
-      switchMap(async data => {
+      switchMap(async (data: any) => {
         const dataList = await REPORT_UTIL.formatAddress(data.dataList);
         return { ...data, dataList };
       })
@@ -105,7 +105,7 @@ export class OrderReportService implements OrderReportManage {
     // params = { ...params, beginTime: formatToUnix(timeInfo[0]), endTime: formatToUnix(timeInfo[1]) };
     params = { ...params, beginTime: timeInfo[0], endTime: timeInfo[1] };
     return this.requestService.get(QUERY_REPORT_TRAFFIC, params).pipe(
-      switchMap(async data => {
+      switchMap(async (data: any) => {
         if (data.longitude && data.latitude) {
           const { longitude, latitude } = data;
           const longitudeLatitude = IMAP.initLonlat(longitude, latitude);
@@ -164,6 +164,7 @@ export class OrderReportService implements OrderReportManage {
           item.longitude = LA[0];
           item.latitude = LA[1];
           item.coordinates = LA;
+          item.stopTime = item.time;
           return item;
         });
 
@@ -184,7 +185,7 @@ export class OrderReportService implements OrderReportManage {
 
   queryMonitorAlarmGroupPagedList(params: ReportMonitorAlarmGroupInput): Observable<boolean> {
     return this.requestService.post(QUERY_MONITOR_ALARM_GROUP_PAGEDLIST, params).pipe(
-      switchMap(async data => {
+      switchMap(async (data: any) => {
         const dataList = await REPORT_UTIL.formatAddress(data.dataList);
         dataList.map((item, index) => {
           item.id = item.id.slice(0, -1) + index;
@@ -208,16 +209,12 @@ export class OrderReportService implements OrderReportManage {
   }
 
   queryMonitorDeviceOfflinePagedList(params: QueryMonitorDeviceOfflineInput): Observable<any> {
-    return this.requestService.post(QUERY_MONITOR_DEVICE_OFFLINE_PAGEDLIST, params);
-    //   .pipe(
-    //   switchMap(async data => {
-    //     const dataList = await REPORT_UTIL.formatAddress(data.dataList);
-    //     dataList.map((item, index) => {
-    //       item.id = item.id.slice(0, -1) + index;
-    //     });
-    //     return { ...data, dataList };
-    //   })
-    // );
+    return this.requestService.post(QUERY_MONITOR_DEVICE_OFFLINE_PAGEDLIST, params).pipe(
+      switchMap(async (data: any) => {
+        const dataList = await REPORT_UTIL.formatAddress(data.dataList);
+        return { ...data, dataList };
+      })
+    );
   }
 
   queryHistoryPagedList(

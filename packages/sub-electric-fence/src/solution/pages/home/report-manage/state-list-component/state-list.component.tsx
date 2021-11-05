@@ -10,9 +10,9 @@ import { GlobalContext } from '~/solution/context/global/global.provider';
 import { DeviceStateConst } from '~/solution/shared/enums/home.enum';
 import { StateListColumn } from './state-list.column';
 
-import { useDirectiveListStore } from './state-list.component.store';
+import { useStateListStore } from './state-list.component.store';
 
-export default function DirectiveListComponent() {
+export default function StateListComponent() {
   const {
     state,
     searchForm,
@@ -23,7 +23,7 @@ export default function DirectiveListComponent() {
     getCurrentSelectInfo,
     handleExport,
     handleExportVisible
-  } = useDirectiveListStore();
+  } = useStateListStore();
   const { isLoading, tableData, total, pageIndex, pageSize } = state;
   const { gState } = React.useContext(GlobalContext);
 
@@ -96,6 +96,7 @@ export default function DirectiveListComponent() {
         data={tableData}
         total={total}
         isPagination={true}
+        scroll={{ x: '110%' }}
         changeTablePageIndex={(pageIndex: number, pageSize: number) => changeTablePageIndex(pageIndex, pageSize)}
       ></ITableComponent>
     );

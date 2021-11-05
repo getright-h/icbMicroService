@@ -1,7 +1,5 @@
-import * as React from 'react';
-import { Divider } from 'antd';
-import { ModalType } from './state-list.interface';
 import { DeviceStateEnum } from '~/solution/shared/enums/home.enum';
+import { REPORT_UTIL } from '~/solution/shared/util/report-manage.util';
 export function StateListColumn(callbackAction: Function) {
   const render = (text: any) => (text ? text : '-');
   return [
@@ -54,6 +52,13 @@ export function StateListColumn(callbackAction: Function) {
       ellipsis: true,
       width: 240,
       render
+    },
+    {
+      title: '经纬度',
+      dataIndex: 'lnglat',
+      ellipsis: true,
+      width: 160,
+      render: (text: any, data: any) => REPORT_UTIL.linkToMapWithLnglat(data.longitude, data.latitude)
     },
     {
       title: '地址',

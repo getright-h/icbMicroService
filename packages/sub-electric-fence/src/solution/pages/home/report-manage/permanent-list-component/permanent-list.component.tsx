@@ -7,11 +7,11 @@ import {
   ISelectLoadingComponent,
   InputExportFilenameComponent
 } from '~/solution/components/component.module';
-import { AlarmParameterColumn } from './permanent-list.column';
-import { useDirectiveListStore } from './permanent-list.component.store';
+import { PermanentListColumn } from './permanent-list.column';
+import { usePermanentListStore } from './permanent-list.component.store';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 
-export default function DirectiveListComponent() {
+export default function PermanentListComponent() {
   const {
     state,
     searchForm,
@@ -23,7 +23,7 @@ export default function DirectiveListComponent() {
     handleTableOnchange,
     handleExport,
     handleExportVisible
-  } = useDirectiveListStore();
+  } = usePermanentListStore();
   const { isLoading, tableData, total, pageIndex, pageSize, sortInfo, timeInfo } = state;
   const { gState } = React.useContext(GlobalContext);
 
@@ -95,7 +95,7 @@ export default function DirectiveListComponent() {
   function RenderTable() {
     return (
       <ITableComponent
-        columns={AlarmParameterColumn(sortInfo, callbackAction)}
+        columns={PermanentListColumn(sortInfo, callbackAction)}
         isLoading={isLoading}
         pageIndex={pageIndex}
         pageSize={pageSize}
@@ -104,6 +104,7 @@ export default function DirectiveListComponent() {
         isPagination={true}
         onChange={handleTableOnchange}
         sortDirections={['descend']}
+        scroll={{ x: '110%' }}
         changeTablePageIndex={(pageIndex: number, pageSize: number) => changeTablePageIndex(pageIndex, pageSize)}
       ></ITableComponent>
     );
