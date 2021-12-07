@@ -96,7 +96,7 @@ export default function StateListComponent() {
         data={tableData}
         total={total}
         isPagination={true}
-        scroll={{ x: '110%' }}
+        scroll={{ x: 'max-content' }}
         changeTablePageIndex={(pageIndex: number, pageSize: number) => changeTablePageIndex(pageIndex, pageSize)}
       ></ITableComponent>
     );
