@@ -21,6 +21,12 @@ export function MonitorListColumn(callbackAction: Function) {
       render
     },
     {
+      title: '车架号',
+      dataIndex: 'vinNo',
+      width: 180,
+      render
+    },
+    {
       title: '设备号',
       dataIndex: 'deviceCode',
       width: 150,

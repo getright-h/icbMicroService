@@ -116,7 +116,7 @@ export default function MonitorListComponent() {
         data={tableData}
         total={total}
         isPagination={true}
-        scroll={{ x: '110%' }}
+        scroll={{ x: '120%' }}
         changeTablePageIndex={(pageIndex: number, pageSize: number) => changeTablePageIndex(pageIndex, pageSize)}
       ></ITableComponent>
     );
