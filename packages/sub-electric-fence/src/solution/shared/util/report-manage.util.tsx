@@ -35,7 +35,11 @@ export const REPORT_UTIL = {
         const errIndexArr: number[] = [];
         const lnglats: any[] = [];
         dataList.forEach((o, i) => {
-          if (!new RegExp(REG_LONGITUDE).test(o.longitude) || !new RegExp(REG_LATITUDE).test(o.latitude)) {
+          if (
+            (o.longitude == 0 && o.latitude == 0) ||
+            !new RegExp(REG_LONGITUDE).test(o.longitude) ||
+            !new RegExp(REG_LATITUDE).test(o.latitude)
+          ) {
             errIndexArr.push(i);
           } else {
             const format = IMAP.initLonlat(o.longitude, o.latitude);
