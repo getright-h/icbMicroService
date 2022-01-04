@@ -22,7 +22,7 @@ export function useIMapStore(mapProps: TIMapProps) {
   // 追踪的car的marker
   const carLineMarkerInfo: any = useRef();
   // 追踪的car的polyline
-  const polyline = useRef();
+  const polyline = useRef<any>();
   const mouseTool: any = useRef();
   const trafficLayer: any = useRef({});
   const isVisibleTrafficLayer = useRef(false);
@@ -39,7 +39,7 @@ export function useIMapStore(mapProps: TIMapProps) {
   const currentAllPointsDetailArr = useRef([]);
   const infoWindowInfo: any = useRef();
   const finishedRun = useRef(false);
-  const stopPointMarkers = useRef({});
+  const stopPointMarkers = useRef([]);
   const stopPointsRef = useRef([]);
   // 常驻点
   const circleMarkers = useRef([]);
@@ -134,9 +134,15 @@ export function useIMapStore(mapProps: TIMapProps) {
       const carLine = pointList.map(item => {
         return item.coordinates;
       });
-      polyline.current = IMAP.drawLine(map.current, carLine);
+      polyline.current = IMAP.drawLineUI(map.current, carLine, pointList);
+
       stopPointsRef.current = stopPoints;
       stopPointMarkers.current = IMAP.bindCommonMarkers(stopPoints, map.current);
+      stopPointMarkers.current.forEach((marker: any, i: number) => {
+        marker.on('click', () =>
+          IMAP.showStopPointInfo(stopPointsRef.current[i], map.current, marker, openStopPointWin)
+        );
+      });
       map.current.setFitView();
       needRunDrivingLine && runCarUtil(carLine);
     }
@@ -145,10 +151,32 @@ export function useIMapStore(mapProps: TIMapProps) {
   useEffect(() => {
     if (isShowStopMarkers && stopPointsRef.current?.length) {
       stopPointMarkers.current = IMAP.bindCommonMarkers(stopPointsRef.current, map.current);
+      stopPointMarkers.current.forEach((marker: any, i: number) => {
+        marker.on('click', () =>
+          IMAP.showStopPointInfo(stopPointsRef.current[i], map.current, marker, openStopPointWin)
+        );
+      });
     } else {
       cleanStopPointMarkers();
     }
   }, [isShowStopMarkers]);
+
+  function openStopPointWin(markerInfo: any, map: any, marker: any, infoWindow: any) {
+    const { coordinates, time } = markerInfo;
+    const data = {
+      address: '转换地址中...',
+      time
+    };
+    infoWindow.setInfoTplData(data);
+    infoWindow.open(map, coordinates);
+    regeoCode([coordinates[0], coordinates[1]]).then(place => {
+      infoWindow.setInfoTplData({
+        ...data,
+        address: place || '无'
+      });
+    });
+    infoWindowInfo.current = infoWindow;
+  }
 
   /**
    *  清除当前停止的停留点
@@ -164,12 +192,21 @@ export function useIMapStore(mapProps: TIMapProps) {
     carLineMarkerInfo.current = new AMap.Marker({
       map: map.current,
       label: {
-        content: `<div>${mapProps.drivingLineData.plateNo}</div>`,
+        // content: `<div>${mapProps.drivingLineData.plateNo}</div>`,
+        content: `<div id="carline">
+            <div>车牌号：${mapProps.drivingLineData.plateNo}</div>
+            <div id="carline-time"></div>
+            <div id="carline-speed"></div>
+          </div>`,
         offset: new AMap.Pixel(-20, 26)
       },
       icon: 'https://webapi.amap.com/images/car.png',
       offset: new AMap.Pixel(-26, -13),
       autoRotation: true
+    });
+
+    carLineMarkerInfo.current.on('click', function(e: any) {
+      !isRunning && showCarInfo();
     });
 
     // 第三个参数是在窗口需要展示的当前车辆的信息
@@ -185,6 +222,13 @@ export function useIMapStore(mapProps: TIMapProps) {
           currentIndex = index;
         }
       });
+
+      document.getElementById('carline-speed') &&
+        (document.getElementById('carline-speed').innerText =
+          '车速：' + mapProps.drivingLineData?.pointList?.[currentIndex].speed + 'km/h');
+      document.getElementById('carline-time') &&
+        (document.getElementById('carline-time').innerText =
+          '时间：' + mapProps.drivingLineData?.pointList?.[currentIndex].time);
 
       runCurrentPoint(currentIndex);
 
@@ -202,32 +246,36 @@ export function useIMapStore(mapProps: TIMapProps) {
     map.current.setCenter(carLine[0]);
   }
 
+  function showCarInfo() {
+    const position = havePassedArr.current[havePassedArr.current.length - 1];
+    let nextPosition: { lng: number; lat: number } = { lng: 0, lat: 0 },
+      satellitesNum = 0,
+      time = 0;
+    const pointList = mapProps.drivingLineData.pointList;
+    if (havePassedArr.current.length > 1) {
+      nextPosition = havePassedArr.current[havePassedArr.current.length - 2];
+      pointList.map(item => {
+        if (item.coordinates[0] == nextPosition.lng) {
+          satellitesNum = item.satellitesNum;
+          time = item.time;
+        }
+      });
+    } else {
+      console.log('pointList[pointList.length - 1]', pointList[pointList.length - 1]);
+
+      satellitesNum = pointList[pointList.length - 1].satellitesNum;
+      time = pointList[pointList.length - 1].time;
+    }
+    IMAP.showCarInfo(mapProps.drivingLineData, map.current, { position, satellitesNum, time }, openInfoWinCar);
+  }
+
   // 切换轨迹回放车的状态
   useEffect(() => {
     if (carLineMarkerInfo.current) {
       if (isRunning) {
         // 暂停显示当前车辆信息
         carLineMarkerInfo.current.pauseMove();
-        const position = havePassedArr.current[havePassedArr.current.length - 1];
-        let nextPosition: { lng: number; lat: number } = { lng: 0, lat: 0 },
-          satellitesNum = 0,
-          time = 0;
-        const pointList = mapProps.drivingLineData.pointList;
-        if (havePassedArr.current.length > 1) {
-          nextPosition = havePassedArr.current[havePassedArr.current.length - 2];
-          pointList.map(item => {
-            if (item.coordinates[0] == nextPosition.lng) {
-              satellitesNum = item.satellitesNum;
-              time = item.time;
-            }
-          });
-        } else {
-          console.log('pointList[pointList.length - 1]', pointList[pointList.length - 1]);
-
-          satellitesNum = pointList[pointList.length - 1].satellitesNum;
-          time = pointList[pointList.length - 1].time;
-        }
-        IMAP.showCarInfo(mapProps.drivingLineData, map.current, { position, satellitesNum, time }, openInfoWinCar);
+        showCarInfo();
       } else {
         if (infoWindowInfo.current) {
           infoWindowInfo.current.close();
@@ -245,8 +293,8 @@ export function useIMapStore(mapProps: TIMapProps) {
 
   // 车当前的运行速度
   useEffect(() => {
-    console.log(currentAllPoints.current);
-    console.log(currentAllPointsDetailArr.current);
+    // console.log(currentAllPoints.current);
+    // console.log(currentAllPointsDetailArr.current);
 
     if (currentAllPoints.current.length) {
       notPassedArr.current = [...currentAllPoints.current.slice(currentPoint)];

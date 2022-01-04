@@ -111,6 +111,85 @@ export const IMAP = {
       // strokeStyle: "solid"  //线样式
     });
   },
+  drawLineUI(map: any, lineArr: any[], originData: any[]) {
+    AMapUI.load(['ui/misc/PathSimplifier'], function(PathSimplifier: any) {
+      if (!PathSimplifier.supportCanvas) {
+        alert('当前环境不支持 Canvas！');
+        return;
+      }
+      const ref = new PathSimplifier({
+        zIndex: 100,
+        map: map, //所属的地图实例
+        clickToSelectPath: false,
+        eventSupport: false,
+        getPath: function(pathData: any, pathIndex: number) {
+          //返回轨迹数据中的节点坐标信息，[AMap.LngLat, AMap.LngLat...] 或者 [[lng|number,lat|number],...]
+          return pathData.path;
+        },
+        getHoverTitle: function(pathData: any, pathIndex: number, pointIndex: number) {
+          //返回鼠标悬停时显示的信息
+          if (pointIndex >= 0) {
+            //鼠标悬停在某个轨迹节点上
+            return `<div>
+              <div>时间：${originData[pointIndex]?.time}</div>
+              <div>速度：${originData[pointIndex]?.speed}km/h</div>
+            </div>`;
+          }
+          // 鼠标悬停在节点之间的连线上
+          return null;
+        },
+        renderOptions: {
+          //轨迹线的样式
+          pathLineStyle: {
+            strokeStyle: '#28F',
+            lineWidth: 6,
+            dirArrowStyle: true
+          },
+          pathLineHoverStyle: {
+            strokeStyle: '#7958fa'
+          },
+          renderAllPointsIfNumberBelow: 100
+        }
+      });
+
+      ref.setData([
+        {
+          name: 'carline',
+          path: lineArr
+        }
+      ]);
+
+      return ref;
+    });
+  },
+  showStopPointInfo(
+    markerInfo: any,
+    map: any,
+    marker: any,
+    callback?: (markerInfo: any, map: any, marker: any, infoWindow: any) => void
+  ) {
+    AMapUI.loadUI(['overlay/SimpleInfoWindow'], (SimpleInfoWindow: any) => {
+      const infoWindow = new SimpleInfoWindow({
+        infoTitle: '<strong>停留点信息</strong>',
+        infoBody: `
+        <div class="vehicle-basic-info">
+          <div class="basic">
+            <div class="item">地址：<%- address %></div>
+            <div class="item">时间：<%- time %></div>
+          </div>
+        </div>`,
+
+        infoTplData: {
+          time: '',
+          address: ''
+        },
+
+        //基点指向marker的头部位置
+        offset: new AMap.Pixel(0, -31)
+      });
+      callback(markerInfo, map, marker, infoWindow);
+    });
+  },
   showCarInfo(
     markerInfo: any,
     map: any,
