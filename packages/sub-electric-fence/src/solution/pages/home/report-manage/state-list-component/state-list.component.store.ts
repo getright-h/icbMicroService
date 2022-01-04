@@ -4,6 +4,7 @@ import { Form } from 'antd';
 import { useEffect } from 'react';
 import { OrderReportService } from '~/solution/model/services/report-order.service';
 import { setState } from '~/framework/microAPP/appStore';
+import moment from 'moment';
 
 export function useStateListStore() {
   const { state, setStateWrap, getState } = useStateStore(new IStateListState());
@@ -16,10 +17,12 @@ export function useStateListStore() {
 
   function getTableData() {
     setStateWrap({ isLoading: true });
-    const { pageIndex, pageSize } = getState();
+    const { pageIndex, pageSize, timeInfo } = getState();
     orderReportService
       .queryMonitorDeviceStatusPagedList({
         ...searchForm.getFieldsValue(),
+        beginTime: timeInfo[0] ? moment(timeInfo[0]).valueOf() : 0,
+        endTime: timeInfo[1] ? moment(timeInfo[1]).valueOf() : 0,
         index: pageIndex,
         size: pageSize
       })
@@ -41,6 +44,15 @@ export function useStateListStore() {
   function initSearchForm() {
     searchForm.resetFields();
     searchClick();
+  }
+
+  function getCurrentInfo(data: any, type: string) {
+    if (type == 'time') {
+      setStateWrap({ timeInfo: !!data[0] ? data : [] });
+    }
+    // if (type == 'device') {
+    //   setStateWrap({ canExport: !!searchForm.getFieldValue('deviceCode') });
+    // }
   }
 
   function getCurrentSelectInfo(data: any, type: string) {
@@ -75,10 +87,12 @@ export function useStateListStore() {
   }
 
   function handleExport(value: string) {
-    const { pageIndex, pageSize } = getState();
+    const { pageIndex, pageSize, timeInfo } = getState();
     orderReportService
       .exportMonitorDeviceStatusList({
         ...searchForm.getFieldsValue(),
+        beginTime: timeInfo[0] ? moment(timeInfo[0]).valueOf() : 0,
+        endTime: timeInfo[1] ? moment(timeInfo[1]).valueOf() : 0,
         index: pageIndex,
         size: pageSize,
         name: value
@@ -109,6 +123,7 @@ export function useStateListStore() {
     handleModalCancel,
     getCurrentSelectInfo,
     handleExport,
-    handleExportVisible
+    handleExportVisible,
+    getCurrentInfo
   };
 }

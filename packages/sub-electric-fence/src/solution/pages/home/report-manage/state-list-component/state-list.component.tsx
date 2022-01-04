@@ -4,7 +4,8 @@ import {
   InputExportFilenameComponent,
   ISelectLoadingComponent,
   ITableComponent,
-  TablePageTelComponent
+  TablePageTelComponent,
+  TimePickerComponent
 } from '~/solution/components/component.module';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 import { DeviceStateConst } from '~/solution/shared/enums/home.enum';
@@ -22,9 +23,10 @@ export default function StateListComponent() {
     initSearchForm,
     getCurrentSelectInfo,
     handleExport,
-    handleExportVisible
+    handleExportVisible,
+    getCurrentInfo
   } = useStateListStore();
-  const { isLoading, tableData, total, pageIndex, pageSize } = state;
+  const { isLoading, tableData, total, pageIndex, pageSize, timeInfo } = state;
   const { gState } = React.useContext(GlobalContext);
 
   const queryOrgList = ISelectLoadingComponent({
@@ -67,6 +69,15 @@ export default function StateListComponent() {
           <Col span={8}>
             <Form.Item label="所属机构" name="organizationId">
               {queryOrgList}
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="时间范围" name="time" labelCol={{ span: 4 }}>
+              <TimePickerComponent
+                timeInfo={timeInfo}
+                pickerType="dateTimeRange"
+                getDateTimeInfo={(time: any, other: any) => getCurrentInfo(time, 'time')}
+              />
             </Form.Item>
           </Col>
         </Row>
