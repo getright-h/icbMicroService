@@ -289,7 +289,7 @@ export function formatTreeDataByParentId(arr: Array<any>, compareKeys = ['id', '
 }
 
 export function addLoadMoreNode(curParams: any, parentNode: EventDataNode | any) {
-  const node: any = { key: generateGUID(true), isLeaf: true, isLoadMoreBtn: true, parentNode };
+  const node: any = { key: generateGUID(true), isLeaf: true, isLoadMoreBtn: true, parentNode, checkable: false };
   node.title = (
     <div style={{ display: 'flex', alignItems: 'center' }}>
       <a
