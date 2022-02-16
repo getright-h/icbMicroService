@@ -36,7 +36,8 @@ export const REPORT_UTIL = {
         const lnglats: any[] = [];
         dataList.forEach((o, i) => {
           if (
-            (o.longitude == 0 && o.latitude == 0) ||
+            o.longitude == 0 ||
+            o.latitude == 0 ||
             !new RegExp(REG_LONGITUDE).test(o.longitude) ||
             !new RegExp(REG_LATITUDE).test(o.latitude)
           ) {
@@ -48,6 +49,9 @@ export const REPORT_UTIL = {
             lnglats.push(format);
           }
         });
+        if (!lnglats.length) {
+          resolve(dataList);
+        }
         await IMAP.covertLnglatsToAddress(lnglats).then(
           (res: any) => {
             let ii = 0;
@@ -57,7 +61,7 @@ export const REPORT_UTIL = {
                 ii++;
               }
             });
-          },
+          }
           // (err: any) => {
           //   ShowNotification.error(err);
           // }
