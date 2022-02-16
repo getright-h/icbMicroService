@@ -58,9 +58,9 @@ export const REPORT_UTIL = {
               }
             });
           },
-          (err: any) => {
-            ShowNotification.error(err);
-          }
+          // (err: any) => {
+          //   ShowNotification.error(err);
+          // }
         );
       }
       resolve(dataList);
