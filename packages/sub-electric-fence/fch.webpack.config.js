@@ -9,7 +9,7 @@ module.exports = {
         {
             plugin: 'html-webpack-plugin',
             option: {
-                template: process.argv[2] == '--build' ? path.resolve(__dirname, './public/index.html') : path.resolve(__dirname, './public/indexMap.html'),
+                template: path.resolve(__dirname, './public/index.html'),
                 title: '风控三期',
                 chunks: ['index']
             }
