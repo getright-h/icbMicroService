@@ -8,14 +8,14 @@ import {
   InputExportFilenameComponent
 } from '~/solution/components/component.module';
 import { AlarmParameterColumn } from './follow-list.column';
-import { useDirectiveListStore } from './follow-list.component.store';
+import { useFollowListStore } from './follow-list.component.store';
 import { AlarmType_FOR_REPORT } from '~shared/constant/alarm.const';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 import SloveModalComponent from './slove-modal-component/slove-modal.component';
 import style from './follow-list.component.less';
 import { InfoCircleOutlined } from '@ant-design/icons';
 
-export default function DirectiveListComponent() {
+export default function FollowListComponent() {
   const {
     state,
     searchForm: aliaNameSearchForm,
@@ -27,7 +27,7 @@ export default function DirectiveListComponent() {
     getCurrentSelectInfo,
     handleExport,
     handleExportVisible
-  } = useDirectiveListStore();
+  } = useFollowListStore();
   const {
     isLoading,
     tableData,
@@ -200,7 +200,7 @@ export default function DirectiveListComponent() {
         data={tableData}
         total={total}
         isPagination={true}
-        scroll={{ x: '110%' }}
+        scroll={{ x: '120%' }}
         changeTablePageIndex={(pageIndex: number, pageSize: number) => changeTablePageIndex(pageIndex, pageSize)}
       ></ITableComponent>
     );

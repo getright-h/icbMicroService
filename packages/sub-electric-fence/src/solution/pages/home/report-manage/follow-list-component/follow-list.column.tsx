@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Tag, Tooltip } from 'antd';
 import { ModalType } from './follow-list.interface';
+import { REPORT_UTIL } from '~/solution/shared/util/report-manage.util';
 export function AlarmParameterColumn(callbackAction: Function) {
   const render = (text: any) => (text ? text : '-');
 
@@ -57,6 +58,13 @@ export function AlarmParameterColumn(callbackAction: Function) {
           </Tooltip>
         );
       }
+    },
+    {
+      title: '经纬度',
+      dataIndex: 'lnglat',
+      ellipsis: true,
+      width: 160,
+      render: (text: any, data: any) => REPORT_UTIL.linkToMapWithLnglat(data.longitude, data.latitude)
     },
     {
       title: '最后报警地址',

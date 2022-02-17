@@ -34,24 +34,11 @@ export class DataScreenService extends DataScreenDTO {
   }
 
   getTotalStat(organizationIds?: string[]): Observable<TotalStatReturn> {
-    return this.requestService.post(GET_TOTAL_STAT, { organizationIds }).pipe(
-      map((data: TotalStatReturn) => {
-        const vehicleBinds = data.vehicleBinds.slice(0, 30);
-        return { ...data, vehicleBinds };
-      })
-    );
+    return this.requestService.post(GET_TOTAL_STAT, { organizationIds });
   }
 
   getAlarmStat(params: AlarmStatRequest): Observable<AlarmStatReturn> {
-    return this.requestService.post(GET_ALARM_STAT, params).pipe(
-      map((data: AlarmStatReturn) => {
-        const organizationAlarmStatistic = {
-          ...data.organizationAlarmStatistic,
-          data: data.organizationAlarmStatistic.data.slice(0, 30)
-        };
-        return { ...data, organizationAlarmStatistic };
-      })
-    );
+    return this.requestService.post(GET_ALARM_STAT, params);
   }
 
   getGpsStat(params: GpsStatRequest): Observable<GpsStatReturn> {

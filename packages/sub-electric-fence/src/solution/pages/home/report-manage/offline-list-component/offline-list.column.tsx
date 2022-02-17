@@ -1,6 +1,5 @@
-import * as React from 'react';
-import { Divider } from 'antd';
-import { ModalType } from './offline-list.interface';
+import { REPORT_UTIL } from '~/solution/shared/util/report-manage.util';
+
 export function OfflineListColumn(callbackAction: Function) {
   const render = (text: any) => (text ? text : '-');
   return [
@@ -30,6 +29,13 @@ export function OfflineListColumn(callbackAction: Function) {
       title: '最后上线时间',
       dataIndex: 'lastTime',
       render
+    },
+    {
+      title: '经纬度',
+      dataIndex: 'lnglat',
+      ellipsis: true,
+      width: 160,
+      render: (text: any, data: any) => REPORT_UTIL.linkToMapWithLnglat(data.longitude, data.latitude)
     },
     {
       title: '地址',

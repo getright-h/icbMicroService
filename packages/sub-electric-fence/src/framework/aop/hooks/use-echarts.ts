@@ -11,9 +11,9 @@ function useECharts(
     const renderedInstance = echarts.getInstanceByDom(chartRef.current);
     if (renderedInstance) {
       chartInstance = renderedInstance;
-    } else {
-      chartInstance = echarts.init(chartRef.current);
     }
+    chartInstance && echarts.dispose(chartInstance);
+    chartInstance = echarts.init(chartRef.current);
     chartInstance.setOption(config);
   }
 
@@ -23,7 +23,7 @@ function useECharts(
 
   useEffect(() => {
     return () => {
-      chartInstance && chartInstance.dispose();
+      chartInstance && echarts.dispose(chartInstance);
     };
   }, []);
 

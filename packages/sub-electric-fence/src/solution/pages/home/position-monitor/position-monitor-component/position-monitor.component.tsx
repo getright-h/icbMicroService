@@ -4,7 +4,7 @@ import { PositionMonitorLeftComponent } from './position-monitor-left-component/
 import { PositionMonitorRightComponent } from './position-monitor-right-component/position-monitor-right.component';
 import { positionMonitorInitialState, PositionMonitorReducer } from './position-monitor-redux/position-monitor-reducer';
 import { setDataAction } from './position-monitor-redux/position-monitor-action';
-import { AlertOutlined, CarOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons';
+import { AlertOutlined, CarOutlined, LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons';
 import { PositionMonitorDrawerLeftComponent } from './position-monitor-drawer-left-component/position-monitor-drawer-left.component';
 import { Badge, Spin, Button } from 'antd';
 import Avatar from 'antd/lib/avatar/avatar';
@@ -61,9 +61,9 @@ export default function PositionMonitorComponent() {
               <a className={`${$auth['queryAllOrganization'] ? '' : 'no-auth-link'}`}>展开机构列表</a>
             )}
             {leftContentVisible ? (
-              <LeftOutlined style={{ fontSize: '20px' }} />
+              <LeftCircleOutlined style={{ fontSize: '20px', color: 'white' }} />
             ) : (
-              <RightOutlined style={{ fontSize: '20px' }} />
+              <RightCircleOutlined style={{ fontSize: '20px', color: 'white' }} />
             )}
           </div>
         )}

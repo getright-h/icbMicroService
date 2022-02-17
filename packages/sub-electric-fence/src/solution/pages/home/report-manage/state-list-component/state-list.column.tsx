@@ -1,7 +1,5 @@
-import * as React from 'react';
-import { Divider } from 'antd';
-import { ModalType } from './state-list.interface';
 import { DeviceStateEnum } from '~/solution/shared/enums/home.enum';
+import { REPORT_UTIL } from '~/solution/shared/util/report-manage.util';
 export function StateListColumn(callbackAction: Function) {
   const render = (text: any) => (text ? text : '-');
   return [
@@ -17,9 +15,15 @@ export function StateListColumn(callbackAction: Function) {
       render
     },
     {
+      title: '车架号',
+      dataIndex: 'vinNo',
+      // width: 180,
+      render
+    },
+    {
       title: '设备号',
       dataIndex: 'deviceCode',
-      width: 150,
+      // width: 150,
       render
     },
     {
@@ -61,6 +65,13 @@ export function StateListColumn(callbackAction: Function) {
       ellipsis: true,
       width: 400,
       render
+    },
+    {
+      title: '经纬度',
+      dataIndex: 'lnglat',
+      ellipsis: true,
+      width: 160,
+      render: (text: any, data: any) => REPORT_UTIL.linkToMapWithLnglat(data.longitude, data.latitude)
     }
   ];
 }

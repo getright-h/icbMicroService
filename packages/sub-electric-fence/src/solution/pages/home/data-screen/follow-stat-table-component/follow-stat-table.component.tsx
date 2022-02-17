@@ -2,8 +2,10 @@ import * as React from 'react';
 import style from './follow-stat-table.component.less';
 import { useFollowStatTableStore } from './follow-stat-table.component.store';
 import { IFollowStatTableProps } from './follow-stat-table.interface';
+import { of } from 'rxjs';
+import VirtureListComponent from '../../../../../framework/components/virture-list-component/virture-list.component';
 export default function FollowStatTableComponent(props: IFollowStatTableProps) {
-  const { state, scrollRef } = useFollowStatTableStore(props);
+  const { state } = useFollowStatTableStore(props);
   const { alarmStatistic, scrollData } = state;
   const { alarmTotal, followedTotal, followingTotal, unFollowTotal } = alarmStatistic;
   return (
@@ -17,17 +19,19 @@ export default function FollowStatTableComponent(props: IFollowStatTableProps) {
           <li className={style.cell}>跟进完成</li>
         </ul>
         <div className={style.followStatBody}>
-          <ul className={style.followStatList} ref={scrollRef}>
+          <ul className={style.followStatList}>
             {!!scrollData.length ? (
-              scrollData.map(item => (
-                <li key={item.id} className={style.row}>
-                  <span className={style.cell}>{item.organizationName}</span>
-                  <span className={style.cell}>{item.total}</span>
-                  <span className={style.cell}>{item.following}</span>
-                  <span className={style.cell}>{item.unFollow}</span>
-                  <span className={style.cell}>{item.followed}</span>
-                </li>
-              ))
+              <VirtureListComponent data={scrollData} options={{ itemHeight: 36 }} style={{ height: 4 * 36 }}>
+                {(item: any, index: number) => (
+                  <li key={index} style={{ background: index % 2 ? '#1f3172' : '#2c3f86' }}>
+                    <span className={style.cell}>{item.organizationName}</span>
+                    <span className={style.cell}>{item.total}</span>
+                    <span className={style.cell}>{item.following}</span>
+                    <span className={style.cell}>{item.unFollow}</span>
+                    <span className={style.cell}>{item.followed}</span>
+                  </li>
+                )}
+              </VirtureListComponent>
             ) : (
               <div className={style.noData}>
                 <span>NO DATA</span>

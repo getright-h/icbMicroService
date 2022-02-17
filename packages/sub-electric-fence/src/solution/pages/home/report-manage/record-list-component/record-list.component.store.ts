@@ -1,4 +1,4 @@
-import { IDwellListState, ModalType } from './record-list.interface';
+import { IRecordListState, ModalType } from './record-list.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form } from 'antd';
 import { OrderReportService } from '~/solution/model/services/report-order.service';
@@ -7,8 +7,8 @@ import { IMAP } from '~shared/util/map.util';
 import moment from 'moment';
 import { setState } from '~/framework/microAPP/appStore';
 
-export function useDwellListStore() {
-  const { state, setStateWrap, getState } = useStateStore(new IDwellListState());
+export function useRecordListStore() {
+  const { state, setStateWrap, getState } = useStateStore(new IRecordListState());
   const orderReportService: OrderReportService = new OrderReportService();
   const [searchForm] = Form.useForm();
 

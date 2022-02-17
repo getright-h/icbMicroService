@@ -1,12 +1,12 @@
 import { IStateListState, ModalType } from './state-list.interface';
 import { useStateStore } from '~/framework/aop/hooks/use-base-store';
 import { Form } from 'antd';
-import { AlarmManageService } from '~/solution/model/services/alarm-manage.service';
 import { useEffect } from 'react';
 import { OrderReportService } from '~/solution/model/services/report-order.service';
 import { setState } from '~/framework/microAPP/appStore';
+import moment from 'moment';
 
-export function useDirectiveListStore() {
+export function useStateListStore() {
   const { state, setStateWrap, getState } = useStateStore(new IStateListState());
   const orderReportService: OrderReportService = new OrderReportService();
   const [searchForm] = Form.useForm();
@@ -17,10 +17,12 @@ export function useDirectiveListStore() {
 
   function getTableData() {
     setStateWrap({ isLoading: true });
-    const { pageIndex, pageSize } = getState();
+    const { pageIndex, pageSize, timeInfo } = getState();
     orderReportService
       .queryMonitorDeviceStatusPagedList({
         ...searchForm.getFieldsValue(),
+        beginTime: timeInfo[0] ? moment(timeInfo[0]).valueOf() : 0,
+        endTime: timeInfo[1] ? moment(timeInfo[1]).valueOf() : 0,
         index: pageIndex,
         size: pageSize
       })
@@ -44,8 +46,16 @@ export function useDirectiveListStore() {
     searchClick();
   }
 
+  function getCurrentInfo(data: any, type: string) {
+    if (type == 'time') {
+      setStateWrap({ timeInfo: !!data[0] ? data : [] });
+    }
+    // if (type == 'device') {
+    //   setStateWrap({ canExport: !!searchForm.getFieldValue('deviceCode') });
+    // }
+  }
+
   function getCurrentSelectInfo(data: any, type: string) {
-    // console.log(data, type);
     if (type == 'organizationId') {
       const { organizationId } = data;
       searchForm.setFieldsValue({ organizationId: organizationId });
@@ -77,10 +87,12 @@ export function useDirectiveListStore() {
   }
 
   function handleExport(value: string) {
-    const { pageIndex, pageSize } = getState();
+    const { pageIndex, pageSize, timeInfo } = getState();
     orderReportService
       .exportMonitorDeviceStatusList({
         ...searchForm.getFieldsValue(),
+        beginTime: timeInfo[0] ? moment(timeInfo[0]).valueOf() : 0,
+        endTime: timeInfo[1] ? moment(timeInfo[1]).valueOf() : 0,
         index: pageIndex,
         size: pageSize,
         name: value
@@ -111,6 +123,7 @@ export function useDirectiveListStore() {
     handleModalCancel,
     getCurrentSelectInfo,
     handleExport,
-    handleExportVisible
+    handleExportVisible,
+    getCurrentInfo
   };
 }

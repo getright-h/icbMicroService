@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { formatStayTime } from './permanent-list.util';
+import { REPORT_UTIL } from '~/solution/shared/util/report-manage.util';
 
-export function AlarmParameterColumn(sortInfo: { key: string; type: string }, callbackAction: Function) {
+export function PermanentListColumn(sortInfo: { key: string; type: string }, callbackAction: Function) {
   const render = (text: any) => (text ? text : '-');
 
   return [
@@ -20,6 +20,13 @@ export function AlarmParameterColumn(sortInfo: { key: string; type: string }, ca
       title: '设备号',
       dataIndex: 'deviceCode',
       render: (text: any) => <span>{text || '未绑定'}</span>
+    },
+    {
+      title: '经纬度',
+      dataIndex: 'lnglat',
+      ellipsis: true,
+      width: 160,
+      render: (text: any, data: any) => REPORT_UTIL.linkToMapWithLnglat(data.longitude, data.latitude)
     },
     {
       title: '常驻地点',

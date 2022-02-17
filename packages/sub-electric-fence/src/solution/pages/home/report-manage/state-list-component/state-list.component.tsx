@@ -4,15 +4,16 @@ import {
   InputExportFilenameComponent,
   ISelectLoadingComponent,
   ITableComponent,
-  TablePageTelComponent
+  TablePageTelComponent,
+  TimePickerComponent
 } from '~/solution/components/component.module';
 import { GlobalContext } from '~/solution/context/global/global.provider';
 import { DeviceStateConst } from '~/solution/shared/enums/home.enum';
 import { StateListColumn } from './state-list.column';
 
-import { useDirectiveListStore } from './state-list.component.store';
+import { useStateListStore } from './state-list.component.store';
 
-export default function DirectiveListComponent() {
+export default function StateListComponent() {
   const {
     state,
     searchForm,
@@ -22,9 +23,10 @@ export default function DirectiveListComponent() {
     initSearchForm,
     getCurrentSelectInfo,
     handleExport,
-    handleExportVisible
-  } = useDirectiveListStore();
-  const { isLoading, tableData, total, pageIndex, pageSize } = state;
+    handleExportVisible,
+    getCurrentInfo
+  } = useStateListStore();
+  const { isLoading, tableData, total, pageIndex, pageSize, timeInfo } = state;
   const { gState } = React.useContext(GlobalContext);
 
   const queryOrgList = ISelectLoadingComponent({
@@ -69,6 +71,15 @@ export default function DirectiveListComponent() {
               {queryOrgList}
             </Form.Item>
           </Col>
+          <Col span={12}>
+            <Form.Item label="时间范围" name="time" labelCol={{ span: 4 }}>
+              <TimePickerComponent
+                timeInfo={timeInfo}
+                pickerType="dateTimeRange"
+                getDateTimeInfo={(time: any, other: any) => getCurrentInfo(time, 'time')}
+              />
+            </Form.Item>
+          </Col>
         </Row>
       </Form>
     );
@@ -96,6 +107,7 @@ export default function DirectiveListComponent() {
         data={tableData}
         total={total}
         isPagination={true}
+        scroll={{ x: 'max-content' }}
         changeTablePageIndex={(pageIndex: number, pageSize: number) => changeTablePageIndex(pageIndex, pageSize)}
       ></ITableComponent>
     );
