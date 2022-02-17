@@ -196,16 +196,15 @@ export class OrderReportService implements OrderReportManage {
   }
 
   queryMonitorDeviceStatusPagedList(params: QueryMonitorDeviceStatusInput): Observable<any> {
-    return this.requestService.post(QUERY_MONITOR_DEVICE_STATUS_PAGEDLIST, params);
-    //   .pipe(
-    //   switchMap(async data => {
-    //     const dataList = await REPORT_UTIL.formatAddress(data.dataList);
-    //     dataList.map((item, index) => {
-    //       item.id = item.id.slice(0, -1) + index;
-    //     });
-    //     return { ...data, dataList };
-    //   })
-    // );
+    return this.requestService.post(QUERY_MONITOR_DEVICE_STATUS_PAGEDLIST, params).pipe(
+      switchMap(async (data: any) => {
+        let dataList: any = [];
+        if (Array.isArray(data.dataList)) {
+          dataList = await REPORT_UTIL.formatAddress(data.dataList);
+        }
+        return { ...data, dataList };
+      })
+    );
   }
 
   queryMonitorDeviceOfflinePagedList(params: QueryMonitorDeviceOfflineInput): Observable<any> {
