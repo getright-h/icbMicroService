@@ -56,6 +56,7 @@ export class WarehouseListService extends WarehouseListDTO {
 
   // 获取子集组织
   queryStoreOrganizationListSub(params: {
+    currentOrganCode: string;
     parentId: string;
     index: number;
     size: number;
