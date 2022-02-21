@@ -116,6 +116,7 @@ export function useOrganizationControllerStore(props: IOrganizationControllerPro
    */
   function queryStoreOrganizationListSub(parentId: string, treeNode: EventDataNode | any, resolve: Function) {
     const params = {
+      currentOrganCode: treeNode.code,
       parentId,
       index: 1,
       size: 10

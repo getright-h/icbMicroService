@@ -59,6 +59,7 @@ export class OrganizationManageService extends OrganizationManageDTO {
 
   // 获取GPS子集组织
   queryGpsOrganizationListSub(params: {
+    currentOrganCode: string;
     parentId: string;
     index: number;
     size: number;
