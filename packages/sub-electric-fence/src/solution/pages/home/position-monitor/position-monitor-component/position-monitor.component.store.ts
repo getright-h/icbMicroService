@@ -49,7 +49,7 @@ export function usePositionMonitorStore(dispatch: Dispatch<any>, positionMonitor
         }
       });
     }
-    queryMonitorAlarmInfoPagedList();
+    // queryMonitorAlarmInfoPagedList();
   }
 
   // 暂停计时
