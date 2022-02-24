@@ -5,6 +5,7 @@ import registerMainApp from '~/framework/microAPP/appRegister';
 import { useHistory, useLocation } from 'react-router-dom';
 import { ShowNotification } from '~/framework/util/common';
 import { MenuListService } from '~/framework/aop/strategy/menuListService';
+import { StorageUtil } from '~/framework/util/storage';
 export function useHomeStore() {
   const menuListService = useService(MenuListService);
   const { state, setStateWrap } = useStateStore(new IHomeProps());
@@ -64,7 +65,11 @@ export function useHomeStore() {
       setStateWrap({ userInfo: res.userInfo });
       return { ...res.userInfo, auth: parsePrivilegeJSON(menuList) };
     } catch (error) {
-      ShowNotification.error(error);
+      // ShowNotification.error(error);
+      console.error(error);
+      StorageUtil.removeLocalStorage('token');
+      history.replace('/login');
+      location.reload();
     }
   }
 
