@@ -61,10 +61,17 @@ export const REPORT_UTIL = {
                 ii++;
               }
             });
+          },
+          (err: any) => {
+            // ShowNotification.error(err);
+            let ii = 0;
+            dataList.forEach((o, i) => {
+              if (!errIndexArr.includes(i)) {
+                o.address = err;
+                ii++;
+              }
+            });
           }
-          // (err: any) => {
-          //   ShowNotification.error(err);
-          // }
         );
       }
       resolve(dataList);
