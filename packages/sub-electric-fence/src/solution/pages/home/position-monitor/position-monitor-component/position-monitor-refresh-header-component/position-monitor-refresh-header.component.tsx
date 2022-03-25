@@ -13,7 +13,7 @@ export default React.memo((props: IPositionMonitorRefreshHeaderProps) => {
       <h1>定位监控</h1>
       {refreshTime && (
         <div className={style.refreshContent}>
-          <span className={style.refreshTime}>{refreshTime}s后刷新</span>
+          {/* <span className={style.refreshTime}>{refreshTime}s后刷新</span> */}
           <Button onClick={resetRefresh}>手动刷新</Button>
         </div>
       )}

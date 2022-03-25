@@ -16,9 +16,9 @@ export function usePositionMonitorRefreshHeaderStore(props: IPositionMonitorRefr
 
   useEffect(() => {
     // 用来暂停时间
-    if (!stopTime) {
-      setRefreshTime();
-    }
+    // if (!stopTime) {
+    //   setRefreshTime();
+    // }
 
     return () => {
       clearInterval(setIntervalInfo.current);
