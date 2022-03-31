@@ -117,7 +117,10 @@ export const IMAP = {
         alert('当前环境不支持 Canvas！');
         return;
       }
-      const ref = new PathSimplifier({
+      if (window['pathSimplifierIns']) {
+        window['pathSimplifierIns'].setData([]);
+      }
+      const pathSimplifierIns = new PathSimplifier({
         zIndex: 100,
         map: map, //所属的地图实例
         clickToSelectPath: false,
@@ -152,14 +155,16 @@ export const IMAP = {
         }
       });
 
-      ref.setData([
+      window['pathSimplifierIns'] = pathSimplifierIns;
+
+      pathSimplifierIns.setData([
         {
           name: 'carline',
           path: lineArr
         }
       ]);
 
-      return ref;
+      return pathSimplifierIns;
     });
   },
   showStopPointInfo(
