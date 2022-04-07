@@ -80,5 +80,11 @@ export const reportManageRoutes: IRoute[] = [
     component: ROUTERS.historyTrack,
     lazyload: true,
     exact: true
+  },
+  {
+    path: `${MODULE_PATH}/deviceQuery`,
+    component: ROUTERS.deviceQuery,
+    lazyload: true,
+    exact: true
   }
 ];

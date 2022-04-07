@@ -11,7 +11,8 @@ import {
   QueryMonitorDeviceOfflineInput,
   QueryHistoryPagedListReqType,
   QueryHistoryPagedListResType,
-  HistoryExportReqType
+  HistoryExportReqType,
+  DeviceAnalyseReqType
 } from '../dto/report-order.dto';
 import moment from 'moment';
 import { RequestService } from '~/framework/util/base-http/request.service';
@@ -40,6 +41,7 @@ const EXPORT_MONITOR_ALARM_STATISTICS_LIST = 'dataProcess/monitorAlarmStatistics
 const EXPORT_RESIDENT_STATISTICS_LIST = 'dataProcess/residentStatisticsExport';
 const EXPORT_DEVICE_STATUS_LIST = 'dataProcess/deviceStatusExport';
 const HISTORY_EXPORT = 'dataProcess/historyExport'; //历史轨迹数据导出
+const DEVICE_QUERY = 'gps/location/device/queryDeviceAnalyse'; // 设备内容查询
 
 @DepUtil.Injectable()
 export class OrderReportService implements OrderReportManage {
@@ -257,5 +259,10 @@ export class OrderReportService implements OrderReportManage {
   // 历史轨迹数据导出
   exportHistoryPagedList(params: HistoryExportReqType): Observable<any> {
     return this.requestService.post(HISTORY_EXPORT, params);
+  }
+
+  // 设备内容查询
+  queryDeviceAnalyse(params: DeviceAnalyseReqType): Observable<string> {
+    return this.requestService.get(DEVICE_QUERY, params);
   }
 }

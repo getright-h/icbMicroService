@@ -531,6 +531,13 @@ export function fetchChildAppsConfig() {
                 lazyload: true,
                 exact: true,
                 componentUrl: 'historyTrack' //对应子应用的组件名
+              },
+              {
+                path: 'deviceQuery',
+                title: '设备内容查询服务',
+                lazyload: true,
+                exact: true,
+                componentUrl: 'deviceQuery' //对应子应用的组件名
               }
             ]
           }

@@ -144,3 +144,9 @@ export interface HistoryExportReqType {
   beginTime: number;
   endTime: number;
 }
+
+export interface DeviceAnalyseReqType {
+  deviceCode: string;
+  beginTime: number;
+  endTime: number;
+}
