@@ -10,16 +10,8 @@ export function useDeviceQueryStore() {
   const orderReportService: OrderReportService = new OrderReportService();
 
   function formatTime(time: moment.MomentInput) {
-    const begin = time?.[0]
-      ? moment(time[0])
-          .startOf('day')
-          .valueOf()
-      : undefined;
-    const end = time?.[1]
-      ? moment(time[1])
-          .endOf('day')
-          .valueOf()
-      : undefined;
+    const begin = time?.[0] ? moment(time[0]).valueOf() : undefined;
+    const end = time?.[1] ? moment(time[1]).valueOf() : undefined;
     return [begin, end];
   }
 

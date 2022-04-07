@@ -23,7 +23,7 @@ export default function DeviceQueryComponent() {
           </Col>
           <Col span={11}>
             <Form.Item label="时间范围" name="time" rules={[{ required: true, message: '请选择时间' }]}>
-              <DatePicker.RangePicker />
+              <DatePicker.RangePicker showTime />
             </Form.Item>
           </Col>
         </Row>
