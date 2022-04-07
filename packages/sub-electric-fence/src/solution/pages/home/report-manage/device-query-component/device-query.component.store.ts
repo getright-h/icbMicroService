@@ -22,15 +22,20 @@ export function useDeviceQueryStore() {
       : undefined;
     return [begin, end];
   }
-  //14091113085
+
   function searchClick() {
     searchForm.validateFields().then(values => {
+      setStateWrap({ isLoading: true });
       const { time, deviceCode } = values;
       const [beginTime, endTime] = formatTime(time);
-      orderReportService.queryDeviceAnalyse({ deviceCode, beginTime, endTime }).subscribe(res => {
-        console.log('res===>', res);
-        setStateWrap({ content: res });
-      });
+      orderReportService.queryDeviceAnalyse({ deviceCode, beginTime, endTime }).subscribe(
+        res => {
+          setStateWrap({ content: res, isLoading: false });
+        },
+        err => {
+          setStateWrap({ isLoading: false });
+        }
+      );
     });
   }
 

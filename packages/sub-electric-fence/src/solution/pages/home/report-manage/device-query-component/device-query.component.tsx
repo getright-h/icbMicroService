@@ -1,6 +1,6 @@
 import { Button, Col, DatePicker, Form, Input, Row } from 'antd';
 import * as React from 'react';
-import { TablePageTelComponent, TimePickerComponent } from '~/solution/components/component.module';
+import { TablePageTelComponent } from '~/solution/components/component.module';
 import style from './device-query.component.less';
 import { useDeviceQueryStore } from './device-query.component.store';
 
@@ -43,7 +43,7 @@ export default function DeviceQueryComponent() {
   }
 
   function renderMainContent() {
-    const contentList = state.content?.split('\n');
+    const contentList = state.content?.replaceAll('\t', '\u2003\u2003').split('\n');
     return (
       <div className={style.analyse}>
         <div className={style.analyseTitle}>设备内容</div>
