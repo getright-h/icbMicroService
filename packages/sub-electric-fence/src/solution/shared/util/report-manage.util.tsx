@@ -29,23 +29,23 @@ export const REPORT_UTIL = {
     }
   },
 
-  async formatAddress(dataList: any[]): Promise<any[]> {
+  async formatAddress(dataList: any[], lngKey = 'longitude', latKey = 'latitude'): Promise<any[]> {
     return new Promise(async (resolve: any, reject: any) => {
       if (Array.isArray(dataList) && dataList.length > 0) {
         const errIndexArr: number[] = [];
         const lnglats: any[] = [];
         dataList.forEach((o, i) => {
           if (
-            o.longitude == 0 ||
-            o.latitude == 0 ||
-            !new RegExp(REG_LONGITUDE).test(o.longitude) ||
-            !new RegExp(REG_LATITUDE).test(o.latitude)
+            o[lngKey] == 0 ||
+            o[latKey] == 0 ||
+            !new RegExp(REG_LONGITUDE).test(o[lngKey]) ||
+            !new RegExp(REG_LATITUDE).test(o[latKey])
           ) {
             errIndexArr.push(i);
           } else {
-            const format = IMAP.initLonlat(o.longitude, o.latitude);
-            o.longitude = format[0];
-            o.latitude = format[1];
+            const format = IMAP.initLonlat(o[lngKey], o[latKey]);
+            o[lngKey] = format[0];
+            o[latKey] = format[1];
             lnglats.push(format);
           }
         });

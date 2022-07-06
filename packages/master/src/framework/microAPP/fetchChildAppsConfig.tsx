@@ -419,6 +419,13 @@ export function fetchChildAppsConfig() {
                 lazyload: true,
                 exact: true,
                 componentUrl: 'MonitoringObjectComponent' //对应子应用的组件名
+              },
+              {
+                path: 'areaSearchCar',
+                title: '区域查车',
+                lazyload: true,
+                exact: true,
+                componentUrl: 'areaSearchCar' //对应子应用的组件名
               }
             ]
           },

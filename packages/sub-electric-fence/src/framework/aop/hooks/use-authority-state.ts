@@ -38,7 +38,7 @@ export function useAuthorityState(): {
       $auth[key] = true;
     }
   }
-  console.log('$auth', $auth);
+  // console.log('$auth', $auth);
   return { $auth };
 }
 /**

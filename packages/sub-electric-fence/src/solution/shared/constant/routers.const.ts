@@ -51,5 +51,7 @@ export const ROUTERS = {
   userActionReport: () => import('~/solution/pages/user-action-report-component/user-action-report.component'),
   dataScreen: () => import('~/solution/pages/home/data-screen/data-screen.component'),
   historyTrack: () => import('~/solution/pages/home/report-manage/history-track-component/history-track.component'),
-  deviceQuery: () => import('~/solution/pages/home/report-manage/device-query-component/device-query.component')
+  deviceQuery: () => import('~/solution/pages/home/report-manage/device-query-component/device-query.component'),
+  areaSearchCar: () =>
+    import('~/solution/pages/home/electric-fence-manage-component/area-search-car-component/area-search-car.component')
 };

@@ -83,6 +83,28 @@ interface Polyline {
   lat: number;
 }
 
+export interface AreaVehicleReqType {
+  index: number;
+  size: number;
+  beginTime: string;
+  endTime: string;
+  polyline: Polyline[];
+}
+
+export interface AreaVehicleListData {
+  dc: string;
+  dt: string;
+  sp: number;
+  dr: number;
+  lg: number;
+  lt: number;
+  sn: number;
+  ml: number;
+  vt: number;
+  ap: boolean;
+  time: string;
+}
+
 export interface FenceManageDTO {
     fenceCreate(params: FenceManageCreateParamsModal): Observable<number>;
     fenceEdit(params: FenceManageEditParamsModal): Observable<number>;

@@ -14,7 +14,7 @@ export default function SelectAddressComponent(props: ISelectAddressProps) {
       <>
         <Select
           value={provinces && province}
-          style={{ width: 100, marginLeft: '-80px' }}
+          style={{ width: 100 }}
           placeholder="请输入省"
           allowClear
           onChange={adcode => getAddressInfo(ADDRESSINFO.CITY, adcode, ADDRESSINFO.PROVINCE)}

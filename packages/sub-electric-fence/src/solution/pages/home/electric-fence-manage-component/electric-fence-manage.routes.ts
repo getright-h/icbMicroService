@@ -18,5 +18,11 @@ export const electricFenceManageRoutes: IRoute[] = [
     path: `${MODULE_PATH}/monitoringObject`,
     component: ROUTERS.MonitoringObjectComponent,
     lazyload: true
+  },
+  {
+    path: `${MODULE_PATH}/areaSearchCar`,
+    component: ROUTERS.areaSearchCar,
+    lazyload: true,
+    exact: true
   }
 ];
