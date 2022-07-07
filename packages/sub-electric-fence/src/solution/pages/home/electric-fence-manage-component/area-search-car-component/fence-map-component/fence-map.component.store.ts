@@ -12,6 +12,7 @@ export function useFenceMapStore(props: IFenceMapProps) {
   const { state, setStateWrap } = useStateStore(new IFenceMapState());
   const map: any = useRef();
   const centerLocation = useRef([116.433322, 39.900256]);
+  const centerMarker = useRef();
   const deviceMarkers = useRef<any[]>();
   const infoWindowInfo = useRef<any>();
   const { fenceType, onValueChange, districtAdcode } = props;
@@ -48,6 +49,9 @@ export function useFenceMapStore(props: IFenceMapProps) {
     switch (fenceType) {
       case FENCE_TYPE_ENUM.POLYGON:
         refinePolygon();
+        drawCenterMarker(map.current, circleLocation, (marker: any) => {
+          centerMarker.current = marker;
+        });
         break;
       case FENCE_TYPE_ENUM.ADMINISTRATIVEDIVISION:
         drawPolylineByDistrictInfo();
@@ -55,6 +59,9 @@ export function useFenceMapStore(props: IFenceMapProps) {
       default:
         break;
     }
+    return () => {
+      centerMarker.current && map.current.remove(centerMarker.current);
+    };
   }, [fenceType, districtAdcode, circleLocation]);
 
   function initMap() {
@@ -65,6 +72,23 @@ export function useFenceMapStore(props: IFenceMapProps) {
 
   function setCurrentCenter(lgnlat: [number, number]) {
     centerLocation.current = lgnlat;
+  }
+
+  function drawCenterMarker(map: any, position: number[], callback: any): any {
+    const marker = new AMap.Marker({
+      icon: new AMap.Icon({
+        // 图标尺寸
+        size: new AMap.Size(20, 30),
+        // 图标的取图地址
+        image: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png',
+        // 图标所用图片大小
+        imageSize: new AMap.Size(20, 30)
+      }),
+      position
+      // offset: new AMap.Pixel(-13, -30)
+    });
+    marker.setMap(map);
+    callback(marker);
   }
 
   // 初始化多边形
