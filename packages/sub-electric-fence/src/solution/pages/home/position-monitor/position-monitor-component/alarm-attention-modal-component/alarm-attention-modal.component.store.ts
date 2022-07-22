@@ -8,12 +8,12 @@ export function useAlarmAttentionModalStore() {
   const { index } = state;
   const positionMonitorService: PositionMonitorService = useService(PositionMonitorService);
   useEffect(() => {
-    queryMonitorAlarmInfoPagedList();
+    // queryMonitorAlarmInfoPagedList();
   }, []);
 
   function changeTablePageIndex(index: number, pageSize: number) {
     setStateWrap({ index, size: pageSize });
-    queryMonitorAlarmInfoPagedList();
+    // queryMonitorAlarmInfoPagedList();
   }
   function queryMonitorAlarmInfoPagedList() {
     setStateWrap({

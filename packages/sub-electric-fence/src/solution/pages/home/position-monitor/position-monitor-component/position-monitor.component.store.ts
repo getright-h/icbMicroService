@@ -20,7 +20,7 @@ export function usePositionMonitorStore(dispatch: Dispatch<any>, positionMonitor
     });
   }
   useEffect(() => {
-    queryMonitorAlarmInfoPagedList();
+    // queryMonitorAlarmInfoPagedList();
   }, []);
 
   useEffect(() => {
