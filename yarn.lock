@@ -10137,6 +10137,13 @@ viewerjs@^1.10.0:
   resolved "http://47.109.82.188:4873/viewerjs/-/viewerjs-1.10.1.tgz#07499ed043d0a29e3002b90f55c5b228bd1a742c"
   integrity sha1-B0me0EPQop4wArkPVcWyKL0adCw=
 
+vist@^0.3.0:
+  version "0.3.0"
+  resolved "http://47.109.82.188:4873/vist/-/vist-0.3.0.tgz#d14e0caf198002bf4a51d36e473ff783cb8a01cf"
+  integrity sha1-0U4MrxmAAr9KUdNuRz/3g8uKAc8=
+  dependencies:
+    rxjs "^6.5.3"
+
 warning@^4.0.1, warning@^4.0.3:
   version "4.0.3"
   resolved "http://47.109.82.188:4873/warning/-/warning-4.0.3.tgz#16e9e077eb8a86d6af7d64aa1e05fd85b4678ca3"

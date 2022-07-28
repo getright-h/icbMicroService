@@ -295,6 +295,16 @@ export function fetchChildAppsConfig() {
             exact: true,
             activeRule: `${MODULE_PATH}/voucher/manage`, // 对应的子应用的路径
             componentUrl: 'voucherManage' //对应子应用的组件名
+          },
+          {
+            path: 'dataPushLog',
+            title: '数据推送日志',
+            icon: 'key', // 图标
+            defaultMountApp: false, // 是否默认启动当前第一个页面
+            lazyload: true,
+            exact: true,
+            activeRule: `${MODULE_PATH}/dataPushLog`, // 对应的子应用的路径
+            componentUrl: 'dataPushLogComponent' //对应子应用的组件名
           }
         ]
       },
