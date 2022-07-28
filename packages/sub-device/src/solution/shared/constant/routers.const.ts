@@ -72,5 +72,6 @@ export const ROUTERS = {
   approvalTemplateFormModal: () =>
     import(
       '~/solution/pages/home/approval-manage/approval-manage-component/approval-template-form-modal-component/approval-template-form-modal.component'
-    )
+    ),
+  dataPushLogComponent: () => import('~/solution/pages/home/data-push-log-component/data-push-log.component')
 };

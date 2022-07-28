@@ -43,6 +43,8 @@ class RequestService {
       returnInfo = process.env.VEHICLE;
     } else if (!!~url.indexOf('gps/')) {
       returnInfo = process.env.GPS;
+    } else if (!!~url.indexOf('dataQueue/')) {
+      returnInfo = process.env.DataQueue;
     } else {
       returnInfo = process.env.MAIN;
     }

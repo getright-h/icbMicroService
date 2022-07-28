@@ -41,5 +41,10 @@ export const homeRoutes: IRoute[] = [
     path: `${MODULE_PATH}/customer`,
     component: ROUTERS.customerManageModule,
     lazyload: true
+  },
+  {
+    path: `${MODULE_PATH}/dataPushLog`,
+    component: ROUTERS.dataPushLogComponent,
+    lazyload: true
   }
 ];

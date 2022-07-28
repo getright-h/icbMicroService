@@ -6,11 +6,13 @@ import {
   OwnerListResponseResult,
   SetOwnerRequestParam,
   SetVehicleRequestParam,
+  SynchronLogPageListReqType,
   VehicleDetailResponse,
   VehicleLayout,
   VehicleListRequestParam,
   VehicleListResponseResult,
-  VehicletypeResType
+  VehicletypeResType,
+  SynchronLogPageListResType
 } from '../dto/customer-manage.dto';
 import { RequestService } from '~/framework/util/base-http/request.service';
 import { Observable } from 'rxjs';
@@ -39,6 +41,8 @@ const VEHICLE_FACTORY = 'vehicle/manage/vehicleFactory';
 const VEHICLE_VERSION = 'vehicle/manage/vehicleVersion';
 const VEHICLE_CONFIG = 'vehicle/manage/vehicleConfig';
 const VEHICLE_TYPE = 'vehicle/manage/vehicletype';
+
+const SYNCHRON_LOG_PAGE_LIST = 'dataQueue/SynchronLogPageList'; //
 
 @DepUtil.Injectable()
 export class CustomerManageService extends CustomerManageDTO {
@@ -116,5 +120,12 @@ export class CustomerManageService extends CustomerManageDTO {
   // 车辆类型
   getVehicleType(): Observable<{ total: number; data: VehicletypeResType[] }> {
     return this.requestService.get(VEHICLE_TYPE);
+  }
+
+  //
+  synchronLogPageList(
+    params: SynchronLogPageListReqType
+  ): Observable<{ total: number; dataList: SynchronLogPageListResType[] }> {
+    return this.requestService.post(SYNCHRON_LOG_PAGE_LIST, params);
   }
 }

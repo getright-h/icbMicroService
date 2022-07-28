@@ -20,6 +20,103 @@ export abstract class CustomerManageDTO {
   abstract deviceUnbind(params: DeviceUnbindRequestParam): Observable<boolean>;
 }
 
+export interface SynchronLogPageListReqType {
+  index: number;
+  size: number;
+  vinNo: string;
+  mobile: string;
+  organizationId: string;
+  financeId: string;
+}
+
+export interface SynchronLogPageListResType {
+  id: string;
+  originName: string;
+  content: string;
+  contentList: ContentList;
+  vehicleId: string;
+  vinNo: string;
+  ownerId: string;
+  name: string;
+  mobile: string;
+  createTime: string;
+  isSendMsg: boolean;
+  errorMsg: string;
+}
+export interface ContentList {
+  socialCreditCode: string;
+  vehicleInput: VehicleInput;
+  ownerInput: OwnerInput;
+  deviceCodeList: DeviceCodeList[];
+  dispatch: Dispatch;
+}
+export interface Dispatch {
+  operateTime: string;
+  serverBeginTime: string;
+  serverEndTime: string;
+  remark: string;
+  address: string;
+  installTypeFormat: string;
+  installerName: string;
+  vehicleImageList: VehicleImageList[];
+  dispatchDeviceList: DispatchDeviceList[];
+}
+export interface DispatchDeviceList {
+  deviceCode: string;
+  image: string;
+  description: string;
+}
+export interface VehicleImageList {
+  image: string;
+  description: string;
+}
+export interface DeviceCodeList {
+  operation: number;
+  deviceTypeId: string;
+  deviceCode: string;
+  deviceSim: string;
+  deviceTypeName: string;
+  replacedDeviceCode: string;
+  replacedDeviceTypeId: string;
+  replacedDeviceSim: string;
+}
+export interface OwnerInput {
+  isEdit: boolean;
+  id: string;
+  name: string;
+  mobile: string;
+  sex: number;
+}
+export interface VehicleInput {
+  ownerId: string;
+  isEdit: boolean;
+  isReplace: boolean;
+  replaceId: string;
+  id: string;
+  vinNo: string;
+  plateNo: string;
+  engineNo: string;
+  brandId: string;
+  brandName: string;
+  factoryId: string;
+  factoryName: string;
+  versionId: string;
+  versionName: string;
+  configId: string;
+  configName: string;
+  color: string;
+  buyTime: string;
+  distributorId: string;
+  distributorName: string;
+  distributorCode: string;
+  financeId: string;
+  financeName: string;
+  imageList: string[];
+  serverBeginTime: string;
+  serverTime: number;
+  type: number;
+}
+
 export interface OwnerListRequestParam {
   index: number;
   size: number;
