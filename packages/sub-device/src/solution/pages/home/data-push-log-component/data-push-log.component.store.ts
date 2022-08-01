@@ -4,7 +4,6 @@ import { Form } from 'antd';
 import { CustomerManageService } from '~/solution/model/services/customer-manage.service';
 import { ModalType } from '~/solution/shared/constant/common.const';
 import { useEffect } from 'react';
-import { ContentList } from '~/solution/model/dto/customer-manage.dto';
 import { SynchronLogPageListResType } from '~/solution/model/dto/customer-manage.dto';
 export function useDataPushLogStore() {
   const { state, setStateWrap, getState } = useStateStore(new IDataPushLogState());

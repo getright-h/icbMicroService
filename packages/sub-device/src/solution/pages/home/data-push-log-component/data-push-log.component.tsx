@@ -29,7 +29,7 @@ export default function DataPushLogComponent() {
       <Form {...layout} form={searchForm} style={{ width: '90%' }}>
         <Row gutter={24}>
           <Col span={8}>
-            <Form.Item name="name" label="车架号">
+            <Form.Item name="vinNo" label="车架号">
               <Input allowClear placeholder="请输入车架号"></Input>
             </Form.Item>
           </Col>
