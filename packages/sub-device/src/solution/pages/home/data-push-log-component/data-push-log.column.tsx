@@ -47,9 +47,32 @@ export function dataPushColumns(callbackAction: Function) {
       fixed: 'right' as 'right',
       dataIndex: 'action',
       render: (render: any, data: any, index: number) => {
+        const renderLinks: any[] = [
+          {
+            text: '详情',
+            fn: () => callbackAction(ModalType.DETAIL, data),
+            show: true
+          },
+          {
+            text: '推送',
+            fn: () => callbackAction(ModalType.SEND, data),
+            show: data['isSendFinance']
+          }
+        ].filter(o => o.show);
         return (
           <React.Fragment>
-            <a onClick={() => callbackAction(ModalType.DETAIL, data)}>详情</a>
+            {renderLinks?.length
+              ? renderLinks.map((o, i) => {
+                  return (
+                    <React.Fragment key={index + i}>
+                      <a type={o.type} onClick={o.fn}>
+                        {o.text}
+                      </a>
+                      {i < renderLinks.length - 1 ? <Divider type="vertical" /> : undefined}
+                    </React.Fragment>
+                  );
+                })
+              : '无'}
           </React.Fragment>
         );
       }

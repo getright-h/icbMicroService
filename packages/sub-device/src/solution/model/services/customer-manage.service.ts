@@ -43,6 +43,7 @@ const VEHICLE_CONFIG = 'vehicle/manage/vehicleConfig';
 const VEHICLE_TYPE = 'vehicle/manage/vehicletype';
 
 const SYNCHRON_LOG_PAGE_LIST = 'dataQueue/SynchronLogPageList'; //
+const SEND_SYNCHRON_DATA = 'dataQueue/SendSynchronData';
 
 @DepUtil.Injectable()
 export class CustomerManageService extends CustomerManageDTO {
@@ -127,5 +128,8 @@ export class CustomerManageService extends CustomerManageDTO {
     params: SynchronLogPageListReqType
   ): Observable<{ total: number; dataList: SynchronLogPageListResType[] }> {
     return this.requestService.post(SYNCHRON_LOG_PAGE_LIST, params);
+  }
+  sendSynchronData(id: string): Observable<boolean> {
+    return this.requestService.get(SEND_SYNCHRON_DATA, { id });
   }
 }

@@ -340,7 +340,9 @@ export enum ModalType {
   SET_RETURN,
   APPLY_REVOKE,
   // 返回
-  GO_BACK
+  GO_BACK,
+  // 发送消息
+  SEND
 }
 /**************************************数据报表************************************* */
 

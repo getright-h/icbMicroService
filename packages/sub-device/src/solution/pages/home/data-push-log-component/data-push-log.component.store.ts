@@ -1,10 +1,11 @@
 import { IDataPushLogState } from './data-push-log.interface';
 import { useStateStore } from '@fch/fch-tool';
-import { Form } from 'antd';
+import { Form, Modal } from 'antd';
 import { CustomerManageService } from '~/solution/model/services/customer-manage.service';
 import { ModalType } from '~/solution/shared/constant/common.const';
 import { useEffect } from 'react';
 import { SynchronLogPageListResType } from '~/solution/model/dto/customer-manage.dto';
+import { ShowNotification } from '~/framework/util/common';
 export function useDataPushLogStore() {
   const { state, setStateWrap, getState } = useStateStore(new IDataPushLogState());
   const [searchForm] = Form.useForm();
@@ -47,6 +48,9 @@ export function useDataPushLogStore() {
       case ModalType.DETAIL:
         setStateWrap({ detailVisible: true, currentData: data.contentList });
         break;
+      case ModalType.SEND:
+        sendSynchronData(data['id']);
+        break;
       default:
         break;
     }
@@ -65,6 +69,24 @@ export function useDataPushLogStore() {
   function searchClick() {
     setStateWrap({ pageIndex: 1 });
     getTableData();
+  }
+
+  function sendSynchronData(id: string) {
+    Modal.confirm({
+      title: '是否确认发送消息给该金融公司？',
+      onOk: () =>
+        new Promise((resolve, reject) => {
+          customerManageService.sendSynchronData(id).subscribe(
+            (res: any) => {
+              ShowNotification.success('已发送！');
+              resolve(true);
+            },
+            (err: any) => {
+              reject();
+            }
+          );
+        })
+    });
   }
 
   return {
