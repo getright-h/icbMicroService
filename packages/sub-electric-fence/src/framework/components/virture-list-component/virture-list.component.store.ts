@@ -32,6 +32,7 @@ export function useVirtureListStore(props: IVirtureListProps) {
 
   function initAnimation() {
     const len = data.length;
+    console.log('data===>', data);
     if (len >= minLength) {
       virtualListScrollRef.current.animate(
         [{ transform: 'translate3D(0, 0, 0)' }, { transform: `translate3D(0, -${len * itemHeight}px, 0)` }],
@@ -44,11 +45,14 @@ export function useVirtureListStore(props: IVirtureListProps) {
   }
 
   function onScroll() {
-    // 每一次滑动都更新数据有性能浪费的地方所以这里等到切换了firstIndex采取执行下面的更新
+    const len = data.length;
     updateShowData();
-    interval.current = setInterval(() => {
-      updateShowData();
-    }, 1500);
+    if (len >= minLength) {
+      // 每一次滑动都更新数据有性能浪费的地方所以这里等到切换了firstIndex采取执行下面的更新
+      interval.current = setInterval(() => {
+        updateShowData();
+      }, 1500);
+    }
   }
 
   function updateShowData() {
