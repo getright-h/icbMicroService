@@ -11,7 +11,7 @@ declare const AMapUI: any;
 export function useFenceMapStore(props: IFenceMapProps) {
   const { state, setStateWrap } = useStateStore(new IFenceMapState());
   const map: any = useRef();
-  const centerLocation = useRef([116.433322, 39.900256]);
+  const centerLocation = useRef([104.065751, 30.657453]);
   const centerMarker = useRef();
   const deviceMarkers = useRef<any[]>();
   const infoWindowInfo = useRef<any>();
