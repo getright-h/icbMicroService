@@ -18,6 +18,8 @@ function getRootUrl(url: string) {
     returnInfo = process.env.VEHICLE;
   } else if (!!~url.indexOf('dataProcess/')) {
     returnInfo = process.env.REPORT_EXPORT;
+  } else if (!!~url.indexOf('organization/manage/')) {
+    returnInfo = process.env.ORG_API;
   } else {
     returnInfo = process.env.MAIN;
   }

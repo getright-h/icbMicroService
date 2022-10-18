@@ -19,8 +19,8 @@ const QUERY_ORGANIZATION_BY_TYPEID = 'prvilege/common/queryOrganizationByTypeId'
 const QUERY_STORE_ORGANIZATION_LIST_SUB = 'store/manage/queryStoreOrganizationListSub';
 const QUERYSTORE_LIST_BY_ORGANIZATIONID = 'store/manage/queryStoreListByOrganizationId';
 const QUERYSTORE_ORGANIZATION = 'store/manage/queryStoreOrganization';
-const QUERY_GPS_ORGANIZATION = 'gps/manage/queryGpsOrganization';
-const QUERY_GPS_ORGANIZATION_LIST_SUB = 'gps/manage/queryGpsOrganizationListSub';
+const QUERY_GPS_ORGANIZATION = 'organization/manage/queryGpsOrganization';
+const QUERY_GPS_ORGANIZATION_LIST_SUB = 'organization/manage/queryGpsOrganizationListSub';
 export class OrganizationManageService extends OrganizationManageDTO {
   private readonly requestService: RequestService = new RequestService();
   constructor() {
