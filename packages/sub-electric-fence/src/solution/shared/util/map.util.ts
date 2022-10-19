@@ -121,10 +121,12 @@ export const IMAP = {
         window['pathSimplifierIns'].setData([]);
       }
       const pathSimplifierIns = new PathSimplifier({
-        zIndex: 100,
+        zIndex: 10,
         map: map, //所属的地图实例
         clickToSelectPath: false,
         eventSupport: false,
+        keyPointTolerance: 10,
+        eventSupportInvisible: true,
         getPath: function(pathData: any, pathIndex: number) {
           //返回轨迹数据中的节点坐标信息，[AMap.LngLat, AMap.LngLat...] 或者 [[lng|number,lat|number],...]
           return pathData.path;
@@ -151,7 +153,11 @@ export const IMAP = {
           pathLineHoverStyle: {
             strokeStyle: '#7958fa'
           },
-          renderAllPointsIfNumberBelow: 100
+          keyPointStyle: {
+            radius: 5,
+            fillStyle: 'red'
+          },
+          renderAllPointsIfNumberBelow: 1000
         }
       });
 
