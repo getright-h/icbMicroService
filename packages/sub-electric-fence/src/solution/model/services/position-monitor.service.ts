@@ -101,7 +101,7 @@ export class PositionMonitorService extends PositionMonitorDTO {
               if (item.stop) {
                 stopPoints.push(item);
               }
-              res.pointList[index].time = moment(res.pointList[index].time).format('MM/DD HH:mm') as any;
+              res.pointList[index].time = moment(res.pointList[index].time).format('MM/DD HH:mm:ss') as any;
               newPointList.push(res.pointList[index]);
             }
           }
